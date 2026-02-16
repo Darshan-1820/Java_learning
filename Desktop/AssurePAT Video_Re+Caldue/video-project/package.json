@@ -1,0 +1,21 @@
+{
+  "name": "assurepat-video",
+  "version": "1.0.0",
+  "description": "AssurePAT Product Walkthrough Video",
+  "scripts": {
+    "studio": "bunx remotion studio src/index.ts",
+    "render": "bunx remotion render src/index.ts AssurePATWalkthrough out/assurepat-walkthrough.mp4",
+    "render:fast": "bunx remotion render src/index.ts AssurePATWalkthrough out/assurepat-walkthrough.mp4 --concurrency=4"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.421",
+    "@remotion/cli": "^4.0.421",
+    "@remotion/install-whisper-cpp": "^4.0.421",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.421",
+    "typescript": "^5.9.3"
+  }
+}
