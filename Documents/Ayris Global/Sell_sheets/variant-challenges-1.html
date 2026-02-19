@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assure PAT — Sell Sheet</title>
+<title>Assure PAT — Sell Sheet (Variant 1: Red Gradient + Icons)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
 
@@ -30,28 +30,18 @@
   }
 
   /* ═══ TOP ACCENT BAR ═══ */
-  .accent-bar {
-    display: none;
-  }
+  .accent-bar { display: none; }
 
   /* ═══ DECORATIVE ELEMENTS ═══ */
-  .deco-circle {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.15;
-  }
+  .deco-circle { position: absolute; border-radius: 50%; opacity: 0.15; }
   .deco-circle.c1 { width: 180px; height: 180px; background: #2B6CB0; top: 60px; right: -40px; }
   .deco-circle.c2 { width: 120px; height: 120px; background: #e88733; bottom: 140px; left: -30px; }
   .deco-circle.c3 { width: 80px; height: 80px; background: #2B6CB0; bottom: 60px; right: 80px; }
 
   /* ═══ HEADER ═══ */
   .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 1;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px; position: relative; z-index: 1;
   }
   .header-left { display: flex; flex-direction: column; gap: 3px; }
   .logo-row { display: flex; align-items: center; }
@@ -65,16 +55,11 @@
 
   /* ═══ OVERVIEW ═══ */
   .overview {
-    font-size: 12px;
-    line-height: 1.6;
-    color: #1A202C;
-    font-weight: 500;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 1;
+    font-size: 12px; line-height: 1.6; color: #1A202C; font-weight: 500;
+    margin-bottom: 10px; position: relative; z-index: 1;
   }
 
-  /* ═══ CHALLENGES — Red Left Border + Icons ═══ */
+  /* ═══ CHALLENGES — Variant 1: Red Gradient + Icons ═══ */
   .challenges { margin-bottom: 10px; position: relative; z-index: 1; }
   .sec-label {
     font-size: 14px; font-weight: 800; color: #1A202C;
@@ -85,38 +70,33 @@
 
   .ch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .ch-box {
-    background-color: #FFF5F5;
+    background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
     border: none;
-    border-radius: 0 8px 8px 0;
-    padding: 9px 10px;
+    border-radius: 10px;
+    padding: 10px 10px;
     display: flex;
     align-items: center;
     gap: 8px;
-    border-left: 3px solid;
-    border-image: linear-gradient(to bottom, #E53E3E, #9B2C2C) 1;
+    box-shadow: 0 2px 6px rgba(153, 27, 27, 0.25);
   }
   .ch-ico {
-    width: 24px; height: 24px; min-width: 24px;
+    width: 28px; height: 28px; min-width: 28px;
     display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.2);
+    border-radius: 6px;
   }
   .ch-ico svg { width: 16px; height: 16px; }
-  .ch-box span { font-size: 10px; font-weight: 700; color: #1A202C; line-height: 1.3; }
+  .ch-box span { font-size: 10px; font-weight: 700; color: #ffffff; line-height: 1.3; }
 
   /* ═══ SOLUTIONS ═══ */
-  .solutions { margin-bottom: 8px; position: relative; z-index: 1; }
+  .solutions { margin-bottom: 10px; position: relative; z-index: 1; }
   .sol-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding-top: 14px; }
   .sol-card {
     background: linear-gradient(135deg, #2B6CB0 0%, #1A365D 100%);
-    border: none;
-    border-radius: 12px;
-    padding: 14px 10px 12px;
-    text-align: center;
-    position: relative;
-    overflow: visible;
+    border: none; border-radius: 12px; padding: 14px 10px 12px;
+    text-align: center; position: relative; overflow: visible;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
   }
   .sol-ico { width: 40px; height: 40px; margin: -24px auto 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #2B6CB0; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   .sol-ico svg { width: 22px; height: 22px; }
@@ -125,55 +105,25 @@
 
   /* ═══ MAIN GRID — Phone + Benefits ═══ */
   .main-grid {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 14px;
-    flex: 1;
-    min-height: 0;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 1;
+    display: grid; grid-template-columns: 380px 1fr; gap: 14px;
+    flex: 1; min-height: 0; margin-bottom: 10px;
+    position: relative; z-index: 1;
   }
-
-  .phone-card {
-    position: relative;
-  }
+  .phone-card { position: relative; }
   .phone-img {
-    width: 100%;
-    height: calc(100% + 80px);
-    margin-top: -40px;
-    background-image: url('res/501shots_so-Photoroom.png');
-    background-size: auto 100%;
-    background-position: center center;
-    background-repeat: no-repeat;
+    width: 100%; height: calc(100% + 80px); margin-top: -40px;
+    background-image: url('res/501shots_so-Photoroom.png'); background-size: auto 100%;
+    background-position: center center; background-repeat: no-repeat;
   }
-
   .benefits-card {
-    background-color: #ffffff;
-    border: 1px solid #E2E8F0;
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
+    background-color: #ffffff; border: 1px solid #E2E8F0; border-radius: 14px;
+    padding: 14px 16px; display: flex; flex-direction: column;
+    justify-content: center; gap: 12px;
   }
   .benefits-title { font-size: 17px; font-weight: 800; color: #1A202C; text-align: center; }
   .benefits-title span { color: #e88733; }
-  .scribble {
-    position: relative;
-    display: inline;
-  }
-  .scribble::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
-    height: 3px;
-    background-color: #2B6CB0;
-    border-radius: 2px;
-  }
+  .scribble { position: relative; display: inline; }
+  .scribble::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 3px; background-color: #2B6CB0; border-radius: 2px; }
   .benefit { display: flex; gap: 12px; align-items: flex-start; }
   .b-ico { width: 40px; height: 40px; min-width: 40px; display: flex; align-items: center; justify-content: center; }
   .b-ico svg { width: 24px; height: 24px; }
@@ -183,77 +133,48 @@
   /* ═══ DIVIDER ═══ */
   .benefits-divider { border: none; border-top: 1.5px dashed #E2E8F0; margin: 0; }
 
-  /* ═══ STATS 2x2 GRID (inside benefits card) ═══ */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .stat {
-    padding: 10px 12px;
-    border-radius: 12px;
-    border-left: 3px solid #2B6CB0;
-    background-color: #EEF2F7;
-  }
+  /* ═══ STATS 2x2 GRID ═══ */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { padding: 10px 12px; border-radius: 12px; border-left: 3px solid #2B6CB0; background-color: #EEF2F7; }
   .stat.teal { border-left-color: #2B6CB0; }
   .stat .num { font-size: 20px; font-weight: 800; color: #1A202C; line-height: 1.1; }
   .stat .lbl { font-size: 8px; font-weight: 600; color: #4A5568; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
   /* ═══ WHO + CTA ═══ */
   .bottom-row {
-    display: grid;
-    grid-template-columns: 1fr 200px;
-    gap: 14px;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 1;
+    display: grid; grid-template-columns: 1fr 200px; gap: 14px;
+    margin-bottom: 10px; position: relative; z-index: 1;
   }
-  .who-card {
-    background-color: #ffffff;
-    border: 1px solid #E2E8F0;
-    border-radius: 12px;
-    padding: 12px 14px 10px;
-  }
+  .who-card { background-color: #ffffff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px 10px; }
   .who-title { font-size: 12px; font-weight: 700; color: #1A202C; margin-bottom: 8px; }
   .who-title span { color: #e88733; }
   .who-icons { display: flex; gap: 4px; justify-content: space-between; }
   .who-item { text-align: center; width: 72px; }
-  .who-item-ico {
-    width: 34px; height: 34px; margin: 0 auto 3px;
-    display: flex; align-items: center; justify-content: center;
-  }
+  .who-item-ico { width: 34px; height: 34px; margin: 0 auto 3px; display: flex; align-items: center; justify-content: center; }
   .who-item-ico svg { width: 20px; height: 20px; }
   .who-item span { font-size: 8px; font-weight: 600; color: #2D3748; line-height: 1.3; display: block; }
-
   .cta-card {
     background: linear-gradient(135deg, #2B6CB0 0%, #1A365D 100%);
-    border-radius: 12px;
-    padding: 16px 18px;
+    border-radius: 12px; padding: 16px 18px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
   }
   .cta-card .cta-label { font-size: 14px; font-weight: 800; color: #e88733; margin-bottom: 4px; }
   .cta-card .cta-list { font-size: 10px; line-height: 1.5; color: #CBD5E0; margin-bottom: 10px; }
-  .cta-card .cta-btn {
-    display: inline-block; background-color: #e88733; color: white;
-    padding: 8px 22px; border-radius: 20px; font-size: 10px; font-weight: 700;
-    letter-spacing: 0.3px;
-  }
+  .cta-card .cta-btn { display: inline-block; background-color: #e88733; color: white; padding: 8px 22px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
 
   /* ═══ FOOTER ═══ */
   .footer {
-    border-top: 2px solid #CBD5E0;
-    padding-top: 8px;
+    border-top: 2px solid #CBD5E0; padding-top: 8px;
     display: flex; justify-content: space-between; align-items: center;
     font-size: 10px; color: #4A5568; font-weight: 600;
-    position: relative;
-    z-index: 1;
+    position: relative; z-index: 1;
   }
   .footer a { color: #2B6CB0; text-decoration: none; font-weight: 700; }
 
   @media print {
     body, .accent-bar, .stat, .ch-box, .sol-card, .sol-ico, .b-ico,
     .phone-card, .benefits-card, .who-card, .who-item-ico,
-    .cta-card, .cta-btn, .deco-circle {
+    .cta-card, .cta-btn, .deco-circle, .ch-ico {
       print-color-adjust: exact;
       -webkit-print-color-adjust: exact;
     }
@@ -263,12 +184,9 @@
 </head>
 <body>
 
-  <!-- DECORATIVE CIRCLES -->
   <div class="deco-circle c1"></div>
   <div class="deco-circle c2"></div>
   <div class="deco-circle c3"></div>
-
-  <!-- TOP ACCENT BAR -->
   <div class="accent-bar"></div>
 
   <!-- HEADER -->
@@ -289,40 +207,40 @@
   <!-- OVERVIEW -->
   <p class="overview">Assure PAT transforms Payment Acceptance Testing from a manual bottleneck into an automated, secure workflow. It manages the complete test card lifecycle across Production, QA, and Certification, replacing physical cards with virtual cards provisioned in seconds and reusable across testing cycles. <b><u>The result</u></b>: Unlimited Card use, faster testing, granular control, full audit trails, no unauthorized uses and zero card data exposure.</p>
 
-  <!-- CHALLENGES -->
+  <!-- CHALLENGES — Red Gradient Boxes + Icons -->
   <div class="challenges">
     <div class="sec-label">Current Market <span>Challenges</span></div>
     <div class="ch-grid">
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="credit-card" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="credit-card" style="color:#ffffff"></i></div>
         <span>Limited Number of Test PANs</span>
       </div>
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="repeat" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="repeat" style="color:#ffffff"></i></div>
         <span>Limited Card Reuse</span>
       </div>
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="clipboard-list" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="clipboard-list" style="color:#ffffff"></i></div>
         <span>Manual Processes</span>
       </div>
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="monitor-x" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="monitor-x" style="color:#ffffff"></i></div>
         <span>Limited Test Coverage and Visibility</span>
       </div>
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="shield-off" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="shield-off" style="color:#ffffff"></i></div>
         <span>Unauthorized Usage</span>
       </div>
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="credit-card" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="credit-card" style="color:#ffffff"></i></div>
         <span>Lost or Stolen Cards</span>
       </div>
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="settings" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="settings" style="color:#ffffff"></i></div>
         <span>Inefficient Management</span>
       </div>
       <div class="ch-box">
-        <div class="ch-ico"><i data-lucide="file-search" style="color:#C53030"></i></div>
+        <div class="ch-ico"><i data-lucide="file-search" style="color:#ffffff"></i></div>
         <span>Lack of Auditability</span>
       </div>
     </div>
@@ -360,7 +278,7 @@
     </div>
   </div>
 
-  <!-- MAIN: Phone (large) + Benefits -->
+  <!-- MAIN: Phone + Benefits -->
   <div class="main-grid">
     <div class="phone-card"><div class="phone-img"></div></div>
     <div class="benefits-card">
@@ -383,22 +301,10 @@
       </div>
       <hr class="benefits-divider">
       <div class="stats-grid">
-        <div class="stat">
-          <div class="num">70–80%</div>
-          <div class="lbl">Faster Testing</div>
-        </div>
-        <div class="stat teal">
-          <div class="num">1000+</div>
-          <div class="lbl">Card Reuses</div>
-        </div>
-        <div class="stat">
-          <div class="num">&lt;30s</div>
-          <div class="lbl">Instant Delivery</div>
-        </div>
-        <div class="stat teal">
-          <div class="num">100%</div>
-          <div class="lbl">Audit Ready</div>
-        </div>
+        <div class="stat"><div class="num">70–80%</div><div class="lbl">Faster Testing</div></div>
+        <div class="stat teal"><div class="num">1000+</div><div class="lbl">Card Reuses</div></div>
+        <div class="stat"><div class="num">&lt;30s</div><div class="lbl">Instant Delivery</div></div>
+        <div class="stat teal"><div class="num">100%</div><div class="lbl">Audit Ready</div></div>
       </div>
     </div>
   </div>
