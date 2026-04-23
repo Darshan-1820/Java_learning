@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Big Picture | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Arch</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link active"><span class="num">10</span> Angular Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS ANGULAR                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-angular">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Angular?</h2>
+  <p class="section-desc">Angular is a frontend framework by Google for building Single Page Applications (SPAs). Instead of the server rendering HTML (like JSP), Angular runs in the browser and builds the UI dynamically using JavaScript.</p>
+
+  <h3>SPA vs Traditional Web App</h3>
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Traditional (Phase 3)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Server renders HTML (JSP)</li>
+          <li>Every click = full page reload</li>
+          <li>Server does everything</li>
+          <li>Feels like a website</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">SPA (Phase 4 &mdash; Angular)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Browser renders HTML (Angular)</li>
+          <li>Only data is fetched (JSON via REST)</li>
+          <li>Server = API only, no HTML</li>
+          <li>Feels like a desktop app</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p><strong>Traditional (JSP):</strong> Like ordering food at a restaurant. Every time you want something, the waiter goes to the kitchen, gets the full plate, brings it back. Full round trip each time.</p>
+    <p><strong>SPA (Angular):</strong> Like a buffet. The kitchen loads all the serving stations once. You walk up and pick what you want instantly. The kitchen only restocks specific items (data) when needed.</p>
+  </div>
+
+  <h3>Component-Based Architecture</h3>
+  <p>Everything in Angular is a <strong>component</strong>. A component is a reusable piece of UI with its own HTML template, CSS styles, and TypeScript logic. You build an app by composing components like LEGO blocks.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">AppComponent<span class="flow-sub">Root (shell)</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">NavbarComponent<span class="flow-sub">Navigation bar</span></div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-box orange">RouterOutlet<span class="flow-sub">Page content area</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">LoginComponent</div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-box cyan">DashboardComponent</div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-box orange">BookingComponent</div>
+    </div>
+    <div class="flow-label">Angular app = tree of components. AppComponent is the root. RouterOutlet swaps pages without full reload.</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our Phase 3 app had 7 JSP files (login.jsp, register.jsp, dashboard.jsp, etc.). In Phase 4, each becomes an Angular <strong>component</strong>: LoginComponent, RegisterComponent, DashboardComponent, BookingComponent, TrackingComponent, HistoryComponent, InvoiceComponent. Same features, completely different architecture.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: ANGULAR CLI                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="angular-cli">
+  <div class="section-tag">Section 02</div>
+  <h2>Angular CLI</h2>
+  <p class="section-desc">The Angular CLI (<code>ng</code> command) is your main tool. It creates projects, generates components, runs the dev server, and builds for production.</p>
+
+  <h3>Essential Commands</h3>
+  <table class="info-table">
+    <thead><tr><th>Command</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr><td><code>npm install -g @angular/cli</code></td><td>Install Angular CLI globally</td></tr>
+      <tr><td><code>ng new nimbus-frontend</code></td><td>Create a new Angular project</td></tr>
+      <tr><td><code>ng serve</code></td><td>Start dev server at <code>http://localhost:4200</code></td></tr>
+      <tr><td><code>ng serve --open</code></td><td>Start dev server and open browser</td></tr>
+      <tr><td><code>ng generate component login</code></td><td>Create LoginComponent (4 files)</td></tr>
+      <tr><td><code>ng generate service parcel</code></td><td>Create ParcelService (2 files)</td></tr>
+      <tr><td><code>ng generate interface models/parcel</code></td><td>Create Parcel interface</td></tr>
+      <tr><td><code>ng build</code></td><td>Build for production (output in <code>dist/</code>)</td></tr>
+      <tr><td><code>ng test</code></td><td>Run unit tests (Karma + Jasmine)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Shorthand</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CLI shortcuts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// These are equivalent:
+ng generate component login
+ng g c login
+
+ng generate service parcel
+ng g s parcel
+
+ng generate interface models/parcel
+ng g i models/parcel</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">What <code>ng g c login</code> Creates</div>
+    <p>Four files inside <code>src/app/login/</code>:</p>
+    <ul>
+      <li><code>login.component.ts</code> &mdash; TypeScript class + @Component decorator</li>
+      <li><code>login.component.html</code> &mdash; HTML template</li>
+      <li><code>login.component.css</code> &mdash; Scoped styles (only apply to this component)</li>
+      <li><code>login.component.spec.ts</code> &mdash; Unit test file</li>
+    </ul>
+    <p>It also automatically registers the component in the nearest module.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: PROJECT STRUCTURE                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="project-structure">
+  <div class="section-tag">Section 03</div>
+  <h2>Project Structure</h2>
+  <p class="section-desc">What each file and folder does in an Angular project.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Angular project layout</span>
+    </div>
+    <pre><code class="language-markup">nimbus-frontend/
+ +-- src/
+ |    +-- app/
+ |    |    +-- app.component.ts        // Root component
+ |    |    +-- app.component.html      // Root template
+ |    |    +-- app.module.ts           // Root module
+ |    |    +-- app-routing.module.ts   // Route definitions
+ |    |    +-- login/                  // Login component folder
+ |    |    |    +-- login.component.ts
+ |    |    |    +-- login.component.html
+ |    |    |    +-- login.component.css
+ |    |    +-- dashboard/              // Dashboard component
+ |    |    +-- booking/                // Booking component
+ |    |    +-- services/               // API services
+ |    |    +-- models/                 // TypeScript interfaces
+ |    +-- assets/                      // Images, fonts
+ |    +-- environments/                // Dev/prod config
+ |    +-- index.html                   // Single HTML page
+ |    +-- main.ts                      // Bootstrap entry
+ |    +-- styles.css                   // Global styles
+ +-- angular.json                      // CLI configuration
+ +-- package.json                      // npm dependencies
+ +-- tsconfig.json                     // TypeScript config</code></pre>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Key Insight</div>
+    <p><code>index.html</code> is the <strong>only HTML file</strong> the browser loads. It contains <code>&lt;app-root&gt;&lt;/app-root&gt;</code>. Angular takes over from there and dynamically renders all components inside that tag. That's why it's called a Single Page Application &mdash; one page, all content swapped by JavaScript.</p>
+  </div>
+
+  <h3>The Module System</h3>
+  <p>Every Angular app has at least one module &mdash; <code>AppModule</code>. A module groups related components, services, and imports together.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/app.module.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+@NgModule({
+  declarations: [          // Components belonging to this module
+    AppComponent,
+    LoginComponent,
+    DashboardComponent
+  ],
+  imports: [               // Other modules this module needs
+    BrowserModule,         // Required for browser apps
+    FormsModule,           // For ngModel (two-way binding)
+    HttpClientModule,      // For HTTP requests to REST API
+    AppRoutingModule       // Routes
+  ],
+  providers: [],           // Services (usually auto-provided)
+  bootstrap: [AppComponent] // Root component to start with
+})
+export class AppModule { }</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: COMPONENTS                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="components">
+  <div class="section-tag">Section 04</div>
+  <h2>Components</h2>
+  <p class="section-desc">A component = template (HTML) + class (TypeScript) + styles (CSS). The <code>@Component</code> decorator connects them.</p>
+
+  <h3>Anatomy of a Component</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">login.component.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-login',              // HTML tag name
+  templateUrl: './login.component.html', // HTML template
+  styleUrls: ['./login.component.css']   // Scoped styles
+})
+export class LoginComponent {
+  // Properties (= the data)
+  username: string = '';
+  password: string = '';
+  errorMessage: string = '';
+
+  // Methods (= the behavior)
+  onLogin(): void {
+    if (this.username === '' || this.password === '') {
+      this.errorMessage = 'Please fill in all fields';
+      return;
+    }
+    // Call auth service (covered in Services chapter)
+    console.log('Logging in:', this.username);
+  }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Component({ ... })</div>
+        <div class="breakdown-explain">Decorator that tells Angular "this class is a component." Similar to @Controller in Spring.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">selector: 'app-login'</div>
+        <div class="breakdown-explain">Use this component in HTML as &lt;app-login&gt;&lt;/app-login&gt;. Like a custom HTML tag.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">templateUrl: './login.component.html'</div>
+        <div class="breakdown-explain">Points to the HTML file for this component's view. Like a JSP view in Spring MVC.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">username: string = ''</div>
+        <div class="breakdown-explain">A typed property. TypeScript enforces this is always a string. This is the "model" data.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">onLogin(): void</div>
+        <div class="breakdown-explain">Method that gets called when the login button is clicked (event binding). Return type void = no return value.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Template</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">login.component.html</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;div class="login-container"&gt;
+  &lt;h2&gt;Nimbus Login&lt;/h2&gt;
+
+  &lt;div *ngIf="errorMessage" class="error"&gt;
+    {{ errorMessage }}
+  &lt;/div&gt;
+
+  &lt;form (ngSubmit)="onLogin()"&gt;
+    &lt;div class="form-group"&gt;
+      &lt;label&gt;Username&lt;/label&gt;
+      &lt;input type="text"
+             [(ngModel)]="username"
+             name="username"
+             required&gt;
+    &lt;/div&gt;
+    &lt;div class="form-group"&gt;
+      &lt;label&gt;Password&lt;/label&gt;
+      &lt;input type="password"
+             [(ngModel)]="password"
+             name="password"
+             required&gt;
+    &lt;/div&gt;
+    &lt;button type="submit"&gt;Login&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: DATA BINDING                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="data-binding">
+  <div class="section-tag">Section 05</div>
+  <h2>Data Binding</h2>
+  <p class="section-desc">Data binding connects the component class (TypeScript) to the template (HTML). Angular has four types of binding.</p>
+
+  <h3>1. Interpolation &mdash; <code>{{ }}</code></h3>
+  <p>Display a property value in the template. One-way: class &rarr; template.</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Interpolation examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Display property --&gt;
+&lt;h2&gt;Welcome, {{ user.fullName }}!&lt;/h2&gt;
+
+&lt;!-- Expression --&gt;
+&lt;p&gt;Total: Rs. {{ price * 1.18 }}&lt;/p&gt;
+
+&lt;!-- Method call --&gt;
+&lt;p&gt;Status: {{ getStatusLabel() }}&lt;/p&gt;
+
+&lt;!-- Like JSP's ${user.fullName} but with {{ }} --&gt;</code></pre>
+  </div>
+
+  <h3>2. Property Binding &mdash; <code>[property]</code></h3>
+  <p>Bind a DOM property to a component property. One-way: class &rarr; template.</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Property binding examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Bind image source --&gt;
+&lt;img [src]="parcel.imageUrl"&gt;
+
+&lt;!-- Disable button conditionally --&gt;
+&lt;button [disabled]="!isFormValid"&gt;Submit&lt;/button&gt;
+
+&lt;!-- Dynamic CSS class --&gt;
+&lt;span [class.delivered]="parcel.status === 'DELIVERED'"&gt;
+  {{ parcel.status }}
+&lt;/span&gt;
+
+&lt;!-- Dynamic style --&gt;
+&lt;div [style.background-color]="isUrgent ? 'red' : 'green'"&gt;
+  Priority
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <h3>3. Event Binding &mdash; <code>(event)</code></h3>
+  <p>Listen to DOM events and call component methods. One-way: template &rarr; class.</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Event binding examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Click event --&gt;
+&lt;button (click)="onBookParcel()"&gt;Book Now&lt;/button&gt;
+
+&lt;!-- Form submit --&gt;
+&lt;form (ngSubmit)="onLogin()"&gt;...&lt;/form&gt;
+
+&lt;!-- Keyup event --&gt;
+&lt;input (keyup.enter)="onSearch()"&gt;
+
+&lt;!-- Pass the event object --&gt;
+&lt;input (input)="onType($event)"&gt;</code></pre>
+  </div>
+
+  <h3>4. Two-Way Binding &mdash; <code>[(ngModel)]</code></h3>
+  <p>Combines property + event binding. Changes in the input update the class property AND changes in the class update the input. Requires <code>FormsModule</code> import.</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Two-way binding</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Whatever user types instantly updates this.trackingId --&gt;
+&lt;input [(ngModel)]="trackingId" name="trackingId"&gt;
+
+&lt;!-- This shows the value in real-time --&gt;
+&lt;p&gt;Searching for: {{ trackingId }}&lt;/p&gt;
+
+&lt;!-- [(ngModel)] is shorthand for: --&gt;
+&lt;input [ngModel]="trackingId"
+       (ngModelChange)="trackingId = $event"&gt;</code></pre>
+  </div>
+
+  <h3>Binding Cheat Sheet</h3>
+  <table class="info-table">
+    <thead><tr><th>Syntax</th><th>Direction</th><th>JSP Equivalent</th></tr></thead>
+    <tbody>
+      <tr><td><code>{{ value }}</code></td><td>Class &rarr; View</td><td><code>${value}</code> (EL expression)</td></tr>
+      <tr><td><code>[property]="expr"</code></td><td>Class &rarr; View</td><td>No direct equivalent</td></tr>
+      <tr><td><code>(event)="method()"</code></td><td>View &rarr; Class</td><td><code>onclick="..."</code> (JS)</td></tr>
+      <tr><td><code>[(ngModel)]="prop"</code></td><td>Both ways</td><td>No equivalent (JSP has no two-way binding)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: DIRECTIVES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="directives">
+  <div class="section-tag">Section 06</div>
+  <h2>Directives</h2>
+  <p class="section-desc">Directives are instructions in the template that change how elements are rendered. They are Angular's version of JSTL tags.</p>
+
+  <h3>*ngIf &mdash; Conditional Rendering</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">*ngIf examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Show only if error exists --&gt;
+&lt;div *ngIf="errorMessage" class="error"&gt;
+  {{ errorMessage }}
+&lt;/div&gt;
+
+&lt;!-- If/else --&gt;
+&lt;div *ngIf="isLoggedIn; else loginBlock"&gt;
+  Welcome back, {{ user.name }}!
+&lt;/div&gt;
+&lt;ng-template #loginBlock&gt;
+  &lt;p&gt;Please log in.&lt;/p&gt;
+&lt;/ng-template&gt;
+
+&lt;!-- JSP equivalent:
+     &lt;c:if test="${not empty error}"&gt;...&lt;/c:if&gt; --&gt;</code></pre>
+  </div>
+
+  <h3>*ngFor &mdash; Loop</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">*ngFor examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Loop over parcels array --&gt;
+&lt;table&gt;
+  &lt;tr *ngFor="let parcel of parcels; let i = index"&gt;
+    &lt;td&gt;{{ i + 1 }}&lt;/td&gt;
+    &lt;td&gt;{{ parcel.trackingId }}&lt;/td&gt;
+    &lt;td&gt;{{ parcel.recipientName }}&lt;/td&gt;
+    &lt;td&gt;{{ parcel.status }}&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- With trackBy for performance --&gt;
+&lt;div *ngFor="let p of parcels; trackBy: trackByTrackingId"&gt;
+  {{ p.trackingId }}
+&lt;/div&gt;
+
+&lt;!-- JSP equivalent:
+     &lt;c:forEach var="p" items="${parcels}" varStatus="s"&gt;
+       ...
+     &lt;/c:forEach&gt; --&gt;</code></pre>
+  </div>
+
+  <h3>*ngSwitch &mdash; Multi-Case</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">*ngSwitch example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;div [ngSwitch]="parcel.status"&gt;
+  &lt;span *ngSwitchCase="'BOOKED'" class="badge orange"&gt;
+    Booked
+  &lt;/span&gt;
+  &lt;span *ngSwitchCase="'IN_TRANSIT'" class="badge blue"&gt;
+    In Transit
+  &lt;/span&gt;
+  &lt;span *ngSwitchCase="'DELIVERED'" class="badge green"&gt;
+    Delivered
+  &lt;/span&gt;
+  &lt;span *ngSwitchDefault class="badge gray"&gt;
+    Unknown
+  &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- JSP equivalent:
+     &lt;c:choose&gt;
+       &lt;c:when test="${status == 'BOOKED'}"&gt;...&lt;/c:when&gt;
+       &lt;c:otherwise&gt;...&lt;/c:otherwise&gt;
+     &lt;/c:choose&gt; --&gt;</code></pre>
+  </div>
+
+  <h3>Directives vs JSTL</h3>
+  <table class="info-table">
+    <thead><tr><th>Angular Directive</th><th>JSTL Tag</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>*ngIf</code></td><td><code>&lt;c:if&gt;</code></td><td>Conditional render</td></tr>
+      <tr><td><code>*ngIf; else</code></td><td><code>&lt;c:choose&gt;</code></td><td>If/else</td></tr>
+      <tr><td><code>*ngFor</code></td><td><code>&lt;c:forEach&gt;</code></td><td>Loop over list</td></tr>
+      <tr><td><code>[ngSwitch]</code></td><td><code>&lt;c:choose&gt;/&lt;c:when&gt;</code></td><td>Multi-case</td></tr>
+      <tr><td><code>[ngClass]</code></td><td>No equivalent</td><td>Dynamic CSS classes</td></tr>
+      <tr><td><code>[ngStyle]</code></td><td>No equivalent</td><td>Dynamic inline styles</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: PIPES                                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="pipes">
+  <div class="section-tag">Section 07</div>
+  <h2>Pipes</h2>
+  <p class="section-desc">Pipes transform data in the template. They format dates, numbers, strings, and more &mdash; without modifying the original data.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Built-in pipes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- uppercase / lowercase --&gt;
+&lt;p&gt;{{ parcel.status | uppercase }}&lt;/p&gt;
+&lt;!-- Output: "DELIVERED" --&gt;
+
+&lt;!-- titlecase --&gt;
+&lt;p&gt;{{ 'rahul sharma' | titlecase }}&lt;/p&gt;
+&lt;!-- Output: "Rahul Sharma" --&gt;
+
+&lt;!-- date formatting --&gt;
+&lt;p&gt;{{ parcel.bookingDate | date:'dd MMM yyyy' }}&lt;/p&gt;
+&lt;!-- Output: "20 Apr 2026" --&gt;
+
+&lt;p&gt;{{ parcel.bookingDate | date:'fullDate' }}&lt;/p&gt;
+&lt;!-- Output: "Monday, April 20, 2026" --&gt;
+
+&lt;!-- currency --&gt;
+&lt;p&gt;{{ parcel.price | currency:'INR' }}&lt;/p&gt;
+&lt;!-- Output: "Rs.237.50" --&gt;
+
+&lt;p&gt;{{ parcel.price | currency:'USD':'symbol':'1.2-2' }}&lt;/p&gt;
+&lt;!-- Output: "$237.50" --&gt;
+
+&lt;!-- number (decimal) --&gt;
+&lt;p&gt;{{ parcel.weight | number:'1.1-2' }}&lt;/p&gt;
+&lt;!-- Output: "2.50" (min 1 integer, 1-2 decimals) --&gt;
+
+&lt;!-- percent --&gt;
+&lt;p&gt;{{ 0.85 | percent }}&lt;/p&gt;
+&lt;!-- Output: "85%" --&gt;
+
+&lt;!-- json (great for debugging) --&gt;
+&lt;pre&gt;{{ parcel | json }}&lt;/pre&gt;
+&lt;!-- Output: full JSON of the object --&gt;
+
+&lt;!-- Chaining pipes --&gt;
+&lt;p&gt;{{ parcel.recipientName | uppercase | slice:0:10 }}&lt;/p&gt;</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead><tr><th>Pipe</th><th>Usage</th><th>JSTL Equivalent</th></tr></thead>
+    <tbody>
+      <tr><td><code>date</code></td><td><code>{{ d | date:'dd-MMM-yyyy' }}</code></td><td><code>&lt;fmt:formatDate&gt;</code></td></tr>
+      <tr><td><code>currency</code></td><td><code>{{ p | currency:'INR' }}</code></td><td><code>&lt;fmt:formatNumber type="currency"&gt;</code></td></tr>
+      <tr><td><code>uppercase</code></td><td><code>{{ s | uppercase }}</code></td><td><code>${fn:toUpperCase(s)}</code></td></tr>
+      <tr><td><code>json</code></td><td><code>{{ obj | json }}</code></td><td>No equivalent</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: COMPONENT COMMUNICATION                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="component-communication">
+  <div class="section-tag">Section 08</div>
+  <h2>Component Communication</h2>
+  <p class="section-desc">Components need to talk to each other. Parent components pass data down with <code>@Input</code>. Child components send events up with <code>@Output</code>.</p>
+
+  <h3>@Input &mdash; Parent to Child</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">parcel-card.component.ts (child)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component, Input } from '@angular/core';
+import { Parcel } from '../models/parcel';
+
+@Component({
+  selector: 'app-parcel-card',
+  template: `
+    &lt;div class="card"&gt;
+      &lt;h3&gt;{{ parcel.trackingId }}&lt;/h3&gt;
+      &lt;p&gt;To: {{ parcel.recipientName }}&lt;/p&gt;
+      &lt;p&gt;Status: {{ parcel.status }}&lt;/p&gt;
+    &lt;/div&gt;
+  `
+})
+export class ParcelCardComponent {
+  @Input() parcel!: Parcel;  // Receives data from parent
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard.component.html (parent)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Parent passes each parcel to the child component --&gt;
+&lt;app-parcel-card
+  *ngFor="let p of parcels"
+  [parcel]="p"&gt;
+&lt;/app-parcel-card&gt;</code></pre>
+  </div>
+
+  <h3>@Output &mdash; Child to Parent</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">parcel-card.component.ts (child emits event)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Parcel } from '../models/parcel';
+
+@Component({
+  selector: 'app-parcel-card',
+  template: `
+    &lt;div class="card"&gt;
+      &lt;h3&gt;{{ parcel.trackingId }}&lt;/h3&gt;
+      &lt;button (click)="onTrack()"&gt;Track&lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+export class ParcelCardComponent {
+  @Input() parcel!: Parcel;
+  @Output() trackClicked = new EventEmitter&lt;string&gt;();
+
+  onTrack(): void {
+    // Emit the tracking ID to the parent
+    this.trackClicked.emit(this.parcel.trackingId);
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard.component.html (parent listens)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;app-parcel-card
+  *ngFor="let p of parcels"
+  [parcel]="p"
+  (trackClicked)="goToTracking($event)"&gt;
+&lt;/app-parcel-card&gt;
+
+&lt;!-- $event contains the tracking ID string emitted by child --&gt;</code></pre>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Parent Component<span class="flow-sub">DashboardComponent</span></div>
+    </div>
+    <div class="flow-row" style="margin-top:8px;">
+      <div class="flow-arrow" style="transform: rotate(90deg);">&darr;</div>
+      <div style="font-size:0.75rem;color:var(--text-muted);padding:0 16px;">@Input (data down)</div>
+      <div style="font-size:0.75rem;color:var(--text-muted);padding:0 16px;">@Output (events up)</div>
+      <div class="flow-arrow" style="transform: rotate(-90deg);">&uarr;</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-box green">Child Component<span class="flow-sub">ParcelCardComponent</span></div>
+    </div>
+    <div class="flow-label">Data flows DOWN via @Input. Events flow UP via @Output. Never the other way.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: NIMBUS COMPONENTS                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-components">
+  <div class="section-tag">Section 09</div>
+  <h2>Nimbus Components</h2>
+  <p class="section-desc">Full Angular components for Nimbus, mapped from the Phase 3 JSP pages.</p>
+
+  <h3>LoginComponent</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">login/login.component.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+  username: string = '';
+  password: string = '';
+  errorMessage: string = '';
+
+  constructor(private router: Router) {}
+
+  onLogin(): void {
+    if (!this.username || !this.password) {
+      this.errorMessage = 'Please fill in all fields';
+      return;
+    }
+
+    // In Phase 4, this calls AuthService.login()
+    // which makes an HTTP POST to /api/auth/login
+    // For now, simple check:
+    if (this.username === 'customer1'
+        &amp;&amp; this.password === 'pass123') {
+      localStorage.setItem('user',
+        JSON.stringify({ username: this.username,
+                         role: 'CUSTOMER' }));
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.errorMessage = 'Invalid username or password';
+    }
+  }
+}</code></pre>
+  </div>
+
+  <h3>DashboardComponent</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard/dashboard.component.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component, OnInit } from '@angular/core';
+import { Parcel } from '../models/parcel';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
+})
+export class DashboardComponent implements OnInit {
+  userName: string = '';
+  totalParcels: number = 0;
+  inTransit: number = 0;
+  delivered: number = 0;
+  recentParcels: Parcel[] = [];
+
+  ngOnInit(): void {
+    // Load user from localStorage
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.userName = JSON.parse(userData).username;
+    }
+
+    // In Phase 4, this calls ParcelService.getMyParcels()
+    // which makes GET /api/parcels/my-parcels
+    // For now, hardcoded sample data:
+    this.recentParcels = [
+      {
+        trackingId: 'NIM1A2B3C4D',
+        recipientName: 'Priya Singh',
+        recipientCity: 'Bangalore',
+        status: 'IN_TRANSIT',
+        bookingDate: new Date('2026-04-20')
+      } as Parcel
+    ];
+
+    this.totalParcels = this.recentParcels.length;
+    this.delivered = this.recentParcels
+      .filter(p =&gt; p.status === 'DELIVERED').length;
+    this.inTransit = this.totalParcels - this.delivered;
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard/dashboard.component.html</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;div class="dashboard"&gt;
+  &lt;h2&gt;Welcome, {{ userName }}!&lt;/h2&gt;
+
+  &lt;div class="stats-row"&gt;
+    &lt;div class="stat-card"&gt;
+      &lt;h3&gt;{{ totalParcels }}&lt;/h3&gt;
+      &lt;p&gt;Total Parcels&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="stat-card"&gt;
+      &lt;h3&gt;{{ inTransit }}&lt;/h3&gt;
+      &lt;p&gt;In Transit&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="stat-card"&gt;
+      &lt;h3&gt;{{ delivered }}&lt;/h3&gt;
+      &lt;p&gt;Delivered&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;h3&gt;Recent Parcels&lt;/h3&gt;
+
+  &lt;div *ngIf="recentParcels.length === 0"&gt;
+    &lt;p&gt;No parcels yet.
+       &lt;a routerLink="/booking"&gt;Book your first parcel!&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;table *ngIf="recentParcels.length &gt; 0"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Tracking ID&lt;/th&gt;
+        &lt;th&gt;Recipient&lt;/th&gt;
+        &lt;th&gt;City&lt;/th&gt;
+        &lt;th&gt;Status&lt;/th&gt;
+        &lt;th&gt;Date&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr *ngFor="let p of recentParcels"&gt;
+        &lt;td&gt;{{ p.trackingId }}&lt;/td&gt;
+        &lt;td&gt;{{ p.recipientName }}&lt;/td&gt;
+        &lt;td&gt;{{ p.recipientCity }}&lt;/td&gt;
+        &lt;td&gt;
+          &lt;span [ngClass]="'badge ' + p.status.toLowerCase()"&gt;
+            {{ p.status }}
+          &lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;{{ p.bookingDate | date:'dd MMM yyyy' }}&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <h3>BookingListComponent</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking-list/booking-list.component.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component, OnInit } from '@angular/core';
+import { Parcel } from '../models/parcel';
+
+@Component({
+  selector: 'app-booking-list',
+  templateUrl: './booking-list.component.html',
+  styleUrls: ['./booking-list.component.css']
+})
+export class BookingListComponent implements OnInit {
+  parcels: Parcel[] = [];
+  filteredParcels: Parcel[] = [];
+  searchTerm: string = '';
+  filterStatus: string = 'ALL';
+
+  ngOnInit(): void {
+    // In Phase 4: this.parcelService.getMyParcels()
+    //   .subscribe(data =&gt; this.parcels = data);
+    this.loadParcels();
+  }
+
+  loadParcels(): void {
+    // Sample data &mdash; replaced by HTTP call later
+    this.parcels = [
+      {
+        trackingId: 'NIM1A2B3C4D',
+        recipientName: 'Priya Singh',
+        recipientCity: 'Bangalore',
+        parcelType: 'MEDIUM',
+        weight: 2.5,
+        price: 237.5,
+        status: 'IN_TRANSIT',
+        bookingDate: new Date('2026-04-20')
+      } as Parcel,
+      {
+        trackingId: 'NIMX9Y8Z7W6',
+        recipientName: 'Amit Verma',
+        recipientCity: 'Mumbai',
+        parcelType: 'DOCUMENT',
+        weight: 0.5,
+        price: 57.5,
+        status: 'DELIVERED',
+        bookingDate: new Date('2026-04-18')
+      } as Parcel
+    ];
+    this.filteredParcels = [...this.parcels];
+  }
+
+  onSearch(): void {
+    this.applyFilters();
+  }
+
+  onFilterChange(): void {
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    this.filteredParcels = this.parcels.filter(p =&gt; {
+      const matchesSearch = !this.searchTerm
+        || p.trackingId.toLowerCase()
+             .includes(this.searchTerm.toLowerCase())
+        || p.recipientName.toLowerCase()
+             .includes(this.searchTerm.toLowerCase());
+
+      const matchesStatus = this.filterStatus === 'ALL'
+        || p.status === this.filterStatus;
+
+      return matchesSearch &amp;&amp; matchesStatus;
+    });
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking-list/booking-list.component.html</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;div class="booking-list"&gt;
+  &lt;h2&gt;Booking History&lt;/h2&gt;
+
+  &lt;!-- Filters --&gt;
+  &lt;div class="filters"&gt;
+    &lt;input type="text"
+           [(ngModel)]="searchTerm"
+           (input)="onSearch()"
+           placeholder="Search by ID or name..."&gt;
+
+    &lt;select [(ngModel)]="filterStatus"
+            (change)="onFilterChange()"&gt;
+      &lt;option value="ALL"&gt;All Status&lt;/option&gt;
+      &lt;option value="BOOKED"&gt;Booked&lt;/option&gt;
+      &lt;option value="IN_TRANSIT"&gt;In Transit&lt;/option&gt;
+      &lt;option value="DELIVERED"&gt;Delivered&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Results count --&gt;
+  &lt;p class="count"&gt;
+    Showing {{ filteredParcels.length }} of {{ parcels.length }}
+  &lt;/p&gt;
+
+  &lt;!-- Table --&gt;
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Tracking ID&lt;/th&gt;
+        &lt;th&gt;Recipient&lt;/th&gt;
+        &lt;th&gt;City&lt;/th&gt;
+        &lt;th&gt;Type&lt;/th&gt;
+        &lt;th&gt;Price&lt;/th&gt;
+        &lt;th&gt;Status&lt;/th&gt;
+        &lt;th&gt;Booked&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr *ngFor="let p of filteredParcels"&gt;
+        &lt;td&gt;{{ p.trackingId }}&lt;/td&gt;
+        &lt;td&gt;{{ p.recipientName }}&lt;/td&gt;
+        &lt;td&gt;{{ p.recipientCity }}&lt;/td&gt;
+        &lt;td&gt;{{ p.parcelType }}&lt;/td&gt;
+        &lt;td&gt;{{ p.price | currency:'INR' }}&lt;/td&gt;
+        &lt;td&gt;
+          &lt;span [ngClass]="'badge ' + p.status.toLowerCase()"&gt;
+            {{ p.status | titlecase }}
+          &lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;{{ p.bookingDate | date:'dd MMM yyyy' }}&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;div *ngIf="filteredParcels.length === 0" class="empty"&gt;
+    &lt;p&gt;No parcels match your search.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">Phase 3 vs Phase 4</div>
+    <p>Notice the pattern: in Phase 3, filtering meant submitting a form to the server and reloading the whole page. In Angular, <code>onSearch()</code> filters the array <strong>instantly in the browser</strong> &mdash; no server round trip, no page reload. The data is already loaded. This is why SPAs feel faster.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: EXERCISES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 10</div>
+  <h2>Exercises</h2>
+  <p class="section-desc">Build these components to practice Angular fundamentals.</p>
+
+  <h3>Exercise 1: Greeting Component</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a <code>GreetingComponent</code> with an input field bound to a <code>name</code> property via <code>[(ngModel)]</code>. Below the input, display "Hello, [name]!" using interpolation. If name is empty, show "Hello, World!".</p>
+    <p>Use <code>ng g c greeting</code> to generate the component. Don't forget to import <code>FormsModule</code> in <code>AppModule</code>.</p>
+  </div>
+
+  <h3>Exercise 2: Parcel Status Badge</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a <code>StatusBadgeComponent</code> that takes a <code>status</code> string via <code>@Input()</code>. Use <code>[ngSwitch]</code> to display different colored badges: green for DELIVERED, blue for IN_TRANSIT, orange for BOOKED. Use it inside a parent component that passes different statuses.</p>
+  </div>
+
+  <h3>Exercise 3: Parcel Counter</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a component with an <code>items: string[]</code> array. Display the array using <code>*ngFor</code>. Add an input field and an "Add" button. When clicked, push the input value to the array. Show the total count above the list. Add a "Remove" button next to each item that removes it from the array.</p>
+  </div>
+
+  <h3>Exercise 4: Price Calculator</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a component with a weight input (number) and a type dropdown (DOCUMENT, SMALL, MEDIUM, LARGE). Calculate price using the Nimbus formula: base + (weight * 15). Display the price formatted with the <code>currency:'INR'</code> pipe. Price should update in real-time as the user changes weight or type (use two-way binding).</p>
+  </div>
+
+  <h3>Exercise 5: Parent-Child Communication</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create two components:</p>
+    <ol>
+      <li><code>ParcelFormComponent</code> (child) &mdash; has a form with tracking ID and recipient name fields. On submit, emits the form data to the parent via <code>@Output()</code>.</li>
+      <li><code>ParcelListComponent</code> (parent) &mdash; maintains a <code>parcels</code> array. Listens for the child's event and adds the new parcel to the array. Displays all parcels in a table using <code>*ngFor</code>.</li>
+    </ol>
+    <p>This mirrors the real Nimbus flow: booking form emits data, parent component adds it to the list.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="typescript.html">
+    <span class="nav-label">&larr; Previous Topic</span>
+    <span class="nav-title">TypeScript Basics</span>
+  </a>
+  <a href="angular-services.html" class="next">
+    <span class="nav-label">Next Topic &rarr;</span>
+    <span class="nav-title">Services &amp; HTTP</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

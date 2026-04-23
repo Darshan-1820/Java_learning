@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 4 Cheat Sheets | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> API Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Architecture</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus as Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular &mdash; Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Angular Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Angular Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link active"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: SPRING BOOT ANNOTATIONS                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="spring-annotations">
+  <div class="section-tag">Quick Reference</div>
+  <h2>Spring Boot Annotations</h2>
+  <p class="section-desc">Every annotation used in Nimbus Phase 4, in one place.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Annotation</th>
+        <th>Where</th>
+        <th>What It Does</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@SpringBootApplication</code></td>
+        <td>Main class</td>
+        <td>Combines @Configuration + @EnableAutoConfiguration + @ComponentScan. Entry point.</td>
+      </tr>
+      <tr>
+        <td><code>@RestController</code></td>
+        <td>Controller class</td>
+        <td>Marks class as a REST controller. All methods return data (JSON), not views.</td>
+      </tr>
+      <tr>
+        <td><code>@RequestMapping</code></td>
+        <td>Controller class</td>
+        <td>Sets the base URL path for all endpoints in the controller.</td>
+      </tr>
+      <tr>
+        <td><code>@GetMapping</code></td>
+        <td>Method</td>
+        <td>Handles HTTP GET requests. Used for reading/fetching data.</td>
+      </tr>
+      <tr>
+        <td><code>@PostMapping</code></td>
+        <td>Method</td>
+        <td>Handles HTTP POST requests. Used for creating new resources.</td>
+      </tr>
+      <tr>
+        <td><code>@PutMapping</code></td>
+        <td>Method</td>
+        <td>Handles HTTP PUT requests. Used for updating existing resources.</td>
+      </tr>
+      <tr>
+        <td><code>@DeleteMapping</code></td>
+        <td>Method</td>
+        <td>Handles HTTP DELETE requests. Used for removing resources.</td>
+      </tr>
+      <tr>
+        <td><code>@PathVariable</code></td>
+        <td>Method param</td>
+        <td>Extracts a value from the URL path: <code>/bookings/{id}</code> &rarr; <code>id</code>.</td>
+      </tr>
+      <tr>
+        <td><code>@RequestParam</code></td>
+        <td>Method param</td>
+        <td>Extracts a query parameter: <code>?userId=1</code> &rarr; <code>userId</code>.</td>
+      </tr>
+      <tr>
+        <td><code>@RequestBody</code></td>
+        <td>Method param</td>
+        <td>Reads the HTTP request body (JSON) and converts to Java object.</td>
+      </tr>
+      <tr>
+        <td><code>@Valid</code></td>
+        <td>Method param</td>
+        <td>Triggers bean validation on the parameter before method runs.</td>
+      </tr>
+      <tr>
+        <td><code>@Service</code></td>
+        <td>Service class</td>
+        <td>Marks class as a service layer bean. Spring auto-creates an instance.</td>
+      </tr>
+      <tr>
+        <td><code>@Repository</code></td>
+        <td>DAO class</td>
+        <td>Marks class as a data access bean. Translates SQL exceptions automatically.</td>
+      </tr>
+      <tr>
+        <td><code>@Configuration</code></td>
+        <td>Config class</td>
+        <td>Contains @Bean methods. Used for CORS config, RestTemplate, etc.</td>
+      </tr>
+      <tr>
+        <td><code>@Autowired</code></td>
+        <td>Field/constructor</td>
+        <td>Injects a dependency. Spring finds the matching bean and wires it in.</td>
+      </tr>
+      <tr>
+        <td><code>@ControllerAdvice</code></td>
+        <td>Exception handler class</td>
+        <td>Global exception handling across all controllers.</td>
+      </tr>
+      <tr>
+        <td><code>@ExceptionHandler</code></td>
+        <td>Method</td>
+        <td>Catches a specific exception type and returns a custom error response.</td>
+      </tr>
+      <tr>
+        <td><code>@CrossOrigin</code></td>
+        <td>Controller/method</td>
+        <td>Enables CORS for specific origins on a controller or method.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: REST ENDPOINT PATTERNS                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="rest-patterns">
+  <div class="section-tag">Quick Reference</div>
+  <h2>REST Endpoint Patterns</h2>
+  <p class="section-desc">Standard patterns for building REST APIs.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Method</th>
+        <th>URL Pattern</th>
+        <th>Status Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>List all</td>
+        <td><strong>GET</strong></td>
+        <td><code>/api/bookings</code></td>
+        <td>200</td>
+      </tr>
+      <tr>
+        <td>Get one</td>
+        <td><strong>GET</strong></td>
+        <td><code>/api/bookings/{id}</code></td>
+        <td>200 / 404</td>
+      </tr>
+      <tr>
+        <td>Create</td>
+        <td><strong>POST</strong></td>
+        <td><code>/api/bookings</code></td>
+        <td>201</td>
+      </tr>
+      <tr>
+        <td>Update</td>
+        <td><strong>PUT</strong></td>
+        <td><code>/api/bookings/{id}</code></td>
+        <td>200</td>
+      </tr>
+      <tr>
+        <td>Delete</td>
+        <td><strong>DELETE</strong></td>
+        <td><code>/api/bookings/{id}</code></td>
+        <td>204</td>
+      </tr>
+      <tr>
+        <td>Filter</td>
+        <td><strong>GET</strong></td>
+        <td><code>/api/bookings?status=X</code></td>
+        <td>200</td>
+      </tr>
+      <tr>
+        <td>Sub-resource</td>
+        <td><strong>PUT</strong></td>
+        <td><code>/api/bookings/{id}/status</code></td>
+        <td>200</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Nimbus Endpoints</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Endpoint</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>POST</strong></td><td><code>/api/register</code></td><td>Register new user</td></tr>
+      <tr><td><strong>POST</strong></td><td><code>/api/login</code></td><td>Authenticate user</td></tr>
+      <tr><td><strong>POST</strong></td><td><code>/api/bookings</code></td><td>Create booking</td></tr>
+      <tr><td><strong>GET</strong></td><td><code>/api/bookings/{id}</code></td><td>Get booking by ID</td></tr>
+      <tr><td><strong>GET</strong></td><td><code>/api/bookings?userId=X</code></td><td>Get user's bookings</td></tr>
+      <tr><td><strong>PUT</strong></td><td><code>/api/bookings/{id}/status</code></td><td>Update booking status</td></tr>
+      <tr><td><strong>PUT</strong></td><td><code>/api/bookings/{id}/pickup</code></td><td>Update pickup date</td></tr>
+      <tr><td><strong>GET</strong></td><td><code>/api/bookings/history</code></td><td>Get delivered bookings</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: HTTP STATUS CODES                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="http-status">
+  <div class="section-tag">Quick Reference</div>
+  <h2>HTTP Methods &amp; Status Codes</h2>
+  <p class="section-desc">The codes you'll use daily.</p>
+
+  <h3>HTTP Methods</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>CRUD</th><th>Has Body?</th><th>Idempotent?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>GET</strong></td><td>Read</td><td>No</td><td>Yes</td></tr>
+      <tr><td><strong>POST</strong></td><td>Create</td><td>Yes</td><td>No</td></tr>
+      <tr><td><strong>PUT</strong></td><td>Update</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td><strong>DELETE</strong></td><td>Delete</td><td>No</td><td>Yes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Status Codes</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>200</strong></td><td>OK</td><td>GET/PUT success</td></tr>
+      <tr><td><strong>201</strong></td><td>Created</td><td>POST success</td></tr>
+      <tr><td><strong>204</strong></td><td>No Content</td><td>DELETE success</td></tr>
+      <tr><td><strong>400</strong></td><td>Bad Request</td><td>Validation failed, bad input</td></tr>
+      <tr><td><strong>401</strong></td><td>Unauthorized</td><td>Not authenticated</td></tr>
+      <tr><td><strong>403</strong></td><td>Forbidden</td><td>Wrong role</td></tr>
+      <tr><td><strong>404</strong></td><td>Not Found</td><td>Resource doesn't exist</td></tr>
+      <tr><td><strong>409</strong></td><td>Conflict</td><td>Duplicate resource</td></tr>
+      <tr><td><strong>500</strong></td><td>Internal Server Error</td><td>Unhandled exception</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: ANGULAR CLI COMMANDS                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="angular-cli">
+  <div class="section-tag">Quick Reference</div>
+  <h2>Angular CLI Commands</h2>
+  <p class="section-desc">Generate, build, and run Angular projects from the terminal.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Command</th><th>What It Does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>ng new nimbus-frontend --routing</code></td><td>Create new Angular app with routing</td></tr>
+      <tr><td><code>ng serve</code></td><td>Start dev server on port 4200</td></tr>
+      <tr><td><code>ng serve --proxy-config proxy.conf.json</code></td><td>Start with API proxy</td></tr>
+      <tr><td><code>ng generate component components/login</code></td><td>Generate a new component</td></tr>
+      <tr><td><code>ng g c components/dashboard</code></td><td>Short form of above</td></tr>
+      <tr><td><code>ng g s services/auth</code></td><td>Generate a service</td></tr>
+      <tr><td><code>ng g guard guards/auth</code></td><td>Generate a route guard</td></tr>
+      <tr><td><code>ng g module bookings --routing</code></td><td>Generate a feature module with routing</td></tr>
+      <tr><td><code>ng build</code></td><td>Build for production (output in dist/)</td></tr>
+      <tr><td><code>ng test</code></td><td>Run unit tests</td></tr>
+      <tr><td><code>ng lint</code></td><td>Run linter</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: TYPESCRIPT TYPES                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="typescript-types">
+  <div class="section-tag">Quick Reference</div>
+  <h2>TypeScript Types</h2>
+  <p class="section-desc">Types used in Angular development.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TypeScript type quick reference</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Primitives
+let name: string = "Darshan";
+let age: number = 25;
+let active: boolean = true;
+
+// Arrays
+let ids: number[] = [1, 2, 3];
+let names: Array&lt;string&gt; = ["a", "b"];
+
+// Objects / Interfaces
+interface User {
+  userId: number;
+  name: string;
+  email: string;
+  role: 'CUSTOMER' | 'OFFICER' | 'ADMIN';  // Union type
+}
+
+interface Booking {
+  bookingId: number;
+  senderName: string;
+  receiverName: string;
+  weight: number;
+  status: string;
+  pickupDate: string;
+  createdAt?: string;  // Optional (?)
+}
+
+// Functions
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+// Arrow functions
+const multiply = (a: number, b: number): number =&gt; a * b;
+
+// any (avoid when possible)
+let data: any = "could be anything";
+
+// Generics
+let bookings: Observable&lt;Booking[]&gt;;  // Observable that emits Booking array
+
+// Type assertion
+const id = Number(params.get('id'));  // Convert string to number</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: ANGULAR DECORATORS                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="angular-decorators">
+  <div class="section-tag">Quick Reference</div>
+  <h2>Angular Decorators</h2>
+  <p class="section-desc">Decorators tell Angular what a class is and how it should behave.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Decorator</th><th>Used On</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@Component</code></td>
+        <td>Class</td>
+        <td>Declares a component with its template, styles, and selector</td>
+      </tr>
+      <tr>
+        <td><code>@NgModule</code></td>
+        <td>Class</td>
+        <td>Declares a module &mdash; groups components, imports, providers</td>
+      </tr>
+      <tr>
+        <td><code>@Injectable</code></td>
+        <td>Class</td>
+        <td>Marks a class as injectable (service). <code>{providedIn: 'root'}</code> = singleton</td>
+      </tr>
+      <tr>
+        <td><code>@Input()</code></td>
+        <td>Property</td>
+        <td>Receives data from parent component</td>
+      </tr>
+      <tr>
+        <td><code>@Output()</code></td>
+        <td>Property</td>
+        <td>Emits events to parent component (with EventEmitter)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Component decorator example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">@Component({
+  selector: 'app-booking-detail',      // HTML tag: &lt;app-booking-detail&gt;
+  templateUrl: './booking-detail.component.html',
+  styleUrls: ['./booking-detail.component.css']
+})
+export class BookingDetailComponent implements OnInit {
+  @Input() bookingId!: number;          // Received from parent
+  @Output() statusChanged = new EventEmitter&lt;string&gt;();  // Emits to parent
+
+  booking: Booking | null = null;
+
+  constructor(private bookingService: BookingService) {}
+
+  ngOnInit() {
+    this.bookingService.getById(this.bookingId).subscribe(
+      data =&gt; this.booking = data
+    );
+  }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: POSTMAN SHORTCUTS                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="postman">
+  <div class="section-tag">Quick Reference</div>
+  <h2>Postman Shortcuts</h2>
+  <p class="section-desc">Speed up API testing in Postman.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Shortcut</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Ctrl + Enter</code></td><td>Send request</td></tr>
+      <tr><td><code>Ctrl + N</code></td><td>New request tab</td></tr>
+      <tr><td><code>Ctrl + S</code></td><td>Save request</td></tr>
+      <tr><td><code>Ctrl + Shift + S</code></td><td>Save as (to collection)</td></tr>
+      <tr><td><code>Ctrl + /</code></td><td>Toggle comment in body</td></tr>
+      <tr><td><code>Ctrl + B</code></td><td>Beautify JSON body</td></tr>
+      <tr><td><code>Ctrl + L</code></td><td>Focus URL bar</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Postman Tips</h3>
+
+  <ul>
+    <li><strong>Variables:</strong> Set <code>{{baseUrl}}</code> to <code>http://localhost:8080</code> in environment. Use <code>{{baseUrl}}/api/bookings</code> in requests. Switch between dev/prod by changing the environment.</li>
+    <li><strong>Tests tab:</strong> Add <code>pm.test("Status is 200", () =&gt; pm.response.to.have.status(200));</code> to auto-verify responses.</li>
+    <li><strong>Runner:</strong> Run an entire collection in sequence. Great for testing the full workflow: register &rarr; login &rarr; create &rarr; get &rarr; update.</li>
+    <li><strong>Pre-request Scripts:</strong> Set a dynamic timestamp: <code>pm.variables.set("now", new Date().toISOString());</code></li>
+  </ul>
+
+  <h3>Validation Annotations (Bean Validation)</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Annotation</th><th>Validates</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>@NotNull</code></td><td>Not null</td></tr>
+      <tr><td><code>@NotBlank</code></td><td>Not null, not empty, not whitespace</td></tr>
+      <tr><td><code>@NotEmpty</code></td><td>Not null, not empty (String/Collection)</td></tr>
+      <tr><td><code>@Size(min, max)</code></td><td>Length within range</td></tr>
+      <tr><td><code>@Email</code></td><td>Valid email format</td></tr>
+      <tr><td><code>@Min(value)</code></td><td>Number &ge; value</td></tr>
+      <tr><td><code>@Max(value)</code></td><td>Number &le; value</td></tr>
+      <tr><td><code>@Positive</code></td><td>Number &gt; 0</td></tr>
+      <tr><td><code>@Pattern(regexp)</code></td><td>Matches regex</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="nimbus-fullstack.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Nimbus Full Stack</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>
