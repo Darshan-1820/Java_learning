@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Error Handling &amp; Validation &mdash; Spring Boot | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link active"><span class="num">05</span> API Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Architecture</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus as Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular &mdash; Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Angular Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Angular Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHY STRUCTURED ERRORS                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-structured-errors">
+  <div class="section-tag">Section 01</div>
+  <h2>Why APIs Need Structured Errors</h2>
+  <p class="section-desc">Your API should never leak stack traces to the client. Structured error responses are a security and usability requirement.</p>
+
+  <h3>What Happens Without Error Handling</h3>
+
+  <p>When your Spring Boot API throws an unhandled exception, the client receives something like this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Default Spring error response (BAD)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "timestamp": "2026-04-23T10:35:00.000+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "trace": "java.lang.NullPointerException\n\tat com.nimbus.service.BookingService.findById(BookingService.java:42)\n\tat com.nimbus.controller.BookingController.getById(BookingController.java:28)\n\tat sun.reflect.NativeMethodAccessorImpl...",
+  "path": "/api/bookings/9999"
+}</code></pre>
+  </div>
+
+  <p>Three problems with this:</p>
+
+  <ul>
+    <li><strong>Security risk:</strong> The <code>trace</code> field exposes your package names, class names, line numbers, and the full call stack. An attacker can map your entire backend architecture from this.</li>
+    <li><strong>Inconsistent format:</strong> Validation errors, 404s, and 500s all return different JSON structures. The frontend can't parse errors reliably.</li>
+    <li><strong>No useful message:</strong> "Internal Server Error" tells the client nothing about what went wrong or how to fix it.</li>
+  </ul>
+
+  <h3>What a Good Error Response Looks Like</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Structured error response (GOOD)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "timestamp": "2026-04-23 10:35:00",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Booking not found with ID: 9999",
+  "path": "/api/bookings/9999"
+}</code></pre>
+  </div>
+
+  <p>Clean, consistent, no stack traces. The frontend knows exactly what happened and can show the user a helpful message.</p>
+
+  <div class="callout think">
+    <div class="callout-title">The Rule</div>
+    <p>Every error response from your API should have the <strong>same JSON structure</strong>, regardless of whether it's a 400, 404, 409, or 500. The only things that change are the values. This lets the Angular frontend handle all errors with one piece of code.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: CUSTOM ERROR RESPONSE CLASS                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="error-response-class">
+  <div class="section-tag">Section 02</div>
+  <h2>Custom ErrorResponse Class</h2>
+  <p class="section-desc">A simple POJO that defines the exact JSON structure for every error your API returns.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/exception/ErrorResponse.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
+
+public class ErrorResponse {
+
+    private int status;
+    private String error;
+    private String message;
+    private String path;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
+
+    public ErrorResponse(int status, String error, String message, String path) {
+        this.status = status;
+        this.error = error;
+        this.message = message;
+        this.path = path;
+        this.timestamp = LocalDateTime.now();
+    }
+
+    // Getters
+    public int getStatus() { return status; }
+    public String getError() { return error; }
+    public String getMessage() { return message; }
+    public String getPath() { return path; }
+    public LocalDateTime getTimestamp() { return timestamp; }
+
+    // Setters
+    public void setStatus(int status) { this.status = status; }
+    public void setError(String error) { this.error = error; }
+    public void setMessage(String message) { this.message = message; }
+    public void setPath(String path) { this.path = path; }
+    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private int status;</div>
+        <div class="breakdown-explain">The HTTP status code (400, 404, 500). Included in the body so the frontend can access it without parsing response headers.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String error;</div>
+        <div class="breakdown-explain">Human-readable error category: "Not Found", "Bad Request", "Internal Server Error". Matches standard HTTP reason phrases.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">10</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String message;</div>
+        <div class="breakdown-explain">The specific error message: "Booking not found with ID: 9999". This is what the frontend displays to the user.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">11</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String path;</div>
+        <div class="breakdown-explain">The URL that caused the error: "/api/bookings/9999". Useful for debugging which endpoint failed.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">13</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")</div>
+        <div class="breakdown-explain">Tells Jackson how to format the timestamp in JSON. Without this, <code>LocalDateTime</code> serializes as an array like <code>[2026,4,23,10,35,0]</code> instead of a readable string.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>When Jackson serializes this class, the JSON output looks exactly like the structured example above. Every error response from Nimbus will use this same class.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: @ExceptionHandler ON CONTROLLERS                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="exception-handler">
+  <div class="section-tag">Section 03</div>
+  <h2>@ExceptionHandler on Controllers</h2>
+  <p class="section-desc">The first approach: handling exceptions directly inside a controller. Simple but limited.</p>
+
+  <h3>How @ExceptionHandler Works</h3>
+
+  <p>You put a method annotated with <code>@ExceptionHandler</code> inside your controller. When any method in that controller throws the specified exception, Spring routes it to your handler instead of returning a default error:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingController.java &mdash; Local exception handler</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@RestController
+@RequestMapping("/api/bookings")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;BookingResponse&gt; getById(@PathVariable int id) {
+        // If booking doesn't exist, service throws BookingNotFoundException
+        BookingResponse booking = bookingService.findById(id);
+        return ResponseEntity.ok(booking);
+    }
+
+    // This catches BookingNotFoundException thrown by ANY method in THIS controller
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleNotFound(
+            BookingNotFoundException ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            404, "Not Found", ex.getMessage(), request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+}</code></pre>
+  </div>
+
+  <h3>The Limitation</h3>
+
+  <p>This approach only works for the controller it's in. If <code>UserController</code> also needs to handle <code>ResourceNotFoundException</code>, you'd copy the same handler method there. And in every other controller. That's duplication.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">When to Use Local @ExceptionHandler</div>
+    <p>Only when the exception is truly specific to one controller and you want different handling than the global handler. For example, a controller that returns a redirect instead of JSON for certain errors. For everything else, use <code>@ControllerAdvice</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: @ControllerAdvice GLOBAL HANDLING                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="controller-advice">
+  <div class="section-tag">Section 04</div>
+  <h2>@ControllerAdvice &mdash; Global Handling</h2>
+  <p class="section-desc">One class catches exceptions from ALL controllers. Write once, handle everywhere.</p>
+
+  <h3>How It Works</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Controller method
+        <span class="flow-sub">throws exception</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Spring intercepts
+        <span class="flow-sub">checks for handler</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">@ControllerAdvice
+        <span class="flow-sub">matches exception type</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">ErrorResponse JSON
+        <span class="flow-sub">returned to client</span>
+      </div>
+    </div>
+    <div class="flow-label">Spring routes every unhandled exception through the @ControllerAdvice class before sending a response</div>
+  </div>
+
+  <p><code>@ControllerAdvice</code> tells Spring: "This class provides exception handling for all controllers." You combine it with <code>@ExceptionHandler</code> methods, one per exception type:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Structure of a @ControllerAdvice class</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@ControllerAdvice          // 1. Apply globally to all controllers
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(SomeException.class)  // 2. Which exception to catch
+    public ResponseEntity&lt;ErrorResponse&gt; handleSome(
+            SomeException ex,               // 3. The thrown exception
+            HttpServletRequest request) {    // 4. The original request (for path)
+
+        ErrorResponse error = new ErrorResponse(
+            400, "Bad Request", ex.getMessage(),
+            request.getRequestURI()
+        );
+        return ResponseEntity.badRequest().body(error);  // 5. Return structured error
+    }
+
+    // Add more @ExceptionHandler methods for other exception types...
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Priority Order</div>
+    <p>When an exception is thrown, Spring looks for a handler in this order: (1) local <code>@ExceptionHandler</code> in the same controller, (2) <code>@ControllerAdvice</code> class. If a local handler exists, it takes priority over the global one. This lets you override global behavior for specific controllers when needed.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: NIMBUS GLOBAL EXCEPTION HANDLER                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-handler">
+  <div class="section-tag">Section 05</div>
+  <h2>Nimbus GlobalExceptionHandler</h2>
+  <p class="section-desc">The complete exception handling setup for Nimbus. Custom exceptions + one handler class = clean error responses everywhere.</p>
+
+  <h3>Step 1: Custom Exception Classes</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/exception/DuplicateEmailException.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+public class DuplicateEmailException extends RuntimeException {
+    public DuplicateEmailException(String email) {
+        super("An account with email '" + email + "' already exists");
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/exception/BookingNotFoundException.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+public class BookingNotFoundException extends RuntimeException {
+    public BookingNotFoundException(int bookingId) {
+        super("Booking not found with ID: " + bookingId);
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/exception/InvalidBookingException.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+public class InvalidBookingException extends RuntimeException {
+    public InvalidBookingException(String message) {
+        super(message);
+    }
+}</code></pre>
+  </div>
+
+  <h3>Step 2: The Global Handler</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/exception/GlobalExceptionHandler.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    // 400 &mdash; Duplicate email during registration
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleDuplicateEmail(
+            DuplicateEmailException ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            400, "Bad Request", ex.getMessage(), request.getRequestURI()
+        );
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    // 400 &mdash; Invalid booking data
+    @ExceptionHandler(InvalidBookingException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleInvalidBooking(
+            InvalidBookingException ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            400, "Bad Request", ex.getMessage(), request.getRequestURI()
+        );
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    // 404 &mdash; Booking not found
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleBookingNotFound(
+            BookingNotFoundException ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            404, "Not Found", ex.getMessage(), request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    // 500 &mdash; Catch-all for unexpected errors
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleGeneral(
+            Exception ex, HttpServletRequest request) {
+        // NEVER expose internal exception messages in 500 responses
+        ErrorResponse error = new ErrorResponse(
+            500, "Internal Server Error",
+            "Something went wrong. Please try again later.",
+            request.getRequestURI()
+        );
+        // Log the real error server-side (for debugging)
+        ex.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">13</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ExceptionHandler(DuplicateEmailException.class)</div>
+        <div class="breakdown-explain">When <code>UserService.register()</code> finds the email already exists, it throws <code>DuplicateEmailException</code>. This handler catches it and returns a 400 with a clear message. The frontend shows "An account with email 'x@y.com' already exists".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">34</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ExceptionHandler(BookingNotFoundException.class)</div>
+        <div class="breakdown-explain">When <code>GET /api/bookings/9999</code> hits a non-existent booking, the service throws this. Returns 404 with the booking ID in the message.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">43</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ExceptionHandler(Exception.class)</div>
+        <div class="breakdown-explain">Catch-all. Handles <code>NullPointerException</code>, <code>SQLException</code>, or any other unexpected error. Returns a generic message &mdash; never the real exception. The real error is logged server-side for developer debugging.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Step 3: Services Throw, Handler Catches</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserService.java &mdash; Throws DuplicateEmailException</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class UserService {
+
+    public User register(String name, String email, String password, String role) {
+        // Check if email already exists
+        User existing = userDAO.findByEmail(email);
+        if (existing != null) {
+            throw new DuplicateEmailException(email);
+            // GlobalExceptionHandler catches this &rarr; returns 400:
+            // {"status":400,"error":"Bad Request","message":"An account with email 'john@test.com' already exists"}
+        }
+        // ... proceed with registration
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingService.java &mdash; Throws BookingNotFoundException</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class BookingService {
+
+    public BookingResponse findById(int id) {
+        Booking booking = bookingDAO.findById(id);
+        if (booking == null) {
+            throw new BookingNotFoundException(id);
+            // GlobalExceptionHandler catches this &rarr; returns 404:
+            // {"status":404,"error":"Not Found","message":"Booking not found with ID: 9999"}
+        }
+        return convertToResponse(booking);
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The controllers and services never build <code>ErrorResponse</code> objects or set error status codes. They throw exceptions and move on. The <code>GlobalExceptionHandler</code> is the single place in the entire codebase where error responses are constructed. Change the error format once, every endpoint is updated.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: BEAN VALIDATION                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="bean-validation">
+  <div class="section-tag">Section 06</div>
+  <h2>Bean Validation</h2>
+  <p class="section-desc">Automatically validate request data using annotations like @NotBlank, @Size, and @Email. No manual if-checks needed.</p>
+
+  <h3>The Problem: Manual Validation</h3>
+
+  <p>Without bean validation, you'd write code like this for every field:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Manual validation (tedious)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@PostMapping("/api/register")
+public ResponseEntity&lt;?&gt; register(@RequestBody UserRegistrationRequest request) {
+    if (request.getName() == null || request.getName().isBlank()) {
+        return ResponseEntity.badRequest().body("Name is required");
+    }
+    if (request.getEmail() == null || !request.getEmail().contains("@")) {
+        return ResponseEntity.badRequest().body("Valid email is required");
+    }
+    if (request.getPassword() == null || request.getPassword().length() &lt; 6) {
+        return ResponseEntity.badRequest().body("Password must be at least 6 characters");
+    }
+    // ... and this goes on for every field
+}</code></pre>
+  </div>
+
+  <p>This is repetitive, error-prone, and clutters your controller. Bean Validation replaces all of it with annotations on the DTO class.</p>
+
+  <h3>Step 1: Add Dependency</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml &mdash; Add validation starter</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <h3>Step 2: Annotate the DTO</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserRegistrationRequest.java &mdash; With validation annotations</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+import jakarta.validation.constraints.*;
+
+public class UserRegistrationRequest {
+
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 50, message = "Name must be 2-50 characters")
+    private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
+    private String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
+    private String password;
+
+    @NotBlank(message = "Role is required")
+    private String role;
+
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingRequest.java &mdash; With validation annotations</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+import jakarta.validation.constraints.*;
+
+public class BookingRequest {
+
+    @NotNull(message = "User ID is required")
+    private Integer userId;
+
+    @NotBlank(message = "Sender name is required")
+    private String senderName;
+
+    @NotBlank(message = "Sender address is required")
+    private String senderAddress;
+
+    @NotBlank(message = "Receiver name is required")
+    private String receiverName;
+
+    @NotBlank(message = "Receiver address is required")
+    private String receiverAddress;
+
+    @Positive(message = "Weight must be greater than 0")
+    private double weight;
+
+    @NotBlank(message = "Pickup date is required")
+    private String pickupDate;
+
+    // Getters and setters...
+}</code></pre>
+  </div>
+
+  <h3>Common Validation Annotations</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Annotation</th>
+        <th>What It Checks</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@NotNull</code></td>
+        <td>Field must not be null</td>
+        <td><code>@NotNull Integer userId</code></td>
+      </tr>
+      <tr>
+        <td><code>@NotBlank</code></td>
+        <td>String must not be null, empty, or whitespace</td>
+        <td><code>@NotBlank String name</code></td>
+      </tr>
+      <tr>
+        <td><code>@NotEmpty</code></td>
+        <td>String/Collection must not be null or empty</td>
+        <td><code>@NotEmpty List&lt;String&gt; items</code></td>
+      </tr>
+      <tr>
+        <td><code>@Size</code></td>
+        <td>String/Collection length must be within range</td>
+        <td><code>@Size(min=2, max=50)</code></td>
+      </tr>
+      <tr>
+        <td><code>@Email</code></td>
+        <td>Must be a valid email format</td>
+        <td><code>@Email String email</code></td>
+      </tr>
+      <tr>
+        <td><code>@Min / @Max</code></td>
+        <td>Numeric value must be at least / at most</td>
+        <td><code>@Min(1) @Max(100) int quantity</code></td>
+      </tr>
+      <tr>
+        <td><code>@Positive</code></td>
+        <td>Number must be greater than 0</td>
+        <td><code>@Positive double weight</code></td>
+      </tr>
+      <tr>
+        <td><code>@Pattern</code></td>
+        <td>Must match a regex pattern</td>
+        <td><code>@Pattern(regexp="^[A-Z]{3}$")</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Step 3: Add @Valid to the Controller</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserController.java &mdash; @Valid triggers validation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@PostMapping("/register")
+public ResponseEntity&lt;User&gt; register(
+        @Valid @RequestBody UserRegistrationRequest request) {
+    //  ^^^^^^
+    // @Valid tells Spring: "Before calling this method, validate the
+    // request object using the annotations on its fields."
+    // If validation fails, Spring throws MethodArgumentNotValidException
+    // BEFORE this method is even called.
+
+    User created = userService.register(request);
+    return ResponseEntity.created(URI.create("/api/users/" + created.getUserId()))
+                         .body(created);
+}</code></pre>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">@Valid is the Trigger</div>
+    <p>Just adding <code>@NotBlank</code> annotations to the DTO does nothing by itself. You must also add <code>@Valid</code> before <code>@RequestBody</code> in the controller method. Without <code>@Valid</code>, Spring skips validation entirely and passes whatever JSON the client sent.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: HANDLING VALIDATION ERRORS                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="validation-errors">
+  <div class="section-tag">Section 07</div>
+  <h2>Handling MethodArgumentNotValidException</h2>
+  <p class="section-desc">When @Valid fails, Spring throws MethodArgumentNotValidException. Here's how to catch it and return clean error messages.</p>
+
+  <h3>What Happens When Validation Fails</h3>
+
+  <p>If the client sends this request to register:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Invalid registration request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "name": "",
+  "email": "not-an-email",
+  "password": "ab",
+  "role": ""
+}</code></pre>
+  </div>
+
+  <p>Spring validates every field, collects <strong>all</strong> violations, and throws <code>MethodArgumentNotValidException</code>. Without a handler, the client gets Spring's default error page. We need a handler in <code>GlobalExceptionHandler</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GlobalExceptionHandler.java &mdash; Add validation handler</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@ExceptionHandler(MethodArgumentNotValidException.class)
+public ResponseEntity&lt;ErrorResponse&gt; handleValidation(
+        MethodArgumentNotValidException ex, HttpServletRequest request) {
+
+    // Collect all validation error messages
+    String errors = ex.getBindingResult()
+        .getFieldErrors()
+        .stream()
+        .map(fieldError -&gt; fieldError.getField() + ": " + fieldError.getDefaultMessage())
+        .collect(Collectors.joining("; "));
+
+    // Example output: "name: Name is required; email: Email must be valid; password: Password must be at least 6 characters"
+
+    ErrorResponse error = new ErrorResponse(
+        400, "Validation Failed", errors, request.getRequestURI()
+    );
+    return ResponseEntity.badRequest().body(error);
+}</code></pre>
+  </div>
+
+  <h3>The Response</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Validation error response</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "timestamp": "2026-04-23 10:40:00",
+  "status": 400,
+  "error": "Validation Failed",
+  "message": "name: Name is required; email: Email must be valid; password: Password must be at least 6 characters; role: Role is required",
+  "path": "/api/users/register"
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">How validation error collection works</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ex.getBindingResult()</div>
+        <div class="breakdown-explain">Gets the validation result object that contains all field errors.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.getFieldErrors()</div>
+        <div class="breakdown-explain">Returns a list of <code>FieldError</code> objects, one for each annotation that failed. If name fails <code>@NotBlank</code> and <code>@Size</code>, you get two entries.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.stream().map()</div>
+        <div class="breakdown-explain">Converts each error to the format "fieldName: error message". The <code>getDefaultMessage()</code> returns the <code>message</code> you set in the annotation.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.collect(Collectors.joining("; "))</div>
+        <div class="breakdown-explain">Joins all error strings with a semicolon separator into one message string.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This handler is added to the same <code>GlobalExceptionHandler</code> class. Now the complete handler has four <code>@ExceptionHandler</code> methods: <code>DuplicateEmailException</code> &rarr; 400, <code>BookingNotFoundException</code> &rarr; 404, <code>MethodArgumentNotValidException</code> &rarr; 400 with field details, <code>Exception</code> &rarr; 500 catch-all.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: HTTP STATUS CODE BEST PRACTICES                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="status-codes">
+  <div class="section-tag">Section 08</div>
+  <h2>HTTP Status Code Best Practices</h2>
+  <p class="section-desc">Choosing the right status code for each situation. A reference you'll use constantly.</p>
+
+  <h3>Success Codes (2xx)</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Meaning</th>
+        <th>Nimbus Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>200 OK</strong></td>
+        <td>Request succeeded</td>
+        <td>GET booking, GET bookings list, PUT status update</td>
+      </tr>
+      <tr>
+        <td><strong>201 Created</strong></td>
+        <td>New resource created</td>
+        <td>POST register, POST create booking</td>
+      </tr>
+      <tr>
+        <td><strong>204 No Content</strong></td>
+        <td>Succeeded, nothing to return</td>
+        <td>DELETE booking (if implemented)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Client Error Codes (4xx)</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Meaning</th>
+        <th>Nimbus Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>400 Bad Request</strong></td>
+        <td>Invalid input data</td>
+        <td>Validation failed, duplicate email, invalid booking data</td>
+      </tr>
+      <tr>
+        <td><strong>401 Unauthorized</strong></td>
+        <td>Not authenticated</td>
+        <td>No token or expired token</td>
+      </tr>
+      <tr>
+        <td><strong>403 Forbidden</strong></td>
+        <td>Authenticated but not allowed</td>
+        <td>Customer tries to update status (officer-only)</td>
+      </tr>
+      <tr>
+        <td><strong>404 Not Found</strong></td>
+        <td>Resource doesn't exist</td>
+        <td>Booking ID not found, user ID not found</td>
+      </tr>
+      <tr>
+        <td><strong>409 Conflict</strong></td>
+        <td>Conflicting state</td>
+        <td>Trying to book when already booked</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Server Error Codes (5xx)</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Meaning</th>
+        <th>Nimbus Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>500 Internal Server Error</strong></td>
+        <td>Unexpected server failure</td>
+        <td>Database down, NullPointerException, any unhandled error</td>
+      </tr>
+      <tr>
+        <td><strong>503 Service Unavailable</strong></td>
+        <td>Server temporarily unavailable</td>
+        <td>Maintenance mode, overloaded</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">The Golden Rules</div>
+    <ul>
+      <li><strong>400 vs 404:</strong> 400 means "I understood your request but the data is wrong." 404 means "I can't find what you asked for." Sending <code>POST /api/register</code> with no name = 400. Requesting <code>GET /api/bookings/9999</code> that doesn't exist = 404.</li>
+      <li><strong>401 vs 403:</strong> 401 means "I don't know who you are" (no token). 403 means "I know who you are, but you're not allowed to do this" (customer trying officer actions).</li>
+      <li><strong>Never return 200 for errors.</strong> Some APIs return 200 with <code>{"success": false, "error": "..."}</code>. This is an anti-pattern. HTTP status codes exist for this exact purpose.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: EXERCISES                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 09</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build error handling from scratch, step by step.</p>
+
+  <h3>Exercise 1: Custom ErrorResponse (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1</div>
+    <p>Create the <code>ErrorResponse</code> class with fields: <code>status</code>, <code>error</code>, <code>message</code>, <code>path</code>, <code>timestamp</code>. Add the <code>@JsonFormat</code> annotation on timestamp. Then write a simple test controller that returns an <code>ErrorResponse</code> as JSON from a <code>GET /api/test-error</code> endpoint. Verify the JSON structure in the browser.</p>
+  </div>
+
+  <h3>Exercise 2: @ControllerAdvice Basics (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2</div>
+    <p>Create a <code>ResourceNotFoundException</code> and a <code>GlobalExceptionHandler</code> with one <code>@ExceptionHandler</code> for it. In your <code>BookingController.getById()</code>, throw <code>ResourceNotFoundException</code> when the ID doesn't match any hardcoded booking. Test with Postman: <code>GET /api/bookings/9999</code> should return 404 with your structured JSON error.</p>
+  </div>
+
+  <h3>Exercise 3: Bean Validation (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3</div>
+    <p>Add <code>spring-boot-starter-validation</code> to your pom.xml. Annotate <code>UserRegistrationRequest</code> with <code>@NotBlank</code>, <code>@Email</code>, and <code>@Size</code>. Add <code>@Valid</code> to the controller. Add a <code>MethodArgumentNotValidException</code> handler to your <code>GlobalExceptionHandler</code>. Test by sending empty/invalid JSON via Postman and verify you get all validation errors in one response.</p>
+  </div>
+
+  <h3>Exercise 4: Full Nimbus Error Handling (Hard)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4</div>
+    <p>Build the complete Nimbus error handling setup:</p>
+    <ul>
+      <li>Create all three custom exceptions: <code>DuplicateEmailException</code>, <code>BookingNotFoundException</code>, <code>InvalidBookingException</code></li>
+      <li>Create the full <code>GlobalExceptionHandler</code> with handlers for all four exception types</li>
+      <li>Add bean validation to both <code>UserRegistrationRequest</code> and <code>BookingRequest</code></li>
+      <li>Test every error path: duplicate email, booking not found, invalid input, validation failure</li>
+      <li>Verify every response uses the same <code>ErrorResponse</code> JSON structure</li>
+    </ul>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Self-Check Questions</div>
+    <ol>
+      <li>Why should APIs never return stack traces? (Security risk &mdash; exposes internal class names, file paths, and application structure)</li>
+      <li>What's the difference between <code>@ExceptionHandler</code> in a controller vs in <code>@ControllerAdvice</code>? (Controller = local to that controller; ControllerAdvice = global across all controllers)</li>
+      <li>What does <code>@Valid</code> do? (Triggers bean validation on the annotated parameter before the method runs)</li>
+      <li>When is <code>MethodArgumentNotValidException</code> thrown? (When <code>@Valid</code> validation fails &mdash; one or more field annotations like @NotBlank or @Email are violated)</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="rest-controllers.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">REST Controllers</span>
+  </a>
+  <a href="api-testing.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">API Testing</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

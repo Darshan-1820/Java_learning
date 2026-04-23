@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheat Sheets | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC with Servlets + JSP</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; The Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; Dependency Injection</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build It</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link active"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: SERVLET API                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="servlet-api">
+  <div class="section-tag">Reference 01</div>
+  <h2>Servlet API Methods</h2>
+  <p class="section-desc">Quick reference for the most-used Servlet API methods.</p>
+
+  <h3>HttpServletRequest</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>Returns</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>getParameter("name")</code></td><td><code>String</code></td><td>Get query/form parameter</td></tr>
+      <tr><td><code>getParameterValues("name")</code></td><td><code>String[]</code></td><td>Get multiple values (checkboxes)</td></tr>
+      <tr><td><code>getAttribute("key")</code></td><td><code>Object</code></td><td>Get request-scoped attribute</td></tr>
+      <tr><td><code>setAttribute("key", value)</code></td><td><code>void</code></td><td>Set request-scoped attribute</td></tr>
+      <tr><td><code>getSession()</code></td><td><code>HttpSession</code></td><td>Get/create session</td></tr>
+      <tr><td><code>getSession(false)</code></td><td><code>HttpSession</code></td><td>Get session (null if none exists)</td></tr>
+      <tr><td><code>getMethod()</code></td><td><code>String</code></td><td>"GET", "POST", etc.</td></tr>
+      <tr><td><code>getRequestURI()</code></td><td><code>String</code></td><td>URI path (e.g., /nimbus/login)</td></tr>
+      <tr><td><code>getContextPath()</code></td><td><code>String</code></td><td>App context (e.g., /nimbus)</td></tr>
+      <tr><td><code>getHeader("name")</code></td><td><code>String</code></td><td>Get HTTP header value</td></tr>
+      <tr><td><code>getCookies()</code></td><td><code>Cookie[]</code></td><td>Get all cookies from request</td></tr>
+      <tr><td><code>getRequestDispatcher("path")</code></td><td><code>RequestDispatcher</code></td><td>Get dispatcher for forward/include</td></tr>
+    </tbody>
+  </table>
+
+  <h3>HttpServletResponse</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>setContentType("text/html")</code></td><td>Set response MIME type</td></tr>
+      <tr><td><code>getWriter()</code></td><td>Get PrintWriter for text output</td></tr>
+      <tr><td><code>getOutputStream()</code></td><td>Get OutputStream for binary output</td></tr>
+      <tr><td><code>sendRedirect("url")</code></td><td>302 redirect to another URL</td></tr>
+      <tr><td><code>setStatus(code)</code></td><td>Set HTTP status code</td></tr>
+      <tr><td><code>sendError(404, "msg")</code></td><td>Send error response</td></tr>
+      <tr><td><code>addCookie(cookie)</code></td><td>Add a cookie to response</td></tr>
+      <tr><td><code>setHeader("name", "value")</code></td><td>Set response header</td></tr>
+    </tbody>
+  </table>
+
+  <h3>HttpSession</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>setAttribute("key", value)</code></td><td>Store data in session</td></tr>
+      <tr><td><code>getAttribute("key")</code></td><td>Retrieve data from session</td></tr>
+      <tr><td><code>removeAttribute("key")</code></td><td>Remove data from session</td></tr>
+      <tr><td><code>invalidate()</code></td><td>Destroy the session (logout)</td></tr>
+      <tr><td><code>getId()</code></td><td>Get session ID (JSESSIONID)</td></tr>
+      <tr><td><code>setMaxInactiveInterval(seconds)</code></td><td>Set session timeout</td></tr>
+      <tr><td><code>isNew()</code></td><td>True if session just created</td></tr>
+    </tbody>
+  </table>
+
+  <h3>RequestDispatcher</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>forward(request, response)</code></td><td>Server-side forward (URL stays the same)</td></tr>
+      <tr><td><code>include(request, response)</code></td><td>Include output of another resource</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: JSP REFERENCE                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="jsp-reference">
+  <div class="section-tag">Reference 02</div>
+  <h2>JSP Directives, EL &amp; JSTL</h2>
+  <p class="section-desc">Complete quick reference for JSP syntax.</p>
+
+  <h3>JSP Directives</h3>
+  <table class="info-table">
+    <thead><tr><th>Directive</th><th>Example</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>page</td><td><code>&lt;%@ page contentType="text/html" %&gt;</code></td><td>Page settings (content type, imports, error page)</td></tr>
+      <tr><td>page import</td><td><code>&lt;%@ page import="java.util.List" %&gt;</code></td><td>Import Java classes</td></tr>
+      <tr><td>page errorPage</td><td><code>&lt;%@ page errorPage="error.jsp" %&gt;</code></td><td>Redirect to error page on exception</td></tr>
+      <tr><td>page isErrorPage</td><td><code>&lt;%@ page isErrorPage="true" %&gt;</code></td><td>Makes ${exception} available</td></tr>
+      <tr><td>taglib</td><td><code>&lt;%@ taglib prefix="c" uri="...jstl/core" %&gt;</code></td><td>Import JSTL tag library</td></tr>
+      <tr><td>include</td><td><code>&lt;%@ include file="header.jsp" %&gt;</code></td><td>Static include (compile-time)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Expression Language (EL)</h3>
+  <table class="info-table">
+    <thead><tr><th>Expression</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>${user.name}</code></td><td>Calls <code>user.getName()</code></td></tr>
+      <tr><td><code>${parcel.price * 1.18}</code></td><td>Math expression (price + 18% GST)</td></tr>
+      <tr><td><code>${empty list}</code></td><td>True if list is null or empty</td></tr>
+      <tr><td><code>${not empty user}</code></td><td>True if user is not null</td></tr>
+      <tr><td><code>${status == 'DELIVERED' ? 'green' : 'red'}</code></td><td>Ternary operator</td></tr>
+      <tr><td><code>${param.username}</code></td><td>Same as <code>request.getParameter("username")</code></td></tr>
+      <tr><td><code>${sessionScope.loggedInUser}</code></td><td>Explicitly access session scope</td></tr>
+      <tr><td><code>${requestScope.error}</code></td><td>Explicitly access request scope</td></tr>
+      <tr><td><code>${pageContext.request.contextPath}</code></td><td>Application context path (e.g., /nimbus)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">EL Scope Search Order</div>
+    <p><code>${name}</code> searches: <strong>pageScope</strong> &rarr; <strong>requestScope</strong> &rarr; <strong>sessionScope</strong> &rarr; <strong>applicationScope</strong>. First match wins. Use explicit scope (e.g., <code>${sessionScope.name}</code>) when attributes exist in multiple scopes.</p>
+  </div>
+
+  <h3>JSTL Core Tags</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Import JSTL first</span>
+    </div>
+    <pre><code class="language-markup">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead><tr><th>Tag</th><th>Example</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>&lt;c:if&gt;</code></td><td><code>&lt;c:if test="${user != null}"&gt;...&lt;/c:if&gt;</code></td><td>Conditional rendering (no else)</td></tr>
+      <tr>
+        <td><code>&lt;c:choose&gt;</code></td>
+        <td><code>&lt;c:choose&gt;&lt;c:when test="..."&gt;...&lt;/c:when&gt;&lt;c:otherwise&gt;...&lt;/c:otherwise&gt;&lt;/c:choose&gt;</code></td>
+        <td>If/else-if/else</td>
+      </tr>
+      <tr><td><code>&lt;c:forEach&gt;</code></td><td><code>&lt;c:forEach var="p" items="${parcels}"&gt;...&lt;/c:forEach&gt;</code></td><td>Loop over collections</td></tr>
+      <tr><td><code>&lt;c:forEach&gt;</code> (range)</td><td><code>&lt;c:forEach begin="1" end="10" var="i"&gt;...&lt;/c:forEach&gt;</code></td><td>Counter loop</td></tr>
+      <tr><td><code>&lt;c:set&gt;</code></td><td><code>&lt;c:set var="tax" value="${price * 0.18}" /&gt;</code></td><td>Create a variable</td></tr>
+      <tr><td><code>&lt;c:out&gt;</code></td><td><code>&lt;c:out value="${user.name}" default="Guest" /&gt;</code></td><td>Output with XSS escaping</td></tr>
+      <tr><td><code>&lt;c:url&gt;</code></td><td><code>&lt;c:url value="/booking/new" /&gt;</code></td><td>Build URL with context path</td></tr>
+      <tr><td><code>&lt;c:redirect&gt;</code></td><td><code>&lt;c:redirect url="/login" /&gt;</code></td><td>Redirect from JSP</td></tr>
+    </tbody>
+  </table>
+
+  <h3>JSTL Format Tags</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Import format taglib</span>
+    </div>
+    <pre><code class="language-markup">&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
+
+&lt;!-- Format date --&gt;
+&lt;fmt:formatDate value="${parcel.bookingDate}"
+                pattern="dd-MMM-yyyy" /&gt;
+
+&lt;!-- Format number --&gt;
+&lt;fmt:formatNumber value="${parcel.price}"
+                  type="currency" currencyCode="INR" /&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: SPRING ANNOTATIONS                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="spring-annotations">
+  <div class="section-tag">Reference 03</div>
+  <h2>Spring Annotations</h2>
+  <p class="section-desc">Every annotation used in Phase 3, grouped by purpose.</p>
+
+  <h3>Configuration</h3>
+  <table class="info-table">
+    <thead><tr><th>Annotation</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>@Configuration</code></td><td>Marks class as Spring configuration (replaces XML)</td></tr>
+      <tr><td><code>@EnableWebMvc</code></td><td>Enables Spring MVC (registers handlers, converters)</td></tr>
+      <tr><td><code>@ComponentScan("pkg")</code></td><td>Tells Spring to scan package for beans</td></tr>
+      <tr><td><code>@Bean</code></td><td>Method return value becomes a Spring-managed bean</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Stereotypes (Bean Registration)</h3>
+  <table class="info-table">
+    <thead><tr><th>Annotation</th><th>Layer</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>@Component</code></td><td>Any</td><td>Generic Spring-managed bean</td></tr>
+      <tr><td><code>@Controller</code></td><td>Web</td><td>Handles HTTP requests, returns view names</td></tr>
+      <tr><td><code>@Service</code></td><td>Business</td><td>Business logic layer</td></tr>
+      <tr><td><code>@Repository</code></td><td>Data</td><td>Data access layer (translates DB exceptions)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Dependency Injection</h3>
+  <table class="info-table">
+    <thead><tr><th>Annotation</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>@Autowired</code></td><td>Inject a dependency (field, constructor, or setter)</td></tr>
+      <tr><td><code>@Qualifier("name")</code></td><td>Specify which bean when multiple exist</td></tr>
+      <tr><td><code>@Primary</code></td><td>Make this the default bean for its type</td></tr>
+      <tr><td><code>@Value("${prop}")</code></td><td>Inject a property value</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Request Mapping</h3>
+  <table class="info-table">
+    <thead><tr><th>Annotation</th><th>HTTP Method</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><code>@RequestMapping("/path")</code></td><td>All methods</td><td>Class-level base path</td></tr>
+      <tr><td><code>@GetMapping("/path")</code></td><td>GET</td><td>Show a page or fetch data</td></tr>
+      <tr><td><code>@PostMapping("/path")</code></td><td>POST</td><td>Submit a form or create data</td></tr>
+      <tr><td><code>@PutMapping("/path")</code></td><td>PUT</td><td>Update existing data</td></tr>
+      <tr><td><code>@DeleteMapping("/path")</code></td><td>DELETE</td><td>Delete data</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Parameter Binding</h3>
+  <table class="info-table">
+    <thead><tr><th>Annotation</th><th>Source</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><code>@RequestParam</code></td><td>Query/form param</td><td><code>@RequestParam String city</code> &larr; <code>?city=Mumbai</code></td></tr>
+      <tr><td><code>@PathVariable</code></td><td>URL path</td><td><code>@PathVariable int id</code> &larr; <code>/parcel/{id}</code></td></tr>
+      <tr><td><code>@ModelAttribute</code></td><td>Form fields &rarr; object</td><td><code>@ModelAttribute Parcel p</code> &larr; all form fields auto-mapped</td></tr>
+      <tr><td><code>@RequestBody</code></td><td>JSON body</td><td><code>@RequestBody Parcel p</code> &larr; JSON parsed to object</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Error Handling</h3>
+  <table class="info-table">
+    <thead><tr><th>Annotation</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>@ExceptionHandler(Exception.class)</code></td><td>Handle specific exception in controller</td></tr>
+      <tr><td><code>@ControllerAdvice</code></td><td>Global exception handler across all controllers</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: HTTP STATUS CODES                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="http-status-codes">
+  <div class="section-tag">Reference 04</div>
+  <h2>HTTP Status Codes</h2>
+  <p class="section-desc">The status codes you will encounter in web development.</p>
+
+  <h3>2xx &mdash; Success</h3>
+  <table class="info-table">
+    <thead><tr><th>Code</th><th>Name</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>200</code></td><td>OK</td><td>Request succeeded, response body has data</td></tr>
+      <tr><td><code>201</code></td><td>Created</td><td>New resource created (POST success)</td></tr>
+      <tr><td><code>204</code></td><td>No Content</td><td>Success but no response body (DELETE)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3xx &mdash; Redirection</h3>
+  <table class="info-table">
+    <thead><tr><th>Code</th><th>Name</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>301</code></td><td>Moved Permanently</td><td>Resource moved forever, update bookmarks</td></tr>
+      <tr><td><code>302</code></td><td>Found (Redirect)</td><td>Temporary redirect (<code>sendRedirect()</code> sends this)</td></tr>
+      <tr><td><code>304</code></td><td>Not Modified</td><td>Use cached version, nothing changed</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4xx &mdash; Client Error</h3>
+  <table class="info-table">
+    <thead><tr><th>Code</th><th>Name</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>400</code></td><td>Bad Request</td><td>Invalid request data (validation failed)</td></tr>
+      <tr><td><code>401</code></td><td>Unauthorized</td><td>Not authenticated (no login)</td></tr>
+      <tr><td><code>403</code></td><td>Forbidden</td><td>Authenticated but not allowed (wrong role)</td></tr>
+      <tr><td><code>404</code></td><td>Not Found</td><td>Resource does not exist</td></tr>
+      <tr><td><code>405</code></td><td>Method Not Allowed</td><td>Wrong HTTP method (POST to GET-only endpoint)</td></tr>
+      <tr><td><code>409</code></td><td>Conflict</td><td>Duplicate entry (username already exists)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5xx &mdash; Server Error</h3>
+  <table class="info-table">
+    <thead><tr><th>Code</th><th>Name</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>500</code></td><td>Internal Server Error</td><td>Unhandled exception in server code</td></tr>
+      <tr><td><code>502</code></td><td>Bad Gateway</td><td>Reverse proxy got bad response from backend</td></tr>
+      <tr><td><code>503</code></td><td>Service Unavailable</td><td>Server overloaded or in maintenance</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: WEB.XML CONFIG                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="web-xml-config">
+  <div class="section-tag">Reference 05</div>
+  <h2>web.xml Config Patterns</h2>
+  <p class="section-desc">Common web.xml configurations you need to know.</p>
+
+  <h3>Servlet Registration</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Servlet mapping</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Register a servlet --&gt;
+&lt;servlet&gt;
+    &lt;servlet-name&gt;loginServlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.nimbus.LoginServlet&lt;/servlet-class&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;loginServlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/login&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</code></pre>
+  </div>
+
+  <h3>Filter Registration</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Filter mapping</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;filter&gt;
+    &lt;filter-name&gt;authFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;com.nimbus.filter.AuthFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;authFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/dashboard/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</code></pre>
+  </div>
+
+  <h3>Context Parameters</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Global parameters</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;context-param&gt;
+    &lt;param-name&gt;appVersion&lt;/param-name&gt;
+    &lt;param-value&gt;1.0&lt;/param-value&gt;
+&lt;/context-param&gt;
+
+&lt;!-- Read in servlet: getServletContext().getInitParameter("appVersion") --&gt;</code></pre>
+  </div>
+
+  <h3>Session Configuration</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Session timeout</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;session-config&gt;
+    &lt;session-timeout&gt;30&lt;/session-timeout&gt;  &lt;!-- minutes --&gt;
+&lt;/session-config&gt;</code></pre>
+  </div>
+
+  <h3>Error Pages</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Custom error pages</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;error-page&gt;
+    &lt;error-code&gt;404&lt;/error-code&gt;
+    &lt;location&gt;/WEB-INF/views/404.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+&lt;error-page&gt;
+    &lt;error-code&gt;500&lt;/error-code&gt;
+    &lt;location&gt;/WEB-INF/views/500.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+&lt;error-page&gt;
+    &lt;exception-type&gt;java.lang.Exception&lt;/exception-type&gt;
+    &lt;location&gt;/WEB-INF/views/error.jsp&lt;/location&gt;
+&lt;/error-page&gt;</code></pre>
+  </div>
+
+  <h3>Welcome File</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Default page</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+&lt;/welcome-file-list&gt;</code></pre>
+  </div>
+
+  <h3>Spring DispatcherServlet</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Spring MVC setup</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;
+        org.springframework.web.servlet.DispatcherServlet
+    &lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextClass&lt;/param-name&gt;
+        &lt;param-value&gt;
+            org.springframework.web.context.support
+            .AnnotationConfigWebApplicationContext
+        &lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;com.nimbus.config.WebConfig&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: SPRING MVC FLOW                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="spring-mvc-flow">
+  <div class="section-tag">Reference 06</div>
+  <h2>Spring MVC Flow</h2>
+  <p class="section-desc">The complete request lifecycle in Spring MVC.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Browser<span class="flow-sub">HTTP Request</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">Filter Chain<span class="flow-sub">AuthFilter, etc.</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">DispatcherServlet<span class="flow-sub">Front Controller</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">DispatcherServlet</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">HandlerMapping<span class="flow-sub">Finds @Controller method</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Controller Method<span class="flow-sub">Business logic</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">Controller<span class="flow-sub">returns "viewName"</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">ViewResolver<span class="flow-sub">prefix + name + suffix</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">JSP View<span class="flow-sub">Renders HTML</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">HTML Response<span class="flow-sub">Sent to browser</span></div>
+    </div>
+  </div>
+
+  <h3>Quick Reference: Controller Return Values</h3>
+  <table class="info-table">
+    <thead><tr><th>Return Value</th><th>What Happens</th></tr></thead>
+    <tbody>
+      <tr><td><code>return "login";</code></td><td>Forward to <code>/WEB-INF/views/login.jsp</code></td></tr>
+      <tr><td><code>return "redirect:/dashboard";</code></td><td>302 redirect &mdash; browser makes new GET to /dashboard</td></tr>
+      <tr><td><code>return "forward:/other";</code></td><td>Server-side forward to another controller/URL</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Quick Reference: Data Passing</h3>
+  <table class="info-table">
+    <thead><tr><th>Direction</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td>Controller &rarr; View</td><td><code>model.addAttribute("key", value)</code></td></tr>
+      <tr><td>View reads it</td><td><code>${key}</code> in JSP (EL expression)</td></tr>
+      <tr><td>Form &rarr; Controller</td><td><code>@RequestParam</code> or <code>@ModelAttribute</code></td></tr>
+      <tr><td>URL path &rarr; Controller</td><td><code>@PathVariable</code> from <code>/parcel/{id}</code></td></tr>
+      <tr><td>Across requests</td><td><code>session.setAttribute()</code> / <code>${sessionScope.key}</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="practice-lab.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Practice Lab</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

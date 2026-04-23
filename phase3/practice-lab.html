@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Lab | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC with Servlets + JSP</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; The Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; Dependency Injection</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build It</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link active"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: SERVLET EXERCISES                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="servlet-exercises">
+  <div class="section-tag">Exercises 01&ndash;05</div>
+  <h2>Servlet Exercises</h2>
+  <p class="section-desc">Build servlets from scratch. Each exercise tests a specific concept from the Servlets chapter.</p>
+
+  <h3>Exercise 1: Hello Servlet</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a servlet mapped to <code>/hello</code> that responds with an HTML page showing "Hello, [name]!" where <code>name</code> comes from a query parameter. If no name is provided, show "Hello, World!".</p>
+  </div>
+  <h4>What will happen if...</h4>
+  <ul>
+    <li>You visit <code>/hello</code> with no parameters? &rarr; <strong>Shows "Hello, World!"</strong> because <code>request.getParameter("name")</code> returns <code>null</code>, and your null check defaults to "World".</li>
+    <li>You visit <code>/hello?name=Rahul</code>? &rarr; <strong>Shows "Hello, Rahul!"</strong> because the query parameter is extracted.</li>
+    <li>You forget to set content type? &rarr; <strong>Browser shows raw HTML tags as text</strong> instead of rendering the page, because the default content type is <code>text/plain</code>.</li>
+  </ul>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HelloServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/hello")
+public class HelloServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String name = request.getParameter("name");
+        if (name == null || name.isEmpty()) {
+            name = "World";
+        }
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("&lt;html&gt;&lt;body&gt;");
+        out.println("&lt;h1&gt;Hello, " + name + "!&lt;/h1&gt;");
+        out.println("&lt;/body&gt;&lt;/html&gt;");
+    }
+}</code></pre>
+  </div>
+
+  <h3>Exercise 2: Form Processing Servlet</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create two files: (1) an HTML form at <code>parcel-form.html</code> with fields for sender name, recipient name, and weight, and (2) a servlet at <code>/process-booking</code> that reads the form data via POST and displays a confirmation page with all the details.</p>
+  </div>
+  <h4>What will happen if...</h4>
+  <ul>
+    <li>You use <code>method="get"</code> on the form? &rarr; <strong>Data appears in the URL</strong> as query parameters (e.g., <code>?sender=Rahul&amp;recipient=Priya</code>). Your <code>doPost()</code> method won't be called &mdash; you'll get a 405 error unless you also implement <code>doGet()</code>.</li>
+    <li>You type letters in the weight field and parse with <code>Double.parseDouble()</code>? &rarr; <strong>NumberFormatException</strong> at runtime. You need validation or a try/catch.</li>
+  </ul>
+
+  <h3>Exercise 3: Servlet Forwarding</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a <code>CalculatorServlet</code> at <code>/calculate</code> that takes <code>weight</code> and <code>type</code> parameters, calculates a price (Document=50, Small=100, Medium=200, Large=350, plus weight*15), stores the price as a request attribute, and <strong>forwards</strong> to <code>result.jsp</code> which displays it.</p>
+  </div>
+  <h4>What will happen if...</h4>
+  <ul>
+    <li>You use <code>response.sendRedirect("result.jsp")</code> instead of <code>RequestDispatcher.forward()</code>? &rarr; <strong>The request attribute is lost.</strong> Redirect creates a brand new request. The JSP won't have access to the price attribute. Forward shares the same request object.</li>
+  </ul>
+
+  <h3>Exercise 4: Servlet Context &amp; Init Parameters</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Configure an init parameter <code>company-name</code> with value "Nimbus Logistics" in <code>web.xml</code>. Write a servlet that reads this parameter using <code>getServletConfig().getInitParameter()</code> and displays it on the page.</p>
+    <p>Then add a <strong>context parameter</strong> (not init parameter) called <code>version</code> with value "1.0". Read it with <code>getServletContext().getInitParameter()</code>.</p>
+  </div>
+  <h4>What will happen if...</h4>
+  <ul>
+    <li>You try to read a context parameter using <code>getServletConfig()</code>? &rarr; <strong>Returns null.</strong> Servlet config only has servlet-level params. Context params are application-wide and need <code>getServletContext()</code>.</li>
+  </ul>
+
+  <h3>Exercise 5: Servlet Lifecycle Logger</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a servlet that overrides <code>init()</code>, <code>doGet()</code>, and <code>destroy()</code>. In each method, print a timestamp and the method name to the console using <code>System.out.println()</code>. Deploy it, hit it 3 times, then stop Tomcat. Check the console output.</p>
+  </div>
+  <h4>What will happen?</h4>
+  <ul>
+    <li><code>init()</code> prints <strong>once</strong> &mdash; on the first request (or at startup if <code>load-on-startup</code> is set).</li>
+    <li><code>doGet()</code> prints <strong>3 times</strong> &mdash; once per request.</li>
+    <li><code>destroy()</code> prints <strong>once</strong> &mdash; when Tomcat shuts down.</li>
+    <li>This proves servlets are <strong>singletons</strong>. One instance handles all requests.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: JSP EXERCISES                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="jsp-exercises">
+  <div class="section-tag">Exercises 06&ndash;10</div>
+  <h2>JSP Exercises</h2>
+  <p class="section-desc">Practice JSP with EL expressions, JSTL tags, and MVC forwarding.</p>
+
+  <h3>Exercise 6: EL Expressions</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a servlet that adds these attributes to the request: <code>userName</code> = "Rahul", <code>parcelCount</code> = 5, <code>isPremium</code> = true. Forward to a JSP that displays them using <strong>only EL expressions</strong> (no scriptlets).</p>
+    <p>In the JSP, display: "Welcome [userName]! You have [parcelCount] parcels. Premium: [Yes/No]"</p>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard.jsp (solution)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" %&gt;
+&lt;h2&gt;Welcome ${userName}!&lt;/h2&gt;
+&lt;p&gt;You have ${parcelCount} parcels.&lt;/p&gt;
+&lt;p&gt;Premium: ${isPremium ? 'Yes' : 'No'}&lt;/p&gt;
+
+&lt;!-- EL can do math too --&gt;
+&lt;p&gt;Double your parcels: ${parcelCount * 2}&lt;/p&gt;
+
+&lt;!-- EL accesses scopes in order:
+     page &rarr; request &rarr; session &rarr; application --&gt;</code></pre>
+  </div>
+
+  <h3>Exercise 7: JSTL forEach with a List</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a servlet that builds a <code>List&lt;String&gt;</code> of 5 city names and adds it as a request attribute. Forward to a JSP that uses <code>&lt;c:forEach&gt;</code> to display them as a numbered list.</p>
+    <p><strong>Bonus:</strong> Add a <code>varStatus</code> to show the index number: "1. Mumbai", "2. Delhi", etc.</p>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">cities.jsp (solution)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+
+&lt;h2&gt;Nimbus Delivery Cities&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;c:forEach var="city" items="${cities}" varStatus="s"&gt;
+    &lt;li&gt;${s.count}. ${city}&lt;/li&gt;
+  &lt;/c:forEach&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Total cities: ${cities.size()}&lt;/p&gt;</code></pre>
+  </div>
+
+  <h3>Exercise 8: JSTL Conditional Rendering</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a JSP that receives a <code>status</code> attribute ("BOOKED", "IN_TRANSIT", "DELIVERED") and displays a different colored badge and message for each status using <code>&lt;c:choose&gt;</code> / <code>&lt;c:when&gt;</code>.</p>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">status-badge.jsp (solution)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+
+&lt;c:choose&gt;
+    &lt;c:when test="${status == 'BOOKED'}"&gt;
+        &lt;span style="color: orange;"&gt;BOOKED&lt;/span&gt;
+        &lt;p&gt;Your parcel is waiting for pickup.&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:when test="${status == 'IN_TRANSIT'}"&gt;
+        &lt;span style="color: blue;"&gt;IN TRANSIT&lt;/span&gt;
+        &lt;p&gt;Your parcel is on its way!&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:when test="${status == 'DELIVERED'}"&gt;
+        &lt;span style="color: green;"&gt;DELIVERED&lt;/span&gt;
+        &lt;p&gt;Your parcel has been delivered.&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:otherwise&gt;
+        &lt;span style="color: red;"&gt;UNKNOWN&lt;/span&gt;
+        &lt;p&gt;Status not recognized.&lt;/p&gt;
+    &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</code></pre>
+  </div>
+
+  <h3>Exercise 9: JSP Include Directive</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a <code>header.jsp</code> with navigation links and a <code>footer.jsp</code> with copyright text. Create a <code>home.jsp</code> that includes both using <code>&lt;%@ include %&gt;</code> directive.</p>
+    <p><strong>Question:</strong> What is the difference between <code>&lt;%@ include file="header.jsp" %&gt;</code> and <code>&lt;jsp:include page="header.jsp" /&gt;</code>?</p>
+  </div>
+  <div class="callout think">
+    <div class="callout-title">Answer</div>
+    <p><strong><code>&lt;%@ include %&gt;</code></strong> = static include. The content of header.jsp is copied into home.jsp at compile time. It becomes one big servlet. Changes to header.jsp require recompiling home.jsp.</p>
+    <p><strong><code>&lt;jsp:include&gt;</code></strong> = dynamic include. At runtime, the server processes header.jsp separately and merges the output. Changes to header.jsp are picked up immediately without recompiling. Use this for content that changes frequently.</p>
+  </div>
+
+  <h3>Exercise 10: JSP Error Page</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a JSP that deliberately throws a <code>NullPointerException</code> (try accessing a method on a null object). Configure a custom error page in <code>web.xml</code> that catches this and displays a user-friendly "Something went wrong" message instead of a stack trace.</p>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">web.xml (error page config)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;error-page&gt;
+    &lt;exception-type&gt;java.lang.NullPointerException&lt;/exception-type&gt;
+    &lt;location&gt;/WEB-INF/views/error.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+
+&lt;error-page&gt;
+    &lt;error-code&gt;404&lt;/error-code&gt;
+    &lt;location&gt;/WEB-INF/views/not-found.jsp&lt;/location&gt;
+&lt;/error-page&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: SPRING EXERCISES                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="spring-exercises">
+  <div class="section-tag">Exercises 11&ndash;15</div>
+  <h2>Spring Exercises</h2>
+  <p class="section-desc">Practice Spring IoC, annotations, and MVC concepts.</p>
+
+  <h3>Exercise 11: Dependency Injection</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a <code>NotificationService</code> interface with a <code>send(String message)</code> method. Implement two classes: <code>EmailNotification</code> and <code>SmsNotification</code>. Use <code>@Service</code> and <code>@Primary</code> to make <code>EmailNotification</code> the default. Inject it into a controller and call <code>send()</code>.</p>
+  </div>
+  <h4>What will happen if...</h4>
+  <ul>
+    <li>You have two <code>@Service</code> implementations without <code>@Primary</code>? &rarr; <strong>Spring throws <code>NoUniqueBeanDefinitionException</code></strong> at startup. It doesn't know which one to inject. Fix with <code>@Primary</code> on one, or <code>@Qualifier("emailNotification")</code> at the injection point.</li>
+    <li>You use <code>@Autowired</code> on a field that has no matching bean? &rarr; <strong><code>NoSuchBeanDefinitionException</code></strong> at startup. Spring can't find anything to inject.</li>
+  </ul>
+
+  <h3>Exercise 12: @RequestParam vs @PathVariable</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a controller with two endpoints:</p>
+    <ol>
+      <li><code>GET /search?city=Mumbai</code> using <code>@RequestParam</code></li>
+      <li><code>GET /parcel/NIM123ABC</code> using <code>@PathVariable</code></li>
+    </ol>
+    <p>Both should return a JSP view. For the search, pass the city name to the view. For the parcel, look it up and pass the Parcel object.</p>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SearchController.java (solution)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class SearchController {
+
+    @Autowired
+    private ParcelDAO parcelDAO;
+
+    // /search?city=Mumbai
+    @GetMapping("/search")
+    public String searchByCity(
+            @RequestParam String city,
+            Model model) {
+        model.addAttribute("city", city);
+        return "search-results";
+    }
+
+    // /parcel/NIM123ABC
+    @GetMapping("/parcel/{trackingId}")
+    public String getParcel(
+            @PathVariable String trackingId,
+            Model model) {
+        Parcel p = parcelDAO.findByTrackingId(trackingId);
+        model.addAttribute("parcel", p);
+        return "parcel-detail";
+    }
+}</code></pre>
+  </div>
+
+  <h3>Exercise 13: @ModelAttribute Form Binding</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a "Contact Us" form with fields: name, email, subject, message. Create a <code>ContactForm</code> POJO matching these fields. Write a controller that uses <code>@ModelAttribute ContactForm form</code> to automatically bind all fields from the form. Display a confirmation page showing the submitted data.</p>
+  </div>
+  <h4>What will happen if...</h4>
+  <ul>
+    <li>The form field name is <code>email</code> but the POJO field is <code>emailAddress</code>? &rarr; <strong>The field will be null.</strong> Spring matches form field names to setter methods. <code>email</code> looks for <code>setEmail()</code>. If the setter is <code>setEmailAddress()</code>, there's no match.</li>
+    <li>Your POJO has no default constructor? &rarr; <strong>Spring cannot instantiate it.</strong> <code>@ModelAttribute</code> calls the no-arg constructor first, then calls setters. No constructor = exception.</li>
+  </ul>
+
+  <h3>Exercise 14: Exception Handling</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a <code>ParcelNotFoundException</code> custom exception. In your tracking controller, throw it when no parcel matches the tracking ID. Write an <code>@ExceptionHandler</code> method in the controller that catches this exception and returns an error view with the message.</p>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exception handling (solution)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Custom exception
+public class ParcelNotFoundException extends RuntimeException {
+    public ParcelNotFoundException(String trackingId) {
+        super("No parcel found with ID: " + trackingId);
+    }
+}
+
+// In the controller
+@Controller
+@RequestMapping("/tracking")
+public class TrackingController {
+
+    @Autowired
+    private ParcelDAO parcelDAO;
+
+    @PostMapping
+    public String track(@RequestParam String trackingId,
+                        Model model) {
+        Parcel p = parcelDAO.findByTrackingId(trackingId);
+        if (p == null) {
+            throw new ParcelNotFoundException(trackingId);
+        }
+        model.addAttribute("parcel", p);
+        return "tracking";
+    }
+
+    @ExceptionHandler(ParcelNotFoundException.class)
+    public String handleNotFound(ParcelNotFoundException ex,
+                                  Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";  // error.jsp
+    }
+}</code></pre>
+  </div>
+
+  <h3>Exercise 15: Spring MVC Redirect vs Forward</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create two endpoints in a controller:</p>
+    <ol>
+      <li><code>POST /register</code> that saves a user and does <code>return "redirect:/login?registered=true";</code></li>
+      <li><code>POST /search</code> that finds results and does <code>return "search-results";</code> (forward)</li>
+    </ol>
+    <p>After each POST, try refreshing the browser. What happens in each case?</p>
+  </div>
+  <div class="callout think">
+    <div class="callout-title">Answer</div>
+    <p><strong>Redirect (<code>return "redirect:/login"</code>):</strong> After register, the browser's URL changes to <code>/login</code>. Refreshing the page just reloads <code>/login</code> &mdash; the form is NOT resubmitted. This is the <strong>Post-Redirect-Get (PRG)</strong> pattern. Always use this after a successful form submission.</p>
+    <p><strong>Forward (<code>return "search-results"</code>):</strong> The URL stays as <code>/search</code>. Refreshing the page shows a browser warning "Resubmit form data?" and sends the POST again. This can cause duplicate submissions (double bookings!). That's why we use redirect after booking in Nimbus.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: INTEGRATION EXERCISES                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="integration-exercises">
+  <div class="section-tag">Exercises 16&ndash;20</div>
+  <h2>Integration Exercises</h2>
+  <p class="section-desc">Combine servlets, JSP, Spring, and database into working features.</p>
+
+  <h3>Exercise 16: Session-Based Cart</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Build a "parcel cart" where users can add multiple parcels before submitting. Store the list in the session. Create three endpoints:</p>
+    <ol>
+      <li><code>POST /cart/add</code> &mdash; adds a parcel to the session list</li>
+      <li><code>GET /cart</code> &mdash; shows all parcels in the cart</li>
+      <li><code>POST /cart/submit</code> &mdash; saves all parcels to the database and clears the session</li>
+    </ol>
+  </div>
+  <h4>What will happen if...</h4>
+  <ul>
+    <li>The user opens a second browser tab? &rarr; <strong>Same session, same cart.</strong> Sessions are per-browser, not per-tab. Both tabs see the same cart data.</li>
+    <li>The session expires while the user is filling the cart? &rarr; <strong>Cart is lost.</strong> Session data lives in server memory. When the session expires (default 30 min), all attributes are gone.</li>
+  </ul>
+
+  <h3>Exercise 17: Login Filter + Role Check</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Modify the AuthFilter to not only check if the user is logged in, but also check their <strong>role</strong>. The <code>/delivery/*</code> URLs should only be accessible by users with role "OFFICER". If a customer tries to access delivery pages, redirect them to <code>/dashboard</code> with an error message.</p>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">RoleFilter.java (solution)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class RoleFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request,
+                         ServletResponse response,
+                         FilterChain chain)
+            throws IOException, ServletException {
+
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession(false);
+
+        if (session == null) {
+            res.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            res.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
+        String uri = req.getRequestURI();
+        if (uri.contains("/delivery")
+                &amp;&amp; !"OFFICER".equals(user.getRole())) {
+            res.sendRedirect(req.getContextPath()
+                + "/dashboard?error=unauthorized");
+            return;
+        }
+
+        chain.doFilter(request, response);
+    }
+}</code></pre>
+  </div>
+
+  <h3>Exercise 18: AJAX Tracking (Servlet + JavaScript)</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a tracking page where the user types a tracking ID and clicks "Track" &mdash; but instead of a full page reload, use <strong>JavaScript fetch()</strong> to call a servlet that returns JSON. Display the result on the same page without refreshing.</p>
+    <p>Create a servlet at <code>/api/track</code> that returns JSON like: <code>{"trackingId":"NIM123","status":"IN_TRANSIT","city":"Mumbai"}</code>.</p>
+  </div>
+  <div class="callout think">
+    <div class="callout-title">Key Learning</div>
+    <p>This is the bridge between Phase 3 (server-rendered JSP) and Phase 4 (REST APIs + Angular). In Phase 4, ALL communication happens this way &mdash; the server sends JSON, the frontend handles rendering. This exercise shows you the transition.</p>
+  </div>
+
+  <h3>Exercise 19: Spring JdbcTemplate CRUD</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Using Spring JdbcTemplate, build a complete CRUD for a <code>DeliveryZone</code> entity (id, zoneName, baseCost, estimatedDays). Create:</p>
+    <ol>
+      <li>A <code>DeliveryZone</code> model class</li>
+      <li>A <code>DeliveryZoneDAO</code> with <code>findAll()</code>, <code>findById(int id)</code>, <code>save(DeliveryZone)</code>, <code>update(DeliveryZone)</code>, <code>delete(int id)</code></li>
+      <li>A controller with endpoints for listing, adding, editing, and deleting zones</li>
+      <li>JSP views for list, add-form, and edit-form</li>
+    </ol>
+  </div>
+
+  <h3>Exercise 20: Build a Mini Admin Panel</h3>
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Build an admin panel at <code>/admin/**</code> that shows:</p>
+    <ol>
+      <li>Total users, total parcels, total revenue (SUM of prices)</li>
+      <li>List of all parcels with ability to change status</li>
+      <li>Protected by a filter that only allows role "ADMIN"</li>
+    </ol>
+    <p>This combines everything: filters, controllers, DAOs, JdbcTemplate aggregate queries, JSP with JSTL, and session management.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">Challenge Level</div>
+    <p>If you can complete Exercise 20, you have mastered Phase 3. This exercise uses every concept: Filters (auth + role), Spring Controllers (multiple endpoints), JdbcTemplate (CRUD + aggregates), JSP (tables, forms, conditionals), and Sessions. This is the full Nimbus admin panel.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: PREDICTION CHALLENGES                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="prediction-challenges">
+  <div class="section-tag">Bonus</div>
+  <h2>Prediction Challenges</h2>
+  <p class="section-desc">Read each code snippet and predict the output BEFORE running it. Test your understanding.</p>
+
+  <h3>Challenge 1: Servlet Output</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">What does this print?</span>
+    </div>
+    <pre><code class="language-java">@WebServlet("/test")
+public class TestServlet extends HttpServlet {
+    private int count = 0;
+
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse res)
+            throws IOException {
+        count++;
+        res.getWriter().println("Count: " + count);
+    }
+}</code></pre>
+  </div>
+  <div class="callout think">
+    <div class="callout-title">Answer</div>
+    <p>First visit: <code>Count: 1</code>. Second visit: <code>Count: 2</code>. Third visit: <code>Count: 3</code>. The count keeps incrementing because <strong>servlets are singletons</strong>. There is only one instance of <code>TestServlet</code>, and <code>count</code> is shared across all requests. This is a threading bug &mdash; in production, two users could hit this simultaneously and get wrong counts.</p>
+  </div>
+
+  <h3>Challenge 2: EL Scope Resolution</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">What does ${name} show?</span>
+    </div>
+    <pre><code class="language-java">// In servlet:
+request.setAttribute("name", "Request-Rahul");
+session.setAttribute("name", "Session-Amit");
+// forward to JSP...</code></pre>
+  </div>
+  <div class="callout think">
+    <div class="callout-title">Answer</div>
+    <p><code>${name}</code> shows <strong>"Request-Rahul"</strong>. EL searches scopes in order: page &rarr; request &rarr; session &rarr; application. It finds "name" in request scope first and stops. To explicitly get the session value, use <code>${sessionScope.name}</code>.</p>
+  </div>
+
+  <h3>Challenge 3: Spring Controller Return</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">What URL does the browser show?</span>
+    </div>
+    <pre><code class="language-java">@PostMapping("/booking/new")
+public String book(@ModelAttribute Parcel parcel) {
+    parcelDAO.save(parcel);
+    return "redirect:/dashboard";
+}
+
+@GetMapping("/dashboard")
+public String dashboard() {
+    return "customer-dashboard";
+}</code></pre>
+  </div>
+  <div class="callout think">
+    <div class="callout-title">Answer</div>
+    <p>After submitting the booking form, the browser URL changes to <code>/dashboard</code>. The <code>redirect:</code> prefix causes a <strong>302 redirect</strong>. The browser makes a new GET request to <code>/dashboard</code>, which returns the <code>customer-dashboard.jsp</code> view. The URL bar shows <code>/dashboard</code>, not <code>/booking/new</code>.</p>
+  </div>
+
+  <h3>Challenge 4: Filter Chain Order</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">What order do these print?</span>
+    </div>
+    <pre><code class="language-java">// FilterA
+public void doFilter(...) {
+    System.out.println("A-before");
+    chain.doFilter(request, response);
+    System.out.println("A-after");
+}
+
+// FilterB
+public void doFilter(...) {
+    System.out.println("B-before");
+    chain.doFilter(request, response);
+    System.out.println("B-after");
+}
+
+// web.xml: FilterA mapped first, FilterB mapped second</code></pre>
+  </div>
+  <div class="callout think">
+    <div class="callout-title">Answer</div>
+    <p>Output: <code>A-before</code>, <code>B-before</code>, (servlet executes), <code>B-after</code>, <code>A-after</code>. Filters form a <strong>chain</strong>. Each filter wraps around the next like Russian dolls. The order is determined by the order of <code>&lt;filter-mapping&gt;</code> declarations in <code>web.xml</code>.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="nimbus-web-app.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Nimbus Web App</span>
+  </a>
+  <a href="cheat-sheets.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Cheat Sheets</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

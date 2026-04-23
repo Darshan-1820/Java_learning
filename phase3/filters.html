@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filters &amp; Listeners | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link active"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS A FILTER                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-filter">
+  <div class="section-tag">Section 01</div>
+  <h2>What Is a Filter?</h2>
+  <p class="section-desc">A filter sits between the client and your servlet. Every request/response passes through it &mdash; like a security guard at a building entrance.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Security Guard Analogy</div>
+    <p>Imagine a building with a security guard at the door. Before anyone enters (request), the guard checks their ID. Before anyone leaves (response), the guard logs the exit time. The guard doesn't do the actual work inside &mdash; that's the servlet's job. The guard just <strong>intercepts</strong> and <strong>decides</strong>: let them pass, or block them.</p>
+    <p>Filters work exactly the same way. They intercept HTTP requests <strong>before</strong> they reach the servlet, and responses <strong>after</strong> the servlet is done.</p>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Browser
+        <span class="flow-sub">HTTP Request</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Filter 1
+        <span class="flow-sub">Auth Check</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Filter 2
+        <span class="flow-sub">Logging</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Servlet
+        <span class="flow-sub">Business Logic</span>
+      </div>
+    </div>
+    <div class="flow-label">Filters form a chain. Request flows left-to-right, response flows right-to-left.</div>
+  </div>
+
+  <h3>Common Uses</h3>
+  <ul>
+    <li><strong>Authentication</strong> &mdash; Is the user logged in? If not, redirect to login page.</li>
+    <li><strong>Logging</strong> &mdash; Log every request's URL, method, and time taken.</li>
+    <li><strong>Encoding</strong> &mdash; Set <code>request.setCharacterEncoding("UTF-8")</code> globally.</li>
+    <li><strong>CORS</strong> &mdash; Add cross-origin headers to every response.</li>
+    <li><strong>Compression</strong> &mdash; Compress response before sending.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: FILTER INTERFACE                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="filter-interface">
+  <div class="section-tag">Section 02</div>
+  <h2>The Filter Interface</h2>
+  <p class="section-desc">Every filter implements <code>javax.servlet.Filter</code> with three lifecycle methods.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>When Called</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>init(FilterConfig)</code></td><td>Once, at server startup</td><td>Read config parameters, set up resources</td></tr>
+      <tr><td><code>doFilter(request, response, chain)</code></td><td>On every matching request</td><td>Your logic goes here. Call <code>chain.doFilter()</code> to pass to next.</td></tr>
+      <tr><td><code>destroy()</code></td><td>Once, at server shutdown</td><td>Release resources, cleanup</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Minimal Filter</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MyFilter.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import javax.servlet.*;
+import java.io.IOException;
+
+public class MyFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig config) throws ServletException {
+        // runs once at startup
+        System.out.println("Filter initialized");
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+                          FilterChain chain) throws IOException, ServletException {
+        // BEFORE servlet
+        System.out.println("Request intercepted");
+
+        chain.doFilter(request, response);  // pass to next filter or servlet
+
+        // AFTER servlet (response coming back)
+        System.out.println("Response leaving");
+    }
+
+    @Override
+    public void destroy() {
+        // runs once at shutdown
+        System.out.println("Filter destroyed");
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Critical Rule</div>
+    <p>If you forget to call <code>chain.doFilter(request, response)</code>, the request <strong>stops dead</strong>. The servlet never executes. The browser gets a blank page or timeout. This is actually useful for auth filters &mdash; block unauthorized requests on purpose.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: AUTH FILTER                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="auth-filter">
+  <div class="section-tag">Section 03</div>
+  <h2>Authentication Filter</h2>
+  <p class="section-desc">Check if the user has a valid session. If not, redirect to login. This protects every page behind login.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AuthFilter.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.*;
+import java.io.IOException;
+
+@WebFilter(urlPatterns = {"/dashboard/*", "/bookings/*", "/admin/*"})
+public class AuthFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res,
+                          FilterChain chain) throws IOException, ServletException {
+
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        // Check for existing session (false = don't create new one)
+        HttpSession session = request.getSession(false);
+
+        if (session != null &amp;&amp; session.getAttribute("user") != null) {
+            // User is logged in, let them through
+            chain.doFilter(request, response);
+        } else {
+            // Not logged in, redirect to login page
+            response.sendRedirect(request.getContextPath() + "/login");
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>AuthFilter</code> protects <code>/dashboard/*</code>, <code>/bookings/*</code>, and <code>/admin/*</code>. When a user logs in via <code>LoginServlet</code>, it sets <code>session.setAttribute("user", userObject)</code>. The filter checks for that attribute on every protected request.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: LOGGING FILTER                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="logging-filter">
+  <div class="section-tag">Section 04</div>
+  <h2>Logging Filter</h2>
+  <p class="section-desc">Log every request's HTTP method, URL, and time taken. Essential for debugging.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LoggingFilter.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+@WebFilter("/*")  // intercepts ALL requests
+public class LoggingFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res,
+                          FilterChain chain) throws IOException, ServletException {
+
+        HttpServletRequest request = (HttpServletRequest) req;
+
+        String method = request.getMethod();        // GET, POST, etc.
+        String url = request.getRequestURI();       // /nimbus/bookings
+        long startTime = System.currentTimeMillis();
+
+        System.out.println("[REQUEST] " + method + " " + url);
+
+        chain.doFilter(req, res);  // let the request proceed
+
+        long duration = System.currentTimeMillis() - startTime;
+        System.out.println("[RESPONSE] " + method + " " + url + " | " + duration + "ms");
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: @WEBFILTER ANNOTATION                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="webfilter">
+  <div class="section-tag">Section 05</div>
+  <h2>@WebFilter Annotation</h2>
+  <p class="section-desc">Configure filters with annotations instead of <code>web.xml</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@WebFilter Examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Match all requests
+@WebFilter("/*")
+
+// Match specific paths
+@WebFilter(urlPatterns = {"/dashboard/*", "/admin/*"})
+
+// Match specific servlet by name
+@WebFilter(servletNames = {"BookingServlet"})
+
+// With init parameters
+@WebFilter(
+    urlPatterns = "/*",
+    initParams = {
+        @WebInitParam(name = "encoding", value = "UTF-8")
+    }
+)
+
+// web.xml equivalent (if you need ordering):
+// &lt;filter&gt;
+//   &lt;filter-name&gt;AuthFilter&lt;/filter-name&gt;
+//   &lt;filter-class&gt;com.nimbus.filters.AuthFilter&lt;/filter-class&gt;
+// &lt;/filter&gt;
+// &lt;filter-mapping&gt;
+//   &lt;filter-name&gt;AuthFilter&lt;/filter-name&gt;
+//   &lt;url-pattern&gt;/dashboard/*&lt;/url-pattern&gt;
+// &lt;/filter-mapping&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: FILTER CHAIN ORDERING                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="chain-ordering">
+  <div class="section-tag">Section 06</div>
+  <h2>Filter Chain Ordering</h2>
+  <p class="section-desc">When multiple filters match the same URL, the order matters.</p>
+
+  <h3>How Order is Determined</h3>
+  <ul>
+    <li><strong><code>web.xml</code> filters:</strong> Execute in the order they appear in the file. First declared = first executed.</li>
+    <li><strong><code>@WebFilter</code> filters:</strong> Order is <strong>not guaranteed</strong> by the spec. It depends on the server's classloading order.</li>
+    <li><strong>Best practice:</strong> If order matters (it usually does), define filters in <code>web.xml</code> and remove <code>@WebFilter</code>.</li>
+  </ul>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Request</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">LoggingFilter
+        <span class="flow-sub">#1 in web.xml</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">AuthFilter
+        <span class="flow-sub">#2 in web.xml</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Servlet</div>
+    </div>
+    <div class="flow-arrow-down">&darr; response flows back &darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">Servlet</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">AuthFilter</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">LoggingFilter</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Browser</div>
+    </div>
+    <div class="flow-label">Request: Filter1 &rarr; Filter2 &rarr; Servlet. Response: Servlet &rarr; Filter2 &rarr; Filter1.</div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why Logging First?</div>
+    <p>Put <code>LoggingFilter</code> before <code>AuthFilter</code> so you log ALL requests &mdash; including the ones that get blocked by auth. If auth was first, you'd never see failed login attempts in your logs.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: LISTENERS                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="listeners">
+  <div class="section-tag">Section 07</div>
+  <h2>Listeners</h2>
+  <p class="section-desc">Listeners react to lifecycle events: app startup/shutdown, sessions created/destroyed.</p>
+
+  <h3>ServletContextListener</h3>
+  <p>Runs code when the app starts and stops. Use it for one-time setup like loading config or initializing a connection pool.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AppStartupListener.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+@WebListener
+public class AppStartupListener implements ServletContextListener {
+
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+        System.out.println("Nimbus app started!");
+        // Load DB driver, create connection pool, read config
+        event.getServletContext().setAttribute("appName", "Nimbus Parcels");
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+        System.out.println("Nimbus app shutting down!");
+        // Close connection pool, flush logs
+    }
+}</code></pre>
+  </div>
+
+  <h3>HttpSessionListener</h3>
+  <p>Track active sessions. Useful for showing "X users online" or monitoring for session leaks.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SessionTracker.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+import java.util.concurrent.atomic.AtomicInteger;
+
+@WebListener
+public class SessionTracker implements HttpSessionListener {
+
+    private static final AtomicInteger activeSessions = new AtomicInteger(0);
+
+    @Override
+    public void sessionCreated(HttpSessionEvent event) {
+        int count = activeSessions.incrementAndGet();
+        System.out.println("Session created. Active: " + count);
+    }
+
+    @Override
+    public void sessionDestroyed(HttpSessionEvent event) {
+        int count = activeSessions.decrementAndGet();
+        System.out.println("Session destroyed. Active: " + count);
+    }
+
+    public static int getActiveCount() {
+        return activeSessions.get();
+    }
+}</code></pre>
+  </div>
+
+  <h3>Listener Summary</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Listener</th><th>Reacts To</th><th>Use Case</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>ServletContextListener</code></td><td>App start/stop</td><td>Init DB pool, load config</td></tr>
+      <tr><td><code>HttpSessionListener</code></td><td>Session create/destroy</td><td>Count active users</td></tr>
+      <tr><td><code>ServletRequestListener</code></td><td>Each request start/end</td><td>Request-scoped timing</td></tr>
+      <tr><td><code>HttpSessionAttributeListener</code></td><td>Session attribute add/remove/replace</td><td>Audit trail</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: NIMBUS FULL CODE                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-filters">
+  <div class="section-tag">Section 08</div>
+  <h2>Full Nimbus Filter Code</h2>
+  <p class="section-desc">Complete AuthFilter and LoggingFilter for the Nimbus Parcel Management System.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Two filters protect the system: <code>LoggingFilter</code> (logs all requests) runs first, then <code>AuthFilter</code> (blocks unauthenticated access to protected pages). The <code>AppStartupListener</code> initializes the DB connection pool when Tomcat starts.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/filters/AuthFilter.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.filters;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+@WebFilter(urlPatterns = {"/dashboard/*", "/bookings/*", "/admin/*", "/track/*"})
+public class AuthFilter implements Filter {
+
+    // Pages that don't need login
+    private static final List&lt;String&gt; PUBLIC_PATHS = Arrays.asList(
+        "/login", "/register", "/css/", "/js/", "/images/"
+    );
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res,
+                          FilterChain chain) throws IOException, ServletException {
+
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        String path = request.getRequestURI().substring(request.getContextPath().length());
+
+        // Allow public paths
+        for (String publicPath : PUBLIC_PATHS) {
+            if (path.startsWith(publicPath)) {
+                chain.doFilter(req, res);
+                return;
+            }
+        }
+
+        // Check session
+        HttpSession session = request.getSession(false);
+        if (session != null &amp;&amp; session.getAttribute("user") != null) {
+            chain.doFilter(req, res);
+        } else {
+            // Save the page they wanted so we can redirect after login
+            session = request.getSession(true);
+            session.setAttribute("redirectAfterLogin", request.getRequestURI());
+            response.sendRedirect(request.getContextPath() + "/login");
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/filters/LoggingFilter.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.filters;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@WebFilter("/*")
+public class LoggingFilter implements Filter {
+
+    private static final DateTimeFormatter FMT =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res,
+                          FilterChain chain) throws IOException, ServletException {
+
+        HttpServletRequest request = (HttpServletRequest) req;
+
+        String method = request.getMethod();
+        String url = request.getRequestURI();
+        String clientIP = request.getRemoteAddr();
+        String timestamp = LocalDateTime.now().format(FMT);
+
+        long start = System.currentTimeMillis();
+
+        // Let request proceed
+        chain.doFilter(req, res);
+
+        long duration = System.currentTimeMillis() - start;
+
+        System.out.printf("[%s] %s %s | IP: %s | %dms%n",
+            timestamp, method, url, clientIP, duration);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: EXERCISES                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 09</div>
+  <h2>Exercises</h2>
+  <p class="section-desc">Build these to solidify filters and listeners.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Encoding Filter</div>
+    <p>Create a filter that sets <code>request.setCharacterEncoding("UTF-8")</code> and <code>response.setContentType("text/html; charset=UTF-8")</code> on every request. Map it to <code>/*</code>. This prevents garbled text from form submissions.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Admin-Only Filter</div>
+    <p>Create a filter on <code>/admin/*</code> that checks not just if the user is logged in, but if their role is <code>"ADMIN"</code>. If not, redirect to <code>/dashboard</code> with an error message in the session: <code>"Access denied. Admin only."</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Request Counter Listener</div>
+    <p>Create a <code>ServletRequestListener</code> that counts total requests since app startup. Store the count in <code>ServletContext</code> as an attribute. Display it on a JSP page: <code>"Total requests served: 1,247"</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Session Timeout Warning</div>
+    <p>Create an <code>HttpSessionListener</code> that logs a warning when sessions are being created faster than destroyed (possible memory leak). If <code>activeSessions &gt; 100</code>, print a warning to the console.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="sessions.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Session Management</span>
+  </a>
+  <a href="spring-intro.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Spring &mdash; Big Picture</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

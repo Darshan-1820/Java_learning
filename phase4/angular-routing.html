@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Routing &amp; Guards | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> API Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Architecture</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus as Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular &mdash; Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Angular Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link active"><span class="num">12</span> Angular Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: ROUTERMODULE & ROUTES                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="router-module">
+  <div class="section-tag">Section 01</div>
+  <h2>RouterModule &amp; Routes</h2>
+  <p class="section-desc">Angular routing maps URL paths to components. When the URL changes, Angular swaps the displayed component without reloading the page.</p>
+
+  <h3>How Routing Works</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">User clicks link
+        <span class="flow-sub">/bookings/1001</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Router matches
+        <span class="flow-sub">finds matching route</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Component loads
+        <span class="flow-sub">BookingDetailComponent</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Renders in
+        <span class="flow-sub">&lt;router-outlet&gt;</span>
+      </div>
+    </div>
+    <div class="flow-label">No page reload &mdash; Angular swaps the component in the router-outlet placeholder</div>
+  </div>
+
+  <h3>Defining Routes</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app-routing.module.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { BookingFormComponent } from './components/booking-form/booking-form.component';
+import { BookingDetailComponent } from './components/booking-detail/booking-detail.component';
+import { BookingHistoryComponent } from './components/booking-history/booking-history.component';
+
+const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'bookings/new', component: BookingFormComponent },
+  { path: 'bookings/history', component: BookingHistoryComponent },
+  { path: 'bookings/:id', component: BookingDetailComponent },
+  { path: '**', redirectTo: '/login' }  // Wildcard: catch-all for unknown URLs
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">12</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">const routes: Routes = [...]</div>
+        <div class="breakdown-explain">An array of route objects. Each maps a URL path to a component. Angular checks them top-to-bottom and uses the first match.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">13</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">{ path: '', redirectTo: '/login', pathMatch: 'full' }</div>
+        <div class="breakdown-explain">When the URL is exactly <code>/</code> (empty path), redirect to <code>/login</code>. The <code>pathMatch: 'full'</code> ensures this only matches the exact empty path, not every URL that starts with nothing.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">18</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">{ path: 'bookings/:id', component: BookingDetailComponent }</div>
+        <div class="breakdown-explain">The <code>:id</code> is a route parameter. <code>/bookings/1001</code> matches this route and passes <code>1001</code> as the <code>id</code> parameter to the component.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">19</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">{ path: '**', redirectTo: '/login' }</div>
+        <div class="breakdown-explain">Wildcard route. Matches any URL that didn't match above. Redirects to login. Always put this last.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">23</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">RouterModule.forRoot(routes)</div>
+        <div class="breakdown-explain"><code>forRoot()</code> registers the routes at the application level. Only called once in the root module. Feature modules use <code>forChild()</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Router Outlet</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app.component.html &mdash; Where routed components render</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">&lt;!-- This stays on every page --&gt;
+&lt;app-navbar&gt;&lt;/app-navbar&gt;
+
+&lt;!-- This is where Angular puts the routed component --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;
+
+&lt;!-- When URL is /login, LoginComponent renders here --&gt;
+&lt;!-- When URL is /dashboard, DashboardComponent renders here --&gt;
+&lt;!-- The navbar stays, only the content below it changes --&gt;</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Route Order Matters</div>
+    <p>Angular checks routes top-to-bottom and stops at the first match. Put specific routes before general ones. <code>bookings/new</code> must come before <code>bookings/:id</code>, otherwise Angular would match "new" as an ID parameter.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: ROUTERLINK                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="router-link">
+  <div class="section-tag">Section 02</div>
+  <h2>routerLink for Navigation</h2>
+  <p class="section-desc">Navigate between pages without reloading. Never use regular &lt;a href&gt; in Angular.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">navbar.component.html &mdash; Navigation links</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">&lt;nav&gt;
+  &lt;!-- Static routes --&gt;
+  &lt;a routerLink="/dashboard" routerLinkActive="active"&gt;Dashboard&lt;/a&gt;
+  &lt;a routerLink="/bookings/new" routerLinkActive="active"&gt;New Booking&lt;/a&gt;
+  &lt;a routerLink="/bookings/history" routerLinkActive="active"&gt;History&lt;/a&gt;
+
+  &lt;!-- Dynamic route with parameter --&gt;
+  &lt;a [routerLink]="['/bookings', booking.bookingId]"&gt;View Details&lt;/a&gt;
+  &lt;!-- Generates: /bookings/1001 --&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">&lt;a href&gt; (Wrong)</div>
+      <div class="comparison-body">
+        <p><code>&lt;a href="/dashboard"&gt;</code></p>
+        <p>Causes a full page reload. The browser downloads everything again. Angular app restarts from scratch. Slow and loses component state.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">routerLink (Correct)</div>
+      <div class="comparison-body">
+        <p><code>&lt;a routerLink="/dashboard"&gt;</code></p>
+        <p>No page reload. Angular swaps the component instantly. State is preserved. Fast SPA navigation.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Programmatic Navigation</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">login.component.ts &mdash; Navigate after login</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Router } from '@angular/router';
+
+export class LoginComponent {
+  constructor(private router: Router) {}
+
+  onLogin() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) =&gt; {
+        // Login successful &mdash; navigate to dashboard
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) =&gt; {
+        this.errorMessage = 'Invalid email or password';
+      }
+    });
+  }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: ROUTE PARAMETERS                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="route-params">
+  <div class="section-tag">Section 03</div>
+  <h2>Route Parameters</h2>
+  <p class="section-desc">Pass data through the URL. The booking ID in /bookings/1001 is a route parameter.</p>
+
+  <h3>ActivatedRoute &mdash; Reading Parameters</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking-detail.component.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BookingService } from '../../services/booking.service';
+
+@Component({
+  selector: 'app-booking-detail',
+  templateUrl: './booking-detail.component.html'
+})
+export class BookingDetailComponent implements OnInit {
+  booking: any;
+  loading = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private bookingService: BookingService
+  ) {}
+
+  ngOnInit() {
+    // Get the :id parameter from the URL
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    // Fetch booking from the API
+    this.bookingService.getById(id).subscribe({
+      next: (data) =&gt; {
+        this.booking = data;
+        this.loading = false;
+      },
+      error: (err) =&gt; {
+        console.error('Booking not found', err);
+        this.loading = false;
+      }
+    });
+  }
+}</code></pre>
+  </div>
+
+  <h3>Reactive Parameter Subscription</h3>
+
+  <p>If the user navigates from <code>/bookings/1001</code> to <code>/bookings/1002</code>, Angular reuses the same component instance. The <code>snapshot</code> approach won't detect the change. Use <code>paramMap</code> observable instead:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Reactive route params &mdash; Detects parameter changes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">ngOnInit() {
+  this.route.paramMap.subscribe(params =&gt; {
+    const id = Number(params.get('id'));
+    this.loadBooking(id);  // Fires every time :id changes
+  });
+}</code></pre>
+  </div>
+
+  <h3>Query Parameters</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Reading query parameters: /bookings?status=DELIVERED</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Setting query parameters
+this.router.navigate(['/bookings'], {
+  queryParams: { status: 'DELIVERED', userId: 1 }
+});
+// URL becomes: /bookings?status=DELIVERED&userId=1
+
+// Reading query parameters
+this.route.queryParamMap.subscribe(params =&gt; {
+  const status = params.get('status');   // 'DELIVERED'
+  const userId = params.get('userId');    // '1' (always a string)
+});</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: CHILD / NESTED ROUTES                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="child-routes">
+  <div class="section-tag">Section 04</div>
+  <h2>Child / Nested Routes</h2>
+  <p class="section-desc">Routes within routes. The dashboard has sub-pages, each rendered inside the dashboard layout.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app-routing.module.ts &mdash; Nested routes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', component: DashboardHomeComponent },         // /dashboard
+      { path: 'bookings', component: BookingListComponent },   // /dashboard/bookings
+      { path: 'profile', component: ProfileComponent },        // /dashboard/profile
+    ]
+  }
+];</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard.component.html &mdash; Has its own router-outlet</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">&lt;div class="dashboard-layout"&gt;
+  &lt;aside class="sidebar"&gt;
+    &lt;a routerLink="/dashboard" routerLinkActive="active"
+       [routerLinkActiveOptions]="{exact: true}"&gt;Home&lt;/a&gt;
+    &lt;a routerLink="/dashboard/bookings" routerLinkActive="active"&gt;Bookings&lt;/a&gt;
+    &lt;a routerLink="/dashboard/profile" routerLinkActive="active"&gt;Profile&lt;/a&gt;
+  &lt;/aside&gt;
+  &lt;main&gt;
+    &lt;!-- Child components render HERE --&gt;
+    &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  &lt;/main&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <p>The dashboard layout (sidebar + main area) stays fixed. Only the content inside the nested <code>&lt;router-outlet&gt;</code> changes as the user navigates between dashboard sub-pages.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: CANACTIVATE GUARD                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="auth-guard">
+  <div class="section-tag">Section 05</div>
+  <h2>CanActivate Guard &mdash; Auth Protection</h2>
+  <p class="section-desc">Prevent unauthorized users from accessing protected pages. If not logged in, redirect to login.</p>
+
+  <h3>Creating an Auth Guard</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">guards/auth.guard.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+export const authGuard: CanActivateFn = (route, state) =&gt; {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isLoggedIn()) {
+    return true;  // Allow access
+  }
+
+  // Not logged in &mdash; redirect to login with return URL
+  router.navigate(['/login'], {
+    queryParams: { returnUrl: state.url }
+  });
+  return false;  // Block access
+};</code></pre>
+  </div>
+
+  <h3>Applying the Guard to Routes</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app-routing.module.ts &mdash; Protected routes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  // These routes require authentication
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'bookings/new', component: BookingFormComponent, canActivate: [authGuard] },
+  { path: 'bookings/history', component: BookingHistoryComponent, canActivate: [authGuard] },
+  { path: 'bookings/:id', component: BookingDetailComponent, canActivate: [authGuard] },
+
+  { path: '**', redirectTo: '/login' }
+];</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>authGuard</code> checks if the user has a valid session (typically a token in localStorage). If not, it redirects to <code>/login</code> with a <code>returnUrl</code> query parameter. After successful login, the login component reads <code>returnUrl</code> and navigates the user back to where they originally wanted to go.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: ROLE-BASED GUARD                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="role-guard">
+  <div class="section-tag">Section 06</div>
+  <h2>Role-Based Guard</h2>
+  <p class="section-desc">Customers see their bookings. Officers update statuses. Different roles, different access.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">guards/role.guard.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+export const roleGuard: CanActivateFn = (route, state) =&gt; {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  // Get required roles from route data
+  const requiredRoles = route.data['roles'] as string[];
+  const userRole = authService.getUserRole();
+
+  if (requiredRoles.includes(userRole)) {
+    return true;  // User has the required role
+  }
+
+  // Wrong role &mdash; redirect to dashboard
+  router.navigate(['/dashboard']);
+  return false;
+};</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app-routing.module.ts &mdash; Role-protected routes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">const routes: Routes = [
+  // Both customers and officers can see the dashboard
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard]
+  },
+
+  // Only customers can create bookings
+  {
+    path: 'bookings/new',
+    component: BookingFormComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['CUSTOMER'] }
+  },
+
+  // Only officers can update booking status
+  {
+    path: 'officer/update-status',
+    component: StatusUpdateComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['OFFICER', 'ADMIN'] }
+  }
+];</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Frontend Guards Are Not Security</div>
+    <p>Route guards only control what the user <strong>sees</strong>. They don't prevent API access. A tech-savvy user could bypass Angular entirely and call the API with curl. Real authorization must happen on the backend too &mdash; the Spring Boot controller should check the user's role before performing restricted actions. Frontend guards are for UX, backend checks are for security.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: LAZY LOADING                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="lazy-loading">
+  <div class="section-tag">Section 07</div>
+  <h2>Lazy Loading Modules</h2>
+  <p class="section-desc">Don't load everything upfront. Load feature modules only when the user navigates to them.</p>
+
+  <h3>The Problem</h3>
+
+  <p>Without lazy loading, Angular bundles every component into one large JavaScript file. The user downloads the officer dashboard, admin panel, and booking history &mdash; even if they're a customer who never visits those pages.</p>
+
+  <h3>Lazy Loading a Feature Module</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app-routing.module.ts &mdash; Lazy loaded routes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+
+  // Lazy load the officer module only when an officer navigates here
+  {
+    path: 'officer',
+    loadChildren: () =&gt; import('./officer/officer.module')
+      .then(m =&gt; m.OfficerModule),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['OFFICER'] }
+  },
+
+  // Lazy load booking module
+  {
+    path: 'bookings',
+    loadChildren: () =&gt; import('./bookings/bookings.module')
+      .then(m =&gt; m.BookingsModule),
+    canActivate: [authGuard]
+  }
+];</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">bookings/bookings-routing.module.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">const routes: Routes = [
+  { path: '', component: BookingListComponent },         // /bookings
+  { path: 'new', component: BookingFormComponent },      // /bookings/new
+  { path: 'history', component: BookingHistoryComponent }, // /bookings/history
+  { path: ':id', component: BookingDetailComponent }     // /bookings/1001
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],  // forChild, not forRoot
+  exports: [RouterModule]
+})
+export class BookingsRoutingModule { }</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">When to Lazy Load</div>
+    <p>Lazy load feature modules that not every user needs: admin panel, officer dashboard, reports section. Keep the login, registration, and main dashboard in the main bundle since every user visits them. Angular CLI generates separate chunk files for lazy-loaded modules automatically.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: NIMBUS ROUTING CONFIG                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-routing">
+  <div class="section-tag">Section 08</div>
+  <h2>Full Nimbus Routing Config</h2>
+  <p class="section-desc">The complete routing setup for the Nimbus Angular frontend.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app-routing.module.ts &mdash; Complete Nimbus routing</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
+
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { BookingFormComponent } from './components/booking-form/booking-form.component';
+import { BookingDetailComponent } from './components/booking-detail/booking-detail.component';
+import { BookingHistoryComponent } from './components/booking-history/booking-history.component';
+import { StatusUpdateComponent } from './components/status-update/status-update.component';
+
+const routes: Routes = [
+  // Public routes (no guard)
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  // Customer routes (auth required)
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'bookings/new',
+    component: BookingFormComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['CUSTOMER'] }
+  },
+  {
+    path: 'bookings/history',
+    component: BookingHistoryComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'bookings/:id',
+    component: BookingDetailComponent,
+    canActivate: [authGuard]
+  },
+
+  // Officer routes (auth + role required)
+  {
+    path: 'officer/update-status',
+    component: StatusUpdateComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['OFFICER', 'ADMIN'] }
+  },
+
+  // Wildcard
+  { path: '**', redirectTo: '/login' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: EXERCISES                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 09</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build routing from scratch, step by step.</p>
+
+  <h3>Exercise 1: Basic Routing (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1</div>
+    <p>Create a new Angular app with <code>ng new nimbus-frontend --routing</code>. Add three components: <code>LoginComponent</code>, <code>DashboardComponent</code>, <code>BookingListComponent</code>. Configure routes so <code>/login</code>, <code>/dashboard</code>, and <code>/bookings</code> each show the correct component. Add <code>routerLink</code> navigation between them.</p>
+  </div>
+
+  <h3>Exercise 2: Route Parameters (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2</div>
+    <p>Add a <code>BookingDetailComponent</code> with route <code>/bookings/:id</code>. In the component, use <code>ActivatedRoute</code> to read the <code>:id</code> parameter and display it on the page. From the booking list, add <code>[routerLink]</code> links that navigate to <code>/bookings/1001</code>, <code>/bookings/1002</code>, etc.</p>
+  </div>
+
+  <h3>Exercise 3: Auth Guard (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3</div>
+    <p>Create an <code>AuthService</code> with an <code>isLoggedIn()</code> method that checks localStorage for a token. Create an <code>authGuard</code> using the functional guard pattern. Apply it to the dashboard and booking routes. Test: accessing <code>/dashboard</code> without logging in should redirect to <code>/login</code>.</p>
+  </div>
+
+  <h3>Exercise 4: Role-Based Access (Hard)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4</div>
+    <p>Extend Exercise 3 with role-based access. Store the user's role in localStorage after login. Create a <code>roleGuard</code> that reads required roles from <code>route.data</code>. Create an officer-only page at <code>/officer/update-status</code>. Test: a CUSTOMER trying to access this route should be redirected to <code>/dashboard</code>.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Self-Check Questions</div>
+    <ol>
+      <li>Why use <code>routerLink</code> instead of <code>href</code>? (routerLink navigates without page reload, keeping Angular SPA state intact)</li>
+      <li>What's the difference between <code>snapshot.paramMap</code> and <code>paramMap.subscribe()</code>? (Snapshot reads once; subscribe detects parameter changes when the component is reused)</li>
+      <li>What does <code>canActivate</code> do? (Runs a guard function before allowing navigation to a route; returns true/false)</li>
+      <li>Why do you need backend authorization in addition to frontend guards? (Frontend guards only hide UI; the API is still accessible directly via curl or Postman)</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="angular-services.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Angular Services &amp; HTTP</span>
+  </a>
+  <a href="nimbus-fullstack.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Nimbus Full Stack</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>
