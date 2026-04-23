@@ -87,10 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Highlight current page in sidebar topic list
+  // Highlight current page in sidebar topic list with permanent style
   document.querySelectorAll('.sidebar-link:not(.toc-link)').forEach(link => {
     if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
+      link.classList.add('current-page');
     }
   });
 
