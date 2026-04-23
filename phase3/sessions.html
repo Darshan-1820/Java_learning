@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session Management | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link active"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHY SESSIONS EXIST                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-sessions">
+  <div class="section-tag">Section 01</div>
+  <h2>Why Sessions Exist</h2>
+  <p class="section-desc">HTTP is stateless. Every request is a blank slate. The server has zero memory of previous requests. So how does it know you're logged in?</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Restaurant Analogy</div>
+    <p>Imagine a restaurant where the waiter has <strong>no memory</strong>. Every time you call them over, they have no idea who you are, what you ordered, or that you're even a customer. You'd have to show your receipt and re-explain your entire order every single time.</p>
+    <p>That's HTTP. Every request is a brand-new waiter who knows nothing about you. Sessions solve this by giving you a <strong>wristband</strong> (session ID) that the waiter checks against a list in the kitchen.</p>
+  </div>
+
+  <h3>The Problem: Statelessness</h3>
+
+  <p>Consider this scenario without sessions:</p>
+
+  <ol class="steps">
+    <li>User sends <code>POST /login</code> with username "john" and password "secret". Server validates. Success! But...</li>
+    <li>User sends <code>GET /dashboard</code>. Server receives this request. But it has <strong>no idea</strong> who sent it. The login from step 1 is forgotten. "Who are you? Login again."</li>
+    <li>User sends <code>GET /my-bookings</code>. Same problem. "Who are you?" This would happen on <strong>every single request</strong>.</li>
+  </ol>
+
+  <p>Sessions solve this by creating a link between multiple requests from the same user.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box red">Without Sessions
+        <span class="flow-sub">every request = stranger</span>
+      </div>
+      <div class="flow-arrow">&nbsp; vs &nbsp;</div>
+      <div class="flow-box green">With Sessions
+        <span class="flow-sub">server remembers you</span>
+      </div>
+    </div>
+    <div class="flow-label">Sessions turn stateless HTTP into a stateful experience</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: COOKIES                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="cookies">
+  <div class="section-tag">Section 02</div>
+  <h2>Cookies</h2>
+  <p class="section-desc">Cookies are small pieces of data that the server asks the browser to store. The browser automatically sends them back with every subsequent request.</p>
+
+  <h3>How Cookies Work</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">1. Browser sends request
+        <span class="flow-sub">GET /login (no cookies yet)</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Server responds
+        <span class="flow-sub">Set-Cookie: JSESSIONID=abc123</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">2. Browser stores cookie
+        <span class="flow-sub">saves abc123 locally</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Every future request
+        <span class="flow-sub">Cookie: JSESSIONID=abc123</span>
+      </div>
+    </div>
+    <div class="flow-label">Set-Cookie (server &rarr; browser) vs Cookie (browser &rarr; server)</div>
+  </div>
+
+  <h3>Set-Cookie Header (Server &rarr; Browser)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Server Response with Set-Cookie</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">HTTP/1.1 200 OK
+Set-Cookie: JSESSIONID=abc123; Path=/; HttpOnly; Secure; Max-Age=1800</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Cookie attributes explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">JSESSIONID=abc123</div>
+        <div class="breakdown-explain">The cookie name and value. <code>JSESSIONID</code> is the standard name Java/Tomcat uses for session IDs.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Path=/</div>
+        <div class="breakdown-explain">Send this cookie for ALL paths on this domain. If it was <code>Path=/admin</code>, it would only be sent for URLs starting with <code>/admin</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">HttpOnly</div>
+        <div class="breakdown-explain">JavaScript CANNOT read this cookie (<code>document.cookie</code> won't show it). Prevents XSS attacks from stealing session IDs. Always use this for session cookies.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Secure</div>
+        <div class="breakdown-explain">Only send this cookie over HTTPS. Prevents session IDs from being sent over unencrypted HTTP.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Max-Age=1800</div>
+        <div class="breakdown-explain">Cookie expires in 1800 seconds (30 minutes). After that, the browser deletes it. If omitted, the cookie dies when the browser closes (session cookie).</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Types of Cookies</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Type</th><th>Lifetime</th><th>Use Case</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Session Cookie</strong></td>
+        <td>Until browser closes (no <code>Max-Age</code> or <code>Expires</code>)</td>
+        <td>Login session, shopping cart</td>
+      </tr>
+      <tr>
+        <td><strong>Persistent Cookie</strong></td>
+        <td>Until <code>Max-Age</code> or <code>Expires</code> date</td>
+        <td>"Remember me" login, user preferences, theme</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Setting Cookies in Servlets</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Creating and Reading Cookies in Java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// CREATING a cookie (in a Servlet)
+Cookie cookie = new Cookie("theme", "dark");
+cookie.setMaxAge(60 * 60 * 24 * 30);  // 30 days in seconds
+cookie.setPath("/");
+cookie.setHttpOnly(true);
+response.addCookie(cookie);
+
+// READING cookies from request
+Cookie[] cookies = request.getCookies();
+if (cookies != null) {
+    for (Cookie c : cookies) {
+        if ("theme".equals(c.getName())) {
+            String theme = c.getValue();  // "dark"
+        }
+    }
+}
+
+// DELETING a cookie (set Max-Age to 0)
+Cookie deleteCookie = new Cookie("theme", "");
+deleteCookie.setMaxAge(0);
+deleteCookie.setPath("/");
+response.addCookie(deleteCookie);</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: HTTPSESSION                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="httpsession">
+  <div class="section-tag">Section 03</div>
+  <h2>HttpSession &mdash; Server-Side Sessions</h2>
+  <p class="section-desc">While cookies store data in the browser, <code>HttpSession</code> stores data on the server. The browser only holds a session ID (in a cookie). The real data lives server-side.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>A cookie is like a <strong>coat check ticket</strong>. The ticket itself has no value &mdash; it's just a number. But when you hand it to the coat check person (the server), they look up your number and give you your coat (your session data). The coat was always stored safely behind the counter, not in your pocket.</p>
+  </div>
+
+  <h3>How HttpSession Works</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Browser
+        <span class="flow-sub">holds only: JSESSIONID=abc123</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Server (Tomcat)
+        <span class="flow-sub">Map: abc123 &rarr; {user=John, role=customer}</span>
+      </div>
+    </div>
+    <div class="flow-label">Browser stores the key. Server stores the data.</div>
+  </div>
+
+  <h3>Core Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HttpSession API &mdash; The methods you'll use</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GET or CREATE a session
+HttpSession session = request.getSession();       // creates if none exists
+HttpSession session = request.getSession(false);  // returns null if none exists
+
+// STORE data in the session
+session.setAttribute("loggedInUser", user);
+session.setAttribute("role", "customer");
+session.setAttribute("loginTime", System.currentTimeMillis());
+
+// READ data from the session
+User user = (User) session.getAttribute("loggedInUser");
+String role = (String) session.getAttribute("role");
+
+// REMOVE a specific attribute
+session.removeAttribute("tempData");
+
+// GET the session ID
+String sessionId = session.getId();  // "abc123"
+
+// SET session timeout (in seconds)
+session.setMaxInactiveInterval(30 * 60);  // 30 minutes
+
+// DESTROY the session (logout)
+session.invalidate();</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key methods explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.getSession()</div>
+        <div class="breakdown-explain">If a session already exists for this user (identified by JSESSIONID cookie), returns it. If not, creates a brand-new session and sends a <code>Set-Cookie: JSESSIONID=...</code> header automatically.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.getSession(false)</div>
+        <div class="breakdown-explain">Same, but does NOT create a new session. Returns <code>null</code> if no session exists. Use this on pages that should only work if you're already logged in.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">session.setAttribute("loggedInUser", user)</div>
+        <div class="breakdown-explain">Stores the <code>User</code> object in the session under the key "loggedInUser". Think of sessions as a <code>HashMap&lt;String, Object&gt;</code>. You put things in with a key, get them out with the same key.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">11</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">(User) session.getAttribute("loggedInUser")</div>
+        <div class="breakdown-explain">Retrieves the stored object. Returns <code>Object</code>, so you must cast it to the correct type. Returns <code>null</code> if the key doesn't exist.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">23</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">session.invalidate()</div>
+        <div class="breakdown-explain">Destroys the entire session. All stored attributes are gone. The JSESSIONID cookie becomes invalid. The user is effectively logged out.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: SESSION LIFECYCLE                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="session-lifecycle">
+  <div class="section-tag">Section 04</div>
+  <h2>Session Lifecycle</h2>
+  <p class="section-desc">A session is born, lives, and dies. Understanding this lifecycle is critical for building secure login systems.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot blue"></div>
+      <div class="timeline-title">1. Creation</div>
+      <div class="timeline-desc">When <code>request.getSession()</code> is called for the first time, Tomcat creates a new session, generates a unique ID (like <code>A1B2C3D4E5F6</code>), and sends <code>Set-Cookie: JSESSIONID=A1B2C3D4E5F6</code> to the browser.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green"></div>
+      <div class="timeline-title">2. Active Use</div>
+      <div class="timeline-desc">Every request from this browser includes <code>Cookie: JSESSIONID=A1B2C3D4E5F6</code>. Tomcat looks up this ID in its internal map and gives your Servlet the matching <code>HttpSession</code> object. You can read/write attributes freely.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot orange"></div>
+      <div class="timeline-title">3. Timeout</div>
+      <div class="timeline-desc">If the user doesn't send any request for the timeout period (default: 30 minutes in Tomcat), the session is automatically destroyed. Configurable via <code>session.setMaxInactiveInterval(seconds)</code> or in <code>web.xml</code>.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot purple"></div>
+      <div class="timeline-title">4. Invalidation (Logout)</div>
+      <div class="timeline-desc">Calling <code>session.invalidate()</code> destroys the session immediately. The session ID is removed from Tomcat's map. The next request with that JSESSIONID will not find a session &mdash; the user must log in again.</div>
+    </div>
+  </div>
+
+  <h3>Configuring Session Timeout</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">web.xml &mdash; Set timeout for ALL sessions</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;session-config&gt;
+    &lt;session-timeout&gt;30&lt;/session-timeout&gt;  &lt;!-- minutes, not seconds --&gt;
+&lt;/session-config&gt;</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Java Code &mdash; Set timeout for ONE session</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Set timeout to 15 minutes for this specific session
+session.setMaxInactiveInterval(15 * 60);  // seconds</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: LOGIN FLOW WITH SESSIONS                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="login-flow">
+  <div class="section-tag">Section 05</div>
+  <h2>Login Flow with Sessions</h2>
+  <p class="section-desc">The complete authentication flow: login, session check, and logout. This is how every Java web app handles user authentication.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">1. Login Form
+        <span class="flow-sub">user enters credentials</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">2. POST /login
+        <span class="flow-sub">username + password</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">3. Validate
+        <span class="flow-sub">check DB</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">4. Create Session
+        <span class="flow-sub">store user in session</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">5. Redirect
+        <span class="flow-sub">302 &rarr; /dashboard</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">6. Dashboard
+        <span class="flow-sub">check session on every page</span>
+      </div>
+    </div>
+    <div class="flow-label">Login &rarr; Store in Session &rarr; Check Session on Every Page &rarr; Logout Invalidates</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: NIMBUS LOGIN SESSION CODE                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-session-code">
+  <div class="section-tag">Section 06</div>
+  <h2>Nimbus Login Session Code</h2>
+  <p class="section-desc">Complete working code for the Nimbus login system using Servlets, HttpSession, and JSP.</p>
+
+  <h3>LoginServlet &mdash; Handle Login</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LoginServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
+    private UserDAO userDAO = new UserDAO();
+
+    // Show login page
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/views/login.jsp")
+               .forward(request, response);
+    }
+
+    // Handle login form submission
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Validate against database
+        User user = userDAO.findByUsername(username);
+
+        if (user != null &amp;&amp; user.getPassword().equals(password)) {
+            // SUCCESS: Create session and store user
+            HttpSession session = request.getSession();
+            session.setAttribute("loggedInUser", user);
+            session.setAttribute("role", user.getRole());
+            session.setMaxInactiveInterval(30 * 60); // 30 min
+
+            // Redirect based on role
+            if ("officer".equals(user.getRole())) {
+                response.sendRedirect("officer/dashboard");
+            } else {
+                response.sendRedirect("customer/dashboard");
+            }
+        } else {
+            // FAILURE: Show error on login page
+            request.setAttribute("error", "Invalid username or password");
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp")
+                   .forward(request, response);
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key lines explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">26</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (user != null &amp;&amp; user.getPassword().equals(password))</div>
+        <div class="breakdown-explain">Checks two things: 1) Does this username exist in the database? 2) Does the password match? In production, you'd hash the password. Never compare plain text passwords.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">28</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">HttpSession session = request.getSession();</div>
+        <div class="breakdown-explain">Creates a new session. Tomcat generates a unique JSESSIONID and will send it to the browser as a cookie. This is the moment "state" begins.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">29</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">session.setAttribute("loggedInUser", user);</div>
+        <div class="breakdown-explain">Stores the entire User object in the session. Now every page can do <code>session.getAttribute("loggedInUser")</code> to know who's logged in and access their name, email, role, etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">34</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">response.sendRedirect("officer/dashboard");</div>
+        <div class="breakdown-explain">Sends a <code>302 Found</code> redirect. The browser makes a new GET request to <code>/officer/dashboard</code>. This is the Post-Redirect-Get (PRG) pattern &mdash; prevents form resubmission on refresh.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>DashboardServlet &mdash; Check Session</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DashboardServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/customer/dashboard")
+public class DashboardServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Check if user is logged in
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            // Not logged in: redirect to login page
+            response.sendRedirect("../login");
+            return;
+        }
+
+        // Logged in: get user from session
+        User user = (User) session.getAttribute("loggedInUser");
+        String role = (String) session.getAttribute("role");
+
+        // Check authorization (customer can't access officer pages)
+        if (!"customer".equals(role)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        // All good: show dashboard
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
+               .forward(request, response);
+    }
+}</code></pre>
+  </div>
+
+  <h3>LogoutServlet &mdash; Destroy Session</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LogoutServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/logout")
+public class LogoutServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();  // Destroy session + all data
+        }
+        response.sendRedirect("login");  // Back to login page
+    }
+}</code></pre>
+  </div>
+
+  <h3>dashboard.jsp &mdash; Using Session Data</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;%@ page language="java" contentType="text/html" %&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome, ${sessionScope.loggedInUser.name}!&lt;/h1&gt;
+    &lt;p&gt;Role: ${sessionScope.role}&lt;/p&gt;
+    &lt;p&gt;Session ID: ${pageContext.session.id}&lt;/p&gt;
+    &lt;a href="../logout"&gt;Logout&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This is exactly how Nimbus handles authentication. The <code>LoginServlet</code> validates credentials, stores the <code>User</code> object in the session, and redirects to the role-specific dashboard. Every protected page checks <code>session.getAttribute("loggedInUser")</code>. Logout calls <code>session.invalidate()</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: SESSION VS COOKIE COMPARISON                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="session-vs-cookie">
+  <div class="section-tag">Section 07</div>
+  <h2>Session vs Cookie</h2>
+  <p class="section-desc">Both maintain state, but they work very differently. Use the right one for the right job.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Cookie</th>
+        <th>HttpSession</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Where data lives</strong></td>
+        <td>Browser (client-side)</td>
+        <td>Server (server-side)</td>
+      </tr>
+      <tr>
+        <td><strong>Size limit</strong></td>
+        <td>~4 KB per cookie</td>
+        <td>No practical limit (server RAM)</td>
+      </tr>
+      <tr>
+        <td><strong>Security</strong></td>
+        <td>Less secure &mdash; user can read/modify</td>
+        <td>More secure &mdash; data never leaves server</td>
+      </tr>
+      <tr>
+        <td><strong>Data types</strong></td>
+        <td>Strings only</td>
+        <td>Any Java object</td>
+      </tr>
+      <tr>
+        <td><strong>Lifetime</strong></td>
+        <td>Controlled by Max-Age/Expires</td>
+        <td>Until timeout or invalidation</td>
+      </tr>
+      <tr>
+        <td><strong>Use for</strong></td>
+        <td>Preferences, "remember me", tracking</td>
+        <td>Login state, user data, shopping cart</td>
+      </tr>
+      <tr>
+        <td><strong>Server memory</strong></td>
+        <td>None (stored on client)</td>
+        <td>Uses server memory per user</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout important">
+    <div class="callout-title">They Work Together</div>
+    <p>Sessions USE cookies. The session ID is stored in a cookie (<code>JSESSIONID</code>). So cookies are the transport mechanism, and sessions are the storage mechanism. You don't choose one or the other &mdash; sessions need cookies to work.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: URL REWRITING                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="url-rewriting">
+  <div class="section-tag">Section 08</div>
+  <h2>URL Rewriting</h2>
+  <p class="section-desc">What happens when cookies are disabled? Sessions break because the JSESSIONID cookie can't be stored. URL rewriting is the fallback.</p>
+
+  <h3>How It Works</h3>
+
+  <p>Instead of storing the session ID in a cookie, the server appends it to every URL:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">URL with Session ID Appended</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Normal URL (with cookies)
+http://nimbus.com/dashboard
+
+// URL rewritten (without cookies)
+http://nimbus.com/dashboard;jsessionid=A1B2C3D4E5F6</code></pre>
+  </div>
+
+  <h3>Using URL Rewriting in Servlets</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">response.encodeURL() and encodeRedirectURL()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// For links in your page
+String url = response.encodeURL("/dashboard");
+// If cookies work: returns "/dashboard"
+// If cookies disabled: returns "/dashboard;jsessionid=A1B2C3D4E5F6"
+
+// For redirects
+response.sendRedirect(response.encodeRedirectURL("/dashboard"));</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">URL Rewriting Drawbacks</div>
+    <ul>
+      <li>Session ID visible in the URL &mdash; can be shared/bookmarked (security risk)</li>
+      <li>Every single link in every page must use <code>encodeURL()</code></li>
+      <li>Session ID appears in server logs and browser history</li>
+    </ul>
+    <p>In practice, most modern apps <strong>require cookies</strong> and show a "Please enable cookies" message if they're disabled.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: @SESSIONATTRIBUTES IN SPRING                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="session-attributes-spring">
+  <div class="section-tag">Section 09</div>
+  <h2>@SessionAttributes in Spring</h2>
+  <p class="section-desc">Spring provides a cleaner way to work with sessions using the <code>@SessionAttributes</code> annotation on controllers.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Spring Controller with @SessionAttributes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@SessionAttributes("loggedInUser")  // "keep 'loggedInUser' in session"
+public class LoginController {
+
+    @PostMapping("/login")
+    public String handleLogin(@RequestParam String username,
+                              @RequestParam String password,
+                              Model model) {
+        User user = userService.authenticate(username, password);
+        if (user != null) {
+            model.addAttribute("loggedInUser", user);  // goes to session!
+            return "redirect:/dashboard";
+        }
+        model.addAttribute("error", "Invalid credentials");
+        return "login";
+    }
+}
+
+@Controller
+public class DashboardController {
+
+    @GetMapping("/dashboard")
+    public String showDashboard(@SessionAttribute("loggedInUser") User user,
+                                Model model) {
+        // Spring automatically gets user from session
+        // Throws exception if not in session (user not logged in)
+        model.addAttribute("bookings", bookingService.getBookings(user.getId()));
+        return "dashboard";
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Spring session handling explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@SessionAttributes("loggedInUser")</div>
+        <div class="breakdown-explain">Tells Spring: "Whenever <code>model.addAttribute("loggedInUser", ...)</code> is called in this controller, also store it in the session. It persists across requests." Without this, model attributes only live for one request.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">22</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@SessionAttribute("loggedInUser") User user</div>
+        <div class="breakdown-explain">Spring retrieves the "loggedInUser" from the session and injects it as a method parameter. If it's not in the session (user not logged in), Spring throws a <code>400 Bad Request</code>. Clean alternative to manually calling <code>session.getAttribute()</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When Nimbus moves to Spring MVC, the raw <code>HttpSession</code> calls in LoginServlet/DashboardServlet get replaced with <code>@SessionAttributes</code> and <code>@SessionAttribute</code>. The logic is the same, but Spring handles the plumbing. No more <code>request.getSession(false)</code> and null checks.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: SESSION SECURITY                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="session-security">
+  <div class="section-tag">Section 10</div>
+  <h2>Session Security</h2>
+  <p class="section-desc">Sessions are the keys to your users' accounts. If an attacker gets a session ID, they become that user. Here are the attacks and defenses.</p>
+
+  <h3>Session Fixation</h3>
+
+  <div class="callout warning">
+    <div class="callout-title">Attack: Session Fixation</div>
+    <p><strong>How it works:</strong> Attacker creates a session on the server, gets a session ID (say <code>EVIL123</code>), and tricks the victim into using that same session ID (via a crafted URL). When the victim logs in, their authenticated session uses ID <code>EVIL123</code>. The attacker already has that ID and is now logged in as the victim.</p>
+    <p><strong>Defense:</strong> Generate a NEW session ID after successful login. Invalidate the old session first.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Preventing Session Fixation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// After successful authentication:
+// 1. Invalidate old session
+request.getSession().invalidate();
+// 2. Create a brand-new session with a new ID
+HttpSession newSession = request.getSession(true);
+// 3. Store user in the NEW session
+newSession.setAttribute("loggedInUser", user);</code></pre>
+  </div>
+
+  <h3>Session Hijacking</h3>
+
+  <div class="callout warning">
+    <div class="callout-title">Attack: Session Hijacking</div>
+    <p><strong>How it works:</strong> Attacker steals the victim's session ID by sniffing network traffic (on public WiFi), XSS attack (stealing via JavaScript), or reading server logs.</p>
+    <p><strong>Defenses:</strong></p>
+    <ul>
+      <li><strong>HTTPS everywhere</strong> &mdash; encrypts all traffic, session ID can't be sniffed</li>
+      <li><strong>HttpOnly cookies</strong> &mdash; JavaScript can't read the session cookie, blocking XSS theft</li>
+      <li><strong>Secure flag</strong> &mdash; cookie only sent over HTTPS</li>
+      <li><strong>Short session timeout</strong> &mdash; limits the window of attack</li>
+      <li><strong>Regenerate session ID</strong> on privilege escalation (login, role change)</li>
+    </ul>
+  </div>
+
+  <h3>Security Checklist</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Measure</th><th>What It Prevents</th><th>How to Implement</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>HTTPS</td>
+        <td>Network sniffing</td>
+        <td>SSL certificate + redirect HTTP to HTTPS</td>
+      </tr>
+      <tr>
+        <td><code>HttpOnly</code> cookie flag</td>
+        <td>XSS stealing session</td>
+        <td><code>cookie.setHttpOnly(true)</code></td>
+      </tr>
+      <tr>
+        <td><code>Secure</code> cookie flag</td>
+        <td>Cookie sent over HTTP</td>
+        <td><code>cookie.setSecure(true)</code></td>
+      </tr>
+      <tr>
+        <td>Session regeneration</td>
+        <td>Session fixation</td>
+        <td>Invalidate + new session after login</td>
+      </tr>
+      <tr>
+        <td>Short timeout</td>
+        <td>Stale sessions</td>
+        <td><code>setMaxInactiveInterval(900)</code> (15 min)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: EXERCISES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 11</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build session management skills from basics to full implementation.</p>
+
+  <h3>Exercise 1: Session Basics (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1</div>
+    <p>Create a <code>CounterServlet</code> that counts how many times the user has visited the page. Store the count in the session. Display: "You have visited this page X times." Refreshing the page should increment the counter. Opening a new browser (different session) should start at 1.</p>
+  </div>
+
+  <h3>Exercise 2: Login + Logout (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2</div>
+    <p>Build a complete login system:</p>
+    <ul>
+      <li>A <code>LoginServlet</code> that accepts username/password (hardcode one valid user: admin/admin123)</li>
+      <li>On success: create session, store username, redirect to <code>/welcome</code></li>
+      <li>A <code>WelcomeServlet</code> that checks if the user is logged in (session exists). If not, redirect to login.</li>
+      <li>A <code>LogoutServlet</code> that invalidates the session and redirects to login.</li>
+    </ul>
+    <p>Test: login &rarr; see welcome &rarr; logout &rarr; try to visit /welcome directly &rarr; should redirect to login.</p>
+  </div>
+
+  <h3>Exercise 3: Session vs Cookie (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3</div>
+    <p>Create two Servlets:</p>
+    <ul>
+      <li><code>PreferenceServlet</code> &mdash; stores the user's preferred theme ("dark" or "light") in a <strong>persistent cookie</strong> (30 days)</li>
+      <li><code>ProfileServlet</code> &mdash; stores sensitive user info (name, email) in the <strong>HttpSession</strong></li>
+    </ul>
+    <p>Explain in comments: why is theme in a cookie (harmless, persists across browser restarts) and user info in a session (sensitive, server-side only)?</p>
+  </div>
+
+  <h3>Exercise 4: Session Timeout Handling (Medium-Hard)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4</div>
+    <p>Set the session timeout to 1 minute. Build a protected page that:</p>
+    <ul>
+      <li>Shows the user's name and a "Session active" message if logged in</li>
+      <li>Shows "Session expired. Please login again." if the session timed out</li>
+      <li>Displays the session creation time and last accessed time (use <code>session.getCreationTime()</code> and <code>session.getLastAccessedTime()</code>)</li>
+    </ul>
+    <p>Test: login, wait over 1 minute without any activity, refresh &mdash; you should see the expired message.</p>
+  </div>
+
+  <h3>Exercise 5: Secure Login with Session Fixation Prevention (Hard)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5</div>
+    <p>Modify your login system from Exercise 2 to include session fixation prevention:</p>
+    <ol>
+      <li>Before authentication, print the current session ID (if any)</li>
+      <li>After successful authentication, invalidate the old session and create a new one</li>
+      <li>Print the new session ID</li>
+      <li>Verify they're different</li>
+    </ol>
+    <p>Also add the <code>HttpOnly</code> flag to the JSESSIONID cookie. (Hint: configure this in <code>web.xml</code> using <code>&lt;cookie-config&gt;</code>.)</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="mvc-pattern.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">MVC Pattern</span>
+  </a>
+  <a href="filters.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Filters &amp; Listeners</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

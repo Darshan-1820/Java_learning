@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exception Handling | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link active"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What Are Exceptions?                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-are-exceptions">
+  <div class="section-tag">Section 01</div>
+  <h2>What Are Exceptions?</h2>
+  <p class="section-desc">When something goes wrong while your program is running, Java does not just crash silently. It creates an <strong>exception object</strong> that describes exactly what went wrong, where it happened, and why. Your job as a developer is to <strong>handle</strong> these exceptions so the program can recover gracefully instead of dying.</p>
+
+  <h3>Error vs Exception</h3>
+
+  <p>People often use "error" and "exception" interchangeably. In Java, they mean very different things.</p>
+
+  <p>An <strong>Error</strong> is something catastrophic that your program <em>cannot</em> recover from. The JVM itself is in trouble. You ran out of memory. The stack overflowed. A class file is corrupted. There is nothing your code can do about it &mdash; the JVM is dying.</p>
+
+  <p>An <strong>Exception</strong> is something that went wrong during normal operation, but your program <em>can</em> recover from it. A file was not found. A database connection failed. A user entered "abc" when you expected a number. These are situations you can anticipate and handle.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Error</th>
+        <th>Exception</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>JVM-level problem</td>
+        <td>Application-level problem</td>
+      </tr>
+      <tr>
+        <td>Cannot recover</td>
+        <td>Can recover</td>
+      </tr>
+      <tr>
+        <td>OutOfMemoryError, StackOverflowError</td>
+        <td>IOException, SQLException, NullPointerException</td>
+      </tr>
+      <tr>
+        <td>You should NOT catch these</td>
+        <td>You SHOULD catch these</td>
+      </tr>
+      <tr>
+        <td>Extends <code>Error</code></td>
+        <td>Extends <code>Exception</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Fire Alarm System</div>
+    <p>Think of your Java program as a building with a fire alarm system.</p>
+    <p>An <strong>Exception</strong> is like a small fire in the kitchen. The alarm goes off, the sprinklers activate, someone grabs a fire extinguisher, and the situation is handled. The building stays standing. People are safe. Life goes on. That is what <code>try-catch</code> does &mdash; it detects the fire (exception), activates the right response (catch block), and lets the building (program) keep running.</p>
+    <p>An <strong>Error</strong> is like the entire building collapsing from an earthquake. No alarm system can save you. No fire extinguisher helps. The foundation is gone. That is what <code>OutOfMemoryError</code> or <code>StackOverflowError</code> is &mdash; the JVM itself is failing, and no amount of <code>try-catch</code> can fix it.</p>
+  </div>
+
+  <h3>What Happens Without Exception Handling?</h3>
+
+  <p>If you do not catch an exception, Java prints a stack trace to the console and <strong>kills your program</strong>. Every line of code after the exception is skipped. The program just stops.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NoCatch.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class NoCatch {
+    public static void main(String[] args) {
+        System.out.println("Starting program...");
+
+        int result = 10 / 0;  // ArithmeticException!
+
+        // This line NEVER runs
+        System.out.println("Result: " + result);
+        System.out.println("Program finished.");
+    }
+}</code></pre>
+  </div>
+
+  <p><strong>Output:</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Console Output</span></div>
+    <pre><code class="language-java">Starting program...
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+    at NoCatch.main(NoCatch.java:5)</code></pre>
+  </div>
+
+  <p>Notice: "Result: ..." and "Program finished." never print. The program crashed at line 5 and everything after it was abandoned. In a real application like Nimbus, this would mean a user clicks "Book Parcel" and the entire system goes down. That is unacceptable.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Without exception handling, if the database is temporarily down when a user tries to register, the entire Nimbus application would crash. With exception handling, <code>UserDAO</code> catches the <code>SQLException</code>, <code>UserService</code> translates it into a meaningful message, and <code>NimbusApp</code> shows the user "Registration failed. Please try again." &mdash; the system stays alive.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Exception Hierarchy                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="exception-hierarchy">
+  <div class="section-tag">Section 02</div>
+  <h2>Exception Hierarchy</h2>
+  <p class="section-desc">Every exception in Java is an object. They are all connected through a class hierarchy. Understanding this tree is the key to understanding <em>why</em> Java treats different exceptions differently.</p>
+
+  <div class="diagram">
+    <pre>
+                        java.lang.<strong>Object</strong>
+                              |
+                    java.lang.<strong>Throwable</strong>
+                         /            \
+                        /              \
+              java.lang.<strong>Error</strong>     java.lang.<strong>Exception</strong>
+              (DON'T catch)        /                \
+                  |               /                  \
+          StackOverflowError    <strong>RuntimeException</strong>     <em>(Checked Exceptions)</em>
+          OutOfMemoryError      (Unchecked)            IOException
+          VirtualMachineError       |                  SQLException
+                              NullPointerException     FileNotFoundException
+                              ArrayIndexOutOfBounds    ClassNotFoundException
+                              ArithmeticException      ParseException
+                              ClassCastException
+                              NumberFormatException
+                              IllegalArgumentException
+    </pre>
+    <div class="diagram-label">The Java Exception Hierarchy &mdash; everything extends Throwable</div>
+  </div>
+
+  <h3>Breaking Down the Tree</h3>
+
+  <p><strong>Throwable</strong> is the root. Only classes that extend <code>Throwable</code> (directly or indirectly) can be thrown with the <code>throw</code> keyword or caught with <code>catch</code>. You cannot throw a <code>String</code> or an <code>int</code>.</p>
+
+  <p><strong>Error</strong> (left branch) represents JVM-level failures. You should almost never catch these. If the JVM is out of memory, catching it will not give you more memory.</p>
+
+  <p><strong>Exception</strong> (right branch) splits into two sub-branches:</p>
+  <ul>
+    <li><strong>RuntimeException</strong> and its subclasses &mdash; these are <strong>unchecked</strong>. The compiler does NOT force you to catch them. They represent programmer mistakes like accessing a null reference or dividing by zero.</li>
+    <li><strong>Everything else under Exception</strong> (IOException, SQLException, etc.) &mdash; these are <strong>checked</strong>. The compiler FORCES you to either catch them or declare them with <code>throws</code>. They represent external problems that can happen even in perfect code.</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>The rule is simple: if a class extends <code>RuntimeException</code>, it is unchecked. If it extends <code>Exception</code> but NOT <code>RuntimeException</code>, it is checked. If it extends <code>Error</code>, leave it alone.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus has two custom exceptions. <code>DuplicateEmailException</code> extends <code>Exception</code> (checked) because duplicate emails are a foreseeable condition the caller MUST handle. <code>BookingNotFoundException</code> extends <code>RuntimeException</code> (unchecked) because it represents a logic error &mdash; asking for history of a non-existent customer is a programming mistake in the calling code.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: try-catch-finally                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="try-catch-finally">
+  <div class="section-tag">Section 03</div>
+  <h2>try-catch-finally</h2>
+  <p class="section-desc">The <code>try-catch-finally</code> block is Java's mechanism for detecting and handling exceptions. It is the fire alarm + sprinkler + emergency exit &mdash; all in one construct.</p>
+
+  <h3>The Basic Structure</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BasicTryCatch.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">try {
+    // Code that MIGHT throw an exception
+    int result = 10 / 0;
+    System.out.println("This won't print");
+} catch (ArithmeticException e) {
+    // Code that runs ONLY if an ArithmeticException is thrown
+    System.out.println("Cannot divide by zero!");
+    System.out.println("Error: " + e.getMessage());
+} finally {
+    // Code that ALWAYS runs, no matter what
+    System.out.println("Cleanup done.");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">try {</div>
+        <div class="breakdown-explain">Start a "danger zone." Any code inside here might fail. Java is now watching for exceptions.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2-3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int result = 10 / 0;</div>
+        <div class="breakdown-explain">This line throws ArithmeticException. Java immediately STOPS executing the try block. Line 4 is skipped entirely. Java jumps to the catch block.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">catch (ArithmeticException e) {</div>
+        <div class="breakdown-explain">Java checks: "Is the thrown exception an ArithmeticException (or subclass)?" Yes, so this catch block runs. The variable <code>e</code> holds the exception object with details about what went wrong.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">e.getMessage()</div>
+        <div class="breakdown-explain">Returns the error message string. For ArithmeticException with division by zero, this returns "/ by zero".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">finally {</div>
+        <div class="breakdown-explain">This block runs NO MATTER WHAT &mdash; whether the try succeeded, whether catch ran, even if someone called <code>return</code> inside try or catch. It is guaranteed execution.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Flow Step by Step</h3>
+
+  <p>There are three possible scenarios when you use try-catch-finally:</p>
+
+  <h4>Scenario 1: No Exception (happy path)</h4>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">try block<span class="flow-sub">runs completely</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box dark">catch block<span class="flow-sub">SKIPPED</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">finally block<span class="flow-sub">ALWAYS runs</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">code after<span class="flow-sub">continues</span></div>
+    </div>
+  </div>
+
+  <h4>Scenario 2: Exception is caught</h4>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box red">try block<span class="flow-sub">fails at line X</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">catch block<span class="flow-sub">handles it</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">finally block<span class="flow-sub">ALWAYS runs</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">code after<span class="flow-sub">continues</span></div>
+    </div>
+  </div>
+
+  <h4>Scenario 3: Exception is NOT caught (wrong type)</h4>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box red">try block<span class="flow-sub">fails at line X</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box dark">catch block<span class="flow-sub">wrong type, SKIPPED</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">finally block<span class="flow-sub">STILL runs</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">program CRASHES<span class="flow-sub">exception propagates up</span></div>
+    </div>
+  </div>
+
+  <h3>finally ALWAYS Runs</h3>
+
+  <p>This is one of the most important guarantees in Java. The <code>finally</code> block executes no matter what happens &mdash; even if there is a <code>return</code> statement inside the try or catch block.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">FinallyWithReturn.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static String test() {
+    try {
+        System.out.println("In try");
+        return "from try";       // return is queued, but...
+    } catch (Exception e) {
+        System.out.println("In catch");
+        return "from catch";
+    } finally {
+        System.out.println("In finally");  // ...this STILL runs!
+        // If you put a return here, it OVERRIDES the try/catch return
+    }
+}
+
+// Output when called:
+// In try
+// In finally
+// Return value: "from try"</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Warning</div>
+    <p>Never put a <code>return</code> inside a <code>finally</code> block. It will override the return value from <code>try</code> or <code>catch</code>, leading to confusing bugs. The compiler will even warn you about it.</p>
+  </div>
+
+  <h3>What If the catch Block Also Throws?</h3>
+
+  <p>If an exception is thrown inside the <code>catch</code> block, the <code>finally</code> block still runs. After <code>finally</code> completes, the new exception from catch propagates up to the caller.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CatchThrows.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">try {
+    int[] arr = new int[3];
+    arr[10] = 5;  // ArrayIndexOutOfBoundsException
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Caught: " + e.getMessage());
+    String s = null;
+    s.length();   // NullPointerException inside catch!
+} finally {
+    System.out.println("Finally still runs!");  // YES, this prints
+}
+// After finally, the NullPointerException from catch propagates up</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>UserDAO.findByEmail()</code> uses try-catch-finally. The <code>try</code> opens a database connection and runs a query. The <code>catch</code> handles <code>SQLException</code> if the database is down. The <code>finally</code> always closes the connection &mdash; because an unclosed connection leaks resources and eventually crashes the server. (In modern Nimbus code, we use try-with-resources instead, covered in Section 08.)</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Multiple Catch Blocks                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="multiple-catch">
+  <div class="section-tag">Section 04</div>
+  <h2>Multiple Catch Blocks</h2>
+  <p class="section-desc">A single <code>try</code> block can throw different types of exceptions depending on what goes wrong. You can write multiple <code>catch</code> blocks to handle each type differently.</p>
+
+  <h3>Order Matters: Specific First, General Last</h3>
+
+  <p>Java checks catch blocks <strong>top to bottom</strong>. The first matching catch wins. If you put a general exception type (like <code>Exception</code>) before a specific one (like <code>FileNotFoundException</code>), the specific one will <em>never</em> execute &mdash; and the compiler will give you an error.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header good">Correct Order</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">try {
+    // risky code
+} catch (FileNotFoundException e) {
+    // specific handler
+} catch (IOException e) {
+    // broader handler
+} catch (Exception e) {
+    // catch-all
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong Order (won't compile)</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">try {
+    // risky code
+} catch (Exception e) {
+    // catches EVERYTHING
+} catch (IOException e) {
+    // UNREACHABLE! Compiler error
+} catch (FileNotFoundException e) {
+    // UNREACHABLE! Compiler error
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Hospital Triage</div>
+    <p>Think of multiple catch blocks like a hospital emergency room. You want the specialist (specific catch) to see patients first. If a heart attack patient (FileNotFoundException) walks in, they should go to the cardiologist (specific catch), not the general practitioner (Exception). If you put the GP first, they take everyone, and the specialists sit idle. Java prevents this because it is always a bug.</p>
+  </div>
+
+  <h3>Multi-catch with the Pipe Operator</h3>
+
+  <p>If you want to handle two different exception types with the <em>same</em> code, use the pipe <code>|</code> operator (Java 7+). This avoids duplicating your error handling logic.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MultiCatch.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">try {
+    String input = "abc";
+    int number = Integer.parseInt(input);      // NumberFormatException
+    int[] arr = new int[2];
+    arr[5] = number;                           // ArrayIndexOutOfBoundsException
+} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+    // Same handler for both
+    System.out.println("Invalid input or index: " + e.getMessage());
+} catch (Exception e) {
+    // Catch-all for anything else
+    System.out.println("Unexpected error: " + e.getMessage());
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Multi-catch Rule</div>
+    <p>The exception types in a multi-catch cannot have a parent-child relationship. You cannot write <code>catch (IOException | FileNotFoundException e)</code> because <code>FileNotFoundException</code> is a subclass of <code>IOException</code>. Java will give a compiler error &mdash; just use <code>catch (IOException e)</code> instead, which already covers both.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>NimbusApp.java</code> uses multiple catch blocks in its main operation loop. When a user tries to register, the try block can throw <code>DuplicateEmailException</code> (email already exists) or <code>SQLException</code> (database problem). Each gets its own catch block with a different user-facing message &mdash; "Email already registered" vs "System error, please try again."</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Checked vs Unchecked Exceptions                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="checked-unchecked">
+  <div class="section-tag">Section 05</div>
+  <h2>Checked vs Unchecked Exceptions</h2>
+  <p class="section-desc">This is the concept that confuses beginners the most. Why does the compiler force you to catch some exceptions but not others? The answer is about <strong>whose fault it is</strong> and <strong>whether you can prevent it</strong>.</p>
+
+  <h3>Checked Exceptions: Things That Can Go Wrong Despite Perfect Code</h3>
+
+  <p>A checked exception represents a <strong>foreseeable external problem</strong> that can happen even if your code is 100% correct. Your code is perfect, but the file does not exist. Your code is perfect, but the database is down. Your code is perfect, but the network timed out.</p>
+
+  <p>Java says: "I know this can fail. You MUST plan for it. Either catch it or declare that your method throws it." If you do neither, the code <strong>will not compile</strong>.</p>
+
+  <h3>Unchecked Exceptions: Programmer Mistakes</h3>
+
+  <p>An unchecked exception (RuntimeException and its subclasses) represents a <strong>bug in your code</strong>. You accessed a null reference. You went past the array boundary. You divided by zero. These are things you <em>could have prevented</em> with an if-check.</p>
+
+  <p>Java says: "These are your fault. I trust you to write correct code. I won't force you to catch them because the fix is to write better code, not to wrap everything in try-catch."</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Driving Rules</div>
+    <p><strong>Checked exceptions</strong> are like mandatory car insurance. Even if you are a perfect driver, another car can hit you. You MUST have insurance (must handle the exception). The law (compiler) requires it.</p>
+    <p><strong>Unchecked exceptions</strong> are like running a red light. It is YOUR fault. The law does not require you to carry "red light insurance." The fix is to not run red lights (fix your code), not to plan for running them.</p>
+  </div>
+
+  <h3>Common Checked Exceptions</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Exception</th>
+        <th>When It Happens</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>IOException</code></td>
+        <td>File/stream read/write fails</td>
+        <td>Reading a log file that is locked by another process</td>
+      </tr>
+      <tr>
+        <td><code>FileNotFoundException</code></td>
+        <td>File does not exist at specified path</td>
+        <td><code>new FileReader("data.csv")</code> but file is missing</td>
+      </tr>
+      <tr>
+        <td><code>SQLException</code></td>
+        <td>Database operation fails</td>
+        <td>Invalid SQL query, DB server unreachable</td>
+      </tr>
+      <tr>
+        <td><code>ClassNotFoundException</code></td>
+        <td>JVM can't find a class at runtime</td>
+        <td><code>Class.forName("com.mysql.cj.jdbc.Driver")</code> and jar is missing</td>
+      </tr>
+      <tr>
+        <td><code>ParseException</code></td>
+        <td>Parsing a string into a date/number fails</td>
+        <td><code>SimpleDateFormat.parse("not-a-date")</code></td>
+      </tr>
+      <tr>
+        <td><code>InterruptedException</code></td>
+        <td>A sleeping/waiting thread is interrupted</td>
+        <td><code>Thread.sleep(1000)</code> and another thread interrupts it</td>
+      </tr>
+      <tr>
+        <td><code>MalformedURLException</code></td>
+        <td>URL string is not valid</td>
+        <td><code>new URL("not a url")</code></td>
+      </tr>
+      <tr>
+        <td><code>CloneNotSupportedException</code></td>
+        <td>Object.clone() called on class that doesn't implement Cloneable</td>
+        <td>Calling <code>clone()</code> without implementing the interface</td>
+      </tr>
+      <tr>
+        <td><code>InstantiationException</code></td>
+        <td>Trying to create instance of abstract class via reflection</td>
+        <td><code>AbstractClass.class.newInstance()</code></td>
+      </tr>
+      <tr>
+        <td><code>NoSuchMethodException</code></td>
+        <td>Reflection can't find a method</td>
+        <td><code>clazz.getMethod("nonExistent")</code></td>
+      </tr>
+      <tr>
+        <td><code>InvocationTargetException</code></td>
+        <td>Method invoked via reflection threw an exception</td>
+        <td>Reflective method call fails internally</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Common Unchecked Exceptions (RuntimeException)</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Exception</th>
+        <th>When It Happens</th>
+        <th>How to Prevent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>NullPointerException</code></td>
+        <td>Calling a method on <code>null</code></td>
+        <td>Check <code>if (obj != null)</code> before using</td>
+      </tr>
+      <tr>
+        <td><code>ArrayIndexOutOfBoundsException</code></td>
+        <td>Array index &lt; 0 or &gt;= length</td>
+        <td>Check <code>if (i &gt;= 0 &amp;&amp; i &lt; arr.length)</code></td>
+      </tr>
+      <tr>
+        <td><code>StringIndexOutOfBoundsException</code></td>
+        <td>String index out of range</td>
+        <td>Check <code>if (i &lt; str.length())</code></td>
+      </tr>
+      <tr>
+        <td><code>ArithmeticException</code></td>
+        <td>Division by zero (integer)</td>
+        <td>Check <code>if (divisor != 0)</code></td>
+      </tr>
+      <tr>
+        <td><code>NumberFormatException</code></td>
+        <td><code>Integer.parseInt("abc")</code></td>
+        <td>Validate input before parsing</td>
+      </tr>
+      <tr>
+        <td><code>ClassCastException</code></td>
+        <td>Invalid type cast</td>
+        <td>Use <code>instanceof</code> before casting</td>
+      </tr>
+      <tr>
+        <td><code>IllegalArgumentException</code></td>
+        <td>Method receives invalid argument</td>
+        <td>Validate arguments at method start</td>
+      </tr>
+      <tr>
+        <td><code>IllegalStateException</code></td>
+        <td>Method called at wrong time</td>
+        <td>Check object state before calling</td>
+      </tr>
+      <tr>
+        <td><code>UnsupportedOperationException</code></td>
+        <td>Operation not supported (e.g., unmodifiable list)</td>
+        <td>Check list type before modifying</td>
+      </tr>
+      <tr>
+        <td><code>ConcurrentModificationException</code></td>
+        <td>Modifying a collection while iterating</td>
+        <td>Use Iterator.remove() or CopyOnWriteArrayList</td>
+      </tr>
+      <tr>
+        <td><code>StackOverflowError</code></td>
+        <td>Infinite recursion (technically an Error, not Exception)</td>
+        <td>Add base case to recursive methods</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>SQLException</code> is checked &mdash; so every method in <code>UserDAO</code> and <code>BookingDAO</code> that runs database queries MUST handle it. The compiler won't let you write <code>connection.prepareStatement(sql)</code> without either a try-catch or a <code>throws SQLException</code> declaration. This is Java protecting you: database calls are inherently unreliable, and you MUST have a plan for when they fail.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: throw vs throws                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="throw-throws">
+  <div class="section-tag">Section 06</div>
+  <h2>throw vs throws</h2>
+  <p class="section-desc">Two keywords that look almost identical but do completely different things. <code>throw</code> creates and fires an exception. <code>throws</code> is a warning label on a method.</p>
+
+  <h3>throw &mdash; Creating and Firing an Exception</h3>
+
+  <p>The <code>throw</code> keyword creates a new exception object and immediately stops the current method. Control is handed to the nearest matching catch block, or if there is none, the program crashes.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ThrowExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public void setAge(int age) {
+    if (age &lt; 0) {
+        throw new IllegalArgumentException("Age cannot be negative: " + age);
+        // Code after throw NEVER executes
+    }
+    if (age &gt; 150) {
+        throw new IllegalArgumentException("Age cannot exceed 150: " + age);
+    }
+    this.age = age;
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">throw new IllegalArgumentException("Age cannot be negative: " + age);</div>
+        <div class="breakdown-explain"><code>throw</code> is the verb &mdash; it is an action. <code>new IllegalArgumentException(...)</code> creates the exception object. Together, this line fires the exception. The method stops immediately. The string message explains what went wrong.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">// Code after throw NEVER executes</div>
+        <div class="breakdown-explain">Any code after a <code>throw</code> statement is unreachable. The compiler knows this &mdash; if you write code directly after <code>throw</code> (not in another branch), it will give you an "unreachable statement" error.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>throws &mdash; Declaring That a Method Might Fail</h3>
+
+  <p>The <code>throws</code> keyword goes in the method signature. It is a warning label that says "this method might throw this exception, and I am NOT handling it here &mdash; YOU (the caller) must handle it."</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ThrowsExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// throws goes in the method SIGNATURE (declaration)
+public User findByEmail(String email) throws SQLException {
+    Connection conn = DriverManager.getConnection(DB_URL);
+    PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+    ps.setString(1, email);
+    ResultSet rs = ps.executeQuery();
+    // ... build User object
+    return user;
+}
+
+// Now the CALLER must handle it:
+public void registerUser(String email) {
+    try {
+        User existing = findByEmail(email);   // must be in try-catch
+    } catch (SQLException e) {
+        System.out.println("Database error: " + e.getMessage());
+    }
+}</code></pre>
+  </div>
+
+  <h3>Side-by-Side Comparison</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th><code>throw</code></th>
+        <th><code>throws</code></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>What it does</td>
+        <td>Creates and fires an exception NOW</td>
+        <td>Declares that a method MIGHT throw later</td>
+      </tr>
+      <tr>
+        <td>Where it goes</td>
+        <td>Inside a method body</td>
+        <td>In the method signature</td>
+      </tr>
+      <tr>
+        <td>How many?</td>
+        <td>Throws one exception at a time</td>
+        <td>Can declare multiple: <code>throws A, B, C</code></td>
+      </tr>
+      <tr>
+        <td>Followed by</td>
+        <td>An exception object: <code>throw new X()</code></td>
+        <td>Exception class names: <code>throws X, Y</code></td>
+      </tr>
+      <tr>
+        <td>Required?</td>
+        <td>Only when you want to signal an error</td>
+        <td>Required for checked exceptions not caught locally</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Using Both Together</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BothTogether.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// throws in signature: "I might throw DuplicateEmailException"
+// throw in body: "I AM throwing DuplicateEmailException right now"
+public void registerUser(String name, String email)
+        throws DuplicateEmailException {          // &lt;-- throws (declaration)
+
+    User existing = userDAO.findByEmail(email);
+    if (existing != null) {
+        throw new DuplicateEmailException(email); // &lt;-- throw (action)
+    }
+    userDAO.save(new User(name, email));
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>UserService.registerUser()</code> both <code>throws</code> and <code>throw</code>s. The method signature declares <code>throws DuplicateEmailException</code> to warn callers. Inside, it uses <code>throw new DuplicateEmailException(email)</code> to actually fire the exception when a duplicate is found. Then in <code>NimbusApp.java</code>, the caller catches it: <code>catch (DuplicateEmailException e) { System.out.println(e.getMessage()); }</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Custom Exceptions                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="custom-exceptions">
+  <div class="section-tag">Section 07</div>
+  <h2>Custom Exceptions</h2>
+  <p class="section-desc">Java comes with dozens of built-in exceptions, but sometimes none of them describe your specific business problem. That is when you create your own exception class. It is just a class that extends <code>Exception</code> or <code>RuntimeException</code>.</p>
+
+  <h3>Checked Custom Exception: DuplicateEmailException</h3>
+
+  <p>This exception is <strong>checked</strong> (extends <code>Exception</code>) because a duplicate email is a foreseeable business condition. The caller MUST handle it &mdash; either show the user a message or try a different email.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DuplicateEmailException.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+public class DuplicateEmailException extends Exception {
+
+    private final String email;
+
+    public DuplicateEmailException(String email) {
+        super("Email already registered: " + email);
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extends Exception</div>
+        <div class="breakdown-explain">This makes it a <strong>checked</strong> exception. Any method that throws this MUST declare it in the signature, and any caller MUST handle it. Java forces this at compile time.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private final String email;</div>
+        <div class="breakdown-explain">Custom exceptions can carry extra data. Here we store the duplicate email so the caller can use it &mdash; maybe to pre-fill a "login instead?" form.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">super("Email already registered: " + email);</div>
+        <div class="breakdown-explain">Calls the parent <code>Exception</code> constructor with a descriptive message. This message is what <code>e.getMessage()</code> returns when the exception is caught.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public String getEmail()</div>
+        <div class="breakdown-explain">Getter for the extra data. The catch block can call <code>e.getEmail()</code> to get the specific email that was duplicated.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Unchecked Custom Exception: BookingNotFoundException</h3>
+
+  <p>This exception is <strong>unchecked</strong> (extends <code>RuntimeException</code>) because looking up bookings for a non-existent customer is a programming mistake in the calling code. The caller should have verified the customer exists first.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingNotFoundException.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+public class BookingNotFoundException extends RuntimeException {
+
+    private final String bookingId;
+
+    public BookingNotFoundException(String bookingId) {
+        super("No booking found with ID: " + bookingId);
+        this.bookingId = bookingId;
+    }
+
+    public BookingNotFoundException(String bookingId, Throwable cause) {
+        super("No booking found with ID: " + bookingId, cause);
+        this.bookingId = bookingId;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extends RuntimeException</div>
+        <div class="breakdown-explain">This makes it <strong>unchecked</strong>. Callers are NOT forced to catch it. The compiler won't complain. But if it is thrown and not caught, the program still crashes.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public BookingNotFoundException(String bookingId, Throwable cause)</div>
+        <div class="breakdown-explain">This is the "chaining" constructor. It takes the original exception (cause) so you don't lose the original error. For example, if a <code>SQLException</code> caused this failure, you can pass it as the cause and the full stack trace is preserved.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>When to Use Which?</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Extend</th>
+        <th>Reasoning</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Duplicate email at registration</td>
+        <td><code>Exception</code> (checked)</td>
+        <td>Foreseeable business condition. Caller MUST handle it &mdash; show user a message.</td>
+      </tr>
+      <tr>
+        <td>Booking ID not found</td>
+        <td><code>RuntimeException</code> (unchecked)</td>
+        <td>Programming error. Caller should have validated the ID first.</td>
+      </tr>
+      <tr>
+        <td>Invalid parcel weight (negative)</td>
+        <td><code>RuntimeException</code> (unchecked)</td>
+        <td>Validation bug. The UI should prevent negative weight.</td>
+      </tr>
+      <tr>
+        <td>Payment gateway timeout</td>
+        <td><code>Exception</code> (checked)</td>
+        <td>External service failure. Can happen anytime. Must have retry/fallback logic.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>UserService</code> throws <code>DuplicateEmailException</code> when a user tries to register with an email that already exists. Because it is checked, <code>NimbusApp.java</code> is FORCED to have a catch block for it. <code>CustomerHistoryService</code> throws <code>BookingNotFoundException</code> when no bookings are found. Because it is unchecked, the caller CAN choose to catch it (and NimbusApp does), but the compiler does not force it.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: try-with-resources                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="try-with-resources">
+  <div class="section-tag">Section 08</div>
+  <h2>try-with-resources</h2>
+  <p class="section-desc">Before Java 7, closing resources (database connections, file streams, etc.) was painful. You had to write ugly <code>finally</code> blocks with null checks. <code>try-with-resources</code> fixes all of this &mdash; resources are automatically closed when the block ends.</p>
+
+  <h3>The Problem: Manual Resource Cleanup</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ManualCleanup.java (the old, ugly way)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Connection conn = null;
+PreparedStatement ps = null;
+ResultSet rs = null;
+
+try {
+    conn = DriverManager.getConnection(DB_URL);
+    ps = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+    ps.setString(1, email);
+    rs = ps.executeQuery();
+    // ... process results
+} catch (SQLException e) {
+    System.out.println("DB error: " + e.getMessage());
+} finally {
+    // Three separate null checks and close calls. Ugly!
+    try { if (rs != null) rs.close(); } catch (SQLException e) { /* ignore */ }
+    try { if (ps != null) ps.close(); } catch (SQLException e) { /* ignore */ }
+    try { if (conn != null) conn.close(); } catch (SQLException e) { /* ignore */ }
+}</code></pre>
+  </div>
+
+  <p>That <code>finally</code> block is 3 lines of boilerplate just to close resources. And each close() can itself throw an exception, so you need try-catch inside try-catch. It is a mess.</p>
+
+  <h3>The Solution: try-with-resources</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AutoCleanup.java (the modern way)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">try (
+    Connection conn = DriverManager.getConnection(DB_URL);
+    PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+) {
+    ps.setString(1, email);
+    ResultSet rs = ps.executeQuery();
+    // ... process results
+} catch (SQLException e) {
+    System.out.println("DB error: " + e.getMessage());
+}
+// conn, ps, and rs are ALL automatically closed here!
+// No finally block needed. No null checks. No nested try-catch.</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">try (Connection conn = ...; PreparedStatement ps = ...) {</div>
+        <div class="breakdown-explain">Resources declared inside the parentheses <code>( )</code> after <code>try</code> are auto-closed. They must implement <code>AutoCloseable</code> (which Connection, PreparedStatement, and ResultSet all do). Java calls <code>.close()</code> on each one in <strong>reverse order</strong> when the block ends.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">// No finally block needed</div>
+        <div class="breakdown-explain">Java generates the cleanup code for you. It handles null checks, exception suppression, and reverse-order closing &mdash; all invisibly. Your code stays clean and focused on business logic.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>How It Works Behind the Scenes</h3>
+
+  <p>Any class that implements the <code>AutoCloseable</code> interface (which has a single method: <code>close()</code>) can be used in a try-with-resources block. When the block ends &mdash; whether normally or via exception &mdash; Java calls <code>close()</code> on each resource in reverse declaration order.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Declare resources<span class="flow-sub">in try( )</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Execute try body<span class="flow-sub">use the resources</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Auto-close ALL<span class="flow-sub">reverse order, guaranteed</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Run catch (if any)<span class="flow-sub">after resources closed</span></div>
+    </div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Hotel Checkout</div>
+    <p>Think of try-with-resources like a hotel that auto-checks you out. With the old way (<code>finally</code>), you had to remember to return the key, close the minibar tab, and check out at reception &mdash; and if you forgot any step, the hotel (JVM) loses resources. With try-with-resources, the hotel automatically handles checkout when you leave your room. You can't forget because you don't have to do it manually.</p>
+  </div>
+
+  <h3>File I/O Example</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ReadFile.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">try (BufferedReader reader = new BufferedReader(new FileReader("parcels.txt"))) {
+    String line;
+    while ((line = reader.readLine()) != null) {
+        System.out.println(line);
+    }
+} catch (FileNotFoundException e) {
+    System.out.println("File not found: parcels.txt");
+} catch (IOException e) {
+    System.out.println("Error reading file: " + e.getMessage());
+}
+// reader is automatically closed here, even if an exception was thrown</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every method in <code>UserDAO</code> and <code>BookingDAO</code> uses try-with-resources for <code>Connection</code>, <code>PreparedStatement</code>, and <code>ResultSet</code>. This ensures database connections are ALWAYS returned to the connection pool, even when exceptions occur. Without this, a busy system would run out of connections and grind to a halt.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Exception Best Practices                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="best-practices">
+  <div class="section-tag">Section 09</div>
+  <h2>Exception Best Practices</h2>
+  <p class="section-desc">Knowing the syntax of try-catch is easy. Using it <em>well</em> separates beginners from professionals. These are the rules every experienced Java developer follows.</p>
+
+  <h3>1. Never Catch <code>Exception</code> or <code>Throwable</code> (Unless You Are at the Top)</h3>
+
+  <p>Catching <code>Exception</code> means you catch <em>everything</em> &mdash; including runtime bugs like <code>NullPointerException</code> that you should fix, not hide. Only catch the specific exception you know how to handle.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Bad</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">try {
+    registerUser(name, email);
+} catch (Exception e) {
+    // Which exception? NPE? SQL?
+    // DuplicateEmail? Who knows!
+    System.out.println("Error");
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Good</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">try {
+    registerUser(name, email);
+} catch (DuplicateEmailException e) {
+    System.out.println(e.getMessage());
+} catch (SQLException e) {
+    logger.error("DB failed", e);
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <p><strong>Exception:</strong> At the very top level of your application (like <code>main()</code> in <code>NimbusApp.java</code>), a broad <code>catch (Exception e)</code> is acceptable as a last-resort safety net to prevent complete crashes.</p>
+
+  <h3>2. Never Swallow Exceptions</h3>
+
+  <p>An empty catch block is the worst thing you can do. The exception happened, but you threw away all evidence. When something breaks later, you have zero clues why.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Terrible (swallowed)</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">try {
+    conn = getConnection();
+} catch (SQLException e) {
+    // silently ignore
+}
+// conn is null here. NullPointerException
+// incoming, and you won't know why.</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Good (logged)</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">try {
+    conn = getConnection();
+} catch (SQLException e) {
+    logger.error("Failed to connect "
+      + "to database", e);
+    throw new ServiceException(
+      "Registration unavailable", e);
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>3. Log Meaningful Messages</h3>
+
+  <p>When logging an exception, include WHAT was being attempted, the input values (if safe to log), and the full exception (not just the message).</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Useless log</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">catch (SQLException e) {
+    logger.error("Error occurred");
+    // Which error? Where? What input?
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Useful log</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">catch (SQLException e) {
+    logger.error("Failed to find user "
+      + "by email: " + email, e);
+    // Logs the full stack trace too
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>4. Do Not Use Exceptions for Flow Control</h3>
+
+  <p>Exceptions are for <em>exceptional</em> situations. Do not use them as glorified if-else statements. They are expensive (creating the stack trace takes time) and make code hard to follow.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Exception as flow control</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">// Using exception to check if
+// a number is valid
+try {
+    int n = Integer.parseInt(input);
+    processNumber(n);
+} catch (NumberFormatException e) {
+    askForInputAgain();
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Validate first</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">// Check BEFORE attempting
+if (input.matches("-?\\d+")) {
+    int n = Integer.parseInt(input);
+    processNumber(n);
+} else {
+    askForInputAgain();
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>5. Catch Late, Throw Early</h3>
+
+  <p>Throw the exception as soon as you detect the problem (throw early). Let it propagate up until it reaches a layer that knows how to handle it meaningfully (catch late). Do not catch an exception in the DAO if only the UI knows what message to show the user.</p>
+
+  <h3>6. Always Close Resources (use try-with-resources)</h3>
+
+  <p>Never leave a <code>Connection</code>, <code>InputStream</code>, or <code>OutputStream</code> unclosed. Use try-with-resources (Section 08) for everything that implements <code>AutoCloseable</code>.</p>
+
+  <h3>7. Preserve the Original Exception (Exception Chaining)</h3>
+
+  <p>When you catch one exception and throw a different one, pass the original as the <code>cause</code>. This preserves the full chain of what went wrong.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ExceptionChaining.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD: original exception lost
+catch (SQLException e) {
+    throw new ServiceException("Registration failed");  // WHERE did SQL fail? Lost forever.
+}
+
+// GOOD: original exception preserved
+catch (SQLException e) {
+    throw new ServiceException("Registration failed", e);  // Pass 'e' as cause
+    // Now the stack trace shows both ServiceException AND the original SQLException
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus follows these practices across all layers. <code>UserDAO</code> catches <code>SQLException</code> and either logs it and re-throws, or wraps it in a custom exception while preserving the cause. <code>NimbusApp.java</code> (the top-level UI) catches specific exceptions and shows user-friendly messages &mdash; never raw stack traces. Resources (Connection, PreparedStatement) always use try-with-resources.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Common Exceptions Every Beginner Hits              -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-exceptions">
+  <div class="section-tag">Section 10</div>
+  <h2>Common Exceptions Every Beginner Hits</h2>
+  <p class="section-desc">These are the exceptions you WILL see in your first month of Java. Every single beginner encounters them. Knowing what causes each one and how to fix it will save you hours of debugging.</p>
+
+  <h3>NullPointerException (NPE)</h3>
+
+  <p><strong>The #1 most common exception in all of Java.</strong> It means you tried to use an object reference that points to <code>null</code> &mdash; nothing is there.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NPE.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String name = null;
+int length = name.length();  // NullPointerException!
+// You called .length() on null. There is no String object to ask.
+
+// FIX: Check before using
+if (name != null) {
+    int length = name.length();
+}</code></pre>
+  </div>
+
+  <p><strong>Common causes:</strong> method returns null and you don't check, uninitialized object fields, getting null from a Map/List, calling methods on the result of another method that returned null.</p>
+
+  <h3>ArrayIndexOutOfBoundsException</h3>
+
+  <p>You tried to access an array element at an index that does not exist. Arrays are 0-indexed, so an array of size 5 has valid indices 0-4.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ArrayOutOfBounds.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] scores = {90, 85, 78};        // indices 0, 1, 2
+System.out.println(scores[3]);       // ArrayIndexOutOfBoundsException!
+System.out.println(scores[-1]);      // Also ArrayIndexOutOfBoundsException!
+
+// FIX: Always check bounds
+for (int i = 0; i &lt; scores.length; i++) {
+    System.out.println(scores[i]);   // safe
+}</code></pre>
+  </div>
+
+  <h3>ClassCastException</h3>
+
+  <p>You tried to cast an object to a type it is not. Java checked at runtime and said no.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ClassCast.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Object obj = "Hello";
+Integer num = (Integer) obj;  // ClassCastException! String is not Integer.
+
+// FIX: Use instanceof before casting
+if (obj instanceof Integer) {
+    Integer num = (Integer) obj;
+}</code></pre>
+  </div>
+
+  <h3>NumberFormatException</h3>
+
+  <p>You tried to parse a string into a number, but the string is not a valid number.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NumberFormat.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String input = "12.5kg";
+int weight = Integer.parseInt(input);  // NumberFormatException!
+
+// FIX: Validate or use try-catch
+try {
+    int weight = Integer.parseInt(input.replaceAll("[^0-9]", ""));
+} catch (NumberFormatException e) {
+    System.out.println("Please enter a valid number.");
+}</code></pre>
+  </div>
+
+  <h3>StackOverflowError</h3>
+
+  <p>A method calls itself recursively without a proper base case, creating an infinite loop of method calls until the stack memory runs out. Technically an <code>Error</code>, not an <code>Exception</code>, but every beginner sees it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StackOverflow.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Infinite recursion — no base case!
+public int factorial(int n) {
+    return n * factorial(n - 1);  // Never stops calling itself
+}
+
+// FIX: Add a base case
+public int factorial(int n) {
+    if (n &lt;= 1) return 1;        // Base case — stops recursion
+    return n * factorial(n - 1);
+}</code></pre>
+  </div>
+
+  <h3>Quick Reference: What Causes Each</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Exception</th>
+        <th>Cause</th>
+        <th>One-line Fix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>NullPointerException</code></td>
+        <td>Calling method on <code>null</code></td>
+        <td>Check <code>if (x != null)</code> before use</td>
+      </tr>
+      <tr>
+        <td><code>ArrayIndexOutOfBoundsException</code></td>
+        <td>Index &lt; 0 or &gt;= array.length</td>
+        <td>Use <code>for (i &lt; arr.length)</code></td>
+      </tr>
+      <tr>
+        <td><code>ClassCastException</code></td>
+        <td>Invalid type cast</td>
+        <td>Check with <code>instanceof</code> first</td>
+      </tr>
+      <tr>
+        <td><code>NumberFormatException</code></td>
+        <td>Non-numeric string parsed</td>
+        <td>Validate input or catch the exception</td>
+      </tr>
+      <tr>
+        <td><code>StackOverflowError</code></td>
+        <td>Infinite recursion</td>
+        <td>Add a base case</td>
+      </tr>
+      <tr>
+        <td><code>ArithmeticException</code></td>
+        <td>Integer division by zero</td>
+        <td>Check <code>if (divisor != 0)</code></td>
+      </tr>
+      <tr>
+        <td><code>StringIndexOutOfBoundsException</code></td>
+        <td>charAt/substring with bad index</td>
+        <td>Check <code>if (i &lt; str.length())</code></td>
+      </tr>
+      <tr>
+        <td><code>ConcurrentModificationException</code></td>
+        <td>Modifying collection during for-each</td>
+        <td>Use <code>Iterator.remove()</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Full Nimbus Examples (DAO → Service → App)        -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-full-example">
+  <div class="section-tag">Section 11</div>
+  <h2>Full Nimbus Exception Flow</h2>
+  <p class="section-desc">This section shows how exceptions flow through all three layers of Nimbus: from the database (DAO), through business logic (Service), to the user interface (App). This is how real applications handle errors.</p>
+
+  <h3>Layer Architecture</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box cyan">NimbusApp.java<span class="flow-sub">UI Layer &mdash; catches &amp; shows messages</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">UserService.java<span class="flow-sub">Business Logic &mdash; validates &amp; throws</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">UserDAO.java<span class="flow-sub">Database Layer &mdash; catches SQLException</span></div>
+    </div>
+  </div>
+
+  <h3>DAO Layer: UserDAO</h3>
+
+  <p>The DAO layer talks to the database. It catches <code>SQLException</code> and either handles it or re-throws it wrapped in a custom exception.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.User;
+import java.sql.*;
+
+public class UserDAO {
+
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/nimbus";
+
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        // try-with-resources: Connection and PreparedStatement auto-close
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, "root", "password");
+            PreparedStatement ps = conn.prepareStatement(sql);
+        ) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            // Log the full error for developers
+            System.err.println("DB error in findByEmail for: " + email);
+            e.printStackTrace();
+            // Return null to indicate "not found" vs throwing
+        }
+        return null;
+    }
+
+    public boolean save(User user) {
+        String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
+
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, "root", "password");
+            PreparedStatement ps = conn.prepareStatement(sql);
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            System.err.println("DB error saving user: " + user.getEmail());
+            e.printStackTrace();
+            return false;
+        }
+    }
+}</code></pre>
+  </div>
+
+  <h3>Service Layer: UserService</h3>
+
+  <p>The service layer contains business logic. It uses the DAO and throws custom exceptions for business rule violations.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.UserDAO;
+import com.nimbus.exception.DuplicateEmailException;
+import com.nimbus.model.User;
+
+public class UserService {
+
+    private final UserDAO userDAO = new UserDAO();
+
+    // throws DuplicateEmailException — forces caller to handle it
+    public User registerUser(String name, String email)
+            throws DuplicateEmailException {
+
+        // Business rule: email must be unique
+        User existing = userDAO.findByEmail(email);
+        if (existing != null) {
+            // throw — fires the exception NOW
+            throw new DuplicateEmailException(email);
+        }
+
+        // Business rule: name must not be empty
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+
+        User newUser = new User(name, email);
+        boolean saved = userDAO.save(newUser);
+
+        if (!saved) {
+            throw new RuntimeException("Failed to save user — database error");
+        }
+
+        return newUser;
+    }
+}</code></pre>
+  </div>
+
+  <h3>App Layer: NimbusApp (UI)</h3>
+
+  <p>The top-level application catches all exceptions and translates them into user-friendly messages. The user never sees a stack trace.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusApp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.app;
+
+import com.nimbus.exception.DuplicateEmailException;
+import com.nimbus.exception.BookingNotFoundException;
+import com.nimbus.service.UserService;
+import com.nimbus.service.CustomerHistoryService;
+import java.util.Scanner;
+
+public class NimbusApp {
+
+    private final UserService userService = new UserService();
+    private final CustomerHistoryService historyService = new CustomerHistoryService();
+
+    public void handleRegistration() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+
+        try {
+            userService.registerUser(name, email);
+            System.out.println("Registration successful!");
+
+        } catch (DuplicateEmailException e) {
+            // Specific: email already exists
+            System.out.println("This email is already registered: " + e.getEmail());
+            System.out.println("Please use a different email or login instead.");
+
+        } catch (IllegalArgumentException e) {
+            // Specific: invalid input
+            System.out.println("Invalid input: " + e.getMessage());
+
+        } catch (RuntimeException e) {
+            // Broad catch for unexpected errors
+            System.out.println("Something went wrong. Please try again later.");
+            System.err.println("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    public void handleViewHistory(String customerId) {
+        try {
+            historyService.getHistory(customerId);
+
+        } catch (BookingNotFoundException e) {
+            System.out.println("No bookings found for customer: " + e.getBookingId());
+            System.out.println("Have you made any bookings yet?");
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Exception flow: User registers with duplicate email</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">NimbusApp calls userService.registerUser("John", "john@email.com")</div>
+        <div class="breakdown-explain">The app layer calls the service layer. It has a try-catch ready.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">UserService calls userDAO.findByEmail("john@email.com")</div>
+        <div class="breakdown-explain">The service layer checks if the email already exists by querying the database through the DAO.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">UserDAO runs SQL query &rarr; finds existing user &rarr; returns User object</div>
+        <div class="breakdown-explain">The DAO uses try-with-resources for the Connection. The query succeeds, finds a match, and returns the User.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">UserService: existing != null &rarr; throw new DuplicateEmailException("john@email.com")</div>
+        <div class="breakdown-explain">The service detects the business rule violation and fires the exception. The service method STOPS here. The <code>userDAO.save()</code> line never runs.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">NimbusApp: catch (DuplicateEmailException e) runs</div>
+        <div class="breakdown-explain">The exception propagates up from Service to App. The matching catch block runs and prints a friendly message: "This email is already registered."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Program continues normally</div>
+        <div class="breakdown-explain">The exception was handled. The program does NOT crash. It can ask for a different email or show a menu.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">The Pattern</div>
+    <p><strong>DAO</strong> catches database exceptions (SQLException) and handles resource cleanup. <strong>Service</strong> throws business exceptions (DuplicateEmailException) when rules are violated. <strong>App</strong> catches everything and translates it to user-friendly messages. Each layer has a specific responsibility in the exception chain.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 12</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Test your understanding. For each exercise, think through the answer before revealing it. If you get it wrong, re-read the relevant section.</p>
+
+  <h3>Exercise 1: What Will This Print?</h3>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Exercise1.java</span></div>
+    <pre><code class="language-java">public static void main(String[] args) {
+    try {
+        System.out.println("A");
+        int x = 10 / 0;
+        System.out.println("B");
+    } catch (ArithmeticException e) {
+        System.out.println("C");
+    } finally {
+        System.out.println("D");
+    }
+    System.out.println("E");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Output: A C D E</div>
+        <div class="breakdown-explain">"A" prints. Then 10/0 throws ArithmeticException &mdash; "B" is skipped. Catch runs, prints "C". Finally always runs, prints "D". Exception was handled, so code after try-catch continues, prints "E".</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 2: What Will This Print?</h3>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Exercise2.java</span></div>
+    <pre><code class="language-java">public static void main(String[] args) {
+    try {
+        System.out.println("A");
+        String s = null;
+        s.length();
+        System.out.println("B");
+    } catch (ArithmeticException e) {
+        System.out.println("C");
+    } finally {
+        System.out.println("D");
+    }
+    System.out.println("E");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Output: A D &rarr; then program CRASHES with NullPointerException</div>
+        <div class="breakdown-explain">"A" prints. <code>s.length()</code> throws NullPointerException. The catch block only catches ArithmeticException &mdash; wrong type, so it is SKIPPED. Finally still runs, prints "D". Then the NullPointerException propagates up uncaught and the program crashes. "E" never prints.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 3: What Will This Return?</h3>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Exercise3.java</span></div>
+    <pre><code class="language-java">public static int mystery() {
+    try {
+        return 1;
+    } catch (Exception e) {
+        return 2;
+    } finally {
+        return 3;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Returns: 3</div>
+        <div class="breakdown-explain">The try block queues <code>return 1</code>. No exception, so catch is skipped. But finally ALWAYS runs, and its <code>return 3</code> overrides the queued return. This is why you should NEVER put a return in a finally block &mdash; it causes exactly this kind of confusing behavior.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 4: Will This Compile?</h3>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Exercise4.java</span></div>
+    <pre><code class="language-java">public void readFile() {
+    BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
+    String line = reader.readLine();
+    System.out.println(line);
+    reader.close();
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">No, it will NOT compile.</div>
+        <div class="breakdown-explain"><code>FileReader</code> throws <code>FileNotFoundException</code> (checked) and <code>readLine()</code> throws <code>IOException</code> (checked). Since these are checked exceptions, the compiler forces you to either wrap them in try-catch or add <code>throws IOException</code> to the method signature. The fix is to use try-with-resources.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 5: Find the Bug</h3>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Exercise5.java</span></div>
+    <pre><code class="language-java">try {
+    Connection conn = DriverManager.getConnection(DB_URL);
+    PreparedStatement ps = conn.prepareStatement("SELECT * FROM users");
+    ResultSet rs = ps.executeQuery();
+    while (rs.next()) {
+        System.out.println(rs.getString("name"));
+    }
+} catch (SQLException e) {
+    System.out.println("Database error");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Bug: Resources are never closed.</div>
+        <div class="breakdown-explain"><code>Connection</code>, <code>PreparedStatement</code>, and <code>ResultSet</code> are opened but never closed. If an exception occurs (or even if it doesn't), these resources leak. Fix: use try-with-resources: <code>try (Connection conn = ...; PreparedStatement ps = ...) { ... }</code></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 6: Find the Bug</h3>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Exercise6.java</span></div>
+    <pre><code class="language-java">try {
+    processPayment(order);
+} catch (Exception e) {
+    // handle all errors
+} catch (PaymentTimeoutException e) {
+    retryPayment(order);
+} catch (InsufficientFundsException e) {
+    notifyUser("Not enough balance");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Bug: Won't compile. Catch order is wrong.</div>
+        <div class="breakdown-explain"><code>catch (Exception e)</code> is the broadest type and catches everything. The two catches after it are unreachable &mdash; they can never run because Exception already caught everything. Fix: put specific exceptions first (PaymentTimeoutException, InsufficientFundsException), then the broad Exception last.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 7: Write It Yourself</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Challenge</div>
+    <p>Create a custom checked exception called <code>InvalidTrackingNumberException</code> for the Nimbus parcel system. It should:</p>
+    <ul>
+      <li>Store the invalid tracking number</li>
+      <li>Have a meaningful message</li>
+      <li>Have a getter for the tracking number</li>
+    </ul>
+    <p>Then write a method <code>trackParcel(String trackingNumber)</code> that throws this exception if the tracking number is less than 10 characters long.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class InvalidTrackingNumberException extends Exception { ... }</div>
+        <div class="breakdown-explain"><pre style="color: var(--text-secondary); font-size: 0.78rem; background: none;">public class InvalidTrackingNumberException extends Exception {
+    private final String trackingNumber;
+
+    public InvalidTrackingNumberException(String trackingNumber) {
+        super("Invalid tracking number: " + trackingNumber
+            + " (must be at least 10 characters)");
+        this.trackingNumber = trackingNumber;
+    }
+
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+}
+
+// Usage:
+public Parcel trackParcel(String trackingNumber)
+        throws InvalidTrackingNumberException {
+    if (trackingNumber == null || trackingNumber.length() &lt; 10) {
+        throw new InvalidTrackingNumberException(trackingNumber);
+    }
+    return parcelDAO.findByTracking(trackingNumber);
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 8: What Will This Print?</h3>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Exercise8.java</span></div>
+    <pre><code class="language-java">public static void main(String[] args) {
+    System.out.println("Start");
+    try {
+        System.out.println("Try 1");
+        try {
+            System.out.println("Try 2");
+            int[] a = new int[2];
+            a[5] = 10;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Inner catch");
+        }
+        System.out.println("After inner try");
+    } catch (Exception e) {
+        System.out.println("Outer catch");
+    } finally {
+        System.out.println("Finally");
+    }
+    System.out.println("End");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Output: Start, Try 1, Try 2, Inner catch, After inner try, Finally, End</div>
+        <div class="breakdown-explain">The exception is caught by the INNER catch (most specific match). After the inner try-catch completes, execution continues normally inside the outer try &mdash; "After inner try" prints. The outer catch is NOT triggered because the inner catch already handled it. Finally runs as always. "End" prints because no uncaught exception remains.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="oop-abstraction.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Abstraction</span>
+  </a>
+  <a href="generics.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Generics</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Services &amp; HTTP Client | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Arch</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link active"><span class="num">11</span> Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT ARE SERVICES?                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-are-services">
+  <div class="section-tag">Section 01</div>
+  <h2>What are Services?</h2>
+  <p class="section-desc">A service is a class that handles reusable business logic &mdash; fetching data from APIs, calculations, shared state. Components handle the UI. Services handle everything else.</p>
+
+  <h3>The Separation</h3>
+
+  <p>In Angular, <strong>components</strong> are responsible for displaying data and handling user interactions. But where does the data come from? Components should NOT contain HTTP calls, data processing, or business rules directly. That is the job of <strong>services</strong>.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without Services</div>
+      <div class="comparison-body">
+        <p>Every component fetches its own data. If 3 components need booking data, the HTTP call is written 3 times. Change the API URL? Fix it in 3 places.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With Services</div>
+      <div class="comparison-body">
+        <p>One <code>BookingService</code> handles all booking API calls. All 3 components use the same service. Change the API URL? Fix it once in the service.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">BookingListComponent<span class="flow-sub">Displays list of bookings</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green" style="min-width:180px;">BookingService<span class="flow-sub">getBookings(), createBooking()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Spring Boot API<span class="flow-sub">/api/bookings</span></div>
+    </div>
+    <div class="flow-arrow-down">&uarr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">TrackingComponent<span class="flow-sub">Shows booking status</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green" style="min-width:180px;">Same BookingService<span class="flow-sub">getBookingById()</span></div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-box dark" style="min-width:120px;border:none;background:none;">&nbsp;</div>
+    </div>
+    <div class="flow-label">Multiple components share one service. The service is the single source of truth for API calls.</div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Library System</div>
+    <p>Think of components as <strong>readers</strong> and services as the <strong>librarian</strong>. Readers do not go into the storage room to find books themselves. They ask the librarian (service), who knows where everything is and handles all the fetching. Multiple readers use the same librarian.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: @INJECTABLE AND DI                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="injectable-di">
+  <div class="section-tag">Section 02</div>
+  <h2>@Injectable() and Dependency Injection</h2>
+  <p class="section-desc">Angular services use the @Injectable() decorator, and components receive them through dependency injection &mdash; a pattern you already know from Spring!</p>
+
+  <h3>Creating a Service</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking.service.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'   // Available everywhere in the app
+})
+export class BookingService {
+
+  getBookings(): string {
+    return "Fetching bookings...";
+  }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Injectable({ providedIn: 'root' })</div>
+        <div class="breakdown-explain">This decorator tells Angular: "This class can be injected into other classes." <code>providedIn: 'root'</code> means Angular creates ONE instance for the entire app (singleton). Same concept as <code>@Service</code> in Spring Boot.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">export class BookingService</div>
+        <div class="breakdown-explain"><code>export</code> so other files can import it. The class contains all booking-related business logic and API calls.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Injecting a Service into a Component</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking-list.component.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Component } from '@angular/core';
+import { BookingService } from '../services/booking.service';
+
+@Component({
+  selector: 'app-booking-list',
+  template: '&lt;h2&gt;Bookings&lt;/h2&gt;'
+})
+export class BookingListComponent {
+
+  // Angular automatically creates and injects the service
+  constructor(private bookingService: BookingService) { }
+
+  loadBookings() {
+    this.bookingService.getBookings();
+  }
+}</code></pre>
+  </div>
+
+  <h3>Spring DI vs Angular DI &mdash; Side by Side</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Spring Boot</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-java">@Service
+public class BookingService {
+  // ...
+}
+
+@RestController
+public class BookingController {
+  @Autowired
+  private BookingService service;
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Angular</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-typescript">@Injectable({ providedIn: 'root' })
+export class BookingService {
+  // ...
+}
+
+@Component({ ... })
+export class BookingListComponent {
+  constructor(
+    private service: BookingService
+  ) { }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The pattern is identical. In Spring Boot, <code>@Service</code> + <code>@Autowired</code> handles DI. In Angular, <code>@Injectable</code> + constructor injection handles DI. Same concept, same purpose, different framework. If you understood Spring DI, you already understand Angular DI.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: HTTPCLIENT                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="httpclient">
+  <div class="section-tag">Section 03</div>
+  <h2>HttpClient &mdash; Making API Calls</h2>
+  <p class="section-desc">Angular's HttpClient module is how the frontend talks to the Spring Boot backend. It supports GET, POST, PUT, and DELETE &mdash; all the REST methods you learned.</p>
+
+  <h3>Setup</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app.module.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { HttpClientModule } from '@angular/common/http';
+
+@NgModule({
+  imports: [
+    HttpClientModule   // Add this to enable HTTP calls
+  ]
+})
+export class AppModule { }</code></pre>
+  </div>
+
+  <h3>All 4 HTTP Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HTTP Methods in Angular</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+
+  private baseUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) { }
+
+  // GET — fetch data
+  getBookings(): Observable&lt;Booking[]&gt; {
+    return this.http.get&lt;Booking[]&gt;(`${this.baseUrl}/bookings`);
+  }
+
+  // POST — create data
+  createBooking(booking: BookingRequest): Observable&lt;Booking&gt; {
+    return this.http.post&lt;Booking&gt;(`${this.baseUrl}/bookings`, booking);
+  }
+
+  // PUT — update data
+  updateStatus(id: number, status: string): Observable&lt;Booking&gt; {
+    return this.http.put&lt;Booking&gt;(`${this.baseUrl}/bookings/${id}/status`, { status });
+  }
+
+  // DELETE — remove data
+  deleteBooking(id: number): Observable&lt;void&gt; {
+    return this.http.delete&lt;void&gt;(`${this.baseUrl}/bookings/${id}`);
+  }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key patterns explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">this.http.get&lt;Booking[]&gt;(url)</div>
+        <div class="breakdown-explain"><code>&lt;Booking[]&gt;</code> is a generic type parameter. It tells TypeScript what type the response will be. The HTTP call returns an <code>Observable</code> that will emit an array of <code>Booking</code> objects.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Observable&lt;Booking[]&gt;</div>
+        <div class="breakdown-explain">HTTP calls in Angular return Observables, not Promises. An Observable is a stream of data. You must <code>subscribe()</code> to it to actually trigger the HTTP request and receive data.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">`${this.baseUrl}/bookings/${id}/status`</div>
+        <div class="breakdown-explain">Template literal (backticks) with variable interpolation. Builds the full URL dynamically. Same as Java string concatenation but cleaner.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: OBSERVABLES                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="observables">
+  <div class="section-tag">Section 04</div>
+  <h2>Observables &mdash; The Subscribe Pattern</h2>
+  <p class="section-desc">Angular uses Observables (from RxJS) for all asynchronous operations. An Observable is like a newspaper subscription &mdash; you sign up, and data gets delivered to you when it arrives.</p>
+
+  <h3>How It Works</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Component<span class="flow-sub">Calls service method</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Service<span class="flow-sub">Returns Observable</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Component<span class="flow-sub">Subscribes to Observable</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Data Arrives<span class="flow-sub">Callback runs</span></div>
+    </div>
+    <div class="flow-label">The HTTP request only fires when you subscribe. No subscribe = no request.</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Subscribing to an Observable</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">export class BookingListComponent {
+  bookings: Booking[] = [];
+  errorMessage: string = '';
+
+  constructor(private bookingService: BookingService) { }
+
+  loadBookings() {
+    this.bookingService.getBookings().subscribe({
+      next: (data) =&gt; {
+        // Success — data arrived from the API
+        this.bookings = data;
+        console.log('Loaded', data.length, 'bookings');
+      },
+      error: (err) =&gt; {
+        // Error — API call failed
+        this.errorMessage = 'Failed to load bookings';
+        console.error(err);
+      }
+    });
+  }
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Forgetting to <code>subscribe()</code>. If you call <code>this.bookingService.getBookings()</code> without <code>.subscribe()</code>, <strong>nothing happens</strong>. The HTTP request never fires. Always subscribe.</p>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Pizza Delivery</div>
+    <p><strong>Observable</strong> = the pizza order. <strong>Subscribe</strong> = placing the order. <strong>next</strong> = the pizza arrives. <strong>error</strong> = the delivery failed. If you never call <code>subscribe()</code>, you are just looking at the menu &mdash; no pizza is coming.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: USER SERVICE                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-service">
+  <div class="section-tag">Section 05</div>
+  <h2>Building the UserService</h2>
+  <p class="section-desc">The UserService handles authentication &mdash; login, register, and token management. It connects directly to our Spring Boot /api/login and /api/register endpoints.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">services/user.service.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+interface LoginResponse {
+  token: string;
+  userId: number;
+  username: string;
+  role: string;
+  expiresIn: number;
+}
+
+interface RegisterRequest {
+  username: string;
+  email: string;
+  password: string;
+  fullName: string;
+  phone: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class UserService {
+
+  private baseUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) { }
+
+  // POST /api/login
+  login(credentials: LoginRequest): Observable&lt;LoginResponse&gt; {
+    return this.http.post&lt;LoginResponse&gt;(`${this.baseUrl}/login`, credentials)
+      .pipe(
+        tap(response =&gt; {
+          // Store the token in localStorage on successful login
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userId', response.userId.toString());
+          localStorage.setItem('role', response.role);
+        })
+      );
+  }
+
+  // POST /api/register
+  register(user: RegisterRequest): Observable&lt;any&gt; {
+    return this.http.post(`${this.baseUrl}/register`, user);
+  }
+
+  // Check if user is logged in
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  // Get stored token
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  // Get user role
+  getRole(): string | null {
+    return localStorage.getItem('role');
+  }
+
+  // Logout — clear everything
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+  }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key patterns explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.pipe(tap(response =&gt; { ... }))</div>
+        <div class="breakdown-explain"><code>pipe</code> lets you chain operators on an Observable. <code>tap</code> is a side-effect operator &mdash; it runs code (storing the token) without modifying the data flowing through. Think of it as "peek" in a stream.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">localStorage.setItem('token', response.token)</div>
+        <div class="breakdown-explain"><code>localStorage</code> is browser storage that persists across page refreshes. We store the JWT token here so every subsequent API request can include it in the Authorization header.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">isLoggedIn(): boolean { return !!localStorage.getItem('token'); }</div>
+        <div class="breakdown-explain"><code>!!</code> converts any value to a boolean. If the token exists, it returns <code>true</code>. If it is <code>null</code>, it returns <code>false</code>. Used by route guards to protect pages.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: BOOKING SERVICE                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-service">
+  <div class="section-tag">Section 06</div>
+  <h2>Building the BookingService</h2>
+  <p class="section-desc">The BookingService handles all parcel booking operations. It connects to every booking endpoint in our Spring Boot API.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">services/booking.service.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Booking {
+  id: number;
+  trackingNumber: string;
+  senderName: string;
+  senderAddress: string;
+  receiverName: string;
+  receiverAddress: string;
+  weight: number;
+  parcelType: string;
+  status: string;
+  cost: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BookingRequest {
+  senderName: string;
+  senderAddress: string;
+  senderPhone: string;
+  receiverName: string;
+  receiverAddress: string;
+  receiverPhone: string;
+  weight: number;
+  parcelType: string;
+  description?: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class BookingService {
+
+  private baseUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) { }
+
+  // GET /api/bookings?userId=X
+  getBookings(userId: number): Observable&lt;Booking[]&gt; {
+    return this.http.get&lt;Booking[]&gt;(`${this.baseUrl}/bookings?userId=${userId}`);
+  }
+
+  // GET /api/bookings/:id
+  getBookingById(id: number): Observable&lt;Booking&gt; {
+    return this.http.get&lt;Booking&gt;(`${this.baseUrl}/bookings/${id}`);
+  }
+
+  // POST /api/bookings
+  createBooking(booking: BookingRequest): Observable&lt;Booking&gt; {
+    return this.http.post&lt;Booking&gt;(`${this.baseUrl}/bookings`, booking);
+  }
+
+  // PUT /api/bookings/:id/status
+  updateStatus(id: number, status: string, remarks?: string): Observable&lt;Booking&gt; {
+    return this.http.put&lt;Booking&gt;(`${this.baseUrl}/bookings/${id}/status`, {
+      status,
+      remarks
+    });
+  }
+
+  // PUT /api/bookings/:id/pickup
+  markPickup(id: number, agentId: number): Observable&lt;Booking&gt; {
+    return this.http.put&lt;Booking&gt;(`${this.baseUrl}/bookings/${id}/pickup`, {
+      agentId,
+      pickupTime: new Date().toISOString()
+    });
+  }
+
+  // GET /api/bookings/history
+  getHistory(): Observable&lt;Booking[]&gt; {
+    return this.http.get&lt;Booking[]&gt;(`${this.baseUrl}/bookings/history`);
+  }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Notice how every method maps directly to a Spring Boot endpoint:</p>
+    <ul>
+      <li><code>getBookings()</code> &rarr; <code>GET /api/bookings?userId=X</code></li>
+      <li><code>getBookingById()</code> &rarr; <code>GET /api/bookings/{id}</code></li>
+      <li><code>createBooking()</code> &rarr; <code>POST /api/bookings</code></li>
+      <li><code>updateStatus()</code> &rarr; <code>PUT /api/bookings/{id}/status</code></li>
+      <li><code>markPickup()</code> &rarr; <code>PUT /api/bookings/{id}/pickup</code></li>
+      <li><code>getHistory()</code> &rarr; <code>GET /api/bookings/history</code></li>
+    </ul>
+    <p>The frontend service is the mirror of the backend controller. Same endpoints, same data shapes.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: ERROR HANDLING                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="error-handling">
+  <div class="section-tag">Section 07</div>
+  <h2>Error Handling</h2>
+  <p class="section-desc">API calls can fail &mdash; the server might be down, the network might drop, or the user might not be authorized. Angular provides operators to handle these gracefully.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error Handling with catchError and retry</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { catchError, retry } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class BookingService {
+
+  constructor(private http: HttpClient) { }
+
+  getBookings(userId: number): Observable&lt;Booking[]&gt; {
+    return this.http.get&lt;Booking[]&gt;(`${this.baseUrl}/bookings?userId=${userId}`)
+      .pipe(
+        retry(2),  // If the request fails, retry up to 2 more times
+        catchError(error =&gt; {
+          // Handle the error
+          if (error.status === 401) {
+            console.error('Not authenticated — redirect to login');
+          } else if (error.status === 404) {
+            console.error('Bookings not found');
+          } else if (error.status === 500) {
+            console.error('Server error — try again later');
+          }
+          // Re-throw so the component knows it failed
+          return throwError(() =&gt; error);
+        })
+      );
+  }
+}</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operator</th><th>What It Does</th><th>When to Use</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>retry(n)</code></td><td>Re-attempts the HTTP call up to <code>n</code> times on failure</td><td>Network glitches, temporary server issues</td></tr>
+      <tr><td><code>catchError</code></td><td>Catches the error and lets you handle it (log, show message, redirect)</td><td>Always &mdash; every API call should have error handling</td></tr>
+      <tr><td><code>throwError</code></td><td>Creates an error Observable to re-throw the error to the subscriber</td><td>When the component also needs to know about the error</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: INTERCEPTORS                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="interceptors">
+  <div class="section-tag">Section 08</div>
+  <h2>Interceptors &mdash; Adding Auth Token Automatically</h2>
+  <p class="section-desc">An interceptor sits between your service and the actual HTTP request. It can modify every outgoing request &mdash; perfect for automatically attaching the JWT token.</p>
+
+  <h3>The Problem</h3>
+
+  <p>Without an interceptor, you would have to manually add the <code>Authorization</code> header to every single HTTP call. With an interceptor, you write it once and it applies to all requests.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">interceptors/auth.interceptor.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { UserService } from '../services/user.service';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+
+  constructor(private userService: UserService) { }
+
+  intercept(request: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+
+    // Get the token from localStorage
+    const token = this.userService.getToken();
+
+    if (token) {
+      // Clone the request and add the Authorization header
+      const authRequest = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return next.handle(authRequest);
+    }
+
+    // No token — send the original request (for login/register)
+    return next.handle(request);
+  }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Interceptor explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">implements HttpInterceptor</div>
+        <div class="breakdown-explain">This class implements Angular's <code>HttpInterceptor</code> interface, which requires an <code>intercept()</code> method. Every HTTP request passes through this method before being sent.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.clone({ setHeaders: { ... } })</div>
+        <div class="breakdown-explain">HTTP requests are immutable in Angular. You cannot modify the original request. Instead, you <code>clone()</code> it with the new header added. This is a safety pattern.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">next.handle(authRequest)</div>
+        <div class="breakdown-explain">Passes the modified request to the next handler in the chain (or to the actual HTTP layer). Without this call, the request would never be sent.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Registering the Interceptor</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">app.module.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
+@NgModule({
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true   // Allows multiple interceptors
+    }
+  ]
+})
+export class AppModule { }</code></pre>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Component<span class="flow-sub">this.bookingService.getBookings()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">AuthInterceptor<span class="flow-sub">Adds Bearer token</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">HTTP Request<span class="flow-sub">Authorization: Bearer eyJ...</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Spring Boot<span class="flow-sub">Validates token</span></div>
+    </div>
+    <div class="flow-label">The interceptor is invisible to your components and services. They never deal with tokens directly.</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our Nimbus Angular app uses one <code>AuthInterceptor</code> that automatically adds the JWT token to every request. This means our <code>BookingService</code> methods are clean &mdash; they just call <code>this.http.get()</code> without worrying about authentication. The interceptor handles it.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: FULL ANGULAR + SPRING BOOT FLOW                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="full-flow">
+  <div class="section-tag">Section 09</div>
+  <h2>Full Angular + Spring Boot Flow</h2>
+  <p class="section-desc">Putting it all together &mdash; from the user clicking a button to the data appearing on screen.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">User Clicks<span class="flow-sub">"Create Booking" button</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Component<span class="flow-sub">Calls bookingService.createBooking()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">BookingService<span class="flow-sub">http.post('/api/bookings', data)</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box orange">AuthInterceptor<span class="flow-sub">Adds Authorization: Bearer token</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Spring Boot<span class="flow-sub">BookingController.createBooking()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">Database<span class="flow-sub">INSERT INTO bookings</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">Spring Boot<span class="flow-sub">Returns 201 + Booking JSON</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Observable<span class="flow-sub">next() callback fires</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Component<span class="flow-sub">Updates UI with new booking</span></div>
+    </div>
+    <div class="flow-label">Complete request-response cycle: Angular Component &rarr; Service &rarr; Interceptor &rarr; Spring Boot &rarr; DB &rarr; Response &rarr; UI Update</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 10</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build these to solidify your understanding of services and HTTP calls.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Build a NotificationService</div>
+    <p>Create a <code>NotificationService</code> with these methods:</p>
+    <ul>
+      <li><code>getNotifications(userId: number): Observable&lt;Notification[]&gt;</code></li>
+      <li><code>markAsRead(notificationId: number): Observable&lt;void&gt;</code></li>
+      <li><code>getUnreadCount(userId: number): Observable&lt;number&gt;</code></li>
+    </ul>
+    <p>Define a <code>Notification</code> interface with id, message, isRead, createdAt. Add error handling with <code>catchError</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Service + Component Connection</div>
+    <p>Write a <code>TrackingComponent</code> that:</p>
+    <ol>
+      <li>Has a text input for tracking number</li>
+      <li>When the user clicks "Track", calls <code>bookingService.getBookingById()</code></li>
+      <li>Displays the booking status on success</li>
+      <li>Shows an error message on failure</li>
+    </ol>
+    <p>Write both the component class (TypeScript) and think about what the template would need.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Error Handling Challenge</div>
+    <p>Modify the <code>BookingService.getBookings()</code> to:</p>
+    <ol>
+      <li>Retry 3 times on failure</li>
+      <li>If it still fails, check the status code</li>
+      <li>For 401: clear the token and redirect to login</li>
+      <li>For 500: return an empty array instead of throwing</li>
+      <li>For anything else: re-throw the error</li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Build a Logging Interceptor</div>
+    <p>Create an interceptor that logs every HTTP request and response:</p>
+    <ul>
+      <li>Log the method, URL, and timestamp for every outgoing request</li>
+      <li>Log the status code and response time for every response</li>
+      <li>Format: <code>[GET] /api/bookings @ 10:30:45 &rarr; 200 (145ms)</code></li>
+    </ul>
+    <p>Hint: Use the <code>tap</code> operator on <code>next.handle()</code> to intercept the response.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Spring Boot vs Angular Mapping</div>
+    <p>For each Spring Boot controller method below, write the corresponding Angular service method:</p>
+<pre style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;font-size:0.85rem;"><code>@GetMapping("/api/users/{id}")
+public User getUser(@PathVariable int id) { }
+
+@PostMapping("/api/users")
+public User createUser(@RequestBody User user) { }
+
+@DeleteMapping("/api/users/{id}")
+public void deleteUser(@PathVariable int id) { }</code></pre>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="angular-intro.html" class="prev">
+    <span class="nav-label">&larr; Previous Topic</span>
+    <span class="nav-title">Angular Big Picture</span>
+  </a>
+  <a href="angular-routing.html" class="next">
+    <span class="nav-label">Next Topic &rarr;</span>
+    <span class="nav-title">Routing &amp; Guards</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

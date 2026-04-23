@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Structure &amp; Eclipse Setup | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link active"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHY PROJECT STRUCTURE MATTERS                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-structure">
+  <div class="section-tag">Section 01</div>
+  <h2>Why Project Structure Matters</h2>
+  <p class="section-desc">Before you write a single class, you need to know <strong>where everything goes</strong>. A well-organized project is the difference between a codebase you can navigate and one that makes you want to quit.</p>
+
+  <h3>The Toolbox Analogy</h3>
+
+  <p>Imagine two mechanics. Mechanic A has a toolbox where every wrench, screwdriver, and socket has its own labeled slot. He reaches in and grabs exactly what he needs in two seconds. Mechanic B has a cardboard box where everything is thrown in together. He spends five minutes digging through the pile every single time.</p>
+
+  <p>Both mechanics have the same tools. But Mechanic A finishes jobs in half the time because <strong>he never wastes time searching.</strong></p>
+
+  <p>Your project structure is your toolbox. Every file has a designated place. When you need to find the code that connects to the database, you know exactly where it is. When you need to change how users are validated, you know which folder to open. You never search. You navigate.</p>
+
+  <h3>What Happens Without Structure?</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">No Structure (Chaos)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>20 Java files in one folder</li>
+          <li>Database code mixed with display logic</li>
+          <li>"Where's the login code?" &mdash; could be anywhere</li>
+          <li>One change breaks three unrelated things</li>
+          <li>New team member takes weeks to understand</li>
+          <li>You forget your own code in two weeks</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Clean Structure (Professional)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Files grouped by responsibility</li>
+          <li>Database code in <code>dao/</code>, display in <code>app/</code></li>
+          <li>"Where's login?" &mdash; <code>service/UserService.java</code></li>
+          <li>Changes to one layer don't ripple to others</li>
+          <li>New team member productive in hours</li>
+          <li>Code documents itself through organization</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p>Professional projects can have hundreds or thousands of files. Google's monorepo has <strong>2 billion lines of code.</strong> Without a strict, agreed-upon structure, it would be impossible for 25,000+ engineers to work in the same codebase. Structure isn't optional &mdash; it's how teams scale.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: ECLIPSE SETUP                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="eclipse-setup">
+  <div class="section-tag">Section 02</div>
+  <h2>Eclipse Setup Step-by-Step</h2>
+  <p class="section-desc">Setting up Eclipse for Java development. We'll create a Maven project from scratch and configure it properly.</p>
+
+  <h3>Creating a Java Maven Project</h3>
+
+  <ol class="steps">
+    <li><strong>Launch Eclipse.</strong> When prompted for a workspace location, choose a dedicated folder like <code>C:\eclipse-workspace</code>. This is where all your Eclipse projects live. Keep it clean &mdash; don't use your Desktop.</li>
+
+    <li><strong>Switch to Java EE perspective.</strong> Go to <code>Window &rarr; Perspective &rarr; Open Perspective &rarr; Java EE</code>. This gives you the right panels for web development: Package Explorer, Servers view, etc.</li>
+
+    <li><strong>Create the project.</strong> <code>File &rarr; New &rarr; Maven Project</code>. Check "Create a simple project" and click Next.</li>
+
+    <li><strong>Enter project details:</strong>
+      <ul>
+        <li><strong>Group Id:</strong> <code>com.nimbus</code></li>
+        <li><strong>Artifact Id:</strong> <code>nimbus-parcel</code></li>
+        <li><strong>Packaging:</strong> <code>war</code></li>
+      </ul>
+      Click Finish. Eclipse creates the Maven directory structure.
+    </li>
+
+    <li><strong>Create webapp directory.</strong> In Package Explorer, right-click <code>src/main</code> &rarr; New &rarr; Folder &rarr; name: <code>webapp</code>. Inside it, create another folder: <code>WEB-INF</code>.</li>
+
+    <li><strong>Configure the pom.xml.</strong> Double-click <code>pom.xml</code>. Switch to the "pom.xml" tab (not the Overview tab) to see raw XML. Paste in your dependencies, properties, and plugins. Save (<code>Ctrl+S</code>).</li>
+
+    <li><strong>Update Maven.</strong> Right-click the project name &rarr; <code>Maven &rarr; Update Project</code> (<code>Alt+F5</code>). Check "Force Update of Snapshots/Releases" on your first setup. Click OK. Wait for downloads to finish (watch the progress bar at bottom-right).</li>
+
+    <li><strong>Verify.</strong> Expand "Maven Dependencies" in Package Explorer. You should see all your JARs listed. No red X marks means everything resolved correctly.</li>
+  </ol>
+
+  <h3>Adding Tomcat Server</h3>
+
+  <ol class="steps">
+    <li><strong>Open the Servers view.</strong> <code>Window &rarr; Show View &rarr; Servers</code>. If the Servers tab is empty, click "No servers are available. Click this link to create a new server."</li>
+
+    <li><strong>Select Apache Tomcat v9.0.</strong> Under "Apache," choose Tomcat v9.0 Server. Click Next.</li>
+
+    <li><strong>Browse to Tomcat installation.</strong> Click "Browse" and navigate to where you extracted Tomcat (e.g., <code>C:\apache-tomcat-9.0.80</code>). Click Finish.</li>
+
+    <li><strong>Add your project.</strong> Right-click the Tomcat server in the Servers view &rarr; "Add and Remove" &rarr; move <code>nimbus-parcel</code> to the right side (Configured) &rarr; Finish.</li>
+
+    <li><strong>Start the server.</strong> Right-click Tomcat &rarr; Start. The Console should show "Server startup in [xxx] ms." Open a browser and go to <code>http://localhost:8080/nimbus-parcel/</code>.</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">Port 8080 Already In Use?</div>
+    <p>If Tomcat fails to start with "Address already in use," another program is using port 8080. Double-click the Tomcat server in Eclipse &rarr; change the port from 8080 to 8081 or 9090. Or find and kill whatever process is using 8080.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: PACKAGE NAMING CONVENTION                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="package-naming">
+  <div class="section-tag">Section 03</div>
+  <h2>Package Naming Convention</h2>
+  <p class="section-desc">Java packages are how you organize your classes into logical groups. The naming convention isn't arbitrary &mdash; it follows a universal standard.</p>
+
+  <h3>The Reverse Domain Convention</h3>
+
+  <p>Java packages follow the <strong>reverse domain name</strong> convention. If your company's website is <code>nimbus.com</code>, your base package is <code>com.nimbus</code>. This guarantees uniqueness worldwide &mdash; no two organizations will accidentally use the same package name.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Package naming examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Google's code
+com.google.maps.api
+com.google.cloud.storage
+
+// Apache's code
+org.apache.commons.lang3
+org.apache.maven.plugins
+
+// Our Nimbus project
+com.nimbus.app         // Servlets (presentation layer)
+com.nimbus.service     // Business logic
+com.nimbus.dao         // Database access
+com.nimbus.model       // Data classes
+com.nimbus.util        // Utility/helper classes
+com.nimbus.exception   // Custom exceptions</code></pre>
+  </div>
+
+  <h3>Package Rules</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Rule</th><th>Example</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>All lowercase</td>
+        <td><code>com.nimbus.dao</code> not <code>com.Nimbus.DAO</code></td>
+        <td>Convention. Packages are always lowercase to distinguish from class names (which use PascalCase).</td>
+      </tr>
+      <tr>
+        <td>No special characters</td>
+        <td><code>com.nimbus</code> not <code>com.nimbus-app</code></td>
+        <td>Hyphens, spaces, and numbers at the start are invalid in package names.</td>
+      </tr>
+      <tr>
+        <td>Singular nouns</td>
+        <td><code>com.nimbus.model</code> not <code>com.nimbus.models</code></td>
+        <td>Convention. The package represents a category, not a collection.</td>
+      </tr>
+      <tr>
+        <td>Folder path = package name</td>
+        <td><code>com.nimbus.dao</code> = <code>com/nimbus/dao/</code></td>
+        <td>Java requires this. The file system path must match the package declaration exactly.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Creating a class in <code>src/main/java/com/nimbus/dao/</code> but writing <code>package com.nimbus.service;</code> at the top of the file. Java will refuse to compile. <strong>The package declaration must match the folder path.</strong> Eclipse creates the correct declaration automatically when you create a class inside a package.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: LAYERED ARCHITECTURE                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="layered-architecture">
+  <div class="section-tag">Section 04</div>
+  <h2>Layered Architecture</h2>
+  <p class="section-desc">Nimbus follows a <strong>layered architecture</strong> where each layer has one specific job and only talks to the layer directly below it.</p>
+
+  <h3>The Four Layers</h3>
+
+  <p>Think of it like a restaurant kitchen. The customer (browser) talks to the waiter (presentation layer). The waiter relays the order to the head chef (service layer). The head chef tells the prep cook what ingredients to get from the pantry (DAO layer). The pantry is the database.</p>
+
+  <p>The customer never walks into the kitchen. The waiter never opens the pantry. Each person has <strong>one job</strong> and talks to <strong>one other person</strong>.</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Presentation</div>
+      <div class="layer-detail">
+        <strong>Package:</strong> <code>com.nimbus.app</code><br>
+        <strong>What:</strong> Servlets and JSPs. Receives HTTP requests, calls the Service layer, sends responses back to the browser.<br>
+        <strong>Talks to:</strong> Service layer only. Never touches the database directly.
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Service</div>
+      <div class="layer-detail">
+        <strong>Package:</strong> <code>com.nimbus.service</code><br>
+        <strong>What:</strong> Business logic and rules. "Is this user allowed to book?" "Calculate delivery fee." Orchestrates DAO calls.<br>
+        <strong>Talks to:</strong> DAO layer. Receives calls from Presentation layer.
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">DAO</div>
+      <div class="layer-detail">
+        <strong>Package:</strong> <code>com.nimbus.dao</code><br>
+        <strong>What:</strong> Data Access Objects. The only layer that writes SQL. All database reads and writes go through here.<br>
+        <strong>Talks to:</strong> Database only. Receives calls from Service layer.
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Database</div>
+      <div class="layer-detail">
+        <strong>System:</strong> MySQL<br>
+        <strong>What:</strong> Stores all persistent data: users, bookings, issues. Tables, rows, columns.<br>
+        <strong>Talks to:</strong> Nobody. It just stores data and answers SQL queries from DAO.
+      </div>
+    </div>
+  </div>
+
+  <h3>The Flow: User Login Example</h3>
+
+  <p>Let's trace exactly what happens when a user clicks "Login" on the Nimbus website:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box dark">Browser<span class="flow-sub">POST /login</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">LoginServlet<span class="flow-sub">app/ layer</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">UserService<span class="flow-sub">service/ layer</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">UserDAO<span class="flow-sub">dao/ layer</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">MySQL<span class="flow-sub">database</span></div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The flow in code</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// 1. LoginServlet (Presentation) — receives the HTTP request
+String email = request.getParameter("email");
+String password = request.getParameter("password");
+User user = userService.validateLogin(email, password);  // calls Service
+
+// 2. UserService (Service) — applies business rules
+public User validateLogin(String email, String password) {
+    User user = userDAO.findByEmail(email);               // calls DAO
+    if (user == null) throw new UserNotFoundException("No account found");
+    if (!user.getPassword().equals(password)) throw new InvalidCredentialsException();
+    return user;
+}
+
+// 3. UserDAO (DAO) — runs the SQL
+public User findByEmail(String email) {
+    String sql = "SELECT * FROM tbl_UserProfile WHERE email = ?";
+    // Execute query, map ResultSet to User object, return it
+}</code></pre>
+  </div>
+
+  <h3>Why Layers?</h3>
+
+  <p>Without layers, your servlet would contain the HTTP handling, the business rules, AND the SQL query all in one method. That's 100+ lines of tangled code. With layers:</p>
+
+  <ul>
+    <li><strong>Change the database?</strong> Only rewrite DAO files. Service and Presentation don't change.</li>
+    <li><strong>Change the business rule?</strong> Only edit the Service class. DAO and Presentation untouched.</li>
+    <li><strong>Switch from servlets to REST API?</strong> Only rewrite the Presentation layer. Service and DAO stay identical.</li>
+    <li><strong>Testing?</strong> Test each layer independently. Mock the DAO when testing Service. Mock the Service when testing Servlet.</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every feature in Nimbus follows this exact pattern. User registration: <code>RegisterServlet &rarr; UserService &rarr; UserDAO &rarr; MySQL</code>. Booking a parcel: <code>BookingServlet &rarr; BookingService &rarr; BookingDAO &rarr; MySQL</code>. Once you understand one flow, you understand all of them.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: FULL NIMBUS PACKAGE STRUCTURE                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-packages">
+  <div class="section-tag">Section 05</div>
+  <h2>Full Nimbus Package Structure</h2>
+  <p class="section-desc">Every file in the Nimbus project, organized by package. This is your project map &mdash; memorize it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Complete Nimbus project structure</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">src/main/java/com/nimbus/
+│
+├── model/                          // Data classes (POJOs)
+│   ├── User.java                   // userId, name, email, password, role
+│   ├── Booking.java                // bookingId, userId, senderAddr, receiverAddr, status, date
+│   └── SupportIssue.java           // issueId, userId, bookingId, description, status
+│
+├── dao/                            // Database access — SQL lives here
+│   ├── UserDAO.java                // findByEmail(), save(), findById()
+│   ├── BookingDAO.java             // save(), findByUserId(), updateStatus(), findById()
+│   └── SupportIssueDAO.java        // save(), findByUserId(), updateStatus()
+│
+├── service/                        // Business logic — rules live here
+│   ├── UserService.java            // validateLogin(), registerUser()
+│   ├── BookingService.java         // createBooking(), getBookingsByUser(), updateDeliveryStatus()
+│   └── SupportService.java         // createIssue(), getIssuesByUser()
+│
+├── app/                            // Servlets — HTTP handling
+│   ├── LoginServlet.java           // POST /login
+│   ├── RegisterServlet.java        // POST /register
+│   ├── BookingServlet.java         // POST /book, GET /track
+│   ├── DashboardServlet.java       // GET /dashboard
+│   └── SupportServlet.java         // POST /support, GET /support
+│
+├── util/                           // Helpers
+│   └── DBConnection.java           // getConnection() — reads db.properties, returns Connection
+│
+└── exception/                      // Custom exceptions
+    ├── UserNotFoundException.java
+    ├── InvalidCredentialsException.java
+    ├── DuplicateEmailException.java
+    └── BookingNotFoundException.java</code></pre>
+  </div>
+
+  <h3>Every File Explained</h3>
+
+  <h4>model/ &mdash; Data Classes (POJOs)</h4>
+  <p>POJO = Plain Old Java Object. These classes have <strong>only fields, getters, setters, and constructors.</strong> No logic, no SQL, no HTTP. They represent database tables as Java objects.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+public class User {
+    private int userId;
+    private String name;
+    private String email;
+    private String password;
+    private String role;      // "customer", "officer", "support"
+
+    // Default constructor
+    public User() {}
+
+    // Parameterized constructor
+    public User(int userId, String name, String email, String password, String role) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    // Getters and Setters
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Why each part exists</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">package com.nimbus.model;</div>
+        <div class="breakdown-explain">Declares this class belongs to the model package. Must match folder path: src/main/java/com/nimbus/model/</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private fields</div>
+        <div class="breakdown-explain">Each field maps to a column in tbl_UserProfile. Private = encapsulation. No one can directly access user.password; they must use getPassword().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Default constructor User()</div>
+        <div class="breakdown-explain">Required by frameworks and when you want to create an empty User then fill fields with setters. JDBC ResultSet mapping uses this: create User(), then set each field.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Parameterized constructor</div>
+        <div class="breakdown-explain">Convenience: create a fully-populated User in one line. Used when you already have all the values (e.g., from registration form).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Getters and Setters</div>
+        <div class="breakdown-explain">Public access methods. JSP EL expressions like ${user.name} automatically call getName(). Without getters, JSP can't read your data.</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>dao/ &mdash; Database Access Objects</h4>
+  <p>DAO classes are the <strong>only place</strong> where SQL queries exist. They take Java objects in, talk to the database, and return Java objects out. No business logic, no HTTP awareness.</p>
+
+  <h4>service/ &mdash; Business Logic</h4>
+  <p>Service classes contain the <strong>rules</strong> of your application. "Is the password correct?" "Does this user already exist?" "Can this officer update this booking?" The service layer <em>orchestrates</em> DAO calls and applies logic between them.</p>
+
+  <h4>app/ &mdash; Servlets (Presentation)</h4>
+  <p>Servlets handle HTTP. They read request parameters, call service methods, and forward results to JSP pages for display. A servlet should be thin &mdash; mostly just glue between HTTP and the service layer.</p>
+
+  <h4>util/ &mdash; Utilities</h4>
+  <p><code>DBConnection.java</code> is the most important utility. It reads database connection settings from <code>db.properties</code> and provides a <code>getConnection()</code> method that all DAOs use. One central place to configure the database.</p>
+
+  <h4>exception/ &mdash; Custom Exceptions</h4>
+  <p>Instead of throwing generic <code>Exception</code> everywhere, custom exceptions tell you <em>exactly</em> what went wrong. <code>UserNotFoundException</code> is a lot more helpful than <code>Exception: something happened</code>.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: BUILD PATH                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="build-path">
+  <div class="section-tag">Section 06</div>
+  <h2>Build Path Configuration</h2>
+  <p class="section-desc">The build path tells Eclipse where to find the libraries your code needs. With Maven, most of this is automatic, but you need to understand it.</p>
+
+  <h3>What is the Build Path?</h3>
+
+  <p>When you write <code>import java.sql.Connection;</code>, Java needs to know where <code>java.sql</code> lives. The build path is a list of all places Java should look for classes: the JDK itself, your project's source folders, and external libraries (JARs).</p>
+
+  <h3>Adding JARs (Non-Maven Projects)</h3>
+
+  <p>In older projects without Maven, you add JARs manually:</p>
+
+  <ol class="steps">
+    <li>Right-click the project &rarr; <code>Properties</code> &rarr; <code>Java Build Path</code></li>
+    <li>Go to the <code>Libraries</code> tab</li>
+    <li>Click <code>Add External JARs</code></li>
+    <li>Browse to the JAR file (e.g., <code>mysql-connector-j-8.0.33.jar</code>)</li>
+    <li>Click Apply and Close</li>
+  </ol>
+
+  <p>With Maven, you <strong>never do this</strong>. Maven handles the build path automatically. When you add a dependency to pom.xml and run <code>Alt+F5</code>, Eclipse's m2e plugin updates the build path for you. All Maven JARs appear under "Maven Dependencies" in Package Explorer.</p>
+
+  <h3>Configuring JDK Version</h3>
+
+  <ol class="steps">
+    <li>Right-click project &rarr; <code>Properties</code> &rarr; <code>Java Build Path</code></li>
+    <li>Click <code>JRE System Library</code> &rarr; <code>Edit</code></li>
+    <li>Select "Workspace default JRE" (if it's JDK 17) or "Alternate JRE" and pick JDK 17</li>
+    <li>Click Finish &rarr; Apply and Close</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">JDK vs JRE</div>
+    <p>Eclipse needs a <strong>JDK</strong> (Java Development Kit), not just a JRE (Java Runtime Environment). The JDK includes the compiler (<code>javac</code>). If Eclipse says "No compiler is provided," you have a JRE instead of a JDK. Download JDK 17 from <a href="https://adoptium.net" style="color: var(--accent);">adoptium.net</a> and configure it in Eclipse: <code>Window &rarr; Preferences &rarr; Java &rarr; Installed JREs &rarr; Add &rarr; Standard VM</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: DB.PROPERTIES                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="db-properties">
+  <div class="section-tag">Section 07</div>
+  <h2>db.properties File</h2>
+  <p class="section-desc">Configuration that shouldn't be hardcoded. Database URL, username, password &mdash; all in one external file that's easy to change without recompiling.</p>
+
+  <h3>Why a Properties File?</h3>
+
+  <p>Imagine hardcoding your database password in <code>UserDAO.java</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BAD: Hardcoded credentials</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// DON'T DO THIS
+Connection conn = DriverManager.getConnection(
+    "jdbc:mysql://localhost:3306/nimbus_db",
+    "root",
+    "MyP@ssw0rd123"
+);</code></pre>
+  </div>
+
+  <p>Problems: The password is in source code (goes to Git = everyone sees it). Changing the database means editing Java files and recompiling. Different developers have different MySQL passwords &mdash; they'd each need to change the code.</p>
+
+  <h3>The Properties File</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/db.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">db.driver=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/nimbus_db
+db.username=root
+db.password=your_password_here</code></pre>
+  </div>
+
+  <h3>Reading It in Java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/util/DBConnection.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Properties;
+
+public class DBConnection {
+
+    private static String url;
+    private static String username;
+    private static String password;
+
+    static {
+        try {
+            Properties props = new Properties();
+            InputStream input = DBConnection.class
+                .getClassLoader()
+                .getResourceAsStream("db.properties");
+            props.load(input);
+
+            Class.forName(props.getProperty("db.driver"));
+            url = props.getProperty("db.url");
+            username = props.getProperty("db.username");
+            password = props.getProperty("db.password");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load db.properties", e);
+        }
+    }
+
+    public static Connection getConnection() throws Exception {
+        return DriverManager.getConnection(url, username, password);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">static { ... }</div>
+        <div class="breakdown-explain">Static initializer block. Runs ONCE when the class is first loaded. Reads db.properties and stores values. Every subsequent call to getConnection() uses these cached values.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getClassLoader().getResourceAsStream("db.properties")</div>
+        <div class="breakdown-explain">Reads the file from the classpath (target/classes/). Since Maven copies src/main/resources/ to target/classes/ during build, the file is available at runtime.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Class.forName(props.getProperty("db.driver"))</div>
+        <div class="breakdown-explain">Loads the MySQL JDBC driver class into memory. This registers the driver with DriverManager so it knows how to talk to MySQL.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">DriverManager.getConnection(url, username, password)</div>
+        <div class="breakdown-explain">Creates and returns a new database connection. Every DAO method calls this, uses the connection, then closes it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every DAO class starts with <code>Connection conn = DBConnection.getConnection();</code>. If you ever need to change the database URL (like switching to a production server), you edit <code>db.properties</code> &mdash; not a single Java file. Add <code>db.properties</code> to your <code>.gitignore</code> so passwords don't get pushed to Git.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: .CLASSPATH AND .PROJECT FILES                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="eclipse-files">
+  <div class="section-tag">Section 08</div>
+  <h2>.classpath and .project Files</h2>
+  <p class="section-desc">Eclipse creates hidden configuration files in your project root. You rarely edit them manually, but you should know what they are.</p>
+
+  <h3>.project</h3>
+
+  <p>This file tells Eclipse <em>what kind of project this is</em>. It contains the project name and which "natures" (capabilities) the project has &mdash; like Java, Maven, and Web.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">.project</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;projectDescription&gt;
+    &lt;name&gt;nimbus-parcel&lt;/name&gt;
+    &lt;buildSpec&gt;
+        &lt;buildCommand&gt;
+            &lt;name&gt;org.eclipse.jdt.core.javabuilder&lt;/name&gt;
+        &lt;/buildCommand&gt;
+        &lt;buildCommand&gt;
+            &lt;name&gt;org.eclipse.m2e.core.maven2Builder&lt;/name&gt;
+        &lt;/buildCommand&gt;
+    &lt;/buildSpec&gt;
+    &lt;natures&gt;
+        &lt;nature&gt;org.eclipse.jdt.core.javanature&lt;/nature&gt;
+        &lt;nature&gt;org.eclipse.m2e.core.maven2Nature&lt;/nature&gt;
+    &lt;/natures&gt;
+&lt;/projectDescription&gt;</code></pre>
+  </div>
+
+  <p><code>javabuilder</code> = "this is a Java project, compile .java files." <code>maven2Builder</code> = "use Maven to manage dependencies." These are set automatically when you create a Maven project.</p>
+
+  <h3>.classpath</h3>
+
+  <p>This file lists all the source folders and libraries Eclipse should use when compiling. For Maven projects, it includes the Maven Dependencies container.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">.classpath</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;classpath&gt;
+    &lt;classpathentry kind="src" path="src/main/java"/&gt;
+    &lt;classpathentry kind="src" path="src/main/resources"/&gt;
+    &lt;classpathentry kind="src" path="src/test/java"/&gt;
+    &lt;classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/&gt;
+    &lt;classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/&gt;
+    &lt;classpathentry kind="output" path="target/classes"/&gt;
+&lt;/classpath&gt;</code></pre>
+  </div>
+
+  <ul>
+    <li><code>kind="src"</code> &mdash; Source folders. Eclipse compiles files from these locations.</li>
+    <li><code>kind="con"</code> &mdash; Containers. JRE_CONTAINER = the Java runtime. MAVEN2_CLASSPATH_CONTAINER = all Maven dependencies.</li>
+    <li><code>kind="output"</code> &mdash; Where compiled .class files go.</li>
+  </ul>
+
+  <div class="callout warning">
+    <div class="callout-title">Git and Eclipse Files</div>
+    <p>Some teams include <code>.project</code> and <code>.classpath</code> in Git so everyone has the same Eclipse config. Others add them to <code>.gitignore</code> because different IDEs generate different files. For our Nimbus project: include them if your whole team uses Eclipse. Gitignore them if anyone uses IntelliJ.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: ECLIPSE SHORTCUTS                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="shortcuts">
+  <div class="section-tag">Section 09</div>
+  <h2>Eclipse Shortcuts Cheat Sheet</h2>
+  <p class="section-desc">These shortcuts will save you hours. Memorize the top 10 and you'll code twice as fast.</p>
+
+  <h3>Essential Shortcuts</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Shortcut</th><th>Action</th><th>When to Use</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Ctrl+Shift+O</code></td>
+        <td>Organize Imports</td>
+        <td>After writing code. Adds missing imports, removes unused ones. <strong>Use this constantly.</strong></td>
+      </tr>
+      <tr>
+        <td><code>Ctrl+Space</code></td>
+        <td>Autocomplete</td>
+        <td>While typing. Shows suggestions for class names, method names, variable names. Type <code>Sys</code> then <code>Ctrl+Space</code> to get <code>System</code>.</td>
+      </tr>
+      <tr>
+        <td><code>F11</code></td>
+        <td>Run / Debug</td>
+        <td>Runs the last launched application. For web projects, starts/restarts the server.</td>
+      </tr>
+      <tr>
+        <td><code>Ctrl+S</code></td>
+        <td>Save</td>
+        <td>Saves the current file. Eclipse auto-compiles on save (for Maven projects).</td>
+      </tr>
+      <tr>
+        <td><code>Ctrl+Shift+F</code></td>
+        <td>Format Code</td>
+        <td>Auto-indents and formats selected code or entire file. Makes messy code readable instantly.</td>
+      </tr>
+      <tr>
+        <td><code>Ctrl+D</code></td>
+        <td>Delete Line</td>
+        <td>Deletes the entire current line. Faster than selecting the whole line and pressing Delete.</td>
+      </tr>
+      <tr>
+        <td><code>Alt+Up/Down</code></td>
+        <td>Move Line</td>
+        <td>Moves the current line (or selected lines) up or down. Great for reordering code.</td>
+      </tr>
+      <tr>
+        <td><code>Ctrl+/</code></td>
+        <td>Toggle Comment</td>
+        <td>Comments/uncomments the current line or selection. Works with single-line comments (//).</td>
+      </tr>
+      <tr>
+        <td><code>Ctrl+Shift+R</code></td>
+        <td>Open Resource</td>
+        <td>Search for any file in the project by name. Type "User" to find UserDAO.java, UserService.java, etc.</td>
+      </tr>
+      <tr>
+        <td><code>Alt+F5</code></td>
+        <td>Maven Update</td>
+        <td>Re-reads pom.xml and updates classpath. <strong>Always do this after changing pom.xml.</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Code Generation Shortcuts</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Shortcut</th><th>Action</th><th>What It Generates</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Alt+Shift+S, R</code></td>
+        <td>Generate Getters/Setters</td>
+        <td>Select which fields need getters/setters. Eclipse writes them all for you.</td>
+      </tr>
+      <tr>
+        <td><code>Alt+Shift+S, O</code></td>
+        <td>Generate Constructor</td>
+        <td>Creates a constructor from selected fields. Choose which fields to include.</td>
+      </tr>
+      <tr>
+        <td><code>Alt+Shift+S, S</code></td>
+        <td>Generate toString()</td>
+        <td>Creates a toString() that prints all fields. Useful for debugging.</td>
+      </tr>
+      <tr>
+        <td><code>Ctrl+1</code></td>
+        <td>Quick Fix</td>
+        <td>Shows fix suggestions for errors. Red underline? Put cursor on it, press <code>Ctrl+1</code>, Eclipse offers to fix it (add import, create class, handle exception, etc.).</td>
+      </tr>
+      <tr>
+        <td><code>sysout + Ctrl+Space</code></td>
+        <td>Template: System.out.println()</td>
+        <td>Type "sysout" then <code>Ctrl+Space</code> &mdash; expands to the full print statement.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Productivity Tip</div>
+    <p>Don't memorize all shortcuts at once. Start with three: <code>Ctrl+Shift+O</code> (imports), <code>Ctrl+Space</code> (autocomplete), and <code>Ctrl+1</code> (quick fix). These three alone handle 80% of your coding friction. Add more as you get comfortable.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: CREATING NIMBUS CLASSES IN ECLIPSE                -->
+<!-- ============================================================ -->
+<section class="content-section" id="creating-classes">
+  <div class="section-tag">Section 10</div>
+  <h2>Creating Nimbus Classes in Eclipse</h2>
+  <p class="section-desc">The step-by-step flow of creating each Nimbus class in Eclipse. Follow this exact process for every file.</p>
+
+  <h3>Creating a Model Class (User.java)</h3>
+
+  <ol class="steps">
+    <li><strong>Right-click</strong> the <code>com.nimbus.model</code> package in Package Explorer &rarr; <code>New &rarr; Class</code>.</li>
+
+    <li><strong>Name:</strong> Type <code>User</code> (PascalCase, no .java extension &mdash; Eclipse adds it). Leave "Superclass" as <code>java.lang.Object</code>. Don't check any interfaces. Click Finish.</li>
+
+    <li><strong>Eclipse creates</strong> <code>User.java</code> with the package declaration and an empty class body. The cursor is inside the class, ready for you to type.</li>
+
+    <li><strong>Add fields.</strong> Type your private fields: <code>private int userId;</code>, <code>private String name;</code>, etc.</li>
+
+    <li><strong>Generate getters/setters.</strong> Right-click inside the class &rarr; <code>Source &rarr; Generate Getters and Setters</code> (or <code>Alt+Shift+S, R</code>). Select All &rarr; Generate. Eclipse writes every getter and setter for you.</li>
+
+    <li><strong>Generate constructors.</strong> <code>Alt+Shift+S, O</code> &rarr; select all fields &rarr; Generate. Then create a default constructor manually: <code>public User() {}</code>.</li>
+
+    <li><strong>Save</strong> (<code>Ctrl+S</code>). Eclipse compiles automatically. Green check = no errors.</li>
+  </ol>
+
+  <h3>Creating a DAO Class (UserDAO.java)</h3>
+
+  <ol class="steps">
+    <li><strong>Right-click</strong> <code>com.nimbus.dao</code> &rarr; <code>New &rarr; Class</code>. Name: <code>UserDAO</code>. Finish.</li>
+
+    <li><strong>Add method stubs.</strong> Start with the method signatures you need:
+      <code>public User findByEmail(String email) { ... }</code>
+      <code>public void save(User user) { ... }</code>
+    </li>
+
+    <li><strong>Write SQL and JDBC code</strong> inside each method. Use <code>DBConnection.getConnection()</code> to get the connection.</li>
+
+    <li><strong>Organize imports.</strong> Press <code>Ctrl+Shift+O</code>. Eclipse adds imports for <code>Connection</code>, <code>PreparedStatement</code>, <code>ResultSet</code>, etc. If there are multiple options (like <code>java.sql.Connection</code> vs <code>com.sun.Connection</code>), Eclipse shows a dialog &mdash; always pick the <code>java.sql</code> one.</li>
+  </ol>
+
+  <h3>Creating a Service Class (UserService.java)</h3>
+
+  <ol class="steps">
+    <li><strong>Right-click</strong> <code>com.nimbus.service</code> &rarr; <code>New &rarr; Class</code>. Name: <code>UserService</code>. Finish.</li>
+
+    <li><strong>Add a DAO field:</strong> <code>private UserDAO userDAO = new UserDAO();</code>. The service layer calls the DAO, so it needs a reference to it.</li>
+
+    <li><strong>Add methods</strong> that use the DAO. Example: <code>validateLogin()</code> calls <code>userDAO.findByEmail()</code>, checks the password, throws exceptions if invalid.</li>
+  </ol>
+
+  <h3>Creating a Servlet (LoginServlet.java)</h3>
+
+  <ol class="steps">
+    <li><strong>Right-click</strong> <code>com.nimbus.app</code> &rarr; <code>New &rarr; Class</code>. Name: <code>LoginServlet</code>. In the "Superclass" field, type <code>javax.servlet.http.HttpServlet</code> (or browse for it). Click Finish.</li>
+
+    <li><strong>Add the @WebServlet annotation</strong> above the class:
+      <code>@WebServlet("/login")</code>. This maps the URL <code>/login</code> to this servlet.
+    </li>
+
+    <li><strong>Override doPost method.</strong> Right-click inside the class &rarr; <code>Source &rarr; Override/Implement Methods</code> &rarr; check <code>doPost(HttpServletRequest, HttpServletResponse)</code> &rarr; OK. Eclipse generates the method with the correct signature.</li>
+
+    <li><strong>Add servlet logic:</strong> Read form parameters with <code>request.getParameter()</code>, call <code>userService.validateLogin()</code>, set session attributes, and forward/redirect to the appropriate page.</li>
+
+    <li><strong>Import resolution.</strong> <code>Ctrl+Shift+O</code> to add <code>javax.servlet</code> imports. These work because <code>servlet-api</code> is in your pom.xml with scope <code>provided</code>.</li>
+  </ol>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>You'll repeat this pattern for every feature: create the Model class first (data structure), then the DAO (database access), then the Service (business logic), then the Servlet (HTTP handling). <strong>Always build bottom-up.</strong> Model &rarr; DAO &rarr; Service &rarr; Servlet. Each layer depends on the one below it, so you can't write a Service without a working DAO.</p>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">The Golden Rule</div>
+    <p>Every file has exactly <strong>one responsibility</strong>. <code>UserDAO</code> does user database operations &mdash; not booking operations. <code>BookingService</code> handles booking business logic &mdash; not user authentication. If a class is doing two different things, it needs to be split into two classes. This is the <strong>Single Responsibility Principle</strong> and it's non-negotiable in professional code.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="hld-lld.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">HLD &amp; LLD</span>
+  </a>
+  <a href="java-how-it-works.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">How Java Works</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVC with Servlets + JSP | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link active"><span class="num">05</span> MVC with Servlets + JSP</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; The Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; Dependency Injection</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build It</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS MVC?                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-mvc">
+  <div class="section-tag">Section 01</div>
+  <h2>What is MVC?</h2>
+  <p class="section-desc">MVC stands for Model-View-Controller. It is an architecture pattern that separates your application into three distinct responsibilities, so each part can change independently.</p>
+
+  <h3>The Three Components</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Component</th><th>Responsibility</th><th>In Java Web Apps</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Model</strong></td>
+        <td>Data and business logic. Knows nothing about how data is displayed.</td>
+        <td>Java classes: <code>User.java</code>, <code>Booking.java</code>, <code>UserDAO.java</code>, <code>BookingService.java</code></td>
+      </tr>
+      <tr>
+        <td><strong>View</strong></td>
+        <td>Display layer. Shows data to the user. No logic beyond presentation.</td>
+        <td>JSP pages: <code>login.jsp</code>, <code>dashboard.jsp</code>, <code>tracking-result.jsp</code></td>
+      </tr>
+      <tr>
+        <td><strong>Controller</strong></td>
+        <td>Traffic cop. Receives requests, calls the Model, picks the View.</td>
+        <td>Servlets: <code>LoginServlet</code>, <code>BookingServlet</code>, <code>TrackingServlet</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Restaurant</div>
+    <p><strong>Model = Kitchen.</strong> The chefs prepare the food (data). They don't care how it's served or who ordered it. They just cook what's requested and hand it over.</p>
+    <p><strong>View = Plate &amp; Presentation.</strong> The food is plated beautifully on a dish (HTML page). The plate doesn't cook the food &mdash; it just displays it attractively.</p>
+    <p><strong>Controller = Waiter.</strong> The waiter takes the customer's order (HTTP request), tells the kitchen what to make (calls Service/DAO), gets the prepared dish (Model data), and brings it to the table on a plate (forwards to JSP).</p>
+    <p>If the restaurant changes its menu (Model), the waiter's job stays the same. If they redesign the plates (View), the kitchen doesn't change. Each layer is independent.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHY MVC?                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-mvc">
+  <div class="section-tag">Section 02</div>
+  <h2>Why MVC? &mdash; Separation of Concerns</h2>
+  <p class="section-desc">Without MVC, your code becomes a tangled mess where HTML, database queries, and business logic live in the same file. MVC separates them so each can evolve independently.</p>
+
+  <h3>What Happens Without MVC</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Everything in one JSP &mdash; the WRONG way</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// booking.jsp — this is a DISASTER
+&lt;%
+    // Database connection in JSP!
+    Connection conn = DriverManager.getConnection("jdbc:mysql://...");
+    String name = request.getParameter("senderName");
+    double weight = Double.parseDouble(request.getParameter("weight"));
+
+    // Business logic in JSP!
+    double cost = weight * 50;
+    if ("EXPRESS".equals(request.getParameter("type"))) {
+        cost *= 1.5;
+    }
+
+    // Database insert in JSP!
+    PreparedStatement ps = conn.prepareStatement("INSERT INTO bookings...");
+    ps.setString(1, name);
+    ps.setDouble(2, cost);
+    ps.executeUpdate();
+%&gt;
+&lt;html&gt;
+    &lt;h1&gt;Booking Confirmed!&lt;/h1&gt;
+    &lt;p&gt;Cost: Rs. &lt;%= cost %&gt;&lt;/p&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">What's Wrong With This?</div>
+    <ul>
+      <li><strong>Database code in JSP</strong> &mdash; if you change the database, you edit every JSP page.</li>
+      <li><strong>Business logic in JSP</strong> &mdash; the pricing formula is buried in HTML. No one can find it.</li>
+      <li><strong>No reuse</strong> &mdash; if another Servlet needs cost calculation, you copy-paste it.</li>
+      <li><strong>Untestable</strong> &mdash; you can't unit test a JSP. You need to deploy to Tomcat to check anything.</li>
+      <li><strong>Team chaos</strong> &mdash; the frontend person and backend person are editing the same file.</li>
+    </ul>
+  </div>
+
+  <h3>Benefits of MVC</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Benefit</th><th>What It Means</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Separation</strong></td>
+        <td>Each layer has one job. A change in one layer doesn't break the others.</td>
+      </tr>
+      <tr>
+        <td><strong>Testability</strong></td>
+        <td>You can test Models (DAOs, Services) with plain JUnit &mdash; no Tomcat needed.</td>
+      </tr>
+      <tr>
+        <td><strong>Reuse</strong></td>
+        <td>The same <code>BookingService</code> works for web, mobile API, and command-line.</td>
+      </tr>
+      <tr>
+        <td><strong>Parallel work</strong></td>
+        <td>Frontend developer works on JSPs. Backend developer works on Servlets/DAOs. No conflicts.</td>
+      </tr>
+      <tr>
+        <td><strong>Maintainability</strong></td>
+        <td>Bug in cost calculation? Go to <code>BookingService</code>. Display issue? Go to the JSP. You always know where to look.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: MVC FLOW                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="mvc-flow">
+  <div class="section-tag">Section 03</div>
+  <h2>The MVC Flow</h2>
+  <p class="section-desc">Every request follows the same path through the three layers. Once you understand this flow, you understand how every Java web application works.</p>
+
+  <h3>Complete Request Flow</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Browser<span class="flow-sub">POST /book (form data)</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Controller<span class="flow-sub">BookingServlet.doPost()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Service<span class="flow-sub">BookingService.createBooking()</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box cyan">DAO<span class="flow-sub">BookingDAO.insert()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Model<span class="flow-sub">Booking object with data</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Controller<span class="flow-sub">setAttribute() + forward()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">View<span class="flow-sub">booking-result.jsp</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">Browser<span class="flow-sub">Sees the confirmation page</span></div>
+    </div>
+    <div class="flow-label">Request &rarr; Controller &rarr; Service &rarr; DAO &rarr; Model &rarr; Controller &rarr; View &rarr; Response</div>
+  </div>
+
+  <h3>Step-by-Step Breakdown</h3>
+
+  <ol class="steps">
+    <li><strong>Browser sends request.</strong> User fills out the booking form and clicks Submit. The browser sends a POST request with form data to <code>/book</code>.</li>
+    <li><strong>Controller (Servlet) receives it.</strong> <code>BookingServlet.doPost()</code> reads the form parameters using <code>request.getParameter()</code>.</li>
+    <li><strong>Controller calls Service.</strong> The Servlet doesn't do the business logic itself. It calls <code>BookingService.createBooking(senderName, weight, type)</code>.</li>
+    <li><strong>Service calls DAO.</strong> The Service applies business rules (calculate cost, validate data) and calls <code>BookingDAO.insert(booking)</code> to save to the database.</li>
+    <li><strong>DAO returns Model.</strong> The DAO executes the SQL, gets the generated ID, and returns a <code>Booking</code> object (the Model) with all the data.</li>
+    <li><strong>Controller prepares the View.</strong> The Servlet puts the Booking object into the request: <code>request.setAttribute("booking", booking)</code>.</li>
+    <li><strong>Controller forwards to View.</strong> <code>request.getRequestDispatcher("/WEB-INF/booking-result.jsp").forward(request, response)</code>.</li>
+    <li><strong>View renders HTML.</strong> The JSP reads <code>${booking.cost}</code>, <code>${booking.senderName}</code>, and generates the HTML that goes back to the browser.</li>
+  </ol>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: MODEL LAYER                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="model">
+  <div class="section-tag">Section 04</div>
+  <h2>Model &mdash; Data Classes</h2>
+  <p class="section-desc">The Model layer contains your Java classes that represent data. These are the same POJO classes from Phase 2 &mdash; User, Booking, Parcel. Nothing changes.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+public class Booking {
+    private int bookingId;
+    private int senderId;
+    private String senderName;
+    private String receiverName;
+    private String receiverAddress;
+    private double weight;
+    private String parcelType;  // STANDARD, EXPRESS, FRAGILE
+    private double cost;
+    private String status;      // BOOKED, PICKED_UP, IN_TRANSIT, DELIVERED
+
+    // Constructors, getters, setters
+    // ... same as Phase 2
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Model Classes Are Platform-Independent</div>
+    <p>Your <code>Booking.java</code> class has no idea whether it's being used in a console app, a web app, or a REST API. It just holds data. That's the whole point &mdash; the Model doesn't know about HTTP, Servlets, or JSPs. It works everywhere.</p>
+  </div>
+
+  <h3>Model Also Includes Service &amp; DAO</h3>
+
+  <p>In MVC, the "Model" is not just the data classes. It includes everything that deals with data and business logic:</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Model Classes</div>
+      <div class="layer-detail"><code>User</code>, <code>Booking</code>, <code>Parcel</code> &mdash; plain Java objects holding data (POJOs)</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">DAO Layer</div>
+      <div class="layer-detail"><code>UserDAO</code>, <code>BookingDAO</code> &mdash; talk to the database (CRUD operations)</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Service Layer</div>
+      <div class="layer-detail"><code>BookingService</code>, <code>TrackingService</code> &mdash; business rules, validation, orchestration</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: VIEW LAYER                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="view">
+  <div class="section-tag">Section 05</div>
+  <h2>View &mdash; JSP Pages</h2>
+  <p class="section-desc">The View layer is JSP pages that display data. A JSP should only contain HTML and EL expressions (${}). No database code. No business logic. Display only.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WEB-INF/booking-result.jsp &mdash; Clean View</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Booking Confirmation&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;Booking Confirmed!&lt;/h1&gt;
+
+    &lt;!-- Display only. No database code. No calculations. --&gt;
+    &lt;table&gt;
+        &lt;tr&gt;&lt;td&gt;Booking ID:&lt;/td&gt;&lt;td&gt;NB-${booking.bookingId}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Sender:&lt;/td&gt;&lt;td&gt;${booking.senderName}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Receiver:&lt;/td&gt;&lt;td&gt;${booking.receiverName}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Weight:&lt;/td&gt;&lt;td&gt;${booking.weight} kg&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Type:&lt;/td&gt;&lt;td&gt;${booking.parcelType}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Cost:&lt;/td&gt;&lt;td&gt;Rs. ${booking.cost}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Status:&lt;/td&gt;&lt;td&gt;${booking.status}&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;!-- Conditional display using JSTL --&gt;
+    &lt;c:if test="${not empty successMessage}"&gt;
+        &lt;div class="success"&gt;${successMessage}&lt;/div&gt;
+    &lt;/c:if&gt;
+
+    &lt;a href="book"&gt;Book Another Parcel&lt;/a&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">The Golden Rule of Views</div>
+    <p>A JSP page should be able to answer: <strong>"Where did this data come from?"</strong> with <strong>"I don't know, it was in the request attributes."</strong> If a JSP knows about the database, about JDBC, about SQL &mdash; it's doing too much. Move that code to the Controller or Model.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: CONTROLLER LAYER                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="controller">
+  <div class="section-tag">Section 06</div>
+  <h2>Controller &mdash; Servlets</h2>
+  <p class="section-desc">The Controller is the Servlet. It receives the request, decides what to do, calls the right Service/DAO, and forwards to the right JSP. It does not contain business logic or HTML.</p>
+
+  <h3>What a Controller Should Do</h3>
+
+  <ol class="steps">
+    <li><strong>Read input.</strong> Extract parameters from the request: <code>request.getParameter("email")</code></li>
+    <li><strong>Validate input.</strong> Check for null, empty, wrong format. Return error to View if invalid.</li>
+    <li><strong>Call the Model.</strong> Pass data to the Service layer: <code>bookingService.createBooking(data)</code></li>
+    <li><strong>Prepare the View.</strong> Put results into request attributes: <code>request.setAttribute("booking", booking)</code></li>
+    <li><strong>Choose the View.</strong> Forward to the right JSP or redirect to another URL.</li>
+  </ol>
+
+  <h3>What a Controller Should NOT Do</h3>
+
+  <ul>
+    <li>Write SQL queries or call <code>DriverManager.getConnection()</code></li>
+    <li>Calculate business rules (pricing, discounts, status transitions)</li>
+    <li>Generate HTML using <code>response.getWriter().println("&lt;html&gt;...")</code></li>
+    <li>Hold state between requests (Servlets are shared across threads)</li>
+  </ul>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: FULL NIMBUS MVC EXAMPLE                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-mvc">
+  <div class="section-tag">Section 07</div>
+  <h2>Full Nimbus MVC Example &mdash; Booking Flow</h2>
+  <p class="section-desc">Let's trace a complete booking request through all three MVC layers. This is how a real user booking a parcel flows through your code.</p>
+
+  <h3>Controller: BookingController Servlet</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/servlet/BookingServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.model.Booking;
+import com.nimbus.model.User;
+import com.nimbus.service.BookingService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+
+@WebServlet("/book")
+public class BookingServlet extends HttpServlet {
+
+    private BookingService bookingService;
+
+    @Override
+    public void init() throws ServletException {
+        bookingService = new BookingService();  // Model layer
+    }
+
+    // GET /book — show the booking form (View)
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
+        request.getRequestDispatcher("/WEB-INF/booking.jsp")
+               .forward(request, response);
+    }
+
+    // POST /book — process booking (Controller logic)
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        try {
+            // 1. READ INPUT (Controller job)
+            String senderName = request.getParameter("senderName");
+            String receiverName = request.getParameter("receiverName");
+            String receiverAddress = request.getParameter("receiverAddress");
+            double weight = Double.parseDouble(request.getParameter("weight"));
+            String parcelType = request.getParameter("parcelType");
+
+            // 2. CALL THE MODEL (Service does business logic)
+            Booking booking = bookingService.createBooking(
+                loggedInUser.getUserId(),
+                senderName, receiverName, receiverAddress,
+                weight, parcelType
+            );
+
+            // 3. CHOOSE THE VIEW (redirect for PRG)
+            session.setAttribute("successMessage",
+                "Parcel booked! ID: NB-" + booking.getBookingId());
+            response.sendRedirect("invoice?bookingId=" + booking.getBookingId());
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid weight value");
+            request.getRequestDispatcher("/WEB-INF/booking.jsp")
+                   .forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("error", "Booking failed: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/booking.jsp")
+                   .forward(request, response);
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Controller responsibilities only</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookingService = new BookingService()</div>
+        <div class="breakdown-explain">The Controller creates the Service once in <code>init()</code>. It delegates ALL business logic to the Service. The Servlet never calculates cost or validates business rules.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.getParameter("senderName")</div>
+        <div class="breakdown-explain">Controller's first job: read input. It extracts raw data from the HTTP request and passes it to the Model layer.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookingService.createBooking(...)</div>
+        <div class="breakdown-explain">Controller's second job: call the Model. The Service handles cost calculation, validation, and database insertion. The Controller doesn't know or care how.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">response.sendRedirect("invoice?bookingId=...")</div>
+        <div class="breakdown-explain">Controller's third job: choose the View. For successful POST, it uses PRG (redirect). For errors, it forwards back to the form with an error message.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Model: BookingService</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/BookingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.model.Booking;
+
+public class BookingService {
+
+    private BookingDAO bookingDAO = new BookingDAO();
+
+    public Booking createBooking(int senderId, String senderName,
+                                  String receiverName, String receiverAddress,
+                                  double weight, String parcelType) {
+
+        // BUSINESS LOGIC lives here, not in the Servlet
+        Booking booking = new Booking();
+        booking.setSenderId(senderId);
+        booking.setSenderName(senderName);
+        booking.setReceiverName(receiverName);
+        booking.setReceiverAddress(receiverAddress);
+        booking.setWeight(weight);
+        booking.setParcelType(parcelType);
+        booking.setStatus("BOOKED");
+
+        // Cost calculation — the business rule
+        double cost = weight * 50;  // Rs. 50 per kg
+        if ("EXPRESS".equals(parcelType)) {
+            cost *= 1.5;  // 50% extra for express
+        } else if ("FRAGILE".equals(parcelType)) {
+            cost *= 1.3;  // 30% extra for fragile handling
+        }
+        booking.setCost(cost);
+
+        // Save to database via DAO
+        int bookingId = bookingDAO.insertBooking(booking);
+        booking.setBookingId(bookingId);
+
+        return booking;
+    }
+}</code></pre>
+  </div>
+
+  <h3>Model: BookingDAO</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Booking;
+import java.sql.*;
+
+public class BookingDAO {
+
+    public int insertBooking(Booking booking) {
+        String sql = "INSERT INTO bookings (sender_id, sender_name, " +
+                     "receiver_name, receiver_address, weight, " +
+                     "parcel_type, cost, status) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql,
+                     Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setInt(1, booking.getSenderId());
+            ps.setString(2, booking.getSenderName());
+            ps.setString(3, booking.getReceiverName());
+            ps.setString(4, booking.getReceiverAddress());
+            ps.setDouble(5, booking.getWeight());
+            ps.setString(6, booking.getParcelType());
+            ps.setDouble(7, booking.getCost());
+            ps.setString(8, booking.getStatus());
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);  // Return generated booking ID
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to insert booking", e);
+        }
+        return -1;
+    }
+
+    public Booking findById(int bookingId) {
+        String sql = "SELECT * FROM bookings WHERE booking_id = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setSenderName(rs.getString("sender_name"));
+                booking.setReceiverName(rs.getString("receiver_name"));
+                booking.setWeight(rs.getDouble("weight"));
+                booking.setParcelType(rs.getString("parcel_type"));
+                booking.setCost(rs.getDouble("cost"));
+                booking.setStatus(rs.getString("status"));
+                return booking;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find booking", e);
+        }
+        return null;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; The Full Picture</div>
+    <p>Notice the clean separation:</p>
+    <ul>
+      <li><strong>BookingServlet</strong> (Controller): reads form data, calls service, picks JSP. Zero SQL, zero HTML.</li>
+      <li><strong>BookingService</strong> (Model - logic): calculates cost, validates rules. Zero HTTP, zero SQL.</li>
+      <li><strong>BookingDAO</strong> (Model - data): executes SQL, maps ResultSet to objects. Zero HTTP, zero business rules.</li>
+      <li><strong>booking-result.jsp</strong> (View): displays <code>${booking.cost}</code>. Zero Java logic, zero SQL.</li>
+    </ul>
+    <p>If the pricing formula changes from Rs. 50/kg to Rs. 65/kg, you change <strong>one line</strong> in <code>BookingService</code>. Nothing else changes.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: COMMON MISTAKES                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="mistakes">
+  <div class="section-tag">Section 08</div>
+  <h2>Common MVC Mistakes</h2>
+  <p class="section-desc">These are the mistakes every beginner makes. Knowing them upfront saves you hours of debugging and refactoring later.</p>
+
+  <h3>Mistake 1: Database Code in JSP</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong &mdash; SQL in JSP</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>&lt;%
+Connection conn = DriverManager
+  .getConnection("jdbc:mysql://...");
+ResultSet rs = conn.createStatement()
+  .executeQuery("SELECT * FROM users");
+while (rs.next()) {
+%&gt;
+&lt;p&gt;&lt;%= rs.getString("name") %&gt;&lt;/p&gt;
+&lt;% } %&gt;</code></pre>
+        <p style="margin-top: 12px;">Database in the View layer. Impossible to test, impossible to reuse, impossible to maintain.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right &mdash; JSP reads attributes</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>&lt;c:forEach var="user"
+           items="${users}"&gt;
+  &lt;p&gt;${user.name}&lt;/p&gt;
+&lt;/c:forEach&gt;</code></pre>
+        <p style="margin-top: 12px;">JSP only displays. The Servlet loaded the users from the DAO and put them in request attributes.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 2: HTML in Servlet</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong &mdash; HTML in Servlet</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>PrintWriter out = response.getWriter();
+out.println("&lt;html&gt;&lt;body&gt;");
+out.println("&lt;h1&gt;Welcome " + name + "&lt;/h1&gt;");
+out.println("&lt;table&gt;");
+for (Booking b : bookings) {
+  out.println("&lt;tr&gt;&lt;td&gt;" + b.getId()
+    + "&lt;/td&gt;&lt;/tr&gt;");
+}
+out.println("&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;");</code></pre>
+        <p style="margin-top: 12px;">HTML buried in Java strings. No syntax highlighting, no designer can touch it, no CSS preview.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right &mdash; Forward to JSP</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>request.setAttribute("name", name);
+request.setAttribute("bookings", bookings);
+request.getRequestDispatcher(
+  "/WEB-INF/dashboard.jsp")
+  .forward(request, response);</code></pre>
+        <p style="margin-top: 12px;">Servlet passes data. JSP handles all HTML/CSS. A designer can edit the JSP without touching Java.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 3: Business Logic in Controller</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong &mdash; Cost calc in Servlet</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>// In BookingServlet.doPost()
+double cost = weight * 50;
+if ("EXPRESS".equals(type)) cost *= 1.5;
+if (weight &gt; 10) cost -= cost * 0.1;
+booking.setCost(cost);
+bookingDAO.insert(booking);</code></pre>
+        <p style="margin-top: 12px;">Pricing formula embedded in the Controller. If a mobile API also creates bookings, you'd have to duplicate this code.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right &mdash; Delegate to Service</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>// In BookingServlet.doPost()
+Booking booking = bookingService
+  .createBooking(
+    senderId, senderName,
+    receiverName, weight, type);
+
+// BookingService handles cost,
+// validation, and DB insertion.
+// One place, used by all entry points.</code></pre>
+        <p style="margin-top: 12px;">Controller just passes data to Service. Business logic lives in one place. Web and API both use the same Service.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: WITHOUT VS WITH MVC                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="comparison">
+  <div class="section-tag">Section 09</div>
+  <h2>Without MVC vs With MVC</h2>
+  <p class="section-desc">A side-by-side look at how the same feature is built with and without MVC architecture.</p>
+
+  <h3>Feature: Show Booking History</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without MVC</div>
+      <div class="comparison-body">
+        <ul>
+          <li>One file: <code>history.jsp</code></li>
+          <li>JSP connects to database</li>
+          <li>JSP runs SQL query</li>
+          <li>JSP loops through ResultSet</li>
+          <li>JSP generates HTML rows</li>
+          <li>Everything in one place</li>
+        </ul>
+        <p style="margin-top: 12px;"><strong>Problems:</strong> Can't test without Tomcat. Can't reuse the query. Frontend dev can't edit without knowing SQL. Change database? Edit every JSP.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With MVC</div>
+      <div class="comparison-body">
+        <ul>
+          <li><code>HistoryServlet</code> (Controller) reads params, calls DAO</li>
+          <li><code>BookingDAO</code> (Model) runs query, returns <code>List&lt;Booking&gt;</code></li>
+          <li><code>history.jsp</code> (View) loops <code>${bookings}</code> with JSTL</li>
+          <li>Three files, three responsibilities</li>
+        </ul>
+        <p style="margin-top: 12px;"><strong>Benefits:</strong> Unit test the DAO alone. Frontend edits JSP only. Change DB? Edit DAO only. Add a REST API? Reuse the same DAO.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>File Count Comparison</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Feature</th><th>Without MVC</th><th>With MVC</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Login</td>
+        <td>1 file (login.jsp with scriptlets)</td>
+        <td>3 files: LoginServlet + UserDAO + login.jsp</td>
+      </tr>
+      <tr>
+        <td>Booking</td>
+        <td>1 file (booking.jsp)</td>
+        <td>4 files: BookingServlet + BookingService + BookingDAO + booking.jsp</td>
+      </tr>
+      <tr>
+        <td>Tracking</td>
+        <td>1 file (tracking.jsp)</td>
+        <td>4 files: TrackingServlet + TrackingService + BookingDAO + tracking.jsp</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">More Files = Better?</div>
+    <p>Yes &mdash; for anything beyond a toy project. With 1 file per feature, you save time in week 1. By month 3, you're drowning. With MVC, each file is small, focused, testable, and you always know exactly where to fix a bug. Every professional Java application uses MVC or a variant of it.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: EXERCISES                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 10</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build these to internalize the MVC pattern. Focus on keeping each layer clean.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Identify the Violations</div>
+    <p>Look at this code and list every MVC violation:</p>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Find the violations</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">@WebServlet("/register")
+public class RegisterServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest req,
+                          HttpServletResponse resp) throws Exception {
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+
+        // SQL in Servlet
+        Connection conn = DriverManager.getConnection("jdbc:mysql://...");
+        PreparedStatement ps = conn.prepareStatement(
+            "INSERT INTO users (name, email) VALUES (?, ?)");
+        ps.setString(1, name);
+        ps.setString(2, email);
+        ps.executeUpdate();
+
+        // HTML in Servlet
+        resp.getWriter().println("&lt;html&gt;&lt;body&gt;Welcome " + name + "&lt;/body&gt;&lt;/html&gt;");
+    }
+}</code></pre>
+    </div>
+    <p><strong>Hint:</strong> There are at least 4 violations. What should be in the DAO? What should be in a JSP? What's missing entirely?</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: Build UserProfile MVC</div>
+    <p>Build a complete MVC flow for viewing a user profile:</p>
+    <ul>
+      <li><strong>Controller:</strong> <code>ProfileServlet</code> mapped to <code>/profile?userId=5</code></li>
+      <li><strong>Model:</strong> <code>UserDAO.findById(int userId)</code> returns a <code>User</code> object</li>
+      <li><strong>View:</strong> <code>profile.jsp</code> displays name, email, phone, total bookings</li>
+    </ul>
+    <p>The Servlet should handle missing userId, user not found, and forward with error messages.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Refactor a Fat JSP</div>
+    <p>Take this JSP that does everything in one file and refactor it into proper MVC:</p>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Fat JSP to refactor</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">&lt;%
+String id = request.getParameter("bookingId");
+Connection c = DriverManager.getConnection("jdbc:mysql://localhost/nimbus");
+ResultSet rs = c.createStatement().executeQuery(
+    "SELECT * FROM bookings WHERE booking_id = " + id);
+if (rs.next()) {
+    double cost = rs.getDouble("cost");
+    double tax = cost * 0.18;
+    double total = cost + tax;
+%&gt;
+&lt;h1&gt;Invoice #&lt;%= id %&gt;&lt;/h1&gt;
+&lt;p&gt;Cost: &lt;%= cost %&gt;&lt;/p&gt;
+&lt;p&gt;Tax: &lt;%= tax %&gt;&lt;/p&gt;
+&lt;p&gt;Total: &lt;%= total %&gt;&lt;/p&gt;
+&lt;% } %&gt;</code></pre>
+    </div>
+    <p>Create: <code>InvoiceServlet</code>, <code>InvoiceService</code> (tax calculation), <code>BookingDAO</code>, and <code>invoice.jsp</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Add a New Feature</div>
+    <p>Add a "Cancel Booking" feature to Nimbus using MVC:</p>
+    <ul>
+      <li><strong>URL:</strong> POST <code>/cancel?bookingId=42</code></li>
+      <li><strong>Business rule:</strong> Only bookings with status "BOOKED" can be cancelled. "IN_TRANSIT" cannot.</li>
+      <li><strong>On success:</strong> Redirect to history page with flash message</li>
+      <li><strong>On failure:</strong> Forward to error page with reason</li>
+    </ul>
+    <p>Write: <code>CancelServlet</code>, <code>BookingService.cancelBooking()</code>, update <code>BookingDAO</code>, and <code>cancel-error.jsp</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: Draw the MVC Diagram</div>
+    <p>For the Nimbus tracking feature, draw a diagram showing:</p>
+    <ul>
+      <li>Which class is the Controller, Model, and View</li>
+      <li>The flow of a GET request to <code>/track?bookingId=NB-1042</code></li>
+      <li>What data is passed at each step</li>
+      <li>Where polymorphism (TrackingService) fits in the MVC layers</li>
+    </ul>
+    <p><strong>Goal:</strong> Prove you can trace any request through the three layers.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="jsp.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">JSP (JavaServer Pages)</span>
+  </a>
+  <a href="sessions.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Session Management</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

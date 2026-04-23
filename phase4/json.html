@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON &mdash; Data Format | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link active"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> API Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Architecture</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus as Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular &mdash; Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Angular Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Angular Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS JSON                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-json">
+  <div class="section-tag">Section 01</div>
+  <h2>What is JSON?</h2>
+  <p class="section-desc">JSON (JavaScript Object Notation) is the universal language APIs use to send and receive data. When your Angular frontend talks to your Spring Boot backend, the conversation happens in JSON.</p>
+
+  <h3>The Simplest Definition</h3>
+
+  <p>JSON is a <strong>text-based data format</strong> that's both human-readable and machine-parseable. It looks like this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">A JSON object</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "name": "Darshan",
+  "age": 23,
+  "developer": true,
+  "email": null
+}</code></pre>
+  </div>
+
+  <p>That's it. Curly braces, key-value pairs, comma-separated. Every API you'll ever build or consume uses this format.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of JSON as a <strong>parcel label</strong>. It has structured fields (sender, receiver, weight, address) that both the sender and the delivery system can read. JSON is the label format that both frontend and backend agree on.</p>
+  </div>
+
+  <h3>Why JSON Matters for Nimbus</h3>
+
+  <p>In Phase 3, your servlets returned HTML pages. In Phase 4, your REST APIs return <strong>JSON data</strong>. The Angular frontend receives this JSON and builds the UI from it. This separation is what makes REST powerful &mdash; the backend doesn't care if the consumer is a web app, mobile app, or another service.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box orange">Angular Frontend
+        <span class="flow-sub">sends JSON request</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Spring Boot API
+        <span class="flow-sub">processes request</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">JSON Response
+        <span class="flow-sub">data, not HTML</span>
+      </div>
+    </div>
+    <div class="flow-label">REST APIs exchange data as JSON &mdash; not HTML pages</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: JSON SYNTAX                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="syntax">
+  <div class="section-tag">Section 02</div>
+  <h2>JSON Syntax</h2>
+  <p class="section-desc">Six data types. Two structures. That's the entire language.</p>
+
+  <h3>The Six Data Types</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Example</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>String</strong></td>
+        <td><code>"hello"</code></td>
+        <td>Always double quotes. Never single quotes.</td>
+      </tr>
+      <tr>
+        <td><strong>Number</strong></td>
+        <td><code>42</code>, <code>3.14</code>, <code>-7</code></td>
+        <td>No quotes. Integers and decimals.</td>
+      </tr>
+      <tr>
+        <td><strong>Boolean</strong></td>
+        <td><code>true</code>, <code>false</code></td>
+        <td>Lowercase only. No quotes.</td>
+      </tr>
+      <tr>
+        <td><strong>Null</strong></td>
+        <td><code>null</code></td>
+        <td>Means "no value." Lowercase, no quotes.</td>
+      </tr>
+      <tr>
+        <td><strong>Object</strong></td>
+        <td><code>{ "key": "value" }</code></td>
+        <td>Curly braces. Unordered key-value pairs.</td>
+      </tr>
+      <tr>
+        <td><strong>Array</strong></td>
+        <td><code>[1, 2, 3]</code></td>
+        <td>Square brackets. Ordered list of values.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Objects &mdash; Key-Value Pairs</h3>
+
+  <p>An object is wrapped in <code>{ }</code>. Keys are always strings. Values can be any of the six types, including other objects and arrays:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">JSON Object with nested data</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "bookingId": 1001,
+  "senderName": "Darshan",
+  "receiverName": "Amit",
+  "weight": 2.5,
+  "fragile": true,
+  "specialInstructions": null,
+  "address": {
+    "street": "MG Road",
+    "city": "Bangalore",
+    "pincode": "560001"
+  }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"bookingId": 1001</div>
+        <div class="breakdown-explain">Number value &mdash; no quotes around 1001. JSON numbers can be integers or decimals.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"senderName": "Darshan"</div>
+        <div class="breakdown-explain">String value &mdash; must be in double quotes. Both the key AND the value are quoted for strings.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"fragile": true</div>
+        <div class="breakdown-explain">Boolean &mdash; lowercase <code>true</code> or <code>false</code>. No quotes. <code>"true"</code> would be a string, not a boolean.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"specialInstructions": null</div>
+        <div class="breakdown-explain">Null means "this field exists but has no value." Different from omitting the field entirely.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8-12</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"address": { ... }</div>
+        <div class="breakdown-explain">Nested object &mdash; the value of "address" is another JSON object with its own key-value pairs. You can nest as deep as needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Arrays &mdash; Ordered Lists</h3>
+
+  <p>An array is wrapped in <code>[ ]</code>. It holds an ordered list of values (any type, including mixed types):</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">JSON Arrays</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "tags": ["express", "fragile", "insured"],
+  "trackingHistory": [
+    { "status": "Booked", "timestamp": "2026-04-23T10:00:00" },
+    { "status": "In Transit", "timestamp": "2026-04-23T14:30:00" },
+    { "status": "Delivered", "timestamp": "2026-04-24T09:15:00" }
+  ]
+}</code></pre>
+  </div>
+
+  <p><code>tags</code> is an array of strings. <code>trackingHistory</code> is an array of objects. Arrays of objects are the most common pattern in API responses &mdash; it's how you return a list of bookings, users, or any collection.</p>
+
+  <h3>Syntax Rules &mdash; Common Mistakes</h3>
+
+  <div class="callout warning">
+    <div class="callout-title">JSON Gotchas</div>
+    <ul>
+      <li><strong>No trailing commas:</strong> <code>{"a": 1, "b": 2,}</code> is INVALID. The comma after <code>2</code> breaks it.</li>
+      <li><strong>No single quotes:</strong> <code>{'name': 'John'}</code> is INVALID. Only double quotes.</li>
+      <li><strong>No comments:</strong> You cannot add <code>// comment</code> or <code>/* comment */</code> in JSON.</li>
+      <li><strong>Keys must be strings:</strong> <code>{name: "John"}</code> is INVALID. Must be <code>{"name": "John"}</code>.</li>
+      <li><strong>No undefined:</strong> JavaScript has <code>undefined</code>, but JSON does not. Use <code>null</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: JSON VS XML                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="json-vs-xml">
+  <div class="section-tag">Section 03</div>
+  <h2>JSON vs XML</h2>
+  <p class="section-desc">Before JSON, XML was the standard data format. Here's why JSON replaced it in most modern APIs.</p>
+
+  <h3>The Same Data, Two Formats</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">JSON</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin: 0; background: none;">
+{
+  "name": "Darshan",
+  "age": 23,
+  "skills": ["Java", "Angular"]
+}
+</pre>
+        <p style="margin-top: 8px;"><strong>68 characters</strong></p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">XML</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin: 0; background: none;">
+&lt;person&gt;
+  &lt;name&gt;Darshan&lt;/name&gt;
+  &lt;age&gt;23&lt;/age&gt;
+  &lt;skills&gt;
+    &lt;skill&gt;Java&lt;/skill&gt;
+    &lt;skill&gt;Angular&lt;/skill&gt;
+  &lt;/skills&gt;
+&lt;/person&gt;
+</pre>
+        <p style="margin-top: 8px;"><strong>156 characters</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Comparison Table</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>JSON</th>
+        <th>XML</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Readability</td>
+        <td>Clean, compact</td>
+        <td>Verbose, tag-heavy</td>
+      </tr>
+      <tr>
+        <td>File size</td>
+        <td>Smaller (less overhead)</td>
+        <td>Larger (opening + closing tags)</td>
+      </tr>
+      <tr>
+        <td>Parsing speed</td>
+        <td>Faster</td>
+        <td>Slower</td>
+      </tr>
+      <tr>
+        <td>Data types</td>
+        <td>String, number, boolean, null, object, array</td>
+        <td>Everything is a string (no native types)</td>
+      </tr>
+      <tr>
+        <td>Arrays</td>
+        <td>Native <code>[ ]</code> syntax</td>
+        <td>No native array &mdash; repeated elements</td>
+      </tr>
+      <tr>
+        <td>Comments</td>
+        <td>Not supported</td>
+        <td>Supported</td>
+      </tr>
+      <tr>
+        <td>Schema validation</td>
+        <td>JSON Schema (optional)</td>
+        <td>XSD, DTD (mature)</td>
+      </tr>
+      <tr>
+        <td>Used by</td>
+        <td>REST APIs, modern web</td>
+        <td>SOAP APIs, enterprise/legacy systems</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Why JSON Won</div>
+    <p>JSON is native to JavaScript &mdash; you can parse it with one line: <code>JSON.parse(text)</code>. XML needs a parser, DOM traversal, and type conversion. As the web moved to JavaScript-heavy frontends, JSON became the natural choice. Today, <strong>over 90% of public APIs</strong> use JSON as their primary format.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: NIMBUS AS JSON                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-json">
+  <div class="section-tag">Section 04</div>
+  <h2>Nimbus as JSON</h2>
+  <p class="section-desc">Every Java object in Nimbus becomes a JSON object when sent through the API. Here's what your entities look like as JSON.</p>
+
+  <h3>User Object</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User &mdash; Java Class vs JSON</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "userId": 1,
+  "name": "Darshan",
+  "email": "darshan@nimbus.com",
+  "phone": "9876543210",
+  "role": "CUSTOMER",
+  "createdAt": "2026-04-23T10:00:00"
+}</code></pre>
+  </div>
+
+  <p>Notice how Java field names become JSON keys. <code>private int userId</code> becomes <code>"userId": 1</code>. <code>private String name</code> becomes <code>"name": "Darshan"</code>. The conversion is automatic.</p>
+
+  <h3>Booking Object</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking &mdash; JSON representation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "bookingId": 1001,
+  "userId": 1,
+  "senderName": "Darshan",
+  "senderAddress": "MG Road, Bangalore",
+  "receiverName": "Amit",
+  "receiverAddress": "FC Road, Pune",
+  "weight": 2.5,
+  "status": "IN_TRANSIT",
+  "pickupDate": "2026-04-23",
+  "estimatedDelivery": "2026-04-26",
+  "createdAt": "2026-04-23T10:30:00"
+}</code></pre>
+  </div>
+
+  <h3>Array of Bookings &mdash; API List Response</h3>
+
+  <p>When the API returns multiple bookings (like "get all bookings for user 1"), the response is a JSON array of booking objects:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GET /api/bookings?userId=1 &mdash; Response</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">[
+  {
+    "bookingId": 1001,
+    "senderName": "Darshan",
+    "receiverName": "Amit",
+    "status": "DELIVERED",
+    "weight": 2.5
+  },
+  {
+    "bookingId": 1002,
+    "senderName": "Darshan",
+    "receiverName": "Priya",
+    "status": "IN_TRANSIT",
+    "weight": 1.0
+  }
+]</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every REST endpoint you build returns JSON like this. <code>GET /api/bookings/1001</code> returns a single booking object. <code>GET /api/bookings?userId=1</code> returns an array. <code>POST /api/bookings</code> accepts a JSON booking in the request body. The format is identical on both ends &mdash; the frontend sends JSON, the backend responds with JSON.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: JACKSON LIBRARY                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="jackson">
+  <div class="section-tag">Section 05</div>
+  <h2>Jackson Library</h2>
+  <p class="section-desc">Jackson is the library that converts Java objects to JSON and back. Spring Boot includes it automatically &mdash; you don't need to add any dependency.</p>
+
+  <h3>What Jackson Does</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Java Object
+        <span class="flow-sub">User user = new User()</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Serialization
+        <span class="flow-sub">Java &rarr; JSON</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">JSON String
+        <span class="flow-sub">{"name": "Darshan"}</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr; and the reverse</div>
+    <div class="flow-row">
+      <div class="flow-box purple">JSON String
+        <span class="flow-sub">{"name": "Darshan"}</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Deserialization
+        <span class="flow-sub">JSON &rarr; Java</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Java Object
+        <span class="flow-sub">User user</span>
+      </div>
+    </div>
+    <div class="flow-label">Serialization = Java &rarr; JSON (response) | Deserialization = JSON &rarr; Java (request)</div>
+  </div>
+
+  <h3>ObjectMapper &mdash; The Core Class</h3>
+
+  <p><code>ObjectMapper</code> is Jackson's main class. It handles both directions:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ObjectMapper &mdash; Serialization (Java &rarr; JSON)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import com.fasterxml.jackson.databind.ObjectMapper;
+
+ObjectMapper mapper = new ObjectMapper();
+
+// Create a Java object
+User user = new User(1, "Darshan", "darshan@nimbus.com");
+
+// Convert to JSON string
+String json = mapper.writeValueAsString(user);
+System.out.println(json);
+// Output: {"userId":1,"name":"Darshan","email":"darshan@nimbus.com"}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ObjectMapper mapper = new ObjectMapper();</div>
+        <div class="breakdown-explain">Creates the Jackson converter. In Spring Boot, you never do this manually &mdash; Spring creates one for you. But in standalone Java, this is how you start.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">mapper.writeValueAsString(user)</div>
+        <div class="breakdown-explain"><code>writeValueAsString</code> takes any Java object, reads its getter methods, and builds a JSON string from the field values. User's <code>getName()</code> becomes <code>"name": "Darshan"</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ObjectMapper &mdash; Deserialization (JSON &rarr; Java)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String json = "{\"userId\":1,\"name\":\"Darshan\",\"email\":\"darshan@nimbus.com\"}";
+
+// Convert JSON string to Java object
+User user = mapper.readValue(json, User.class);
+
+System.out.println(user.getName());   // "Darshan"
+System.out.println(user.getEmail());  // "darshan@nimbus.com"</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">mapper.readValue(json, User.class)</div>
+        <div class="breakdown-explain"><code>readValue</code> takes a JSON string and a target class. Jackson reads the JSON keys, matches them to setter methods on User, and populates a new User object. <code>"name": "Darshan"</code> calls <code>setName("Darshan")</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>How Jackson Matches Fields</h3>
+
+  <p>Jackson uses <strong>getter/setter method names</strong> to determine JSON key names. It strips "get"/"set" and lowercases the first letter:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Java Method</th>
+        <th>JSON Key</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>getName()</code> / <code>setName()</code></td>
+        <td><code>"name"</code></td>
+      </tr>
+      <tr>
+        <td><code>getUserId()</code> / <code>setUserId()</code></td>
+        <td><code>"userId"</code></td>
+      </tr>
+      <tr>
+        <td><code>isFragile()</code></td>
+        <td><code>"fragile"</code> (boolean getters use "is")</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout important">
+    <div class="callout-title">Jackson Requirements</div>
+    <p>For Jackson to work, your Java class needs:</p>
+    <ul>
+      <li>A <strong>no-arg constructor</strong> (for deserialization &mdash; Jackson needs to create an empty object first)</li>
+      <li><strong>Getter methods</strong> (for serialization &mdash; Jackson reads values through getters)</li>
+      <li><strong>Setter methods</strong> (for deserialization &mdash; Jackson sets values through setters)</li>
+    </ul>
+    <p>If your Nimbus <code>User</code> and <code>Booking</code> classes already follow the JavaBean convention with getters/setters, Jackson works out of the box.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: JACKSON ANNOTATIONS                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="jackson-annotations">
+  <div class="section-tag">Section 06</div>
+  <h2>Jackson Annotations</h2>
+  <p class="section-desc">When the default behavior isn't enough, Jackson annotations give you fine-grained control over serialization and deserialization.</p>
+
+  <h3>@JsonProperty &mdash; Custom Key Names</h3>
+
+  <p>When you want the JSON key to be different from the Java field name:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@JsonProperty</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    @JsonProperty("user_id")     // JSON key will be "user_id" not "userId"
+    private int userId;
+
+    @JsonProperty("full_name")   // JSON key will be "full_name" not "name"
+    private String name;
+
+    private String email;        // No annotation = uses "email" (default)
+}
+
+// Produces:
+// { "user_id": 1, "full_name": "Darshan", "email": "darshan@nimbus.com" }</code></pre>
+  </div>
+
+  <h3>@JsonIgnore &mdash; Hide Fields</h3>
+
+  <p>Some fields should never appear in JSON responses &mdash; like passwords:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@JsonIgnore &mdash; Security-sensitive fields</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    private int userId;
+    private String name;
+    private String email;
+
+    @JsonIgnore                  // This field will NOT appear in JSON output
+    private String password;
+
+    @JsonIgnore                  // Internal field, not needed by frontend
+    private String internalNotes;
+}
+
+// Produces:
+// { "userId": 1, "name": "Darshan", "email": "darshan@nimbus.com" }
+// password and internalNotes are excluded</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>User</code> entity has a password field. You <strong>must</strong> use <code>@JsonIgnore</code> on it. Without it, every API response that includes a user would expose their password in the JSON. This is the #1 security mistake in REST APIs.</p>
+  </div>
+
+  <h3>@JsonFormat &mdash; Date Formatting</h3>
+
+  <p>Dates in Java are complex objects. <code>@JsonFormat</code> controls how they appear in JSON:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@JsonFormat &mdash; Date patterns</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+
+public class Booking {
+    private int bookingId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate pickupDate;
+    // Produces: "pickupDate": "2026-04-23"
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
+    // Produces: "createdAt": "2026-04-23 10:30:00"
+
+    // Without @JsonFormat, LocalDateTime becomes:
+    // "createdAt": [2026, 4, 23, 10, 30, 0]  &lt;-- ugly array!
+}</code></pre>
+  </div>
+
+  <h3>@JsonInclude &mdash; Skip Null/Empty Fields</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@JsonInclude</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)  // Skip ALL null fields
+public class Booking {
+    private int bookingId;
+    private String senderName;
+    private String specialInstructions;  // often null
+}
+
+// If specialInstructions is null:
+// { "bookingId": 1001, "senderName": "Darshan" }
+// specialInstructions is omitted entirely instead of showing null</code></pre>
+  </div>
+
+  <h3>Annotation Reference</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Annotation</th>
+        <th>Purpose</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@JsonProperty</code></td>
+        <td>Custom JSON key name</td>
+        <td><code>@JsonProperty("user_id")</code></td>
+      </tr>
+      <tr>
+        <td><code>@JsonIgnore</code></td>
+        <td>Exclude field from JSON</td>
+        <td><code>@JsonIgnore private String password</code></td>
+      </tr>
+      <tr>
+        <td><code>@JsonFormat</code></td>
+        <td>Date/time format pattern</td>
+        <td><code>@JsonFormat(pattern = "yyyy-MM-dd")</code></td>
+      </tr>
+      <tr>
+        <td><code>@JsonInclude</code></td>
+        <td>Skip null/empty fields</td>
+        <td><code>@JsonInclude(Include.NON_NULL)</code></td>
+      </tr>
+      <tr>
+        <td><code>@JsonIgnoreProperties</code></td>
+        <td>Ignore unknown fields on deserialization</td>
+        <td><code>@JsonIgnoreProperties(ignoreUnknown = true)</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: PARSING JSON IN JAVA                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="parsing">
+  <div class="section-tag">Section 07</div>
+  <h2>Parsing JSON in Java</h2>
+  <p class="section-desc">Complete ObjectMapper operations &mdash; from single objects to lists to nested structures.</p>
+
+  <h3>writeValueAsString() &mdash; Java to JSON</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Serializing different types</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">ObjectMapper mapper = new ObjectMapper();
+
+// Single object
+User user = new User(1, "Darshan", "darshan@nimbus.com");
+String json = mapper.writeValueAsString(user);
+// {"userId":1,"name":"Darshan","email":"darshan@nimbus.com"}
+
+// List of objects
+List&lt;User&gt; users = List.of(
+    new User(1, "Darshan", "darshan@nimbus.com"),
+    new User(2, "Amit", "amit@nimbus.com")
+);
+String jsonArray = mapper.writeValueAsString(users);
+// [{"userId":1,"name":"Darshan",...},{"userId":2,"name":"Amit",...}]
+
+// Pretty print (indented JSON)
+String pretty = mapper.writerWithDefaultPrettyPrinter()
+                      .writeValueAsString(user);
+// {
+//   "userId" : 1,
+//   "name" : "Darshan",
+//   "email" : "darshan@nimbus.com"
+// }</code></pre>
+  </div>
+
+  <h3>readValue() &mdash; JSON to Java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Deserializing different types</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">ObjectMapper mapper = new ObjectMapper();
+
+// Single object
+String json = "{\"userId\":1,\"name\":\"Darshan\"}";
+User user = mapper.readValue(json, User.class);
+
+// List of objects (needs TypeReference because of Java generics)
+String jsonArray = "[{\"userId\":1,\"name\":\"Darshan\"},{\"userId\":2,\"name\":\"Amit\"}]";
+List&lt;User&gt; users = mapper.readValue(jsonArray, new TypeReference&lt;List&lt;User&gt;&gt;() {});
+
+// From a file
+User user = mapper.readValue(new File("user.json"), User.class);
+
+// From an InputStream (useful for HTTP requests)
+User user = mapper.readValue(inputStream, User.class);</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">mapper.readValue(json, User.class)</div>
+        <div class="breakdown-explain">Pass the JSON string and the target class. Jackson creates a new User, matches JSON keys to setter methods, and populates the fields.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">new TypeReference&lt;List&lt;User&gt;&gt;() {}</div>
+        <div class="breakdown-explain">Java's generics get erased at runtime, so <code>List&lt;User&gt;.class</code> doesn't exist. <code>TypeReference</code> is Jackson's workaround &mdash; it preserves the generic type information so Jackson knows to create a <code>List</code> of <code>User</code> objects, not just a list of raw maps.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">You Won't Use ObjectMapper Directly</div>
+    <p>In Spring Boot, you <strong>never manually call</strong> <code>writeValueAsString()</code> or <code>readValue()</code>. When a controller method returns a Java object, Spring Boot automatically uses Jackson to serialize it to JSON. When a request body contains JSON, Spring Boot automatically deserializes it to a Java object via <code>@RequestBody</code>. The <code>ObjectMapper</code> knowledge is for understanding what happens under the hood.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: NIMBUS API EXAMPLES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="api-examples">
+  <div class="section-tag">Section 08</div>
+  <h2>Full Nimbus API JSON Examples</h2>
+  <p class="section-desc">Real request and response bodies for the Nimbus REST API.</p>
+
+  <h3>POST /api/users/register &mdash; Request Body</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request &mdash; Creating a new user</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "name": "Darshan",
+  "email": "darshan@nimbus.com",
+  "phone": "9876543210",
+  "password": "securePass123",
+  "role": "CUSTOMER"
+}</code></pre>
+  </div>
+
+  <h3>POST /api/users/register &mdash; Response Body</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; User created (201 Created)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "userId": 1,
+  "name": "Darshan",
+  "email": "darshan@nimbus.com",
+  "phone": "9876543210",
+  "role": "CUSTOMER",
+  "createdAt": "2026-04-23T10:00:00"
+}</code></pre>
+  </div>
+
+  <p>Notice: the response does <strong>not</strong> include <code>password</code>. That's <code>@JsonIgnore</code> at work. The server also adds <code>userId</code> and <code>createdAt</code> which the client didn't send.</p>
+
+  <h3>POST /api/bookings &mdash; Creating a Booking</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request Body</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "userId": 1,
+  "senderName": "Darshan",
+  "senderAddress": "MG Road, Bangalore",
+  "receiverName": "Amit",
+  "receiverAddress": "FC Road, Pune",
+  "weight": 2.5,
+  "pickupDate": "2026-04-25"
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response Body (201 Created)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "bookingId": 1001,
+  "userId": 1,
+  "senderName": "Darshan",
+  "senderAddress": "MG Road, Bangalore",
+  "receiverName": "Amit",
+  "receiverAddress": "FC Road, Pune",
+  "weight": 2.5,
+  "status": "BOOKED",
+  "pickupDate": "2026-04-25",
+  "estimatedDelivery": "2026-04-28",
+  "createdAt": "2026-04-23T10:30:00"
+}</code></pre>
+  </div>
+
+  <p>The server generates <code>bookingId</code>, sets the initial <code>status</code> to "BOOKED", calculates <code>estimatedDelivery</code>, and records <code>createdAt</code>.</p>
+
+  <h3>Error Response</h3>
+
+  <p>When something goes wrong, the API returns an error in JSON too:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error Response (400 Bad Request)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Sender name is required",
+  "timestamp": "2026-04-23T10:35:00"
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every Nimbus API endpoint follows this pattern: <strong>request body</strong> is the data the client sends (JSON), <strong>response body</strong> is the data the server sends back (JSON), <strong>error body</strong> is a consistent error object (JSON). The format never changes &mdash; it's always JSON. This makes the Angular frontend's job straightforward: parse the JSON, display the data.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: JSON SCHEMA                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="json-schema">
+  <div class="section-tag">Section 09</div>
+  <h2>JSON Schema Basics</h2>
+  <p class="section-desc">JSON Schema is a way to describe and validate the structure of JSON data. It's like a blueprint that says "this JSON must have these fields with these types."</p>
+
+  <h3>What is JSON Schema?</h3>
+
+  <p>Just as a database has a schema that defines table columns and their types, JSON can have a schema that defines expected fields and their types. This is used for:</p>
+
+  <ul>
+    <li><strong>API documentation:</strong> Tell frontend developers exactly what to send</li>
+    <li><strong>Validation:</strong> Reject invalid requests before they hit your business logic</li>
+    <li><strong>Code generation:</strong> Auto-generate Java/TypeScript classes from the schema</li>
+  </ul>
+
+  <h3>A Simple Schema</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">JSON Schema for a Nimbus User</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "pattern": "^[0-9]{10}$"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["CUSTOMER", "OFFICER", "ADMIN"]
+    }
+  },
+  "required": ["name", "email", "role"]
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"type": "object"</div>
+        <div class="breakdown-explain">The top-level JSON value must be an object (not an array, string, etc.).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6-7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"type": "string", "minLength": 1</div>
+        <div class="breakdown-explain">The "name" field must be a string with at least 1 character. An empty string <code>""</code> would fail validation.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">16</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"pattern": "^[0-9]{10}$"</div>
+        <div class="breakdown-explain">Regex pattern validation. Phone must be exactly 10 digits. <code>"98765"</code> would fail, <code>"9876543210"</code> would pass.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">20</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"enum": ["CUSTOMER", "OFFICER", "ADMIN"]</div>
+        <div class="breakdown-explain">The value must be one of these three strings. Any other value (like <code>"MANAGER"</code>) would fail validation.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">23</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"required": ["name", "email", "role"]</div>
+        <div class="breakdown-explain">These three fields must be present. Phone is optional &mdash; it's not in the required list.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Schema in Practice</div>
+    <p>You won't write JSON schemas manually in Nimbus &mdash; Spring Boot's <code>@Valid</code> annotations handle validation on the Java side (covered in the API Error Handling topic). But understanding schemas helps when reading API documentation or working with tools like Swagger/OpenAPI that auto-generate schemas from your code.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: EXERCISES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 10</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Write JSON by hand, then use Jackson to parse it. These exercises build the muscle memory for working with APIs.</p>
+
+  <h3>Exercise 1: Write Valid JSON (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1</div>
+    <p>Write a JSON object representing a Nimbus parcel with these fields:</p>
+    <ul>
+      <li>Tracking ID: "NIM-2026-1001"</li>
+      <li>Weight: 3.2 kg</li>
+      <li>Is fragile: yes</li>
+      <li>Sender and receiver as nested objects (each with name and city)</li>
+      <li>Status history as an array of objects (each with status and date)</li>
+    </ul>
+    <p>Validate your JSON at <strong>jsonlint.com</strong>. Fix any errors until it passes.</p>
+  </div>
+
+  <h3>Exercise 2: Spot the Errors (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2</div>
+    <p>This JSON has <strong>5 errors</strong>. Find and fix all of them:</p>
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); margin: 8px 0;">
+{
+  name: "Darshan",
+  'email': "darshan@nimbus.com",
+  "age": 23,
+  "active": True,
+  "skills": ["Java", "Spring",],
+}
+</pre>
+  </div>
+
+  <h3>Exercise 3: Jackson Serialization (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3</div>
+    <p>Create a Java class <code>Parcel</code> with fields: <code>trackingId</code> (String), <code>weight</code> (double), <code>status</code> (String), <code>createdAt</code> (LocalDate). Use Jackson annotations to:</p>
+    <ul>
+      <li>Rename <code>trackingId</code> to <code>"tracking_id"</code> in JSON</li>
+      <li>Format <code>createdAt</code> as <code>"yyyy-MM-dd"</code></li>
+    </ul>
+    <p>Create an instance, serialize it with ObjectMapper, and print the result.</p>
+  </div>
+
+  <h3>Exercise 4: Jackson Deserialization (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4</div>
+    <p>Given this JSON string, write Java code to parse it into a <code>Booking</code> object and a <code>List&lt;Booking&gt;</code>:</p>
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); margin: 8px 0;">
+{"bookingId":1001,"sender":"Darshan","receiver":"Amit","weight":2.5}
+</pre>
+    <p>Then parse this array:</p>
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); margin: 8px 0;">
+[{"bookingId":1001,"sender":"Darshan"},{"bookingId":1002,"sender":"Priya"}]
+</pre>
+    <p>Use <code>TypeReference</code> for the list. Print each booking's sender name.</p>
+  </div>
+
+  <h3>Exercise 5: Security Check (Hard)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5</div>
+    <p>Create a <code>User</code> class with: <code>userId</code>, <code>name</code>, <code>email</code>, <code>password</code>, <code>internalNotes</code>, <code>lastLogin</code> (LocalDateTime). Apply Jackson annotations so that:</p>
+    <ul>
+      <li><code>password</code> and <code>internalNotes</code> never appear in JSON</li>
+      <li><code>lastLogin</code> is formatted as "dd-MM-yyyy HH:mm"</li>
+      <li>Null fields are excluded from the output</li>
+    </ul>
+    <p>Serialize a User where <code>lastLogin</code> is null. Verify the output excludes both the ignored fields and the null field.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Self-Check Questions</div>
+    <ol>
+      <li>What are the six JSON data types? (string, number, boolean, null, object, array)</li>
+      <li>Why can't you use single quotes in JSON? (JSON spec requires double quotes &mdash; it's not JavaScript)</li>
+      <li>What does Jackson's <code>writeValueAsString()</code> do? (Converts a Java object to a JSON string)</li>
+      <li>Why do you need <code>TypeReference</code> when deserializing a list? (Java erases generic types at runtime)</li>
+      <li>Why should you <code>@JsonIgnore</code> the password field? (To prevent it from appearing in API responses)</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="rest-principles.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">REST Principles</span>
+  </a>
+  <a href="spring-boot.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Spring Boot</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

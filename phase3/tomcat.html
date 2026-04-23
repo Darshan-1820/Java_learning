@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Servers &amp; Tomcat | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link active"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC with Servlets + JSP</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; The Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; Dependency Injection</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build It</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS A WEB SERVER?                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-web-server">
+  <div class="section-tag">Section 01</div>
+  <h2>What is a Web Server?</h2>
+  <p class="section-desc">A web server is a program that sits on a machine, listens for incoming requests from browsers, and sends back the right files or data. Every website you visit is served by one.</p>
+
+  <h3>The Post Office Analogy</h3>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Post Office</div>
+    <p>Think of a web server as a <strong>post office</strong>. People (browsers) send letters (HTTP requests) to a specific address (URL). The post office receives the letter, looks at where it needs to go, fetches the right package (HTML page, image, data), and sends it back to the person who asked.</p>
+    <p>It doesn't write the letters. It doesn't create the packages. It just <strong>receives, routes, and delivers</strong>. That's exactly what a web server does.</p>
+  </div>
+
+  <h3>What Happens When You Visit a Website</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">You type URL<span class="flow-sub">http://nimbus.com/track</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">DNS Lookup<span class="flow-sub">nimbus.com &rarr; 192.168.1.50</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Web Server<span class="flow-sub">Listening on port 8080</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Process Request<span class="flow-sub">Find the right resource</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">Send Response<span class="flow-sub">HTML back to browser</span></div>
+    </div>
+    <div class="flow-label">Every website visit follows this exact flow</div>
+  </div>
+
+  <h3>How a Web Server Works</h3>
+
+  <ol class="steps">
+    <li><strong>Listen on a port.</strong> The server binds to a port number (usually 80 for HTTP, 443 for HTTPS, 8080 for development). It waits for connections.</li>
+    <li><strong>Receive an HTTP request.</strong> A browser connects and sends a request: <code>GET /track?bookingId=42 HTTP/1.1</code>. The server reads the method (GET), the path (/track), and any parameters.</li>
+    <li><strong>Process the request.</strong> For static files (HTML, CSS, images), the server finds the file on disk and reads it. For dynamic content, the server passes the request to application code (like a Servlet).</li>
+    <li><strong>Send the response.</strong> The server sends back an HTTP response with a status code (200 OK, 404 Not Found), headers (content type, length), and the body (the HTML page, JSON data, or image).</li>
+  </ol>
+
+  <div class="callout think">
+    <div class="callout-title">Static vs Dynamic Content</div>
+    <p><strong>Static:</strong> The server returns a file exactly as it is on disk. An <code>about.html</code> page looks the same for every visitor. No processing needed.</p>
+    <p><strong>Dynamic:</strong> The server runs code to generate the response. A tracking page shows different data for each booking ID. The server calls your Java code, which queries the database, and builds the HTML on the fly.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: APACHE TOMCAT                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="tomcat">
+  <div class="section-tag">Section 02</div>
+  <h2>Apache Tomcat &mdash; A Servlet Container</h2>
+  <p class="section-desc">Tomcat is the most popular Java web server. But it's not a full web server like Apache HTTP or Nginx &mdash; it's specifically a Servlet container that runs your Java web applications.</p>
+
+  <h3>Web Server vs Servlet Container</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Aspect</th><th>Web Server (Apache HTTP, Nginx)</th><th>Servlet Container (Tomcat)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Primary job</td>
+        <td>Serve static files (HTML, CSS, images) very fast</td>
+        <td>Run Java Servlets and JSPs</td>
+      </tr>
+      <tr>
+        <td>Dynamic content</td>
+        <td>Needs plugins (mod_php, FastCGI) for server-side code</td>
+        <td>Built-in &mdash; runs Java code natively</td>
+      </tr>
+      <tr>
+        <td>Languages</td>
+        <td>PHP, Python, etc. via modules</td>
+        <td>Java only</td>
+      </tr>
+      <tr>
+        <td>Performance (static)</td>
+        <td>Extremely fast, handles 10K+ concurrent connections</td>
+        <td>Decent, but not optimized for static files</td>
+      </tr>
+      <tr>
+        <td>Used for</td>
+        <td>Static websites, reverse proxy, load balancing</td>
+        <td>Java web applications (Servlets, JSP, Spring)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>In production, companies often put Nginx <strong>in front</strong> of Tomcat. Nginx handles static files and SSL, and forwards dynamic requests to Tomcat. For development, Tomcat alone is enough.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Hotel vs Kitchen</div>
+    <p>A full web server (Nginx) is like the <strong>entire hotel</strong> &mdash; reception, hallways, elevators, room service. It handles everything.</p>
+    <p>Tomcat is like the <strong>kitchen</strong>. It doesn't handle the front desk or the elevator. But when a guest orders food (dynamic Java request), the kitchen is where the actual cooking (Java code execution) happens. In production, the hotel (Nginx) takes the order and sends it to the kitchen (Tomcat).</p>
+  </div>
+
+  <h3>Tomcat Architecture</h3>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Catalina</div>
+      <div class="layer-detail">The Servlet container engine. Manages the lifecycle of Servlets (init, service, destroy). This is the core of Tomcat.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Coyote</div>
+      <div class="layer-detail">The HTTP connector. Listens on port 8080, parses incoming HTTP requests, and passes them to Catalina for processing.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Jasper</div>
+      <div class="layer-detail">The JSP engine. Converts <code>.jsp</code> files into Servlet Java classes, compiles them, and runs them. JSPs are actually Servlets under the hood.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Cluster</div>
+      <div class="layer-detail">Handles session replication across multiple Tomcat instances. Used in production for high availability.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: INSTALLING TOMCAT IN ECLIPSE                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="eclipse-setup">
+  <div class="section-tag">Section 03</div>
+  <h2>Setting Up Tomcat in Eclipse</h2>
+  <p class="section-desc">Eclipse has built-in support for Tomcat. You add it once, and Eclipse can start/stop the server, deploy your app, and show console output &mdash; all from the IDE.</p>
+
+  <h3>Step-by-Step Setup</h3>
+
+  <ol class="steps">
+    <li><strong>Download Tomcat.</strong> Go to <code>tomcat.apache.org</code> &rarr; Download &rarr; Tomcat 10.x (for Jakarta Servlet API). Extract the zip to a folder like <code>C:\apache-tomcat-10</code>.</li>
+    <li><strong>Open Eclipse.</strong> Go to <code>Window &rarr; Preferences &rarr; Server &rarr; Runtime Environments &rarr; Add</code>. Select <code>Apache Tomcat v10.x</code>. Point to the folder where you extracted Tomcat.</li>
+    <li><strong>Create a Server.</strong> Go to the <code>Servers</code> tab at the bottom of Eclipse. Right-click &rarr; <code>New &rarr; Server</code>. Select <code>Tomcat v10.x</code>. Click Finish.</li>
+    <li><strong>Add your project.</strong> Right-click the server in the Servers tab &rarr; <code>Add and Remove</code> &rarr; move your project to the "Configured" side. Click Finish.</li>
+    <li><strong>Start the server.</strong> Right-click server &rarr; <code>Start</code>. The console shows Tomcat startup logs. Visit <code>http://localhost:8080/nimbus/</code> to see your app.</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Setup Issue: Port 8080 Already in Use</div>
+    <p>If another program is using port 8080, Tomcat won't start. Fix: Double-click the server in the Servers tab. Change the HTTP/1.1 port from 8080 to 8081 or 9090. Save. Restart.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Your First Server Start</div>
+    <p>When you start Tomcat with the Nimbus project, the console shows something like:</p>
+    <p><code>INFO: Starting Servlet engine: [Apache Tomcat/10.1.x]</code></p>
+    <p><code>INFO: Deploying web application directory [nimbus]</code></p>
+    <p>Your app is now live at <code>http://localhost:8080/nimbus/</code>. Every Servlet you write is accessible from a browser.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: WAR FILES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="war-files">
+  <div class="section-tag">Section 04</div>
+  <h2>WAR Files &mdash; Packaging Your Web App</h2>
+  <p class="section-desc">A WAR (Web Application Archive) file is a single .war file that contains your entire web application &mdash; compiled classes, JSPs, config files, libraries &mdash; ready to be dropped into any Tomcat server.</p>
+
+  <h3>What's Inside a WAR?</h3>
+
+  <p>A WAR file is just a ZIP file with a specific structure. When you rename <code>nimbus.war</code> to <code>nimbus.zip</code> and extract it, you see the same directory structure as your project's deployed form.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Moving Box</div>
+    <p>Building a WAR is like packing a moving box. You put all your belongings (classes, JSPs, config) into one box (WAR file), label it (nimbus.war), and ship it to the new apartment (production server). The movers (Tomcat) unpack it and set everything up in the right place.</p>
+  </div>
+
+  <h3>Creating a WAR in Eclipse</h3>
+
+  <ol class="steps">
+    <li><strong>Right-click your project</strong> &rarr; <code>Export &rarr; Web &rarr; WAR file</code>.</li>
+    <li><strong>Choose destination.</strong> Pick a folder to save the WAR. Name it <code>nimbus.war</code>.</li>
+    <li><strong>Click Finish.</strong> Eclipse compiles all your Java code, bundles everything into the WAR structure, and creates the file.</li>
+  </ol>
+
+  <h3>Creating a WAR with Maven</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal command</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// In your project root directory:
+// mvn clean package
+//
+// This compiles code, runs tests, and creates:
+// target/nimbus.war
+//
+// The &lt;packaging&gt;war&lt;/packaging&gt; in pom.xml tells Maven
+// to build a WAR instead of a JAR.</code></pre>
+  </div>
+
+  <h3>Deploying the WAR</h3>
+
+  <ol class="steps">
+    <li><strong>Copy the WAR file</strong> to Tomcat's <code>webapps/</code> folder: <code>C:\apache-tomcat-10\webapps\nimbus.war</code></li>
+    <li><strong>Start Tomcat.</strong> It detects the new WAR file, extracts it automatically into a <code>nimbus/</code> folder, and deploys the app.</li>
+    <li><strong>Access the app</strong> at <code>http://localhost:8080/nimbus/</code>. The folder name becomes the context path.</li>
+  </ol>
+
+  <div class="callout think">
+    <div class="callout-title">Hot Deploy</div>
+    <p>If Tomcat is already running, you can drop a WAR into <code>webapps/</code> and Tomcat will detect and deploy it automatically &mdash; no restart needed. This is called <strong>hot deployment</strong>. In development with Eclipse, this happens every time you save a file (Eclipse pushes the change to the running Tomcat).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: WEB.XML                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="web-xml">
+  <div class="section-tag">Section 05</div>
+  <h2>web.xml &mdash; The Deployment Descriptor</h2>
+  <p class="section-desc">The web.xml file is Tomcat's instruction manual for your app. It tells Tomcat which Servlets exist, what URLs they handle, what the welcome page is, and how to handle errors.</p>
+
+  <h3>Location</h3>
+
+  <p>The file lives at <code>WEB-INF/web.xml</code> inside your project. Tomcat reads it when the app starts up. If it's missing or malformed, the app won't deploy.</p>
+
+  <h3>Full Nimbus web.xml</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WEB-INF/web.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         version="6.0"&gt;
+
+    &lt;display-name&gt;Nimbus Parcel Management&lt;/display-name&gt;
+
+    &lt;!-- ======= WELCOME FILE ======= --&gt;
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+
+    &lt;!-- ======= SERVLET REGISTRATION ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.LoginServlet&lt;/servlet-class&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/login&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;BookingServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.BookingServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;BookingServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/book&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= ERROR PAGES ======= --&gt;
+    &lt;error-page&gt;
+        &lt;error-code&gt;404&lt;/error-code&gt;
+        &lt;location&gt;/WEB-INF/error/404.jsp&lt;/location&gt;
+    &lt;/error-page&gt;
+    &lt;error-page&gt;
+        &lt;error-code&gt;500&lt;/error-code&gt;
+        &lt;location&gt;/WEB-INF/error/500.jsp&lt;/location&gt;
+    &lt;/error-page&gt;
+
+    &lt;!-- ======= SESSION CONFIG ======= --&gt;
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+
+&lt;/web-app&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key sections explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;web-app&gt;</div>
+        <div class="breakdown-explain">Root element. The <code>version="6.0"</code> tells Tomcat which Servlet specification this app uses. Version 6.0 is the Jakarta EE version used with Tomcat 10+.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;welcome-file-list&gt;</div>
+        <div class="breakdown-explain">When someone visits <code>/nimbus/</code> without a specific page, Tomcat serves <code>index.jsp</code>. Like a default homepage.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;servlet&gt; + &lt;servlet-mapping&gt;</div>
+        <div class="breakdown-explain">Two-part registration. <code>&lt;servlet&gt;</code> gives the Servlet a name and points to its Java class. <code>&lt;servlet-mapping&gt;</code> links that name to a URL pattern. The name is the connector between them.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</div>
+        <div class="breakdown-explain">Normally, Servlets are created on first request. This tag forces Tomcat to create the Servlet when the server starts. Lower numbers load first. Good for Servlets that need initialization time.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;error-page&gt;</div>
+        <div class="breakdown-explain">Custom error pages. Instead of Tomcat's ugly default error screen, users see your styled error page. You can map by HTTP status code or by Java exception type.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;session-config&gt;</div>
+        <div class="breakdown-explain">Sets the default session timeout (in minutes). After 30 minutes of inactivity, the user's session is destroyed and they need to log in again.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Key Elements Reference</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Purpose</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>&lt;welcome-file&gt;</code></td>
+        <td>Default page when no file specified</td>
+        <td><code>index.jsp</code></td>
+      </tr>
+      <tr>
+        <td><code>&lt;servlet&gt;</code></td>
+        <td>Register a Servlet with a name</td>
+        <td>Name + fully qualified class</td>
+      </tr>
+      <tr>
+        <td><code>&lt;servlet-mapping&gt;</code></td>
+        <td>Map a Servlet name to a URL</td>
+        <td><code>/login</code>, <code>/api/*</code></td>
+      </tr>
+      <tr>
+        <td><code>&lt;error-page&gt;</code></td>
+        <td>Custom error page for status codes or exceptions</td>
+        <td>404 &rarr; /WEB-INF/error/404.jsp</td>
+      </tr>
+      <tr>
+        <td><code>&lt;session-config&gt;</code></td>
+        <td>Session timeout in minutes</td>
+        <td>30 minutes</td>
+      </tr>
+      <tr>
+        <td><code>&lt;context-param&gt;</code></td>
+        <td>App-wide configuration values</td>
+        <td>Database URL, app name</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: DIRECTORY STRUCTURE                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="directory-structure">
+  <div class="section-tag">Section 06</div>
+  <h2>Web App Directory Structure</h2>
+  <p class="section-desc">Every Java web application follows a strict directory structure. Tomcat expects files in specific locations. Put them in the wrong place and they won't work.</p>
+
+  <h3>The Standard Structure</h3>
+
+  <div class="diagram">
+    <pre>
+nimbus/                          &larr; Context root (app name)
+&boxv;
+&boxvr;&boxh;&boxh; index.jsp                   &larr; Welcome page (public)
+&boxvr;&boxh;&boxh; css/
+&boxv;   &boxur;&boxh;&boxh; style.css                &larr; Stylesheets (public)
+&boxvr;&boxh;&boxh; js/
+&boxv;   &boxur;&boxh;&boxh; app.js                   &larr; JavaScript (public)
+&boxvr;&boxh;&boxh; images/
+&boxv;   &boxur;&boxh;&boxh; logo.png                 &larr; Images (public)
+&boxv;
+&boxvr;&boxh;&boxh; WEB-INF/                     &larr; PROTECTED (not accessible from browser)
+&boxv;   &boxvr;&boxh;&boxh; web.xml                  &larr; Deployment descriptor
+&boxv;   &boxvr;&boxh;&boxh; classes/                 &larr; Compiled .class files
+&boxv;   &boxv;   &boxur;&boxh;&boxh; com/nimbus/
+&boxv;   &boxv;       &boxvr;&boxh;&boxh; servlet/
+&boxv;   &boxv;       &boxv;   &boxvr;&boxh;&boxh; LoginServlet.class
+&boxv;   &boxv;       &boxv;   &boxur;&boxh;&boxh; BookingServlet.class
+&boxv;   &boxv;       &boxvr;&boxh;&boxh; dao/
+&boxv;   &boxv;       &boxv;   &boxur;&boxh;&boxh; UserDAO.class
+&boxv;   &boxv;       &boxvr;&boxh;&boxh; model/
+&boxv;   &boxv;       &boxv;   &boxur;&boxh;&boxh; User.class
+&boxv;   &boxv;       &boxur;&boxh;&boxh; service/
+&boxv;   &boxv;           &boxur;&boxh;&boxh; BookingService.class
+&boxv;   &boxvr;&boxh;&boxh; lib/                     &larr; JAR dependencies
+&boxv;   &boxv;   &boxvr;&boxh;&boxh; mysql-connector-j-8.x.jar
+&boxv;   &boxv;   &boxur;&boxh;&boxh; jstl-2.0.jar
+&boxv;   &boxur;&boxh;&boxh; login.jsp                &larr; JSP pages (protected)
+&boxv;   &boxur;&boxh;&boxh; dashboard.jsp
+&boxv;   &boxur;&boxh;&boxh; error/
+&boxv;       &boxvr;&boxh;&boxh; 404.jsp
+&boxv;       &boxur;&boxh;&boxh; 500.jsp
+&boxv;
+&boxur;&boxh;&boxh; META-INF/
+    &boxur;&boxh;&boxh; MANIFEST.MF              &larr; JAR/WAR metadata
+    </pre>
+    <div class="diagram-label">Standard Java web application directory layout</div>
+  </div>
+
+  <h3>Key Folders Explained</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Folder</th><th>What Goes Here</th><th>Accessible from Browser?</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>/</code> (root)</td>
+        <td>Public files: CSS, JS, images, public JSPs</td>
+        <td>Yes &mdash; <code>/nimbus/css/style.css</code></td>
+      </tr>
+      <tr>
+        <td><code>/WEB-INF/</code></td>
+        <td>Protected files: web.xml, classes, libraries, private JSPs</td>
+        <td><strong>No</strong> &mdash; 404 if accessed directly</td>
+      </tr>
+      <tr>
+        <td><code>/WEB-INF/classes/</code></td>
+        <td>Compiled <code>.class</code> files (your Servlets, DAOs, models)</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><code>/WEB-INF/lib/</code></td>
+        <td>JAR files (MySQL driver, JSTL, any library your app uses)</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><code>/META-INF/</code></td>
+        <td>Manifest file, context configuration</td>
+        <td>No</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout important">
+    <div class="callout-title">WEB-INF is Your Security Wall</div>
+    <p>Anything inside <code>/WEB-INF/</code> is invisible to the browser. A user cannot type <code>http://localhost:8080/nimbus/WEB-INF/web.xml</code> and see your config. Tomcat blocks it. This is why you put JSP pages inside <code>/WEB-INF/</code> &mdash; it forces users to go through your Servlets first, where you can validate input and check login status.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: CONTEXT PATH                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="context-path">
+  <div class="section-tag">Section 07</div>
+  <h2>Context Path &mdash; How URLs Map to Your App</h2>
+  <p class="section-desc">The context path is the first part of the URL after the domain. It tells Tomcat which web application to route the request to.</p>
+
+  <h3>URL Anatomy</h3>
+
+  <div class="diagram">
+    <pre>
+http://localhost:8080/nimbus/login?email=john@test.com
+&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh; &boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh; &boxh;&boxh;&boxh;&boxh;&boxh;&boxh; &boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;
+       Host + Port        Context  Servlet   Query Parameters
+                           Path    Mapping
+    </pre>
+    <div class="diagram-label">Each part of the URL routes to a different layer</div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>URL Part</th><th>Handled By</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>localhost:8080</code></td>
+        <td>Tomcat (Coyote connector)</td>
+        <td>Which server and port</td>
+      </tr>
+      <tr>
+        <td><code>/nimbus</code></td>
+        <td>Tomcat (context path)</td>
+        <td>Which web app</td>
+      </tr>
+      <tr>
+        <td><code>/login</code></td>
+        <td>web.xml or @WebServlet</td>
+        <td>Which Servlet</td>
+      </tr>
+      <tr>
+        <td><code>?email=john@test.com</code></td>
+        <td>Your Servlet code</td>
+        <td><code>request.getParameter("email")</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Where the Context Path Comes From</h3>
+
+  <p>By default, the context path equals the <strong>WAR filename</strong> or the <strong>folder name</strong> in <code>webapps/</code>:</p>
+
+  <ul>
+    <li><code>webapps/nimbus.war</code> &rarr; context path = <code>/nimbus</code></li>
+    <li><code>webapps/parcel-tracker.war</code> &rarr; context path = <code>/parcel-tracker</code></li>
+    <li><code>webapps/ROOT.war</code> &rarr; context path = <code>/</code> (no prefix, the default app)</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Context Path = /nimbus</div>
+    <p>When you deploy <code>nimbus.war</code> to Tomcat, all your URLs start with <code>/nimbus</code>:</p>
+    <ul>
+      <li><code>http://localhost:8080/nimbus/</code> &rarr; welcome page (index.jsp)</li>
+      <li><code>http://localhost:8080/nimbus/login</code> &rarr; LoginServlet</li>
+      <li><code>http://localhost:8080/nimbus/book</code> &rarr; BookingServlet</li>
+      <li><code>http://localhost:8080/nimbus/track?bookingId=42</code> &rarr; TrackingServlet</li>
+    </ul>
+    <p>Inside your Servlets, you never write <code>/nimbus</code> in URLs. When you do <code>response.sendRedirect("login")</code>, Tomcat automatically prepends the context path.</p>
+  </div>
+
+  <h3>Multiple Apps on One Tomcat</h3>
+
+  <p>Tomcat can run many apps simultaneously, each with its own context path:</p>
+
+  <div class="diagram">
+    <pre>
+webapps/
+&boxvr;&boxh;&boxh; nimbus/         &rarr;  /nimbus         (parcel management)
+&boxvr;&boxh;&boxh; shopify-clone/  &rarr;  /shopify-clone  (e-commerce)
+&boxvr;&boxh;&boxh; blog/           &rarr;  /blog           (blog engine)
+&boxur;&boxh;&boxh; ROOT/           &rarr;  /               (default landing page)
+    </pre>
+    <div class="diagram-label">Each folder = a separate web application with its own context path</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: NIMBUS DEPLOYMENT                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-deployment">
+  <div class="section-tag">Section 08</div>
+  <h2>Deploying Nimbus to Tomcat</h2>
+  <p class="section-desc">Putting it all together &mdash; how to take your Nimbus project, build a WAR, and deploy it to a Tomcat server.</p>
+
+  <h3>Development Deployment (Eclipse)</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Write Code<span class="flow-sub">Servlet, JSP, DAO</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Save File<span class="flow-sub">Ctrl+S in Eclipse</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Eclipse Compiles<span class="flow-sub">Auto-build .class files</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Hot Deploy<span class="flow-sub">Pushes to running Tomcat</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">Refresh Browser<span class="flow-sub">See changes instantly</span></div>
+    </div>
+    <div class="flow-label">Eclipse auto-deploys on save &mdash; no manual WAR building needed</div>
+  </div>
+
+  <h3>Production Deployment</h3>
+
+  <ol class="steps">
+    <li><strong>Build the WAR.</strong> In Eclipse: <code>Export &rarr; WAR file</code>. Or with Maven: <code>mvn clean package</code>. This creates <code>nimbus.war</code>.</li>
+    <li><strong>Stop Tomcat</strong> on the production server (optional but safer): <code>./shutdown.sh</code> (Linux) or <code>shutdown.bat</code> (Windows).</li>
+    <li><strong>Copy WAR</strong> to <code>webapps/</code> folder. Remove the old <code>nimbus/</code> folder if it exists.</li>
+    <li><strong>Start Tomcat:</strong> <code>./startup.sh</code> or <code>startup.bat</code>. Tomcat extracts and deploys the WAR.</li>
+    <li><strong>Verify</strong> by visiting <code>http://yourserver:8080/nimbus/</code>.</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">Don't Forget the Database</div>
+    <p>Your WAR contains the application code, but not the database. On the production server, you also need MySQL installed, the <code>nimbus_db</code> database created, and the JDBC connection URL in your code pointing to the correct host. In Phase 4, you'll learn about <code>application.properties</code> for environment-specific config.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: TOMCAT CONFIGURATION                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="tomcat-config">
+  <div class="section-tag">Section 09</div>
+  <h2>Tomcat Configuration Files</h2>
+  <p class="section-desc">Tomcat has its own configuration files (separate from your app's web.xml) that control server-level behavior like ports, connection limits, and virtual hosts.</p>
+
+  <h3>Key Config Files</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Location</th><th>What It Controls</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>server.xml</code></td>
+        <td><code>conf/server.xml</code></td>
+        <td>Ports, connectors, virtual hosts, thread pools. The main Tomcat config.</td>
+      </tr>
+      <tr>
+        <td><code>web.xml</code></td>
+        <td><code>conf/web.xml</code></td>
+        <td>Default config for ALL apps. Your app's web.xml overrides these.</td>
+      </tr>
+      <tr>
+        <td><code>context.xml</code></td>
+        <td><code>conf/context.xml</code></td>
+        <td>Default context settings for all apps: session management, JNDI resources.</td>
+      </tr>
+      <tr>
+        <td><code>tomcat-users.xml</code></td>
+        <td><code>conf/tomcat-users.xml</code></td>
+        <td>Users and roles for Tomcat's built-in manager app. Used to deploy WARs via browser.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Changing the Port</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">conf/server.xml &mdash; Connector port</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;!-- Change 8080 to any available port --&gt;
+&lt;Connector port="9090"
+           protocol="HTTP/1.1"
+           connectionTimeout="20000"
+           redirectPort="8443"
+           maxThreads="200" /&gt;</code></pre>
+  </div>
+
+  <p>After changing <code>server.xml</code>, you must restart Tomcat for the change to take effect.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: EXERCISES                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 10</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Hands-on tasks to solidify your understanding of web servers, Tomcat, and deployment.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Setup Tomcat</div>
+    <p>Download Tomcat 10, configure it in Eclipse, create a new Dynamic Web Project called "nimbus", and verify you can access <code>http://localhost:8080/nimbus/</code> showing a welcome page.</p>
+    <p><strong>Goal:</strong> Verify your development environment works end-to-end.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: Write a Complete web.xml</div>
+    <p>Write a <code>web.xml</code> for Nimbus with:</p>
+    <ul>
+      <li>Welcome file: <code>index.jsp</code></li>
+      <li>5 Servlets registered: Login, Register, Booking, Tracking, History</li>
+      <li>Error pages for 404 and 500</li>
+      <li>Session timeout of 30 minutes</li>
+      <li>A context parameter for the app name: <code>nimbus-parcel-management</code></li>
+    </ul>
+    <p><strong>Goal:</strong> Practice XML syntax and understand every element.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Build and Deploy a WAR</div>
+    <p>Export your Nimbus project as a WAR file. Stop the Eclipse Tomcat server. Copy the WAR to a standalone Tomcat's <code>webapps/</code> folder. Start the standalone Tomcat from the command line. Access your app and verify it works outside Eclipse.</p>
+    <p><strong>Goal:</strong> Understand that your app isn't tied to Eclipse &mdash; it runs on any Tomcat.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Change the Port</div>
+    <p>Edit <code>server.xml</code> to change Tomcat's port from 8080 to 9090. Restart Tomcat. Access your app at <code>http://localhost:9090/nimbus/</code>. Then change it back to 8080.</p>
+    <p><strong>Goal:</strong> Learn that the port is just config &mdash; your app code doesn't change.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="http-basics.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">How the Web Works</span>
+  </a>
+  <a href="servlets.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Servlets</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

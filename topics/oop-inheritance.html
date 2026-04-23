@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inheritance — Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link active"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS INHERITANCE?                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-inheritance">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Inheritance?</h2>
+  <p class="section-desc">Inheritance is the mechanism where one class <strong>acquires all the fields and methods</strong> of another class. The child class gets everything from the parent &mdash; for free &mdash; and can add its own stuff on top.</p>
+
+  <h3>The Family Analogy</h3>
+
+  <p>Think about a real family. A child inherits features from their parents: eye color, hair type, height tendencies. The child doesn't have to "build" those features from scratch &mdash; they come built-in. But the child also develops their own unique traits: maybe they learn guitar, or they're left-handed. They are their parents + something extra.</p>
+
+  <p>That is exactly how Java inheritance works:</p>
+
+  <ul>
+    <li><strong>Parent class (superclass)</strong> &mdash; the base class that has common fields and methods</li>
+    <li><strong>Child class (subclass)</strong> &mdash; inherits everything from the parent, then adds or customizes</li>
+    <li>The child <strong>IS-A</strong> type of the parent. A <code>CustomerTrackingService</code> IS-A <code>TrackingService</code>.</li>
+  </ul>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>A <strong>smartphone</strong> inherits from <strong>phone</strong>. Every smartphone can make calls and send texts (inherited). But a smartphone also has apps, a camera, GPS (its own additions). A smartphone IS-A phone. But a phone is NOT necessarily a smartphone.</p>
+  </div>
+
+  <h3>The "is-a" Relationship</h3>
+
+  <p>Inheritance models an <strong>"is-a"</strong> relationship. Before using inheritance, ask: "Is [Child] a type of [Parent]?" If yes, inheritance makes sense. If not, you probably want composition (covered later).</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Relationship</th>
+        <th>Is-a test</th>
+        <th>Inheritance?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CustomerTrackingService</code> &rarr; <code>TrackingService</code></td>
+        <td>A CustomerTrackingService IS-A TrackingService</td>
+        <td style="color: var(--green);">Yes</td>
+      </tr>
+      <tr>
+        <td><code>BookingThread</code> &rarr; <code>Thread</code></td>
+        <td>A BookingThread IS-A Thread</td>
+        <td style="color: var(--green);">Yes</td>
+      </tr>
+      <tr>
+        <td><code>DuplicateEmailException</code> &rarr; <code>Exception</code></td>
+        <td>A DuplicateEmailException IS-A Exception</td>
+        <td style="color: var(--green);">Yes</td>
+      </tr>
+      <tr>
+        <td><code>Car</code> &rarr; <code>Engine</code></td>
+        <td>A Car IS-A Engine? No. Car HAS-A Engine.</td>
+        <td style="color: var(--red);">No &mdash; use composition</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every <code>extends</code> relationship in Nimbus passes the is-a test. <code>CustomerTrackingService</code> IS-A <code>TrackingService</code>. <code>BookingNotFoundException</code> IS-A <code>Exception</code>. <code>BookingThread</code> IS-A <code>Thread</code>. These are not random &mdash; each one means the child is a specialized version of the parent.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: THE extends KEYWORD                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="extends-keyword">
+  <div class="section-tag">Section 02</div>
+  <h2>The <code>extends</code> Keyword</h2>
+  <p class="section-desc">In Java, you create an inheritance relationship using the <code>extends</code> keyword. The child class says: "I am everything my parent is, plus more."</p>
+
+  <h3>Basic Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Inheritance Syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Parent class
+public class TrackingService {
+    protected String serviceName;
+
+    public void trackParcel(String trackingId) {
+        System.out.println("Tracking parcel: " + trackingId);
+    }
+}
+
+// Child class — inherits from TrackingService
+public class CustomerTrackingService extends TrackingService {
+    // This class automatically has:
+    //   - serviceName field (inherited)
+    //   - trackParcel() method (inherited)
+
+    // Plus its own additions:
+    public void viewDeliveryEstimate(String trackingId) {
+        System.out.println("Estimated delivery for " + trackingId + ": 3 days");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class TrackingService {</div>
+        <div class="breakdown-explain">This is the parent (superclass). It defines the common behavior shared by all tracking services.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">protected String serviceName;</div>
+        <div class="breakdown-explain"><code>protected</code> means child classes CAN access this directly. If it were <code>private</code>, child classes could not see it (they'd need getters).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void trackParcel(String trackingId)</div>
+        <div class="breakdown-explain">A public method. Any child class inherits this and can call it as if it were its own.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class CustomerTrackingService extends TrackingService {</div>
+        <div class="breakdown-explain">The <code>extends</code> keyword creates the inheritance link. CustomerTrackingService now has everything TrackingService has.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void viewDeliveryEstimate(String trackingId)</div>
+        <div class="breakdown-explain">A new method that only CustomerTrackingService has. The parent TrackingService does NOT have this method.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>What Gets Inherited (and What Doesn't)</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Inherited</th>
+        <th>NOT Inherited</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>public</code> methods</td>
+        <td>Constructors (must call via <code>super()</code>)</td>
+      </tr>
+      <tr>
+        <td><code>protected</code> methods and fields</td>
+        <td><code>private</code> fields (exist but not directly accessible)</td>
+      </tr>
+      <tr>
+        <td><code>public</code> fields</td>
+        <td><code>private</code> methods</td>
+      </tr>
+      <tr>
+        <td>Package-private members (same package only)</td>
+        <td>&mdash;</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Important</div>
+    <p><code>private</code> fields <strong>still exist</strong> in the child object &mdash; they are allocated in memory. The child just cannot access them directly. It must use the parent's public/protected getters and setters. Think of it as: you inherited your parent's safe deposit box, but you need the key (getter) to open it.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: TYPES OF INHERITANCE                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="types-of-inheritance">
+  <div class="section-tag">Section 03</div>
+  <h2>Types of Inheritance</h2>
+  <p class="section-desc">Java supports three types of class inheritance. It deliberately blocks a fourth (multiple inheritance) for a very specific reason.</p>
+
+  <h3>1. Single Inheritance</h3>
+  <p>One parent, one child. The simplest and most common form.</p>
+
+  <div class="diagram">
+    <pre>
+  ┌─────────────────────┐
+  │   TrackingService    │  &larr; Parent
+  │─────────────────────│
+  │  trackParcel()       │
+  └──────────┬──────────┘
+             │ extends
+  ┌──────────▼──────────┐
+  │ CustomerTracking     │  &larr; Child
+  │      Service         │
+  │─────────────────────│
+  │  viewEstimate()      │
+  └─────────────────────┘
+    </pre>
+    <div class="diagram-label">Single inheritance: TrackingService &rarr; CustomerTrackingService</div>
+  </div>
+
+  <h3>2. Multilevel Inheritance</h3>
+  <p>A chain: A &rarr; B &rarr; C. The grandchild inherits from both parent and grandparent.</p>
+
+  <div class="diagram">
+    <pre>
+  ┌─────────────────────┐
+  │      Vehicle         │  &larr; Grandparent
+  │─────────────────────│
+  │  start(), stop()     │
+  └──────────┬──────────┘
+             │ extends
+  ┌──────────▼──────────┐
+  │        Car           │  &larr; Parent
+  │─────────────────────│
+  │  openTrunk()         │
+  └──────────┬──────────┘
+             │ extends
+  ┌──────────▼──────────┐
+  │     ElectricCar      │  &larr; Child
+  │─────────────────────│
+  │  chargeBattery()     │
+  └─────────────────────┘
+    </pre>
+    <div class="diagram-label">Multilevel: ElectricCar has start(), stop(), openTrunk(), AND chargeBattery()</div>
+  </div>
+
+  <h3>3. Hierarchical Inheritance</h3>
+  <p>One parent, multiple children. Each child gets the parent's stuff independently.</p>
+
+  <div class="diagram">
+    <pre>
+              ┌─────────────────────┐
+              │   TrackingService    │  &larr; Parent
+              │─────────────────────│
+              │  trackParcel()       │
+              └──────────┬──────────┘
+              ┌──────────┴──────────┐
+              │ extends              │ extends
+  ┌───────────▼──────────┐  ┌───────▼──────────────┐
+  │ CustomerTracking      │  │ OfficerTracking       │
+  │      Service          │  │      Service          │
+  │──────────────────────│  │──────────────────────│
+  │ viewEstimate()        │  │ updateStatus()        │
+  └──────────────────────┘  └──────────────────────┘
+    </pre>
+    <div class="diagram-label">Hierarchical: Both children inherit trackParcel() but add their own methods</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses <strong>hierarchical inheritance</strong> for tracking: <code>TrackingService</code> is the parent, with <code>CustomerTrackingService</code> and <code>OfficerTrackingService</code> as children. Customers can view estimates; officers can update statuses. Both can track parcels (inherited). And <strong>single inheritance</strong> for history: <code>BaseHistoryService</code> &rarr; <code>CustomerHistoryService</code>.</p>
+  </div>
+
+  <h3>4. Multiple Inheritance &mdash; NOT Allowed in Java</h3>
+  <p>What if a class could extend two parents? Java says <strong>no</strong>. Here is why:</p>
+
+  <div class="diagram">
+    <pre>
+  ┌──────────────┐     ┌──────────────┐
+  │   ClassA      │     │   ClassB      │
+  │──────────────│     │──────────────│
+  │  display()    │     │  display()    │
+  └──────┬───────┘     └──────┬───────┘
+         │ extends?            │ extends?
+         └──────────┬─────────┘
+            ┌───────▼────────┐
+            │     ClassC      │
+            │────────────────│
+            │  display() ??   │  &larr; Which parent's display()?
+            └────────────────┘
+    </pre>
+    <div class="diagram-label">The Diamond Problem: ClassC inherits display() from BOTH parents. Which one wins?</div>
+  </div>
+
+  <p>This is called the <strong>Diamond Problem</strong>. If both parents have a method with the same signature, the compiler has no way to decide which one the child should use. Java avoids this ambiguity entirely by forbidding multiple class inheritance.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">This WILL NOT compile</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// COMPILER ERROR: Java does not support multiple inheritance
+public class ClassC extends ClassA, ClassB {  // WRONG
+    // Which display() do I inherit?
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">What about interfaces?</div>
+    <p>Java allows a class to implement <strong>multiple interfaces</strong> &mdash; that is different. Interfaces only define method signatures (contracts), not implementations (before default methods). So there is no ambiguity about "which code to run." You will learn this in the Abstraction topic.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: THE super KEYWORD                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="super-keyword">
+  <div class="section-tag">Section 04</div>
+  <h2>The <code>super</code> Keyword</h2>
+  <p class="section-desc">When a child needs to reference its parent, it uses <code>super</code>. It is the bridge between child and parent.</p>
+
+  <h3>Three Uses of <code>super</code></h3>
+
+  <h4>1. <code>super.method()</code> &mdash; Call parent's version of a method</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Calling parent method</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class TrackingService {
+    public String getTrackingInfo(String id) {
+        return "Parcel " + id + " is in transit";
+    }
+}
+
+public class CustomerTrackingService extends TrackingService {
+    @Override
+    public String getTrackingInfo(String id) {
+        // Call parent's version first, then add to it
+        String basic = super.getTrackingInfo(id);
+        return basic + " | Estimated delivery: 3 days";
+    }
+}</code></pre>
+  </div>
+
+  <p>Without <code>super.getTrackingInfo(id)</code>, calling <code>getTrackingInfo()</code> would call the child's own version (infinite recursion!). <code>super</code> explicitly says: "call the parent's version."</p>
+
+  <h4>2. <code>super()</code> &mdash; Call parent's constructor</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Calling parent constructor</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class TrackingService {
+    protected String serviceName;
+
+    public TrackingService(String serviceName) {
+        this.serviceName = serviceName;
+    }
+}
+
+public class CustomerTrackingService extends TrackingService {
+    private String customerId;
+
+    public CustomerTrackingService(String serviceName, String customerId) {
+        super(serviceName);         // MUST be the first line
+        this.customerId = customerId;
+    }
+}</code></pre>
+  </div>
+
+  <h4>3. <code>super.field</code> &mdash; Access parent's field</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Accessing parent field</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class TrackingService {
+    protected String serviceName = "General Tracking";
+}
+
+public class CustomerTrackingService extends TrackingService {
+    protected String serviceName = "Customer Tracking";  // hides parent's field
+
+    public void printNames() {
+        System.out.println(serviceName);        // "Customer Tracking"
+        System.out.println(super.serviceName);  // "General Tracking"
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">When super() is MANDATORY</div>
+    <p>If the parent class has <strong>no default (no-arg) constructor</strong> &mdash; meaning it only has constructors that take parameters &mdash; the child <strong>must</strong> explicitly call <code>super(args)</code>. Otherwise the compiler will try to insert <code>super()</code> automatically, fail to find a no-arg constructor, and throw a compilation error.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: CONSTRUCTOR CHAINING                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="constructor-chaining">
+  <div class="section-tag">Section 05</div>
+  <h2>Constructor Chaining</h2>
+  <p class="section-desc">When you create a child object, the parent's constructor <strong>always runs first</strong>. Always. No exceptions. This is called constructor chaining.</p>
+
+  <h3>The Rule</h3>
+  <p>Every child constructor calls a parent constructor &mdash; either you write <code>super(...)</code> explicitly, or the compiler inserts <code>super()</code> (no-arg) automatically. The parent initializes its part of the object before the child initializes its own part.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Building a house: you pour the <strong>foundation first</strong> (parent constructor), then build the <strong>walls on top</strong> (child constructor). You cannot build walls without a foundation. Java enforces this order automatically.</p>
+  </div>
+
+  <h3>Full Example with Output</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ConstructorChainDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Grandparent {
+    Grandparent() {
+        System.out.println("1. Grandparent constructor");
+    }
+}
+
+class Parent extends Grandparent {
+    Parent() {
+        // super() is inserted automatically by compiler
+        System.out.println("2. Parent constructor");
+    }
+}
+
+class Child extends Parent {
+    Child() {
+        // super() is inserted automatically by compiler
+        System.out.println("3. Child constructor");
+    }
+}
+
+public class ConstructorChainDemo {
+    public static void main(String[] args) {
+        Child c = new Child();
+    }
+}
+
+// OUTPUT:
+// 1. Grandparent constructor
+// 2. Parent constructor
+// 3. Child constructor</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Execution order explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">new Child()</div>
+        <div class="breakdown-explain">You call the Child constructor. But before it can run its body, it calls Parent's constructor via implicit super().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Parent() calls super()</div>
+        <div class="breakdown-explain">Parent's constructor is called, but before IT runs, it calls Grandparent's constructor via implicit super().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Grandparent() runs first</div>
+        <div class="breakdown-explain">Grandparent has no parent (well, Object, which has an empty constructor). So it prints "1. Grandparent constructor" first.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Parent() body runs</div>
+        <div class="breakdown-explain">After Grandparent finishes, control returns to Parent. It prints "2. Parent constructor".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Child() body runs</div>
+        <div class="breakdown-explain">After Parent finishes, control returns to Child. It prints "3. Child constructor". Object is fully built.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Key Takeaway</div>
+    <p>Constructor order is <strong>top-down</strong> (grandparent &rarr; parent &rarr; child). The topmost ancestor always initializes first. This guarantees that by the time a child constructor runs, all inherited fields from the parent are already initialized and ready to use.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: METHOD OVERRIDING                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="method-overriding">
+  <div class="section-tag">Section 06</div>
+  <h2>Method Overriding</h2>
+  <p class="section-desc">When a child class provides its own version of a method that already exists in the parent, that is <strong>method overriding</strong>. The child says: "I know you gave me this behavior, but I want to do it differently."</p>
+
+  <h3>How It Works</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Method Overriding</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class TrackingService {
+    public String getStatus(String trackingId) {
+        return "Status: In Transit";
+    }
+}
+
+public class OfficerTrackingService extends TrackingService {
+    @Override
+    public String getStatus(String trackingId) {
+        // Officer gets detailed internal status
+        return "Status: In Transit | Warehouse: Mumbai-Central | Bay: 14";
+    }
+}</code></pre>
+  </div>
+
+  <h3>The <code>@Override</code> Annotation</h3>
+
+  <p><code>@Override</code> is optional but you should <strong>always use it</strong>. It tells the compiler: "I intend to override a parent method." If you misspell the method name or get the parameters wrong, the compiler will catch your mistake.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header good">With @Override (safe)</div>
+      <div class="comparison-body">
+<pre style="background: none; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin: 0;">@Override
+public String getStatus(String id) {
+    // Compiler verifies this
+    // method exists in parent
+}</pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without @Override (risky)</div>
+      <div class="comparison-body">
+<pre style="background: none; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin: 0;">// Typo: getSatus instead of getStatus
+public String getSatus(String id) {
+    // No error! This is a NEW method,
+    // not an override. Bug is silent.
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Rules of Overriding</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Rule</th>
+        <th>Explanation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Same method signature</td>
+        <td>Name, parameter types, and order must match exactly</td>
+      </tr>
+      <tr>
+        <td>Same or covariant return type</td>
+        <td>Return type must be the same or a subclass of the parent's return type</td>
+      </tr>
+      <tr>
+        <td>Cannot reduce visibility</td>
+        <td>If parent is <code>public</code>, child cannot make it <code>protected</code> or <code>private</code></td>
+      </tr>
+      <tr>
+        <td>Cannot throw broader checked exceptions</td>
+        <td>Child can throw the same or narrower exceptions, not broader ones</td>
+      </tr>
+      <tr>
+        <td>Cannot override <code>final</code> methods</td>
+        <td>A <code>final</code> method is locked &mdash; the parent says "nobody changes this"</td>
+      </tr>
+      <tr>
+        <td>Cannot override <code>static</code> methods</td>
+        <td>Static methods belong to the class, not instances. They are <strong>hidden</strong>, not overridden (see next section)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Visibility rule violation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class TrackingService {
+    public String getStatus(String id) { ... }
+}
+
+public class CustomerTrackingService extends TrackingService {
+    // COMPILER ERROR: Cannot reduce visibility from public to protected
+    @Override
+    protected String getStatus(String id) { ... }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: METHOD HIDING (static methods)                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="method-hiding">
+  <div class="section-tag">Section 07</div>
+  <h2>Method Hiding (Static Methods)</h2>
+  <p class="section-desc">When a child class defines a static method with the same signature as a parent's static method, it <strong>hides</strong> the parent's version &mdash; it does NOT override it. The difference is subtle but important.</p>
+
+  <h3>Overriding vs Hiding</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StaticHidingDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Parent {
+    // Instance method — can be overridden
+    public String greet() { return "Hello from Parent"; }
+
+    // Static method — can be hidden, NOT overridden
+    public static String info() { return "Parent info"; }
+}
+
+class Child extends Parent {
+    @Override
+    public String greet() { return "Hello from Child"; }
+
+    // This HIDES Parent.info(), it does NOT override it
+    public static String info() { return "Child info"; }
+}
+
+public class StaticHidingDemo {
+    public static void main(String[] args) {
+        Parent obj = new Child();
+
+        // Instance method: calls CHILD's version (runtime polymorphism)
+        System.out.println(obj.greet());   // "Hello from Child"
+
+        // Static method: calls PARENT's version (compile-time, based on reference type)
+        System.out.println(obj.info());    // "Parent info"  &larr; SURPRISE!
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Why static behaves differently</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Parent obj = new Child();</div>
+        <div class="breakdown-explain">The reference type is Parent, but the actual object is Child.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">obj.greet() &rarr; "Hello from Child"</div>
+        <div class="breakdown-explain">Instance methods use <strong>runtime polymorphism</strong>. Java looks at the actual object type (Child) and calls Child's greet().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">obj.info() &rarr; "Parent info"</div>
+        <div class="breakdown-explain">Static methods use <strong>compile-time binding</strong>. The compiler sees the reference type is Parent, so it calls Parent.info(). The actual object type is irrelevant for static calls.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Rule of Thumb</div>
+    <p><strong>Overriding</strong> = instance methods, resolved at runtime (which object am I?).<br>
+    <strong>Hiding</strong> = static methods, resolved at compile time (what type is the reference?).<br>
+    This is why you should always call static methods using the class name (<code>Parent.info()</code>), not an object reference.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: THE Object CLASS                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="object-class">
+  <div class="section-tag">Section 08</div>
+  <h2>The <code>Object</code> Class</h2>
+  <p class="section-desc">Every class in Java &mdash; whether you write <code>extends</code> or not &mdash; implicitly extends <code>java.lang.Object</code>. It is the root of the entire class hierarchy. Every object you ever create IS-A Object.</p>
+
+  <h3>Implicit Inheritance</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Implicit Object Extension</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// These two are IDENTICAL:
+public class TrackingService { }
+public class TrackingService extends Object { }
+
+// This means TrackingService automatically has:
+// toString(), equals(), hashCode(), getClass(), clone(), finalize(), etc.</code></pre>
+  </div>
+
+  <h3>Key Methods Inherited from Object</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Default Behavior</th>
+        <th>Usually Override?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>toString()</code></td>
+        <td>Returns class name + <code>@</code> + hashcode (e.g., <code>Parcel@1a2b3c</code>)</td>
+        <td style="color: var(--green);">Yes &mdash; to get readable output</td>
+      </tr>
+      <tr>
+        <td><code>equals(Object)</code></td>
+        <td>Same as <code>==</code> (checks if same reference in memory)</td>
+        <td style="color: var(--green);">Yes &mdash; to compare by field values</td>
+      </tr>
+      <tr>
+        <td><code>hashCode()</code></td>
+        <td>Returns a memory-based integer</td>
+        <td style="color: var(--green);">Yes &mdash; must override with equals()</td>
+      </tr>
+      <tr>
+        <td><code>getClass()</code></td>
+        <td>Returns the runtime class of the object</td>
+        <td style="color: var(--red);">No &mdash; it is <code>final</code></td>
+      </tr>
+      <tr>
+        <td><code>clone()</code></td>
+        <td>Creates a shallow copy (must implement Cloneable)</td>
+        <td style="color: var(--orange);">Sometimes</td>
+      </tr>
+      <tr>
+        <td><code>finalize()</code></td>
+        <td>Called by garbage collector before destroying object</td>
+        <td style="color: var(--red);">No &mdash; deprecated since Java 9</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Overriding toString()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Parcel {
+    private String trackingId;
+    private String destination;
+
+    @Override
+    public String toString() {
+        return "Parcel[id=" + trackingId + ", dest=" + destination + "]";
+    }
+}
+
+// Without override: System.out.println(parcel) → "Parcel@1a2b3c"
+// With override:    System.out.println(parcel) → "Parcel[id=NMB-1001, dest=Mumbai]"</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every Nimbus class &mdash; <code>TrackingService</code>, <code>CustomerTrackingService</code>, <code>BookingThread</code>, <code>DuplicateEmailException</code> &mdash; implicitly extends <code>Object</code>. When <code>CustomerTrackingService extends TrackingService</code>, the chain is: <code>Object</code> &rarr; <code>TrackingService</code> &rarr; <code>CustomerTrackingService</code>. Object is always at the top.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: COMPOSITION VS INHERITANCE                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="composition-vs-inheritance">
+  <div class="section-tag">Section 09</div>
+  <h2>Composition vs Inheritance</h2>
+  <p class="section-desc">Not every relationship should be modeled with <code>extends</code>. Sometimes a class should <strong>contain</strong> another class rather than <strong>be</strong> another class. This is the "has-a" vs "is-a" distinction.</p>
+
+  <h3>"is-a" vs "has-a"</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Inheritance (is-a)</div>
+      <div class="comparison-body">
+        <p style="margin-bottom: 8px;"><strong>CustomerTrackingService IS-A TrackingService</strong></p>
+        <p style="margin-bottom: 8px;">The child is a specialized version of the parent. They share an identity.</p>
+<pre style="background: none; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin: 0;">class CustomerTrackingService
+    extends TrackingService {
+    // inherits all tracking behavior
+}</pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Composition (has-a)</div>
+      <div class="comparison-body">
+        <p style="margin-bottom: 8px;"><strong>UserService HAS-A UserDAO</strong></p>
+        <p style="margin-bottom: 8px;">The outer class uses the inner class as a tool. They are separate things.</p>
+<pre style="background: none; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin: 0;">class UserService {
+    private UserDAO userDao; // has-a
+    // uses userDao to do work
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>When to Use Which</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Use Inheritance When</th>
+        <th>Use Composition When</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>There is a true is-a relationship</td>
+        <td>There is a has-a or "uses-a" relationship</td>
+      </tr>
+      <tr>
+        <td>Child needs to be used wherever parent is expected (polymorphism)</td>
+        <td>You want to reuse behavior without tight coupling</td>
+      </tr>
+      <tr>
+        <td>You want to override specific behaviors</td>
+        <td>The relationship could change at runtime</td>
+      </tr>
+      <tr>
+        <td><code>BookingThread extends Thread</code></td>
+        <td><code>BookingService</code> has a <code>ParcelDAO</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">The Golden Rule</div>
+    <p><strong>"Favor composition over inheritance."</strong> This is one of the most quoted rules in software design. Inheritance creates tight coupling &mdash; changing the parent can break all children. Composition is more flexible: you can swap out the composed object without touching the outer class. Use inheritance only when there is a genuine is-a relationship AND you need polymorphism.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses <strong>both</strong> correctly:<br>
+    <strong>Inheritance:</strong> <code>CustomerTrackingService extends TrackingService</code> (is-a, polymorphic use)<br>
+    <strong>Composition:</strong> <code>BookingService</code> has a <code>ParcelDAO</code> field (uses-a, not a type relationship). A BookingService is NOT a ParcelDAO &mdash; it uses one to access the database.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: NIMBUS INHERITANCE HIERARCHY                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-hierarchy">
+  <div class="section-tag">Section 10</div>
+  <h2>Full Nimbus Inheritance Hierarchy</h2>
+  <p class="section-desc">Every <code>extends</code> relationship in the Nimbus parcel management system, mapped out in one diagram.</p>
+
+  <div class="diagram">
+    <pre>
+                           java.lang.Object
+                                 │
+        ┌──────────────┬─────────┼───────────┬──────────────────┐
+        │              │         │           │                  │
+  TrackingService  BaseHistory  Thread    Exception           ...
+        │           Service      │           │
+        │              │         │     ┌─────┴──────┐
+   ┌────┴────┐         │         │     │            │
+   │         │         │         │     │            │
+Customer  Officer   Customer  Booking  Duplicate  Booking
+Tracking  Tracking  History   Thread   Email      NotFound
+Service   Service   Service            Exception  Exception
+    </pre>
+    <div class="diagram-label">Complete Nimbus class hierarchy showing all extends relationships</div>
+  </div>
+
+  <h3>Reading the Diagram</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Child Class</th>
+        <th>extends</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CustomerTrackingService</code></td>
+        <td><code>TrackingService</code></td>
+        <td>Customer-facing tracking (view estimates, track parcels)</td>
+      </tr>
+      <tr>
+        <td><code>OfficerTrackingService</code></td>
+        <td><code>TrackingService</code></td>
+        <td>Officer-facing tracking (update statuses, assign routes)</td>
+      </tr>
+      <tr>
+        <td><code>CustomerHistoryService</code></td>
+        <td><code>BaseHistoryService</code></td>
+        <td>Customer's booking/delivery history</td>
+      </tr>
+      <tr>
+        <td><code>BookingThread</code></td>
+        <td><code>Thread</code></td>
+        <td>Runs parcel booking logic in a separate thread</td>
+      </tr>
+      <tr>
+        <td><code>DuplicateEmailException</code></td>
+        <td><code>Exception</code></td>
+        <td>Thrown when a user tries to register with an existing email</td>
+      </tr>
+      <tr>
+        <td><code>BookingNotFoundException</code></td>
+        <td><code>Exception</code></td>
+        <td>Thrown when a booking ID does not exist in the database</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: TrackingService → CustomerTrackingService          -->
+<!-- ============================================================ -->
+<section class="content-section" id="tracking-service">
+  <div class="section-tag">Section 11</div>
+  <h2>TrackingService &rarr; CustomerTrackingService</h2>
+  <p class="section-desc">A full implementation showing how the customer tracking service inherits from the base tracking service and adds its own behavior.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+public class TrackingService {
+    protected String serviceName;
+    protected String serviceRegion;
+
+    public TrackingService(String serviceName, String serviceRegion) {
+        this.serviceName = serviceName;
+        this.serviceRegion = serviceRegion;
+    }
+
+    public String trackParcel(String trackingId) {
+        return "Tracking " + trackingId + " via " + serviceName;
+    }
+
+    public String getServiceInfo() {
+        return serviceName + " [" + serviceRegion + "]";
+    }
+
+    @Override
+    public String toString() {
+        return "TrackingService{name='" + serviceName + "', region='" + serviceRegion + "'}";
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+public class CustomerTrackingService extends TrackingService {
+    private String customerId;
+
+    public CustomerTrackingService(String serviceRegion, String customerId) {
+        super("Customer Tracking", serviceRegion);  // calls parent constructor
+        this.customerId = customerId;
+    }
+
+    // Inherited: trackParcel(), getServiceInfo(), toString()
+
+    // New method: only customers need delivery estimates
+    public String getDeliveryEstimate(String trackingId) {
+        return "Parcel " + trackingId + " | Estimated delivery: 2-3 business days";
+    }
+
+    // Override: customize tracking output for customers
+    @Override
+    public String trackParcel(String trackingId) {
+        String base = super.trackParcel(trackingId);  // reuse parent logic
+        return base + " | Customer: " + customerId;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerTrackingService{customer='" + customerId
+            + "', region='" + serviceRegion + "'}";
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">CustomerTrackingService breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extends TrackingService</div>
+        <div class="breakdown-explain">Inherits all protected/public fields (serviceName, serviceRegion) and methods (trackParcel, getServiceInfo, toString).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String customerId;</div>
+        <div class="breakdown-explain">New field that only the child has. The parent TrackingService has no concept of a customer ID.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">super("Customer Tracking", serviceRegion);</div>
+        <div class="breakdown-explain">Calls the parent's constructor to initialize serviceName and serviceRegion. Must be the first line. Parent has no default constructor, so this is mandatory.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getDeliveryEstimate()</div>
+        <div class="breakdown-explain">A brand new method. Only CustomerTrackingService has it. The parent cannot see or call this method.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">super.trackParcel(trackingId)</div>
+        <div class="breakdown-explain">Overrides trackParcel() but reuses the parent's implementation via super. This is the "extend, don't replace" pattern: keep what the parent does and add more.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: BaseHistoryService → CustomerHistoryService        -->
+<!-- ============================================================ -->
+<section class="content-section" id="history-service">
+  <div class="section-tag">Section 12</div>
+  <h2>BaseHistoryService &rarr; CustomerHistoryService</h2>
+  <p class="section-desc">Another real Nimbus inheritance example: a base history service that provides generic history retrieval, and a customer-specific child that adds customer context.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BaseHistoryService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class BaseHistoryService {
+    protected List&lt;String&gt; historyLog;
+
+    public BaseHistoryService() {
+        this.historyLog = new ArrayList&lt;&gt;();
+    }
+
+    public void addEntry(String entry) {
+        historyLog.add(entry);
+    }
+
+    public List&lt;String&gt; getFullHistory() {
+        return new ArrayList&lt;&gt;(historyLog);  // return a copy, not the original
+    }
+
+    public int getHistoryCount() {
+        return historyLog.size();
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerHistoryService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class CustomerHistoryService extends BaseHistoryService {
+    private String customerId;
+
+    public CustomerHistoryService(String customerId) {
+        super();  // calls BaseHistoryService() — initializes historyLog
+        this.customerId = customerId;
+    }
+
+    // New: add entry with customer prefix
+    public void addCustomerEntry(String action) {
+        String entry = "[Customer:" + customerId + "] " + action;
+        super.addEntry(entry);  // reuse parent's addEntry
+    }
+
+    // New: filter history for bookings only
+    public List&lt;String&gt; getBookingHistory() {
+        return historyLog.stream()
+            .filter(e -&gt; e.contains("BOOKED") || e.contains("CANCELLED"))
+            .collect(Collectors.toList());
+    }
+
+    // Override: add customer context to full history
+    @Override
+    public List&lt;String&gt; getFullHistory() {
+        List&lt;String&gt; history = super.getFullHistory();
+        history.add(0, "=== History for Customer " + customerId + " ===");
+        return history;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">CustomerHistoryService breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extends BaseHistoryService</div>
+        <div class="breakdown-explain">Inherits historyLog field, addEntry(), getFullHistory(), getHistoryCount().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">super()</div>
+        <div class="breakdown-explain">Calls the parent's no-arg constructor, which creates the empty ArrayList. Even though the parent has a default constructor, making the call explicit is clearer.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">addCustomerEntry()</div>
+        <div class="breakdown-explain">New method that prefixes entries with customer ID, then delegates to super.addEntry(). This is composition of behavior: child builds on parent's method.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getBookingHistory()</div>
+        <div class="breakdown-explain">New method. Uses Java streams to filter the inherited historyLog. Only available on CustomerHistoryService, not the parent.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Override getFullHistory()</div>
+        <div class="breakdown-explain">Overrides parent method. Calls super.getFullHistory() to get the base list, then inserts a header line at position 0. Extends parent behavior rather than replacing it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: BookingThread extends Thread                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-thread">
+  <div class="section-tag">Section 13</div>
+  <h2>BookingThread extends Thread</h2>
+  <p class="section-desc">When Nimbus needs to process a booking without blocking the main thread, it creates a <code>BookingThread</code>. This is inheritance from a Java standard library class.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingThread.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.thread;
+
+public class BookingThread extends Thread {
+    private String bookingId;
+    private String customerName;
+
+    public BookingThread(String bookingId, String customerName) {
+        super("BookingThread-" + bookingId);  // sets the thread name
+        this.bookingId = bookingId;
+        this.customerName = customerName;
+    }
+
+    @Override
+    public void run() {
+        // This method is inherited from Thread and overridden
+        System.out.println("Processing booking " + bookingId + " for " + customerName);
+
+        try {
+            // Simulate booking steps
+            System.out.println("Step 1: Validating address...");
+            Thread.sleep(1000);
+
+            System.out.println("Step 2: Calculating shipping cost...");
+            Thread.sleep(500);
+
+            System.out.println("Step 3: Booking confirmed!");
+        } catch (InterruptedException e) {
+            System.out.println("Booking " + bookingId + " was interrupted!");
+        }
+    }
+}
+
+// Usage:
+// BookingThread bt = new BookingThread("NMB-1001", "Darshan");
+// bt.start();  // start() is inherited from Thread — it calls run() in a new thread</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">BookingThread breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extends Thread</div>
+        <div class="breakdown-explain">Inherits from java.lang.Thread. BookingThread IS-A Thread. It gets start(), sleep(), interrupt(), getName(), and dozens of other thread methods.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">super("BookingThread-" + bookingId)</div>
+        <div class="breakdown-explain">Thread has a constructor that accepts a name. By calling super with a descriptive name, this thread shows up in debuggers as "BookingThread-NMB-1001" instead of "Thread-0".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Override public void run()</div>
+        <div class="breakdown-explain">Thread.run() does nothing by default. We override it to define what this thread actually does when started. This is the core pattern of extending Thread.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bt.start()</div>
+        <div class="breakdown-explain">start() is inherited from Thread. You do NOT call run() directly. start() creates a new OS-level thread and calls run() inside it. Calling run() directly would execute on the same thread (no parallelism).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>BookingThread lets Nimbus process multiple bookings simultaneously. When a customer submits a booking, a new <code>BookingThread</code> is created and started. The main application thread can continue accepting new requests while the booking is processed in the background. The custom exceptions (<code>DuplicateEmailException</code>, <code>BookingNotFoundException</code>) follow the same pattern &mdash; they extend <code>Exception</code> to create domain-specific error types.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: COMMON MISTAKES                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-mistakes">
+  <div class="section-tag">Section 14</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">These are the mistakes beginners make with inheritance. Learn them now so you can spot them in your own code.</p>
+
+  <h3>Mistake 1: Confusing Overriding with Overloading</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header good">Overriding (same signature)</div>
+      <div class="comparison-body">
+<pre style="background: none; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin: 0;">class Parent {
+    void display(String msg) { ... }
+}
+class Child extends Parent {
+    @Override
+    void display(String msg) { ... }
+    // SAME name, SAME params
+    // Replaces parent's version
+}</pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header bad">Overloading (different params)</div>
+      <div class="comparison-body">
+<pre style="background: none; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin: 0;">class Parent {
+    void display(String msg) { ... }
+}
+class Child extends Parent {
+    void display(String msg, int count) { ... }
+    // SAME name, DIFFERENT params
+    // This is a NEW method!
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <p><strong>The trap:</strong> You think you overrode <code>display()</code> but you actually created a new overloaded method. The parent's <code>display(String)</code> still runs when called polymorphically. Always use <code>@Override</code> to catch this.</p>
+
+  <h3>Mistake 2: Forgetting <code>super()</code></h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Missing super() call</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class TrackingService {
+    // Only parameterized constructor — no default constructor
+    public TrackingService(String name) {
+        this.serviceName = name;
+    }
+}
+
+public class CustomerTrackingService extends TrackingService {
+    public CustomerTrackingService() {
+        // COMPILER ERROR: There is no default constructor in TrackingService
+        // The compiler tries to insert super() automatically,
+        // but TrackingService has no no-arg constructor!
+
+        // FIX: super("Customer Tracking");
+    }
+}</code></pre>
+  </div>
+
+  <h3>Mistake 3: Trying Circular Inheritance</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Circular inheritance attempt</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// COMPILER ERROR: Cyclic inheritance
+class A extends B { }
+class B extends A { }
+
+// A needs B to exist first, B needs A to exist first.
+// This is an impossible loop. Java catches it immediately.</code></pre>
+  </div>
+
+  <h3>Mistake 4: Calling <code>run()</code> Instead of <code>start()</code></h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Thread mistake</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">BookingThread bt = new BookingThread("NMB-1001", "Darshan");
+
+bt.run();    // WRONG: runs on the current thread, no parallelism
+bt.start();  // RIGHT: creates a new thread, then calls run() inside it</code></pre>
+  </div>
+
+  <h3>Mistake 5: Overriding a <code>final</code> or <code>static</code> Method</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Final method restriction</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Parent {
+    public final void validate() { ... }
+}
+
+class Child extends Parent {
+    @Override
+    public void validate() { ... }  // COMPILER ERROR: Cannot override final method
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 15: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 15</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Test your understanding. Try to solve each one on paper before revealing the answer.</p>
+
+  <!-- Exercise 1 -->
+  <h3>Exercise 1: What Will This Print?</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ConstructorOrder.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Animal {
+    Animal() { System.out.println("Animal born"); }
+}
+class Dog extends Animal {
+    Dog() { System.out.println("Dog born"); }
+}
+class Puppy extends Dog {
+    Puppy() { System.out.println("Puppy born"); }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Puppy p = new Puppy();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Output</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Animal born</div>
+        <div class="breakdown-explain">Constructors chain from bottom to top, then execute from top to bottom. Animal (grandparent) runs first.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Dog born</div>
+        <div class="breakdown-explain">After Animal finishes, Dog constructor body executes.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Puppy born</div>
+        <div class="breakdown-explain">Finally, Puppy constructor body executes. Order: Animal &rarr; Dog &rarr; Puppy.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 2 -->
+  <h3>Exercise 2: Will This Compile?</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CompileCheck.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Vehicle {
+    Vehicle(int speed) {
+        System.out.println("Vehicle: " + speed);
+    }
+}
+
+class Car extends Vehicle {
+    Car() {
+        System.out.println("Car created");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">&times;</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">WILL NOT COMPILE</div>
+        <div class="breakdown-explain">Vehicle only has a parameterized constructor (int speed). Car's constructor doesn't call super(someSpeed), so the compiler inserts super() automatically. But Vehicle has no no-arg constructor. Fix: add <code>super(100);</code> as the first line in Car's constructor.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 3 -->
+  <h3>Exercise 3: What Will This Print?</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OverrideVsHide.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Base {
+    public void show() { System.out.println("Base show"); }
+    public static void display() { System.out.println("Base display"); }
+}
+
+class Derived extends Base {
+    @Override
+    public void show() { System.out.println("Derived show"); }
+    public static void display() { System.out.println("Derived display"); }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Base obj = new Derived();
+        obj.show();
+        obj.display();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Output</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Derived show</div>
+        <div class="breakdown-explain">show() is an instance method, so it uses runtime polymorphism. The actual object is Derived, so Derived's show() runs.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Base display</div>
+        <div class="breakdown-explain">display() is static, so it uses compile-time binding. The reference type is Base, so Base.display() runs. This is method hiding, not overriding.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 4 -->
+  <h3>Exercise 4: Write a Custom Exception</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create a <code>DuplicateEmailException</code> that extends <code>Exception</code>. It should accept an email string and produce the message: <code>"Email already registered: [email]"</code>. Add a method <code>getEmail()</code> that returns the duplicate email.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class DuplicateEmailException extends Exception {</div>
+        <div class="breakdown-explain">Extends Exception to make it a checked exception. The "is-a" test: DuplicateEmailException IS-A Exception.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">    private String email;</div>
+        <div class="breakdown-explain">Store the duplicate email for later retrieval.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">    public DuplicateEmailException(String email) {</div>
+        <div class="breakdown-explain">Constructor accepts the problematic email address.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">        super("Email already registered: " + email);</div>
+        <div class="breakdown-explain">Calls Exception's constructor with a human-readable message. This sets the getMessage() return value.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">    public String getEmail() { return email; }</div>
+        <div class="breakdown-explain">Custom getter that Exception doesn't have. Child-specific addition.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 5 -->
+  <h3>Exercise 5: What Will This Print?</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SuperChain.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class A {
+    A(int x) {
+        System.out.println("A: " + x);
+    }
+}
+class B extends A {
+    B() {
+        super(10);
+        System.out.println("B: default");
+    }
+    B(int y) {
+        super(y);
+        System.out.println("B: " + y);
+    }
+}
+class C extends B {
+    C() {
+        super(20);
+        System.out.println("C: done");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        C obj = new C();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Output</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">A: 20</div>
+        <div class="breakdown-explain">C() calls super(20) &rarr; B(int y=20) calls super(20) &rarr; A(int x=20) prints "A: 20".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">B: 20</div>
+        <div class="breakdown-explain">After A finishes, B(20) continues and prints "B: 20".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">C: done</div>
+        <div class="breakdown-explain">After B finishes, C() continues and prints "C: done".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 6 -->
+  <h3>Exercise 6: Is-A or Has-A?</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>For each pair, decide: should the relationship be inheritance (is-a, use <code>extends</code>) or composition (has-a, use a field)?</p>
+    <ol>
+      <li><code>BookingService</code> and <code>ParcelDAO</code></li>
+      <li><code>OfficerTrackingService</code> and <code>TrackingService</code></li>
+      <li><code>Car</code> and <code>Engine</code></li>
+      <li><code>ArrayList</code> and <code>List</code></li>
+      <li><code>BookingNotFoundException</code> and <code>Exception</code></li>
+    </ol>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answers</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">BookingService HAS-A ParcelDAO</div>
+        <div class="breakdown-explain">Composition. A BookingService is NOT a ParcelDAO. It uses one to access the database.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">OfficerTrackingService IS-A TrackingService</div>
+        <div class="breakdown-explain">Inheritance. An OfficerTrackingService is a specialized version of TrackingService.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Car HAS-A Engine</div>
+        <div class="breakdown-explain">Composition. A Car is NOT an Engine. It contains an engine.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ArrayList IS-A List</div>
+        <div class="breakdown-explain">Inheritance (technically implements). ArrayList is a type of List.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">BookingNotFoundException IS-A Exception</div>
+        <div class="breakdown-explain">Inheritance. A BookingNotFoundException is a specific type of Exception.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 7 -->
+  <h3>Exercise 7: Fix the Bug</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BuggyCode.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Service {
+    public void process() {
+        System.out.println("Processing...");
+    }
+}
+
+class SpecialService extends Service {
+    @Override
+    protected void process() {
+        System.out.println("Special processing...");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Bug &amp; Fix</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">&times;</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Cannot reduce visibility from public to protected</div>
+        <div class="breakdown-explain">The parent's process() is <code>public</code>. The child tries to make it <code>protected</code>. This violates the overriding rule: you can widen visibility (protected &rarr; public) but never narrow it. Fix: change <code>protected</code> to <code>public</code> in SpecialService.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 8 -->
+  <h3>Exercise 8: Build a Nimbus Exception Hierarchy</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Task</div>
+    <p>Create the following hierarchy:</p>
+    <ul>
+      <li><code>NimbusException extends Exception</code> &mdash; base exception for all Nimbus errors, with a field <code>errorCode</code></li>
+      <li><code>BookingNotFoundException extends NimbusException</code> &mdash; takes a bookingId, sets errorCode to "BOOKING_404"</li>
+      <li><code>DuplicateEmailException extends NimbusException</code> &mdash; takes an email, sets errorCode to "EMAIL_DUP"</li>
+    </ul>
+    <p>Write the three classes. Use constructor chaining (<code>super()</code>) in each. Add a <code>toString()</code> override.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class NimbusException extends Exception {</div>
+        <div class="breakdown-explain">Base exception. All Nimbus-specific exceptions extend this.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">    private String errorCode;</div>
+        <div class="breakdown-explain">Every Nimbus exception has a machine-readable error code.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">    public NimbusException(String message, String errorCode) { super(message); this.errorCode = errorCode; }</div>
+        <div class="breakdown-explain">Calls Exception's constructor with message, stores errorCode.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class BookingNotFoundException extends NimbusException {</div>
+        <div class="breakdown-explain">Multilevel: Exception &rarr; NimbusException &rarr; BookingNotFoundException.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">    public BookingNotFoundException(String bookingId) { super("Booking not found: " + bookingId, "BOOKING_404"); }</div>
+        <div class="breakdown-explain">Calls NimbusException constructor which calls Exception constructor. Three-level constructor chain.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class DuplicateEmailException extends NimbusException {</div>
+        <div class="breakdown-explain">Same pattern. super("Email already registered: " + email, "EMAIL_DUP");</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="oop-classes.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Classes &amp; Encapsulation</span>
+  </a>
+  <a href="oop-polymorphism.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Polymorphism</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

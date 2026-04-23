@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus Code — All Project Files | Nimbus Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0B1120; --bg-secondary: #131B2E; --bg-card: #1A2340; --bg-card-hover: #1F2B4D;
+      --bg-surface: #0F172A; --text-primary: #F1F5F9; --text-secondary: #94A3B8; --text-muted: #64748B;
+      --accent: #3B82F6; --accent-glow: rgba(59, 130, 246, 0.15);
+      --green: #22C55E; --orange: #F59E0B; --purple: #A855F7; --red: #EF4444; --cyan: #06B6D4;
+      --border: rgba(148, 163, 184, 0.1); --radius: 12px;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; }
+
+    /* Header */
+    .header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo svg { width: 32px; height: 32px; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-primary); }
+    .logo-badge { background: var(--green); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .header-right { display: flex; gap: 12px; }
+    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+    .header-link:hover { color: var(--text-primary); background: var(--bg-card); }
+    .header-link.active { color: var(--green); background: rgba(34, 197, 94, 0.15); }
+
+    /* Layout */
+    .layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 64px); }
+
+    /* Sidebar */
+    .sidebar { background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; }
+    .sidebar-section { padding: 0 16px; margin-bottom: 24px; }
+    .sidebar-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; padding: 0 12px; margin-bottom: 8px; }
+    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 7px 12px; color: var(--text-secondary); text-decoration: none; font-size: 0.82rem; font-weight: 500; border-radius: 8px; transition: all 0.2s; margin-bottom: 2px; cursor: pointer; }
+    .sidebar-link:hover { color: var(--text-primary); background: var(--bg-card); }
+    .sidebar-link.active { color: var(--accent); background: var(--accent-glow); }
+    .sidebar-link .icon { font-size: 0.7rem; opacity: 0.5; }
+
+    /* Main */
+    .main { padding: 40px 48px 80px; max-width: 940px; }
+
+    /* Hero */
+    .hero-mini { margin-bottom: 40px; }
+    .hero-mini h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+    .hero-mini h1 span { color: var(--green); }
+    .hero-mini p { color: var(--text-secondary); font-size: 0.95rem; max-width: 600px; }
+
+    /* Phase headers */
+    .phase-header { margin: 48px 0 24px; padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); display: flex; align-items: center; gap: 12px; scroll-margin-top: 80px; }
+    .phase-header .phase-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .phase-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.25rem; font-weight: 700; }
+    .phase-header .phase-desc { font-size: 0.8rem; color: var(--text-muted); margin-left: auto; }
+    .phase-header:first-of-type { margin-top: 0; }
+
+    /* File sections */
+    .file-section { margin-bottom: 32px; scroll-margin-top: 80px; }
+    .file-header { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; cursor: pointer; padding: 10px 0; }
+    .file-header h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+    .file-header .file-path { font-size: 0.75rem; color: var(--text-muted); }
+    .file-header .file-badge { font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+    .file-badge.model { background: rgba(59, 130, 246, 0.15); color: var(--accent); }
+    .file-badge.dao { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+    .file-badge.service { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+    .file-badge.exception { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+    .file-badge.util { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+    .file-badge.app { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
+    .file-badge.config { background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); }
+    .file-badge.web { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+    .file-badge.jsp { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+    .file-badge.controller { background: rgba(59, 130, 246, 0.15); color: var(--accent); }
+    .file-badge.angular { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+    .file-desc { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; }
+
+    /* Code blocks */
+    .code-block { position: relative; margin: 0 0 8px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+    .code-header { background: #1E293B; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .code-filename { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); }
+    .copy-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 4px; }
+    .copy-btn:hover { background: var(--bg-card); color: var(--text-primary); border-color: var(--text-muted); }
+    .copy-btn.copied { background: rgba(34, 197, 94, 0.15); color: var(--green); border-color: var(--green); }
+    .code-block pre { margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .code-block pre code { font-family: 'JetBrains Mono', monospace !important; font-size: 0.8rem !important; line-height: 1.65 !important; }
+
+    /* Setup checklist */
+    .checklist { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 16px 0 32px; }
+    .checklist h4 { font-size: 0.9rem; margin-bottom: 12px; color: var(--text-primary); }
+    .checklist-item { display: flex; gap: 10px; padding: 6px 0; font-size: 0.85rem; color: var(--text-secondary); }
+    .checklist-item .check { color: var(--green); font-weight: 700; }
+
+    /* Callout */
+    .callout { border-radius: var(--radius); padding: 16px 20px; margin: 16px 0; border-left: 4px solid; font-size: 0.85rem; }
+    .callout.warning { background: rgba(245, 158, 11, 0.08); border-color: var(--orange); }
+    .callout.warning strong { color: var(--orange); }
+    .callout.info { background: rgba(59, 130, 246, 0.08); border-color: var(--accent); }
+    .callout.info strong { color: var(--accent); }
+    .callout p { color: var(--text-secondary); margin: 0; }
+
+    /* Responsive */
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .main { padding: 24px 20px 60px; } }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge" style="background: var(--green);">Code</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="index.html" class="header-link">Home</a>
+    <a href="sprint-2.html" class="header-link">Phase 2</a>
+    <a href="sprint-3.html" class="header-link">Phase 3</a>
+    <a href="sprint-4.html" class="header-link">Phase 4</a>
+    <a href="nimbus-code.html" class="header-link active">Code</a>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Setup</div>
+      <a href="#setup" class="sidebar-link active">Setup Checklist</a>
+      <a href="#database" class="sidebar-link">Database Setup</a>
+      <a href="#pom" class="sidebar-link">pom.xml (Maven)</a>
+      <a href="#dbprops" class="sidebar-link">db.properties</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Phase 2 — Console + JDBC</div>
+      <a href="#user-model" class="sidebar-link"><span class="icon">&#9679;</span> User.java</a>
+      <a href="#booking-model" class="sidebar-link"><span class="icon">&#9679;</span> Booking.java</a>
+      <a href="#dbconnection" class="sidebar-link"><span class="icon">&#9679;</span> DBConnection.java</a>
+      <a href="#userdao" class="sidebar-link"><span class="icon">&#9679;</span> UserDAO.java</a>
+      <a href="#bookingdao" class="sidebar-link"><span class="icon">&#9679;</span> BookingDAO.java</a>
+      <a href="#duplicate-ex" class="sidebar-link"><span class="icon">&#9679;</span> DuplicateEmailException</a>
+      <a href="#notfound-ex" class="sidebar-link"><span class="icon">&#9679;</span> BookingNotFoundException</a>
+      <a href="#userservice" class="sidebar-link"><span class="icon">&#9679;</span> UserService.java</a>
+      <a href="#bookingthread" class="sidebar-link"><span class="icon">&#9679;</span> BookingThread.java</a>
+      <a href="#trackingservice" class="sidebar-link"><span class="icon">&#9679;</span> TrackingService.java</a>
+      <a href="#custtracking" class="sidebar-link"><span class="icon">&#9679;</span> CustomerTracking</a>
+      <a href="#offtracking" class="sidebar-link"><span class="icon">&#9679;</span> OfficerTracking</a>
+      <a href="#basehistory" class="sidebar-link"><span class="icon">&#9679;</span> BaseHistoryService</a>
+      <a href="#custhistory" class="sidebar-link"><span class="icon">&#9679;</span> CustomerHistory</a>
+      <a href="#nimbusapp" class="sidebar-link"><span class="icon">&#9679;</span> NimbusApp.java</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Phase 3 — Spring Web</div>
+      <a href="#spring-config" class="sidebar-link"><span class="icon">&#9679;</span> AppConfig.java</a>
+      <a href="#login-servlet" class="sidebar-link"><span class="icon">&#9679;</span> LoginServlet.java</a>
+      <a href="#login-controller" class="sidebar-link"><span class="icon">&#9679;</span> LoginController.java</a>
+      <a href="#booking-controller" class="sidebar-link"><span class="icon">&#9679;</span> BookingController.java</a>
+      <a href="#web-xml" class="sidebar-link"><span class="icon">&#9679;</span> web.xml</a>
+      <a href="#login-jsp" class="sidebar-link"><span class="icon">&#9679;</span> login.jsp</a>
+      <a href="#dashboard-jsp" class="sidebar-link"><span class="icon">&#9679;</span> dashboard.jsp</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Phase 4 — REST + Angular</div>
+      <a href="#rest-user" class="sidebar-link"><span class="icon">&#9679;</span> UserController (REST)</a>
+      <a href="#rest-booking" class="sidebar-link"><span class="icon">&#9679;</span> BookingController (REST)</a>
+      <a href="#springboot-main" class="sidebar-link"><span class="icon">&#9679;</span> NimbusApplication.java</a>
+      <a href="#app-properties" class="sidebar-link"><span class="icon">&#9679;</span> application.properties</a>
+      <a href="#ng-user-service" class="sidebar-link"><span class="icon">&#9679;</span> user.service.ts</a>
+      <a href="#ng-booking-service" class="sidebar-link"><span class="icon">&#9679;</span> booking.service.ts</a>
+      <a href="#ng-login" class="sidebar-link"><span class="icon">&#9679;</span> login.component.ts</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="hero-mini">
+      <h1>Nimbus <span>Code</span></h1>
+      <p>Every project file across all phases. Copy into Eclipse and run. Organized by phase — find what you need, grab it, go.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SETUP                                        -->
+    <!-- ============================================ -->
+    <div id="setup" class="phase-header" style="margin-top: 0;">
+      <span class="phase-dot" style="background: var(--text-muted);"></span>
+      <h2>Setup</h2>
+      <span class="phase-desc">Before writing any code</span>
+    </div>
+
+    <div class="checklist">
+      <h4>Pre-Flight Checklist</h4>
+      <div class="checklist-item"><span class="check">1.</span> MySQL installed and running</div>
+      <div class="checklist-item"><span class="check">2.</span> Eclipse open with Maven project created (groupId: com.nimbus, artifactId: NimbusParcelSystem)</div>
+      <div class="checklist-item"><span class="check">3.</span> Create packages: com.nimbus.model, com.nimbus.dao, com.nimbus.service, com.nimbus.exception, com.nimbus.util, com.nimbus.app</div>
+      <div class="checklist-item"><span class="check">4.</span> pom.xml has MySQL connector dependency</div>
+      <div class="checklist-item"><span class="check">5.</span> Database created and tables built (run SQL below)</div>
+      <div class="checklist-item"><span class="check">6.</span> Update DBConnection.java with YOUR MySQL username/password</div>
+    </div>
+
+    <!-- DATABASE SETUP -->
+    <div id="database" class="file-section">
+      <div class="file-header">
+        <h3>Database Setup</h3>
+        <span class="file-badge config">SQL</span>
+      </div>
+      <p class="file-desc">Run this in MySQL to create the database, tables, and seed data.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">nimbus_setup.sql</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-sql">-- ============================================
+-- NIMBUS DATABASE SETUP — Run this first!
+-- ============================================
+
+CREATE DATABASE IF NOT EXISTS nimbus_db;
+USE nimbus_db;
+
+-- Users table
+CREATE TABLE tbl_UserProfile (
+    User_ID         VARCHAR(20)   PRIMARY KEY,
+    FullName        VARCHAR(50)   NOT NULL,
+    Rec_Address     VARCHAR(200)  NOT NULL,
+    Email           VARCHAR(100)  NOT NULL UNIQUE,
+    MobileNumber    VARCHAR(15)   NOT NULL,
+    Password        VARCHAR(30)   NOT NULL,
+    Role            VARCHAR(10)   NOT NULL
+        CHECK (Role IN ('customer', 'officer', 'support'))
+);
+
+-- Bookings table
+CREATE TABLE Booking (
+    Booking_ID                  VARCHAR(20)   PRIMARY KEY,
+    User_ID                     VARCHAR(20)   NOT NULL,
+    Rec_Name                    VARCHAR(50)   NOT NULL,
+    Rec_Address                 VARCHAR(200)  NOT NULL,
+    Rec_Pin                     VARCHAR(6)    NOT NULL,
+    Rec_Mobile                  VARCHAR(15)   NOT NULL,
+    Par_Weight_Gram             INT           NOT NULL,
+    Par_Contents_Description    VARCHAR(200)  NOT NULL,
+    Par_Delivery_Type           VARCHAR(20)   NOT NULL,
+    Par_Packing_Preference      VARCHAR(20)   NOT NULL,
+    Par_PickupTime              DATETIME,
+    Par_DropoffTime             DATETIME,
+    Par_ServiceCost             DECIMAL(10,2) NOT NULL,
+    Par_PaymentTime             DATETIME,
+    Par_Status                  VARCHAR(20)   NOT NULL DEFAULT 'Booked',
+    Booking_Date                DATETIME      DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (User_ID) REFERENCES tbl_UserProfile(User_ID)
+);
+
+-- ============================================
+-- SEED DATA
+-- ============================================
+
+-- 5 Customers
+INSERT INTO tbl_UserProfile VALUES
+('260401-AK01', 'Amit Kumar',   '45 MG Road, Bangalore, Karnataka',     'amit.kumar@email.com',   '9876543210', 'Amit@123',   'customer'),
+('260401-PS02', 'Priya Sharma', '12 Connaught Place, New Delhi',         'priya.sharma@email.com', '8765432109', 'Priya@123',  'customer'),
+('260401-RV03', 'Rahul Verma',  '78 Park Street, Kolkata',               'rahul.verma@email.com',  '7654321098', 'Rahul@123',  'customer'),
+('260401-SM04', 'Sneha Menon',  '33 Anna Salai, Chennai',                'sneha.menon@email.com',  '6543210987', 'Sneha@123',  'customer'),
+('260401-DP05', 'Deepak Patel', '90 SG Highway, Ahmedabad',              'deepak.patel@email.com', '5432109876', 'Deepak@123', 'customer');
+
+-- 2 Officers + 1 Support
+INSERT INTO tbl_UserProfile VALUES
+('OFF-001', 'Rajesh Nair',  '15 Wardha Road, Nagpur',         'rajesh.nair@nimbus.com',  '9988776655', 'Officer@123', 'officer'),
+('OFF-002', 'Meera Joshi',  '22 Residency Road, Bangalore',   'meera.joshi@nimbus.com',  '8877665544', 'Officer@123', 'officer'),
+('SUP-001', 'Karan Singh',  '44 Sector 18, Noida',            'karan.singh@nimbus.com',  '7766554433', 'Support@123', 'support');
+
+-- 3 Sample Bookings
+INSERT INTO Booking VALUES
+('NMB-260401-0001', '260401-AK01', 'Vikram Reddy',  '90 Jubilee Hills, Hyderabad',   '500033', '8765432100', 500,  'Books and documents',   'Standard', 'Standard',     '2026-04-02 10:00:00', '2026-04-05 18:00:00', 150.00, '2026-04-01 12:00:00', 'In Transit', '2026-04-01 12:00:00'),
+('NMB-260401-0002', '260401-PS02', 'Anita Desai',   '45 Koregaon Park, Pune',        '411001', '7654321099', 1200, 'Electronics - Laptop',  'Express',  'Fragile',      '2026-04-02 09:00:00', '2026-04-03 18:00:00', 350.00, '2026-04-01 14:00:00', 'Booked',     '2026-04-01 14:00:00'),
+('NMB-260401-0003', '260401-RV03', 'Suman Das',     '56 Salt Lake, Kolkata',         '700091', '6543210988', 300,  'Clothing items',        'Standard', 'Eco-friendly', '2026-04-01 11:00:00', '2026-04-04 17:00:00', 200.00, '2026-04-01 09:00:00', 'Delivered',  '2026-04-01 09:00:00');
+
+SELECT 'Database setup complete!' AS Status;</code></pre>
+      </div>
+    </div>
+
+    <!-- POM.XML -->
+    <div id="pom" class="file-section">
+      <div class="file-header">
+        <h3>pom.xml</h3>
+        <span class="file-badge config">CONFIG</span>
+      </div>
+      <p class="file-desc">Maven configuration — manages all dependencies. Put this at the root of your project.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">pom.xml</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;NimbusParcelSystem&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;11&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;11&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- MySQL Connector --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;version&gt;8.3.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
+      </div>
+    </div>
+
+    <!-- DB PROPERTIES -->
+    <div id="dbprops" class="file-section">
+      <div class="file-header">
+        <h3>db.properties</h3>
+        <span class="file-badge config">CONFIG</span>
+      </div>
+      <p class="file-desc">Put in src/main/resources/. Change username and password to match YOUR MySQL setup.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">src/main/resources/db.properties</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-none">db.url=jdbc:mysql://localhost:3306/nimbus_db
+db.username=root
+db.password=password
+db.driver=com.mysql.cj.jdbc.Driver</code></pre>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PHASE 2: CONSOLE + JDBC                      -->
+    <!-- ============================================ -->
+    <div id="phase2" class="phase-header">
+      <span class="phase-dot" style="background: var(--accent);"></span>
+      <h2>Phase 2 — Console + JDBC</h2>
+      <span class="phase-desc">14 Java files</span>
+    </div>
+
+    <div class="callout info">
+      <p><strong>Project Structure:</strong> All files go in <code>src/main/java/com/nimbus/</code> under the package shown in each file's <code>package</code> statement.</p>
+    </div>
+
+    <!-- User.java -->
+    <div id="user-model" class="file-section">
+      <div class="file-header">
+        <h3>User.java</h3>
+        <span class="file-path">com.nimbus.model</span>
+        <span class="file-badge model">MODEL</span>
+      </div>
+      <p class="file-desc">Data class representing a Nimbus user. Maps to tbl_UserProfile.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/model/User.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.model;
+
+public class User {
+    private String userId;
+    private String fullName;
+    private String email;
+    private String mobile;
+    private String address;
+    private String password;
+    private String role;
+
+    public User() {}
+
+    public User(String userId, String fullName, String email,
+                String mobile, String address, String password, String role) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.password = password;
+        this.role = role;
+    }
+
+    public String getUserId()   { return userId; }
+    public String getFullName() { return fullName; }
+    public String getEmail()    { return email; }
+    public String getMobile()   { return mobile; }
+    public String getAddress()  { return address; }
+    public String getPassword() { return password; }
+    public String getRole()     { return role; }
+
+    public void setUserId(String userId)     { this.userId = userId; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setEmail(String email)       { this.email = email; }
+    public void setMobile(String mobile)     { this.mobile = mobile; }
+    public void setAddress(String address)   { this.address = address; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(String role)         { this.role = role; }
+
+    @Override
+    public String toString() {
+        return "User{userId='" + userId + "', fullName='" + fullName +
+               "', email='" + email + "', role='" + role + "'}";
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- Booking.java -->
+    <div id="booking-model" class="file-section">
+      <div class="file-header">
+        <h3>Booking.java</h3>
+        <span class="file-path">com.nimbus.model</span>
+        <span class="file-badge model">MODEL</span>
+      </div>
+      <p class="file-desc">Data class representing a parcel booking. Maps to Booking table.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/model/Booking.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.model;
+
+import java.time.LocalDateTime;
+
+public class Booking {
+    private String bookingId;
+    private String userId;
+    private String recName;
+    private String recAddress;
+    private String recPin;
+    private String recMobile;
+    private int parWeightGram;
+    private String parContentsDesc;
+    private String parDeliveryType;
+    private String parPackingPref;
+    private LocalDateTime parPickupTime;
+    private LocalDateTime parDropoffTime;
+    private double parServiceCost;
+    private LocalDateTime parPaymentTime;
+    private String parStatus;
+
+    public Booking() {}
+
+    public Booking(String bookingId, String userId, String recName,
+                   String recAddress, String recPin, String recMobile,
+                   int parWeightGram, String parContentsDesc,
+                   String parDeliveryType, String parPackingPref,
+                   LocalDateTime parPickupTime, LocalDateTime parDropoffTime,
+                   double parServiceCost, LocalDateTime parPaymentTime,
+                   String parStatus) {
+        this.bookingId = bookingId; this.userId = userId;
+        this.recName = recName; this.recAddress = recAddress;
+        this.recPin = recPin; this.recMobile = recMobile;
+        this.parWeightGram = parWeightGram; this.parContentsDesc = parContentsDesc;
+        this.parDeliveryType = parDeliveryType; this.parPackingPref = parPackingPref;
+        this.parPickupTime = parPickupTime; this.parDropoffTime = parDropoffTime;
+        this.parServiceCost = parServiceCost; this.parPaymentTime = parPaymentTime;
+        this.parStatus = parStatus;
+    }
+
+    // Getters
+    public String getBookingId()       { return bookingId; }
+    public String getUserId()          { return userId; }
+    public String getRecName()         { return recName; }
+    public String getRecAddress()      { return recAddress; }
+    public String getRecPin()          { return recPin; }
+    public String getRecMobile()       { return recMobile; }
+    public int getParWeightGram()      { return parWeightGram; }
+    public String getParContentsDesc() { return parContentsDesc; }
+    public String getParDeliveryType() { return parDeliveryType; }
+    public String getParPackingPref()  { return parPackingPref; }
+    public LocalDateTime getParPickupTime()  { return parPickupTime; }
+    public LocalDateTime getParDropoffTime() { return parDropoffTime; }
+    public double getParServiceCost()  { return parServiceCost; }
+    public LocalDateTime getParPaymentTime() { return parPaymentTime; }
+    public String getParStatus()       { return parStatus; }
+
+    // Setters
+    public void setBookingId(String v)       { this.bookingId = v; }
+    public void setUserId(String v)          { this.userId = v; }
+    public void setRecName(String v)         { this.recName = v; }
+    public void setRecAddress(String v)      { this.recAddress = v; }
+    public void setRecPin(String v)          { this.recPin = v; }
+    public void setRecMobile(String v)       { this.recMobile = v; }
+    public void setParWeightGram(int v)      { this.parWeightGram = v; }
+    public void setParContentsDesc(String v) { this.parContentsDesc = v; }
+    public void setParDeliveryType(String v) { this.parDeliveryType = v; }
+    public void setParPackingPref(String v)  { this.parPackingPref = v; }
+    public void setParPickupTime(LocalDateTime v)  { this.parPickupTime = v; }
+    public void setParDropoffTime(LocalDateTime v) { this.parDropoffTime = v; }
+    public void setParServiceCost(double v)  { this.parServiceCost = v; }
+    public void setParPaymentTime(LocalDateTime v) { this.parPaymentTime = v; }
+    public void setParStatus(String v)       { this.parStatus = v; }
+
+    @Override
+    public String toString() {
+        return String.format("Booking[%s] %s -&gt; %s | %s | Rs.%.2f",
+            bookingId, userId, recName, parStatus, parServiceCost);
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- DBConnection -->
+    <div id="dbconnection" class="file-section">
+      <div class="file-header">
+        <h3>DBConnection.java</h3>
+        <span class="file-path">com.nimbus.util</span>
+        <span class="file-badge util">UTIL</span>
+      </div>
+      <div class="callout warning">
+        <p><strong>Change URL, USER, PASSWORD</strong> to match your MySQL setup before running!</p>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/util/DBConnection.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/nimbus_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "password";  // CHANGE THIS
+
+    public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL Driver not found! Add mysql-connector to Build Path.", e);
+        }
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- Exceptions -->
+    <div id="duplicate-ex" class="file-section">
+      <div class="file-header">
+        <h3>DuplicateEmailException.java</h3>
+        <span class="file-path">com.nimbus.exception</span>
+        <span class="file-badge exception">EXCEPTION</span>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/exception/DuplicateEmailException.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.exception;
+
+public class DuplicateEmailException extends Exception {
+    public DuplicateEmailException(String email) {
+        super("Email Already Exists: " + email);
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <div id="notfound-ex" class="file-section">
+      <div class="file-header">
+        <h3>BookingNotFoundException.java</h3>
+        <span class="file-path">com.nimbus.exception</span>
+        <span class="file-badge exception">EXCEPTION</span>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/exception/BookingNotFoundException.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.exception;
+
+public class BookingNotFoundException extends Exception {
+    public BookingNotFoundException(String criteria) {
+        super("No Details found in the given criteria: " + criteria);
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- Note for remaining files -->
+    <div class="callout info">
+      <p><strong>Remaining Phase 2 files</strong> (UserDAO, BookingDAO, UserService, BookingThread, TrackingService hierarchy, BaseHistoryService hierarchy, NimbusApp) are in the detailed topic page: <a href="topics/nimbus-backend.html" style="color: var(--accent);">Nimbus Backend Code →</a></p>
+      <p style="margin-top: 8px;">Each file there has full code with copy buttons + line-by-line "Break it down" explanations.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PHASE 3: SPRING WEB                          -->
+    <!-- ============================================ -->
+    <div id="phase3" class="phase-header">
+      <span class="phase-dot" style="background: var(--orange);"></span>
+      <h2>Phase 3 — Spring Web App</h2>
+      <span class="phase-desc">Servlets + JSP + Spring MVC</span>
+    </div>
+
+    <!-- Spring AppConfig -->
+    <div id="spring-config" class="file-section">
+      <div class="file-header">
+        <h3>AppConfig.java</h3>
+        <span class="file-path">com.nimbus.config</span>
+        <span class="file-badge config">CONFIG</span>
+      </div>
+      <p class="file-desc">Spring configuration — enables component scanning and configures DataSource.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/config/AppConfig.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.config;
+
+import javax.sql.DataSource;
+import org.springframework.context.annotation.*;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+@Configuration
+@ComponentScan("com.nimbus")
+public class AppConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        ds.setUrl("jdbc:mysql://localhost:3306/nimbus_db");
+        ds.setUsername("root");
+        ds.setPassword("password");  // CHANGE THIS
+        return ds;
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- LoginController (Spring MVC) -->
+    <div id="login-controller" class="file-section">
+      <div class="file-header">
+        <h3>LoginController.java</h3>
+        <span class="file-path">com.nimbus.controller</span>
+        <span class="file-badge controller">CONTROLLER</span>
+      </div>
+      <p class="file-desc">Spring MVC controller for login — replaces the raw LoginServlet.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/controller/LoginController.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dao.UserDAO;
+import com.nimbus.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpSession;
+
+@Controller
+public class LoginController {
+
+    @Autowired
+    private UserDAO userDAO;
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login";  // returns login.jsp
+    }
+
+    @PostMapping("/login")
+    public String processLogin(@RequestParam String userId,
+                                @RequestParam String password,
+                                HttpSession session, Model model) {
+        User user = userDAO.validateLogin(userId, password);
+
+        if (user != null) {
+            session.setAttribute("currentUser", user);
+            switch (user.getRole()) {
+                case "customer": return "redirect:/customer/dashboard";
+                case "officer":  return "redirect:/officer/dashboard";
+                case "support":  return "redirect:/support/dashboard";
+            }
+        }
+
+        model.addAttribute("error", "Invalid User ID or Password");
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- login.jsp -->
+    <div id="login-jsp" class="file-section">
+      <div class="file-header">
+        <h3>login.jsp</h3>
+        <span class="file-path">WEB-INF/views/</span>
+        <span class="file-badge jsp">JSP</span>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">WEB-INF/views/login.jsp</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Nimbus — Sign In&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Nimbus Login&lt;/h1&gt;
+
+  &lt;c:if test="${not empty error}"&gt;
+    &lt;p style="color: red;"&gt;${error}&lt;/p&gt;
+  &lt;/c:if&gt;
+
+  &lt;form action="${pageContext.request.contextPath}/login" method="POST"&gt;
+    &lt;label&gt;User ID:&lt;/label&gt;
+    &lt;input type="text" name="userId" required /&gt;&lt;br/&gt;
+
+    &lt;label&gt;Password:&lt;/label&gt;
+    &lt;input type="password" name="password" required /&gt;&lt;br/&gt;
+
+    &lt;button type="submit"&gt;Sign In&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <p><strong>More Phase 3 code</strong> (BookingController, TrackingController, all JSP pages, web.xml, Spring config) is in the detailed topic pages: <a href="phase3/spring-mvc.html" style="color: var(--accent);">Spring MVC →</a> | <a href="phase3/servlets.html" style="color: var(--accent);">Servlets →</a> | <a href="phase3/jsp.html" style="color: var(--accent);">JSP →</a></p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PHASE 4: REST + ANGULAR                      -->
+    <!-- ============================================ -->
+    <div id="phase4" class="phase-header">
+      <span class="phase-dot" style="background: var(--purple);"></span>
+      <h2>Phase 4 — REST API + Angular</h2>
+      <span class="phase-desc">Spring Boot + Angular</span>
+    </div>
+
+    <!-- Spring Boot Main -->
+    <div id="springboot-main" class="file-section">
+      <div class="file-header">
+        <h3>NimbusApplication.java</h3>
+        <span class="file-path">com.nimbus</span>
+        <span class="file-badge app">SPRING BOOT</span>
+      </div>
+      <p class="file-desc">Spring Boot entry point — replaces Tomcat + web.xml entirely.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/NimbusApplication.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NimbusApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApplication.class, args);
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- application.properties -->
+    <div id="app-properties" class="file-section">
+      <div class="file-header">
+        <h3>application.properties</h3>
+        <span class="file-badge config">CONFIG</span>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">src/main/resources/application.properties</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-none">server.port=8080
+spring.datasource.url=jdbc:mysql://localhost:3306/nimbus_db
+spring.datasource.username=root
+spring.datasource.password=password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver</code></pre>
+      </div>
+    </div>
+
+    <!-- REST UserController -->
+    <div id="rest-user" class="file-section">
+      <div class="file-header">
+        <h3>UserController.java (REST)</h3>
+        <span class="file-path">com.nimbus.controller</span>
+        <span class="file-badge controller">REST</span>
+      </div>
+      <p class="file-desc">REST API for user operations — register, login, get user.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/controller/UserController.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dao.UserDAO;
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import com.nimbus.exception.DuplicateEmailException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api")
+@CrossOrigin(origins = "*")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserDAO userDAO;
+
+    @PostMapping("/register")
+    public ResponseEntity&lt;?&gt; register(@RequestBody User user) {
+        try {
+            boolean success = userService.registerUser(user);
+            if (success) {
+                return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of("message", "Customer registered successfully",
+                                 "userId", user.getUserId()));
+            }
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", "Registration failed"));
+        } catch (DuplicateEmailException e) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity&lt;?&gt; login(@RequestBody Map&lt;String, String&gt; credentials) {
+        String userId = credentials.get("userId");
+        String password = credentials.get("password");
+
+        User user = userDAO.validateLogin(userId, password);
+        if (user != null) {
+            return ResponseEntity.ok(Map.of(
+                "message", "Customer logged in successfully",
+                "userId", user.getUserId(),
+                "fullName", user.getFullName(),
+                "role", user.getRole()
+            ));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("error", "Invalid credentials"));
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- REST BookingController -->
+    <div id="rest-booking" class="file-section">
+      <div class="file-header">
+        <h3>BookingController.java (REST)</h3>
+        <span class="file-path">com.nimbus.controller</span>
+        <span class="file-badge controller">REST</span>
+      </div>
+      <p class="file-desc">REST API for all booking operations — create, track, update, history.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">com/nimbus/controller/BookingController.java</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.model.Booking;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
+import java.util.*;
+
+@RestController
+@RequestMapping("/api/bookings")
+@CrossOrigin(origins = "*")
+public class BookingController {
+
+    @Autowired
+    private BookingDAO bookingDAO;
+
+    @PostMapping
+    public ResponseEntity&lt;?&gt; createBooking(@RequestBody Booking booking) {
+        booking.setParPaymentTime(LocalDateTime.now());
+        booking.setParStatus("Booked");
+        boolean success = bookingDAO.addBooking(booking);
+
+        if (success) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Booked a service successfully",
+                             "bookingId", booking.getBookingId()));
+        }
+        return ResponseEntity.badRequest()
+            .body(Map.of("error", "Booking failed"));
+    }
+
+    @GetMapping("/{bookingId}")
+    public ResponseEntity&lt;?&gt; trackBooking(@PathVariable String bookingId) {
+        Booking booking = bookingDAO.getBookingById(bookingId);
+        if (booking != null) {
+            return ResponseEntity.ok(booking);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping
+    public ResponseEntity&lt;?&gt; getBookings(
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+
+        ArrayList&lt;Booking&gt; bookings;
+
+        if (userId != null &amp;&amp; startDate != null &amp;&amp; endDate != null) {
+            bookings = bookingDAO.getBookingsByDateRange(userId, startDate, endDate);
+        } else if (userId != null) {
+            bookings = bookingDAO.getBookingsByUser(userId);
+        } else {
+            bookings = bookingDAO.getAllBookings();
+        }
+
+        return ResponseEntity.ok(bookings);
+    }
+
+    @PutMapping("/{bookingId}/status")
+    public ResponseEntity&lt;?&gt; updateStatus(@PathVariable String bookingId,
+                                            @RequestBody Map&lt;String, String&gt; body) {
+        boolean updated = bookingDAO.updateStatus(bookingId, body.get("status"));
+        if (updated) {
+            return ResponseEntity.ok(Map.of("message", "Delivery Status updated successfully"));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{bookingId}/pickup")
+    public ResponseEntity&lt;?&gt; updatePickup(@PathVariable String bookingId,
+                                            @RequestBody Map&lt;String, String&gt; body) {
+        LocalDateTime pickup = LocalDateTime.parse(body.get("pickupTime"));
+        LocalDateTime dropoff = LocalDateTime.parse(body.get("dropoffTime"));
+        boolean updated = bookingDAO.updatePickupDrop(bookingId, pickup, dropoff);
+        if (updated) {
+            return ResponseEntity.ok(Map.of("message", "Pick up and drop updated successfully"));
+        }
+        return ResponseEntity.notFound().build();
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- Angular Services -->
+    <div id="ng-user-service" class="file-section">
+      <div class="file-header">
+        <h3>user.service.ts</h3>
+        <span class="file-path">src/app/services/</span>
+        <span class="file-badge angular">ANGULAR</span>
+      </div>
+      <p class="file-desc">Angular service — talks to the Spring Boot REST API for user operations.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">src/app/services/user.service.ts</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private apiUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) {}
+
+  register(user: any): Observable&lt;any&gt; {
+    return this.http.post(`${this.apiUrl}/register`, user);
+  }
+
+  login(userId: string, password: string): Observable&lt;any&gt; {
+    return this.http.post(`${this.apiUrl}/login`, { userId, password });
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <div id="ng-booking-service" class="file-section">
+      <div class="file-header">
+        <h3>booking.service.ts</h3>
+        <span class="file-path">src/app/services/</span>
+        <span class="file-badge angular">ANGULAR</span>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">src/app/services/booking.service.ts</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class BookingService {
+  private apiUrl = 'http://localhost:8080/api/bookings';
+
+  constructor(private http: HttpClient) {}
+
+  createBooking(booking: any): Observable&lt;any&gt; {
+    return this.http.post(this.apiUrl, booking);
+  }
+
+  trackBooking(bookingId: string): Observable&lt;any&gt; {
+    return this.http.get(`${this.apiUrl}/${bookingId}`);
+  }
+
+  getBookingsByUser(userId: string): Observable&lt;any&gt; {
+    return this.http.get(`${this.apiUrl}?userId=${userId}`);
+  }
+
+  getAllBookings(): Observable&lt;any&gt; {
+    return this.http.get(this.apiUrl);
+  }
+
+  updateStatus(bookingId: string, status: string): Observable&lt;any&gt; {
+    return this.http.put(`${this.apiUrl}/${bookingId}/status`, { status });
+  }
+
+  updatePickup(bookingId: string, pickupTime: string, dropoffTime: string): Observable&lt;any&gt; {
+    return this.http.put(`${this.apiUrl}/${bookingId}/pickup`, { pickupTime, dropoffTime });
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <p><strong>More Phase 4 code</strong> (Angular components, routing, microservices split) is in the topic pages: <a href="phase4/rest-controllers.html" style="color: var(--accent);">REST Controllers →</a> | <a href="phase4/angular-services.html" style="color: var(--accent);">Angular Services →</a> | <a href="phase4/spring-boot.html" style="color: var(--accent);">Spring Boot →</a></p>
+    </div>
+
+  </main>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script>
+function copyCode(button) {
+  const codeBlock = button.closest('.code-block');
+  const code = codeBlock.querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    button.classList.add('copied');
+    button.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+    setTimeout(() => {
+      button.classList.remove('copied');
+      button.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
+    }, 2000);
+  });
+}
+
+// Sidebar scroll tracking
+const sections = document.querySelectorAll('.file-section, .phase-header');
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      sidebarLinks.forEach(link => link.classList.remove('active'));
+      const id = entry.target.id;
+      const activeLink = document.querySelector('.sidebar-link[href="#' + id + '"]');
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => { if (s.id) observer.observe(s); });
+</script>
+</body>
+</html>

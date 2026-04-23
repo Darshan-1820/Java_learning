@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Flow | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link active"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: IF / ELSE                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="if-else">
+  <div class="section-tag">Section 01</div>
+  <h2>if / else &mdash; Decision Making</h2>
+  <p class="section-desc">Every program makes decisions. "Is the user logged in? Is the parcel weight valid? Does this customer exist?" The <code>if</code> statement is how Java answers yes/no questions.</p>
+
+  <h3>Basic Syntax</h3>
+
+  <p>An <code>if</code> evaluates a <strong>boolean expression</strong> (something that is <code>true</code> or <code>false</code>). If true, the block runs. If false, it is skipped.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BasicIf.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int parcelWeight = 25;
+
+if (parcelWeight &gt; 30) {
+    System.out.println("Overweight surcharge applies");
+}
+
+// With else
+if (parcelWeight &gt; 30) {
+    System.out.println("Overweight surcharge applies");
+} else {
+    System.out.println("Weight is within limits");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int parcelWeight = 25;</div>
+        <div class="breakdown-explain">Declares an integer variable holding the parcel's weight in kg.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (parcelWeight &gt; 30) {</div>
+        <div class="breakdown-explain">Evaluates the condition: is 25 greater than 30? No &mdash; so the block is skipped entirely.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">} else {</div>
+        <div class="breakdown-explain">The else block runs when the if condition is false. Since 25 is NOT greater than 30, this block executes.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>if / else if / else Chain</h3>
+
+  <p>When you have <strong>multiple conditions</strong> to check, chain them with <code>else if</code>. Java checks top to bottom and runs the <strong>first</strong> one that is true. Everything after is skipped.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ParcelPricing.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">double weight = 12.5;
+double price;
+
+if (weight &lt;= 1) {
+    price = 50;           // Up to 1 kg
+} else if (weight &lt;= 5) {
+    price = 100;          // 1-5 kg
+} else if (weight &lt;= 15) {
+    price = 200;          // 5-15 kg
+} else if (weight &lt;= 30) {
+    price = 350;          // 15-30 kg
+} else {
+    price = 500;          // Over 30 kg
+}
+
+System.out.println("Shipping cost: Rs." + price);
+// Output: Shipping cost: Rs.200</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This exact pattern appears in the <strong>pricing module</strong>. When a customer books a parcel, the system checks weight brackets to calculate cost. The <code>else if</code> chain ensures each parcel hits exactly one price tier.</p>
+  </div>
+
+  <h3>Multiple Conditions with &amp;&amp; and ||</h3>
+
+  <p>Combine conditions using <strong>logical AND</strong> (<code>&amp;&amp;</code>) and <strong>logical OR</strong> (<code>||</code>).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MultipleConditions.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String role = "OFFICER";
+boolean isLoggedIn = true;
+
+// AND: both must be true
+if (isLoggedIn &amp;&amp; role.equals("OFFICER")) {
+    System.out.println("Access granted to officer dashboard");
+}
+
+// OR: at least one must be true
+if (role.equals("ADMIN") || role.equals("OFFICER")) {
+    System.out.println("Can update parcel status");
+}
+
+// NOT: inverts the condition
+if (!isLoggedIn) {
+    System.out.println("Please log in first");
+}</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>&amp;&amp;</code></td><td>AND &mdash; both must be true</td><td><code>true &amp;&amp; false</code></td><td><code>false</code></td></tr>
+      <tr><td><code>||</code></td><td>OR &mdash; at least one true</td><td><code>true || false</code></td><td><code>true</code></td></tr>
+      <tr><td><code>!</code></td><td>NOT &mdash; flips the value</td><td><code>!true</code></td><td><code>false</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Nested if &mdash; Conditions Inside Conditions</h3>
+
+  <p>Sometimes you need to check a condition <strong>only after</strong> another condition is true. This is nesting. It creates a <strong>validation chain</strong> &mdash; each level filters out invalid cases before going deeper.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusValidationChain.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Nimbus parcel booking validation chain
+String senderName = "Darshan";
+double weight = 8.5;
+String destination = "Mumbai";
+
+if (senderName != null &amp;&amp; !senderName.isEmpty()) {
+    // Level 1: sender exists
+    if (weight &gt; 0 &amp;&amp; weight &lt;= 30) {
+        // Level 2: weight is valid
+        if (destination != null &amp;&amp; !destination.isEmpty()) {
+            // Level 3: destination provided
+            System.out.println("Booking confirmed for " + senderName);
+            System.out.println("Weight: " + weight + "kg to " + destination);
+        } else {
+            System.out.println("Error: Destination is required");
+        }
+    } else {
+        System.out.println("Error: Weight must be between 0 and 30 kg");
+    }
+} else {
+    System.out.println("Error: Sender name is required");
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The booking service uses this nested validation pattern. Before creating a parcel record, it checks: (1) is the user valid? (2) is the weight within limits? (3) is the destination a real serviceable location? Each check filters out bad data before it reaches the database.</p>
+  </div>
+
+  <h3>The Dangling Else Problem</h3>
+
+  <p>When you write <code>if</code> without braces, the <code>else</code> binds to the <strong>nearest</strong> <code>if</code>, not the one you might expect.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Dangerous &mdash; No Braces</div>
+      <div class="comparison-body">
+<pre><code class="language-java">if (weight &gt; 0)
+    if (weight &lt;= 30)
+        System.out.println("Valid");
+    else
+        System.out.println("???");
+// The else belongs to the INNER if
+// Not the outer one!</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Safe &mdash; Always Use Braces</div>
+      <div class="comparison-body">
+<pre><code class="language-java">if (weight &gt; 0) {
+    if (weight &lt;= 30) {
+        System.out.println("Valid");
+    } else {
+        System.out.println("Too heavy");
+    }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Rule</div>
+    <p><strong>Always use curly braces</strong> with <code>if</code>/<code>else</code>, even for single-line bodies. It prevents the dangling else bug and makes the code easier to read. Every professional codebase enforces this.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SWITCH                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="switch">
+  <div class="section-tag">Section 02</div>
+  <h2>switch &mdash; Multiple Exact Matches</h2>
+  <p class="section-desc">When you are checking one variable against many possible <strong>exact values</strong>, a <code>switch</code> is cleaner than a chain of <code>if/else if</code>. Think of it as a menu: "If the user picked option 1, do this. Option 2, do that."</p>
+
+  <h3>Basic switch Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusStatusSwitch.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String status = "IN_TRANSIT";
+
+switch (status) {
+    case "BOOKED":
+        System.out.println("Parcel has been booked, awaiting pickup");
+        break;
+    case "IN_TRANSIT":
+        System.out.println("Parcel is on the way");
+        break;
+    case "OUT_FOR_DELIVERY":
+        System.out.println("Parcel is out for delivery today");
+        break;
+    case "DELIVERED":
+        System.out.println("Parcel has been delivered");
+        break;
+    case "CANCELLED":
+        System.out.println("Booking was cancelled");
+        break;
+    default:
+        System.out.println("Unknown status: " + status);
+        break;
+}
+// Output: Parcel is on the way</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">switch (status) {</div>
+        <div class="breakdown-explain">Java takes the value of <code>status</code> and looks for a matching <code>case</code> label.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">case "IN_TRANSIT":</div>
+        <div class="breakdown-explain">This label matches! Java jumps here and starts executing the code below it.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">break;</div>
+        <div class="breakdown-explain">Exits the switch block. Without this, Java would "fall through" and run the next case too.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">default:</div>
+        <div class="breakdown-explain">Catches anything that doesn't match any case. Like the <code>else</code> at the end of an <code>if/else if</code> chain.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <strong>parcel tracking module</strong> uses a switch on parcel status to display the right message and icon to the user. Each status string maps to a specific UI state: "BOOKED" shows a clock icon, "IN_TRANSIT" shows a truck, "DELIVERED" shows a checkmark.</p>
+  </div>
+
+  <h3>Fall-Through &mdash; Why break Matters</h3>
+
+  <p>Without <code>break</code>, Java does not stop at the matched case. It keeps running every case below it. This is called <strong>fall-through</strong>, and it is usually a bug.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">FallThrough.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int day = 3;
+
+switch (day) {
+    case 1:
+        System.out.println("Monday");
+    case 2:
+        System.out.println("Tuesday");
+    case 3:
+        System.out.println("Wednesday");  // Matches here
+    case 4:
+        System.out.println("Thursday");   // Falls through!
+    case 5:
+        System.out.println("Friday");     // Falls through!
+}
+// Output:
+// Wednesday
+// Thursday
+// Friday</code></pre>
+  </div>
+
+  <p>Sometimes fall-through is <strong>intentional</strong> &mdash; when multiple cases share the same code:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">IntentionalFallThrough.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Nimbus: role-based menu access
+String role = "OFFICER";
+
+switch (role) {
+    case "ADMIN":
+        System.out.println("  [A] Admin Panel");
+        // fall through — admin gets officer options too
+    case "OFFICER":
+        System.out.println("  [U] Update Parcel Status");
+        System.out.println("  [S] Scan Barcode");
+        // fall through — officer gets customer options too
+    case "CUSTOMER":
+        System.out.println("  [B] Book Parcel");
+        System.out.println("  [T] Track Parcel");
+        break;
+    default:
+        System.out.println("  Unknown role");
+}
+// For OFFICER, prints: Update Parcel Status, Scan Barcode, Book Parcel, Track Parcel</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <strong>role-based menu selection</strong> uses intentional fall-through. An admin sees all options (admin + officer + customer). An officer sees officer + customer options. A customer sees only customer options. The hierarchy is built into the case ordering.</p>
+  </div>
+
+  <h3>String switch (Java 7+)</h3>
+
+  <p>Before Java 7, switch only worked with <code>int</code>, <code>char</code>, <code>byte</code>, <code>short</code>, and enums. Since Java 7, you can switch on <strong>Strings</strong>. Java uses the string's <code>hashCode()</code> internally for efficiency.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StringSwitch.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String command = "track";
+
+switch (command.toLowerCase()) {
+    case "book":
+        System.out.println("Opening booking form...");
+        break;
+    case "track":
+        System.out.println("Enter tracking ID:");
+        break;
+    case "cancel":
+        System.out.println("Enter booking ID to cancel:");
+        break;
+    default:
+        System.out.println("Unknown command. Try: book, track, cancel");
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Watch Out</div>
+    <p>String switch is <strong>case-sensitive</strong>. <code>"Track"</code> will NOT match <code>case "track"</code>. Always normalize input with <code>.toLowerCase()</code> or <code>.toUpperCase()</code> before switching.</p>
+  </div>
+
+  <h3>switch with Enums</h3>
+
+  <p>Enums are the best match for switch. Each enum constant is a fixed, named value &mdash; exactly what switch was designed for.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">EnumSwitch.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">enum ParcelStatus {
+    BOOKED, IN_TRANSIT, OUT_FOR_DELIVERY, DELIVERED, CANCELLED
+}
+
+ParcelStatus status = ParcelStatus.IN_TRANSIT;
+
+switch (status) {
+    case BOOKED:          // Note: no "ParcelStatus." prefix inside case
+        System.out.println("Awaiting pickup");
+        break;
+    case IN_TRANSIT:
+        System.out.println("On the way");
+        break;
+    case DELIVERED:
+        System.out.println("Successfully delivered");
+        break;
+    default:
+        System.out.println("Status: " + status);
+}</code></pre>
+  </div>
+
+  <h3>Enhanced switch Expressions (Java 14+)</h3>
+
+  <p>Modern Java introduced <strong>switch expressions</strong> with the arrow syntax (<code>-&gt;</code>). No <code>break</code> needed, no fall-through risk, and the switch can <strong>return a value</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SwitchExpression.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String status = "IN_TRANSIT";
+
+// Switch EXPRESSION — returns a value
+String message = switch (status) {
+    case "BOOKED"            -&gt; "Parcel booked, awaiting pickup";
+    case "IN_TRANSIT"        -&gt; "Parcel is on the way";
+    case "OUT_FOR_DELIVERY"  -&gt; "Out for delivery today";
+    case "DELIVERED"         -&gt; "Successfully delivered";
+    case "CANCELLED"         -&gt; "Booking cancelled";
+    default                  -&gt; "Unknown status";
+};  // Note the semicolon — it's a statement
+
+System.out.println(message);
+
+// Multiple values per case
+String type = switch (status) {
+    case "BOOKED", "IN_TRANSIT", "OUT_FOR_DELIVERY" -&gt; "Active";
+    case "DELIVERED"                                 -&gt; "Completed";
+    case "CANCELLED"                                 -&gt; "Closed";
+    default                                          -&gt; "Unknown";
+};</code></pre>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Traditional switch</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Requires <code>break</code> on every case</li>
+          <li>Fall-through is easy to forget</li>
+          <li>Cannot return a value directly</li>
+          <li>Works in all Java versions</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Enhanced switch (14+)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Arrow <code>-&gt;</code> syntax, no break needed</li>
+          <li>No fall-through — each case is isolated</li>
+          <li>Can return a value (expression)</li>
+          <li>Requires Java 14 or newer</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: FOR LOOP                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="for-loop">
+  <div class="section-tag">Section 03</div>
+  <h2>for Loop &mdash; Counted Repetition</h2>
+  <p class="section-desc">Use <code>for</code> when you know <strong>how many times</strong> to repeat. It packs initialization, condition, and update all in one line.</p>
+
+  <h3>Syntax</h3>
+
+  <div class="diagram">
+    <pre>
+for ( init ;  condition ;  update ) {
+        |         |           |
+        v         v           v
+   runs once    checked     runs after
+   at start     BEFORE      EACH
+                each loop   iteration
+}
+
+for (int i = 0;  i &lt; 5;  i++) {
+    // body runs 5 times: i = 0, 1, 2, 3, 4
+}
+    </pre>
+    <div class="diagram-label">The three parts of a for loop header.</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BasicFor.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Counting forward: 1 to 5
+for (int i = 1; i &lt;= 5; i++) {
+    System.out.println("Parcel #" + i);
+}
+
+// Counting backward: 5 to 1
+for (int i = 5; i &gt;= 1; i--) {
+    System.out.println("Countdown: " + i);
+}
+
+// Stepping by 2
+for (int i = 0; i &lt; 10; i += 2) {
+    System.out.println(i);  // 0, 2, 4, 6, 8
+}</code></pre>
+  </div>
+
+  <h3>Nimbus: Booking History Display</h3>
+
+  <p>When a customer views their booking history, the system iterates through all bookings and displays them in a formatted table.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingHistoryDisplay.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] bookingIds   = {"NMB-001", "NMB-002", "NMB-003", "NMB-004"};
+String[] destinations = {"Mumbai",  "Delhi",   "Chennai", "Pune"};
+String[] statuses     = {"DELIVERED", "IN_TRANSIT", "BOOKED", "CANCELLED"};
+
+System.out.println("=== Your Booking History ===");
+System.out.printf("%-4s %-10s %-12s %-15s%n", "#", "ID", "Destination", "Status");
+System.out.println("-".repeat(45));
+
+for (int i = 0; i &lt; bookingIds.length; i++) {
+    System.out.printf("%-4d %-10s %-12s %-15s%n",
+        (i + 1), bookingIds[i], destinations[i], statuses[i]);
+}
+
+// Output:
+// === Your Booking History ===
+// #    ID         Destination  Status
+// ---------------------------------------------
+// 1    NMB-001    Mumbai       DELIVERED
+// 2    NMB-002    Delhi        IN_TRANSIT
+// 3    NMB-003    Chennai      BOOKED
+// 4    NMB-004    Pune         CANCELLED</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">for (int i = 0; i &lt; bookingIds.length; i++)</div>
+        <div class="breakdown-explain">Starts at index 0, runs while i is less than the array length (4), increments i after each loop.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">System.out.printf("%-4d %-10s ...")</div>
+        <div class="breakdown-explain"><code>printf</code> formats output. <code>%-4d</code> means: left-aligned, 4 characters wide, integer. <code>%-10s</code> means: left-aligned, 10 characters wide, string.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">(i + 1)</div>
+        <div class="breakdown-explain">Arrays are 0-indexed, but we display 1-indexed row numbers to the user. So row 0 shows as "#1".</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <strong>booking history display</strong> uses a for loop with the array index because it needs the index for row numbering. When you need position-based access across parallel arrays, the classic <code>for</code> is the right tool.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: WHILE LOOP                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="while-loop">
+  <div class="section-tag">Section 04</div>
+  <h2>while Loop &mdash; Unknown Iterations</h2>
+  <p class="section-desc">Use <code>while</code> when you do not know in advance how many times the loop should run. It keeps going until its condition becomes <code>false</code>.</p>
+
+  <h3>Basic Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BasicWhile.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int attempts = 0;
+int maxAttempts = 3;
+boolean authenticated = false;
+
+while (!authenticated &amp;&amp; attempts &lt; maxAttempts) {
+    System.out.println("Enter password (attempt " + (attempts + 1) + "/" + maxAttempts + "):");
+    String input = scanner.nextLine();
+
+    if (input.equals("nimbus123")) {
+        authenticated = true;
+        System.out.println("Login successful!");
+    } else {
+        attempts++;
+        System.out.println("Wrong password.");
+    }
+}
+
+if (!authenticated) {
+    System.out.println("Account locked after " + maxAttempts + " failed attempts.");
+}</code></pre>
+  </div>
+
+  <h3>Infinite Loop Pattern for Menus</h3>
+
+  <p>The most common use of <code>while(true)</code> is an <strong>interactive menu</strong>. The loop runs forever until the user explicitly chooses to exit, at which point <code>break</code> ends it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusMainMenu.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.Scanner;
+
+Scanner scanner = new Scanner(System.in);
+
+while (true) {
+    System.out.println("\n============================");
+    System.out.println("   NIMBUS PARCEL SYSTEM");
+    System.out.println("============================");
+    System.out.println("  1. Book a Parcel");
+    System.out.println("  2. Track Parcel");
+    System.out.println("  3. View Booking History");
+    System.out.println("  4. Update Status (Officer)");
+    System.out.println("  5. Exit");
+    System.out.println("============================");
+    System.out.print("Choose option: ");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine();  // consume leftover newline
+
+    switch (choice) {
+        case 1:
+            System.out.println("Opening booking form...");
+            // bookParcel();
+            break;
+        case 2:
+            System.out.println("Enter tracking ID:");
+            // trackParcel();
+            break;
+        case 3:
+            System.out.println("Loading history...");
+            // viewHistory();
+            break;
+        case 4:
+            System.out.println("Enter parcel ID to update:");
+            // updateStatus();
+            break;
+        case 5:
+            System.out.println("Thank you for using Nimbus!");
+            scanner.close();
+            return;  // exits the method (or use System.exit(0))
+        default:
+            System.out.println("Invalid choice. Please enter 1-5.");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">while (true) {</div>
+        <div class="breakdown-explain">Creates an infinite loop. The condition is always <code>true</code>, so it never stops on its own. We use <code>return</code> or <code>break</code> to exit.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">scanner.nextLine(); // consume leftover newline</div>
+        <div class="breakdown-explain">After <code>nextInt()</code>, the newline character from pressing Enter is still in the buffer. This call clears it so the next input read works correctly.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">case 5: ... return;</div>
+        <div class="breakdown-explain">When user picks 5, we print a goodbye message, close the scanner (free resources), and <code>return</code> exits the method, ending the infinite loop.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <strong>main menu loop</strong> is the heart of the console application. It combines <code>while(true)</code> for continuous operation with a <code>switch</code> for dispatching user choices. This is the standard pattern for any CLI application: loop &rarr; show menu &rarr; read input &rarr; dispatch &rarr; repeat.</p>
+  </div>
+
+  <h3>When to Use while vs for</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Use <code>for</code> when...</th><th>Use <code>while</code> when...</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>You know the count: <code>for(i=0; i&lt;10; i++)</code></td><td>You don't know when to stop: user input, file reading</td></tr>
+      <tr><td>Iterating arrays/collections</td><td>Waiting for a condition: login attempts, polling</td></tr>
+      <tr><td>Counting up or down by a fixed step</td><td>Event loops, server listeners, game loops</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: DO-WHILE                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="do-while">
+  <div class="section-tag">Section 05</div>
+  <h2>do-while &mdash; Runs At Least Once</h2>
+  <p class="section-desc">A <code>do-while</code> is like a <code>while</code>, but the condition is checked <strong>after</strong> the body runs. This guarantees the body executes <strong>at least one time</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DoWhileMenu.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Scanner scanner = new Scanner(System.in);
+int choice;
+
+do {
+    System.out.println("\n--- Quick Menu ---");
+    System.out.println("1. Book Parcel");
+    System.out.println("2. Track Parcel");
+    System.out.println("0. Exit");
+    System.out.print("Choice: ");
+    choice = scanner.nextInt();
+
+    if (choice == 1) {
+        System.out.println("Booking...");
+    } else if (choice == 2) {
+        System.out.println("Tracking...");
+    }
+
+} while (choice != 0);
+
+System.out.println("Goodbye!");</code></pre>
+  </div>
+
+  <h3>When to Use do-while</h3>
+
+  <p>Use <code>do-while</code> when the action must happen at least once before you can check the condition:</p>
+  <ul>
+    <li><strong>Input validation:</strong> Ask for input, then check if it is valid. If not, ask again.</li>
+    <li><strong>Menu display:</strong> Show the menu at least once, then repeat based on user choice.</li>
+    <li><strong>Game rounds:</strong> Play at least one round, then ask "play again?"</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">InputValidation.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">double weight;
+
+do {
+    System.out.print("Enter parcel weight (0.1 - 30 kg): ");
+    weight = scanner.nextDouble();
+
+    if (weight &lt;= 0 || weight &gt; 30) {
+        System.out.println("Invalid weight. Must be between 0.1 and 30 kg.");
+    }
+} while (weight &lt;= 0 || weight &gt; 30);
+
+System.out.println("Weight accepted: " + weight + " kg");</code></pre>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">while</div>
+      <div class="comparison-body">
+        <p>Checks condition <strong>before</strong> running the body. Body might never run if condition is already false.</p>
+<pre><code class="language-java">while (condition) {
+    // might run 0 times
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">do-while</div>
+      <div class="comparison-body">
+        <p>Runs body <strong>first</strong>, then checks condition. Body always runs at least once.</p>
+<pre><code class="language-java">do {
+    // runs at least 1 time
+} while (condition);</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: ENHANCED FOR-EACH                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="for-each">
+  <div class="section-tag">Section 06</div>
+  <h2>Enhanced for-each Loop</h2>
+  <p class="section-desc">When you just need to go through every element in an array or collection and do not care about the index, the <strong>for-each</strong> loop is the cleanest option.</p>
+
+  <h3>Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ForEach.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] cities = {"Mumbai", "Delhi", "Chennai", "Kolkata", "Pune"};
+
+// For-each: read each element
+for (String city : cities) {
+    System.out.println("Nimbus delivers to: " + city);
+}
+
+// With objects (after you learn OOP)
+// for (User user : userList) {
+//     System.out.println(user.getName());
+// }</code></pre>
+  </div>
+
+  <p>Read it as: "for each <code>String city</code> <strong>in</strong> <code>cities</code>, do this."</p>
+
+  <h3>When You CAN'T Use for-each</h3>
+
+  <p>The for-each loop has limitations. Use a regular <code>for</code> when you need:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Situation</th><th>Why for-each Fails</th><th>Use Instead</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Need the index</td>
+        <td>for-each hides the index &mdash; no way to access <code>i</code></td>
+        <td><code>for (int i = 0; i &lt; arr.length; i++)</code></td>
+      </tr>
+      <tr>
+        <td>Need to modify elements</td>
+        <td>The loop variable is a <strong>copy</strong> &mdash; changing it does not change the array</td>
+        <td><code>arr[i] = newValue;</code></td>
+      </tr>
+      <tr>
+        <td>Iterating multiple arrays</td>
+        <td>Can only iterate one collection at a time</td>
+        <td>Regular for with shared index</td>
+      </tr>
+      <tr>
+        <td>Going backwards</td>
+        <td>for-each always goes first to last</td>
+        <td><code>for (int i = arr.length-1; i &gt;= 0; i--)</code></td>
+      </tr>
+      <tr>
+        <td>Skipping elements</td>
+        <td>No control over increment step</td>
+        <td><code>for (int i = 0; i &lt; n; i += 2)</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ForEachTrap.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] prices = {100, 200, 300};
+
+// THIS DOES NOT WORK — price is a copy, not a reference
+for (int price : prices) {
+    price = price * 2;  // modifies the local copy only
+}
+// prices is still {100, 200, 300}
+
+// THIS WORKS — use index to modify the actual array
+for (int i = 0; i &lt; prices.length; i++) {
+    prices[i] = prices[i] * 2;
+}
+// prices is now {200, 400, 600}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: BREAK                                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="break">
+  <div class="section-tag">Section 07</div>
+  <h2>break &mdash; Exit a Loop</h2>
+  <p class="section-desc"><code>break</code> immediately exits the <strong>innermost</strong> loop or switch. The program continues with the first statement after that loop.</p>
+
+  <h3>Basic break</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BreakExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Search for a parcel ID in an array
+String[] parcels = {"NMB-001", "NMB-002", "NMB-003", "NMB-004", "NMB-005"};
+String target = "NMB-003";
+int foundIndex = -1;
+
+for (int i = 0; i &lt; parcels.length; i++) {
+    if (parcels[i].equals(target)) {
+        foundIndex = i;
+        break;  // Found it — no need to check the rest
+    }
+}
+
+if (foundIndex != -1) {
+    System.out.println("Found " + target + " at position " + foundIndex);
+} else {
+    System.out.println("Parcel not found");
+}
+// Output: Found NMB-003 at position 2</code></pre>
+  </div>
+
+  <h3>Labeled break for Nested Loops</h3>
+
+  <p>A plain <code>break</code> only exits the innermost loop. If you have nested loops and need to exit the <strong>outer</strong> loop from inside the inner one, use a <strong>labeled break</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LabeledBreak.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Find which warehouse has a specific parcel
+String[][] warehouses = {
+    {"NMB-001", "NMB-002", "NMB-003"},  // Warehouse A
+    {"NMB-004", "NMB-005"},              // Warehouse B
+    {"NMB-006", "NMB-007", "NMB-008"}   // Warehouse C
+};
+String target = "NMB-005";
+
+search:  // This is the label
+for (int w = 0; w &lt; warehouses.length; w++) {
+    for (int p = 0; p &lt; warehouses[w].length; p++) {
+        if (warehouses[w][p].equals(target)) {
+            System.out.println("Found in Warehouse " + (char)('A' + w)
+                + ", slot " + p);
+            break search;  // Exits BOTH loops
+        }
+    }
+}
+// Output: Found in Warehouse B, slot 1</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">How Labels Work</div>
+    <p><code>search:</code> is a label &mdash; just a name followed by a colon, placed before the loop you want to break out of. When <code>break search;</code> runs, Java exits the loop that <code>search:</code> is attached to, not just the inner one. Without the label, <code>break</code> would only exit the inner <code>for</code> loop, and the outer loop would keep going.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: CONTINUE                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="continue">
+  <div class="section-tag">Section 08</div>
+  <h2>continue &mdash; Skip Current Iteration</h2>
+  <p class="section-desc"><code>continue</code> skips the rest of the current iteration and jumps to the <strong>next</strong> iteration of the loop. The loop does not end &mdash; it just moves on.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ContinueExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Print only active (non-cancelled) bookings
+String[] ids     = {"NMB-001", "NMB-002", "NMB-003", "NMB-004"};
+String[] status  = {"DELIVERED", "CANCELLED", "IN_TRANSIT", "CANCELLED"};
+
+System.out.println("Active Bookings:");
+for (int i = 0; i &lt; ids.length; i++) {
+    if (status[i].equals("CANCELLED")) {
+        continue;  // Skip cancelled — go to next iteration
+    }
+    System.out.println("  " + ids[i] + " — " + status[i]);
+}
+// Output:
+// Active Bookings:
+//   NMB-001 — DELIVERED
+//   NMB-003 — IN_TRANSIT</code></pre>
+  </div>
+
+  <h3>Labeled continue</h3>
+
+  <p>Like labeled break, you can label a <code>continue</code> to skip to the next iteration of an <strong>outer</strong> loop.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LabeledContinue.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Process parcels by route, skip routes with any overweight parcel
+double[][] routeWeights = {
+    {5.0, 8.0, 3.0},      // Route 1: all valid
+    {2.0, 35.0, 7.0},     // Route 2: has overweight (35 kg)
+    {10.0, 15.0, 20.0}    // Route 3: all valid
+};
+
+routeLoop:
+for (int r = 0; r &lt; routeWeights.length; r++) {
+    for (int p = 0; p &lt; routeWeights[r].length; p++) {
+        if (routeWeights[r][p] &gt; 30) {
+            System.out.println("Route " + (r + 1) + " skipped — overweight parcel");
+            continue routeLoop;  // Skip to next route
+        }
+    }
+    System.out.println("Route " + (r + 1) + " — all parcels cleared");
+}
+// Output:
+// Route 1 — all parcels cleared
+// Route 2 skipped — overweight parcel
+// Route 3 — all parcels cleared</code></pre>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">break</div>
+      <div class="comparison-body">
+        <p><strong>Exits</strong> the loop entirely. No more iterations run.</p>
+<pre><code class="language-java">for (int i = 0; i &lt; 5; i++) {
+    if (i == 3) break;
+    System.out.print(i + " ");
+}
+// Output: 0 1 2</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">continue</div>
+      <div class="comparison-body">
+        <p><strong>Skips</strong> the current iteration. Loop continues with the next one.</p>
+<pre><code class="language-java">for (int i = 0; i &lt; 5; i++) {
+    if (i == 3) continue;
+    System.out.print(i + " ");
+}
+// Output: 0 1 2 4</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: NESTED LOOPS                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="nested-loops">
+  <div class="section-tag">Section 09</div>
+  <h2>Nested Loops</h2>
+  <p class="section-desc">A loop inside another loop. The inner loop runs its <strong>full cycle</strong> for each single iteration of the outer loop. If the outer loop runs N times and the inner loop runs M times, the body executes N &times; M times.</p>
+
+  <h3>How Nested Loops Work</h3>
+
+  <div class="diagram">
+    <pre>
+Outer i=0:  Inner j=0, j=1, j=2  (3 runs)
+Outer i=1:  Inner j=0, j=1, j=2  (3 runs)
+Outer i=2:  Inner j=0, j=1, j=2  (3 runs)
+
+Total body executions: 3 &times; 3 = 9
+    </pre>
+    <div class="diagram-label">A 3x3 nested loop executes the body 9 times.</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusRouteMatrix.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Display parcel delivery matrix: routes vs time slots
+String[] routes = {"Route-A", "Route-B", "Route-C"};
+String[] slots  = {"Morning", "Afternoon", "Evening"};
+
+System.out.println("=== Delivery Schedule ===");
+for (int r = 0; r &lt; routes.length; r++) {
+    System.out.println("\n" + routes[r] + ":");
+    for (int s = 0; s &lt; slots.length; s++) {
+        int parcelCount = (r + 1) * (s + 1) * 3;  // simulated count
+        System.out.println("  " + slots[s] + ": " + parcelCount + " parcels");
+    }
+}</code></pre>
+  </div>
+
+  <h3>Pattern Printing</h3>
+
+  <p>Pattern printing is the classic nested loop exercise. The outer loop controls <strong>rows</strong>, the inner loop controls <strong>columns</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Patterns.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Right triangle
+// *
+// * *
+// * * *
+// * * * *
+int n = 4;
+for (int i = 1; i &lt;= n; i++) {
+    for (int j = 1; j &lt;= i; j++) {
+        System.out.print("* ");
+    }
+    System.out.println();
+}
+
+// Number triangle
+// 1
+// 1 2
+// 1 2 3
+// 1 2 3 4
+for (int i = 1; i &lt;= n; i++) {
+    for (int j = 1; j &lt;= i; j++) {
+        System.out.print(j + " ");
+    }
+    System.out.println();
+}
+
+// Inverted triangle
+// * * * *
+// * * *
+// * *
+// *
+for (int i = n; i &gt;= 1; i--) {
+    for (int j = 1; j &lt;= i; j++) {
+        System.out.print("* ");
+    }
+    System.out.println();
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Performance Consideration</div>
+    <p>Nested loops multiply the iteration count. A loop of 1,000 inside another loop of 1,000 runs the body <strong>1,000,000 times</strong>. Three levels deep with 1,000 each is <strong>1 billion</strong>. Always ask: "Can I avoid nesting?" Often, a <code>HashMap</code> lookup or a sorted data structure eliminates the need for an inner loop entirely.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: TERNARY OPERATOR                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="ternary">
+  <div class="section-tag">Section 10</div>
+  <h2>Ternary Operator</h2>
+  <p class="section-desc">The ternary operator is a one-line <code>if/else</code> that <strong>returns a value</strong>. It is the only operator in Java that takes three operands.</p>
+
+  <h3>Syntax</h3>
+
+  <div class="diagram">
+    <pre>
+result = condition ? valueIfTrue : valueIfFalse;
+
+            |             |              |
+         boolean       returned        returned
+        expression     if true         if false
+    </pre>
+    <div class="diagram-label">The ternary operator: condition ? value1 : value2</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TernaryExamples.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Simple ternary
+double weight = 25;
+String category = weight &gt; 20 ? "Heavy" : "Light";
+System.out.println(category);  // Heavy
+
+// Instead of 5 lines of if/else:
+double price = 350;
+double finalPrice = (price &gt; 500) ? price * 0.9 : price;
+// Apply 10% discount only if over Rs.500
+
+// Nimbus: display status label
+String status = "DELIVERED";
+String label = status.equals("DELIVERED") ? "Completed" : "In Progress";
+
+// Nimbus: fee calculation
+boolean isExpress = true;
+double deliveryFee = isExpress ? 150.0 : 50.0;</code></pre>
+  </div>
+
+  <h3>When to Use vs When NOT to Use</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header good">Good &mdash; Use Ternary</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Simple value assignment based on one condition</li>
+          <li>Inline return values</li>
+          <li>Setting a default: <code>name != null ? name : "Guest"</code></li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header bad">Bad &mdash; Use if/else</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Multiple conditions (nested ternary is unreadable)</li>
+          <li>Complex logic with side effects</li>
+          <li>More than one statement per branch</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NestedTernary.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// DO NOT DO THIS — nested ternary is unreadable
+String tier = weight &gt; 20 ? "Heavy" : weight &gt; 10 ? "Medium" : "Light";
+
+// DO THIS instead — clear and maintainable
+String tier;
+if (weight &gt; 20) {
+    tier = "Heavy";
+} else if (weight &gt; 10) {
+    tier = "Medium";
+} else {
+    tier = "Light";
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: NIMBUS FULL EXAMPLES                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-examples">
+  <div class="section-tag">Section 11</div>
+  <h2>Full Nimbus Examples</h2>
+  <p class="section-desc">Everything in this topic comes together in these real Nimbus patterns. These are the actual control flow structures used in the parcel management system.</p>
+
+  <h3>Complete Menu System</h3>
+
+  <p>This combines <code>while(true)</code> for the menu loop, <code>switch</code> for dispatch, nested <code>if</code> for validation, and <code>for</code> for display.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusApp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class NimbusApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String currentUser = null;
+        String currentRole = null;
+
+        // === LOGIN LOOP ===
+        boolean loggedIn = false;
+        int loginAttempts = 0;
+
+        while (!loggedIn &amp;&amp; loginAttempts &lt; 3) {
+            System.out.print("Username: ");
+            String username = scanner.nextLine();
+            System.out.print("Password: ");
+            String password = scanner.nextLine();
+
+            // Simplified auth — real system uses database
+            if (username.equals("admin") &amp;&amp; password.equals("admin123")) {
+                currentUser = username;
+                currentRole = "ADMIN";
+                loggedIn = true;
+            } else if (username.equals("officer1") &amp;&amp; password.equals("off123")) {
+                currentUser = username;
+                currentRole = "OFFICER";
+                loggedIn = true;
+            } else {
+                loginAttempts++;
+                System.out.println("Invalid credentials. "
+                    + (3 - loginAttempts) + " attempts remaining.");
+            }
+        }
+
+        if (!loggedIn) {
+            System.out.println("Account locked.");
+            return;
+        }
+
+        System.out.println("\nWelcome, " + currentUser + " (" + currentRole + ")");
+
+        // === MAIN MENU LOOP ===
+        while (true) {
+            System.out.println("\n--- NIMBUS MENU ---");
+
+            // Role-based menu display using switch fall-through
+            switch (currentRole) {
+                case "ADMIN":
+                    System.out.println("  1. Manage Users");
+                case "OFFICER":
+                    System.out.println("  2. Update Parcel Status");
+                    System.out.println("  3. Scan Barcode");
+                default:
+                    System.out.println("  4. Book Parcel");
+                    System.out.println("  5. Track Parcel");
+                    System.out.println("  6. View History");
+                    System.out.println("  0. Logout");
+            }
+
+            System.out.print("Choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 4:
+                    // === BOOKING WITH VALIDATION CHAIN ===
+                    System.out.print("Sender name: ");
+                    String sender = scanner.nextLine();
+
+                    if (sender != null &amp;&amp; !sender.trim().isEmpty()) {
+                        System.out.print("Weight (kg): ");
+                        double weight = scanner.nextDouble();
+                        scanner.nextLine();
+
+                        if (weight &gt; 0 &amp;&amp; weight &lt;= 30) {
+                            System.out.print("Destination: ");
+                            String dest = scanner.nextLine();
+
+                            if (dest != null &amp;&amp; !dest.trim().isEmpty()) {
+                                // Calculate price
+                                double price;
+                                if (weight &lt;= 1) price = 50;
+                                else if (weight &lt;= 5) price = 100;
+                                else if (weight &lt;= 15) price = 200;
+                                else price = 350;
+
+                                System.out.println("Booked! " + sender
+                                    + " -&gt; " + dest + " | "
+                                    + weight + "kg | Rs." + price);
+                            } else {
+                                System.out.println("Error: Destination required");
+                            }
+                        } else {
+                            System.out.println("Error: Weight must be 0-30 kg");
+                        }
+                    } else {
+                        System.out.println("Error: Sender name required");
+                    }
+                    break;
+
+                case 6:
+                    // === BOOKING HISTORY WITH FOR LOOP ===
+                    String[] bookings = {"NMB-001", "NMB-002", "NMB-003"};
+                    String[] statuses = {"DELIVERED", "IN_TRANSIT", "CANCELLED"};
+
+                    System.out.println("\nYour Bookings:");
+                    for (int i = 0; i &lt; bookings.length; i++) {
+                        if (statuses[i].equals("CANCELLED")) {
+                            continue;  // Skip cancelled
+                        }
+                        System.out.println("  " + (i + 1) + ". "
+                            + bookings[i] + " — " + statuses[i]);
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("Logged out. Goodbye!");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Feature coming soon...");
+            }
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Control flow patterns used</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">while (!loggedIn &amp;&amp; loginAttempts &lt; 3)</div>
+        <div class="breakdown-explain"><strong>while loop</strong> for login — unknown iterations, stops on success or after 3 failures.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">while (true) { ... switch (choice) }</div>
+        <div class="breakdown-explain"><strong>Infinite loop + switch</strong> — the standard menu pattern. Loop shows menu, switch dispatches choice.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">switch (currentRole) with fall-through</div>
+        <div class="breakdown-explain"><strong>Intentional fall-through</strong> — ADMIN sees all options, OFFICER sees officer + customer, default shows customer options.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Nested if (sender) &gt; if (weight) &gt; if (dest)</div>
+        <div class="breakdown-explain"><strong>Validation chain</strong> — each level validates one field. Fails early with a specific error message.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">for + continue</div>
+        <div class="breakdown-explain"><strong>for loop with continue</strong> — iterates bookings, skips cancelled ones.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: COMMON MISTAKES                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-mistakes">
+  <div class="section-tag">Section 12</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">These are the bugs that catch everyone. Learn to spot them before they cost you hours of debugging.</p>
+
+  <h3>1. Assignment vs Comparison: = vs ==</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AssignmentBug.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int status = 1;
+
+// BUG: This ASSIGNS 2 to status, not a comparison
+// Java won't compile this (int is not boolean), but in C/C++ it's a silent bug
+// if (status = 2)  // WRONG
+
+// CORRECT: Use == for comparison
+if (status == 2) {
+    System.out.println("Status is 2");
+}
+
+// For Strings — NEVER use == (compares references, not content)
+String role = "ADMIN";
+if (role == "ADMIN") { }       // WRONG — might work sometimes, but unreliable
+if (role.equals("ADMIN")) { }  // CORRECT — compares actual string content</code></pre>
+  </div>
+
+  <h3>2. Missing break in switch</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MissingBreak.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BUG: Missing break causes fall-through
+int choice = 1;
+switch (choice) {
+    case 1:
+        System.out.println("Booking...");
+        // break;  &lt;-- forgot this!
+    case 2:
+        System.out.println("Tracking...");  // Also runs!
+        break;
+}
+// Output: Booking... AND Tracking... (unintended)
+
+// FIX: Always add break, or use enhanced switch (Java 14+)
+switch (choice) {
+    case 1 -&gt; System.out.println("Booking...");   // No fall-through possible
+    case 2 -&gt; System.out.println("Tracking...");
+}</code></pre>
+  </div>
+
+  <h3>3. Infinite Loops</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">InfiniteLoopBug.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BUG 1: Forgot to update the loop variable
+int i = 0;
+while (i &lt; 10) {
+    System.out.println(i);
+    // i++;  &lt;-- forgot this! Loops forever printing 0
+}
+
+// BUG 2: Condition can never become false
+int count = 10;
+while (count &gt; 0) {
+    System.out.println(count);
+    count++;  // Should be count-- ! Goes 10, 11, 12... forever
+}
+
+// BUG 3: Wrong comparison direction
+for (int j = 10; j &gt; 0; j++) {  // Should be j-- ! Never reaches 0
+    System.out.println(j);
+}</code></pre>
+  </div>
+
+  <h3>4. Off-by-One Errors</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OffByOne.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] parcels = {"A", "B", "C", "D"};  // length = 4, indices 0-3
+
+// BUG: ArrayIndexOutOfBoundsException — index 4 doesn't exist
+for (int i = 0; i &lt;= parcels.length; i++) {  // &lt;= should be &lt;
+    System.out.println(parcels[i]);
+}
+
+// CORRECT
+for (int i = 0; i &lt; parcels.length; i++) {  // &lt; not &lt;=
+    System.out.println(parcels[i]);
+}
+
+// RULE OF THUMB:
+// Starting at 0? Use &lt; length
+// Starting at 1? Use &lt;= length</code></pre>
+  </div>
+
+  <h3>5. Comparing Strings with ==</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StringComparison.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String input = scanner.nextLine();  // User types "ADMIN"
+
+// BUG: == compares memory addresses, not string content
+if (input == "ADMIN") {
+    // This might NOT work — input and "ADMIN" are different objects
+}
+
+// CORRECT: .equals() compares actual characters
+if (input.equals("ADMIN")) {
+    // This always works
+}
+
+// EVEN SAFER: Put the literal first to avoid NullPointerException
+if ("ADMIN".equals(input)) {
+    // If input is null, this returns false instead of crashing
+}</code></pre>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Cheat Sheet: Quick Reference</div>
+    <p><strong>= vs ==</strong> &mdash; <code>=</code> assigns, <code>==</code> compares. Always use <code>.equals()</code> for Strings.</p>
+    <p><strong>Missing break</strong> &mdash; Every case needs a <code>break</code>, or use arrow syntax (Java 14+).</p>
+    <p><strong>Infinite loops</strong> &mdash; Always check: is the loop variable being updated? Is the condition reachable?</p>
+    <p><strong>Off-by-one</strong> &mdash; Arrays start at 0. Use <code>&lt; length</code>, not <code>&lt;= length</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 13</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">10 exercises, from basic to advanced. Every one uses control flow concepts from this topic. Write them out, compile, and run. No copy-pasting &mdash; type each line yourself.</p>
+
+  <h3>Exercise 1: Grade Calculator</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Write a program that takes a score (0-100) and prints the grade:</p>
+    <ul>
+      <li>90-100: A</li>
+      <li>80-89: B</li>
+      <li>70-79: C</li>
+      <li>60-69: D</li>
+      <li>Below 60: F</li>
+    </ul>
+    <p>Use an <code>if/else if/else</code> chain. Also print "Pass" or "Fail" using a ternary operator (pass = 60+).</p>
+  </div>
+
+  <h3>Exercise 2: Parcel Price Calculator</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Ask the user for parcel weight and delivery type ("standard" or "express"). Calculate price:</p>
+    <ul>
+      <li>0-1 kg: Rs.50 | 1-5 kg: Rs.100 | 5-15 kg: Rs.200 | 15-30 kg: Rs.350</li>
+      <li>Express doubles the price</li>
+      <li>Over 30 kg: print "Rejected — too heavy"</li>
+    </ul>
+    <p>Use <code>if/else if</code> for weight tiers and a ternary for the express multiplier.</p>
+  </div>
+
+  <h3>Exercise 3: Day of Week (switch)</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Take a number 1-7 from user input. Print the day name using a <code>switch</code>. Also print whether it's a "Weekday" or "Weekend" (use intentional fall-through for Sat/Sun).</p>
+  </div>
+
+  <h3>Exercise 4: Multiplication Table</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Ask the user for a number N. Print its multiplication table from 1 to 10 using a <code>for</code> loop:</p>
+    <pre>5 x 1 = 5
+5 x 2 = 10
+...
+5 x 10 = 50</pre>
+  </div>
+
+  <h3>Exercise 5: FizzBuzz</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Print numbers 1 to 50. But:</p>
+    <ul>
+      <li>If divisible by 3, print "Fizz" instead</li>
+      <li>If divisible by 5, print "Buzz" instead</li>
+      <li>If divisible by both 3 and 5, print "FizzBuzz"</li>
+    </ul>
+    <p>Hint: Check "both" first (the order of your <code>if/else if</code> matters).</p>
+  </div>
+
+  <h3>Exercise 6: Password Validator</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Use a <code>do-while</code> loop to keep asking the user for a password until they enter one that is at least 8 characters long and contains at least one digit. Print "Password accepted" when valid. Hint: Use a <code>for</code> loop inside to check each character with <code>Character.isDigit()</code>.</p>
+  </div>
+
+  <h3>Exercise 7: Menu Simulation</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Build a mini parcel system menu with <code>while(true)</code> + <code>switch</code>:</p>
+    <ul>
+      <li>Option 1: "Book Parcel" &mdash; ask for destination and weight, print confirmation</li>
+      <li>Option 2: "Track Parcel" &mdash; ask for ID, print "Status: IN_TRANSIT" (hardcoded)</li>
+      <li>Option 3: "View All" &mdash; loop through a hardcoded String array of 5 parcel IDs</li>
+      <li>Option 0: Exit with goodbye message</li>
+    </ul>
+    <p>Invalid input should print "Invalid choice" and show the menu again.</p>
+  </div>
+
+  <h3>Exercise 8: Right-Aligned Number Triangle</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Print this pattern for N=5 using nested loops:</p>
+    <pre>        1
+      1 2
+    1 2 3
+  1 2 3 4
+1 2 3 4 5</pre>
+    <p>Hint: You need two inner loops &mdash; one for spaces, one for numbers.</p>
+  </div>
+
+  <h3>Exercise 9: Search and Report</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Given two arrays:</p>
+    <pre>String[] ids     = {"NMB-001","NMB-002","NMB-003","NMB-004","NMB-005"};
+String[] statuses = {"DELIVERED","IN_TRANSIT","CANCELLED","DELIVERED","BOOKED"};</pre>
+    <p>Write a program that:</p>
+    <ul>
+      <li>Counts how many are DELIVERED (use a for loop + if)</li>
+      <li>Prints only non-cancelled bookings (use continue)</li>
+      <li>Finds the first IN_TRANSIT parcel and prints its ID (use break)</li>
+    </ul>
+  </div>
+
+  <h3>Exercise 10: Diamond Pattern</h3>
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Print a diamond pattern for N=5:</p>
+    <pre>    *
+   ***
+  *****
+ *******
+*********
+ *******
+  *****
+   ***
+    *</pre>
+    <p>Hint: The top half is a triangle (spaces decrease, stars increase). The bottom half is the reverse. Use two separate sets of nested loops.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="java-arrays.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Arrays</span>
+  </a>
+  <a href="java-methods.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Methods &amp; Scope</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

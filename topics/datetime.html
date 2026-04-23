@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date &amp; Time API | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link active"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: Old vs New                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="old-vs-new">
+  <div class="section-tag">Section 01</div>
+  <h2>Old vs New: Why Java 8 Changed Everything</h2>
+  <p class="section-desc">Java's original date/time classes (<code>java.util.Date</code>, <code>java.util.Calendar</code>) are universally considered one of the worst APIs in the language. Java 8 introduced <code>java.time.*</code> &mdash; an entirely new package that is clean, immutable, and actually makes sense.</p>
+
+  <h3>What Was Wrong With the Old API</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OldDateProblems.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Problem 1: Months start at 0 (January = 0, not 1)
+Date date = new Date(2026, 3, 23);  // This is actually April 3926!
+// Year is offset from 1900, month is 0-indexed. Insane.
+
+// Problem 2: Date is mutable — anyone can change it
+Date bookingDate = booking.getDate();
+bookingDate.setTime(0);  // Just mutated the booking's internal date!
+
+// Problem 3: Date contains time, Calendar is verbose
+Calendar cal = Calendar.getInstance();
+cal.set(Calendar.YEAR, 2026);
+cal.set(Calendar.MONTH, Calendar.APRIL);  // Why not just 4?
+cal.set(Calendar.DAY_OF_MONTH, 23);
+Date d = cal.getTime();  // 4 lines for one date</code></pre>
+  </div>
+
+  <h3>The New API: Clean and Immutable</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NewDateAPI.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// One line. Month is 4 for April. Year is 2026. Done.
+LocalDate date = LocalDate.of(2026, 4, 23);
+
+// Immutable — plusDays returns a NEW object, never modifies the original
+LocalDate tomorrow = date.plusDays(1);  // date is still April 23
+
+// Clean, readable, no surprises
+LocalDateTime now = LocalDateTime.now();
+System.out.println(now);  // 2026-04-23T14:30:00</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Old (<code>java.util.Date</code>)</th>
+        <th>New (<code>java.time.*</code>)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Months</td>
+        <td>0-indexed (Jan = 0)</td>
+        <td>1-indexed (Jan = 1)</td>
+      </tr>
+      <tr>
+        <td>Mutability</td>
+        <td>Mutable (dangerous)</td>
+        <td>Immutable (safe)</td>
+      </tr>
+      <tr>
+        <td>Thread safety</td>
+        <td>Not thread-safe</td>
+        <td>Thread-safe</td>
+      </tr>
+      <tr>
+        <td>API design</td>
+        <td>Confusing, deprecated methods</td>
+        <td>Clean, fluent methods</td>
+      </tr>
+      <tr>
+        <td>Date vs Time</td>
+        <td>Date includes time always</td>
+        <td>Separate: LocalDate, LocalTime, LocalDateTime</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout important">
+    <div class="callout-title">Rule</div>
+    <p>Never use <code>java.util.Date</code> or <code>java.util.Calendar</code> in new code. Always use <code>java.time.*</code>. The old classes exist only for backward compatibility with legacy code. Nimbus uses the new API exclusively.</p>
+  </div>
+
+  <h3>The java.time Family</h3>
+
+  <div class="diagram">
+    <pre>
+                      java.time.*
+                          |
+          ┌───────────────┼───────────────┐
+          |               |               |
+      <strong>LocalDate</strong>      <strong>LocalTime</strong>    <strong>LocalDateTime</strong>
+    (date only)    (time only)   (date + time)
+    2026-04-23      14:30:00     2026-04-23T14:30:00
+          |               |               |
+          └───────────────┼───────────────┘
+                          |
+                  <strong>ZonedDateTime</strong>
+              (date + time + timezone)
+          2026-04-23T14:30:00+05:30[Asia/Kolkata]
+    </pre>
+    <div class="diagram-label">The core classes of java.time &mdash; each handles a different level of detail</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: LocalDate                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="localdate">
+  <div class="section-tag">Section 02</div>
+  <h2>LocalDate &mdash; Date Without Time</h2>
+  <p class="section-desc"><code>LocalDate</code> represents a calendar date &mdash; year, month, day &mdash; with no time and no timezone. Use it when you only care about the date: birthdays, booking dates, due dates.</p>
+
+  <h3>Creating a LocalDate</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LocalDateCreation.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Today's date
+LocalDate today = LocalDate.now();              // 2026-04-23
+
+// Specific date
+LocalDate launch = LocalDate.of(2026, 4, 23);   // 2026-04-23
+
+// Using Month enum (more readable)
+LocalDate launch2 = LocalDate.of(2026, Month.APRIL, 23);
+
+// Parse from string
+LocalDate parsed = LocalDate.parse("2026-04-23");  // ISO format: yyyy-MM-dd</code></pre>
+  </div>
+
+  <h3>Common Operations</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LocalDateOps.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">LocalDate today = LocalDate.of(2026, 4, 23);
+
+// Adding and subtracting — returns NEW object, never modifies original
+LocalDate tomorrow   = today.plusDays(1);        // 2026-04-24
+LocalDate nextWeek   = today.plusWeeks(1);       // 2026-04-30
+LocalDate nextMonth  = today.plusMonths(1);      // 2026-05-23
+LocalDate lastYear   = today.minusYears(1);      // 2025-04-23
+
+// Extracting parts
+int year      = today.getYear();                 // 2026
+Month month   = today.getMonth();                // APRIL
+int monthVal  = today.getMonthValue();            // 4
+int day       = today.getDayOfMonth();            // 23
+DayOfWeek dow = today.getDayOfWeek();             // THURSDAY
+int dayOfYear = today.getDayOfYear();             // 113
+
+// Comparisons
+boolean isBefore = today.isBefore(tomorrow);     // true
+boolean isAfter  = today.isAfter(lastYear);      // true
+boolean isEqual  = today.isEqual(today);          // true
+boolean isLeap   = today.isLeapYear();            // false</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key methods explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">today.plusDays(1)</div>
+        <div class="breakdown-explain">Returns a NEW LocalDate one day later. <code>today</code> is NOT modified &mdash; LocalDate is immutable. Every "modifier" method returns a new object. This is a critical difference from the old <code>Date</code> class.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">today.getDayOfWeek()</div>
+        <div class="breakdown-explain">Returns a <code>DayOfWeek</code> enum (MONDAY through SUNDAY), not a number. Much more readable than the old Calendar.DAY_OF_WEEK which returned integers where Sunday was 1.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div name="breakdown-content">
+        <div class="breakdown-code">today.isBefore(tomorrow)</div>
+        <div class="breakdown-explain">Reads like English. Compare this to the old API where you had to call <code>date1.compareTo(date2) &lt; 0</code> or <code>date1.getTime() &lt; date2.getTime()</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a user books a parcel, Nimbus records the booking date as <code>LocalDate.now()</code>. To calculate estimated delivery (e.g., 3 business days), you would use <code>bookingDate.plusDays(3)</code> and check if the result falls on a weekend using <code>getDayOfWeek()</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: LocalTime                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="localtime">
+  <div class="section-tag">Section 03</div>
+  <h2>LocalTime &mdash; Time Without Date</h2>
+  <p class="section-desc"><code>LocalTime</code> represents a time of day &mdash; hours, minutes, seconds, nanoseconds &mdash; with no date and no timezone. Use it for opening hours, shift schedules, or time-only comparisons.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LocalTimeBasics.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Current time
+LocalTime now = LocalTime.now();               // 14:30:15.123456
+
+// Specific time
+LocalTime pickup = LocalTime.of(10, 30);       // 10:30
+LocalTime precise = LocalTime.of(10, 30, 45);  // 10:30:45
+
+// Parse from string
+LocalTime parsed = LocalTime.parse("10:30:00");
+
+// Operations
+LocalTime later = pickup.plusHours(2);          // 12:30
+LocalTime earlier = pickup.minusMinutes(30);    // 10:00
+
+// Extract parts
+int hour   = pickup.getHour();    // 10
+int minute = pickup.getMinute();  // 30
+
+// Comparisons
+boolean isOpen = now.isAfter(LocalTime.of(9, 0))
+              &amp;&amp; now.isBefore(LocalTime.of(18, 0));
+// true if current time is between 9 AM and 6 PM</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus could use <code>LocalTime</code> to enforce pickup windows: "Parcels can only be picked up between 9:00 AM and 6:00 PM." A simple <code>isAfter</code>/<code>isBefore</code> check on the requested pickup time handles this validation.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: LocalDateTime                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="localdatetime">
+  <div class="section-tag">Section 04</div>
+  <h2>LocalDateTime &mdash; Date + Time</h2>
+  <p class="section-desc"><code>LocalDateTime</code> combines date and time into one object. This is the most commonly used class in business applications &mdash; booking timestamps, payment times, scheduling.</p>
+
+  <h3>Creating and Using</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LocalDateTimeBasics.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Current date and time
+LocalDateTime now = LocalDateTime.now();
+// 2026-04-23T14:30:15.123
+
+// Specific date and time
+LocalDateTime booking = LocalDateTime.of(2026, 4, 23, 10, 30);
+// 2026-04-23T10:30
+
+// From separate LocalDate and LocalTime
+LocalDate date = LocalDate.of(2026, 4, 23);
+LocalTime time = LocalTime.of(10, 30);
+LocalDateTime combined = LocalDateTime.of(date, time);
+// 2026-04-23T10:30
+
+// Extract date or time part
+LocalDate datePart = now.toLocalDate();   // 2026-04-23
+LocalTime timePart = now.toLocalTime();   // 14:30:15.123
+
+// All the same operations work
+LocalDateTime tomorrow = now.plusDays(1);
+LocalDateTime laterToday = now.plusHours(3);
+int hour = now.getHour();
+DayOfWeek day = now.getDayOfWeek();</code></pre>
+  </div>
+
+  <h3>Nimbus Booking Example</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingTimestamps.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Booking {
+    private LocalDateTime pickupTime;
+    private LocalDateTime dropoffTime;
+    private LocalDateTime paymentTime;
+
+    public void schedulePickup(LocalDateTime requestedTime) {
+        // Validate: pickup must be in the future
+        if (requestedTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Pickup time cannot be in the past");
+        }
+
+        // Validate: pickup must be during business hours (9 AM - 6 PM)
+        LocalTime timeOfDay = requestedTime.toLocalTime();
+        if (timeOfDay.isBefore(LocalTime.of(9, 0)) ||
+            timeOfDay.isAfter(LocalTime.of(18, 0))) {
+            throw new IllegalArgumentException("Pickup must be between 9 AM and 6 PM");
+        }
+
+        this.pickupTime = requestedTime;
+
+        // Auto-calculate estimated dropoff (pickup + 2 days)
+        this.dropoffTime = requestedTime.plusDays(2);
+    }
+
+    public void recordPayment() {
+        this.paymentTime = LocalDateTime.now();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">requestedTime.isBefore(LocalDateTime.now())</div>
+        <div class="breakdown-explain">Compares the requested pickup with the current moment. If the user tries to schedule a pickup for yesterday, this catches it. Reads like English: "is the requested time before now?"</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">requestedTime.toLocalTime()</div>
+        <div class="breakdown-explain">Extracts just the time part from the datetime. We only care about the hour for business-hours validation, not the date.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">requestedTime.plusDays(2)</div>
+        <div class="breakdown-explain">Estimated delivery is 2 days after pickup. This returns a new <code>LocalDateTime</code> &mdash; the original is untouched. Immutability means you can pass <code>requestedTime</code> around without worrying someone will modify it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>LocalDateTime</code> is the backbone of Nimbus's time tracking. Every booking has a <code>pickupTime</code>, <code>dropoffTime</code>, and <code>paymentTime</code>. The scheduling logic, delivery window calculations, and payment timestamps all use <code>LocalDateTime</code>. It replaced what would have been dozens of lines of <code>Calendar</code> manipulation with clean, readable one-liners.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: DateTimeFormatter                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="formatter">
+  <div class="section-tag">Section 05</div>
+  <h2>DateTimeFormatter</h2>
+  <p class="section-desc"><code>DateTimeFormatter</code> converts dates to strings (formatting) and strings to dates (parsing). It controls how dates appear to users &mdash; "2026-04-23" vs "April 23, 2026" vs "23/04/2026".</p>
+
+  <h3>Formatting: Date to String</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Formatting.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">LocalDateTime now = LocalDateTime.of(2026, 4, 23, 14, 30, 0);
+
+// Built-in formatters
+String iso = now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+// "2026-04-23T14:30:00"
+
+// Custom patterns
+DateTimeFormatter custom1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+String formatted1 = now.format(custom1);
+// "23/04/2026"
+
+DateTimeFormatter custom2 = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
+String formatted2 = now.format(custom2);
+// "23 Apr 2026, 02:30 PM"
+
+DateTimeFormatter custom3 = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
+String formatted3 = now.format(custom3);
+// "Thursday, April 23, 2026"
+
+DateTimeFormatter custom4 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+String formatted4 = now.format(custom4);
+// "2026-04-23 14:30"</code></pre>
+  </div>
+
+  <h3>Common Pattern Letters</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Letter</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>yyyy</code></td>
+        <td>Year (4 digits)</td>
+        <td>2026</td>
+      </tr>
+      <tr>
+        <td><code>MM</code></td>
+        <td>Month (2 digits)</td>
+        <td>04</td>
+      </tr>
+      <tr>
+        <td><code>MMM</code></td>
+        <td>Month (abbreviated)</td>
+        <td>Apr</td>
+      </tr>
+      <tr>
+        <td><code>MMMM</code></td>
+        <td>Month (full)</td>
+        <td>April</td>
+      </tr>
+      <tr>
+        <td><code>dd</code></td>
+        <td>Day (2 digits)</td>
+        <td>23</td>
+      </tr>
+      <tr>
+        <td><code>EEEE</code></td>
+        <td>Day of week (full)</td>
+        <td>Thursday</td>
+      </tr>
+      <tr>
+        <td><code>HH</code></td>
+        <td>Hour (24-hour, 00-23)</td>
+        <td>14</td>
+      </tr>
+      <tr>
+        <td><code>hh</code></td>
+        <td>Hour (12-hour, 01-12)</td>
+        <td>02</td>
+      </tr>
+      <tr>
+        <td><code>mm</code></td>
+        <td>Minutes</td>
+        <td>30</td>
+      </tr>
+      <tr>
+        <td><code>ss</code></td>
+        <td>Seconds</td>
+        <td>45</td>
+      </tr>
+      <tr>
+        <td><code>a</code></td>
+        <td>AM/PM</td>
+        <td>PM</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Parsing: String to Date</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Parsing.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Parse ISO format (default)
+LocalDate date = LocalDate.parse("2026-04-23");
+
+// Parse custom format — the pattern must match the input EXACTLY
+DateTimeFormatter indian = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+LocalDate parsed = LocalDate.parse("23/04/2026", indian);
+
+// Parse datetime
+DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+LocalDateTime dt = LocalDateTime.parse("2026-04-23 14:30", dtFormat);
+
+// What happens if the format doesn't match?
+LocalDate bad = LocalDate.parse("23-04-2026");
+// DateTimeParseException! Default format is yyyy-MM-dd, not dd-MM-yyyy</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Watch Out</div>
+    <p>Parsing is strict. The string must exactly match the pattern. <code>"23/04/2026"</code> will not parse with pattern <code>"yyyy-MM-dd"</code>. If the user provides input in a different format than expected, you get a <code>DateTimeParseException</code>. Always wrap parsing in a try-catch when dealing with user input.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When displaying booking history to users, Nimbus formats dates as <code>"dd MMM yyyy, hh:mm a"</code> (e.g., "23 Apr 2026, 02:30 PM") for readability. When storing dates in the database, it uses ISO format <code>"yyyy-MM-dd HH:mm:ss"</code>. Two different formatters for two different audiences.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Duration and Period                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="duration-period">
+  <div class="section-tag">Section 06</div>
+  <h2>Duration and Period</h2>
+  <p class="section-desc"><code>Duration</code> measures time-based amounts (hours, minutes, seconds). <code>Period</code> measures date-based amounts (years, months, days). They answer the question: "How much time between A and B?"</p>
+
+  <h3>Duration: For Time</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DurationExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// How long between two times?
+LocalTime start = LocalTime.of(10, 0);
+LocalTime end = LocalTime.of(14, 30);
+
+Duration gap = Duration.between(start, end);
+System.out.println(gap.toHours());     // 4
+System.out.println(gap.toMinutes());   // 270
+
+// Create durations directly
+Duration twoHours = Duration.ofHours(2);
+Duration thirtyMins = Duration.ofMinutes(30);
+
+// Use with LocalDateTime
+LocalDateTime pickup = LocalDateTime.of(2026, 4, 23, 10, 0);
+LocalDateTime delivery = pickup.plus(Duration.ofHours(48));
+// 2026-04-25T10:00</code></pre>
+  </div>
+
+  <h3>Period: For Dates</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PeriodExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// How long between two dates?
+LocalDate start = LocalDate.of(2026, 1, 1);
+LocalDate end = LocalDate.of(2026, 4, 23);
+
+Period gap = Period.between(start, end);
+System.out.println(gap.getMonths());  // 3
+System.out.println(gap.getDays());    // 22
+System.out.println(gap);              // P3M22D (3 months, 22 days)
+
+// Create periods directly
+Period oneMonth = Period.ofMonths(1);
+Period twoWeeks = Period.ofWeeks(2);  // stored as 14 days
+
+// Use with LocalDate
+LocalDate today = LocalDate.of(2026, 4, 23);
+LocalDate renewal = today.plus(Period.ofMonths(6));
+// 2026-10-23</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th><code>Duration</code></th>
+        <th><code>Period</code></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Measures</td>
+        <td>Hours, minutes, seconds, nanos</td>
+        <td>Years, months, days</td>
+      </tr>
+      <tr>
+        <td>Use with</td>
+        <td><code>LocalTime</code>, <code>LocalDateTime</code></td>
+        <td><code>LocalDate</code>, <code>LocalDateTime</code></td>
+      </tr>
+      <tr>
+        <td>Example</td>
+        <td>"2 hours 30 minutes"</td>
+        <td>"3 months 22 days"</td>
+      </tr>
+      <tr>
+        <td>ISO format</td>
+        <td><code>PT2H30M</code></td>
+        <td><code>P3M22D</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>Duration</code> is perfect for calculating delivery windows: "this parcel took 48 hours from pickup to delivery." <code>Period</code> is useful for subscription or billing cycles: "user's plan renews every 1 month." Both give you precise control over time arithmetic without manual calculations.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Timestamps and JDBC                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="jdbc-timestamps">
+  <div class="section-tag">Section 07</div>
+  <h2>Timestamps and JDBC</h2>
+  <p class="section-desc">Databases store datetime values as <code>TIMESTAMP</code>. JDBC (Java's database connectivity) uses <code>java.sql.Timestamp</code>. You need to convert between <code>java.sql.Timestamp</code> and <code>java.time.LocalDateTime</code> when reading from and writing to the database.</p>
+
+  <h3>Writing to Database: LocalDateTime to Timestamp</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WriteTimestamp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Convert LocalDateTime → java.sql.Timestamp for database
+LocalDateTime pickupTime = LocalDateTime.of(2026, 4, 23, 10, 30);
+
+// Using PreparedStatement
+String sql = "INSERT INTO bookings (tracking_id, pickup_time) VALUES (?, ?)";
+PreparedStatement ps = conn.prepareStatement(sql);
+ps.setString(1, "NIM-001");
+ps.setTimestamp(2, Timestamp.valueOf(pickupTime));  // LocalDateTime → Timestamp
+ps.executeUpdate();</code></pre>
+  </div>
+
+  <h3>Reading from Database: Timestamp to LocalDateTime</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ReadTimestamp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Read from ResultSet and convert to LocalDateTime
+String sql = "SELECT tracking_id, pickup_time, dropoff_time FROM bookings";
+ResultSet rs = stmt.executeQuery(sql);
+
+while (rs.next()) {
+    String trackingId = rs.getString("tracking_id");
+
+    // Timestamp → LocalDateTime
+    Timestamp ts = rs.getTimestamp("pickup_time");
+    LocalDateTime pickupTime = ts.toLocalDateTime();
+
+    // Or in one line
+    LocalDateTime dropoffTime = rs.getTimestamp("dropoff_time").toLocalDateTime();
+
+    System.out.println(trackingId + " pickup: " + pickupTime);
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">The two key conversions</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Timestamp.valueOf(localDateTime)</div>
+        <div class="breakdown-explain"><strong>LocalDateTime &rarr; Timestamp.</strong> Static method on <code>Timestamp</code>. Use when WRITING to the database. The <code>PreparedStatement.setTimestamp()</code> method requires a <code>Timestamp</code> object.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">timestamp.toLocalDateTime()</div>
+        <div class="breakdown-explain"><strong>Timestamp &rarr; LocalDateTime.</strong> Instance method on <code>Timestamp</code>. Use when READING from the database. The <code>ResultSet.getTimestamp()</code> returns a <code>Timestamp</code>, and you convert it to the modern API.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>For LocalDate and DATE columns</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DateColumn.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Writing LocalDate → java.sql.Date
+LocalDate bookingDate = LocalDate.now();
+ps.setDate(1, java.sql.Date.valueOf(bookingDate));
+
+// Reading java.sql.Date → LocalDate
+java.sql.Date sqlDate = rs.getDate("booking_date");
+LocalDate date = sqlDate.toLocalDate();</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In <code>BookingDAO</code>, every time you read a booking from the database, you convert <code>Timestamp</code> to <code>LocalDateTime</code>. Every time you save a booking, you convert <code>LocalDateTime</code> to <code>Timestamp</code>. These two methods &mdash; <code>Timestamp.valueOf()</code> and <code>.toLocalDateTime()</code> &mdash; are the bridge between the modern API and the database.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Full Nimbus Examples                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-datetime">
+  <div class="section-tag">Section 08</div>
+  <h2>Full Nimbus Date/Time Examples</h2>
+  <p class="section-desc">Putting it all together &mdash; real scenarios from the Nimbus parcel management system.</p>
+
+  <h3>Generating a Booking Timestamp</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public Booking createBooking(User sender, User receiver, double weight) {
+    Booking booking = new Booking();
+    booking.setSender(sender);
+    booking.setReceiver(receiver);
+    booking.setWeight(weight);
+
+    // Record exact time of booking
+    booking.setBookingTime(LocalDateTime.now());
+
+    // Generate tracking ID with date: NIM-20260423-001
+    String dateStr = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    booking.setTrackingId("NIM-" + dateStr + "-" + getNextSequence());
+
+    return booking;
+}</code></pre>
+  </div>
+
+  <h3>Formatting for Display</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingDisplay.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public void displayBookingDetails(Booking booking) {
+    DateTimeFormatter displayFormat =
+        DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
+
+    System.out.println("Tracking ID : " + booking.getTrackingId());
+    System.out.println("Booked on   : " + booking.getBookingTime().format(displayFormat));
+    // "Booked on   : 23 Apr 2026, 10:30 AM"
+
+    System.out.println("Pickup at   : " + booking.getPickupTime().format(displayFormat));
+    // "Pickup at   : 23 Apr 2026, 02:00 PM"
+
+    if (booking.getDropoffTime() != null) {
+        System.out.println("Delivered   : " + booking.getDropoffTime().format(displayFormat));
+
+        // Calculate delivery duration
+        Duration deliveryTime = Duration.between(
+            booking.getPickupTime(), booking.getDropoffTime()
+        );
+        System.out.println("Took        : " + deliveryTime.toHours() + " hours");
+    }
+}</code></pre>
+  </div>
+
+  <h3>Parsing User Input for Scheduling</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ScheduleParser.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public LocalDateTime parsePickupInput(String userInput) {
+    // User enters: "23/04/2026 14:30"
+    DateTimeFormatter inputFormat =
+        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    try {
+        LocalDateTime requested = LocalDateTime.parse(userInput, inputFormat);
+
+        // Validate
+        if (requested.isBefore(LocalDateTime.now())) {
+            System.out.println("Error: Cannot schedule in the past.");
+            return null;
+        }
+
+        return requested;
+
+    } catch (DateTimeParseException e) {
+        System.out.println("Error: Invalid format. Use dd/MM/yyyy HH:mm");
+        return null;
+    }
+}</code></pre>
+  </div>
+
+  <h3>Calculating Delivery Windows</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DeliveryCalculator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public String estimateDelivery(LocalDateTime pickupTime, String serviceType) {
+    LocalDateTime estimated;
+
+    switch (serviceType) {
+        case "EXPRESS":
+            estimated = pickupTime.plusHours(24);
+            break;
+        case "STANDARD":
+            estimated = pickupTime.plusDays(3);
+            break;
+        case "ECONOMY":
+            estimated = pickupTime.plusDays(7);
+            break;
+        default:
+            estimated = pickupTime.plusDays(5);
+    }
+
+    // Skip weekends
+    while (estimated.getDayOfWeek() == DayOfWeek.SATURDAY ||
+           estimated.getDayOfWeek() == DayOfWeek.SUNDAY) {
+        estimated = estimated.plusDays(1);
+    }
+
+    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy");
+    return "Estimated delivery: " + estimated.format(fmt);
+    // "Estimated delivery: Monday, 27 Apr 2026"
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>These four examples cover the complete date/time lifecycle in Nimbus: creating timestamps when bookings happen, formatting them for user-facing display, parsing user input for scheduling, and performing calculations for delivery windows. Every real-world application needs all four capabilities.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Timezone Basics                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="timezones">
+  <div class="section-tag">Section 09</div>
+  <h2>Timezone Basics</h2>
+  <p class="section-desc">Nimbus operates in India only, so timezones are not critical. But understanding the basics is important for interviews and future projects that span multiple timezones.</p>
+
+  <h3>ZonedDateTime</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TimezoneBasics.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Current time in India
+ZonedDateTime indiaTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+// 2026-04-23T14:30:00+05:30[Asia/Kolkata]
+
+// Same moment in New York
+ZonedDateTime nyTime = indiaTime.withZoneSameInstant(ZoneId.of("America/New_York"));
+// 2026-04-23T05:00:00-04:00[America/New_York]
+
+// Convert LocalDateTime to ZonedDateTime
+LocalDateTime local = LocalDateTime.of(2026, 4, 23, 14, 30);
+ZonedDateTime zoned = local.atZone(ZoneId.of("Asia/Kolkata"));
+
+// Convert ZonedDateTime to LocalDateTime (drops timezone info)
+LocalDateTime backToLocal = zoned.toLocalDateTime();
+
+// List all available zone IDs
+Set&lt;String&gt; zones = ZoneId.getAvailableZoneIds();
+// Contains "Asia/Kolkata", "America/New_York", "Europe/London", etc.</code></pre>
+  </div>
+
+  <h3>When to Use What</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Class</th>
+        <th>When to Use</th>
+        <th>Nimbus Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>LocalDate</code></td>
+        <td>Dates only (no time needed)</td>
+        <td>Booking date, user registration date</td>
+      </tr>
+      <tr>
+        <td><code>LocalTime</code></td>
+        <td>Time only (no date needed)</td>
+        <td>Business hours check, shift schedules</td>
+      </tr>
+      <tr>
+        <td><code>LocalDateTime</code></td>
+        <td>Date + time, single timezone</td>
+        <td>Pickup time, dropoff time, payment time</td>
+      </tr>
+      <tr>
+        <td><code>ZonedDateTime</code></td>
+        <td>Date + time, multiple timezones</td>
+        <td>International parcel tracking (future)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p><code>LocalDateTime</code> does NOT store timezone information. It is "local" to wherever the code runs. For Nimbus running on a server in India, <code>LocalDateTime.now()</code> returns IST. If the same server moved to the US, it would return EST. For single-timezone applications like Nimbus, this is fine. For multi-timezone applications, use <code>ZonedDateTime</code> or store in UTC and convert on display.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Common Mistakes                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-mistakes">
+  <div class="section-tag">Section 10</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">Date/time code is a minefield. These are the mistakes that catch everyone.</p>
+
+  <h3>Mistake 1: Thinking plusDays() Modifies the Original</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">LocalDate date = LocalDate.now();
+date.plusDays(5);  // Returns new object
+// date is UNCHANGED! The result
+// was thrown away.</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">LocalDate date = LocalDate.now();
+LocalDate future = date.plusDays(5);
+// Assign the result to a variable</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 2: Using java.util.Date in New Code</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">Date now = new Date();
+// Mutable, confusing API,
+// months start at 0</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">LocalDateTime now = LocalDateTime.now();
+// Immutable, clean API,
+// months start at 1</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 3: Wrong Pattern Letters</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// mm is minutes, not months!
+DateTimeFormatter f =
+    DateTimeFormatter.ofPattern(
+        "dd/mm/yyyy"
+    );
+// Formats month as minutes = wrong</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// MM is months (capital M)
+DateTimeFormatter f =
+    DateTimeFormatter.ofPattern(
+        "dd/MM/yyyy"
+    );
+// 23/04/2026 — correct</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 4: Parsing Without Error Handling</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// User input can be anything
+String input = scanner.nextLine();
+LocalDate date =
+    LocalDate.parse(input);
+// DateTimeParseException if
+// input is "hello"</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">String input = scanner.nextLine();
+try {
+    LocalDate date =
+        LocalDate.parse(input);
+} catch (DateTimeParseException e) {
+    System.out.println("Invalid date");
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 5: Comparing with == Instead of Methods</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">LocalDate a = LocalDate.of(2026, 4, 23);
+LocalDate b = LocalDate.of(2026, 4, 23);
+if (a == b) {}  // false!
+// == compares references, not values</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">LocalDate a = LocalDate.of(2026, 4, 23);
+LocalDate b = LocalDate.of(2026, 4, 23);
+if (a.isEqual(b)) {}  // true
+// Or a.equals(b) — also true</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 11</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Write these yourself. Each exercise uses a different part of the Date/Time API.</p>
+
+  <h3>Exercise 1: Days Until Birthday</h3>
+
+  <p>Ask the user for their birthday (as <code>"dd/MM/yyyy"</code>). Calculate how many days until their next birthday. If the birthday has already passed this year, calculate days until next year's birthday.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+LocalDate birthday = LocalDate.parse("15/08/2000", fmt);
+LocalDate today = LocalDate.now();
+
+// This year's birthday
+LocalDate nextBirthday = birthday.withYear(today.getYear());
+
+// If it already passed, use next year
+if (nextBirthday.isBefore(today) || nextBirthday.isEqual(today)) {
+    nextBirthday = nextBirthday.plusYears(1);
+}
+
+long daysUntil = ChronoUnit.DAYS.between(today, nextBirthday);
+System.out.println("Days until birthday: " + daysUntil);</code></pre></div>
+        <div class="breakdown-explain"><code>birthday.withYear(today.getYear())</code> creates a copy of the birthday but in the current year. <code>ChronoUnit.DAYS.between()</code> gives the exact number of days between two dates.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 2: Booking Receipt Formatter</h3>
+
+  <p>Given a <code>LocalDateTime</code>, format it in three different ways: ISO (<code>"2026-04-23T14:30:00"</code>), Indian (<code>"23/04/2026 02:30 PM"</code>), and friendly (<code>"Thursday, 23 April 2026 at 2:30 PM"</code>). Create a method that takes a <code>LocalDateTime</code> and a format name ("iso", "indian", "friendly") and returns the formatted string.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public static String formatBookingTime(LocalDateTime dt, String style) {
+    switch (style) {
+        case "iso":
+            return dt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        case "indian":
+            return dt.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a"));
+        case "friendly":
+            return dt.format(DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy 'at' h:mm a"));
+        default:
+            return dt.toString();
+    }
+}
+
+LocalDateTime booking = LocalDateTime.of(2026, 4, 23, 14, 30);
+System.out.println(formatBookingTime(booking, "iso"));
+// 2026-04-23T14:30:00
+System.out.println(formatBookingTime(booking, "indian"));
+// 23/04/2026 02:30 PM
+System.out.println(formatBookingTime(booking, "friendly"));
+// Thursday, 23 April 2026 at 2:30 PM</code></pre></div>
+        <div class="breakdown-explain">The single quotes around <code>'at'</code> in the pattern mean literal text &mdash; they are not parsed as date tokens. <code>EEEE</code> gives full day name, <code>MMMM</code> gives full month name.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 3: Delivery Time Calculator</h3>
+
+  <p>Write a method that takes a pickup <code>LocalDateTime</code> and a service type (<code>"EXPRESS"</code>, <code>"STANDARD"</code>, <code>"ECONOMY"</code>) and returns the estimated delivery <code>LocalDateTime</code>. EXPRESS = +24 hours, STANDARD = +3 days, ECONOMY = +7 days. Skip weekends (if the estimated date falls on Saturday or Sunday, push to Monday).</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public static LocalDateTime estimateDelivery(LocalDateTime pickup, String service) {
+    LocalDateTime estimated;
+
+    switch (service) {
+        case "EXPRESS":  estimated = pickup.plusHours(24); break;
+        case "STANDARD": estimated = pickup.plusDays(3);   break;
+        case "ECONOMY":  estimated = pickup.plusDays(7);   break;
+        default:         estimated = pickup.plusDays(5);   break;
+    }
+
+    // Skip weekends
+    while (estimated.getDayOfWeek() == DayOfWeek.SATURDAY ||
+           estimated.getDayOfWeek() == DayOfWeek.SUNDAY) {
+        estimated = estimated.plusDays(1);
+    }
+
+    return estimated;
+}
+
+LocalDateTime pickup = LocalDateTime.of(2026, 4, 23, 10, 0); // Thursday
+System.out.println(estimateDelivery(pickup, "STANDARD"));
+// 2026-04-27T10:00 → Saturday → pushed to Monday: 2026-04-27T10:00</code></pre></div>
+        <div class="breakdown-explain">The while loop handles the weekend skip. If the estimated day is Saturday, it pushes to Sunday, then to Monday. Immutability means each <code>plusDays(1)</code> creates a new object that we reassign to <code>estimated</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 4: Age Calculator</h3>
+
+  <p>Write a method that takes a <code>LocalDate</code> birthdate and returns the person's age in years, months, and days using <code>Period</code>. Format as "24 years, 8 months, 5 days".</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public static String calculateAge(LocalDate birthdate) {
+    Period age = Period.between(birthdate, LocalDate.now());
+    return age.getYears() + " years, " +
+           age.getMonths() + " months, " +
+           age.getDays() + " days";
+}
+
+System.out.println(calculateAge(LocalDate.of(2001, 8, 15)));
+// "24 years, 8 months, 8 days" (depends on today's date)</code></pre></div>
+        <div class="breakdown-explain"><code>Period.between()</code> calculates the exact difference. <code>getYears()</code>, <code>getMonths()</code>, <code>getDays()</code> return the individual components. Note: <code>getDays()</code> returns only the days part, not total days.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 5: JDBC Timestamp Round Trip</h3>
+
+  <p>Simulate a database round trip: create a <code>LocalDateTime</code>, convert it to <code>java.sql.Timestamp</code>, then convert it back. Print all three to verify they match. This tests the two conversion methods you will use in every DAO.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+public class TimestampRoundTrip {
+    public static void main(String[] args) {
+        // Step 1: Create LocalDateTime
+        LocalDateTime original = LocalDateTime.of(2026, 4, 23, 14, 30, 0);
+        System.out.println("Original:  " + original);
+        // 2026-04-23T14:30
+
+        // Step 2: Convert to Timestamp (what you send to DB)
+        Timestamp ts = Timestamp.valueOf(original);
+        System.out.println("Timestamp: " + ts);
+        // 2026-04-23 14:30:00.0
+
+        // Step 3: Convert back (what you get from DB)
+        LocalDateTime recovered = ts.toLocalDateTime();
+        System.out.println("Recovered: " + recovered);
+        // 2026-04-23T14:30
+
+        // Verify they match
+        System.out.println("Match: " + original.isEqual(recovered));
+        // true
+    }
+}</code></pre></div>
+        <div class="breakdown-explain"><code>Timestamp.valueOf()</code> converts TO the database format. <code>.toLocalDateTime()</code> converts FROM the database format. These are the only two conversions you need to memorize for JDBC.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 6: Business Hours Validator</h3>
+
+  <p>Write a method <code>boolean isWithinBusinessHours(LocalDateTime dateTime)</code> that returns <code>true</code> only if the datetime is on a weekday (Monday-Friday) AND between 9:00 AM and 6:00 PM. Test with various inputs including weekends and after-hours.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public static boolean isWithinBusinessHours(LocalDateTime dt) {
+    DayOfWeek day = dt.getDayOfWeek();
+    LocalTime time = dt.toLocalTime();
+
+    // Check weekday
+    boolean isWeekday = day != DayOfWeek.SATURDAY &amp;&amp; day != DayOfWeek.SUNDAY;
+
+    // Check business hours (9:00 AM to 6:00 PM)
+    boolean isDuringHours = !time.isBefore(LocalTime.of(9, 0))
+                         &amp;&amp; time.isBefore(LocalTime.of(18, 0));
+
+    return isWeekday &amp;&amp; isDuringHours;
+}
+
+// Tests
+System.out.println(isWithinBusinessHours(
+    LocalDateTime.of(2026, 4, 23, 14, 30)));  // Thu 2:30 PM → true
+
+System.out.println(isWithinBusinessHours(
+    LocalDateTime.of(2026, 4, 25, 14, 30)));  // Sat 2:30 PM → false
+
+System.out.println(isWithinBusinessHours(
+    LocalDateTime.of(2026, 4, 23, 20, 0)));   // Thu 8:00 PM → false
+
+System.out.println(isWithinBusinessHours(
+    LocalDateTime.of(2026, 4, 23, 9, 0)));    // Thu 9:00 AM → true</code></pre></div>
+        <div class="breakdown-explain"><code>toLocalTime()</code> extracts the time part for hour comparison. <code>getDayOfWeek()</code> returns the enum value for day checking. The <code>!</code> before <code>time.isBefore(9:00)</code> means "time is at or after 9:00." Combined with <code>time.isBefore(18:00)</code>, this creates the 9 AM to 6 PM window (inclusive start, exclusive end).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="collections.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Collections</span>
+  </a>
+  <a href="threads.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Threads</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

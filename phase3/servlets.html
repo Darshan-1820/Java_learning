@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlets | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link active"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build It</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS A SERVLET?                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-servlet">
+  <div class="section-tag">Section 01</div>
+  <h2>What is a Servlet?</h2>
+  <p class="section-desc">A Servlet is a Java class that lives inside a web server and handles HTTP requests from browsers. It is the bridge between the web and your Java code.</p>
+
+  <h3>The Core Idea</h3>
+
+  <p>Right now, Nimbus is a console app. The user types choices into a terminal, and <code>NimbusApp.java</code> reads them with <code>Scanner</code>. That works for learning, but real users use browsers. They click buttons, fill forms, and hit submit.</p>
+
+  <p>A <strong>Servlet</strong> is the Java class that receives those browser requests and sends back responses. Every form submission, every link click, every page load &mdash; a Servlet handles it on the server side.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Hotel Receptionist</div>
+    <p>Think of a web server as a hotel. Guests (browsers) walk in and make requests: "I need a room," "Where is the pool?" "Check me out."</p>
+    <p>The <strong>receptionist</strong> is the Servlet. She doesn't own the hotel (that's Tomcat). She doesn't clean the rooms (that's the Service/DAO layer). But she is the person who <strong>takes the request, figures out what to do, talks to the right department, and gives the guest an answer</strong>.</p>
+    <p>Each type of request can have its own receptionist. One handles check-ins (LoginServlet), another handles bookings (BookingServlet), another handles complaints (ErrorServlet). But they all follow the same process: receive &rarr; process &rarr; respond.</p>
+  </div>
+
+  <h3>Servlet vs Regular Java Class</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Aspect</th><th>Regular Java Class</th><th>Servlet</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Where it runs</td>
+        <td>Command line (<code>java MyApp</code>)</td>
+        <td>Inside a web server (Tomcat)</td>
+      </tr>
+      <tr>
+        <td>How user interacts</td>
+        <td>Types text in terminal</td>
+        <td>Clicks links, submits forms in browser</td>
+      </tr>
+      <tr>
+        <td>Input comes from</td>
+        <td><code>Scanner</code> reading keyboard</td>
+        <td><code>HttpServletRequest</code> reading HTTP data</td>
+      </tr>
+      <tr>
+        <td>Output goes to</td>
+        <td><code>System.out.println()</code> to terminal</td>
+        <td><code>HttpServletResponse</code> to browser</td>
+      </tr>
+      <tr>
+        <td>Entry point</td>
+        <td><code>public static void main()</code></td>
+        <td><code>doGet()</code> or <code>doPost()</code></td>
+      </tr>
+      <tr>
+        <td>Multiple users?</td>
+        <td>One user at a time</td>
+        <td>Hundreds simultaneously (multithreaded)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your console app has <code>NimbusApp.java</code> with a <code>switch</code> statement: case 1 = login, case 2 = register, case 3 = book a parcel. In the web version, <strong>each case becomes its own Servlet</strong>: <code>LoginServlet</code>, <code>RegisterServlet</code>, <code>BookingServlet</code>. The logic stays the same &mdash; only the input/output changes from terminal to HTTP.</p>
+  </div>
+
+  <h3>The Eight Nimbus Servlets</h3>
+
+  <p>Here is every Servlet that Nimbus will have, and what it does:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Servlet</th><th>Console Equivalent</th><th>What It Handles</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>LoginServlet</code></td>
+        <td>Menu option 1</td>
+        <td>POST from login form &rarr; validates via UserDAO &rarr; creates HttpSession &rarr; redirects by role</td>
+      </tr>
+      <tr>
+        <td><code>RegisterServlet</code></td>
+        <td>Menu option 2</td>
+        <td>POST from registration form &rarr; uses UserService (throws DuplicateEmailException)</td>
+      </tr>
+      <tr>
+        <td><code>BookingServlet</code></td>
+        <td>Menu option 3</td>
+        <td>POST from booking form &rarr; calculates cost &rarr; uses BookingDAO</td>
+      </tr>
+      <tr>
+        <td><code>TrackingServlet</code></td>
+        <td>Menu option 4</td>
+        <td>GET with bookingId param &rarr; uses TrackingService (polymorphism still applies)</td>
+      </tr>
+      <tr>
+        <td><code>DeliveryStatusServlet</code></td>
+        <td>Menu option 5</td>
+        <td>POST to update delivery status via BookingDAO</td>
+      </tr>
+      <tr>
+        <td><code>PickupServlet</code></td>
+        <td>Menu option 6</td>
+        <td>POST to update pickup/drop times</td>
+      </tr>
+      <tr>
+        <td><code>HistoryServlet</code></td>
+        <td>Menu option 7</td>
+        <td>GET with userId and date range params</td>
+      </tr>
+      <tr>
+        <td><code>InvoiceServlet</code></td>
+        <td>Menu option 8</td>
+        <td>GET with bookingId &rarr; displays invoice data</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: ARCHITECTURE — WHERE SERVLETS FIT                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="architecture">
+  <div class="section-tag">Section 02</div>
+  <h2>Where Servlets Fit in the Architecture</h2>
+  <p class="section-desc">A Servlet is just one layer in a multi-layer system. Understanding where it sits is critical before writing code.</p>
+
+  <h3>The Full Request Flow</h3>
+
+  <p>When a user clicks "Book Parcel" on the Nimbus website, here is exactly what happens, layer by layer:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Browser<span class="flow-sub">User fills form, clicks submit</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">HTTP Request<span class="flow-sub">POST /nimbus/book</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">Tomcat<span class="flow-sub">Receives, routes to correct Servlet</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">Servlet<span class="flow-sub">BookingServlet.doPost()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Service Layer<span class="flow-sub">BookingService.calculateCost()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">DAO Layer<span class="flow-sub">BookingDAO.insertBooking()</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box dark">Database<span class="flow-sub">MySQL INSERT</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box dark">Database<span class="flow-sub">Returns generated booking ID</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">DAO<span class="flow-sub">Returns Booking object</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Servlet<span class="flow-sub">Sets attributes, forwards to JSP</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Browser<span class="flow-sub">Sees confirmation page</span></div>
+    </div>
+    <div class="flow-label">Full request-response cycle for booking a parcel in Nimbus</div>
+  </div>
+
+  <h3>Layer Responsibilities</h3>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Browser</div>
+      <div class="layer-detail">HTML forms, links, buttons. Sends HTTP requests. Displays HTML responses. Knows nothing about Java.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Tomcat</div>
+      <div class="layer-detail">Web server. Receives HTTP requests, finds the right Servlet based on URL mapping, creates <code>HttpServletRequest</code> and <code>HttpServletResponse</code> objects, calls the Servlet.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Servlet</div>
+      <div class="layer-detail">Controller. Reads form data from request, calls the Service/DAO layer, puts results into request attributes, forwards to a JSP for display. <strong>No business logic here.</strong> No SQL here.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Service</div>
+      <div class="layer-detail">Business logic. Validates data, calculates costs, enforces rules (e.g., "no duplicate emails"). Calls DAOs for database work.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name cyan">DAO</div>
+      <div class="layer-detail">Data Access. Runs SQL queries via JDBC. Returns Java objects (<code>User</code>, <code>Booking</code>). Knows nothing about HTTP or Servlets.</div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Beginners often put SQL queries directly inside the Servlet. <strong>Never do this.</strong> The Servlet's only job is to handle HTTP &mdash; read request data and send responses. All database work goes through DAO classes, just like in your console app.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your existing <code>UserDAO</code>, <code>BookingDAO</code>, <code>TrackingService</code>, and all your model classes (<code>User</code>, <code>Booking</code>) stay <strong>exactly the same</strong>. The Servlet is just a new front door. Instead of <code>Scanner</code> feeding data into the DAO, the Servlet reads from <code>HttpServletRequest</code> and feeds it into the same DAO. Your entire backend is reused.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: SERVLET LIFECYCLE                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="lifecycle">
+  <div class="section-tag">Section 03</div>
+  <h2>Servlet Lifecycle</h2>
+  <p class="section-desc">Tomcat manages the birth, life, and death of every Servlet. Understanding this lifecycle tells you when your code runs.</p>
+
+  <h3>The Four Stages</h3>
+
+  <p>A Servlet goes through four stages, managed entirely by Tomcat. You never call <code>new LoginServlet()</code> yourself &mdash; Tomcat does it.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot blue"></div>
+      <div class="timeline-title">1. Loading &amp; Instantiation</div>
+      <div class="timeline-desc">Tomcat loads the Servlet class and creates <strong>one instance</strong> using the no-arg constructor. This happens either when the server starts (if <code>load-on-startup</code> is set) or when the first request hits that URL. Only <strong>one instance per Servlet</strong> is created &mdash; all requests share it.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green"></div>
+      <div class="timeline-title">2. Initialization &mdash; <code>init()</code></div>
+      <div class="timeline-desc">Called <strong>once</strong> after the instance is created. Use this for one-time setup: loading config, opening database connection pools, initializing resources. If <code>init()</code> fails, the Servlet is not put into service.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot active"></div>
+      <div class="timeline-title">3. Request Handling &mdash; <code>service()</code> &rarr; <code>doGet()</code>/<code>doPost()</code></div>
+      <div class="timeline-desc">For <strong>every request</strong>, Tomcat calls <code>service()</code>, which checks the HTTP method and routes to <code>doGet()</code> or <code>doPost()</code>. This is where your actual logic runs. Called thousands of times &mdash; once per request. Each request runs in its own thread but uses the same Servlet instance.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot orange"></div>
+      <div class="timeline-title">4. Destruction &mdash; <code>destroy()</code></div>
+      <div class="timeline-desc">Called <strong>once</strong> when the server shuts down or the app is undeployed. Use this to release resources: close database connections, flush logs. After <code>destroy()</code>, the instance is garbage collected.</div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <pre>
+  SERVLET LIFECYCLE
+  ==================
+
+  Server starts / First request arrives
+          |
+          v
+  +------------------+
+  |   Constructor     |    &lt;-- Tomcat calls new LoginServlet()
+  |   (no-arg)        |        Called ONCE
+  +------------------+
+          |
+          v
+  +------------------+
+  |    init()         |    &lt;-- Called ONCE after constructor
+  |                   |        Setup: DB pools, config
+  +------------------+
+          |
+          v
+  +------------------+
+  |   service()       |    &lt;-- Called for EVERY request
+  |     |             |        Checks HTTP method
+  |     +--doGet()    |        GET  requests go here
+  |     +--doPost()   |        POST requests go here
+  |                   |        Runs in separate THREAD per request
+  +------------------+        (same Servlet object, many threads)
+          |
+          v
+  +------------------+
+  |   destroy()       |    &lt;-- Called ONCE on server shutdown
+  |                   |        Cleanup: close connections
+  +------------------+
+          |
+          v
+    Garbage Collected
+    </pre>
+    <div class="diagram-label">One Servlet instance handles all requests. Each request gets its own thread.</div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Critical: Single Instance, Multiple Threads</div>
+    <p>Tomcat creates <strong>one</strong> LoginServlet object. When 50 users log in at the same time, 50 threads run <code>doPost()</code> on that <strong>same object</strong>. This means you must <strong>never store request-specific data in instance variables</strong>. Use local variables inside <code>doGet()</code>/<code>doPost()</code> instead &mdash; each thread gets its own copy of local variables.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Lifecycle Demo</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class LoginServlet extends HttpServlet {
+
+    // Called ONCE when Tomcat creates this Servlet
+    @Override
+    public void init() throws ServletException {
+        System.out.println("LoginServlet initialized");
+        // One-time setup: load config, etc.
+    }
+
+    // Called for EVERY GET request to this Servlet's URL
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+        // Show the login page
+        request.getRequestDispatcher("/WEB-INF/login.jsp")
+               .forward(request, response);
+    }
+
+    // Called for EVERY POST request to this Servlet's URL
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+        // Process login form submission
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        // ... validate, create session, redirect
+    }
+
+    // Called ONCE when the server shuts down
+    @Override
+    public void destroy() {
+        System.out.println("LoginServlet destroyed");
+        // Cleanup resources
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class LoginServlet extends HttpServlet</div>
+        <div class="breakdown-explain">Every Servlet must extend <strong>HttpServlet</strong>. This gives you access to doGet(), doPost(), and the entire Servlet API.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void init() throws ServletException</div>
+        <div class="breakdown-explain">Called once when Tomcat first loads this Servlet. Use for one-time setup. If this throws an exception, the Servlet won't be available.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">10</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">protected void doGet(HttpServletRequest request, HttpServletResponse response)</div>
+        <div class="breakdown-explain">Handles GET requests (browser navigating to a URL, clicking a link). Takes two parameters: <strong>request</strong> (incoming data) and <strong>response</strong> (what to send back).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">13-14</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response)</div>
+        <div class="breakdown-explain">Forwards to a JSP page to display the login form. The browser never sees this internal path &mdash; <code>/WEB-INF/</code> is hidden from direct access.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">19</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">protected void doPost(...)</div>
+        <div class="breakdown-explain">Handles POST requests (form submissions). When a user fills out the login form and clicks "Login", the browser sends a POST request here.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">22</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String email = request.getParameter("email")</div>
+        <div class="breakdown-explain">Reads the value the user typed into the "email" input field. The parameter name must match the HTML input's <code>name</code> attribute.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: HttpServletRequest                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="request">
+  <div class="section-tag">Section 04</div>
+  <h2>HttpServletRequest &mdash; Reading Incoming Data</h2>
+  <p class="section-desc">The request object contains everything the browser sent: form data, URL parameters, headers, cookies, and session info. This is how your Servlet knows what the user wants.</p>
+
+  <h3>The Most Important Methods</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>Returns</th><th>What It Does</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>getParameter("name")</code></td>
+        <td><code>String</code></td>
+        <td>Gets a form field or query string value. Returns <code>null</code> if the parameter doesn't exist.</td>
+      </tr>
+      <tr>
+        <td><code>getParameterValues("name")</code></td>
+        <td><code>String[]</code></td>
+        <td>Gets multiple values for the same parameter name (e.g., checkboxes).</td>
+      </tr>
+      <tr>
+        <td><code>getAttribute("key")</code></td>
+        <td><code>Object</code></td>
+        <td>Gets data set by a Servlet (not from the browser). Used to pass data from Servlet to JSP.</td>
+      </tr>
+      <tr>
+        <td><code>setAttribute("key", value)</code></td>
+        <td><code>void</code></td>
+        <td>Stores data in the request. The JSP can then read it with <code>${key}</code>.</td>
+      </tr>
+      <tr>
+        <td><code>getSession()</code></td>
+        <td><code>HttpSession</code></td>
+        <td>Gets the current user's session (creates one if none exists). Used to track logged-in users.</td>
+      </tr>
+      <tr>
+        <td><code>getSession(false)</code></td>
+        <td><code>HttpSession</code></td>
+        <td>Gets existing session or <code>null</code> &mdash; does NOT create a new one. Use this to check if user is logged in.</td>
+      </tr>
+      <tr>
+        <td><code>getRequestDispatcher("path")</code></td>
+        <td><code>RequestDispatcher</code></td>
+        <td>Gets a dispatcher to forward or include another resource (JSP, Servlet).</td>
+      </tr>
+      <tr>
+        <td><code>getMethod()</code></td>
+        <td><code>String</code></td>
+        <td>Returns "GET", "POST", "PUT", etc. Usually you don't need this since <code>doGet</code>/<code>doPost</code> already separate them.</td>
+      </tr>
+      <tr>
+        <td><code>getRequestURI()</code></td>
+        <td><code>String</code></td>
+        <td>Returns the URL path, e.g., <code>/nimbus/login</code>.</td>
+      </tr>
+      <tr>
+        <td><code>getHeader("name")</code></td>
+        <td><code>String</code></td>
+        <td>Reads HTTP headers (e.g., <code>User-Agent</code>, <code>Content-Type</code>).</td>
+      </tr>
+      <tr>
+        <td><code>getContextPath()</code></td>
+        <td><code>String</code></td>
+        <td>Returns the app's base path, e.g., <code>/nimbus</code>. Useful for building URLs.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>getParameter() &mdash; The Method You'll Use Most</h3>
+
+  <p>Every form field has a <code>name</code> attribute in HTML. When the form is submitted, those names become the parameter keys you read in the Servlet.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">login.jsp &mdash; HTML Form</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;form action="login" method="post"&gt;
+    &lt;input type="email" name="email" placeholder="Email" /&gt;
+    &lt;input type="password" name="password" placeholder="Password" /&gt;
+    &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LoginServlet.java &mdash; Reading Form Data</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+protected void doPost(HttpServletRequest request,
+                      HttpServletResponse response)
+        throws ServletException, IOException {
+
+    // These names MUST match the HTML input "name" attributes
+    String email = request.getParameter("email");       // from name="email"
+    String password = request.getParameter("password"); // from name="password"
+
+    // Always check for null/empty
+    if (email == null || email.trim().isEmpty()) {
+        request.setAttribute("error", "Email is required");
+        request.getRequestDispatcher("/WEB-INF/login.jsp")
+               .forward(request, response);
+        return;
+    }
+
+    // Now use email and password with your existing UserDAO
+    UserDAO userDAO = new UserDAO();
+    User user = userDAO.authenticate(email, password);
+    // ...
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Parameter vs Attribute &mdash; Don't Confuse Them</div>
+    <p><strong>Parameters</strong> come from the <strong>browser</strong> (form fields, query strings). You only <strong>read</strong> them: <code>getParameter()</code>.</p>
+    <p><strong>Attributes</strong> are set by <strong>your Java code</strong> to pass data to JSPs. You <strong>read and write</strong> them: <code>setAttribute()</code> and <code>getAttribute()</code>.</p>
+    <p>Think of it this way: Parameters = what the user sent you. Attributes = what you're sending to the JSP.</p>
+  </div>
+
+  <h3>setAttribute() &mdash; Passing Data to JSP</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingServlet.java &mdash; Setting Attributes for JSP</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// In TrackingServlet.doGet()
+String bookingId = request.getParameter("bookingId"); // from query string
+
+TrackingService trackingService = new TrackingService();
+Booking booking = trackingService.getTrackingInfo(bookingId);
+
+// Store data as request attributes — JSP will read these
+request.setAttribute("booking", booking);
+request.setAttribute("status", booking.getStatus());
+request.setAttribute("estimatedDelivery", booking.getEstimatedDate());
+
+// Forward to JSP — it can now access ${booking}, ${status}, etc.
+request.getRequestDispatcher("/WEB-INF/tracking.jsp")
+       .forward(request, response);</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: HttpServletResponse                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="response">
+  <div class="section-tag">Section 05</div>
+  <h2>HttpServletResponse &mdash; Sending Data Back</h2>
+  <p class="section-desc">The response object is how your Servlet sends data back to the browser. You can send HTML, redirect to another URL, set cookies, or return error codes.</p>
+
+  <h3>Key Methods</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>What It Does</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>setContentType("text/html")</code></td>
+        <td>Tells the browser what kind of data you're sending. <code>text/html</code> for web pages, <code>application/json</code> for API responses.</td>
+      </tr>
+      <tr>
+        <td><code>getWriter()</code></td>
+        <td>Returns a <code>PrintWriter</code> to write text/HTML directly to the response. Rarely used when you have JSP.</td>
+      </tr>
+      <tr>
+        <td><code>sendRedirect("url")</code></td>
+        <td>Tells the browser to go to a different URL. Sends HTTP 302. <strong>The URL in the browser changes.</strong></td>
+      </tr>
+      <tr>
+        <td><code>sendError(404)</code></td>
+        <td>Sends an HTTP error status code to the browser.</td>
+      </tr>
+      <tr>
+        <td><code>setStatus(200)</code></td>
+        <td>Sets the HTTP status code. 200 = OK, 404 = Not Found, 500 = Server Error.</td>
+      </tr>
+      <tr>
+        <td><code>addCookie(cookie)</code></td>
+        <td>Adds a cookie to the response. The browser will store it and send it back with future requests.</td>
+      </tr>
+      <tr>
+        <td><code>setHeader("name", "value")</code></td>
+        <td>Sets an HTTP response header (e.g., caching, content-disposition for downloads).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Writing HTML Directly (Quick &amp; Dirty)</h3>
+
+  <p>You <em>can</em> write HTML directly from a Servlet, but you almost never should. JSPs are much better for this. Still, it's important to understand how it works:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Writing HTML from a Servlet (NOT recommended)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+protected void doGet(HttpServletRequest request,
+                     HttpServletResponse response)
+        throws ServletException, IOException {
+
+    response.setContentType("text/html");
+    PrintWriter out = response.getWriter();
+
+    out.println("&lt;html&gt;");
+    out.println("&lt;body&gt;");
+    out.println("&lt;h1&gt;Welcome to Nimbus&lt;/h1&gt;");
+    out.println("&lt;p&gt;Booking ID: " + request.getParameter("id") + "&lt;/p&gt;");
+    out.println("&lt;/body&gt;");
+    out.println("&lt;/html&gt;");
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Why This is Bad</div>
+    <p>Mixing Java code and HTML is a maintenance nightmare. Imagine styling a full page with CSS inside Java strings. That's why JSPs exist &mdash; they let you write HTML normally and embed small amounts of Java. In Nimbus, <strong>Servlets handle logic, JSPs handle display</strong>.</p>
+  </div>
+
+  <h3>sendRedirect() &mdash; Sending User to Another URL</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Redirect after successful login</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// After successful login, redirect based on role
+User user = userDAO.authenticate(email, password);
+
+if (user != null) {
+    HttpSession session = request.getSession();
+    session.setAttribute("loggedInUser", user);
+
+    // Redirect based on user role
+    if (user.getRole().equals("ADMIN")) {
+        response.sendRedirect("admin/dashboard");
+    } else if (user.getRole().equals("DELIVERY_AGENT")) {
+        response.sendRedirect("agent/deliveries");
+    } else {
+        response.sendRedirect("customer/home");
+    }
+} else {
+    request.setAttribute("error", "Invalid email or password");
+    request.getRequestDispatcher("/WEB-INF/login.jsp")
+           .forward(request, response);
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: doGet vs doPost                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="get-vs-post">
+  <div class="section-tag">Section 06</div>
+  <h2>doGet() vs doPost()</h2>
+  <p class="section-desc">GET is for reading. POST is for writing. Getting this right is fundamental to building web applications correctly.</p>
+
+  <h3>When to Use Each</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">doGet() &mdash; Reading Data</div>
+      <div class="comparison-body">
+        <p><strong>Use when:</strong> User is requesting/viewing data.</p>
+        <ul>
+          <li>Navigating to a page</li>
+          <li>Clicking a link</li>
+          <li>Searching for something</li>
+          <li>Tracking a parcel (just viewing)</li>
+        </ul>
+        <p><strong>Data goes in:</strong> URL query string<br>
+        <code>/track?bookingId=NB-1042</code></p>
+        <p><strong>Browser behavior:</strong></p>
+        <ul>
+          <li>Can be bookmarked</li>
+          <li>Appears in browser history</li>
+          <li>Can be refreshed without warning</li>
+          <li>Data is visible in the URL</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">doPost() &mdash; Sending Data</div>
+      <div class="comparison-body">
+        <p><strong>Use when:</strong> User is submitting/modifying data.</p>
+        <ul>
+          <li>Submitting a login form</li>
+          <li>Registering a new account</li>
+          <li>Booking a parcel</li>
+          <li>Updating delivery status</li>
+        </ul>
+        <p><strong>Data goes in:</strong> Request body (hidden)<br>
+        <code>POST /login</code> (data in body)</p>
+        <p><strong>Browser behavior:</strong></p>
+        <ul>
+          <li>Cannot be bookmarked</li>
+          <li>Not in browser history</li>
+          <li>Refreshing shows "re-submit?" warning</li>
+          <li>Data is hidden from the URL</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>How the HTML Form Decides</h3>
+
+  <p>The HTML form's <code>method</code> attribute determines which Servlet method gets called:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Form method determines Servlet method</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;!-- This triggers doGet() on the Servlet --&gt;
+&lt;form action="track" method="get"&gt;
+    &lt;input name="bookingId" /&gt;
+    &lt;button&gt;Track Parcel&lt;/button&gt;
+&lt;/form&gt;
+&lt;!-- URL becomes: /nimbus/track?bookingId=NB-1042 --&gt;
+
+
+&lt;!-- This triggers doPost() on the Servlet --&gt;
+&lt;form action="login" method="post"&gt;
+    &lt;input name="email" /&gt;
+    &lt;input name="password" type="password" /&gt;
+    &lt;button&gt;Login&lt;/button&gt;
+&lt;/form&gt;
+&lt;!-- URL stays: /nimbus/login (data hidden in body) --&gt;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Which Method for Each Servlet</div>
+    <table class="info-table">
+      <thead>
+        <tr><th>Servlet</th><th>doGet()</th><th>doPost()</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>LoginServlet</code></td><td>Show login form</td><td>Process login (validate credentials)</td></tr>
+        <tr><td><code>RegisterServlet</code></td><td>Show registration form</td><td>Process registration (create user)</td></tr>
+        <tr><td><code>BookingServlet</code></td><td>Show booking form</td><td>Process booking (calculate cost, save)</td></tr>
+        <tr><td><code>TrackingServlet</code></td><td>Show tracking result</td><td>&mdash; (not needed)</td></tr>
+        <tr><td><code>DeliveryStatusServlet</code></td><td>Show status form</td><td>Update delivery status</td></tr>
+        <tr><td><code>PickupServlet</code></td><td>Show pickup form</td><td>Update pickup/drop times</td></tr>
+        <tr><td><code>HistoryServlet</code></td><td>Show booking history</td><td>&mdash; (not needed)</td></tr>
+        <tr><td><code>InvoiceServlet</code></td><td>Show invoice</td><td>&mdash; (not needed)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Rule of Thumb</div>
+    <p><strong>If the action changes data on the server</strong> (insert, update, delete) &rarr; <strong>POST</strong>.<br>
+    <strong>If the action only reads data</strong> (view, search, display) &rarr; <strong>GET</strong>.</p>
+    <p>Never use GET for passwords, payments, or anything that modifies the database. That data would appear in the URL, browser history, and server logs.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: web.xml CONFIGURATION                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="web-xml">
+  <div class="section-tag">Section 07</div>
+  <h2>web.xml &mdash; Servlet Configuration</h2>
+  <p class="section-desc">The deployment descriptor tells Tomcat which Servlet handles which URL. It's the routing table of your web application.</p>
+
+  <h3>How Tomcat Knows Which Servlet to Call</h3>
+
+  <p>When a browser requests <code>/nimbus/login</code>, how does Tomcat know to call <code>LoginServlet</code>? Two ways:</p>
+
+  <ol>
+    <li><strong>web.xml</strong> &mdash; An XML file that maps URLs to Servlet classes. The older, traditional way.</li>
+    <li><strong>@WebServlet annotation</strong> &mdash; A modern annotation directly on the Servlet class. Simpler, no XML needed.</li>
+  </ol>
+
+  <p>Most real projects use annotations, but you <strong>must</strong> understand web.xml because interview questions love it, and some enterprise projects still use it.</p>
+
+  <h3>web.xml Structure</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WEB-INF/web.xml &mdash; Nimbus Full Configuration</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+           http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0"&gt;
+
+    &lt;!-- ======= WELCOME FILE ======= --&gt;
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+
+    &lt;!-- ======= LOGIN SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.LoginServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/login&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= REGISTER SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;RegisterServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.RegisterServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;RegisterServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/register&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= BOOKING SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;BookingServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.BookingServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;BookingServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/book&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= TRACKING SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;TrackingServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.TrackingServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;TrackingServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/track&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= DELIVERY STATUS SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;DeliveryStatusServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.DeliveryStatusServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;DeliveryStatusServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/delivery-status&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= PICKUP SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;PickupServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.PickupServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;PickupServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/pickup&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= HISTORY SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HistoryServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.HistoryServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HistoryServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/history&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= INVOICE SERVLET ======= --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;InvoiceServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.nimbus.servlet.InvoiceServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;InvoiceServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/invoice&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!-- ======= ERROR PAGES ======= --&gt;
+    &lt;error-page&gt;
+        &lt;error-code&gt;404&lt;/error-code&gt;
+        &lt;location&gt;/WEB-INF/error/404.jsp&lt;/location&gt;
+    &lt;/error-page&gt;
+    &lt;error-page&gt;
+        &lt;error-code&gt;500&lt;/error-code&gt;
+        &lt;location&gt;/WEB-INF/error/500.jsp&lt;/location&gt;
+    &lt;/error-page&gt;
+    &lt;error-page&gt;
+        &lt;exception-type&gt;java.lang.Exception&lt;/exception-type&gt;
+        &lt;location&gt;/WEB-INF/error/500.jsp&lt;/location&gt;
+    &lt;/error-page&gt;
+
+&lt;/web-app&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key sections explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;web-app&gt;</div>
+        <div class="breakdown-explain">Root element. The <code>version="4.0"</code> tells Tomcat which Servlet specification to use. Version 4.0 supports annotations, async servlets, etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;welcome-file-list&gt;</div>
+        <div class="breakdown-explain">When someone visits <code>/nimbus/</code> (no specific page), Tomcat serves <code>index.jsp</code> automatically. Like a default homepage.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;servlet&gt; + &lt;servlet-mapping&gt;</div>
+        <div class="breakdown-explain">Two-part registration. <code>&lt;servlet&gt;</code> gives the Servlet a name and points to its class. <code>&lt;servlet-mapping&gt;</code> links that name to a URL. The name is the connector between them.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;url-pattern&gt;/login&lt;/url-pattern&gt;</div>
+        <div class="breakdown-explain">When browser requests <code>/nimbus/login</code>, Tomcat calls <code>LoginServlet</code>. The pattern is relative to the app context path.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;error-page&gt;</div>
+        <div class="breakdown-explain">Custom error pages. Instead of Tomcat's ugly default "HTTP 404" page, users see your styled error page. You can map by status code or exception type.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: @WebServlet ANNOTATION                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="annotation">
+  <div class="section-tag">Section 08</div>
+  <h2>@WebServlet Annotation &mdash; The Modern Way</h2>
+  <p class="section-desc">Instead of writing XML for every Servlet, you can use a single annotation on the class itself. Same result, much less config.</p>
+
+  <h3>web.xml vs @WebServlet</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">web.xml (Old Way)</div>
+      <div class="comparison-body">
+        <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>&lt;servlet&gt;
+  &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;
+    com.nimbus.servlet.LoginServlet
+  &lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;LoginServlet&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;/login&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</code></pre>
+        <p style="margin-top: 12px;"><strong>10 lines of XML</strong> per Servlet. 8 Servlets = 80 lines of boilerplate.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">@WebServlet (Modern Way)</div>
+      <div class="comparison-body">
+        <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0;"><code>@WebServlet("/login")
+public class LoginServlet
+    extends HttpServlet {
+    // ...
+}</code></pre>
+        <p style="margin-top: 12px;"><strong>1 line</strong> per Servlet. The URL mapping lives right next to the code it controls.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>@WebServlet Options</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@WebServlet in different forms</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Simple — single URL pattern
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet { ... }
+
+// Multiple URL patterns — same Servlet handles both
+@WebServlet(urlPatterns = {"/login", "/signin"})
+public class LoginServlet extends HttpServlet { ... }
+
+// With name and load-on-startup
+@WebServlet(
+    name = "LoginServlet",
+    urlPatterns = "/login",
+    loadOnStartup = 1  // Load when server starts (not on first request)
+)
+public class LoginServlet extends HttpServlet { ... }
+
+// Wildcard pattern — matches /api/anything
+@WebServlet("/api/*")
+public class ApiServlet extends HttpServlet { ... }
+
+// Extension pattern — matches any .do URL
+@WebServlet("*.do")
+public class ActionServlet extends HttpServlet { ... }</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; All 8 Servlets with Annotations</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Nimbus Servlet URL mappings</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">@WebServlet("/login")           // POST: validate credentials, create session
+public class LoginServlet extends HttpServlet { ... }
+
+@WebServlet("/register")        // POST: create new user account
+public class RegisterServlet extends HttpServlet { ... }
+
+@WebServlet("/book")            // POST: create new booking, calculate cost
+public class BookingServlet extends HttpServlet { ... }
+
+@WebServlet("/track")           // GET:  /track?bookingId=NB-1042
+public class TrackingServlet extends HttpServlet { ... }
+
+@WebServlet("/delivery-status") // POST: update delivery status
+public class DeliveryStatusServlet extends HttpServlet { ... }
+
+@WebServlet("/pickup")          // POST: update pickup/drop times
+public class PickupServlet extends HttpServlet { ... }
+
+@WebServlet("/history")         // GET:  /history?userId=5&amp;from=2026-01-01
+public class HistoryServlet extends HttpServlet { ... }
+
+@WebServlet("/invoice")         // GET:  /invoice?bookingId=42
+public class InvoiceServlet extends HttpServlet { ... }</code></pre>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Don't Mix Both</div>
+    <p>If you use <code>@WebServlet</code> annotations, you can <strong>remove</strong> the <code>&lt;servlet&gt;</code> and <code>&lt;servlet-mapping&gt;</code> entries from web.xml for those Servlets. You can still keep web.xml for things like error pages and welcome files. But <strong>never</strong> register the same Servlet in both places &mdash; it will cause conflicts.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: REQUEST PARAMETERS                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="parameters">
+  <div class="section-tag">Section 09</div>
+  <h2>Request Parameters &mdash; Reading User Input</h2>
+  <p class="section-desc">Parameters are how user input arrives at your Servlet. They come from form fields (POST) or query strings (GET).</p>
+
+  <h3>Where Parameters Come From</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">GET &mdash; Query String</div>
+      <div class="comparison-body">
+        <p>Parameters are in the URL after <code>?</code>:</p>
+        <p><code>/track?bookingId=NB-1042&amp;format=detail</code></p>
+        <p>Multiple params separated by <code>&amp;</code>. Visible to everyone. Used for searches, filters, links.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">POST &mdash; Request Body</div>
+      <div class="comparison-body">
+        <p>Parameters are hidden in the HTTP body:</p>
+        <p><code>email=john@test.com&amp;password=secret</code></p>
+        <p>Not visible in URL. Used for form submissions with sensitive data.</p>
+      </div>
+    </div>
+  </div>
+
+  <p><strong>Both</strong> are read the same way in your Servlet: <code>request.getParameter("name")</code>. The Servlet doesn't care whether it came from a query string or a form body.</p>
+
+  <h3>Handling Missing Parameters</h3>
+
+  <p>If a parameter doesn't exist, <code>getParameter()</code> returns <code>null</code>. If it exists but is empty (user submitted blank field), it returns an empty string <code>""</code>. You must handle both.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Safe parameter reading pattern</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+protected void doPost(HttpServletRequest request,
+                      HttpServletResponse response)
+        throws ServletException, IOException {
+
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
+
+    // Check for null (parameter not sent at all)
+    // Check for empty (parameter sent but blank)
+    if (email == null || email.trim().isEmpty()) {
+        request.setAttribute("error", "Email is required");
+        request.getRequestDispatcher("/WEB-INF/login.jsp")
+               .forward(request, response);
+        return;  // IMPORTANT: stop processing after forward
+    }
+
+    if (password == null || password.trim().isEmpty()) {
+        request.setAttribute("error", "Password is required");
+        request.setAttribute("email", email); // Keep the email they typed
+        request.getRequestDispatcher("/WEB-INF/login.jsp")
+               .forward(request, response);
+        return;
+    }
+
+    // Both fields have values — safe to proceed
+    // ...
+}</code></pre>
+  </div>
+
+  <h3>Reading Numeric Parameters</h3>
+
+  <p><code>getParameter()</code> always returns a <strong>String</strong>. If you need a number (like bookingId), you must parse it yourself:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Parsing numeric parameters safely</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// URL: /invoice?bookingId=42
+String bookingIdStr = request.getParameter("bookingId");
+
+if (bookingIdStr == null) {
+    response.sendError(400, "Missing bookingId parameter");
+    return;
+}
+
+int bookingId;
+try {
+    bookingId = Integer.parseInt(bookingIdStr);
+} catch (NumberFormatException e) {
+    response.sendError(400, "bookingId must be a number");
+    return;
+}
+
+// Now safe to use bookingId as an int
+Booking booking = bookingDAO.findById(bookingId);</code></pre>
+  </div>
+
+  <h3>Reading Multiple Values (Checkboxes)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Multiple values for one parameter name</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;!-- HTML: checkboxes with same name --&gt;
+&lt;input type="checkbox" name="services" value="EXPRESS" /&gt; Express
+&lt;input type="checkbox" name="services" value="INSURANCE" /&gt; Insurance
+&lt;input type="checkbox" name="services" value="FRAGILE" /&gt; Fragile Handling</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Reading multiple values in Servlet</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// getParameter() would only return the FIRST checked value
+// getParameterValues() returns ALL checked values
+String[] services = request.getParameterValues("services");
+
+if (services != null) {
+    for (String service : services) {
+        System.out.println("Selected: " + service);
+        // Output: "EXPRESS", "INSURANCE", "FRAGILE"
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: FORWARDING TO JSP                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="forwarding">
+  <div class="section-tag">Section 10</div>
+  <h2>Forwarding to JSP &mdash; RequestDispatcher</h2>
+  <p class="section-desc">After the Servlet processes the request, it forwards to a JSP page for display. This is the core of the MVC pattern: Servlet = Controller, JSP = View.</p>
+
+  <h3>The Forward Process</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Browser<span class="flow-sub">POST /login</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">LoginServlet<span class="flow-sub">doPost() validates user</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">setAttribute()<span class="flow-sub">Stores user in request</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">forward()<span class="flow-sub">To dashboard.jsp</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Browser<span class="flow-sub">Sees dashboard HTML</span></div>
+    </div>
+    <div class="flow-label">The browser URL stays as /login &mdash; it doesn't know about the JSP</div>
+  </div>
+
+  <h3>The Two Steps: setAttribute() + forward()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HistoryServlet.java &mdash; Complete forward example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/history")
+public class HistoryServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Step 1: Read parameters
+        String userIdStr = request.getParameter("userId");
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+
+        // Step 2: Call DAO to get data
+        BookingDAO bookingDAO = new BookingDAO();
+        int userId = Integer.parseInt(userIdStr);
+        List&lt;Booking&gt; bookings = bookingDAO.getHistory(userId, fromDate, toDate);
+
+        // Step 3: Store data as request attributes
+        request.setAttribute("bookings", bookings);     // JSP reads as ${bookings}
+        request.setAttribute("totalBookings", bookings.size());
+        request.setAttribute("fromDate", fromDate);
+        request.setAttribute("toDate", toDate);
+
+        // Step 4: Forward to JSP for display
+        request.getRequestDispatcher("/WEB-INF/history.jsp")
+               .forward(request, response);
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why /WEB-INF/ for JSPs?</div>
+    <p>Files inside <code>/WEB-INF/</code> cannot be accessed directly from a browser. If someone types <code>http://localhost:8080/nimbus/WEB-INF/history.jsp</code>, they get a 404. This is good &mdash; it forces users to go through your Servlet first, where you can validate input and check permissions. <strong>Always put JSPs in /WEB-INF/.</strong></p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: REDIRECT VS FORWARD                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="redirect-vs-forward">
+  <div class="section-tag">Section 11</div>
+  <h2>Redirect vs Forward &mdash; The Critical Difference</h2>
+  <p class="section-desc">These two concepts confuse almost every beginner. Getting them wrong causes duplicate form submissions, lost data, and broken navigation. This is a must-know for interviews.</p>
+
+  <h3>Visual Comparison</h3>
+
+  <div class="diagram">
+    <pre>
+  FORWARD (Server-side)
+  ======================
+
+  Browser                    Server
+  +--------+                +------------------+
+  |        | --- Request --&gt;| LoginServlet     |
+  |        |                |   validates...   |
+  |        |                |   forward() ----&gt;| dashboard.jsp
+  |        | &lt;--- HTML -----|                  | generates HTML
+  +--------+                +------------------+
+
+  URL in browser: /login     (UNCHANGED!)
+  Number of requests: 1
+  Request attributes: PRESERVED (JSP can read them)
+
+
+  REDIRECT (Client-side)
+  =======================
+
+  Browser                    Server
+  +--------+                +------------------+
+  |        | --- POST -----&gt;| LoginServlet     |
+  |        |                |   validates...   |
+  |        | &lt;-- 302 ------| sendRedirect()   |
+  |        |                +------------------+
+  |        | --- GET ------&gt;| DashboardServlet |
+  |        | &lt;--- HTML -----|                  |
+  +--------+                +------------------+
+
+  URL in browser: /dashboard (CHANGED!)
+  Number of requests: 2
+  Request attributes: LOST (new request = clean slate)
+    </pre>
+    <div class="diagram-label">Forward = one trip. Redirect = two trips.</div>
+  </div>
+
+  <h3>When to Use Each</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Scenario</th><th>Use</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Login failed &mdash; show error on login page</td>
+        <td><strong>Forward</strong></td>
+        <td>Need to pass the error message via request attribute. Same request.</td>
+      </tr>
+      <tr>
+        <td>Login succeeded &mdash; go to dashboard</td>
+        <td><strong>Redirect</strong></td>
+        <td>New page. Clean URL. Prevents "re-submit form?" on refresh.</td>
+      </tr>
+      <tr>
+        <td>Booking created &mdash; show confirmation</td>
+        <td><strong>Redirect</strong></td>
+        <td>POST-Redirect-GET pattern. Refreshing won't create duplicate booking.</td>
+      </tr>
+      <tr>
+        <td>Tracking result &mdash; show tracking page</td>
+        <td><strong>Forward</strong></td>
+        <td>Passing tracking data via request attributes to JSP.</td>
+      </tr>
+      <tr>
+        <td>User not logged in &mdash; go to login page</td>
+        <td><strong>Redirect</strong></td>
+        <td>Clean URL change. User sees /login in browser.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>POST-Redirect-GET Pattern (PRG)</h3>
+
+  <p>This is one of the most important patterns in web development. It solves the "double submission" problem.</p>
+
+  <div class="callout important">
+    <div class="callout-title">The Problem Without PRG</div>
+    <p>User books a parcel (POST). Server creates booking, <strong>forwards</strong> to confirmation page. User refreshes the page. Browser asks "Re-submit form data?" User clicks Yes. <strong>Another booking is created.</strong> Duplicate charge.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">The Solution: POST-Redirect-GET</div>
+    <p>User books a parcel (POST). Server creates booking, <strong>redirects</strong> to <code>/booking-confirmation?id=42</code>. Browser makes a new GET request. User refreshes the page. Browser just re-sends the GET &mdash; no form data, no duplicate. Safe.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PRG Pattern in BookingServlet</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/book")
+public class BookingServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // 1. Read form data
+        String senderName = request.getParameter("senderName");
+        String receiverName = request.getParameter("receiverName");
+        double weight = Double.parseDouble(request.getParameter("weight"));
+
+        // 2. Process booking
+        BookingDAO bookingDAO = new BookingDAO();
+        Booking booking = new Booking(senderName, receiverName, weight);
+        int bookingId = bookingDAO.insertBooking(booking);
+
+        // 3. REDIRECT (not forward!) — PRG pattern
+        // Store success message in session (survives redirect)
+        HttpSession session = request.getSession();
+        session.setAttribute("successMessage", "Booking created! ID: " + bookingId);
+
+        // Redirect to confirmation page (GET request)
+        response.sendRedirect("invoice?bookingId=" + bookingId);
+        // User refreshes? Just re-loads the invoice. No duplicate booking.
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Why each step matters</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Read form data from POST</div>
+        <div class="breakdown-explain">The form was submitted with method="post", so data is in the request body. <code>getParameter()</code> reads it.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Process &mdash; insert into database</div>
+        <div class="breakdown-explain">The booking is saved. The database returns the generated booking ID. At this point, the data is committed.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Redirect instead of forward</div>
+        <div class="breakdown-explain"><strong>This is the key step.</strong> <code>sendRedirect()</code> sends HTTP 302 to the browser. The browser makes a new GET request to <code>/invoice?bookingId=42</code>. If the user refreshes, they only repeat the GET &mdash; the POST is gone from browser history.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Session for flash messages</div>
+        <div class="breakdown-explain">Since redirect creates a new request, <code>request.setAttribute()</code> won't survive. So we use <code>session.setAttribute()</code> for the success message. The JSP reads it and then removes it (so it only shows once).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: FULL LoginServlet                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="login-servlet">
+  <div class="section-tag">Section 12</div>
+  <h2>Full Nimbus LoginServlet</h2>
+  <p class="section-desc">The complete LoginServlet with form display, validation, session creation, and role-based redirect. This is the first Servlet you build for Nimbus.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/servlet/LoginServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.dao.UserDAO;
+import com.nimbus.model.User;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
+
+    private UserDAO userDAO;
+
+    @Override
+    public void init() throws ServletException {
+        userDAO = new UserDAO();
+    }
+
+    // GET /login — Show the login form
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // If already logged in, redirect to home
+        HttpSession session = request.getSession(false);
+        if (session != null &amp;&amp; session.getAttribute("loggedInUser") != null) {
+            response.sendRedirect("home");
+            return;
+        }
+
+        // Show login page
+        request.getRequestDispatcher("/WEB-INF/login.jsp")
+               .forward(request, response);
+    }
+
+    // POST /login — Process login form
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // 1. Read form data
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        // 2. Validate input
+        if (email == null || email.trim().isEmpty()
+                || password == null || password.trim().isEmpty()) {
+            request.setAttribute("error", "Email and password are required");
+            request.getRequestDispatcher("/WEB-INF/login.jsp")
+                   .forward(request, response);
+            return;
+        }
+
+        // 3. Authenticate using existing UserDAO
+        User user = userDAO.authenticate(email.trim(), password);
+
+        if (user == null) {
+            // Login failed — forward back to login with error
+            request.setAttribute("error", "Invalid email or password");
+            request.setAttribute("email", email); // Keep the email they typed
+            request.getRequestDispatcher("/WEB-INF/login.jsp")
+                   .forward(request, response);
+            return;
+        }
+
+        // 4. Login succeeded — create session
+        HttpSession session = request.getSession();
+        session.setAttribute("loggedInUser", user);
+        session.setAttribute("userId", user.getUserId());
+        session.setAttribute("userName", user.getName());
+        session.setAttribute("userRole", user.getRole());
+        session.setMaxInactiveInterval(30 * 60); // 30 minutes
+
+        // 5. Redirect based on role (PRG pattern)
+        switch (user.getRole()) {
+            case "ADMIN":
+                response.sendRedirect("admin/dashboard");
+                break;
+            case "DELIVERY_AGENT":
+                response.sendRedirect("agent/deliveries");
+                break;
+            case "CUSTOMER":
+            default:
+                response.sendRedirect("customer/home");
+                break;
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">LoginServlet line-by-line</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private UserDAO userDAO; + init()</div>
+        <div class="breakdown-explain">The DAO is created once in <code>init()</code>, not in every request. This is efficient &mdash; all threads share one DAO instance. The DAO itself is stateless (no instance variables holding request data), so this is safe.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">doGet() &mdash; request.getSession(false)</div>
+        <div class="breakdown-explain">Passing <code>false</code> means "give me the existing session or null, don't create a new one." If the user is already logged in (session exists with user data), we skip the login page and redirect to home.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">doPost() &mdash; Validation</div>
+        <div class="breakdown-explain">Always validate before processing. If input is missing, we <strong>forward</strong> (not redirect) back to login.jsp. Forward preserves the error message we set as a request attribute.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.setAttribute("email", email)</div>
+        <div class="breakdown-explain">When login fails, we send the email back so the user doesn't have to retype it. The JSP reads this: <code>&lt;input value="${email}"&gt;</code>. Small UX detail that matters.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">session.setMaxInactiveInterval(30 * 60)</div>
+        <div class="breakdown-explain">Session expires after 30 minutes of inactivity. After that, <code>getSession(false)</code> returns null, and the user is effectively logged out. The value is in seconds.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">response.sendRedirect() after successful login</div>
+        <div class="breakdown-explain">PRG pattern. After POST login, we redirect (not forward). The browser makes a new GET request to the dashboard URL. Refreshing won't re-submit the login form.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Console vs Web Login</div>
+    <p><strong>Console:</strong> <code>Scanner</code> reads email/password &rarr; <code>userDAO.authenticate()</code> &rarr; <code>System.out.println("Welcome")</code>.</p>
+    <p><strong>Web:</strong> <code>request.getParameter()</code> reads email/password &rarr; same <code>userDAO.authenticate()</code> &rarr; <code>session.setAttribute()</code> + <code>response.sendRedirect()</code>.</p>
+    <p>The DAO call is <strong>identical</strong>. The only change is where input comes from and where output goes.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: FULL BookingServlet                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-servlet">
+  <div class="section-tag">Section 13</div>
+  <h2>Full Nimbus BookingServlet</h2>
+  <p class="section-desc">The BookingServlet handles parcel booking: reads form data, calculates cost, saves to database, and redirects to invoice.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/servlet/BookingServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.model.Booking;
+import com.nimbus.model.User;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+
+@WebServlet("/book")
+public class BookingServlet extends HttpServlet {
+
+    private BookingDAO bookingDAO;
+
+    @Override
+    public void init() throws ServletException {
+        bookingDAO = new BookingDAO();
+    }
+
+    // GET /book — Show the booking form
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Must be logged in
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
+        request.getRequestDispatcher("/WEB-INF/booking.jsp")
+               .forward(request, response);
+    }
+
+    // POST /book — Process the booking
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Must be logged in
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        try {
+            // 1. Read form parameters
+            String senderName = request.getParameter("senderName");
+            String senderAddress = request.getParameter("senderAddress");
+            String senderPhone = request.getParameter("senderPhone");
+            String receiverName = request.getParameter("receiverName");
+            String receiverAddress = request.getParameter("receiverAddress");
+            String receiverPhone = request.getParameter("receiverPhone");
+            double weight = Double.parseDouble(request.getParameter("weight"));
+            String parcelType = request.getParameter("parcelType");
+
+            // 2. Create Booking object
+            Booking booking = new Booking();
+            booking.setSenderId(loggedInUser.getUserId());
+            booking.setSenderName(senderName);
+            booking.setSenderAddress(senderAddress);
+            booking.setSenderPhone(senderPhone);
+            booking.setReceiverName(receiverName);
+            booking.setReceiverAddress(receiverAddress);
+            booking.setReceiverPhone(receiverPhone);
+            booking.setWeight(weight);
+            booking.setParcelType(parcelType);
+
+            // 3. Calculate cost (same logic as console app)
+            double baseCost = weight * 50; // Rs. 50 per kg
+            if ("EXPRESS".equals(parcelType)) {
+                baseCost *= 1.5;
+            }
+            booking.setCost(baseCost);
+            booking.setStatus("BOOKED");
+
+            // 4. Save to database
+            int bookingId = bookingDAO.insertBooking(booking);
+
+            // 5. PRG — Redirect to invoice (not forward!)
+            session.setAttribute("successMessage",
+                "Parcel booked successfully! Booking ID: NB-" + bookingId);
+            response.sendRedirect("invoice?bookingId=" + bookingId);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid weight value");
+            request.getRequestDispatcher("/WEB-INF/booking.jsp")
+                   .forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("error", "Booking failed: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/booking.jsp")
+                   .forward(request, response);
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; What Changed from Console</div>
+    <p><strong>Console:</strong> <code>Scanner</code> reads each field one by one with prompts. Cost calculation inline. Result printed to terminal.</p>
+    <p><strong>Web:</strong> All fields arrive at once from the form. Same cost calculation. Result saved, then <strong>redirect</strong> to invoice page (PRG pattern). The <code>Booking</code> model and <code>BookingDAO</code> are the exact same classes.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 14: FULL TrackingServlet (POLYMORPHISM)               -->
+<!-- ============================================================ -->
+<section class="content-section" id="tracking-servlet">
+  <div class="section-tag">Section 14</div>
+  <h2>Full Nimbus TrackingServlet &mdash; Polymorphism in Web Context</h2>
+  <p class="section-desc">The TrackingServlet shows how your Phase 2 polymorphism design (TrackingService with different tracking strategies) works in a web context. The OOP stays the same.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/servlet/TrackingServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.model.Booking;
+import com.nimbus.service.TrackingService;
+import com.nimbus.service.TrackingInfo;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/track")
+public class TrackingServlet extends HttpServlet {
+
+    private BookingDAO bookingDAO;
+    private TrackingService trackingService;
+
+    @Override
+    public void init() throws ServletException {
+        bookingDAO = new BookingDAO();
+        trackingService = new TrackingService();
+    }
+
+    // GET /track?bookingId=NB-1042
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String bookingIdParam = request.getParameter("bookingId");
+
+        // No bookingId provided — show the search form
+        if (bookingIdParam == null || bookingIdParam.trim().isEmpty()) {
+            request.getRequestDispatcher("/WEB-INF/tracking-search.jsp")
+                   .forward(request, response);
+            return;
+        }
+
+        try {
+            // Parse the booking ID (strip "NB-" prefix if present)
+            String cleanId = bookingIdParam.replace("NB-", "");
+            int bookingId = Integer.parseInt(cleanId);
+
+            // Get booking from database
+            Booking booking = bookingDAO.findById(bookingId);
+
+            if (booking == null) {
+                request.setAttribute("error", "Booking not found: " + bookingIdParam);
+                request.getRequestDispatcher("/WEB-INF/tracking-search.jsp")
+                       .forward(request, response);
+                return;
+            }
+
+            // POLYMORPHISM: TrackingService decides which tracker to use
+            // based on the parcel type (standard, express, fragile).
+            // This is the SAME polymorphism from your console app.
+            TrackingInfo trackingInfo = trackingService.track(booking);
+
+            // Set attributes for JSP
+            request.setAttribute("booking", booking);
+            request.setAttribute("trackingInfo", trackingInfo);
+            request.setAttribute("statusHistory", trackingInfo.getStatusHistory());
+            request.setAttribute("estimatedDelivery", trackingInfo.getEstimatedDate());
+            request.setAttribute("currentLocation", trackingInfo.getCurrentLocation());
+
+            // Forward to tracking result page
+            request.getRequestDispatcher("/WEB-INF/tracking-result.jsp")
+                   .forward(request, response);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid booking ID format");
+            request.getRequestDispatcher("/WEB-INF/tracking-search.jsp")
+                   .forward(request, response);
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Polymorphism Unchanged</div>
+    <p>In your console app, <code>TrackingService.track(booking)</code> uses polymorphism to select the right tracking strategy based on parcel type. Express parcels get <code>ExpressTracker</code>, fragile parcels get <code>FragileTracker</code>, etc.</p>
+    <p><strong>That code is 100% the same here.</strong> The Servlet just reads the booking ID from the URL instead of from <code>Scanner</code>, and passes results to a JSP instead of <code>System.out.println()</code>. The OOP architecture you built in Phase 2 plugs right in.</p>
+  </div>
+
+  <h3>How the Tracking Page Works End-to-End</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">User<span class="flow-sub">Types "NB-1042" in search box</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">GET<span class="flow-sub">/track?bookingId=NB-1042</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">TrackingServlet<span class="flow-sub">doGet()</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box cyan">BookingDAO<span class="flow-sub">findById(1042)</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">TrackingService<span class="flow-sub">track(booking) &mdash; polymorphism</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">setAttribute()<span class="flow-sub">booking, trackingInfo</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">forward()<span class="flow-sub">tracking-result.jsp</span></div>
+    </div>
+    <div class="flow-label">Tracking uses GET (read-only) + Forward (passing data to JSP)</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 15: ERROR HANDLING                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="error-handling">
+  <div class="section-tag">Section 15</div>
+  <h2>Error Handling in Servlets</h2>
+  <p class="section-desc">Things will go wrong: database down, invalid input, null pointers. A well-built web app handles errors gracefully instead of showing stack traces to users.</p>
+
+  <h3>Three Levels of Error Handling</h3>
+
+  <h4>Level 1: Try-Catch Inside the Servlet</h4>
+
+  <p>Handle specific errors where they happen. This is your first line of defense.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Handling errors in the Servlet</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+protected void doPost(HttpServletRequest request,
+                      HttpServletResponse response)
+        throws ServletException, IOException {
+
+    try {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        User user = userDAO.authenticate(email, password);
+
+        if (user == null) {
+            // Expected error — user-friendly message
+            request.setAttribute("error", "Invalid email or password");
+            request.getRequestDispatcher("/WEB-INF/login.jsp")
+                   .forward(request, response);
+            return;
+        }
+
+        // ... success logic ...
+
+    } catch (SQLException e) {
+        // Database error — log it, show generic message
+        log("Database error during login", e);
+        request.setAttribute("error", "Service temporarily unavailable. Please try again.");
+        request.getRequestDispatcher("/WEB-INF/login.jsp")
+               .forward(request, response);
+
+    } catch (Exception e) {
+        // Unexpected error — let it bubble up to error page
+        throw new ServletException("Login processing failed", e);
+    }
+}</code></pre>
+  </div>
+
+  <h4>Level 2: Custom Error Pages in web.xml</h4>
+
+  <p>When an unhandled exception escapes the Servlet, or when Tomcat generates an HTTP error (404, 500), web.xml error pages catch it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">web.xml &mdash; Error page configuration</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;!-- When user visits a URL that doesn't exist --&gt;
+&lt;error-page&gt;
+    &lt;error-code&gt;404&lt;/error-code&gt;
+    &lt;location&gt;/WEB-INF/error/404.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+
+&lt;!-- When server encounters an internal error --&gt;
+&lt;error-page&gt;
+    &lt;error-code&gt;500&lt;/error-code&gt;
+    &lt;location&gt;/WEB-INF/error/500.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+
+&lt;!-- When any Java exception goes unhandled --&gt;
+&lt;error-page&gt;
+    &lt;exception-type&gt;java.lang.Exception&lt;/exception-type&gt;
+    &lt;location&gt;/WEB-INF/error/500.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+
+&lt;!-- Specific exception type --&gt;
+&lt;error-page&gt;
+    &lt;exception-type&gt;com.nimbus.exception.DuplicateEmailException&lt;/exception-type&gt;
+    &lt;location&gt;/WEB-INF/error/duplicate-email.jsp&lt;/location&gt;
+&lt;/error-page&gt;</code></pre>
+  </div>
+
+  <h4>Level 3: sendError() for Programmatic Errors</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Using sendError() in Servlets</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Missing required parameter
+if (bookingIdParam == null) {
+    response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+        "Missing required parameter: bookingId");
+    return; // This triggers the 400 error page
+}
+
+// Resource not found
+Booking booking = bookingDAO.findById(bookingId);
+if (booking == null) {
+    response.sendError(HttpServletResponse.SC_NOT_FOUND,
+        "Booking not found: " + bookingId);
+    return; // This triggers the 404 error page
+}
+
+// Unauthorized access
+if (!"ADMIN".equals(session.getAttribute("userRole"))) {
+    response.sendError(HttpServletResponse.SC_FORBIDDEN,
+        "Admin access required");
+    return; // This triggers the 403 error page
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Never Show Stack Traces to Users</div>
+    <p>When an exception happens, <strong>log the full stack trace on the server</strong> (using <code>log()</code> or a logger) but show the user a friendly message like "Something went wrong. Please try again." Stack traces in the browser expose your internal code structure &mdash; a security risk and terrible UX.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 16: PRACTICE EXERCISES                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 16</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build these to solidify your understanding. Each exercise targets a specific Servlet concept.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: RegisterServlet</div>
+    <p>Build <code>RegisterServlet</code> that:</p>
+    <ul>
+      <li><code>doGet()</code> shows the registration form (name, email, password, phone)</li>
+      <li><code>doPost()</code> reads form data, creates a <code>User</code> object, calls <code>UserService.register()</code></li>
+      <li>If <code>DuplicateEmailException</code> is thrown, forward back to the form with an error message</li>
+      <li>On success, redirect to the login page with a success message (use session for flash message)</li>
+      <li>Use <code>@WebServlet("/register")</code></li>
+    </ul>
+    <p><strong>Concepts practiced:</strong> doGet/doPost, getParameter, forward, redirect, exception handling, PRG pattern.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: InvoiceServlet</div>
+    <p>Build <code>InvoiceServlet</code> that:</p>
+    <ul>
+      <li><code>doGet()</code> reads <code>bookingId</code> from query string</li>
+      <li>Validates the parameter (null check, number format check)</li>
+      <li>Calls <code>BookingDAO.findById()</code> to get the booking</li>
+      <li>If booking not found, <code>sendError(404)</code></li>
+      <li>If found, sets the booking as a request attribute and forwards to <code>invoice.jsp</code></li>
+    </ul>
+    <p><strong>Concepts practiced:</strong> GET parameters, numeric parsing, error handling, forward with attributes.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: DeliveryStatusServlet</div>
+    <p>Build <code>DeliveryStatusServlet</code> that:</p>
+    <ul>
+      <li><code>doGet()</code> shows a form where the delivery agent selects a booking and a new status</li>
+      <li><code>doPost()</code> reads <code>bookingId</code> and <code>newStatus</code></li>
+      <li>Checks that the logged-in user has role <code>DELIVERY_AGENT</code> &mdash; if not, <code>sendError(403)</code></li>
+      <li>Calls <code>BookingDAO.updateStatus(bookingId, newStatus)</code></li>
+      <li>Redirects back to the agent's delivery list (PRG pattern)</li>
+    </ul>
+    <p><strong>Concepts practiced:</strong> Authorization check, session reading, POST processing, PRG pattern.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: web.xml Configuration</div>
+    <p>Without using <code>@WebServlet</code> annotations:</p>
+    <ul>
+      <li>Write the full web.xml entries for <code>RegisterServlet</code> at URL <code>/register</code></li>
+      <li>Add a welcome file that loads <code>index.jsp</code></li>
+      <li>Add error pages for 404 and 500</li>
+      <li>Configure <code>LoginServlet</code> with <code>load-on-startup</code> priority 1</li>
+    </ul>
+    <p><strong>Concepts practiced:</strong> web.xml syntax, servlet-mapping, welcome-file, error-page, load-on-startup.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: HistoryServlet with Date Range</div>
+    <p>Build <code>HistoryServlet</code> that:</p>
+    <ul>
+      <li><code>doGet()</code> reads <code>userId</code>, <code>from</code> (date), and <code>to</code> (date) from query string</li>
+      <li>If <code>from</code> or <code>to</code> is missing, default to last 30 days</li>
+      <li>Calls <code>BookingDAO.getHistory(userId, from, to)</code></li>
+      <li>Calculates total cost across all bookings</li>
+      <li>Sets <code>bookings</code>, <code>totalCost</code>, <code>fromDate</code>, <code>toDate</code> as attributes</li>
+      <li>Forwards to <code>history.jsp</code></li>
+    </ul>
+    <p><strong>Concepts practiced:</strong> Multiple GET parameters, default values, data processing, forward with multiple attributes.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6: Redirect vs Forward Decision</div>
+    <p>For each scenario below, decide whether to use <strong>redirect</strong> or <strong>forward</strong>, and explain why:</p>
+    <ol>
+      <li>User submits booking form successfully &rarr; show confirmation</li>
+      <li>User submits booking form with invalid weight &rarr; show form again with error</li>
+      <li>User clicks "Logout" &rarr; go to login page</li>
+      <li>User searches for tracking ID &rarr; show tracking results</li>
+      <li>User tries to access admin page without admin role &rarr; go to home</li>
+      <li>User submits registration &rarr; go to login page</li>
+    </ol>
+    <p><strong>Answers:</strong> 1) Redirect (PRG), 2) Forward (keep error message), 3) Redirect (clean URL), 4) Forward (pass data), 5) Redirect (clean URL), 6) Redirect (PRG).</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="tomcat.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Web Servers &amp; Tomcat</span>
+  </a>
+  <a href="jsp.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">JSP (JavaServer Pages)</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

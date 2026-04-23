@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REST API Principles | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link active"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Arch</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS AN API?                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-api">
+  <div class="section-tag">Section 01</div>
+  <h2>What is an API?</h2>
+  <p class="section-desc">API stands for Application Programming Interface. It is the contract that lets two pieces of software talk to each other without knowing what is happening inside the other.</p>
+
+  <h3>The Waiter Analogy</h3>
+
+  <p>You are sitting in a restaurant. You want food. The kitchen has the food. But you cannot walk into the kitchen yourself. You need a <strong>waiter</strong>.</p>
+
+  <ul>
+    <li><strong>You</strong> = the client (your app, your browser, your phone)</li>
+    <li><strong>The kitchen</strong> = the server (database, business logic, backend)</li>
+    <li><strong>The waiter</strong> = the API</li>
+    <li><strong>The menu</strong> = the API documentation (what you can order)</li>
+    <li><strong>Your order</strong> = the request</li>
+    <li><strong>The dish you get back</strong> = the response</li>
+  </ul>
+
+  <div class="diagram">
+    <pre>
+     YOU (Client)          WAITER (API)          KITCHEN (Server)
+    +-------------+      +--------------+      +----------------+
+    |             | ---->|  Takes your  | ---->|  Processes     |
+    | "I want     |      |  order to    |      |  the order,    |
+    |  chicken    |      |  the kitchen |      |  cooks it      |
+    |  biryani"   |      |              |      |                |
+    |             | <----|  Brings your | <----|  Sends the     |
+    |             |      |  food back   |      |  dish out      |
+    +-------------+      +--------------+      +----------------+
+       REQUEST --->         API LAYER          <--- RESPONSE</pre>
+    <div class="diagram-label">The waiter never cooks. The kitchen never serves. Each does its own job.</div>
+  </div>
+
+  <p>The waiter does not cook. The kitchen does not serve. The waiter is the <strong>interface</strong> between you and the kitchen. That is exactly what an API does &mdash; it sits between two systems, takes requests from one, and delivers responses from the other.</p>
+
+  <h3>APIs in the Real World</h3>
+
+  <p>APIs are everywhere. Every time you use an app, APIs are working behind the scenes:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>What You Do</th><th>API Call Behind the Scenes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Open Zomato and see restaurants near you</td><td>App calls Google Maps API for your location + Zomato's own API for restaurant data</td></tr>
+      <tr><td>Pay with UPI on PhonePe</td><td>PhonePe calls NPCI's UPI API to process the payment</td></tr>
+      <tr><td>Check weather on your phone</td><td>App calls a weather API (like OpenWeatherMap) with your city name</td></tr>
+      <tr><td>Log in with Google on any website</td><td>Website calls Google's OAuth API to verify your identity</td></tr>
+      <tr><td>Track a parcel on Nimbus</td><td>Frontend calls <code>GET /api/bookings/{id}</code> to get booking details</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>An API is not a database. It is not a server. It is the <strong>rules and mechanisms</strong> that allow one application to request data or actions from another. The API defines <em>what</em> you can ask for, <em>how</em> to ask, and <em>what format</em> the answer comes in.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHAT IS REST?                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-rest">
+  <div class="section-tag">Section 02</div>
+  <h2>What is REST?</h2>
+  <p class="section-desc">REST stands for REpresentational State Transfer. It is not a technology or a library &mdash; it is an architectural style, a set of rules for how APIs should be designed.</p>
+
+  <h3>REST = A Set of Rules</h3>
+
+  <p>REST was defined by Roy Fielding in his PhD dissertation in 2000. He observed how the web worked so well &mdash; billions of pages, millions of servers, all working together &mdash; and distilled the principles that made it work into 6 constraints. Any API that follows these constraints is called a <strong>RESTful API</strong>.</p>
+
+  <p>Think of REST like traffic rules. You can drive however you want on a private road, but on public roads, everyone follows the same rules (drive on the left in India, stop at red lights, yield at roundabouts). REST is the traffic rules for APIs.</p>
+
+  <h3>The 6 REST Constraints</h3>
+
+  <h4>1. Client-Server</h4>
+  <p>The client (frontend, mobile app) and the server (backend, database) are <strong>completely separate</strong>. The client only knows how to make requests. The server only knows how to process them and send responses. Neither knows the internal details of the other.</p>
+  <p><strong>Why it matters:</strong> You can change the entire frontend from Angular to React without touching a single line of backend code. You can swap MySQL for PostgreSQL without the frontend ever knowing.</p>
+
+  <h4>2. Stateless</h4>
+  <p>Every request from the client must contain <strong>all the information</strong> the server needs to process it. The server does not remember anything about previous requests. Each request is treated as if it is the first one ever.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Stateful (NOT REST)</div>
+      <div class="comparison-body">
+        <p><strong>Request 1:</strong> "I'm user Darshan"</p>
+        <p><strong>Request 2:</strong> "Show me my bookings"</p>
+        <p>Server remembers who you are from Request 1. If the server restarts, it forgets and breaks.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Stateless (REST)</div>
+      <div class="comparison-body">
+        <p><strong>Every request:</strong> "I'm user Darshan (here's my token), show me my bookings"</p>
+        <p>Each request is self-contained. Server can restart, scale, load-balance &mdash; nothing breaks.</p>
+      </div>
+    </div>
+  </div>
+
+  <h4>3. Cacheable</h4>
+  <p>Responses must declare whether they can be cached or not. If a response says "this data is valid for 60 seconds," the client can reuse it without making another request. This reduces server load and makes apps faster.</p>
+  <p><strong>Example:</strong> A list of Indian states rarely changes. An API can mark this response as cacheable for 24 hours. Your app fetches it once and uses the cached version all day.</p>
+
+  <h4>4. Uniform Interface</h4>
+  <p>This is the most important constraint. Every REST API follows the same conventions:</p>
+  <ul>
+    <li>Resources are identified by URIs (<code>/api/bookings/42</code>)</li>
+    <li>You manipulate resources through representations (JSON)</li>
+    <li>Messages are self-descriptive (the HTTP method + headers + body tell you everything)</li>
+    <li>Hypermedia (responses can contain links to related resources)</li>
+  </ul>
+  <p><strong>Why it matters:</strong> Once you learn how one REST API works, you can use any REST API. The patterns are the same everywhere.</p>
+
+  <h4>5. Layered System</h4>
+  <p>The client does not know (and does not care) if it is talking to the actual server, a load balancer, a cache, or a proxy. You can put layers between the client and server without the client knowing.</p>
+
+  <div class="diagram">
+    <pre>
+  Client  --->  Load Balancer  --->  API Gateway  --->  Server
+                                          |
+                                        Cache
+                                          |
+                                     Rate Limiter</pre>
+    <div class="diagram-label">The client just talks to a URL. What is behind it is invisible.</div>
+  </div>
+
+  <h4>6. Code on Demand (Optional)</h4>
+  <p>The server can optionally send executable code to the client. For example, a web server sending JavaScript to the browser. This is the only optional constraint &mdash; most REST APIs do not use it.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our Nimbus API follows all 5 mandatory REST constraints:</p>
+    <ul>
+      <li><strong>Client-Server:</strong> Angular frontend is completely separate from Spring Boot backend</li>
+      <li><strong>Stateless:</strong> Every request carries a JWT token &mdash; server never stores session state</li>
+      <li><strong>Cacheable:</strong> GET responses for booking history can be cached</li>
+      <li><strong>Uniform Interface:</strong> All endpoints follow <code>/api/resource</code> pattern with standard HTTP methods</li>
+      <li><strong>Layered:</strong> We could put Nginx in front of Spring Boot and nothing changes</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: RESOURCES AND URIs                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="resources-uris">
+  <div class="section-tag">Section 03</div>
+  <h2>Resources and URIs</h2>
+  <p class="section-desc">In REST, everything is a resource. A user is a resource. A booking is a resource. A parcel is a resource. Each resource has a unique address called a URI.</p>
+
+  <h3>What is a Resource?</h3>
+
+  <p>A resource is any piece of data or concept that your API manages. It is a <strong>noun</strong>, not a verb. You do not have an endpoint called <code>/getUser</code> or <code>/createBooking</code>. Instead, you have resources like <code>/users</code> and <code>/bookings</code>, and you use HTTP methods (GET, POST, PUT, DELETE) to act on them.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong (Verb-Based)</div>
+      <div class="comparison-body">
+        <p><code>/getUsers</code></p>
+        <p><code>/createBooking</code></p>
+        <p><code>/deleteUser/5</code></p>
+        <p><code>/updateBookingStatus</code></p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Correct (Resource-Based)</div>
+      <div class="comparison-body">
+        <p><code>GET /api/users</code></p>
+        <p><code>POST /api/bookings</code></p>
+        <p><code>DELETE /api/users/5</code></p>
+        <p><code>PUT /api/bookings/3/status</code></p>
+      </div>
+    </div>
+  </div>
+
+  <h3>URI Structure</h3>
+
+  <p>URI stands for Uniform Resource Identifier. It is the address of a resource. Here is how a REST URI is structured:</p>
+
+  <div class="diagram">
+    <pre>
+  https://api.nimbus.com/api/bookings/42
+  \___/   \_____________/ \__/ \______/ \_/
+    |           |           |      |      |
+  scheme      host       prefix resource  id
+
+  /api/bookings          --&gt;  ALL bookings (collection)
+  /api/bookings/42       --&gt;  ONE specific booking (single resource)
+  /api/bookings?userId=5 --&gt;  Filtered bookings (query parameter)
+  /api/users/5/bookings  --&gt;  Bookings belonging to user 5 (nested)</pre>
+    <div class="diagram-label">URIs are hierarchical. They read like a file path.</div>
+  </div>
+
+  <h3>URI Design Rules</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Rule</th><th>Good</th><th>Bad</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Use nouns, not verbs</td><td><code>/api/bookings</code></td><td><code>/api/getBookings</code></td></tr>
+      <tr><td>Use plural nouns</td><td><code>/api/users</code></td><td><code>/api/user</code></td></tr>
+      <tr><td>Use lowercase</td><td><code>/api/bookings</code></td><td><code>/api/Bookings</code></td></tr>
+      <tr><td>Use hyphens for readability</td><td><code>/api/booking-history</code></td><td><code>/api/bookingHistory</code></td></tr>
+      <tr><td>Use path params for IDs</td><td><code>/api/bookings/42</code></td><td><code>/api/bookings?id=42</code></td></tr>
+      <tr><td>Use query params for filters</td><td><code>/api/bookings?status=delivered</code></td><td><code>/api/bookings/delivered</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>All Nimbus endpoints follow these URI conventions:</p>
+    <ul>
+      <li><code>/api/register</code> &mdash; user registration resource</li>
+      <li><code>/api/login</code> &mdash; authentication resource</li>
+      <li><code>/api/bookings</code> &mdash; bookings collection</li>
+      <li><code>/api/bookings/{id}</code> &mdash; single booking by ID</li>
+      <li><code>/api/bookings?userId=5</code> &mdash; filtered bookings for a specific user</li>
+      <li><code>/api/bookings/{id}/status</code> &mdash; sub-resource (status of a booking)</li>
+      <li><code>/api/bookings/{id}/pickup</code> &mdash; sub-resource (pickup action)</li>
+      <li><code>/api/bookings/history</code> &mdash; historical bookings collection</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: HTTP METHODS AND CRUD                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="http-methods">
+  <div class="section-tag">Section 04</div>
+  <h2>HTTP Methods and CRUD</h2>
+  <p class="section-desc">REST uses HTTP methods to define what action you want to perform on a resource. There are 4 main methods, and they map directly to the 4 CRUD operations.</p>
+
+  <h3>The CRUD Mapping</h3>
+
+  <p>CRUD stands for Create, Read, Update, Delete &mdash; the four basic operations you can do with any data. REST maps each one to an HTTP method:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>CRUD</th><th>HTTP Method</th><th>What It Does</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Create</strong></td><td><code>POST</code></td><td>Creates a new resource</td><td><code>POST /api/bookings</code> &mdash; create a new parcel booking</td></tr>
+      <tr><td><strong>Read</strong></td><td><code>GET</code></td><td>Retrieves a resource (no changes)</td><td><code>GET /api/bookings/42</code> &mdash; get booking #42 details</td></tr>
+      <tr><td><strong>Update</strong></td><td><code>PUT</code></td><td>Updates an existing resource</td><td><code>PUT /api/bookings/42/status</code> &mdash; change booking status</td></tr>
+      <tr><td><strong>Delete</strong></td><td><code>DELETE</code></td><td>Removes a resource</td><td><code>DELETE /api/users/5</code> &mdash; delete a user account</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Deep Dive: Each Method</h3>
+
+  <h4>GET &mdash; Read Data</h4>
+  <p><strong>Purpose:</strong> Retrieve data. Never changes anything on the server. Called <strong>safe</strong> and <strong>idempotent</strong> (calling it 10 times gives the same result as calling it once).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GET Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">GET /api/bookings/42
+
+// No request body (GET never has a body)
+
+// Response: 200 OK
+{
+  "id": 42,
+  "senderName": "Darshan",
+  "receiverName": "Rahul",
+  "status": "IN_TRANSIT",
+  "weight": 2.5
+}</code></pre>
+  </div>
+
+  <h4>POST &mdash; Create Data</h4>
+  <p><strong>Purpose:</strong> Create a new resource. The server assigns an ID and returns the created resource. <strong>Not idempotent</strong> &mdash; calling it twice creates two resources.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">POST Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">POST /api/bookings
+Content-Type: application/json
+
+// Request body:
+{
+  "senderName": "Darshan",
+  "senderAddress": "Mumbai",
+  "receiverName": "Rahul",
+  "receiverAddress": "Delhi",
+  "weight": 2.5,
+  "parcelType": "FRAGILE"
+}
+
+// Response: 201 Created
+{
+  "id": 43,
+  "trackingNumber": "NIM-2026-0043",
+  "status": "BOOKED",
+  "createdAt": "2026-04-23T10:30:00"
+}</code></pre>
+  </div>
+
+  <h4>PUT &mdash; Update Data</h4>
+  <p><strong>Purpose:</strong> Update an existing resource. You send the updated data. <strong>Idempotent</strong> &mdash; calling it 10 times with the same data produces the same result.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PUT Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">PUT /api/bookings/42/status
+Content-Type: application/json
+
+// Request body:
+{
+  "status": "DELIVERED"
+}
+
+// Response: 200 OK
+{
+  "id": 42,
+  "status": "DELIVERED",
+  "updatedAt": "2026-04-23T14:00:00"
+}</code></pre>
+  </div>
+
+  <h4>DELETE &mdash; Remove Data</h4>
+  <p><strong>Purpose:</strong> Remove a resource. <strong>Idempotent</strong> &mdash; deleting the same resource twice should not cause an error (first call deletes, second call returns 404 or 204).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DELETE Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">DELETE /api/users/5
+
+// No request body
+
+// Response: 204 No Content
+// (empty body — the resource is gone)</code></pre>
+  </div>
+
+  <h3>Safety and Idempotency</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>Safe?</th><th>Idempotent?</th><th>Has Body?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td>Yes (no changes)</td><td>Yes</td><td>No</td></tr>
+      <tr><td><code>POST</code></td><td>No (creates data)</td><td>No</td><td>Yes</td></tr>
+      <tr><td><code>PUT</code></td><td>No (modifies data)</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td><code>DELETE</code></td><td>No (removes data)</td><td>Yes</td><td>No</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Library</div>
+    <p>Think of a library:</p>
+    <ul>
+      <li><strong>GET</strong> = Looking up a book in the catalog. You read information. The catalog does not change.</li>
+      <li><strong>POST</strong> = Donating a new book. The library adds it to the shelves with a new catalog number.</li>
+      <li><strong>PUT</strong> = Updating a book's information (correcting the author's name). The book stays, the info changes.</li>
+      <li><strong>DELETE</strong> = Removing a damaged book from the catalog. It is gone.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: REQUEST AND RESPONSE ANATOMY                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="request-response">
+  <div class="section-tag">Section 05</div>
+  <h2>Request &amp; Response Anatomy</h2>
+  <p class="section-desc">Every HTTP communication has two parts: the request (what you send) and the response (what you get back). Understanding their structure is essential.</p>
+
+  <h3>Request Anatomy</h3>
+
+  <p>An HTTP request has 4 parts:</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">URL</div>
+      <div class="layer-detail"><strong>Where</strong> to send the request. Example: <code>https://api.nimbus.com/api/bookings/42</code></div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Method</div>
+      <div class="layer-detail"><strong>What action</strong> to perform. One of: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code></div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Headers</div>
+      <div class="layer-detail"><strong>Metadata</strong> about the request. Content-Type, Authorization, Accept, etc.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Body</div>
+      <div class="layer-detail"><strong>The data</strong> you are sending (only for POST and PUT). Usually JSON.</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Full HTTP Request Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">POST /api/bookings HTTP/1.1          &lt;-- Method + URL + HTTP version
+Host: api.nimbus.com                  &lt;-- Header: which server
+Content-Type: application/json        &lt;-- Header: body format is JSON
+Authorization: Bearer eyJhbGci...     &lt;-- Header: authentication token
+Accept: application/json              &lt;-- Header: I want JSON back
+
+{                                     &lt;-- Body starts here
+  "senderName": "Darshan",
+  "receiverName": "Rahul",
+  "weight": 2.5
+}</code></pre>
+  </div>
+
+  <h3>Response Anatomy</h3>
+
+  <p>An HTTP response has 3 parts:</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Status Code</div>
+      <div class="layer-detail">A 3-digit number telling you what happened. <code>200</code> = OK, <code>404</code> = Not Found, <code>500</code> = Server Error</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Headers</div>
+      <div class="layer-detail">Metadata about the response. Content-Type, Cache-Control, Content-Length, etc.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Body</div>
+      <div class="layer-detail">The actual data. Usually a JSON object or array.</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Full HTTP Response Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">HTTP/1.1 201 Created                 &lt;-- Status line
+Content-Type: application/json        &lt;-- Header: body is JSON
+Location: /api/bookings/43            &lt;-- Header: where the new resource lives
+
+{                                     &lt;-- Body starts here
+  "id": 43,
+  "trackingNumber": "NIM-2026-0043",
+  "status": "BOOKED",
+  "createdAt": "2026-04-23T10:30:00"
+}</code></pre>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Client<span class="flow-sub">Angular / Postman</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">HTTP Request<span class="flow-sub">Method + URL + Headers + Body</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Server<span class="flow-sub">Spring Boot</span></div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-box blue">Client<span class="flow-sub">Displays data</span></div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box green">HTTP Response<span class="flow-sub">Status + Headers + Body</span></div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box purple">Server<span class="flow-sub">Processes + returns</span></div>
+    </div>
+    <div class="flow-label">Every API interaction follows this request-response cycle</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: STATUS CODES                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="status-codes">
+  <div class="section-tag">Section 06</div>
+  <h2>HTTP Status Codes</h2>
+  <p class="section-desc">Status codes are 3-digit numbers that tell the client exactly what happened with their request. They are grouped into 5 families.</p>
+
+  <h3>The 5 Families</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Range</th><th>Family</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>1xx</code></td><td>Informational</td><td>Request received, still processing (rarely used)</td></tr>
+      <tr><td><code>2xx</code></td><td>Success</td><td>Request worked. Everything is good.</td></tr>
+      <tr><td><code>3xx</code></td><td>Redirection</td><td>Resource moved. Go somewhere else.</td></tr>
+      <tr><td><code>4xx</code></td><td>Client Error</td><td>YOU made a mistake. Fix your request.</td></tr>
+      <tr><td><code>5xx</code></td><td>Server Error</td><td>SERVER made a mistake. Not your fault.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>The Status Codes You Must Know</h3>
+
+  <h4>Success Codes (2xx)</h4>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When It Is Used</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>200</code></td>
+        <td>OK</td>
+        <td>Request succeeded. Data is in the response body.</td>
+        <td><code>GET /api/bookings/42</code> returns booking details</td>
+      </tr>
+      <tr>
+        <td><code>201</code></td>
+        <td>Created</td>
+        <td>A new resource was successfully created.</td>
+        <td><code>POST /api/bookings</code> creates a new booking</td>
+      </tr>
+      <tr>
+        <td><code>204</code></td>
+        <td>No Content</td>
+        <td>Request succeeded but there is nothing to return.</td>
+        <td><code>DELETE /api/users/5</code> &mdash; user deleted, no body needed</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Client Error Codes (4xx)</h4>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When It Is Used</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>400</code></td>
+        <td>Bad Request</td>
+        <td>Your request is malformed or missing required fields.</td>
+        <td>POST booking without <code>senderName</code> &mdash; validation fails</td>
+      </tr>
+      <tr>
+        <td><code>401</code></td>
+        <td>Unauthorized</td>
+        <td>You are not authenticated. No token or invalid token.</td>
+        <td>Calling <code>GET /api/bookings</code> without a JWT token</td>
+      </tr>
+      <tr>
+        <td><code>403</code></td>
+        <td>Forbidden</td>
+        <td>You are authenticated but do not have permission.</td>
+        <td>A regular user trying to access admin-only endpoint</td>
+      </tr>
+      <tr>
+        <td><code>404</code></td>
+        <td>Not Found</td>
+        <td>The resource you requested does not exist.</td>
+        <td><code>GET /api/bookings/99999</code> &mdash; no booking with that ID</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Server Error Codes (5xx)</h4>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When It Is Used</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>500</code></td>
+        <td>Internal Server Error</td>
+        <td>Something went wrong on the server. A bug, crash, or unhandled exception.</td>
+        <td>Database connection fails while processing a booking</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Traffic Light</div>
+    <p>Think of status codes like traffic signals:</p>
+    <ul>
+      <li><strong>2xx (Green):</strong> Go ahead, everything worked perfectly</li>
+      <li><strong>3xx (Yellow):</strong> Redirect &mdash; the road you want moved, follow the new sign</li>
+      <li><strong>4xx (Red for you):</strong> You ran a red light. You made the mistake. Fix your driving.</li>
+      <li><strong>5xx (Red for the road):</strong> The road itself is broken. Not your fault. Wait for repairs.</li>
+    </ul>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p><strong>401 vs 403:</strong> These are often confused.</p>
+    <ul>
+      <li><strong>401 Unauthorized</strong> = "Who are you? I don't know you." (Not authenticated. Log in.)</li>
+      <li><strong>403 Forbidden</strong> = "I know who you are, but you're not allowed in here." (Authenticated but insufficient permissions.)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: JSON FORMAT                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="json-format">
+  <div class="section-tag">Section 07</div>
+  <h2>JSON Format</h2>
+  <p class="section-desc">JSON (JavaScript Object Notation) is the standard format for sending and receiving data in REST APIs. It is human-readable and machine-parseable.</p>
+
+  <h3>JSON Syntax Rules</h3>
+
+  <ul>
+    <li>Data is in <strong>key-value pairs</strong>: <code>"name": "Darshan"</code></li>
+    <li>Keys are always <strong>strings in double quotes</strong></li>
+    <li>Values can be: string, number, boolean, null, object, or array</li>
+    <li>Objects use curly braces: <code>{ }</code></li>
+    <li>Arrays use square brackets: <code>[ ]</code></li>
+    <li>Pairs are separated by commas</li>
+    <li><strong>No trailing commas</strong> (the last item has no comma after it)</li>
+    <li><strong>No comments</strong> allowed in JSON</li>
+  </ul>
+
+  <h3>JSON Data Types</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">All JSON Data Types</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "name": "Darshan",              // String  (always double quotes)
+  "age": 22,                      // Number  (no quotes)
+  "weight": 2.5,                  // Number  (decimals work)
+  "isActive": true,               // Boolean (true or false, no quotes)
+  "middleName": null,             // Null    (no value, no quotes)
+  "address": {                    // Object  (nested curly braces)
+    "city": "Mumbai",
+    "pincode": "400001"
+  },
+  "phones": [                     // Array   (square brackets)
+    "9876543210",
+    "9123456789"
+  ]
+}</code></pre>
+  </div>
+
+  <h3>Objects vs Arrays</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Object { }</div>
+      <div class="comparison-body">
+        <p>A single thing with named properties.</p>
+        <p><code>{ "name": "Darshan", "age": 22 }</code></p>
+        <p>Like a single row in a database table.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Array [ ]</div>
+      <div class="comparison-body">
+        <p>A list of things (ordered, can repeat).</p>
+        <p><code>[{"name":"A"}, {"name":"B"}]</code></p>
+        <p>Like multiple rows from a database query.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Nested JSON (Real-World Example)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus Booking (Nested JSON)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "id": 42,
+  "trackingNumber": "NIM-2026-0042",
+  "sender": {
+    "name": "Darshan",
+    "address": "Mumbai, MH",
+    "phone": "9876543210"
+  },
+  "receiver": {
+    "name": "Rahul",
+    "address": "Delhi, DL",
+    "phone": "9123456789"
+  },
+  "parcel": {
+    "weight": 2.5,
+    "type": "FRAGILE",
+    "dimensions": {
+      "length": 30,
+      "width": 20,
+      "height": 15
+    }
+  },
+  "status": "IN_TRANSIT",
+  "history": [
+    { "status": "BOOKED", "timestamp": "2026-04-20T09:00:00" },
+    { "status": "PICKED_UP", "timestamp": "2026-04-20T14:30:00" },
+    { "status": "IN_TRANSIT", "timestamp": "2026-04-21T06:00:00" }
+  ]
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Structure breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"id": 42</div>
+        <div class="breakdown-explain">Top-level field &mdash; a number, no quotes needed</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"sender": { ... }</div>
+        <div class="breakdown-explain">Nested object &mdash; sender is an object with its own fields (name, address, phone)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"dimensions": { "length": 30, ... }</div>
+        <div class="breakdown-explain">Object inside an object &mdash; dimensions is nested inside parcel. JSON nests as deep as you need.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"history": [ { ... }, { ... } ]</div>
+        <div class="breakdown-explain">Array of objects &mdash; each status change is an object inside the history array</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: NIMBUS API DESIGN                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-api">
+  <div class="section-tag">Section 08</div>
+  <h2>Nimbus API Design</h2>
+  <p class="section-desc">Nimbus has 8 REST endpoints. Here is the complete API design &mdash; every endpoint mapped with its method, URI, purpose, request body, and response.</p>
+
+  <h3>All 8 Endpoints at a Glance</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>#</th><th>Method</th><th>Endpoint</th><th>Purpose</th><th>Auth?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><code>POST</code></td><td><code>/api/register</code></td><td>Register a new user</td><td>No</td></tr>
+      <tr><td>2</td><td><code>POST</code></td><td><code>/api/login</code></td><td>Log in and get a JWT token</td><td>No</td></tr>
+      <tr><td>3</td><td><code>POST</code></td><td><code>/api/bookings</code></td><td>Create a new parcel booking</td><td>Yes</td></tr>
+      <tr><td>4</td><td><code>GET</code></td><td><code>/api/bookings/{id}</code></td><td>Get booking details by ID</td><td>Yes</td></tr>
+      <tr><td>5</td><td><code>GET</code></td><td><code>/api/bookings?userId=X</code></td><td>Get all bookings for a user</td><td>Yes</td></tr>
+      <tr><td>6</td><td><code>PUT</code></td><td><code>/api/bookings/{id}/status</code></td><td>Update booking status</td><td>Yes</td></tr>
+      <tr><td>7</td><td><code>PUT</code></td><td><code>/api/bookings/{id}/pickup</code></td><td>Mark booking as picked up</td><td>Yes</td></tr>
+      <tr><td>8</td><td><code>GET</code></td><td><code>/api/bookings/history</code></td><td>Get booking history (all completed)</td><td>Yes</td></tr>
+    </tbody>
+  </table>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Register<span class="flow-sub">POST /api/register</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Login<span class="flow-sub">POST /api/login</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Create Booking<span class="flow-sub">POST /api/bookings</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box orange">Track Booking<span class="flow-sub">GET /api/bookings/{id}</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Update Status<span class="flow-sub">PUT /api/bookings/{id}/status</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Mark Pickup<span class="flow-sub">PUT /api/bookings/{id}/pickup</span></div>
+    </div>
+    <div class="flow-label">Typical user flow through the Nimbus API</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: FULL REQUEST/RESPONSE EXAMPLES                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-examples">
+  <div class="section-tag">Section 09</div>
+  <h2>Nimbus API &mdash; Full Examples</h2>
+  <p class="section-desc">Complete request and response examples for every Nimbus endpoint. Copy these into Postman to test.</p>
+
+  <h3>1. POST /api/register</h3>
+  <p>Register a new user account.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">POST /api/register
+Content-Type: application/json
+
+{
+  "username": "darshan",
+  "email": "darshan@example.com",
+  "password": "SecurePass123",
+  "fullName": "Darshan Mohan",
+  "phone": "9876543210"
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 201 Created</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "id": 1,
+  "username": "darshan",
+  "email": "darshan@example.com",
+  "fullName": "Darshan Mohan",
+  "role": "CUSTOMER",
+  "createdAt": "2026-04-23T10:00:00"
+}</code></pre>
+  </div>
+
+  <h3>2. POST /api/login</h3>
+  <p>Authenticate and receive a JWT token.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">POST /api/login
+Content-Type: application/json
+
+{
+  "username": "darshan",
+  "password": "SecurePass123"
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 200 OK</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiZGFyc2hhbiIsInJvbGUiOiJDVVNUT01FUiJ9.abc123",
+  "userId": 1,
+  "username": "darshan",
+  "role": "CUSTOMER",
+  "expiresIn": 86400
+}</code></pre>
+  </div>
+
+  <h3>3. POST /api/bookings</h3>
+  <p>Create a new parcel booking. Requires JWT in Authorization header.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">POST /api/bookings
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+
+{
+  "senderName": "Darshan Mohan",
+  "senderAddress": "Flat 12, Andheri West, Mumbai 400058",
+  "senderPhone": "9876543210",
+  "receiverName": "Rahul Kumar",
+  "receiverAddress": "Block B, Sector 15, Noida 201301",
+  "receiverPhone": "9123456789",
+  "weight": 2.5,
+  "parcelType": "FRAGILE",
+  "description": "Glass photo frames"
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 201 Created</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "id": 43,
+  "trackingNumber": "NIM-2026-0043",
+  "senderName": "Darshan Mohan",
+  "receiverName": "Rahul Kumar",
+  "weight": 2.5,
+  "parcelType": "FRAGILE",
+  "status": "BOOKED",
+  "estimatedDelivery": "2026-04-26",
+  "cost": 185.00,
+  "createdAt": "2026-04-23T10:30:00"
+}</code></pre>
+  </div>
+
+  <h3>4. GET /api/bookings/{id}</h3>
+  <p>Get full details of a single booking by its ID.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">GET /api/bookings/43
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+
+// No request body</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 200 OK</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "id": 43,
+  "trackingNumber": "NIM-2026-0043",
+  "senderName": "Darshan Mohan",
+  "senderAddress": "Flat 12, Andheri West, Mumbai 400058",
+  "senderPhone": "9876543210",
+  "receiverName": "Rahul Kumar",
+  "receiverAddress": "Block B, Sector 15, Noida 201301",
+  "receiverPhone": "9123456789",
+  "weight": 2.5,
+  "parcelType": "FRAGILE",
+  "description": "Glass photo frames",
+  "status": "BOOKED",
+  "estimatedDelivery": "2026-04-26",
+  "cost": 185.00,
+  "createdAt": "2026-04-23T10:30:00",
+  "updatedAt": "2026-04-23T10:30:00"
+}</code></pre>
+  </div>
+
+  <h3>5. GET /api/bookings?userId=X</h3>
+  <p>Get all bookings belonging to a specific user.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">GET /api/bookings?userId=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 200 OK</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">[
+  {
+    "id": 42,
+    "trackingNumber": "NIM-2026-0042",
+    "receiverName": "Priya Sharma",
+    "status": "DELIVERED",
+    "cost": 120.00,
+    "createdAt": "2026-04-20T09:00:00"
+  },
+  {
+    "id": 43,
+    "trackingNumber": "NIM-2026-0043",
+    "receiverName": "Rahul Kumar",
+    "status": "BOOKED",
+    "cost": 185.00,
+    "createdAt": "2026-04-23T10:30:00"
+  }
+]</code></pre>
+  </div>
+
+  <h3>6. PUT /api/bookings/{id}/status</h3>
+  <p>Update the status of a booking (e.g., IN_TRANSIT, OUT_FOR_DELIVERY, DELIVERED).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">PUT /api/bookings/43/status
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+
+{
+  "status": "IN_TRANSIT",
+  "location": "Mumbai Hub",
+  "remarks": "Parcel sorted and dispatched"
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 200 OK</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "id": 43,
+  "trackingNumber": "NIM-2026-0043",
+  "status": "IN_TRANSIT",
+  "location": "Mumbai Hub",
+  "remarks": "Parcel sorted and dispatched",
+  "updatedAt": "2026-04-23T16:45:00"
+}</code></pre>
+  </div>
+
+  <h3>7. PUT /api/bookings/{id}/pickup</h3>
+  <p>Mark a booking as picked up by the delivery agent.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">PUT /api/bookings/43/pickup
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+
+{
+  "agentId": 7,
+  "pickupTime": "2026-04-23T14:30:00",
+  "remarks": "Picked up from sender doorstep"
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 200 OK</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "id": 43,
+  "trackingNumber": "NIM-2026-0043",
+  "status": "PICKED_UP",
+  "agentId": 7,
+  "pickupTime": "2026-04-23T14:30:00",
+  "updatedAt": "2026-04-23T14:30:00"
+}</code></pre>
+  </div>
+
+  <h3>8. GET /api/bookings/history</h3>
+  <p>Get all completed (delivered/cancelled) bookings. Used for reports and analytics.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">GET /api/bookings/history
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response &mdash; 200 OK</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">[
+  {
+    "id": 38,
+    "trackingNumber": "NIM-2026-0038",
+    "senderName": "Darshan Mohan",
+    "receiverName": "Amit Patel",
+    "status": "DELIVERED",
+    "deliveredAt": "2026-04-18T11:00:00",
+    "cost": 95.00
+  },
+  {
+    "id": 40,
+    "trackingNumber": "NIM-2026-0040",
+    "senderName": "Darshan Mohan",
+    "receiverName": "Sneha Gupta",
+    "status": "CANCELLED",
+    "cancelledAt": "2026-04-19T08:30:00",
+    "cost": 0.00
+  }
+]</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Notice the patterns across all endpoints:</p>
+    <ul>
+      <li>All endpoints start with <code>/api/</code></li>
+      <li>POST endpoints return <code>201 Created</code>, GET endpoints return <code>200 OK</code></li>
+      <li>All protected endpoints require <code>Authorization: Bearer &lt;token&gt;</code></li>
+      <li>GET endpoints for collections return arrays <code>[ ]</code>, single resources return objects <code>{ }</code></li>
+      <li>Every response includes relevant timestamps (<code>createdAt</code>, <code>updatedAt</code>)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: AUTHENTICATION CONCEPTS                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="authentication">
+  <div class="section-tag">Section 10</div>
+  <h2>Authentication Concepts</h2>
+  <p class="section-desc">REST APIs are stateless &mdash; the server does not remember who you are between requests. So how do you prove your identity? With tokens.</p>
+
+  <h3>The Problem</h3>
+
+  <p>Without authentication, anyone can call your API. Someone could create fake bookings, read other people's data, or delete accounts. You need a way to verify: "Who is making this request, and are they allowed to?"</p>
+
+  <h3>Token-Based Authentication</h3>
+
+  <p>The most common approach for REST APIs is <strong>token-based authentication</strong>:</p>
+
+  <ol class="steps">
+    <li>User sends <strong>username + password</strong> to the login endpoint</li>
+    <li>Server verifies credentials. If correct, it generates a <strong>token</strong> (a long encrypted string) and sends it back</li>
+    <li>Client stores the token (in localStorage, cookie, or memory)</li>
+    <li>For every subsequent request, client sends the token in the <code>Authorization</code> header</li>
+    <li>Server reads the token, verifies it, and knows who the user is</li>
+  </ol>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Client<span class="flow-sub">username + password</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">POST /api/login</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Server<span class="flow-sub">Verify credentials</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">Client<span class="flow-sub">Stores token</span></div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box green">Response<span class="flow-sub">{ "token": "eyJ..." }</span></div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box purple">Server<span class="flow-sub">Generates JWT</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">Client<span class="flow-sub">Authorization: Bearer eyJ...</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">GET /api/bookings</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Server<span class="flow-sub">Reads token, returns data</span></div>
+    </div>
+    <div class="flow-label">Token-based authentication flow</div>
+  </div>
+
+  <h3>JWT Preview</h3>
+
+  <p>JWT stands for <strong>JSON Web Token</strong>. It is the most popular token format for REST APIs. A JWT has 3 parts, separated by dots:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">JWT Structure</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiZGFyc2hhbiJ9.SflKxwRJSMeKKF2QT4fw
+
+|_________________________|  |______________________________________________|  |___________________|
+         HEADER                              PAYLOAD                               SIGNATURE
+   (algorithm + type)              (user data — userId, role)                 (server's secret seal)</code></pre>
+  </div>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Header</div>
+      <div class="layer-detail">Says which algorithm was used to sign the token. Usually <code>HS256</code> (HMAC-SHA256).</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Payload</div>
+      <div class="layer-detail">Contains the user data (called "claims"): <code>userId</code>, <code>username</code>, <code>role</code>, <code>exp</code> (expiry time). This is NOT encrypted &mdash; anyone can decode it. Never put passwords in here.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Signature</div>
+      <div class="layer-detail">The server uses a <strong>secret key</strong> to sign the token. If anyone tampers with the header or payload, the signature won't match and the server rejects the token.</div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Important</div>
+    <p>JWT payload is <strong>base64-encoded, not encrypted</strong>. Anyone can decode it and read the data inside. The signature only prevents <em>tampering</em> &mdash; it does not prevent <em>reading</em>. Never put sensitive data (passwords, credit card numbers) in a JWT.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses JWT for authentication:</p>
+    <ul>
+      <li><code>POST /api/login</code> returns a JWT token containing <code>userId</code>, <code>username</code>, and <code>role</code></li>
+      <li>Every protected endpoint checks for <code>Authorization: Bearer &lt;token&gt;</code></li>
+      <li>Token expires in 24 hours (86400 seconds)</li>
+      <li>The server validates the token's signature with its secret key before processing any request</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 11</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Reinforce everything you learned. Try to answer these without scrolling up first.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Method Matching</div>
+    <p>For each action, write the correct HTTP method and URI:</p>
+    <ol>
+      <li>Get all bookings for user 5</li>
+      <li>Create a new user account</li>
+      <li>Delete booking #42</li>
+      <li>Update the status of booking #43 to DELIVERED</li>
+      <li>Get the details of booking #10</li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Status Code Diagnosis</div>
+    <p>What status code would the server return in each scenario?</p>
+    <ol>
+      <li>Client sends a POST to create a booking but forgets the <code>senderName</code> field</li>
+      <li>Client sends a GET for booking #99999 which does not exist</li>
+      <li>Client sends a valid GET request and receives the data</li>
+      <li>Client sends a request without a JWT token to a protected endpoint</li>
+      <li>The database crashes while processing a valid request</li>
+      <li>Client deletes a user successfully and no body needs to be returned</li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Fix the URI</div>
+    <p>Each URI below violates REST conventions. Fix them:</p>
+    <ol>
+      <li><code>/api/getBooking/42</code></li>
+      <li><code>/api/User</code></li>
+      <li><code>/api/createUser</code></li>
+      <li><code>/api/bookings/deleteBooking?id=5</code></li>
+      <li><code>/api/bookingHistory</code></li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Build a JSON Response</div>
+    <p>Write a JSON response for a GET request to <code>/api/users/1</code> that returns a user with:</p>
+    <ul>
+      <li>id: 1, username: "darshan", email: "darshan@example.com"</li>
+      <li>An address object with city "Mumbai" and pincode "400058"</li>
+      <li>An array of 2 roles: "CUSTOMER" and "ADMIN"</li>
+    </ul>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; REST Constraints</div>
+    <p>Name all 6 REST constraints. For each one, write a one-sentence explanation and give one example from the Nimbus system.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; Design an API</div>
+    <p>You are building an API for a movie ticket booking system. Design the endpoints:</p>
+    <ol>
+      <li>Get all movies currently showing</li>
+      <li>Get details of a specific movie</li>
+      <li>Get available shows for a movie on a specific date</li>
+      <li>Book a ticket (with movieId, showTime, seatNumbers, userId)</li>
+      <li>Cancel a booking</li>
+      <li>Get all bookings for a user</li>
+    </ol>
+    <p>For each endpoint, write the HTTP method, URI, whether it needs a body, and the expected status code.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <div></div>
+  <a href="json.html" class="next">
+    <span class="nav-label">Next Topic &rarr;</span>
+    <span class="nav-title">JSON</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

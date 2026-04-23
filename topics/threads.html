@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Threads | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link active"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What Are Threads?                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-are-threads">
+  <div class="section-tag">Section 01</div>
+  <h2>What Are Threads?</h2>
+  <p class="section-desc">A thread is the smallest unit of execution inside a program. Every Java program starts with one thread &mdash; the <code>main</code> thread. Multithreading lets you run multiple tasks at the same time within a single program.</p>
+
+  <h3>Single-Threaded vs Multi-Threaded</h3>
+
+  <p>A <strong>single-threaded</strong> program does one thing at a time. It finishes Task A, then starts Task B, then Task C. If Task A takes 5 seconds, everything else waits. The program is <strong>sequential</strong> &mdash; one line of execution from top to bottom.</p>
+
+  <p>A <strong>multi-threaded</strong> program can do Task A, Task B, and Task C at the same time. Each task runs on its own thread. The CPU switches between them so fast it looks simultaneous. On multi-core processors, they can truly run in parallel.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">&#127860; Analogy: Restaurant Waiters</div>
+    <p><strong>Single-threaded = 1 waiter.</strong> One customer orders, the waiter goes to the kitchen, waits for the food, brings it back, THEN takes the next customer's order. Everyone waits in a long queue.</p>
+    <p><strong>Multi-threaded = 10 waiters.</strong> Ten customers can order at the same time. Each waiter handles one customer independently. The kitchen (CPU) processes all orders, and food comes out much faster overall.</p>
+    <p>In Nimbus: when 5 parcels arrive for booking, single-threaded = process one booking at a time. Multi-threaded = process all 5 bookings simultaneously with 5 threads.</p>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Single-Threaded</div>
+      <div class="comparison-body">
+        <ul>
+          <li>One task at a time</li>
+          <li>Simple to write and debug</li>
+          <li>No data sharing issues</li>
+          <li>Wastes CPU on waiting</li>
+          <li>Slow for I/O-heavy work</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Multi-Threaded</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Multiple tasks simultaneously</li>
+          <li>Complex to write and debug</li>
+          <li>Must handle shared data carefully</li>
+          <li>Uses CPU efficiently</li>
+          <li>Fast for I/O and parallel work</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Where Threads Are Used in Real Life</h3>
+  <ul>
+    <li><strong>Web servers</strong> &mdash; each incoming HTTP request gets its own thread (Tomcat uses a thread pool)</li>
+    <li><strong>Android apps</strong> &mdash; UI runs on main thread, network calls run on background threads</li>
+    <li><strong>Games</strong> &mdash; rendering, physics, audio, and input each run on separate threads</li>
+    <li><strong>Batch processing</strong> &mdash; process 10,000 records in parallel instead of one by one</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">&#128230; In Nimbus</div>
+    <p>Nimbus uses <code>BookingThread extends Thread</code> for parallel booking processing. When multiple parcels need to be booked simultaneously &mdash; say during a peak hour rush &mdash; each booking runs on its own thread. The main thread doesn't block waiting for each booking to finish. It dispatches all of them and collects results.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Thread Lifecycle                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="lifecycle">
+  <div class="section-tag">Section 02</div>
+  <h2>Thread Lifecycle</h2>
+  <p class="section-desc">Every thread in Java goes through a defined set of states from birth to death. Understanding these states is critical for debugging threading issues.</p>
+
+  <h3>The 5 States</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">NEW<span class="flow-sub">Thread created</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">RUNNABLE<span class="flow-sub">start() called</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">RUNNING<span class="flow-sub">CPU executing</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">TERMINATED<span class="flow-sub">run() finished</span></div>
+    </div>
+    <div class="flow-label">The happy path: New &rarr; Runnable &rarr; Running &rarr; Terminated</div>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box purple">RUNNING</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">BLOCKED / WAITING<span class="flow-sub">sleep(), wait(), I/O, lock</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">RUNNABLE<span class="flow-sub">sleep done, notified, lock acquired</span></div>
+    </div>
+    <div class="flow-label">A running thread can get blocked, then return to runnable when the block clears</div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>State</th><th>What's Happening</th><th>How It Gets Here</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>NEW</code></td>
+        <td>Thread object created, not started yet</td>
+        <td><code>Thread t = new Thread()</code></td>
+      </tr>
+      <tr>
+        <td><code>RUNNABLE</code></td>
+        <td>Ready to run, waiting for CPU time</td>
+        <td><code>t.start()</code> called</td>
+      </tr>
+      <tr>
+        <td><code>RUNNING</code></td>
+        <td>CPU is actively executing the thread's code</td>
+        <td>Thread scheduler picks it from the runnable pool</td>
+      </tr>
+      <tr>
+        <td><code>BLOCKED/WAITING</code></td>
+        <td>Paused &mdash; waiting for lock, sleep, or notification</td>
+        <td><code>sleep()</code>, <code>wait()</code>, waiting for synchronized lock</td>
+      </tr>
+      <tr>
+        <td><code>TERMINATED</code></td>
+        <td>Thread is dead. Cannot be restarted.</td>
+        <td><code>run()</code> method completes or throws unhandled exception</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">&#9888;&#65039; Critical Rule</div>
+    <p>Once a thread is <code>TERMINATED</code>, you <strong>cannot restart it</strong>. Calling <code>start()</code> on a dead thread throws <code>IllegalThreadStateException</code>. You must create a new Thread object.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Creating Threads                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="creating-threads">
+  <div class="section-tag">Section 03</div>
+  <h2>Creating Threads</h2>
+  <p class="section-desc">Java gives you two ways to create threads. Both work, but one is better practice. Understanding why is key.</p>
+
+  <h3>Way 1: Extending Thread</h3>
+  <p>Your class <strong>extends</strong> the <code>Thread</code> class and overrides the <code>run()</code> method. This is what Nimbus does with <code>BookingThread</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ExtendingThread.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class MyThread extends Thread {
+    @Override
+    public void run() {
+        // This code runs on a separate thread
+        System.out.println("Running on: " + getName());
+    }
+}
+
+// Usage
+public class Main {
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        MyThread t2 = new MyThread();
+        t1.start();  // Starts a new thread, calls run() internally
+        t2.start();  // Another new thread
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">&#128270; Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">class MyThread extends Thread {</div>
+        <div class="breakdown-explain">Our class inherits from Thread. Gets all thread capabilities (start, sleep, join, etc.)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2-3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Override public void run() {</div>
+        <div class="breakdown-explain">Override the run() method &mdash; this is the code that executes when the thread starts</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">System.out.println("Running on: " + getName());</div>
+        <div class="breakdown-explain">getName() is inherited from Thread &mdash; returns "Thread-0", "Thread-1", etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">10-11</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">t1.start(); t2.start();</div>
+        <div class="breakdown-explain">start() creates a new OS thread and calls run() on it. Both threads run concurrently.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Way 2: Implementing Runnable</h3>
+  <p>Your class <strong>implements</strong> the <code>Runnable</code> interface and passes itself to a Thread constructor.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ImplementingRunnable.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class MyTask implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("Running on: " + Thread.currentThread().getName());
+    }
+}
+
+// Usage
+public class Main {
+    public static void main(String[] args) {
+        MyTask task = new MyTask();
+        Thread t1 = new Thread(task);
+        Thread t2 = new Thread(task);
+        t1.start();
+        t2.start();
+
+        // Lambda shortcut (Java 8+):
+        Thread t3 = new Thread(() -&gt; {
+            System.out.println("Lambda thread: " + Thread.currentThread().getName());
+        });
+        t3.start();
+    }
+}</code></pre>
+  </div>
+
+  <h3>extends Thread vs implements Runnable</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Criteria</th><th>extends Thread</th><th>implements Runnable</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Inheritance</td>
+        <td>Uses up your only extends slot</td>
+        <td>Can still extend another class</td>
+      </tr>
+      <tr>
+        <td>Reusability</td>
+        <td>Task tied to Thread object</td>
+        <td>Same task can be shared by multiple threads</td>
+      </tr>
+      <tr>
+        <td>Thread pool</td>
+        <td>Cannot use with ExecutorService</td>
+        <td>Works perfectly with thread pools</td>
+      </tr>
+      <tr>
+        <td>Design</td>
+        <td>IS-A Thread (tight coupling)</td>
+        <td>HAS-A task (loose coupling, better design)</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>Simple standalone threads</td>
+        <td>Production code, enterprise apps</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">&#128161; Why Runnable is Preferred</div>
+    <p>Java only allows <strong>single inheritance</strong>. If your class extends Thread, it cannot extend anything else. With Runnable, your class can implement Runnable AND extend another class. Plus, Runnable separates "what to do" (the task) from "how to run it" (the thread), which is cleaner design.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">&#128230; In Nimbus</div>
+    <p>Nimbus uses <code>BookingThread extends Thread</code> &mdash; which is fine for a learning project. In a production system, you would refactor it to <code>BookingTask implements Runnable</code> and use a thread pool. We will see both approaches.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: start() vs run()                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="start-vs-run">
+  <div class="section-tag">Section 04</div>
+  <h2>start() vs run()</h2>
+  <p class="section-desc">This is <strong>THE</strong> most common threading mistake. You will see it in interviews, in exams, and in buggy code at work. Learn this once and never forget it.</p>
+
+  <h3>The Difference</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header good">start() &mdash; CORRECT</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Creates a <strong>new OS thread</strong></li>
+          <li>JVM calls run() on that new thread</li>
+          <li>Code runs <strong>concurrently</strong> with main</li>
+          <li>Can only be called <strong>once</strong> per thread</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header bad">run() &mdash; WRONG (usually)</div>
+      <div class="comparison-body">
+        <ul>
+          <li><strong>No new thread</strong> created</li>
+          <li>Just a normal method call on main thread</li>
+          <li>Code runs <strong>sequentially</strong> on main</li>
+          <li>Can be called multiple times (but why?)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StartVsRun.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class DemoThread extends Thread {
+    public void run() {
+        System.out.println("Thread: " + Thread.currentThread().getName());
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        DemoThread t = new DemoThread();
+
+        // WRONG: Calling run() directly
+        t.run();   // Prints: Thread: main   &lt;-- runs on MAIN thread!
+
+        // CORRECT: Calling start()
+        t.start(); // Prints: Thread: Thread-0  &lt;-- runs on NEW thread!
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">&#9888;&#65039; Interview Trap</div>
+    <p>"What happens if you call <code>run()</code> directly instead of <code>start()</code>?"</p>
+    <p>Answer: No new thread is created. <code>run()</code> executes as a regular method on the calling thread (main). The program behaves as single-threaded. This defeats the entire purpose of threading.</p>
+  </div>
+
+  <div class="diagram">
+    <pre>
+Calling start():                     Calling run():
+
+main thread ──┬──────────────►       main thread ──── run() ──── continues
+              │                      (everything on one thread, sequential)
+              └── new thread ──►
+              (two threads, concurrent)
+    </pre>
+    <div class="diagram-label">start() forks execution; run() stays on the same thread</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Thread Methods                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="thread-methods">
+  <div class="section-tag">Section 05</div>
+  <h2>Thread Methods</h2>
+  <p class="section-desc">The Thread class comes loaded with methods for controlling thread behavior. Here are the ones you will actually use.</p>
+
+  <h3>Essential Methods</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>What It Does</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>sleep(ms)</code></td>
+        <td>Pauses current thread for specified milliseconds. Static method.</td>
+        <td><code>Thread.sleep(1000)</code> &mdash; sleep 1 second</td>
+      </tr>
+      <tr>
+        <td><code>join()</code></td>
+        <td>Makes the calling thread <strong>wait</strong> until this thread finishes</td>
+        <td><code>t1.join()</code> &mdash; main waits for t1 to complete</td>
+      </tr>
+      <tr>
+        <td><code>interrupt()</code></td>
+        <td>Sends interrupt signal to a sleeping/waiting thread</td>
+        <td><code>t1.interrupt()</code> &mdash; wakes up t1 from sleep</td>
+      </tr>
+      <tr>
+        <td><code>isAlive()</code></td>
+        <td>Returns true if thread is started and not yet terminated</td>
+        <td><code>if (t1.isAlive()) { ... }</code></td>
+      </tr>
+      <tr>
+        <td><code>getName()</code></td>
+        <td>Returns thread name ("Thread-0", "Thread-1", or custom)</td>
+        <td><code>t1.setName("Booking-1")</code></td>
+      </tr>
+      <tr>
+        <td><code>setPriority(n)</code></td>
+        <td>Sets priority 1 (MIN) to 10 (MAX). Default is 5. Just a <em>hint</em> to scheduler.</td>
+        <td><code>t1.setPriority(Thread.MAX_PRIORITY)</code></td>
+      </tr>
+      <tr>
+        <td><code>currentThread()</code></td>
+        <td>Static. Returns reference to the currently executing thread.</td>
+        <td><code>Thread.currentThread().getName()</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>sleep() &mdash; Pausing a Thread</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SleepExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Countdown extends Thread {
+    public void run() {
+        for (int i = 5; i &gt;= 1; i--) {
+            System.out.println("Launch in " + i + "...");
+            try {
+                Thread.sleep(1000); // Pause 1 second
+            } catch (InterruptedException e) {
+                System.out.println("Countdown interrupted!");
+                return;
+            }
+        }
+        System.out.println("LAUNCH!");
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">&#128161; Why the try-catch?</div>
+    <p><code>Thread.sleep()</code> throws <code>InterruptedException</code> &mdash; a checked exception. If another thread calls <code>interrupt()</code> on a sleeping thread, it wakes up by throwing this exception. You must handle it.</p>
+  </div>
+
+  <h3>join() &mdash; Waiting for a Thread</h3>
+  <p><code>join()</code> is how you say "don't continue until this thread is done." Without it, the main thread races ahead while worker threads are still running.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">JoinExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Main {
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(() -&gt; {
+            System.out.println("Downloading file...");
+            try { Thread.sleep(3000); } catch (InterruptedException e) {}
+            System.out.println("Download complete.");
+        });
+
+        t1.start();
+        System.out.println("Waiting for download...");
+
+        t1.join();  // main thread BLOCKS here until t1 finishes
+
+        System.out.println("File ready. Processing...");
+        // Without join(), this would print BEFORE download finishes!
+    }
+}</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+main:   start t1 ──── join() ────────────── BLOCKED ────── "File ready" ──►
+                         │                     ▲
+t1:                      └─── downloading ─────┘ (t1 finishes, main unblocks)
+    </pre>
+    <div class="diagram-label">join() makes the calling thread wait until the target thread completes</div>
+  </div>
+
+  <h3>interrupt() &mdash; Signaling a Thread</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">InterruptExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Thread worker = new Thread(() -&gt; {
+    while (!Thread.currentThread().isInterrupted()) {
+        System.out.println("Working...");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            System.out.println("Got interrupt signal. Cleaning up...");
+            break;  // Exit the loop gracefully
+        }
+    }
+    System.out.println("Worker stopped.");
+});
+
+worker.start();
+Thread.sleep(2000);    // Let it work for 2 seconds
+worker.interrupt();     // Send stop signal</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Synchronization                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="synchronization">
+  <div class="section-tag">Section 06</div>
+  <h2>Synchronization &amp; Race Conditions</h2>
+  <p class="section-desc">When multiple threads access the same data, things break in subtle and terrifying ways. Synchronization is how you prevent that chaos.</p>
+
+  <h3>What is a Race Condition?</h3>
+  <p>A <strong>race condition</strong> happens when two or more threads read and write the same variable at the same time, and the result depends on which thread gets there first. The "race" is unpredictable &mdash; your program gives different results on different runs.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">RaceCondition.java &mdash; THE BUG</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class BankAccount {
+    private int balance = 1000;
+
+    public void withdraw(int amount) {
+        if (balance &gt;= amount) {          // Thread A checks: 1000 &gt;= 800? YES
+            // Thread A gets paused here by CPU scheduler...
+            // Thread B checks: 1000 &gt;= 800? YES (still 1000!)
+            balance -= amount;             // Both threads subtract 800
+        }
+    }
+
+    public int getBalance() { return balance; }
+}
+
+// Two threads withdrawing 800 from an account with 1000
+// Expected: one succeeds, one fails (not enough balance)
+// Reality: BOTH succeed! balance = 1000 - 800 - 800 = -600 !!!</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">&#9888;&#65039; This is a real-world bug</div>
+    <p>This exact race condition has caused banks to lose money, e-commerce sites to oversell inventory, and airlines to double-book seats. In Nimbus, without synchronization, two threads could assign the same tracking number to different parcels.</p>
+  </div>
+
+  <h3>The Fix: synchronized Keyword</h3>
+  <p>The <code>synchronized</code> keyword creates a <strong>lock</strong> (also called a monitor). Only one thread can hold the lock at a time. Other threads must wait.</p>
+
+  <h4>Synchronized Method</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SynchronizedMethod.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class BankAccount {
+    private int balance = 1000;
+
+    // The ENTIRE method is locked. Only one thread at a time can execute it.
+    public synchronized void withdraw(int amount) {
+        if (balance &gt;= amount) {
+            balance -= amount;
+            System.out.println(Thread.currentThread().getName()
+                + " withdrew " + amount + ". Balance: " + balance);
+        } else {
+            System.out.println(Thread.currentThread().getName()
+                + " failed. Insufficient balance: " + balance);
+        }
+    }
+
+    public synchronized int getBalance() { return balance; }
+}</code></pre>
+  </div>
+
+  <h4>Synchronized Block (more precise)</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SynchronizedBlock.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class BankAccount {
+    private int balance = 1000;
+    private final Object lock = new Object(); // Explicit lock object
+
+    public void withdraw(int amount) {
+        // Only the critical section is locked, not the entire method
+        synchronized (lock) {
+            if (balance &gt;= amount) {
+                balance -= amount;
+            }
+        }
+        // Code outside the block runs without lock &mdash; better performance
+        System.out.println("Withdrawal processed.");
+    }
+}</code></pre>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Synchronized Method</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Locks the <strong>entire method</strong></li>
+          <li>Simpler to write</li>
+          <li>Lock object = <code>this</code></li>
+          <li>Less granular &mdash; may lock too much</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Synchronized Block</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Locks only the <strong>critical section</strong></li>
+          <li>Slightly more code</li>
+          <li>Lock object = any Object you choose</li>
+          <li>Better performance &mdash; locks only what's needed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>How the Monitor/Lock Works</h3>
+
+  <div class="diagram">
+    <pre>
+Thread A arrives ─── acquires lock ─── enters critical section ─── releases lock
+                                          │
+Thread B arrives ─── lock taken! ─── WAITS ─── lock released ─── acquires ─── enters
+                                          │
+Thread C arrives ─── lock taken! ─── WAITS ─── ─── ─── ─── ─── WAITS ─── acquires ─── enters
+    </pre>
+    <div class="diagram-label">Only one thread can hold the monitor at a time. Others queue up.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Thread Safety                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="thread-safety">
+  <div class="section-tag">Section 07</div>
+  <h2>Thread Safety</h2>
+  <p class="section-desc">Beyond synchronized, Java provides several tools for writing code that works correctly when multiple threads access it.</p>
+
+  <h3>volatile Keyword</h3>
+  <p>Each thread has its own CPU cache. When thread A writes a variable, thread B might read the old cached value. <code>volatile</code> forces every read/write to go directly to main memory &mdash; no caching.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">VolatileExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class StoppableWorker extends Thread {
+    // Without volatile, the worker thread might NEVER see the change
+    private volatile boolean running = true;
+
+    public void run() {
+        while (running) {   // Always reads from main memory
+            System.out.println("Working...");
+        }
+        System.out.println("Stopped.");
+    }
+
+    public void stopWorker() {
+        running = false;    // Writes directly to main memory
+    }
+}
+
+// Usage:
+StoppableWorker w = new StoppableWorker();
+w.start();
+Thread.sleep(2000);
+w.stopWorker();  // Without volatile, this might not work!</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">&#128161; volatile vs synchronized</div>
+    <p><code>volatile</code> guarantees <strong>visibility</strong> &mdash; changes are seen by all threads. But it does NOT guarantee <strong>atomicity</strong>. <code>count++</code> is NOT thread-safe even with volatile because <code>count++</code> is actually three operations: read, increment, write. Use <code>synchronized</code> or Atomic classes for compound operations.</p>
+  </div>
+
+  <h3>Atomic Classes</h3>
+  <p>The <code>java.util.concurrent.atomic</code> package provides lock-free, thread-safe variables for single operations.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AtomicExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.concurrent.atomic.AtomicInteger;
+
+class Counter {
+    // AtomicInteger: thread-safe increment without synchronized
+    private AtomicInteger count = new AtomicInteger(0);
+
+    public void increment() {
+        count.incrementAndGet();  // Atomic: read + increment + write in one step
+    }
+
+    public int getCount() {
+        return count.get();
+    }
+}
+
+// Other atomic classes:
+// AtomicLong, AtomicBoolean, AtomicReference&lt;T&gt;</code></pre>
+  </div>
+
+  <h3>Thread-Safe Collections</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Not Thread-Safe</th><th>Thread-Safe Alternative</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>ArrayList</code></td>
+        <td><code>CopyOnWriteArrayList</code></td>
+        <td>Great for read-heavy, write-rare scenarios</td>
+      </tr>
+      <tr>
+        <td><code>HashMap</code></td>
+        <td><code>ConcurrentHashMap</code></td>
+        <td>Segments locked independently &mdash; high concurrency</td>
+      </tr>
+      <tr>
+        <td><code>LinkedList</code> (as queue)</td>
+        <td><code>ConcurrentLinkedQueue</code></td>
+        <td>Lock-free queue for producer-consumer</td>
+      </tr>
+      <tr>
+        <td><code>HashSet</code></td>
+        <td><code>ConcurrentHashMap.newKeySet()</code></td>
+        <td>Or wrap with <code>Collections.synchronizedSet()</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ConcurrentCollections.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.concurrent.*;
+
+// Safe to read/write from multiple threads simultaneously
+ConcurrentHashMap&lt;String, Integer&gt; map = new ConcurrentHashMap&lt;&gt;();
+map.put("parcels", 0);
+map.compute("parcels", (key, val) -&gt; val + 1);  // Atomic update
+
+CopyOnWriteArrayList&lt;String&gt; list = new CopyOnWriteArrayList&lt;&gt;();
+list.add("Booking-001");  // Thread-safe add</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: wait(), notify(), notifyAll()                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="wait-notify">
+  <div class="section-tag">Section 08</div>
+  <h2>wait(), notify(), notifyAll()</h2>
+  <p class="section-desc">These three methods enable threads to <strong>communicate</strong> with each other. They form the foundation of the producer-consumer pattern &mdash; one of the most common patterns in concurrent programming.</p>
+
+  <h3>How It Works</h3>
+  <ul>
+    <li><code>wait()</code> &mdash; releases the lock and puts the thread to sleep until notified</li>
+    <li><code>notify()</code> &mdash; wakes up ONE waiting thread (chosen randomly)</li>
+    <li><code>notifyAll()</code> &mdash; wakes up ALL waiting threads (they compete for the lock)</li>
+  </ul>
+  <p><strong>All three must be called inside a <code>synchronized</code> block.</strong> They are methods of <code>Object</code>, not <code>Thread</code>.</p>
+
+  <h3>Producer-Consumer Pattern</h3>
+  <p>One thread produces data, another consumes it. They share a buffer. The producer waits when the buffer is full. The consumer waits when the buffer is empty.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ProducerConsumer.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.LinkedList;
+import java.util.Queue;
+
+class ParcelBuffer {
+    private final Queue&lt;String&gt; buffer = new LinkedList&lt;&gt;();
+    private final int MAX_SIZE = 5;
+
+    public synchronized void addParcel(String parcel) throws InterruptedException {
+        while (buffer.size() == MAX_SIZE) {
+            System.out.println("Buffer full! Producer waiting...");
+            wait();  // Release lock, sleep until notified
+        }
+        buffer.add(parcel);
+        System.out.println("Produced: " + parcel + " | Buffer: " + buffer.size());
+        notifyAll();  // Wake up consumers
+    }
+
+    public synchronized String takeParcel() throws InterruptedException {
+        while (buffer.isEmpty()) {
+            System.out.println("Buffer empty! Consumer waiting...");
+            wait();  // Release lock, sleep until notified
+        }
+        String parcel = buffer.poll();
+        System.out.println("Consumed: " + parcel + " | Buffer: " + buffer.size());
+        notifyAll();  // Wake up producers
+        return parcel;
+    }
+}
+
+// Producer thread
+class Producer extends Thread {
+    private final ParcelBuffer buffer;
+    Producer(ParcelBuffer buffer) { this.buffer = buffer; }
+
+    public void run() {
+        for (int i = 1; i &lt;= 10; i++) {
+            try {
+                buffer.addParcel("PKG-" + i);
+                Thread.sleep(200);
+            } catch (InterruptedException e) { break; }
+        }
+    }
+}
+
+// Consumer thread
+class Consumer extends Thread {
+    private final ParcelBuffer buffer;
+    Consumer(ParcelBuffer buffer) { this.buffer = buffer; }
+
+    public void run() {
+        for (int i = 0; i &lt; 10; i++) {
+            try {
+                buffer.takeParcel();
+                Thread.sleep(500);  // Consumer is slower
+            } catch (InterruptedException e) { break; }
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">&#128270; Producer-Consumer breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">while (buffer.size() == MAX_SIZE) { wait(); }</div>
+        <div class="breakdown-explain">Why <code>while</code> not <code>if</code>? Because when a thread wakes up, the condition might have changed again (spurious wakeup). Always re-check in a loop.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">wait()</div>
+        <div class="breakdown-explain">Releases the synchronized lock AND puts the thread to sleep. Other threads can now enter the synchronized block.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">notifyAll()</div>
+        <div class="breakdown-explain">Wakes up all waiting threads. They re-acquire the lock one by one and re-check their while condition.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">&#9888;&#65039; Common Mistake</div>
+    <p>Always use <code>while</code> with <code>wait()</code>, never <code>if</code>. Java allows <strong>spurious wakeups</strong> &mdash; a thread can wake up even without being notified. The while loop re-checks the condition after waking up.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: ExecutorService & Thread Pools                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="executorservice">
+  <div class="section-tag">Section 09</div>
+  <h2>ExecutorService &amp; Thread Pools</h2>
+  <p class="section-desc">Manually creating threads is like hiring and firing employees for every task. Thread pools keep a reusable pool of threads &mdash; much more efficient. This is how real-world Java applications manage threads.</p>
+
+  <h3>Why Thread Pools?</h3>
+  <ul>
+    <li><strong>Creating threads is expensive</strong> &mdash; each thread needs memory for its stack (~512KB-1MB). Creating 1000 threads = ~1GB wasted.</li>
+    <li><strong>No control over how many</strong> &mdash; without pools, 10,000 requests = 10,000 threads = system crash.</li>
+    <li><strong>Thread pools reuse</strong> &mdash; a fixed number of threads pick up tasks from a queue. Finished? Take the next task. No creating/destroying.</li>
+  </ul>
+
+  <h3>Creating Thread Pools</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ThreadPoolBasics.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.concurrent.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Create a pool with 3 threads
+        ExecutorService pool = Executors.newFixedThreadPool(3);
+
+        // Submit 5 tasks &mdash; only 3 run at a time, 2 wait in queue
+        for (int i = 1; i &lt;= 5; i++) {
+            final int taskId = i;
+            pool.submit(() -&gt; {
+                System.out.println("Task " + taskId
+                    + " on " + Thread.currentThread().getName());
+                try { Thread.sleep(1000); } catch (InterruptedException e) {}
+            });
+        }
+
+        pool.shutdown();  // No new tasks accepted. Existing tasks finish.
+        pool.awaitTermination(10, TimeUnit.SECONDS);  // Wait for all to finish
+        System.out.println("All tasks complete.");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">&#128270; Thread pool breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Executors.newFixedThreadPool(3)</div>
+        <div class="breakdown-explain">Creates a pool of exactly 3 threads. Tasks beyond 3 wait in an internal queue.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">pool.submit(() -&gt; { ... })</div>
+        <div class="breakdown-explain">Submits a Runnable (lambda) to the pool. The pool assigns it to a free thread.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">pool.shutdown()</div>
+        <div class="breakdown-explain">Stops accepting new tasks. Already submitted tasks will complete. Without this, the program hangs forever.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">pool.awaitTermination(10, TimeUnit.SECONDS)</div>
+        <div class="breakdown-explain">Blocks until all tasks finish or 10 seconds pass, whichever comes first.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Types of Thread Pools</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Factory Method</th><th>Threads</th><th>Use Case</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>newFixedThreadPool(n)</code></td>
+        <td>Exactly n threads</td>
+        <td>Known workload. E.g., process 3 bookings at a time.</td>
+      </tr>
+      <tr>
+        <td><code>newCachedThreadPool()</code></td>
+        <td>Creates as needed, reuses idle</td>
+        <td>Short-lived tasks with unpredictable volume.</td>
+      </tr>
+      <tr>
+        <td><code>newSingleThreadExecutor()</code></td>
+        <td>Exactly 1 thread</td>
+        <td>Tasks must run sequentially. E.g., logging.</td>
+      </tr>
+      <tr>
+        <td><code>newScheduledThreadPool(n)</code></td>
+        <td>n threads with scheduling</td>
+        <td>Periodic tasks. E.g., check for delayed parcels every 5 minutes.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Future &mdash; Getting Results from Threads</h3>
+  <p>Runnable returns void. If you need a <strong>result</strong> from a thread, use <code>Callable</code> and <code>Future</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">FutureExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.concurrent.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+
+        // Callable returns a value (unlike Runnable)
+        Callable&lt;String&gt; bookingTask = () -&gt; {
+            Thread.sleep(2000);
+            return "Booking confirmed: PKG-" + (int)(Math.random() * 1000);
+        };
+
+        // submit() returns a Future &mdash; a promise of the result
+        Future&lt;String&gt; future1 = pool.submit(bookingTask);
+        Future&lt;String&gt; future2 = pool.submit(bookingTask);
+
+        System.out.println("Tasks submitted. Doing other work...");
+
+        // get() blocks until the result is ready
+        String result1 = future1.get();  // Blocks until done
+        String result2 = future2.get();
+
+        System.out.println(result1);
+        System.out.println(result2);
+
+        pool.shutdown();
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">&#128161; Runnable vs Callable</div>
+    <p><code>Runnable.run()</code> returns <code>void</code> and cannot throw checked exceptions. <code>Callable.call()</code> returns a value and can throw exceptions. Use Callable when you need a result back from the thread.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Nimbus BookingThread                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-booking-thread">
+  <div class="section-tag">Section 10</div>
+  <h2>Nimbus BookingThread</h2>
+  <p class="section-desc">This is the thread that powers parallel booking processing in Nimbus. Let's build it, break it down, and understand every line.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">&#128230; In Nimbus</div>
+    <p>When a batch of parcels arrives at a Nimbus hub, each parcel needs booking &mdash; weight validation, cost calculation, tracking number generation, database insert. Instead of processing sequentially (slow), Nimbus spawns a <code>BookingThread</code> per parcel for parallel processing.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingThread.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.threads;
+
+import com.nimbus.model.Parcel;
+import com.nimbus.service.BookingService;
+import java.time.LocalDateTime;
+
+public class BookingThread extends Thread {
+
+    private final Parcel parcel;
+    private final BookingService bookingService;
+    private String result;
+    private boolean success;
+
+    public BookingThread(Parcel parcel, BookingService bookingService) {
+        this.parcel = parcel;
+        this.bookingService = bookingService;
+        this.success = false;
+        // Set a meaningful thread name for debugging
+        setName("Booking-" + parcel.getTrackingId());
+    }
+
+    @Override
+    public void run() {
+        try {
+            System.out.println("[" + getName() + "] Starting booking at "
+                + LocalDateTime.now());
+
+            // Step 1: Validate parcel weight and dimensions
+            if (!bookingService.validateParcel(parcel)) {
+                result = "FAILED: Validation failed for " + parcel.getTrackingId();
+                return;
+            }
+
+            // Step 2: Calculate shipping cost
+            double cost = bookingService.calculateCost(parcel);
+            parcel.setCost(cost);
+
+            // Step 3: Generate tracking number (synchronized internally)
+            String trackingNumber = bookingService.generateTrackingNumber();
+            parcel.setTrackingNumber(trackingNumber);
+
+            // Step 4: Save to database
+            bookingService.saveBooking(parcel);
+
+            result = "SUCCESS: " + parcel.getTrackingId()
+                + " | Cost: Rs." + cost
+                + " | Tracking: " + trackingNumber;
+            success = true;
+
+            System.out.println("[" + getName() + "] Booking complete.");
+
+        } catch (Exception e) {
+            result = "ERROR: " + parcel.getTrackingId()
+                + " - " + e.getMessage();
+            System.err.println("[" + getName() + "] " + result);
+        }
+    }
+
+    public String getResult() { return result; }
+    public boolean isSuccess() { return success; }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">&#128270; BookingThread breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class BookingThread extends Thread</div>
+        <div class="breakdown-explain">BookingThread IS-A Thread. It inherits start(), join(), getName(), sleep(), etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private final Parcel parcel;</div>
+        <div class="breakdown-explain">Each thread processes one specific parcel. Marked final &mdash; cannot be reassigned after construction.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private final BookingService bookingService;</div>
+        <div class="breakdown-explain">Shared service object. Multiple threads use the same BookingService &mdash; so its methods must be thread-safe (synchronized internally).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">setName("Booking-" + parcel.getTrackingId());</div>
+        <div class="breakdown-explain">Custom thread name for debugging. Instead of "Thread-0", logs show "Booking-PKG001". Makes logs readable.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookingService.generateTrackingNumber()</div>
+        <div class="breakdown-explain">This method MUST be synchronized. If two threads call it at the same time without synchronization, they could get the same tracking number.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String result; private boolean success;</div>
+        <div class="breakdown-explain">These store the outcome. The main thread calls getResult() and isSuccess() AFTER join() to read the results safely.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Processing 5 Bookings in Parallel                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="parallel-bookings">
+  <div class="section-tag">Section 11</div>
+  <h2>Processing 5 Bookings in Parallel</h2>
+  <p class="section-desc">Here is the complete example: creating 5 parcels, processing them on separate threads simultaneously, and collecting results.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ParallelBookingProcessor.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.threads;
+
+import com.nimbus.model.Parcel;
+import com.nimbus.service.BookingService;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ParallelBookingProcessor {
+
+    public static void main(String[] args) {
+        BookingService service = new BookingService();
+
+        // Create 5 parcels to book
+        List&lt;Parcel&gt; parcels = List.of(
+            new Parcel("PKG-001", "Mumbai", "Delhi", 2.5),
+            new Parcel("PKG-002", "Chennai", "Kolkata", 1.8),
+            new Parcel("PKG-003", "Pune", "Bangalore", 5.0),
+            new Parcel("PKG-004", "Hyderabad", "Jaipur", 0.3),
+            new Parcel("PKG-005", "Delhi", "Mumbai", 12.0)  // Overweight?
+        );
+
+        // Step 1: Create and start all threads
+        List&lt;BookingThread&gt; threads = new ArrayList&lt;&gt;();
+        long startTime = System.currentTimeMillis();
+
+        for (Parcel parcel : parcels) {
+            BookingThread thread = new BookingThread(parcel, service);
+            threads.add(thread);
+            thread.start();  // Each booking runs on its own thread
+        }
+
+        // Step 2: Wait for ALL threads to finish
+        for (BookingThread thread : threads) {
+            try {
+                thread.join();  // Main thread waits for each one
+            } catch (InterruptedException e) {
+                System.err.println("Interrupted while waiting for " + thread.getName());
+            }
+        }
+
+        long elapsed = System.currentTimeMillis() - startTime;
+
+        // Step 3: Collect and display results
+        System.out.println("\n===== BOOKING RESULTS =====");
+        int successCount = 0;
+        for (BookingThread thread : threads) {
+            System.out.println(thread.getResult());
+            if (thread.isSuccess()) successCount++;
+        }
+
+        System.out.println("\nTotal: " + parcels.size()
+            + " | Success: " + successCount
+            + " | Failed: " + (parcels.size() - successCount));
+        System.out.println("Time: " + elapsed + "ms");
+        System.out.println("(Sequential would take ~" + (parcels.size() * 1000) + "ms)");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">&#128270; Parallel processor breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">for (Parcel p : parcels) { new BookingThread(p, service).start(); }</div>
+        <div class="breakdown-explain">Creates 5 threads and starts them ALL immediately. They begin executing concurrently.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">for (BookingThread t : threads) { t.join(); }</div>
+        <div class="breakdown-explain">join() on each thread. Main pauses until that thread finishes. After the loop, ALL 5 are done.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">thread.getResult()</div>
+        <div class="breakdown-explain">Safe to read after join() completes. Before join(), the result might be null (thread still running).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Time comparison</div>
+        <div class="breakdown-explain">If each booking takes ~1 second, sequential = 5s, parallel = ~1s (all run at the same time).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <pre>
+Time     main      Booking-PKG001  Booking-PKG002  Booking-PKG003  Booking-PKG004  Booking-PKG005
+  0ms    start()   |-validate-|    |-validate-|    |-validate-|    |-validate-|    |-validate-|
+100ms    start()   |-calc cost-|   |-calc cost-|   |-calc cost-|   |-calc cost-|   |-calc cost-|
+200ms    start()   |-gen track-|   |  waiting  |   |-gen track-|   |  waiting  |   |-gen track-|
+300ms    start()   |-save db---|   |-gen track-|   |-save db---|   |-gen track-|   |-save db---|
+400ms    start()   |   DONE    |   |-save db---|   |   DONE    |   |-save db---|   |   DONE    |
+500ms    join()    |           |   |   DONE    |   |           |   |   DONE    |   |
+ ~1s     results!
+    </pre>
+    <div class="diagram-label">All 5 bookings process in parallel &mdash; total time is ~1x, not 5x</div>
+  </div>
+
+  <h3>ExecutorService Version (production-ready)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingPoolProcessor.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.concurrent.*;
+import java.util.List;
+import java.util.ArrayList;
+
+public class BookingPoolProcessor {
+
+    public static void main(String[] args) throws Exception {
+        BookingService service = new BookingService();
+
+        // Fixed pool of 3 threads &mdash; at most 3 bookings process at a time
+        ExecutorService pool = Executors.newFixedThreadPool(3);
+
+        List&lt;Future&lt;String&gt;&gt; futures = new ArrayList&lt;&gt;();
+
+        for (int i = 1; i &lt;= 5; i++) {
+            final int id = i;
+            Future&lt;String&gt; future = pool.submit(() -&gt; {
+                // Simulate booking work
+                Thread.sleep(1000);
+                return "Booking-" + id + " confirmed on "
+                    + Thread.currentThread().getName();
+            });
+            futures.add(future);
+        }
+
+        // Collect results
+        for (Future&lt;String&gt; f : futures) {
+            System.out.println(f.get());  // Blocks until result is ready
+        }
+
+        pool.shutdown();
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Deadlock                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="deadlock">
+  <div class="section-tag">Section 12</div>
+  <h2>Deadlock</h2>
+  <p class="section-desc">Deadlock is when two or more threads are stuck forever, each waiting for the other to release a lock. Nobody moves. The program freezes. No error. No exception. Just silence.</p>
+
+  <h3>How Deadlock Happens</h3>
+
+  <div class="diagram">
+    <pre>
+Thread A:  holds Lock-1  ───►  waiting for Lock-2
+                                     ▲
+                                     │ (held by Thread B)
+                                     │
+Thread B:  holds Lock-2  ───►  waiting for Lock-1
+                                     ▲
+                                     │ (held by Thread A)
+
+Result: BOTH threads wait forever. Program frozen.
+    </pre>
+    <div class="diagram-label">Classic deadlock: circular dependency on locks</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DeadlockExample.java &mdash; DO NOT do this</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class DeadlockDemo {
+    private static final Object lockA = new Object();
+    private static final Object lockB = new Object();
+
+    public static void main(String[] args) {
+        Thread t1 = new Thread(() -&gt; {
+            synchronized (lockA) {
+                System.out.println("Thread 1: holds lockA, waiting for lockB...");
+                try { Thread.sleep(100); } catch (InterruptedException e) {}
+                synchronized (lockB) {  // STUCK! Thread 2 holds lockB
+                    System.out.println("Thread 1: got both locks!");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -&gt; {
+            synchronized (lockB) {  // Lock order is REVERSED!
+                System.out.println("Thread 2: holds lockB, waiting for lockA...");
+                try { Thread.sleep(100); } catch (InterruptedException e) {}
+                synchronized (lockA) {  // STUCK! Thread 1 holds lockA
+                    System.out.println("Thread 2: got both locks!");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+        // Program hangs forever. No exception. No crash. Just frozen.
+    }
+}</code></pre>
+  </div>
+
+  <h3>How to Prevent Deadlock</h3>
+
+  <ol class="steps">
+    <li><strong>Lock ordering:</strong> Always acquire locks in the same order. If Thread A locks A then B, Thread B must also lock A then B &mdash; never B then A.</li>
+    <li><strong>Timeout:</strong> Use <code>tryLock(timeout)</code> from <code>ReentrantLock</code> instead of <code>synchronized</code>. If the lock isn't available within the timeout, give up and retry.</li>
+    <li><strong>Minimize lock scope:</strong> Hold locks for the shortest time possible. Don't do I/O inside a synchronized block.</li>
+    <li><strong>Avoid nested locks:</strong> If you can avoid locking inside a lock, do it. Flatten your lock structure.</li>
+    <li><strong>Use higher-level concurrency:</strong> <code>ExecutorService</code>, <code>ConcurrentHashMap</code>, and <code>BlockingQueue</code> handle locking internally so you don't have to.</li>
+  </ol>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DeadlockFix.java &mdash; Same lock order</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// FIX: Both threads lock in the SAME order: A first, then B
+Thread t1 = new Thread(() -&gt; {
+    synchronized (lockA) {
+        synchronized (lockB) {
+            System.out.println("Thread 1: got both locks!");
+        }
+    }
+});
+
+Thread t2 = new Thread(() -&gt; {
+    synchronized (lockA) {  // Same order as t1: A first!
+        synchronized (lockB) {
+            System.out.println("Thread 2: got both locks!");
+        }
+    }
+});
+// No deadlock possible. Threads compete for lockA, loser waits,
+// winner gets both locks, finishes, releases, then loser proceeds.</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">&#9888;&#65039; Deadlock in Real Systems</div>
+    <p>Deadlocks are some of the hardest bugs to find. They don't crash the program &mdash; it just stops responding. In production, monitoring tools detect "thread not progressing" and alert the team. Prevention is always better than detection.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 13</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Thread questions are tricky because output order is non-deterministic. These exercises test your understanding of lifecycle, scheduling, and synchronization.</p>
+
+  <h3>Exercise 1: What Will This Print?</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise1.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class MyThread extends Thread {
+    public void run() {
+        System.out.println("A");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyThread t = new MyThread();
+        t.run();
+        t.run();
+        t.start();
+        System.out.println("B");
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Answer</div>
+    <p>The first two <code>t.run()</code> calls are <strong>normal method calls on the main thread</strong>. They print "A", "A" sequentially. Then <code>t.start()</code> creates a new thread. After that, "B" and "A" can print in ANY order because the new thread and main thread race. Possible outputs:</p>
+    <ul>
+      <li><code>A A B A</code> (main prints B before thread runs)</li>
+      <li><code>A A A B</code> (thread runs before main prints B)</li>
+    </ul>
+    <p>The first two A's are always first and always in order. The last A and B are non-deterministic.</p>
+  </div>
+
+  <h3>Exercise 2: Thread Interleaving</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise2.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Thread t1 = new Thread(() -&gt; {
+    for (int i = 1; i &lt;= 3; i++) System.out.print(i + " ");
+});
+Thread t2 = new Thread(() -&gt; {
+    for (int i = 1; i &lt;= 3; i++) System.out.print(i + " ");
+});
+t1.start();
+t2.start();</code></pre>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Answer</div>
+    <p>Both threads print 1, 2, 3 &mdash; but interleaved in unpredictable ways. All of these are possible:</p>
+    <ul>
+      <li><code>1 2 3 1 2 3</code> (t1 finishes before t2 starts)</li>
+      <li><code>1 1 2 2 3 3</code> (perfectly interleaved)</li>
+      <li><code>1 2 1 3 2 3</code> (random interleaving)</li>
+    </ul>
+    <p>The CPU scheduler decides. You will get different output each time you run it. This is the nature of concurrency.</p>
+  </div>
+
+  <h3>Exercise 3: join() Behavior</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise3.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Thread t1 = new Thread(() -&gt; System.out.println("First"));
+Thread t2 = new Thread(() -&gt; System.out.println("Second"));
+
+t1.start();
+t1.join();   // main waits until t1 finishes
+t2.start();
+t2.join();   // main waits until t2 finishes
+System.out.println("Done");</code></pre>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Answer</div>
+    <p>Output is <strong>always</strong>: <code>First</code>, <code>Second</code>, <code>Done</code> &mdash; in that exact order. The <code>join()</code> calls force sequential execution. t2 doesn't start until t1 is finished. "Done" doesn't print until t2 is finished. This effectively makes it single-threaded (which defeats the purpose, but it's for understanding join).</p>
+  </div>
+
+  <h3>Exercise 4: Race Condition Detection</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise4.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Counter {
+    int count = 0;
+    void increment() { count++; }
+}
+
+Counter c = new Counter();
+Thread t1 = new Thread(() -&gt; { for (int i = 0; i &lt; 10000; i++) c.increment(); });
+Thread t2 = new Thread(() -&gt; { for (int i = 0; i &lt; 10000; i++) c.increment(); });
+t1.start(); t2.start();
+t1.join(); t2.join();
+System.out.println(c.count);  // Expected: 20000. Actual: ???</code></pre>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Answer</div>
+    <p>The answer is almost always <strong>less than 20000</strong>. Could be 18432, 19567, or any random number. Why? <code>count++</code> is not atomic. It is three operations: read count, add 1, write count. Two threads doing this simultaneously lose updates. Fix: make increment() <code>synchronized</code> or use <code>AtomicInteger</code>.</p>
+  </div>
+
+  <h3>Exercise 5: Starting a Thread Twice</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise5.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Thread t = new Thread(() -&gt; System.out.println("Hello"));
+t.start();
+t.start();  // What happens here?</code></pre>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Answer</div>
+    <p><code>IllegalThreadStateException</code> on the second <code>start()</code>. A thread can only be started <strong>once</strong>. After it finishes (or even while running), calling start() again throws this exception. To run the same task again, create a <strong>new Thread object</strong>.</p>
+  </div>
+
+  <h3>Exercise 6: Build a Thread-Safe Counter</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Challenge</div>
+    <p>Build a <code>ThreadSafeCounter</code> class with <code>increment()</code>, <code>decrement()</code>, and <code>getCount()</code> methods. All methods must be safe to call from multiple threads. Test it with 4 threads: 2 incrementing 10,000 times each and 2 decrementing 5,000 times each. Final count should always be 10,000.</p>
+    <p><strong>Hint:</strong> Use either <code>synchronized</code> methods or <code>AtomicInteger</code>.</p>
+  </div>
+
+  <h3>Exercise 7: Producer-Consumer with Bounded Buffer</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Challenge</div>
+    <p>Create a bounded buffer (max 3 items) with <code>produce(item)</code> and <code>consume()</code> methods. The producer should block when full, the consumer should block when empty. Use <code>wait()</code>/<code>notifyAll()</code>. Create 2 producer threads and 1 consumer thread. Each producer adds 5 items.</p>
+    <p><strong>Hint:</strong> Review the ParcelBuffer example in Section 8. Use a while loop with wait(), never if.</p>
+  </div>
+
+  <h3>Exercise 8: Nimbus Parallel Processing with ExecutorService</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">&#127919; Challenge</div>
+    <p>Refactor the BookingThread pattern to use <code>ExecutorService</code> with a fixed pool of 3 threads. Process 10 parcels using <code>Callable&lt;String&gt;</code> that returns the booking confirmation string. Collect all <code>Future&lt;String&gt;</code> results and print them. Measure total time and compare with an estimated sequential time.</p>
+    <p><strong>Bonus:</strong> Handle the case where one booking throws an exception &mdash; other bookings should still complete successfully.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="datetime.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Date &amp; Time API</span>
+  </a>
+  <a href="sql.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">SQL &amp; Database</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

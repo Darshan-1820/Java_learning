@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Methods &amp; Scope — Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link active"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is a Method?                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-method">
+  <div class="section-tag">Section 01</div>
+  <h2>What is a Method?</h2>
+  <p class="section-desc">A method is a <strong>named, reusable block of code</strong> that performs a specific task. You define it once, then call it whenever you need that task done &mdash; without rewriting the same logic.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>A method is like a <strong>recipe</strong>. You write the recipe once (definition). Every time you want that dish, you follow the recipe (call the method). You can even adjust ingredients (pass different arguments). The recipe always gives you a result &mdash; the dish (return value).</p>
+  </div>
+
+  <h3>Why Methods Exist</h3>
+  <p>Without methods, your entire program would be one massive block of code in <code>main()</code>. Imagine writing Nimbus with 500 lines inside main &mdash; booking logic, login logic, history display, cost calculation, all tangled together. Every time you need to calculate cost in two places, you copy-paste the same 15 lines.</p>
+
+  <p>Methods solve this by letting you:</p>
+  <ul>
+    <li><strong>Reuse code</strong> &mdash; write once, call many times</li>
+    <li><strong>Organize code</strong> &mdash; each method does one thing</li>
+    <li><strong>Debug easier</strong> &mdash; if cost calculation is wrong, you fix one method, not 5 copies</li>
+    <li><strong>Read easier</strong> &mdash; <code>calculateCost(weight, distance)</code> tells you what happens without reading the logic</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every action in Nimbus is a method: <code>calculateCost()</code> computes shipping price, <code>generateBookingId()</code> creates unique IDs, <code>validateLogin()</code> checks credentials, <code>addUser()</code> saves a new user, <code>getBookingsByUser()</code> fetches bookings, <code>displayHistory()</code> prints them, <code>extractBooking()</code> reads from a ResultSet. All methods. All reusable.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Method Anatomy                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="method-anatomy">
+  <div class="section-tag">Section 02</div>
+  <h2>Method Anatomy</h2>
+  <p class="section-desc">Every method in Java has a precise structure. Each part tells the compiler something specific about what this method is and what it does.</p>
+
+  <div class="diagram">
+    <pre>
+  public       static     double     calculateCost   (double weight, int distance)    { ... }
+    |            |          |             |                      |                       |
+    |            |          |             |                      |                       |
+ Access      Static or   Return       Method              Parameters                  Body
+Modifier     Instance     Type         Name          (inputs the method needs)    (the actual code)
+    </pre>
+    <div class="diagram-label">The six parts of a Java method signature</div>
+  </div>
+
+  <h3>Each Part Explained</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Part</th>
+        <th>What It Means</th>
+        <th>Examples</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Access Modifier</strong></td>
+        <td>Who can call this method</td>
+        <td><code>public</code>, <code>private</code>, <code>protected</code>, (default)</td>
+      </tr>
+      <tr>
+        <td><strong>static / instance</strong></td>
+        <td>Belongs to class or to an object</td>
+        <td><code>static</code> = class-level, no <code>static</code> = needs an object</td>
+      </tr>
+      <tr>
+        <td><strong>Return Type</strong></td>
+        <td>What the method gives back</td>
+        <td><code>void</code>, <code>int</code>, <code>String</code>, <code>Booking</code></td>
+      </tr>
+      <tr>
+        <td><strong>Method Name</strong></td>
+        <td>Identifier to call the method</td>
+        <td><code>calculateCost</code>, <code>validateLogin</code></td>
+      </tr>
+      <tr>
+        <td><strong>Parameters</strong></td>
+        <td>Inputs the method receives (can be zero)</td>
+        <td><code>(double weight, int distance)</code></td>
+      </tr>
+      <tr>
+        <td><strong>Body</strong></td>
+        <td>The code that runs when method is called</td>
+        <td>Everything inside <code>{ }</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MethodAnatomy.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// A complete method with every part labeled
+public static double calculateCost(double weight, int distance) {
+    double baseCost = 50.0;
+    double perKg = 10.0;
+    double perKm = 5.0;
+    double total = baseCost + (weight * perKg) + (distance * perKm);
+    return total;  // sends the result back to whoever called this method
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public static double calculateCost(double weight, int distance) {</div>
+        <div class="breakdown-explain"><strong>public</strong> = anyone can call it. <strong>static</strong> = belongs to the class, no object needed. <strong>double</strong> = returns a decimal number. <strong>calculateCost</strong> = the name. <strong>(double weight, int distance)</strong> = two inputs required.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2-4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">double baseCost = 50.0; double perKg = 10.0; double perKm = 5.0;</div>
+        <div class="breakdown-explain">Local variables &mdash; they exist only inside this method. Once the method finishes, they are gone.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">double total = baseCost + (weight * perKg) + (distance * perKm);</div>
+        <div class="breakdown-explain">The actual calculation. Uses both local variables and the parameters passed in.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">return total;</div>
+        <div class="breakdown-explain"><strong>return</strong> sends the value back to the caller and immediately exits the method. Nothing after this line runs.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Method Signature vs Method Declaration</h3>
+  <p>These terms get mixed up. The <strong>method signature</strong> is just the name + parameter types. The <strong>method declaration</strong> is the full first line including return type and modifiers.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Signature vs Declaration</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Method declaration (full line):
+public static double calculateCost(double weight, int distance)
+
+// Method signature (what Java uses to tell methods apart):
+// calculateCost(double, int)
+
+// Two methods can have the same name if their signatures differ.
+// This is called method overloading (covered in Section 05).</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Parameters vs Arguments                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="params-vs-args">
+  <div class="section-tag">Section 03</div>
+  <h2>Parameters vs Arguments</h2>
+  <p class="section-desc">These two words sound similar but mean different things. Mixing them up is one of the most common beginner mistakes.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Parameter</div>
+      <div class="comparison-body">
+        <p>The <strong>placeholder variable</strong> in the method definition. It is a name that will receive a value later.</p>
+        <p>Think of it as a blank on a form: <strong>"Name: ______"</strong></p>
+        <p><code>void greet(String name)</code> &mdash; <code>name</code> is a parameter.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Argument</div>
+      <div class="comparison-body">
+        <p>The <strong>actual value</strong> you pass when calling the method. It fills the blank.</p>
+        <p>Think of it as the answer on the form: <strong>"Name: Darshan"</strong></p>
+        <p><code>greet("Darshan")</code> &mdash; <code>"Darshan"</code> is an argument.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ParamVsArg.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// DEFINITION — "weight" and "distance" are PARAMETERS
+public static double calculateCost(double weight, int distance) {
+    return 50 + (weight * 10) + (distance * 5);
+}
+
+// CALLING — 2.5 and 120 are ARGUMENTS
+double cost = calculateCost(2.5, 120);
+//                          ^^^  ^^^
+//                      argument  argument
+
+// The argument 2.5 gets copied into the parameter "weight"
+// The argument 120 gets copied into the parameter "distance"</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Remember It</div>
+    <p><strong>P</strong>arameter = <strong>P</strong>laceholder (in the definition).<br>
+    <strong>A</strong>rgument = <strong>A</strong>ctual value (when you call it).</p>
+  </div>
+
+  <h3>Multiple Parameters &amp; Order Matters</h3>
+  <p>Arguments must match parameters <strong>in order, type, and count</strong>. If the method expects <code>(String, int)</code> and you pass <code>(int, String)</code>, the compiler rejects it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OrderMatters.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static void addUser(String userId, String name, String password) {
+    // ...
+}
+
+// Correct — matches order: String, String, String
+addUser("USR001", "Darshan", "secret123");
+
+// Wrong — even though all are Strings, the ORDER gives them meaning
+addUser("secret123", "USR001", "Darshan");
+// This compiles! But now the password is treated as userId. Silent bug.</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Watch Out</div>
+    <p>When multiple parameters share the same type (like three Strings), the compiler cannot catch wrong order. The code compiles, but it does the wrong thing. This is why <strong>meaningful variable names</strong> and <strong>careful ordering</strong> matter so much.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Return Types                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="return-types">
+  <div class="section-tag">Section 04</div>
+  <h2>Return Types</h2>
+  <p class="section-desc">Every method must declare what type of value it gives back. This is the <strong>return type</strong> &mdash; the contract between the method and its caller.</p>
+
+  <h3>void &mdash; Returns Nothing</h3>
+  <p>Some methods perform an action but do not give back a value. They print something, save to a database, or update a variable. These use <code>void</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">VoidMethod.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// void — this method does something but gives nothing back
+public static void displayHistory(List&lt;Booking&gt; bookings) {
+    System.out.println("=== Booking History ===");
+    for (Booking b : bookings) {
+        System.out.println(b.getBookingId() + " | " + b.getStatus());
+    }
+    // No return statement needed (but you CAN use "return;" to exit early)
+}
+
+// Calling a void method — you cannot store its result
+displayHistory(myBookings);  // correct
+// String x = displayHistory(myBookings);  // COMPILE ERROR — void has no value</code></pre>
+  </div>
+
+  <h3>Primitive Returns</h3>
+  <p>Methods can return any primitive type: <code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code>, etc.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PrimitiveReturns.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Returns double
+public static double calculateCost(double weight, int distance) {
+    return 50 + (weight * 10) + (distance * 5);
+}
+
+// Returns boolean
+public static boolean validateLogin(String userId, String password) {
+    // Check credentials against database
+    User user = UserDAO.findById(userId);
+    if (user == null) return false;
+    return user.getPassword().equals(password);
+}
+
+// Returns int
+public static int countBookings(String userId) {
+    List&lt;Booking&gt; bookings = BookingDAO.getByUser(userId);
+    return bookings.size();
+}</code></pre>
+  </div>
+
+  <h3>Object Returns</h3>
+  <p>Methods can return any object &mdash; String, array, your own custom class, even a List.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ObjectReturns.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Returns String
+public static String generateBookingId() {
+    return "NB-" + System.currentTimeMillis();
+}
+
+// Returns a Booking object
+public static Booking extractBooking(ResultSet rs) throws SQLException {
+    Booking b = new Booking();
+    b.setBookingId(rs.getString("booking_id"));
+    b.setSenderId(rs.getString("sender_id"));
+    b.setWeight(rs.getDouble("weight"));
+    b.setStatus(rs.getString("status"));
+    return b;  // returns the entire object
+}
+
+// Returns a List
+public static List&lt;Booking&gt; getBookingsByUser(String userId) {
+    List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+    // ... fetch from database, add to list ...
+    return bookings;
+}</code></pre>
+  </div>
+
+  <h3>return Exits Immediately</h3>
+  <p>The moment Java hits a <code>return</code> statement, the method stops. Any code after it is <strong>unreachable</strong> and causes a compile error.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ReturnExits.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static boolean validateLogin(String userId, String password) {
+    if (userId == null || password == null) {
+        return false;  // exits HERE — nothing below runs
+    }
+
+    User user = UserDAO.findById(userId);
+    if (user == null) {
+        return false;  // exits HERE if user not found
+    }
+
+    return user.getPassword().equals(password);  // final return
+}
+
+// This is a common pattern: "early return" or "guard clause"
+// It handles error cases first, so the main logic stays clean and unindented.</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Rule</div>
+    <p>If a method declares a return type (not <code>void</code>), <strong>every possible code path must end with a return statement</strong>. If Java finds a path that might reach the end without returning, it gives a compile error: <code>"missing return statement"</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Method Overloading                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="overloading">
+  <div class="section-tag">Section 05</div>
+  <h2>Method Overloading</h2>
+  <p class="section-desc">Java lets you create <strong>multiple methods with the same name</strong> as long as their parameter lists differ. This is called overloading &mdash; the compiler picks the right version based on the arguments you pass.</p>
+
+  <h3>The Rules</h3>
+  <ul>
+    <li>Same method name</li>
+    <li>Different parameter list (different number, types, or order of parameters)</li>
+    <li><strong>Return type alone is NOT enough</strong> to distinguish overloaded methods</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>calculateCost</code> is a perfect candidate for overloading. Sometimes you have just the weight. Sometimes weight + distance. Sometimes weight + distance + parcel type. Instead of three different method names, you use one name with different parameter combinations.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CostCalculator.java — Overloaded calculateCost</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CostCalculator {
+
+    // Version 1: weight only — assumes default distance
+    public static double calculateCost(double weight) {
+        return 50 + (weight * 10);
+    }
+
+    // Version 2: weight + distance
+    public static double calculateCost(double weight, int distance) {
+        return 50 + (weight * 10) + (distance * 5);
+    }
+
+    // Version 3: weight + distance + parcel type
+    public static double calculateCost(double weight, int distance, String type) {
+        double base = 50 + (weight * 10) + (distance * 5);
+        if ("EXPRESS".equals(type)) {
+            base *= 1.5;  // 50% extra for express
+        }
+        return base;
+    }
+}
+
+// Calling — Java picks the right version based on arguments
+double c1 = CostCalculator.calculateCost(2.5);              // calls Version 1
+double c2 = CostCalculator.calculateCost(2.5, 120);         // calls Version 2
+double c3 = CostCalculator.calculateCost(2.5, 120, "EXPRESS"); // calls Version 3</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">How the compiler chooses</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">calculateCost(2.5)</div>
+        <div class="breakdown-explain">One argument (double) &rarr; matches <code>calculateCost(double weight)</code>. Only one method has exactly one double parameter.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">calculateCost(2.5, 120)</div>
+        <div class="breakdown-explain">Two arguments (double, int) &rarr; matches <code>calculateCost(double weight, int distance)</code>. The compiler looks at parameter count AND types.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">calculateCost(2.5, 120, "EXPRESS")</div>
+        <div class="breakdown-explain">Three arguments (double, int, String) &rarr; matches the third version. All resolved at compile time &mdash; no guessing at runtime.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Return Type Alone is NOT Enough</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">InvalidOverload.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// THIS DOES NOT COMPILE
+public static int getCount() { return 5; }
+public static double getCount() { return 5.0; }
+
+// Why? Because when you call getCount(), Java has no way to know
+// which version you want. The parameters are identical (none).
+// Return type is not part of the method signature.</code></pre>
+  </div>
+
+  <h3>Constructor Overloading</h3>
+  <p>The same overloading concept applies to constructors. A class can have multiple constructors with different parameter lists.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking.java — Overloaded Constructors</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Booking {
+    private String bookingId;
+    private String senderId;
+    private double weight;
+    private String status;
+
+    // Constructor 1: empty — for when you'll set fields later
+    public Booking() {
+        this.status = "PENDING";
+    }
+
+    // Constructor 2: with core fields
+    public Booking(String bookingId, String senderId, double weight) {
+        this.bookingId = bookingId;
+        this.senderId = senderId;
+        this.weight = weight;
+        this.status = "PENDING";
+    }
+
+    // Constructor 3: all fields — used when reading from database
+    public Booking(String bookingId, String senderId, double weight, String status) {
+        this.bookingId = bookingId;
+        this.senderId = senderId;
+        this.weight = weight;
+        this.status = status;
+    }
+}
+
+// All valid:
+Booking b1 = new Booking();
+Booking b2 = new Booking("NB-001", "USR-001", 2.5);
+Booking b3 = new Booking("NB-001", "USR-001", 2.5, "DELIVERED");</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Pass by Value                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="pass-by-value">
+  <div class="section-tag">Section 06</div>
+  <h2>Pass by Value</h2>
+  <p class="section-desc">This is one of the most confusing topics in Java. The rule is simple but the implications trip up even experienced developers: <strong>Java ALWAYS passes by value. Always. No exceptions.</strong></p>
+
+  <h3>With Primitives: Copy of the Value</h3>
+  <p>When you pass a primitive (<code>int</code>, <code>double</code>, etc.) to a method, Java copies the value. The method works on its own copy. Changing it inside the method has zero effect on the original.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PrimitivePassByValue.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static void doubleIt(int x) {
+    x = x * 2;   // modifies the LOCAL copy only
+    System.out.println("Inside method: " + x);  // 20
+}
+
+public static void main(String[] args) {
+    int num = 10;
+    doubleIt(num);
+    System.out.println("After method: " + num); // still 10!
+}</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+  MEMORY (Primitives)
+
+  main() stack frame:          doubleIt() stack frame:
+  ┌─────────────────┐          ┌──────────────────┐
+  │  num = 10       │ ──copy──&gt;│  x = 10          │
+  └─────────────────┘          │  x = 20  (changed)│
+                               └──────────────────┘
+                               (destroyed when method ends)
+
+  After doubleIt() returns:
+  ┌─────────────────┐
+  │  num = 10       │  &lt;── unchanged, because x was a COPY
+  └─────────────────┘
+    </pre>
+    <div class="diagram-label">Primitives: method gets its own copy, original untouched</div>
+  </div>
+
+  <h3>With Objects: Copy of the REFERENCE</h3>
+  <p>This is where it gets tricky. When you pass an object, Java does NOT pass the object itself. It passes a <strong>copy of the reference</strong> (the memory address). Both the original and the copy point to the <strong>same object in heap memory</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ObjectPassByValue.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static void updateStatus(Booking b) {
+    b.setStatus("DELIVERED");  // modifies the ACTUAL object via the reference copy
+}
+
+public static void replaceBooking(Booking b) {
+    b = new Booking();  // reassigns the LOCAL copy of the reference
+    b.setStatus("CANCELLED");
+}
+
+public static void main(String[] args) {
+    Booking booking = new Booking("NB-001", "USR-001", 2.5);
+    booking.setStatus("PENDING");
+
+    updateStatus(booking);
+    System.out.println(booking.getStatus()); // "DELIVERED" — changed!
+
+    replaceBooking(booking);
+    System.out.println(booking.getStatus()); // still "DELIVERED" — NOT cancelled!
+}</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+  MEMORY (Objects)
+
+  main() stack:                HEAP:
+  ┌──────────────┐            ┌──────────────────────┐
+  │ booking: 0x42│────────┐   │  Booking@0x42         │
+  └──────────────┘        ├──&gt;│  status = "PENDING"   │
+                          │   └──────────────────────┘
+  updateStatus() stack:   │
+  ┌──────────────┐        │
+  │ b: 0x42      │────────┘   Same object! b.setStatus("DELIVERED")
+  └──────────────┘            changes the actual object.
+
+  replaceBooking() stack:     HEAP:
+  ┌──────────────┐            ┌──────────────────────┐
+  │ b: 0x42      │──(was)──&gt; │  Booking@0x42         │
+  │ b: 0x99      │──(now)──&gt; │  status = "DELIVERED" │
+  └──────────────┘            └──────────────────────┘
+  b = new Booking() makes    ┌──────────────────────┐
+  b point to a NEW object    │  Booking@0x99         │
+  in heap. The ORIGINAL      │  status = "CANCELLED" │
+  booking variable in main   └──────────────────────┘
+  still points to 0x42.       (this new object is lost
+                               when replaceBooking ends)
+    </pre>
+    <div class="diagram-label">Objects: reference is copied, but both point to the same heap object</div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">The Bottom Line</div>
+    <p><strong>You can modify an object's fields through a copied reference</strong> (because both references point to the same object). But <strong>you cannot make the caller's variable point to a different object</strong> (because reassigning the local reference only changes the copy).</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: static Methods                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="static-methods">
+  <div class="section-tag">Section 07</div>
+  <h2>static Methods</h2>
+  <p class="section-desc">A <code>static</code> method belongs to the <strong>class itself</strong>, not to any particular object. You call it using the class name, and you do not need to create an object first.</p>
+
+  <h3>Calling static Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StaticMethods.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Called via ClassName.methodName() — no object needed
+double cost = CostCalculator.calculateCost(2.5, 120);
+String id = BookingIdGenerator.generateBookingId();
+Connection conn = DBConnection.getConnection();
+
+// You do NOT do this:
+// CostCalculator calc = new CostCalculator();
+// calc.calculateCost(2.5, 120);  // works but unnecessary and misleading</code></pre>
+  </div>
+
+  <h3>Why Utility Methods Are static</h3>
+  <p>Some methods do not need any object-level data. They take input, compute, and return a result. These are <strong>utility methods</strong> &mdash; pure functions that live on the class.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>DBConnection.getConnection()</code> is static because you do not need a DBConnection object &mdash; you just need the connection. <code>CostCalculator.calculateCost()</code> is static because the formula does not depend on any object's state. <code>InputValidator.isValidEmail()</code> would be static &mdash; it just checks a string.</p>
+  </div>
+
+  <h3>static Cannot Access Instance Members</h3>
+  <p>A static method has no <code>this</code> &mdash; there is no object. So it cannot access instance variables or instance methods directly.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StaticRestrictions.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class BookingService {
+    private String serviceName = "Nimbus Express";  // instance variable
+
+    // STATIC method
+    public static double calculateCost(double weight) {
+        // System.out.println(serviceName);  // COMPILE ERROR!
+        // Static method cannot access instance variable.
+        // There is no "this" — no object — so which serviceName?
+        return 50 + (weight * 10);
+    }
+
+    // INSTANCE method — can access both static and instance members
+    public void printServiceInfo() {
+        System.out.println(serviceName);  // fine — this is an instance method
+        double cost = calculateCost(2.5); // fine — instance can call static
+    }
+}</code></pre>
+  </div>
+
+  <h3>Why main() is static</h3>
+  <p>When your program starts, <strong>no objects exist yet</strong>. The JVM needs a way to call your starting method without creating an object first. That is why <code>main()</code> must be <code>public static void main(String[] args)</code> &mdash; it is the entry point that runs before any objects are created.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Can a static method...</th>
+        <th>Answer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Call another static method?</td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td>Access a static variable?</td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td>Access an instance variable?</td>
+        <td>No (no <code>this</code>)</td>
+      </tr>
+      <tr>
+        <td>Call an instance method?</td>
+        <td>No (unless it has an object reference)</td>
+      </tr>
+      <tr>
+        <td>Create an object and call its methods?</td>
+        <td>Yes (that is how <code>main</code> works)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Instance Methods                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="instance-methods">
+  <div class="section-tag">Section 08</div>
+  <h2>Instance Methods</h2>
+  <p class="section-desc">Instance methods belong to a <strong>specific object</strong>. They can access <code>this</code> &mdash; the object they were called on &mdash; and use its instance variables.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking.java — Instance Methods</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Booking {
+    private String bookingId;
+    private String status;
+    private double weight;
+
+    // Instance method — operates on THIS booking's data
+    public String getSummary() {
+        return this.bookingId + " | " + this.weight + "kg | " + this.status;
+    }
+
+    // Instance method — modifies THIS booking's state
+    public void markDelivered() {
+        this.status = "DELIVERED";
+    }
+
+    // Getters and setters are also instance methods
+    public String getBookingId() { return this.bookingId; }
+    public void setBookingId(String bookingId) { this.bookingId = bookingId; }
+}
+
+// Usage — you MUST create an object first
+Booking b = new Booking("NB-001", "USR-001", 2.5);
+String summary = b.getSummary();    // calls getSummary on THIS specific booking
+b.markDelivered();                  // changes THIS booking's status
+
+// Booking.getSummary();  // COMPILE ERROR — instance method needs an object</code></pre>
+  </div>
+
+  <h3>static vs Instance &mdash; Quick Comparison</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">static Method</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Belongs to the <strong>class</strong></li>
+          <li>Called via <code>ClassName.method()</code></li>
+          <li>No <code>this</code> keyword</li>
+          <li>Cannot access instance variables</li>
+          <li>Use for: utility, helpers, factory methods</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Instance Method</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Belongs to an <strong>object</strong></li>
+          <li>Called via <code>object.method()</code></li>
+          <li>Has <code>this</code> &mdash; the current object</li>
+          <li>Can access everything (instance + static)</li>
+          <li>Use for: getters, setters, business logic on object data</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Variable Scope                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="variable-scope">
+  <div class="section-tag">Section 09</div>
+  <h2>Variable Scope</h2>
+  <p class="section-desc">Scope defines <strong>where a variable can be seen and used</strong>. A variable declared inside a method cannot be used outside it. A variable declared inside an if-block cannot be used outside that block. Understanding scope prevents countless bugs.</p>
+
+  <h3>The Four Levels of Scope</h3>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name purple">Class / Static</div>
+      <div class="layer-detail"><strong>Shared across all objects.</strong> Declared with <code>static</code> at the class level. Exists for the entire program. Example: <code>static int totalBookings = 0;</code></div>
+    </div>
+    <div class="layer">
+      <div class="layer-name blue">Instance</div>
+      <div class="layer-detail"><strong>One copy per object.</strong> Declared at the class level without <code>static</code>. Lives as long as the object. Example: <code>private String bookingId;</code></div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Local</div>
+      <div class="layer-detail"><strong>Inside a method.</strong> Born when the method is called, dies when the method returns. Not accessible from other methods. Example: <code>double total = weight * rate;</code></div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Block</div>
+      <div class="layer-detail"><strong>Inside { } of if, for, while, try.</strong> Only visible within those braces. Example: <code>for (int i = 0; ...)</code> &mdash; <code>i</code> does not exist outside the loop.</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ScopeDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class BookingService {
+
+    // CLASS/STATIC scope — shared by ALL BookingService objects
+    private static int totalBookings = 0;
+
+    // INSTANCE scope — each BookingService object has its own copy
+    private String serviceName;
+
+    public void processBooking(String userId) {
+        // LOCAL scope — exists only during this method call
+        double cost = CostCalculator.calculateCost(2.5, 120);
+
+        if (cost &gt; 100) {
+            // BLOCK scope — exists only inside this if-block
+            String message = "Premium booking!";
+            System.out.println(message);  // OK
+        }
+
+        // System.out.println(message);  // COMPILE ERROR — message is block-scoped
+        System.out.println(cost);         // OK — cost is local to this method
+
+        totalBookings++;  // OK — static variable, accessible everywhere in the class
+    }
+
+    // System.out.println(cost);  // COMPILE ERROR — cost died when processBooking ended
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Variable lifetimes</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">static int totalBookings = 0;</div>
+        <div class="breakdown-explain"><strong>Class scope.</strong> Created when the class is loaded. Destroyed when the JVM shuts down. Same value shared by every object and every method in this class.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String serviceName;</div>
+        <div class="breakdown-explain"><strong>Instance scope.</strong> Created when <code>new BookingService()</code> is called. Destroyed when the object is garbage-collected. Each object has its own <code>serviceName</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">double cost = ...</div>
+        <div class="breakdown-explain"><strong>Local scope.</strong> Created when <code>processBooking()</code> starts. Destroyed when <code>processBooking()</code> returns. Another method cannot see this variable.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String message = "Premium booking!";</div>
+        <div class="breakdown-explain"><strong>Block scope.</strong> Created when the <code>if</code> block executes. Destroyed when the <code>}</code> of the if is reached. Cannot be used even one line after the closing brace.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Variable Shadowing                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="shadowing">
+  <div class="section-tag">Section 10</div>
+  <h2>Variable Shadowing</h2>
+  <p class="section-desc">When a local variable has the <strong>same name</strong> as an instance variable, the local variable "shadows" (hides) the instance variable. Java uses the <strong>nearest</strong> declaration.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Shadowing.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    private String name;  // instance variable
+
+    // The parameter "name" SHADOWS the instance variable "name"
+    public void setName(String name) {
+        // "name" here refers to the PARAMETER (nearest scope)
+        // "this.name" refers to the INSTANCE variable
+        this.name = name;
+    }
+
+    // Without this, you get a silent bug:
+    public void setNameBuggy(String name) {
+        name = name;  // assigns the parameter to itself!
+        // The instance variable "this.name" is never updated.
+        // No error. No warning. Just a bug that is hard to find.
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Beginner Bug</div>
+    <p>Forgetting <code>this.</code> in setters is one of the most common bugs in Java. The code compiles, runs, and appears to work &mdash; but the field never gets set. <strong>Always use <code>this.</code></strong> when a parameter has the same name as an instance variable.</p>
+  </div>
+
+  <h3>Shadowing in Constructors</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ConstructorShadowing.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Booking {
+    private String bookingId;
+    private double weight;
+    private String status;
+
+    // Constructor — all parameters shadow instance variables
+    public Booking(String bookingId, double weight, String status) {
+        this.bookingId = bookingId;  // instance = parameter
+        this.weight = weight;        // instance = parameter
+        this.status = status;        // instance = parameter
+    }
+    // Without "this.", all three fields would remain null/0.0
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Varargs                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="varargs">
+  <div class="section-tag">Section 11</div>
+  <h2>Varargs (Variable Arguments)</h2>
+  <p class="section-desc">Sometimes you do not know how many arguments a method will receive. Varargs lets a method accept <strong>zero or more</strong> arguments of the same type, using the <code>...</code> syntax.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">VarargsDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// String... names means: accept any number of String arguments
+public static void printNames(String... names) {
+    // Internally, "names" is a String[] array
+    System.out.println("Received " + names.length + " names:");
+    for (String name : names) {
+        System.out.println("  - " + name);
+    }
+}
+
+// All of these are valid calls:
+printNames();                              // 0 arguments — empty array
+printNames("Darshan");                     // 1 argument
+printNames("Darshan", "Ravi", "Priya");    // 3 arguments
+printNames(new String[]{"A", "B", "C"});   // pass an array directly</code></pre>
+  </div>
+
+  <h3>Rules for Varargs</h3>
+  <ul>
+    <li><strong>Only one varargs parameter per method</strong></li>
+    <li><strong>Must be the LAST parameter</strong></li>
+    <li>Inside the method, it behaves exactly like an array</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">VarargsRules.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// VALID — varargs is the last parameter
+public static double totalWeight(String label, double... weights) {
+    double total = 0;
+    for (double w : weights) {
+        total += w;
+    }
+    System.out.println(label + ": " + total + " kg");
+    return total;
+}
+
+totalWeight("Batch A", 2.5, 3.0, 1.2);  // label="Batch A", weights=[2.5, 3.0, 1.2]
+
+// INVALID — varargs not last
+// public static void bad(double... weights, String label) {}  // COMPILE ERROR
+
+// INVALID — two varargs
+// public static void bad(int... a, String... b) {}  // COMPILE ERROR</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Under the Hood</div>
+    <p>When you write <code>method(String... names)</code>, the compiler converts it to <code>method(String[] names)</code>. Varargs is syntactic sugar. At the call site, the compiler wraps your arguments into an array automatically. That is why you can also pass an actual array instead of individual arguments.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Recursion                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="recursion">
+  <div class="section-tag">Section 12</div>
+  <h2>Recursion</h2>
+  <p class="section-desc">A recursive method is one that <strong>calls itself</strong>. It sounds circular, but it works because each call handles a smaller piece of the problem until it hits a <strong>base case</strong> &mdash; the stopping condition.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Imagine you are standing in a line and want to know your position. You ask the person in front: "What is your position?" They ask the person in front of them. This keeps going until the person at the front says "I am #1." Then each answer comes back: "I am #2", "I am #3", etc. That is recursion &mdash; delegating to a smaller problem until you reach a known answer.</p>
+  </div>
+
+  <h3>Factorial &mdash; The Classic Example</h3>
+  <p><code>5! = 5 &times; 4 &times; 3 &times; 2 &times; 1 = 120</code>. Recursively: <code>5! = 5 &times; 4!</code></p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Factorial.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static int factorial(int n) {
+    // BASE CASE — the stopping condition
+    if (n &lt;= 1) {
+        return 1;
+    }
+    // RECURSIVE CASE — calls itself with a smaller problem
+    return n * factorial(n - 1);
+}
+
+System.out.println(factorial(5));  // 120
+
+// How it executes:
+// factorial(5) = 5 * factorial(4)
+// factorial(4) = 4 * factorial(3)
+// factorial(3) = 3 * factorial(2)
+// factorial(2) = 2 * factorial(1)
+// factorial(1) = 1              &lt;-- base case hit, start returning
+// factorial(2) = 2 * 1 = 2
+// factorial(3) = 3 * 2 = 6
+// factorial(4) = 4 * 6 = 24
+// factorial(5) = 5 * 24 = 120</code></pre>
+  </div>
+
+  <h3>The Two Essential Parts</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Part</th>
+        <th>What It Does</th>
+        <th>What Happens Without It</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Base Case</strong></td>
+        <td>Stops the recursion &mdash; returns a known value</td>
+        <td>Infinite recursion &rarr; <code>StackOverflowError</code></td>
+      </tr>
+      <tr>
+        <td><strong>Recursive Case</strong></td>
+        <td>Calls itself with a smaller/simpler input</td>
+        <td>Method never calls itself &mdash; it is just a normal method</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">StackOverflowError</div>
+    <p>Every method call gets a <strong>stack frame</strong> in memory. If a recursive method never hits its base case, it keeps creating frames until the stack runs out of space. Java throws <code>StackOverflowError</code> &mdash; the program crashes. Always make sure the input moves toward the base case on every recursive call.</p>
+  </div>
+
+  <h3>When to Use Recursion vs Loops</h3>
+  <ul>
+    <li><strong>Use loops</strong> when the problem is straightforward iteration (summing numbers, traversing an array)</li>
+    <li><strong>Use recursion</strong> when the problem naturally breaks into smaller sub-problems (tree traversal, directory walking, parsing nested structures)</li>
+    <li>Loops are generally faster (no overhead of creating stack frames)</li>
+    <li>In business applications like Nimbus, you will rarely need recursion &mdash; but understanding it is essential for interviews and data structures</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Full Nimbus Methods                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-methods">
+  <div class="section-tag">Section 13</div>
+  <h2>Full Nimbus Methods</h2>
+  <p class="section-desc">Let us look at three real methods from Nimbus in detail &mdash; the kind of code you will write and read every day in the project.</p>
+
+  <h3>calculateCost()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CostCalculator.java — Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CostCalculator {
+    private static final double BASE_CHARGE = 50.0;
+    private static final double RATE_PER_KG = 10.0;
+    private static final double RATE_PER_KM = 5.0;
+    private static final double EXPRESS_MULTIPLIER = 1.5;
+
+    /**
+     * Calculates shipping cost based on weight, distance, and type.
+     * @param weight  Parcel weight in kilograms
+     * @param distance Distance in kilometers
+     * @param type    "STANDARD" or "EXPRESS"
+     * @return Total cost in rupees
+     */
+    public static double calculateCost(double weight, int distance, String type) {
+        if (weight &lt;= 0 || distance &lt;= 0) {
+            throw new IllegalArgumentException("Weight and distance must be positive");
+        }
+
+        double cost = BASE_CHARGE + (weight * RATE_PER_KG) + (distance * RATE_PER_KM);
+
+        if ("EXPRESS".equalsIgnoreCase(type)) {
+            cost *= EXPRESS_MULTIPLIER;
+        }
+
+        return Math.round(cost * 100.0) / 100.0;  // round to 2 decimal places
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">calculateCost — line by line</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1-4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private static final double BASE_CHARGE = 50.0;</div>
+        <div class="breakdown-explain">Constants (<code>static final</code>) &mdash; values that never change. Named in UPPER_SNAKE_CASE by convention. Stored at class level, not inside the method.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public static double calculateCost(...)</div>
+        <div class="breakdown-explain"><strong>public</strong> = callable from anywhere. <strong>static</strong> = no object needed. <strong>double</strong> = returns a decimal. Three parameters with clear names and types.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6-8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (weight &lt;= 0 || distance &lt;= 0) throw ...</div>
+        <div class="breakdown-explain"><strong>Input validation.</strong> Defensive programming &mdash; catch bad data immediately instead of silently computing garbage.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"EXPRESS".equalsIgnoreCase(type)</div>
+        <div class="breakdown-explain">Calling <code>equals</code> on the constant string avoids NullPointerException. If <code>type</code> is null, <code>type.equalsIgnoreCase("EXPRESS")</code> would crash. This way is safe.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">10</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Math.round(cost * 100.0) / 100.0</div>
+        <div class="breakdown-explain">Rounds to 2 decimal places. Multiply by 100, round to nearest integer, divide by 100. Standard technique for money calculations.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>generateBookingId()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingIdGenerator.java — Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class BookingIdGenerator {
+
+    private static int counter = 0;
+    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+    /**
+     * Generates a unique booking ID in the format: NB-20260423-001
+     * Thread-safety note: in a real app, use AtomicInteger or UUID.
+     * @return A unique booking ID string
+     */
+    public static String generateBookingId() {
+        counter++;
+        String date = LocalDateTime.now().format(FMT);
+        return String.format("NB-%s-%03d", date, counter);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">generateBookingId — line by line</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private static int counter = 0;</div>
+        <div class="breakdown-explain"><strong>static</strong> variable &mdash; shared across all calls. Each call increments it, so IDs are unique within one program run.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">DateTimeFormatter.ofPattern("yyyyMMdd")</div>
+        <div class="breakdown-explain">Formats today's date as "20260423". <code>static final</code> because the pattern never changes &mdash; no need to recreate it every call.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String.format("NB-%s-%03d", date, counter)</div>
+        <div class="breakdown-explain"><code>%s</code> = string (the date). <code>%03d</code> = integer padded to 3 digits with leading zeros. Result: "NB-20260423-001".</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>extractBooking()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingDAO.java — extractBooking method</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">/**
+ * Converts one row of a ResultSet into a Booking object.
+ * Called inside a while(rs.next()) loop — once per database row.
+ * @param rs The ResultSet positioned at the current row
+ * @return A fully populated Booking object
+ * @throws SQLException if a column name is wrong or DB error occurs
+ */
+private static Booking extractBooking(ResultSet rs) throws SQLException {
+    Booking booking = new Booking();
+    booking.setBookingId(rs.getString("booking_id"));
+    booking.setSenderId(rs.getString("sender_id"));
+    booking.setReceiverName(rs.getString("receiver_name"));
+    booking.setReceiverAddress(rs.getString("receiver_address"));
+    booking.setWeight(rs.getDouble("weight"));
+    booking.setDistance(rs.getInt("distance"));
+    booking.setCost(rs.getDouble("cost"));
+    booking.setStatus(rs.getString("status"));
+    booking.setBookingDate(rs.getTimestamp("booking_date").toLocalDateTime());
+    return booking;
+}
+
+// Usage — inside getBookingsByUser()
+public static List&lt;Booking&gt; getBookingsByUser(String userId) throws SQLException {
+    List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+    String sql = "SELECT * FROM bookings WHERE sender_id = ?";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, userId);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            bookings.add(extractBooking(rs));  // reuse for every row
+        }
+    }
+    return bookings;
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">extractBooking — why it exists</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private static Booking extractBooking(ResultSet rs)</div>
+        <div class="breakdown-explain"><strong>private</strong> = only used inside BookingDAO. <strong>static</strong> = no object needed. Returns a <code>Booking</code> object. Takes a <code>ResultSet</code> (database cursor) as input.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">rs.getString("booking_id")</div>
+        <div class="breakdown-explain">Reads the "booking_id" column from the current row. Different <code>rs.getXxx()</code> methods for different types: <code>getString</code>, <code>getDouble</code>, <code>getInt</code>, <code>getTimestamp</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookings.add(extractBooking(rs));</div>
+        <div class="breakdown-explain">Called inside a loop. Without this method, the 10 lines of setter calls would be duplicated everywhere you read bookings from the database. <strong>Single Responsibility</strong> &mdash; extractBooking does one thing: convert a row to an object.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: Best Practices                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="best-practices">
+  <div class="section-tag">Section 14</div>
+  <h2>Best Practices</h2>
+  <p class="section-desc">Writing methods that work is the first step. Writing methods that are <strong>readable, maintainable, and debuggable</strong> is what separates professional code from hobby code.</p>
+
+  <h3>1. Single Responsibility</h3>
+  <p>A method should do <strong>one thing</strong>. If you can describe what it does and you use the word "and", it probably does too much.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Bad &mdash; Does Too Much</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">void processBooking(Booking b) {
+    // validates
+    // calculates cost
+    // saves to DB
+    // sends email
+    // updates dashboard
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Good &mdash; Each Does One Thing</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">void processBooking(Booking b) {
+    validate(b);
+    b.setCost(calculateCost(b));
+    save(b);
+    sendConfirmation(b);
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>2. Meaningful Names</h3>
+  <p>Method names should be <strong>verbs or verb phrases</strong> that describe what they do. A reader should understand the method's purpose without reading its body.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Bad Name</th>
+        <th>Good Name</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>doStuff()</code></td>
+        <td><code>calculateShippingCost()</code></td>
+        <td>Says exactly what it does</td>
+      </tr>
+      <tr>
+        <td><code>check()</code></td>
+        <td><code>validateLogin()</code></td>
+        <td>Check what? Validate is specific</td>
+      </tr>
+      <tr>
+        <td><code>get()</code></td>
+        <td><code>getBookingsByUser()</code></td>
+        <td>Get what? From where? For whom?</td>
+      </tr>
+      <tr>
+        <td><code>process()</code></td>
+        <td><code>markAsDelivered()</code></td>
+        <td>Process how? Mark as delivered is clear</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>3. Keep Methods Short</h3>
+  <p>If a method is longer than 20-30 lines, it is probably doing too much. Extract sub-tasks into their own methods. Short methods are easier to test, easier to name, and easier to reuse.</p>
+
+  <h3>4. Minimize Parameters</h3>
+  <p>Three or fewer parameters is ideal. If you need more, consider grouping related parameters into an object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TooManyParams.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Bad — too many parameters, easy to mix up order
+void createBooking(String senderId, String receiverName, String address,
+                   double weight, int distance, String type, double cost) { ... }
+
+// Better — group into an object
+void createBooking(Booking booking) { ... }
+
+// The Booking object carries all the data. Cleaner, safer, extensible.</code></pre>
+  </div>
+
+  <h3>5. Validate Inputs Early</h3>
+  <p>Check parameters at the top of the method. Return or throw immediately if invalid. This is the <strong>guard clause</strong> pattern you saw earlier.</p>
+
+  <h3>6. Prefer Returning Values Over Side Effects</h3>
+  <p>A method that returns a value is easier to test than one that modifies external state. <code>double cost = calculateCost(w, d)</code> is safer than <code>booking.cost = calculateAndSetCost(w, d, booking)</code>.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 15: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 15</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Eight exercises that cover every concept from this page. Try solving each one before looking at hints. Write real code &mdash; do not just read.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Basic Method</div>
+    <p>Write a method <code>greetUser(String name)</code> that prints <code>"Welcome to Nimbus, [name]!"</code>. Call it from <code>main()</code> with your name.</p>
+    <p><strong>Concepts:</strong> void return, single parameter, method call.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Return Value</div>
+    <p>Write a method <code>calculateDiscount(double price, int percentage)</code> that returns the discounted price. Example: <code>calculateDiscount(500, 20)</code> should return <code>400.0</code>.</p>
+    <p><strong>Concepts:</strong> double return type, calculation, return statement.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Method Overloading</div>
+    <p>Create three overloaded versions of <code>formatBookingId</code>:</p>
+    <ul>
+      <li><code>formatBookingId(int number)</code> &rarr; returns <code>"NB-001"</code></li>
+      <li><code>formatBookingId(String date, int number)</code> &rarr; returns <code>"NB-20260423-001"</code></li>
+      <li><code>formatBookingId(String prefix, String date, int number)</code> &rarr; returns <code>"[prefix]-20260423-001"</code></li>
+    </ul>
+    <p><strong>Concepts:</strong> overloading rules, String.format, %03d padding.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Pass by Value Trap</div>
+    <p>Predict the output of this code WITHOUT running it. Then verify.</p>
+    <pre><code class="language-java">public static void swap(int a, int b) {
+    int temp = a; a = b; b = temp;
+}
+int x = 5, y = 10;
+swap(x, y);
+System.out.println(x + " " + y);</code></pre>
+    <p><strong>Answer:</strong> <code>5 10</code> &mdash; swap has no effect because Java passes primitives by value.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; static vs Instance</div>
+    <p>Create a class <code>ParcelCounter</code> with:</p>
+    <ul>
+      <li>A <code>static int totalParcels</code> (shared across all objects)</li>
+      <li>An instance variable <code>String counterName</code></li>
+      <li>A <code>static</code> method <code>getTotalParcels()</code></li>
+      <li>An instance method <code>addParcel()</code> that increments <code>totalParcels</code> and prints the counter name</li>
+    </ul>
+    <p>Create two <code>ParcelCounter</code> objects with different names. Call <code>addParcel()</code> on each. Print total.</p>
+    <p><strong>Concepts:</strong> static vs instance, shared state, why both can access static.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; Variable Scope Bug Hunt</div>
+    <p>This code has THREE scope-related bugs. Find and fix them.</p>
+    <pre><code class="language-java">public class ScopeBugs {
+    private String name = "Nimbus";
+
+    public static void printName() {
+        System.out.println(name);  // Bug 1
+    }
+
+    public void search(String query) {
+        if (query.length() &gt; 3) {
+            String result = "Found: " + query;
+        }
+        System.out.println(result);  // Bug 2
+    }
+
+    public void setName(String name) {
+        name = name;  // Bug 3
+    }
+}</code></pre>
+    <p><strong>Concepts:</strong> static accessing instance, block scope, variable shadowing.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7 &mdash; Varargs</div>
+    <p>Write a method <code>averageWeight(double... weights)</code> that returns the average of all weights passed. Handle the case where zero arguments are passed (return 0).</p>
+    <p><strong>Concepts:</strong> varargs, array iteration, edge case handling.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8 &mdash; Recursion</div>
+    <p>Write a recursive method <code>sumDigits(int n)</code> that returns the sum of all digits in a number. Example: <code>sumDigits(1234)</code> returns <code>10</code> (1+2+3+4).</p>
+    <p><strong>Hints:</strong> <code>n % 10</code> gives the last digit. <code>n / 10</code> removes the last digit. Base case: <code>n == 0</code> returns <code>0</code>.</p>
+    <p><strong>Concepts:</strong> recursion, base case, modulo operator.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="java-control-flow.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Control Flow</span>
+  </a>
+  <a href="oop-classes.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Classes &amp; Encapsulation</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

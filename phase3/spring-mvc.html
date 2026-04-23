@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring MVC | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC with Servlets + JSP</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; The Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; Dependency Injection</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link active"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build It</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS SPRING MVC                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-spring-mvc">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Spring MVC?</h2>
+  <p class="section-desc">Spring MVC is Spring's web framework. It implements the Model-View-Controller pattern with Spring managing everything &mdash; routing, parameter binding, view resolution, sessions, validation. You write clean controller methods instead of messy servlet code.</p>
+
+  <h3>The Problem with Raw Servlets</h3>
+
+  <p>With raw servlets, you do <strong>everything manually</strong>:</p>
+  <ul>
+    <li>Parse request parameters with <code>request.getParameter()</code></li>
+    <li>Manually route URLs to different servlets in <code>web.xml</code></li>
+    <li>Cast parameters to correct types yourself</li>
+    <li>Forward to JSP pages with <code>RequestDispatcher</code></li>
+    <li>Handle sessions, validation, errors &mdash; all by hand</li>
+  </ul>
+
+  <p>For one servlet, this is fine. For Nimbus with 6+ servlets, it becomes a mess of boilerplate code that&rsquo;s painful to maintain.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p><strong>Servlets = building a car from scratch.</strong> You weld the chassis, build the engine, wire the electronics, stitch the seats. You control everything, but it takes forever and you&rsquo;ll make mistakes.</p>
+    <p><strong>Spring MVC = buying a car with features built in.</strong> Engine, transmission, power steering, ABS &mdash; all included. You just drive. Spring handles the plumbing; you handle the business logic.</p>
+  </div>
+
+  <h3>What Spring MVC Gives You</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Feature</th><th>Raw Servlet</th><th>Spring MVC</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>URL routing</td><td>web.xml &mdash; one servlet per URL</td><td><code>@GetMapping("/track")</code> on method</td></tr>
+      <tr><td>Parameter binding</td><td><code>request.getParameter("id")</code> + parse</td><td><code>@RequestParam int id</code> &mdash; auto-parsed</td></tr>
+      <tr><td>Form binding</td><td>Get each field manually, create object</td><td><code>@ModelAttribute Booking b</code> &mdash; auto-filled</td></tr>
+      <tr><td>View forwarding</td><td><code>RequestDispatcher.forward()</code></td><td><code>return "booking";</code> &mdash; view name</td></tr>
+      <tr><td>Dependency injection</td><td><code>new UserDAO()</code> everywhere</td><td><code>@Autowired UserService</code> &mdash; injected</td></tr>
+      <tr><td>Validation</td><td>Manual if/else checks</td><td><code>@Valid</code> + annotations on fields</td></tr>
+      <tr><td>Error handling</td><td>try/catch in every servlet</td><td><code>@ExceptionHandler</code> &mdash; centralized</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our 6 servlets (LoginServlet, RegisterServlet, BookingServlet, TrackingServlet, DeliveryServlet, HistoryServlet) each become <strong>one or two methods</strong> inside a <code>@Controller</code> class. No web.xml URL mappings. No manual parameter parsing. Spring does it all.</p>
+  </div>
+
+  <h3>The MVC Pattern in Spring</h3>
+
+  <ul>
+    <li><strong>Model</strong> &mdash; the data. Java objects (User, Booking, Parcel) passed to the view via <code>Model</code> or <code>ModelAndView</code></li>
+    <li><strong>View</strong> &mdash; the presentation. JSP pages that render HTML using the model data</li>
+    <li><strong>Controller</strong> &mdash; the handler. Java class annotated with <code>@Controller</code> that processes requests, calls service layer, and returns a view name</li>
+  </ul>
+
+  <p>Spring adds one critical piece: the <strong>DispatcherServlet</strong> &mdash; a front controller that sits between the browser and your controllers, routing every request to the right place.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: DISPATCHERSERVLET                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="dispatcher-servlet">
+  <div class="section-tag">Section 02</div>
+  <h2>DispatcherServlet &mdash; The Front Controller</h2>
+  <p class="section-desc">Every single HTTP request in a Spring MVC app goes through one servlet: the DispatcherServlet. It&rsquo;s the traffic cop that routes requests to the correct controller method.</p>
+
+  <h3>How It Works</h3>
+
+  <p>In raw servlets, each URL is mapped to a different servlet. You could have 20 servlets for 20 URLs. With Spring MVC, there&rsquo;s <strong>only one servlet</strong> &mdash; the DispatcherServlet. It receives all requests and delegates to the right <code>@Controller</code> method based on the URL and HTTP method.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p><strong>Raw servlets:</strong> A company where customers walk directly to different desks &mdash; one for billing, one for complaints, one for returns. No central reception. Chaos.</p>
+    <p><strong>DispatcherServlet:</strong> A receptionist at the front desk. Every visitor checks in, the receptionist looks at what they need, and sends them to the right department. Organized, centralized, controlled.</p>
+  </div>
+
+  <h3>Request Flow Diagram</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Browser<span class="flow-sub">GET /nimbus/tracking?bookingId=101</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">DispatcherServlet<span class="flow-sub">Front Controller</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">HandlerMapping<span class="flow-sub">Finds matching @RequestMapping</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">TrackingController<span class="flow-sub">@GetMapping("/tracking")</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">BookingService<span class="flow-sub">Business logic</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box dark">BookingDAO<span class="flow-sub">Database query</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">Controller returns<span class="flow-sub">"tracking" + model data</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">ViewResolver<span class="flow-sub">/WEB-INF/views/tracking.jsp</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Browser<span class="flow-sub">Rendered HTML response</span></div>
+    </div>
+    <div class="flow-label">Complete request lifecycle: Browser &rarr; DispatcherServlet &rarr; Controller &rarr; Service &rarr; DAO &rarr; DB, then back through ViewResolver &rarr; JSP &rarr; Browser</div>
+  </div>
+
+  <h3>Step-by-Step Breakdown</h3>
+
+  <ol class="steps">
+    <li><strong>Browser sends request</strong> &mdash; <code>GET /nimbus/tracking?bookingId=101</code></li>
+    <li><strong>DispatcherServlet receives it</strong> &mdash; it&rsquo;s mapped to <code>/</code> or <code>/*</code> in web.xml, so it catches everything</li>
+    <li><strong>HandlerMapping finds the right method</strong> &mdash; scans all <code>@Controller</code> classes, finds <code>@GetMapping("/tracking")</code> in TrackingController</li>
+    <li><strong>Controller method executes</strong> &mdash; receives <code>bookingId</code> as <code>@RequestParam</code>, calls service, adds result to <code>Model</code></li>
+    <li><strong>Controller returns view name</strong> &mdash; <code>return "tracking";</code></li>
+    <li><strong>ViewResolver resolves JSP path</strong> &mdash; prefix <code>/WEB-INF/views/</code> + name <code>tracking</code> + suffix <code>.jsp</code> = <code>/WEB-INF/views/tracking.jsp</code></li>
+    <li><strong>JSP renders HTML</strong> &mdash; uses model data (booking object) to build the page</li>
+    <li><strong>Response sent to browser</strong> &mdash; user sees the tracking page with booking details</li>
+  </ol>
+
+  <h3>DispatcherServlet Configuration</h3>
+
+  <h4>Option 1: web.xml (Traditional)</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">web.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;web-app&gt;
+
+    &lt;!-- Register DispatcherServlet --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;
+            org.springframework.web.servlet.DispatcherServlet
+        &lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+            &lt;param-value&gt;/WEB-INF/spring-mvc.xml&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+
+    &lt;!-- Map ALL requests to DispatcherServlet --&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+&lt;/web-app&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;</div>
+        <div class="breakdown-explain">Names this servlet "dispatcher" &mdash; Spring will look for dispatcher-servlet.xml by default (unless you override with init-param)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;servlet-class&gt;...DispatcherServlet&lt;/servlet-class&gt;</div>
+        <div class="breakdown-explain">This IS a regular servlet &mdash; it extends HttpServlet. Spring provides it; you don't write it. It handles doGet/doPost internally and delegates to your controllers.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</div>
+        <div class="breakdown-explain">Tells DispatcherServlet where to find Spring's config file. This file defines component scanning, view resolver, etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</div>
+        <div class="breakdown-explain">Load this servlet when Tomcat starts (not on first request). 1 = highest priority. Ensures Spring context is ready before any request comes in.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;url-pattern&gt;/&lt;/url-pattern&gt;</div>
+        <div class="breakdown-explain">Map ALL URLs to DispatcherServlet. Every request (GET /login, POST /booking, GET /tracking) goes through this one servlet. It handles the routing internally using @RequestMapping annotations.</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Option 2: Java Config (Modern &mdash; No web.xml)</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WebAppInitializer.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class WebAppInitializer
+        extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return null;  // No root config needed for simple apps
+    }
+
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class[] { WebConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] { "/" };  // Map all URLs to DispatcherServlet
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>The DispatcherServlet is just a regular servlet (extends <code>HttpServlet</code>). The difference is that instead of you writing <code>doGet()</code>/<code>doPost()</code>, Spring's DispatcherServlet does that internally and calls YOUR controller methods. You never subclass it &mdash; you configure it.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: @CONTROLLER                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="controller-annotation">
+  <div class="section-tag">Section 03</div>
+  <h2>@Controller</h2>
+  <p class="section-desc">The annotation that marks a Java class as a web controller. Spring scans for it, registers the class, and maps its methods to URLs.</p>
+
+  <h3>Basic Controller</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HomeController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class HomeController {
+
+    @GetMapping("/")
+    public String home() {
+        return "home";  // Returns view name "home"
+                        // ViewResolver finds /WEB-INF/views/home.jsp
+    }
+}</code></pre>
+  </div>
+
+  <p>That&rsquo;s it. No extending <code>HttpServlet</code>. No overriding <code>doGet()</code>. No <code>web.xml</code> mapping. Just a POJO (plain old Java object) with annotations.</p>
+
+  <h3>@Controller vs @RestController</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Aspect</th><th><code>@Controller</code></th><th><code>@RestController</code></th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Returns</td><td><strong>View name</strong> &mdash; JSP page rendered</td><td><strong>Data directly</strong> &mdash; JSON/XML in response body</td></tr>
+      <tr><td>Use case</td><td>Traditional web app (HTML pages)</td><td>REST API (mobile/frontend consumes data)</td></tr>
+      <tr><td>Equivalent to</td><td><code>@Component</code> + web awareness</td><td><code>@Controller</code> + <code>@ResponseBody</code> on every method</td></tr>
+      <tr><td>Nimbus Phase 3</td><td>We use this &mdash; JSP pages</td><td>Phase 4 &mdash; REST APIs</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Comparison</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// @Controller — returns VIEW name, Spring finds the JSP
+@Controller
+public class BookingController {
+    @GetMapping("/booking")
+    public String showForm() {
+        return "booking-form";  // → /WEB-INF/views/booking-form.jsp
+    }
+}
+
+// @RestController — returns DATA directly as JSON
+@RestController
+public class BookingApiController {
+    @GetMapping("/api/bookings")
+    public List&lt;Booking&gt; getAll() {
+        return bookingService.findAll();  // → JSON: [{...}, {...}]
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Phase 3 uses <code>@Controller</code> because we render JSP pages. In Phase 4, when we build REST APIs for a mobile app or frontend framework, we&rsquo;ll switch to <code>@RestController</code>.</p>
+  </div>
+
+  <h3>The Annotation Hierarchy</h3>
+
+  <p><code>@Controller</code> is a <strong>specialization</strong> of <code>@Component</code>. Spring's component scan finds it the same way it finds <code>@Service</code> and <code>@Repository</code>. The difference is semantic &mdash; it tells Spring "this class handles HTTP requests."</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">@Component</div>
+      <div class="layer-detail">Generic Spring bean. Base annotation. "Register this class in the container."</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">@Controller</div>
+      <div class="layer-detail">Web layer. Handles HTTP requests, returns view names. DispatcherServlet looks for these.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">@Service</div>
+      <div class="layer-detail">Business logic layer. No special behavior, but marks intent: "this is a service class."</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">@Repository</div>
+      <div class="layer-detail">Data access layer. Adds automatic exception translation (SQL exceptions &rarr; Spring's DataAccessException).</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: @REQUESTMAPPING                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="request-mapping">
+  <div class="section-tag">Section 04</div>
+  <h2>@RequestMapping</h2>
+  <p class="section-desc">Maps a URL (and optionally an HTTP method) to a controller method. Can go on the class level (base URL) and method level (specific endpoint).</p>
+
+  <h3>Basic Usage</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@RequestMapping("/booking")   // Class level — base URL
+public class BookingController {
+
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String showForm() {
+        return "booking-form";
+    }
+    // Handles: GET /booking/new
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public String processForm(@ModelAttribute Booking booking) {
+        bookingService.save(booking);
+        return "redirect:/booking/confirmation";
+    }
+    // Handles: POST /booking/new
+}</code></pre>
+  </div>
+
+  <h3>@RequestMapping Attributes</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Attribute</th><th>Purpose</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>value</code> / <code>path</code></td><td>URL path(s) to map</td><td><code>value = "/login"</code></td></tr>
+      <tr><td><code>method</code></td><td>HTTP method(s) allowed</td><td><code>method = RequestMethod.POST</code></td></tr>
+      <tr><td><code>produces</code></td><td>Response content type</td><td><code>produces = "application/json"</code></td></tr>
+      <tr><td><code>consumes</code></td><td>Request content type required</td><td><code>consumes = "application/json"</code></td></tr>
+      <tr><td><code>params</code></td><td>Required request parameters</td><td><code>params = "action=delete"</code></td></tr>
+      <tr><td><code>headers</code></td><td>Required headers</td><td><code>headers = "X-API-Key"</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Class-Level + Method-Level</h3>
+
+  <p>When you put <code>@RequestMapping</code> on the class, it becomes the <strong>base URL</strong>. All method-level mappings are appended to it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">URL Composition</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@RequestMapping("/delivery")         // Base: /delivery
+public class DeliveryController {
+
+    @RequestMapping("/status")       // Full: /delivery/status
+    public String statusPage() { ... }
+
+    @RequestMapping("/history")      // Full: /delivery/history
+    public String historyPage() { ... }
+
+    @RequestMapping("/update/{id}")  // Full: /delivery/update/42
+    public String update(@PathVariable int id) { ... }
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Don&rsquo;t put <code>@RequestMapping</code> on the class if all your methods have completely different base paths. Class-level mapping is for grouping related endpoints: <code>/booking/new</code>, <code>/booking/cancel</code>, <code>/booking/track</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: SHORTCUT ANNOTATIONS                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="shortcut-annotations">
+  <div class="section-tag">Section 05</div>
+  <h2>Shortcut Annotations</h2>
+  <p class="section-desc">Spring 4.3 introduced shorthand annotations so you don&rsquo;t need to write <code>@RequestMapping(method = RequestMethod.GET)</code> every time.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Shortcut</th><th>Equivalent To</th><th>When to Use</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>@GetMapping</code></td><td><code>@RequestMapping(method = GET)</code></td><td>Fetching data, showing pages, search results</td></tr>
+      <tr><td><code>@PostMapping</code></td><td><code>@RequestMapping(method = POST)</code></td><td>Submitting forms, creating resources</td></tr>
+      <tr><td><code>@PutMapping</code></td><td><code>@RequestMapping(method = PUT)</code></td><td>Updating an entire resource</td></tr>
+      <tr><td><code>@DeleteMapping</code></td><td><code>@RequestMapping(method = DELETE)</code></td><td>Deleting a resource</td></tr>
+      <tr><td><code>@PatchMapping</code></td><td><code>@RequestMapping(method = PATCH)</code></td><td>Partial update of a resource</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Before vs After</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BEFORE (verbose)
+@RequestMapping(value = "/login", method = RequestMethod.POST)
+public String login(...) { ... }
+
+// AFTER (clean)
+@PostMapping("/login")
+public String login(...) { ... }
+
+// Both do EXACTLY the same thing. Use the shortcut version.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every Nimbus controller uses shortcut annotations:</p>
+    <ul>
+      <li><code>@PostMapping("/login")</code> &mdash; LoginController processes login form</li>
+      <li><code>@PostMapping("/register")</code> &mdash; RegisterController creates user</li>
+      <li><code>@GetMapping("/booking")</code> &mdash; BookingController shows the form</li>
+      <li><code>@PostMapping("/booking")</code> &mdash; BookingController processes form</li>
+      <li><code>@GetMapping("/tracking")</code> &mdash; TrackingController shows tracking info</li>
+      <li><code>@PostMapping("/delivery/status")</code> &mdash; DeliveryController updates status</li>
+      <li><code>@GetMapping("/history")</code> &mdash; HistoryController shows booking history</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: METHOD PARAMETERS                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="method-parameters">
+  <div class="section-tag">Section 06</div>
+  <h2>Method Parameters</h2>
+  <p class="section-desc">Spring MVC can inject almost anything into your controller methods &mdash; request parameters, path variables, form objects, session, model. You just declare them as method arguments.</p>
+
+  <h3>@RequestParam &mdash; Query Parameters</h3>
+
+  <p>Extracts parameters from the URL query string. <code>/tracking?bookingId=101</code> &rarr; <code>bookingId = 101</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/tracking")
+public String track(
+    @RequestParam("bookingId") int bookingId,  // Required by default
+    Model model
+) {
+    Booking booking = bookingService.findById(bookingId);
+    model.addAttribute("booking", booking);
+    return "tracking";
+}
+// URL: /tracking?bookingId=101
+// Spring automatically parses "101" → int 101</code></pre>
+  </div>
+
+  <h4>Optional and Default Values</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HistoryController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/history")
+public String history(
+    @RequestParam(required = false) String startDate,  // Optional
+    @RequestParam(required = false) String endDate,
+    @RequestParam(defaultValue = "1") int page,        // Default value
+    Model model
+) {
+    List&lt;Booking&gt; bookings = bookingService.findByDateRange(startDate, endDate, page);
+    model.addAttribute("bookings", bookings);
+    return "history";
+}
+// /history                         → startDate=null, endDate=null, page=1
+// /history?startDate=2026-01-01    → startDate="2026-01-01", endDate=null, page=1
+// /history?page=3                  → startDate=null, endDate=null, page=3</code></pre>
+  </div>
+
+  <h3>@PathVariable &mdash; URL Parts</h3>
+
+  <p>Extracts values from the URL path itself. <code>/booking/101</code> &rarr; <code>id = 101</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PathVariable examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Single path variable
+@GetMapping("/booking/{id}")
+public String viewBooking(@PathVariable int id, Model model) {
+    Booking booking = bookingService.findById(id);
+    model.addAttribute("booking", booking);
+    return "booking-detail";
+}
+// URL: /booking/101    → id = 101
+// URL: /booking/205    → id = 205
+
+// Multiple path variables
+@GetMapping("/delivery/{city}/{date}")
+public String deliveries(
+    @PathVariable String city,
+    @PathVariable String date,
+    Model model
+) {
+    List&lt;Booking&gt; deliveries = deliveryService.findByCityAndDate(city, date);
+    model.addAttribute("deliveries", deliveries);
+    return "delivery-list";
+}
+// URL: /delivery/Mumbai/2026-04-23</code></pre>
+  </div>
+
+  <h4>@RequestParam vs @PathVariable</h4>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Aspect</th><th><code>@RequestParam</code></th><th><code>@PathVariable</code></th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Source</td><td>Query string: <code>?key=value</code></td><td>URL path: <code>/resource/{id}</code></td></tr>
+      <tr><td>Example URL</td><td><code>/tracking?bookingId=101</code></td><td><code>/booking/101</code></td></tr>
+      <tr><td>Optional?</td><td>Yes, with <code>required = false</code></td><td>No &mdash; path must match</td></tr>
+      <tr><td>Best for</td><td>Filters, search, optional params</td><td>Identifying a specific resource</td></tr>
+    </tbody>
+  </table>
+
+  <h3>@ModelAttribute &mdash; Form Binding</h3>
+
+  <p>Automatically maps form fields to a Java object. If the form has fields named <code>senderName</code>, <code>senderCity</code>, <code>weight</code>, Spring creates a <code>Booking</code> object and calls the matching setters.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Form binding</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@PostMapping("/booking")
+public String processBooking(@ModelAttribute Booking booking) {
+    // Spring automatically does:
+    // booking.setSenderName(request.getParameter("senderName"));
+    // booking.setSenderCity(request.getParameter("senderCity"));
+    // booking.setWeight(Double.parseDouble(request.getParameter("weight")));
+    // ... for every matching field
+
+    bookingService.save(booking);
+    return "redirect:/booking/confirmation";
+}</code></pre>
+  </div>
+
+  <h3>HttpSession &mdash; Session Access</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Session injection</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@PostMapping("/login")
+public String login(
+    @RequestParam String email,
+    @RequestParam String password,
+    HttpSession session   // Spring injects the session automatically
+) {
+    User user = userService.authenticate(email, password);
+    if (user != null) {
+        session.setAttribute("loggedInUser", user);
+        return "redirect:/dashboard";
+    }
+    return "redirect:/login?error=true";
+}</code></pre>
+  </div>
+
+  <h3>Model &mdash; Passing Data to View</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Model usage</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/dashboard")
+public String dashboard(Model model, HttpSession session) {
+    User user = (User) session.getAttribute("loggedInUser");
+
+    model.addAttribute("userName", user.getName());          // Single value
+    model.addAttribute("bookings", bookingService.findByUser(user.getId())); // List
+    model.addAttribute("totalBookings", 42);                 // Primitive
+
+    return "dashboard";
+    // In dashboard.jsp: ${userName}, ${bookings}, ${totalBookings}
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p><code>Model</code> is a container that carries data from controller to view. Whatever you put in with <code>addAttribute()</code> becomes available in the JSP via EL expressions (<code>${key}</code>). Think of it as a map that Spring passes along to the JSP for rendering.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: RETURNING VIEWS                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="returning-views">
+  <div class="section-tag">Section 07</div>
+  <h2>Returning Views</h2>
+  <p class="section-desc">When a <code>@Controller</code> method returns a string, Spring treats it as a view name and uses the ViewResolver to find the actual JSP file.</p>
+
+  <h3>Three Ways to Return Views</h3>
+
+  <h4>1. Return String (Most Common)</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">String return</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/login")
+public String showLogin() {
+    return "login";  // → /WEB-INF/views/login.jsp
+}
+
+@GetMapping("/booking")
+public String showBookingForm(Model model) {
+    model.addAttribute("booking", new Booking());
+    return "booking-form";  // → /WEB-INF/views/booking-form.jsp
+}</code></pre>
+  </div>
+
+  <h4>2. ModelAndView (View + Data in One Object)</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ModelAndView return</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/tracking")
+public ModelAndView track(@RequestParam int bookingId) {
+    ModelAndView mav = new ModelAndView("tracking");  // View name
+    Booking booking = bookingService.findById(bookingId);
+    mav.addObject("booking", booking);                // Data
+    mav.addObject("status", booking.getStatus());
+    return mav;
+}</code></pre>
+  </div>
+
+  <h4>3. Redirect</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Redirect</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@PostMapping("/login")
+public String login(@RequestParam String email,
+                    @RequestParam String password,
+                    HttpSession session) {
+    User user = userService.authenticate(email, password);
+    if (user != null) {
+        session.setAttribute("loggedInUser", user);
+        return "redirect:/dashboard";  // HTTP 302 redirect
+    }
+    return "redirect:/login?error=true";  // Redirect with query param
+}
+
+// "redirect:" prefix tells Spring: DON'T look for a JSP called "redirect".
+// Instead, send an HTTP 302 redirect response to the browser.</code></pre>
+  </div>
+
+  <h3>How ViewResolver Works</h3>
+
+  <p>The ViewResolver takes the view name you return and resolves it to an actual file path. The most common one is <code>InternalResourceViewResolver</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">spring-mvc.xml or WebConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Java Config
+@Bean
+public InternalResourceViewResolver viewResolver() {
+    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+    resolver.setPrefix("/WEB-INF/views/");   // Folder
+    resolver.setSuffix(".jsp");              // Extension
+    return resolver;
+}
+
+// When you return "tracking":
+//   prefix + viewName + suffix
+//   /WEB-INF/views/ + tracking + .jsp
+//   = /WEB-INF/views/tracking.jsp</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Why /WEB-INF/views/?</div>
+    <p>Files inside <code>/WEB-INF/</code> are <strong>not directly accessible</strong> from the browser. A user can&rsquo;t type <code>/WEB-INF/views/admin.jsp</code> in their browser and see it. They MUST go through a controller. This is a security feature &mdash; controllers check authentication before showing the page.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: FORM HANDLING                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="form-handling">
+  <div class="section-tag">Section 08</div>
+  <h2>Form Handling</h2>
+  <p class="section-desc">Spring MVC handles forms elegantly: <code>@ModelAttribute</code> binds form fields to Java objects, <code>BindingResult</code> captures errors, and the PRG pattern prevents duplicate submissions.</p>
+
+  <h3>Complete Form Flow</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">User visits /booking<span class="flow-sub">GET request</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">showForm() runs<span class="flow-sub">Adds empty Booking to model</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">booking-form.jsp<span class="flow-sub">Renders HTML form</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">User submits form<span class="flow-sub">POST request</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">processForm() runs<span class="flow-sub">@ModelAttribute binds data</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Validate + Save<span class="flow-sub">Service → DAO → DB</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box red">redirect:/booking/confirmation<span class="flow-sub">PRG pattern (Post-Redirect-Get)</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Browser follows redirect<span class="flow-sub">GET request</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">confirmation.jsp<span class="flow-sub">Shows success page</span></div>
+    </div>
+    <div class="flow-label">Form flow: GET shows form → POST processes → Redirect prevents duplicate submit → GET shows confirmation</div>
+  </div>
+
+  <h3>Controller Code</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@RequestMapping("/booking")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    // Step 1: Show the empty form
+    @GetMapping
+    public String showForm(Model model) {
+        model.addAttribute("booking", new Booking()); // Empty object for form binding
+        return "booking-form";
+    }
+
+    // Step 2: Process the submitted form
+    @PostMapping
+    public String processForm(
+        @Valid @ModelAttribute("booking") Booking booking,
+        BindingResult result,      // MUST be right after @ModelAttribute
+        HttpSession session
+    ) {
+        // If validation errors, re-show the form
+        if (result.hasErrors()) {
+            return "booking-form";   // Form will show error messages
+        }
+
+        // Get logged-in user from session
+        User user = (User) session.getAttribute("loggedInUser");
+        booking.setUserId(user.getId());
+
+        bookingService.createBooking(booking);
+        return "redirect:/booking/confirmation";  // PRG pattern
+    }
+
+    // Step 3: Show confirmation (after redirect)
+    @GetMapping("/confirmation")
+    public String confirmation() {
+        return "booking-confirmation";
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">model.addAttribute("booking", new Booking());</div>
+        <div class="breakdown-explain">Creates an empty Booking object and puts it in the model. The JSP form binds to this object. Without it, Spring form tags would throw an error.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Valid @ModelAttribute("booking") Booking booking</div>
+        <div class="breakdown-explain">@ModelAttribute tells Spring to map form fields to Booking properties. @Valid triggers validation annotations on the Booking class. "booking" matches the model attribute name.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">BindingResult result</div>
+        <div class="breakdown-explain">Holds validation errors. MUST come immediately after @ModelAttribute — if you put another parameter between them, Spring throws an error. Check result.hasErrors() before processing.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">return "booking-form";</div>
+        <div class="breakdown-explain">If validation fails, show the same form again. The form will still have the user's entered data (because the booking object is in the model) plus error messages.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">return "redirect:/booking/confirmation";</div>
+        <div class="breakdown-explain">PRG Pattern (Post-Redirect-Get). After successful POST, redirect to a GET endpoint. If user refreshes the page, it's a GET to /confirmation — not a re-POST of the form. Prevents duplicate bookings.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The JSP Form (Spring Form Tags)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking-form.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;
+
+&lt;form:form modelAttribute="booking" action="/booking" method="POST"&gt;
+
+    &lt;label&gt;Sender Name:&lt;/label&gt;
+    &lt;form:input path="senderName" /&gt;
+    &lt;form:errors path="senderName" cssClass="error" /&gt;
+
+    &lt;label&gt;Sender City:&lt;/label&gt;
+    &lt;form:input path="senderCity" /&gt;
+    &lt;form:errors path="senderCity" cssClass="error" /&gt;
+
+    &lt;label&gt;Receiver Name:&lt;/label&gt;
+    &lt;form:input path="receiverName" /&gt;
+
+    &lt;label&gt;Weight (kg):&lt;/label&gt;
+    &lt;form:input path="weight" type="number" step="0.1" /&gt;
+    &lt;form:errors path="weight" cssClass="error" /&gt;
+
+    &lt;button type="submit"&gt;Book Parcel&lt;/button&gt;
+
+&lt;/form:form&gt;</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight &mdash; PRG Pattern</div>
+    <p><strong>Post-Redirect-Get</strong> prevents the "do you want to resubmit?" browser popup. Without it, if a user refreshes after booking, the browser re-sends the POST and creates a duplicate booking. With PRG: POST &rarr; 302 Redirect &rarr; GET confirmation. Refresh just re-GETs the confirmation page. Safe.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: SESSION HANDLING                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="session-handling">
+  <div class="section-tag">Section 09</div>
+  <h2>Session Handling</h2>
+  <p class="section-desc">Sessions track logged-in users across requests. Spring gives you two approaches: inject <code>HttpSession</code> directly, or use <code>@SessionAttributes</code>.</p>
+
+  <h3>Approach 1: HttpSession Injection (Simpler)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LoginController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class LoginController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(
+        @RequestParam String email,
+        @RequestParam String password,
+        HttpSession session,
+        Model model
+    ) {
+        User user = userService.authenticate(email, password);
+
+        if (user == null) {
+            model.addAttribute("error", "Invalid email or password");
+            return "login";
+        }
+
+        // Store user in session — available across all requests
+        session.setAttribute("loggedInUser", user);
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();   // Destroy session, clear all data
+        return "redirect:/login";
+    }
+}</code></pre>
+  </div>
+
+  <h3>Reading Session in Other Controllers</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Any controller that needs logged-in user</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/booking")
+public String showBookingForm(HttpSession session, Model model) {
+    // Check if user is logged in
+    User user = (User) session.getAttribute("loggedInUser");
+    if (user == null) {
+        return "redirect:/login";  // Not logged in → send to login
+    }
+
+    model.addAttribute("userName", user.getName());
+    model.addAttribute("booking", new Booking());
+    return "booking-form";
+}</code></pre>
+  </div>
+
+  <h3>Approach 2: @SessionAttributes (Spring-Managed)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@SessionAttributes example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@SessionAttributes("booking")  // Keep "booking" in session across requests
+public class MultiStepBookingController {
+
+    @GetMapping("/booking/step1")
+    public String step1(Model model) {
+        model.addAttribute("booking", new Booking());
+        return "booking-step1";
+    }
+
+    @PostMapping("/booking/step2")
+    public String step2(@ModelAttribute Booking booking) {
+        // booking from step1 is preserved in session
+        return "booking-step2";
+    }
+
+    @PostMapping("/booking/confirm")
+    public String confirm(@ModelAttribute Booking booking,
+                          SessionStatus status) {
+        bookingService.save(booking);
+        status.setComplete();  // Clear "booking" from session
+        return "redirect:/booking/success";
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>We use <strong>Approach 1 (HttpSession injection)</strong> because it&rsquo;s simpler and our login flow is straightforward. LoginController sets <code>session.setAttribute("loggedInUser", user)</code>, and every other controller checks it. The authentication filter (from Phase 3 topic 7) catches unauthenticated requests before they reach the controller.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: VALIDATION                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="validation">
+  <div class="section-tag">Section 10</div>
+  <h2>Validation</h2>
+  <p class="section-desc">Instead of writing <code>if (name == null || name.isEmpty())</code> for every field, Spring lets you put validation annotations directly on your model class. One annotation per rule.</p>
+
+  <h3>Step 1: Add Annotations to Model</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import jakarta.validation.constraints.*;
+
+public class Booking {
+
+    @NotBlank(message = "Sender name is required")
+    @Size(min = 2, max = 50, message = "Name must be 2-50 characters")
+    private String senderName;
+
+    @NotBlank(message = "Sender city is required")
+    private String senderCity;
+
+    @NotBlank(message = "Receiver name is required")
+    private String receiverName;
+
+    @NotBlank(message = "Receiver city is required")
+    private String receiverCity;
+
+    @NotNull(message = "Weight is required")
+    @Min(value = 1, message = "Minimum weight is 0.1 kg")
+    @Max(value = 50, message = "Maximum weight is 50 kg")
+    private Double weight;
+
+    // getters + setters
+}</code></pre>
+  </div>
+
+  <h3>Common Validation Annotations</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Annotation</th><th>Purpose</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>@NotNull</code></td><td>Value must not be null</td><td><code>@NotNull Double weight</code></td></tr>
+      <tr><td><code>@NotBlank</code></td><td>String must not be null/empty/whitespace</td><td><code>@NotBlank String name</code></td></tr>
+      <tr><td><code>@NotEmpty</code></td><td>Collection/String must not be empty</td><td><code>@NotEmpty List items</code></td></tr>
+      <tr><td><code>@Size</code></td><td>Length/size constraint</td><td><code>@Size(min=2, max=50)</code></td></tr>
+      <tr><td><code>@Min / @Max</code></td><td>Numeric range</td><td><code>@Min(1) @Max(100)</code></td></tr>
+      <tr><td><code>@Email</code></td><td>Must be valid email format</td><td><code>@Email String email</code></td></tr>
+      <tr><td><code>@Pattern</code></td><td>Must match regex</td><td><code>@Pattern(regexp="[0-9]{10}")</code></td></tr>
+      <tr><td><code>@Past / @Future</code></td><td>Date must be in past/future</td><td><code>@Future LocalDate deliveryDate</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Step 2: Use @Valid in Controller</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Controller with validation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@PostMapping("/booking")
+public String processBooking(
+    @Valid @ModelAttribute("booking") Booking booking,
+    BindingResult result    // Must be right after @Valid @ModelAttribute
+) {
+    if (result.hasErrors()) {
+        return "booking-form";  // Re-show form with errors
+    }
+    bookingService.save(booking);
+    return "redirect:/booking/confirmation";
+}</code></pre>
+  </div>
+
+  <h3>Step 3: Display Errors in JSP</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking-form.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;form:form modelAttribute="booking" method="POST" action="/booking"&gt;
+
+    &lt;div class="field"&gt;
+        &lt;label&gt;Sender Name&lt;/label&gt;
+        &lt;form:input path="senderName" /&gt;
+        &lt;form:errors path="senderName" cssClass="error-text" /&gt;
+        &lt;!-- Shows: "Sender name is required" if blank --&gt;
+    &lt;/div&gt;
+
+    &lt;div class="field"&gt;
+        &lt;label&gt;Weight&lt;/label&gt;
+        &lt;form:input path="weight" type="number" /&gt;
+        &lt;form:errors path="weight" cssClass="error-text" /&gt;
+        &lt;!-- Shows: "Maximum weight is 50 kg" if > 50 --&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Show ALL errors at top --&gt;
+    &lt;form:errors path="*" cssClass="error-summary" /&gt;
+
+    &lt;button type="submit"&gt;Book&lt;/button&gt;
+&lt;/form:form&gt;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>User registration uses <code>@Email</code> on the email field, <code>@Size(min=6)</code> on password. Booking uses <code>@NotBlank</code> on sender/receiver names and <code>@Min(1)</code> on weight. All validation errors display inline next to the form field.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Dependency Required</div>
+    <p>Validation annotations come from <code>jakarta.validation:jakarta.validation-api</code> and the implementation <code>org.hibernate.validator:hibernate-validator</code>. Add both to your <code>pom.xml</code>. Without the implementation, <code>@Valid</code> silently does nothing.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: EXCEPTION HANDLING                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="exception-handling">
+  <div class="section-tag">Section 11</div>
+  <h2>Exception Handling</h2>
+  <p class="section-desc">Instead of try/catch in every controller method, Spring lets you handle exceptions centrally with <code>@ExceptionHandler</code> and <code>@ControllerAdvice</code>.</p>
+
+  <h3>Approach 1: @ExceptionHandler (Per Controller)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    @GetMapping("/tracking")
+    public String track(@RequestParam int bookingId, Model model) {
+        // If booking doesn't exist, service throws BookingNotFoundException
+        Booking booking = bookingService.findById(bookingId);
+        model.addAttribute("booking", booking);
+        return "tracking";
+    }
+
+    // Handles BookingNotFoundException ONLY in this controller
+    @ExceptionHandler(BookingNotFoundException.class)
+    public String handleBookingNotFound(BookingNotFoundException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/booking-not-found";  // → booking-not-found.jsp
+    }
+}</code></pre>
+  </div>
+
+  <h3>Approach 2: @ControllerAdvice (Global)</h3>
+
+  <p>A single class that handles exceptions from <strong>ALL controllers</strong>. Much better than putting <code>@ExceptionHandler</code> in every controller.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GlobalExceptionHandler.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    // Handle specific business exceptions
+    @ExceptionHandler(BookingNotFoundException.class)
+    public String handleBookingNotFound(BookingNotFoundException ex, Model model) {
+        model.addAttribute("errorMessage", "Booking not found: " + ex.getMessage());
+        return "error/not-found";
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public String handleDuplicateEmail(DuplicateEmailException ex, Model model) {
+        model.addAttribute("errorMessage", "Email already registered");
+        return "error/duplicate";
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public String handleUnauthorized() {
+        return "redirect:/login?error=unauthorized";
+    }
+
+    // Catch-all for anything unexpected
+    @ExceptionHandler(Exception.class)
+    public String handleGeneral(Exception ex, Model model) {
+        model.addAttribute("errorMessage", "Something went wrong. Please try again.");
+        // Log the actual error for debugging
+        ex.printStackTrace();
+        return "error/general";
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ControllerAdvice</div>
+        <div class="breakdown-explain">Marks this class as a global exception handler. Spring scans all controllers, and any unhandled exception gets routed here. "Advice" is AOP terminology — it advises (wraps around) controller methods.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ExceptionHandler(BookingNotFoundException.class)</div>
+        <div class="breakdown-explain">This method handles BookingNotFoundException from ANY controller. Spring matches the exception type. More specific handlers (BookingNotFoundException) are tried before generic ones (Exception).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ExceptionHandler(Exception.class)</div>
+        <div class="breakdown-explain">The catch-all. If no other handler matches, this one catches it. Always put this last. Log the real error for debugging, but show a user-friendly message on the page.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>We use <code>@ControllerAdvice</code> with handlers for:</p>
+    <ul>
+      <li><code>BookingNotFoundException</code> &rarr; "Booking #xyz not found" page</li>
+      <li><code>DuplicateEmailException</code> &rarr; redirect to register with error</li>
+      <li><code>UnauthorizedException</code> &rarr; redirect to login</li>
+      <li><code>Exception</code> (catch-all) &rarr; generic error page</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: NIMBUS CONTROLLERS                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-controllers">
+  <div class="section-tag">Section 12</div>
+  <h2>Full Nimbus Controllers</h2>
+  <p class="section-desc">The actual controllers for Nimbus &mdash; converting raw servlets to Spring MVC. Each servlet becomes one or two annotated methods.</p>
+
+  <h3>LoginController</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LoginController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class LoginController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login";  // → /WEB-INF/views/login.jsp
+    }
+
+    @PostMapping("/login")
+    public String processLogin(
+        @RequestParam String email,
+        @RequestParam String password,
+        HttpSession session,
+        Model model
+    ) {
+        User user = userService.authenticate(email, password);
+
+        if (user == null) {
+            model.addAttribute("error", "Invalid email or password");
+            return "login";  // Re-show login page with error
+        }
+
+        session.setAttribute("loggedInUser", user);
+
+        // Redirect based on role
+        if ("ADMIN".equals(user.getRole())) {
+            return "redirect:/admin/dashboard";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login?logout=true";
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Autowired private UserService userService;</div>
+        <div class="breakdown-explain">Spring injects the UserService bean. No "new UserService()" — Spring's IoC container creates it and gives it to us. The service handles authentication logic.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@GetMapping("/login") → return "login"</div>
+        <div class="breakdown-explain">When user visits /login in browser (GET request), show the login.jsp page. No data needed, just the form.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PostMapping("/login") with @RequestParam</div>
+        <div class="breakdown-explain">When the login form is submitted (POST), Spring extracts email and password from the form data. No request.getParameter() needed.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">session.setAttribute("loggedInUser", user);</div>
+        <div class="breakdown-explain">Stores the authenticated user in the HTTP session. Every subsequent request from this browser will have access to this user object via session.getAttribute().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">return "redirect:/dashboard";</div>
+        <div class="breakdown-explain">After successful login, redirect (HTTP 302) to the dashboard. PRG pattern — if user refreshes, it's a GET to /dashboard, not a re-POST of credentials.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>BookingController</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@RequestMapping("/booking")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    // Show booking form
+    @GetMapping
+    public String showForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("booking", new Booking());
+        model.addAttribute("userName", user.getName());
+        return "booking-form";
+    }
+
+    // Process booking form submission
+    @PostMapping
+    public String processBooking(
+        @Valid @ModelAttribute("booking") Booking booking,
+        BindingResult result,
+        HttpSession session,
+        RedirectAttributes redirectAttrs
+    ) {
+        if (result.hasErrors()) {
+            return "booking-form";
+        }
+
+        User user = (User) session.getAttribute("loggedInUser");
+        booking.setUserId(user.getId());
+        booking.setStatus("BOOKED");
+        booking.setBookingDate(LocalDate.now());
+
+        String bookingId = bookingService.createBooking(booking);
+
+        // Flash attribute — available after redirect, then auto-deleted
+        redirectAttrs.addFlashAttribute("successMessage",
+            "Booking created! ID: " + bookingId);
+
+        return "redirect:/booking/confirmation";
+    }
+
+    // Confirmation page
+    @GetMapping("/confirmation")
+    public String confirmation() {
+        return "booking-confirmation";
+    }
+}</code></pre>
+  </div>
+
+  <h3>TrackingController</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class TrackingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    @GetMapping("/tracking")
+    public String showTrackingForm() {
+        return "tracking-form";  // Shows form with bookingId input
+    }
+
+    @GetMapping("/tracking/result")
+    public String trackBooking(
+        @RequestParam("bookingId") String bookingId,
+        Model model
+    ) {
+        Booking booking = bookingService.findByBookingId(bookingId);
+
+        if (booking == null) {
+            model.addAttribute("error", "No booking found with ID: " + bookingId);
+            return "tracking-form";
+        }
+
+        model.addAttribute("booking", booking);
+        model.addAttribute("statusHistory", bookingService.getStatusHistory(bookingId));
+        return "tracking-result";
+    }
+}</code></pre>
+  </div>
+
+  <h3>RegisterController</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">RegisterController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class RegisterController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("user", new User());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String processRegistration(
+        @Valid @ModelAttribute("user") User user,
+        BindingResult result,
+        Model model
+    ) {
+        if (result.hasErrors()) {
+            return "register";
+        }
+
+        try {
+            userService.register(user);
+            return "redirect:/login?registered=true";
+        } catch (DuplicateEmailException ex) {
+            model.addAttribute("emailError", "Email already registered");
+            return "register";
+        }
+    }
+}</code></pre>
+  </div>
+
+  <h3>DeliveryController + HistoryController</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DeliveryController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@RequestMapping("/delivery")
+public class DeliveryController {
+
+    @Autowired
+    private DeliveryService deliveryService;
+
+    @PostMapping("/status")
+    public String updateStatus(
+        @RequestParam String bookingId,
+        @RequestParam String newStatus,
+        HttpSession session,
+        RedirectAttributes redirectAttrs
+    ) {
+        User officer = (User) session.getAttribute("loggedInUser");
+
+        deliveryService.updateStatus(bookingId, newStatus, officer.getId());
+
+        redirectAttrs.addFlashAttribute("message",
+            "Status updated to " + newStatus);
+
+        return "redirect:/delivery/dashboard";
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HistoryController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class HistoryController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    @GetMapping("/history")
+    public String showHistory(
+        @RequestParam(required = false) String startDate,
+        @RequestParam(required = false) String endDate,
+        HttpSession session,
+        Model model
+    ) {
+        User user = (User) session.getAttribute("loggedInUser");
+
+        List&lt;Booking&gt; bookings;
+        if (startDate != null &amp;&amp; endDate != null) {
+            bookings = bookingService.findByUserAndDateRange(
+                user.getId(),
+                LocalDate.parse(startDate),
+                LocalDate.parse(endDate)
+            );
+        } else {
+            bookings = bookingService.findByUserId(user.getId());
+        }
+
+        model.addAttribute("bookings", bookings);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        return "history";
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: SPRING MVC CONFIGURATION                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="configuration">
+  <div class="section-tag">Section 13</div>
+  <h2>Spring MVC Configuration</h2>
+  <p class="section-desc">Three things to configure: component scanning (find controllers), view resolver (find JSPs), and the DispatcherServlet itself.</p>
+
+  <h3>Java Config (Modern Approach)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WebConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = "com.nimbus")
+public class WebConfig implements WebMvcConfigurer {
+
+    // View Resolver — tells Spring where JSPs live
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        return resolver;
+    }
+
+    // Static resources (CSS, JS, images)
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("/static/");
+    }
+
+    // Message source for validation messages (optional)
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+        source.setBasename("messages");
+        return source;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Configuration</div>
+        <div class="breakdown-explain">Marks this as a Spring config class. Replaces XML config files. Spring reads this at startup.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@EnableWebMvc</div>
+        <div class="breakdown-explain">Enables Spring MVC features: argument resolvers, message converters, etc. Without this, @RequestParam, @ModelAttribute won't work.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ComponentScan(basePackages = "com.nimbus")</div>
+        <div class="breakdown-explain">Tells Spring to scan the com.nimbus package (and sub-packages) for @Controller, @Service, @Repository, @Component classes and register them as beans.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">implements WebMvcConfigurer</div>
+        <div class="breakdown-explain">Interface that lets you customize Spring MVC behavior. Override methods to add interceptors, resource handlers, CORS config, etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">resolver.setPrefix("/WEB-INF/views/") + setSuffix(".jsp")</div>
+        <div class="breakdown-explain">When controller returns "login", ViewResolver builds: /WEB-INF/views/ + login + .jsp = /WEB-INF/views/login.jsp. This way controllers only return short names.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>XML Config (Traditional)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">spring-mvc.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/mvc
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd"&gt;
+
+    &lt;!-- Enable annotation-driven MVC --&gt;
+    &lt;mvc:annotation-driven /&gt;
+
+    &lt;!-- Scan for @Controller, @Service, @Repository --&gt;
+    &lt;context:component-scan base-package="com.nimbus" /&gt;
+
+    &lt;!-- View Resolver --&gt;
+    &lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;
+        &lt;property name="prefix" value="/WEB-INF/views/" /&gt;
+        &lt;property name="suffix" value=".jsp" /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- Static resources --&gt;
+    &lt;mvc:resources mapping="/static/**" location="/static/" /&gt;
+
+&lt;/beans&gt;</code></pre>
+  </div>
+
+  <h3>Nimbus Project Structure</h3>
+
+  <div class="diagram">
+    <pre>
+nimbus-web/
+├── src/main/java/com/nimbus/
+│   ├── config/
+│   │   └── WebConfig.java              ← @Configuration + @EnableWebMvc
+│   ├── controller/
+│   │   ├── LoginController.java        ← @Controller
+│   │   ├── RegisterController.java
+│   │   ├── BookingController.java
+│   │   ├── TrackingController.java
+│   │   ├── DeliveryController.java
+│   │   └── HistoryController.java
+│   ├── service/
+│   │   ├── UserService.java            ← @Service
+│   │   ├── BookingService.java
+│   │   └── DeliveryService.java
+│   ├── dao/
+│   │   ├── UserDAO.java                ← @Repository
+│   │   ├── BookingDAO.java
+│   │   └── DeliveryDAO.java
+│   ├── model/
+│   │   ├── User.java
+│   │   ├── Booking.java
+│   │   └── Parcel.java
+│   └── exception/
+│       ├── GlobalExceptionHandler.java  ← @ControllerAdvice
+│       ├── BookingNotFoundException.java
+│       └── DuplicateEmailException.java
+├── src/main/webapp/
+│   ├── WEB-INF/
+│   │   ├── views/
+│   │   │   ├── login.jsp
+│   │   │   ├── register.jsp
+│   │   │   ├── booking-form.jsp
+│   │   │   ├── tracking-result.jsp
+│   │   │   ├── history.jsp
+│   │   │   └── error/
+│   │   │       ├── not-found.jsp
+│   │   │       └── general.jsp
+│   │   └── web.xml
+│   └── static/
+│       ├── css/
+│       └── js/
+└── pom.xml
+    </pre>
+    <div class="diagram-label">Nimbus project structure with Spring MVC &mdash; clean separation of concerns</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 14: SERVLET vs SPRING MVC COMPARISON                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="servlet-vs-spring">
+  <div class="section-tag">Section 14</div>
+  <h2>Raw Servlet vs Spring MVC &mdash; Side by Side</h2>
+  <p class="section-desc">The same feature implemented both ways. See exactly how Spring MVC eliminates boilerplate.</p>
+
+  <h3>Login Feature</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Raw Servlet</div>
+      <div class="comparison-body">
+        <pre><code class="language-java" style="font-size:0.75rem;">// LoginServlet.java
+@WebServlet("/login")
+public class LoginServlet
+    extends HttpServlet {
+
+  private UserDAO userDAO
+    = new UserDAO();
+
+  @Override
+  protected void doGet(
+    HttpServletRequest req,
+    HttpServletResponse resp)
+    throws ServletException,
+           IOException {
+    req.getRequestDispatcher(
+      "/WEB-INF/login.jsp")
+      .forward(req, resp);
+  }
+
+  @Override
+  protected void doPost(
+    HttpServletRequest req,
+    HttpServletResponse resp)
+    throws ServletException,
+           IOException {
+    String email = req
+      .getParameter("email");
+    String password = req
+      .getParameter("password");
+
+    User user = userDAO
+      .authenticate(email, password);
+
+    if (user != null) {
+      HttpSession session =
+        req.getSession();
+      session.setAttribute(
+        "loggedInUser", user);
+      resp.sendRedirect(
+        "/nimbus/dashboard");
+    } else {
+      req.setAttribute(
+        "error", "Invalid login");
+      req.getRequestDispatcher(
+        "/WEB-INF/login.jsp")
+        .forward(req, resp);
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Spring MVC</div>
+      <div class="comparison-body">
+        <pre><code class="language-java" style="font-size:0.75rem;">// LoginController.java
+@Controller
+public class LoginController {
+
+  @Autowired
+  private UserService userService;
+
+  @GetMapping("/login")
+  public String showLogin() {
+    return "login";
+  }
+
+  @PostMapping("/login")
+  public String processLogin(
+    @RequestParam String email,
+    @RequestParam String password,
+    HttpSession session,
+    Model model
+  ) {
+    User user = userService
+      .authenticate(
+        email, password);
+
+    if (user != null) {
+      session.setAttribute(
+        "loggedInUser", user);
+      return
+        "redirect:/dashboard";
+    }
+
+    model.addAttribute(
+      "error",
+      "Invalid login");
+    return "login";
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>What Changed?</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Aspect</th><th>Raw Servlet</th><th>Spring MVC</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Lines of code</td><td>~40</td><td>~25</td></tr>
+      <tr><td>Extending</td><td><code>extends HttpServlet</code></td><td>POJO &mdash; no extends</td></tr>
+      <tr><td>URL mapping</td><td><code>@WebServlet</code> or web.xml</td><td><code>@GetMapping</code> / <code>@PostMapping</code></td></tr>
+      <tr><td>Parameters</td><td><code>req.getParameter("email")</code></td><td><code>@RequestParam String email</code></td></tr>
+      <tr><td>View forwarding</td><td><code>req.getRequestDispatcher(...).forward()</code></td><td><code>return "login";</code></td></tr>
+      <tr><td>Redirect</td><td><code>resp.sendRedirect("/nimbus/dashboard")</code></td><td><code>return "redirect:/dashboard";</code></td></tr>
+      <tr><td>Dependencies</td><td><code>new UserDAO()</code></td><td><code>@Autowired UserService</code></td></tr>
+      <tr><td>Exception handling</td><td>try/catch in every servlet</td><td><code>@ControllerAdvice</code> globally</td></tr>
+      <tr><td>Checked exceptions</td><td>Must declare <code>throws</code></td><td>Not needed</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tracking Feature</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Raw Servlet</div>
+      <div class="comparison-body">
+        <pre><code class="language-java" style="font-size:0.75rem;">@WebServlet("/tracking")
+public class TrackingServlet
+    extends HttpServlet {
+
+  private BookingDAO bookingDAO
+    = new BookingDAO();
+
+  @Override
+  protected void doGet(
+    HttpServletRequest req,
+    HttpServletResponse resp)
+    throws ServletException,
+           IOException {
+    String idStr = req
+      .getParameter("bookingId");
+
+    if (idStr == null
+      || idStr.isEmpty()) {
+      req.setAttribute("error",
+        "Booking ID required");
+      req.getRequestDispatcher(
+        "/WEB-INF/tracking.jsp")
+        .forward(req, resp);
+      return;
+    }
+
+    try {
+      int id = Integer
+        .parseInt(idStr);
+      Booking b = bookingDAO
+        .findById(id);
+      req.setAttribute(
+        "booking", b);
+    } catch (NumberFormatException e) {
+      req.setAttribute("error",
+        "Invalid booking ID");
+    }
+
+    req.getRequestDispatcher(
+      "/WEB-INF/tracking.jsp")
+      .forward(req, resp);
+  }
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Spring MVC</div>
+      <div class="comparison-body">
+        <pre><code class="language-java" style="font-size:0.75rem;">@Controller
+public class TrackingController {
+
+  @Autowired
+  private BookingService
+    bookingService;
+
+  @GetMapping("/tracking")
+  public String track(
+    @RequestParam("bookingId")
+    int bookingId,
+    Model model
+  ) {
+    Booking booking =
+      bookingService
+        .findById(bookingId);
+
+    model.addAttribute(
+      "booking", booking);
+
+    return "tracking";
+  }
+
+  // Type mismatch and
+  // missing params are
+  // handled automatically
+  // by Spring or by
+  // @ControllerAdvice
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Spring MVC doesn&rsquo;t do anything magical. It does the <strong>same work</strong> the servlet does (getParameter, parseInt, forward) &mdash; but it does it <strong>for you</strong>, behind the scenes. <code>@RequestParam int bookingId</code> means Spring calls <code>getParameter("bookingId")</code>, parses it to <code>int</code>, and if it fails, throws a <code>TypeMismatchException</code> that your <code>@ControllerAdvice</code> catches. You just write the business logic.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 15: PRACTICE EXERCISES                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 15</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build these to solidify your understanding. Start from Exercise 1 and work up.</p>
+
+  <h3>Exercise 1: Hello Controller</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create a <code>HelloController</code> with:</p>
+    <ul>
+      <li><code>@GetMapping("/")</code> &rarr; returns view "home"</li>
+      <li><code>@GetMapping("/greet")</code> that takes <code>@RequestParam String name</code> and adds "Hello, [name]!" to the model. Return view "greet".</li>
+      <li>Make the <code>name</code> parameter optional with a default value of "World"</li>
+    </ul>
+    <p><strong>Test:</strong> <code>/greet</code> shows "Hello, World!" and <code>/greet?name=Darshan</code> shows "Hello, Darshan!"</p>
+  </div>
+
+  <h3>Exercise 2: Path Variables</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create a <code>ProductController</code> with:</p>
+    <ul>
+      <li><code>@GetMapping("/products")</code> &rarr; shows list of all products</li>
+      <li><code>@GetMapping("/products/{id}")</code> &rarr; shows single product detail</li>
+      <li><code>@GetMapping("/products/category/{category}")</code> &rarr; filters by category</li>
+    </ul>
+    <p><strong>Test:</strong> <code>/products/5</code> shows product #5. <code>/products/category/electronics</code> shows only electronics.</p>
+  </div>
+
+  <h3>Exercise 3: Form with Validation</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create a <code>ContactController</code> with a contact form:</p>
+    <ul>
+      <li>Model: <code>ContactForm</code> with fields: <code>name</code> (@NotBlank), <code>email</code> (@Email), <code>message</code> (@Size min=10)</li>
+      <li><code>@GetMapping("/contact")</code> &rarr; shows the form</li>
+      <li><code>@PostMapping("/contact")</code> &rarr; validates with <code>@Valid</code>, shows errors or redirects to thank-you page</li>
+      <li>Use PRG pattern after successful submission</li>
+    </ul>
+  </div>
+
+  <h3>Exercise 4: Session-Based Shopping Cart</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create a <code>CartController</code> using <code>HttpSession</code>:</p>
+    <ul>
+      <li><code>@PostMapping("/cart/add")</code> &rarr; adds item to <code>List&lt;String&gt;</code> stored in session</li>
+      <li><code>@GetMapping("/cart")</code> &rarr; shows all items in session cart</li>
+      <li><code>@PostMapping("/cart/clear")</code> &rarr; removes cart from session</li>
+    </ul>
+    <p><strong>Key learning:</strong> Session data persists across requests for the same user. Different users (different browsers) have different sessions.</p>
+  </div>
+
+  <h3>Exercise 5: Exception Handling</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create a <code>@ControllerAdvice</code> that handles:</p>
+    <ul>
+      <li>Custom <code>ResourceNotFoundException</code> &rarr; returns "error/404" view with the error message</li>
+      <li><code>NumberFormatException</code> &rarr; returns "error/bad-request" view</li>
+      <li>Generic <code>Exception</code> &rarr; returns "error/500" view</li>
+    </ul>
+    <p>Create a test controller that deliberately throws each exception type to verify your handler works.</p>
+  </div>
+
+  <h3>Exercise 6: Convert a Servlet to Controller</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Take this raw servlet and convert it to a Spring MVC controller:</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Convert this SearchServlet</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/search")
+public class SearchServlet extends HttpServlet {
+    private BookingDAO bookingDAO = new BookingDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String query = req.getParameter("q");
+        String city = req.getParameter("city");
+        String sort = req.getParameter("sort");
+
+        if (sort == null) sort = "date";
+
+        List&lt;Booking&gt; results = bookingDAO.search(query, city, sort);
+
+        req.setAttribute("results", results);
+        req.setAttribute("query", query);
+        req.setAttribute("resultCount", results.size());
+        req.getRequestDispatcher("/WEB-INF/search.jsp").forward(req, resp);
+    }
+}
+
+// Convert to @Controller with:
+// - @Autowired BookingService (not DAO directly)
+// - @RequestParam with defaults
+// - Model instead of req.setAttribute
+// - return "search" instead of RequestDispatcher</code></pre>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="spring-annotations.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Spring Annotations</span>
+  </a>
+  <a href="spring-jdbc.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Spring JDBC &amp; Data Access</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

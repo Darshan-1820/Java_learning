@@ -1,0 +1,2702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Lab | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .exercise {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .exercise-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .exercise-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .exercise-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+    .exercise-body {
+      padding: 20px;
+    }
+    .exercise-body p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+    .exercise-body p:last-child { margin-bottom: 0; }
+    .difficulty {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .difficulty.easy { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+    .difficulty.medium { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+    .difficulty.hard { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+    .bug-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--red);
+      background: rgba(239, 68, 68, 0.1);
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+    .requirement-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+    }
+    .requirement-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+    }
+    .requirement-list li::before {
+      content: "\25B8";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link active"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: Output Prediction                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="output-prediction">
+  <div class="section-tag">Section 01</div>
+  <h2>Output Prediction</h2>
+  <p class="section-desc">Read the code carefully, trace the execution, and predict what gets printed. Click "Reveal Answer" to check. 15 exercises covering every tricky area of Java.</p>
+
+  <!-- Exercise 1: Type Promotion -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">1</span>
+      <span class="exercise-title">Type Promotion in Arithmetic</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">TypePromotion.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class TypePromotion {
+    public static void main(String[] args) {
+        byte a = 10;
+        byte b = 20;
+        // byte c = a + b;  // Would this compile?
+        int c = a + b;
+        System.out.println(c);
+
+        int x = 7;
+        int y = 2;
+        System.out.println(x / y);
+        System.out.println((double) x / y);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">30</div>
+            <div class="breakdown-explain"><code>byte + byte</code> promotes to <code>int</code>. So <code>a + b = 30</code> as an int. The commented line would NOT compile &mdash; you can't assign an int result back to byte without casting.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">3</div>
+            <div class="breakdown-explain"><code>int / int = int</code>. Integer division truncates &mdash; <code>7 / 2 = 3</code>, not 3.5.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">3.5</div>
+            <div class="breakdown-explain"><code>(double) x</code> casts x to 7.0 first. Then <code>7.0 / 2</code> promotes 2 to double &rarr; <code>3.5</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 2: String == vs .equals() -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">2</span>
+      <span class="exercise-title">String Pool &amp; Reference Comparison</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">StringCompare.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class StringCompare {
+    public static void main(String[] args) {
+        String a = "Nimbus";
+        String b = "Nimbus";
+        String c = new String("Nimbus");
+
+        System.out.println(a == b);
+        System.out.println(a == c);
+        System.out.println(a.equals(c));
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">true</div>
+            <div class="breakdown-explain">Both <code>a</code> and <code>b</code> are string literals &mdash; Java puts them in the String Pool. Same literal = same reference. <code>==</code> checks reference, so true.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">false</div>
+            <div class="breakdown-explain"><code>new String()</code> forces a new object on the heap, bypassing the pool. Different reference &rarr; <code>==</code> returns false.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">true</div>
+            <div class="breakdown-explain"><code>.equals()</code> compares content. Both contain "Nimbus" &rarr; true. Always use <code>.equals()</code> for String comparison.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 3: Casting -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">3</span>
+      <span class="exercise-title">Implicit &amp; Explicit Casting</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">CastingDemo.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class CastingDemo {
+    public static void main(String[] args) {
+        double price = 299.99;
+        int rounded = (int) price;
+        System.out.println(rounded);
+
+        int big = 130;
+        byte small = (byte) big;
+        System.out.println(small);
+
+        char letter = 'A';
+        int ascii = letter;
+        System.out.println(ascii);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">299</div>
+            <div class="breakdown-explain">Casting double to int truncates the decimal. No rounding &mdash; just chops off .99.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">-126</div>
+            <div class="breakdown-explain">byte range is -128 to 127. 130 overflows: <code>130 - 256 = -126</code>. This is narrowing conversion &mdash; data loss happens silently.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">65</div>
+            <div class="breakdown-explain">char to int is widening &mdash; automatic. 'A' = Unicode 65. No cast needed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 4: Constructor Chaining -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">4</span>
+      <span class="exercise-title">Constructor Chaining</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">ConstructorChain.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">class Vehicle {
+    Vehicle() {
+        System.out.println("Vehicle created");
+    }
+}
+
+class Car extends Vehicle {
+    Car() {
+        System.out.println("Car created");
+    }
+}
+
+class ElectricCar extends Car {
+    ElectricCar() {
+        System.out.println("ElectricCar created");
+    }
+}
+
+public class ConstructorChain {
+    public static void main(String[] args) {
+        ElectricCar tesla = new ElectricCar();
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Vehicle created</div>
+            <div class="breakdown-explain">Constructors chain upward. <code>ElectricCar()</code> calls <code>Car()</code> which calls <code>Vehicle()</code>. Parent constructors execute first &mdash; top-down. Java inserts an invisible <code>super()</code> as the first line of every constructor.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Car created</div>
+            <div class="breakdown-explain">After Vehicle's constructor finishes, Car's constructor body runs.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">ElectricCar created</div>
+            <div class="breakdown-explain">Finally, ElectricCar's own constructor body runs last.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 5: Polymorphism - Which Method Runs? -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">5</span>
+      <span class="exercise-title">Polymorphism &mdash; Which Method Runs?</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">PolyDispatch.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">class Parcel {
+    String getType() { return "Generic Parcel"; }
+}
+
+class ExpressParcel extends Parcel {
+    String getType() { return "Express Parcel"; }
+    String getSpeed() { return "Fast"; }
+}
+
+public class PolyDispatch {
+    public static void main(String[] args) {
+        Parcel p = new ExpressParcel();
+        System.out.println(p.getType());
+        // System.out.println(p.getSpeed()); // Would this compile?
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Express Parcel</div>
+            <div class="breakdown-explain">Reference type is <code>Parcel</code>, but actual object is <code>ExpressParcel</code>. Method dispatch uses the <strong>actual object type</strong> at runtime (dynamic binding). The overridden version in ExpressParcel runs.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">p.getSpeed() &mdash; WON'T COMPILE</div>
+            <div class="breakdown-explain">The compiler sees <code>p</code> as type <code>Parcel</code>. Parcel has no <code>getSpeed()</code> method. You'd need to cast: <code>((ExpressParcel) p).getSpeed()</code>. Rule: reference type controls what you CAN call; object type controls what RUNS.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 6: Exception Flow -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">6</span>
+      <span class="exercise-title">Exception Flow &mdash; What Executes?</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">ExceptionFlow.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class ExceptionFlow {
+    public static void main(String[] args) {
+        System.out.println("Start");
+        try {
+            System.out.println("Try block");
+            int result = 10 / 0;
+            System.out.println("After division");
+        } catch (ArithmeticException e) {
+            System.out.println("Caught: " + e.getMessage());
+        } finally {
+            System.out.println("Finally block");
+        }
+        System.out.println("End");
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Start</div>
+            <div class="breakdown-explain">Normal execution before the try block.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Try block</div>
+            <div class="breakdown-explain">Enters try, prints this line before the exception occurs.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Caught: / by zero</div>
+            <div class="breakdown-explain"><code>10 / 0</code> throws ArithmeticException. "After division" is SKIPPED &mdash; execution jumps to catch. The message from the exception is "/ by zero".</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">4</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Finally block</div>
+            <div class="breakdown-explain">Finally ALWAYS runs &mdash; whether exception happened or not. Cleanup code goes here.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">5</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">End</div>
+            <div class="breakdown-explain">After the try-catch-finally, normal execution continues because the exception was caught.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 7: Collection Iteration -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">7</span>
+      <span class="exercise-title">Collection Iteration &amp; Modification</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">CollectionIter.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">import java.util.*;
+
+public class CollectionIter {
+    public static void main(String[] args) {
+        List&lt;String&gt; statuses = new ArrayList&lt;&gt;();
+        statuses.add("BOOKED");
+        statuses.add("IN_TRANSIT");
+        statuses.add("DELIVERED");
+
+        for (String s : statuses) {
+            if (s.equals("IN_TRANSIT")) {
+                statuses.remove(s);
+            }
+        }
+        System.out.println(statuses);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">ConcurrentModificationException!</div>
+            <div class="breakdown-explain">You CANNOT modify a collection while iterating it with a for-each loop. The for-each loop uses an Iterator internally, and <code>statuses.remove()</code> modifies the list behind the iterator's back. Fix: use <code>Iterator.remove()</code> or <code>statuses.removeIf(s -&gt; s.equals("IN_TRANSIT"))</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 8: Thread Interleaving -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">8</span>
+      <span class="exercise-title">Thread Interleaving</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print? (Trick question)</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">ThreadInterleave.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class ThreadInterleave {
+    public static void main(String[] args) {
+        Thread t1 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 3; i++) System.out.print("A");
+        });
+        Thread t2 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 3; i++) System.out.print("B");
+        });
+        t1.start();
+        t2.start();
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">UNPREDICTABLE &mdash; could be AAABBB, BBBAAA, ABABAB, AABBBA, etc.</div>
+            <div class="breakdown-explain">Thread scheduling is non-deterministic. The OS decides when each thread runs. Both threads compete for CPU time and their output interleaves randomly. You'd need <code>t1.join()</code> before starting t2 to guarantee order, or use synchronization.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 9: Switch Fall-Through -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">9</span>
+      <span class="exercise-title">Switch Fall-Through</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">SwitchFall.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class SwitchFall {
+    public static void main(String[] args) {
+        String status = "IN_TRANSIT";
+        switch (status) {
+            case "BOOKED":
+                System.out.println("Booked");
+            case "IN_TRANSIT":
+                System.out.println("In Transit");
+            case "OUT_FOR_DELIVERY":
+                System.out.println("Out for Delivery");
+            case "DELIVERED":
+                System.out.println("Delivered");
+                break;
+            default:
+                System.out.println("Unknown");
+        }
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">In Transit</div>
+            <div class="breakdown-explain">Matches "IN_TRANSIT" case, starts executing here.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Out for Delivery</div>
+            <div class="breakdown-explain">No <code>break</code> after "IN_TRANSIT" case &mdash; execution falls through to the next case.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Delivered</div>
+            <div class="breakdown-explain">Still falling through. Hits <code>break</code> here, so execution finally stops. Without breaks, switch "waterfalls" through all remaining cases.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 10: Post-increment vs Pre-increment -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">10</span>
+      <span class="exercise-title">Post-increment vs Pre-increment</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">IncrementDemo.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class IncrementDemo {
+    public static void main(String[] args) {
+        int a = 5;
+        int b = a++;
+        System.out.println("a=" + a + " b=" + b);
+
+        int c = 5;
+        int d = ++c;
+        System.out.println("c=" + c + " d=" + d);
+
+        int x = 10;
+        System.out.println(x++ + " " + x);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">a=6 b=5</div>
+            <div class="breakdown-explain"><code>a++</code> is post-increment: use current value (5) FIRST, then increment. So b gets 5, then a becomes 6.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">c=6 d=6</div>
+            <div class="breakdown-explain"><code>++c</code> is pre-increment: increment FIRST, then use new value. So c becomes 6, d gets 6.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">10 11</div>
+            <div class="breakdown-explain"><code>x++</code> evaluates to 10 (old value), then x becomes 11. The second <code>x</code> in the concatenation sees the already-incremented value 11.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 11: Autoboxing Trap -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">11</span>
+      <span class="exercise-title">Autoboxing &amp; Integer Cache</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">AutoboxTrap.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class AutoboxTrap {
+    public static void main(String[] args) {
+        Integer a = 100;
+        Integer b = 100;
+        System.out.println(a == b);
+
+        Integer c = 200;
+        Integer d = 200;
+        System.out.println(c == d);
+
+        System.out.println(c.equals(d));
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">true</div>
+            <div class="breakdown-explain">Java caches Integer objects for values -128 to 127. Both <code>a</code> and <code>b</code> point to the same cached object. <code>==</code> checks reference &rarr; same object &rarr; true.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">false</div>
+            <div class="breakdown-explain">200 is outside the cache range. Two separate Integer objects are created. Different references &rarr; <code>==</code> returns false. This is the classic autoboxing trap.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">true</div>
+            <div class="breakdown-explain"><code>.equals()</code> compares values, not references. Always use <code>.equals()</code> for wrapper types.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 12: Static vs Instance -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">12</span>
+      <span class="exercise-title">Static vs Instance Members</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">StaticDemo.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">class Booking {
+    static int totalBookings = 0;
+    String bookingId;
+
+    Booking(String id) {
+        this.bookingId = id;
+        totalBookings++;
+    }
+}
+
+public class StaticDemo {
+    public static void main(String[] args) {
+        Booking b1 = new Booking("NMB-001");
+        Booking b2 = new Booking("NMB-002");
+        Booking b3 = new Booking("NMB-003");
+
+        System.out.println(b1.totalBookings);
+        System.out.println(Booking.totalBookings);
+        System.out.println(b2.bookingId);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">3</div>
+            <div class="breakdown-explain"><code>totalBookings</code> is static &mdash; shared across ALL instances. After 3 bookings are created, it's 3. Accessing via <code>b1</code> works but is misleading &mdash; it's the same variable for all objects.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">3</div>
+            <div class="breakdown-explain">Correct way to access static members: <code>ClassName.field</code>. Same value &mdash; 3.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">NMB-002</div>
+            <div class="breakdown-explain"><code>bookingId</code> is an instance field &mdash; each object has its own copy. b2's id is "NMB-002".</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 13: finally with return -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">13</span>
+      <span class="exercise-title">Finally vs Return</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this method return?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">FinallyReturn.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class FinallyReturn {
+    static int getValue() {
+        try {
+            return 1;
+        } catch (Exception e) {
+            return 2;
+        } finally {
+            return 3;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getValue());
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">3</div>
+            <div class="breakdown-explain">Finally block ALWAYS executes, and a <code>return</code> in finally overrides any return in try or catch. The try says "return 1" but before that return completes, finally runs and says "return 3". The 3 wins. This is generally considered bad practice &mdash; never put return in a finally block.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 14: Method Overloading Resolution -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">14</span>
+      <span class="exercise-title">Overloading Resolution</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">OverloadResolve.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class OverloadResolve {
+    static void process(int x) {
+        System.out.println("int: " + x);
+    }
+    static void process(double x) {
+        System.out.println("double: " + x);
+    }
+    static void process(String x) {
+        System.out.println("String: " + x);
+    }
+
+    public static void main(String[] args) {
+        process(42);
+        process(3.14);
+        process('A');
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">int: 42</div>
+            <div class="breakdown-explain">42 is an int literal &rarr; exact match to <code>process(int)</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">double: 3.14</div>
+            <div class="breakdown-explain">3.14 is a double literal &rarr; exact match to <code>process(double)</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">int: 65</div>
+            <div class="breakdown-explain"><code>'A'</code> is a char. No <code>process(char)</code> exists, so Java widens char to int (65). Widening beats boxing &mdash; it picks <code>process(int)</code>, not <code>process(String)</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 15: HashMap Behavior -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">15</span>
+      <span class="exercise-title">HashMap Duplicate Keys</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>What will this print?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">HashMapDup.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">import java.util.*;
+
+public class HashMapDup {
+    public static void main(String[] args) {
+        Map&lt;String, Double&gt; prices = new HashMap&lt;&gt;();
+        prices.put("Standard", 100.0);
+        prices.put("Express", 250.0);
+        prices.put("Standard", 120.0);
+
+        System.out.println(prices.size());
+        System.out.println(prices.get("Standard"));
+        System.out.println(prices.containsValue(100.0));
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Answer &amp; Explanation</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">2</div>
+            <div class="breakdown-explain">HashMap doesn't allow duplicate keys. The third <code>put</code> overwrites the first "Standard" entry. Only 2 unique keys remain.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">120.0</div>
+            <div class="breakdown-explain">The value was overwritten from 100.0 to 120.0. <code>put()</code> replaces if key exists.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">false</div>
+            <div class="breakdown-explain">100.0 was replaced by 120.0 &mdash; it no longer exists in the map. The old value is gone.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Find the Bug                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="find-the-bug">
+  <div class="section-tag">Section 02</div>
+  <h2>Find the Bug</h2>
+  <p class="section-desc">Each exercise contains broken code. Read it carefully, find the bug, and think about the fix before revealing the answer. 10 exercises covering real-world bugs.</p>
+
+  <!-- Bug 1: NullPointerException -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">1</span>
+      <span class="exercise-title">NullPointerException</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>This code crashes at runtime. Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">NullBug.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class NullBug {
+    public static void main(String[] args) {
+        String trackingId = getTrackingId(999);
+        System.out.println(trackingId.toUpperCase());
+    }
+
+    static String getTrackingId(int bookingId) {
+        if (bookingId &lt; 100) {
+            return "NMB-" + bookingId;
+        }
+        return null;
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: getTrackingId(999) returns null</div>
+            <div class="breakdown-explain">999 &gt; 100, so the if-block is skipped and <code>null</code> is returned. Calling <code>.toUpperCase()</code> on null &rarr; NullPointerException.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Always null-check before calling methods on returned values</div>
+            <div class="breakdown-explain"><code>if (trackingId != null) { System.out.println(trackingId.toUpperCase()); }</code> or make the method never return null by throwing an exception or returning a default value.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 2: Missing break in switch -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">2</span>
+      <span class="exercise-title">Missing break in switch</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>Expected output: "Express rate applied". What actually happens?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">SwitchBug.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class SwitchBug {
+    public static void main(String[] args) {
+        String type = "EXPRESS";
+        double rate = 0;
+
+        switch (type) {
+            case "STANDARD":
+                rate = 50.0;
+            case "EXPRESS":
+                rate = 100.0;
+            case "OVERNIGHT":
+                rate = 200.0;
+        }
+        System.out.println("Rate: " + rate);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: Prints "Rate: 200.0" instead of "Rate: 100.0"</div>
+            <div class="breakdown-explain">No <code>break</code> statements. Execution falls through from EXPRESS to OVERNIGHT, overwriting rate to 200.0.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Add break; after each case</div>
+            <div class="breakdown-explain"><code>case "EXPRESS": rate = 100.0; break;</code> &mdash; always add breaks unless intentional fall-through (and comment it).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 3: == instead of equals -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">3</span>
+      <span class="exercise-title">== Instead of .equals()</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>This validation always fails even when the status is correct. Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">EqualsBug.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class EqualsBug {
+    public static void main(String[] args) {
+        String userInput = new Scanner(System.in).nextLine(); // User types "DELIVERED"
+        String expected = "DELIVERED";
+
+        if (userInput == expected) {
+            System.out.println("Status matched!");
+        } else {
+            System.out.println("Status NOT matched!");
+        }
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: == compares references, not content</div>
+            <div class="breakdown-explain"><code>userInput</code> comes from Scanner (new object on heap). <code>expected</code> is a string literal (in string pool). Different memory locations &rarr; <code>==</code> returns false even though content matches.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Use .equals() &mdash; if (userInput.equals(expected))</div>
+            <div class="breakdown-explain">Or even better: <code>expected.equals(userInput)</code> &mdash; putting the literal first avoids NullPointerException if userInput is somehow null.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 4: Scanner newline trap -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">4</span>
+      <span class="exercise-title">Scanner Newline Trap</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>The program skips the name input entirely. User enters "25" for age but never gets to type their name. Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">ScannerBug.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">import java.util.Scanner;
+
+public class ScannerBug {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter age: ");
+        int age = sc.nextInt();
+
+        System.out.print("Enter name: ");
+        String name = sc.nextLine();
+
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: nextInt() leaves the newline character in the buffer</div>
+            <div class="breakdown-explain">When user types "25\n", <code>nextInt()</code> reads "25" but leaves the <code>\n</code> in the buffer. <code>nextLine()</code> then immediately reads that leftover <code>\n</code> as an empty string.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Add sc.nextLine(); after sc.nextInt() to consume the leftover newline</div>
+            <div class="breakdown-explain"><code>int age = sc.nextInt();</code> then <code>sc.nextLine(); // consume newline</code> then <code>String name = sc.nextLine();</code> &mdash; this is the classic Scanner trap in Java.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 5: Infinite Loop -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">5</span>
+      <span class="exercise-title">Infinite Loop</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>This program hangs and never finishes. Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">InfiniteLoop.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class InfiniteLoop {
+    public static void main(String[] args) {
+        int count = 10;
+        while (count &gt; 0) {
+            System.out.println("Processing parcel #" + count);
+            // count--;  // someone forgot this!
+        }
+        System.out.println("All parcels processed");
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: count never decrements &mdash; condition is always true</div>
+            <div class="breakdown-explain"><code>count</code> stays at 10 forever. <code>count &gt; 0</code> is always true. The loop never ends. "All parcels processed" never prints.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Uncomment count-- to decrement each iteration</div>
+            <div class="breakdown-explain">Always ensure your loop variable moves toward the exit condition. Use a for-loop when the increment pattern is predictable: <code>for (int i = 10; i &gt; 0; i--)</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 6: ArrayIndexOutOfBounds -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">6</span>
+      <span class="exercise-title">ArrayIndexOutOfBounds</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>This code crashes on the last iteration. Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">ArrayBug.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class ArrayBug {
+    public static void main(String[] args) {
+        String[] cities = {"Mumbai", "Delhi", "Bangalore", "Chennai"};
+
+        for (int i = 0; i &lt;= cities.length; i++) {
+            System.out.println(cities[i]);
+        }
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: i &lt;= cities.length goes one index too far</div>
+            <div class="breakdown-explain">Array length is 4, valid indices are 0-3. <code>&lt;=</code> means <code>i</code> reaches 4 &rarr; <code>cities[4]</code> &rarr; ArrayIndexOutOfBoundsException.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Use i &lt; cities.length (strict less-than)</div>
+            <div class="breakdown-explain">This is the #1 beginner bug. Arrays are 0-indexed. Length 4 = indices 0,1,2,3. Always use <code>&lt;</code> not <code>&lt;=</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 7: SQL Injection -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">7</span>
+      <span class="exercise-title">SQL Injection Vulnerability</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>This code "works" but has a critical security vulnerability. What is it?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">SqlInjection.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public List&lt;Booking&gt; searchBookings(String userInput) {
+    String sql = "SELECT * FROM bookings WHERE tracking_id = '" + userInput + "'";
+    Statement stmt = connection.createStatement();
+    ResultSet rs = stmt.executeQuery(sql);
+    // ... process results
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: String concatenation in SQL = SQL Injection</div>
+            <div class="breakdown-explain">If user enters <code>' OR '1'='1</code>, the query becomes <code>SELECT * FROM bookings WHERE tracking_id = '' OR '1'='1'</code> &mdash; returns ALL bookings. Worse: <code>'; DROP TABLE bookings; --</code> could destroy data.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Use PreparedStatement with parameterized queries</div>
+            <div class="breakdown-explain"><code>PreparedStatement ps = conn.prepareStatement("SELECT * FROM bookings WHERE tracking_id = ?"); ps.setString(1, userInput);</code> &mdash; the database treats the input as data, never as SQL code.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 8: Unclosed Connection -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">8</span>
+      <span class="exercise-title">Unclosed Connection (Resource Leak)</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>This works fine for 10 users. With 100 users, the app crashes with "Too many connections". Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">ConnectionLeak.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public Booking getBooking(int id) throws SQLException {
+    Connection conn = DriverManager.getConnection(URL, USER, PASS);
+    PreparedStatement ps = conn.prepareStatement("SELECT * FROM bookings WHERE id = ?");
+    ps.setInt(1, id);
+    ResultSet rs = ps.executeQuery();
+
+    if (rs.next()) {
+        return new Booking(rs.getString("tracking_id"), rs.getDouble("cost"));
+    }
+    return null;
+    // Where's conn.close()? rs.close()? ps.close()?
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: Connection, PreparedStatement, ResultSet are never closed</div>
+            <div class="breakdown-explain">Each call opens a new connection and never releases it. Databases have a connection limit (typically 100-150). After enough calls, no more connections can be opened &rarr; crash.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Use try-with-resources to auto-close all resources</div>
+            <div class="breakdown-explain"><code>try (Connection conn = ...; PreparedStatement ps = ...; ResultSet rs = ...) { ... }</code> &mdash; all three implement <code>AutoCloseable</code> and will be closed automatically, even if an exception occurs.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 9: Wrong Generic Type -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">9</span>
+      <span class="exercise-title">Wrong Generic Type</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>This compiles but crashes at runtime with ClassCastException. Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">GenericBug.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">import java.util.*;
+
+public class GenericBug {
+    public static void main(String[] args) {
+        List bookings = new ArrayList();  // raw type!
+        bookings.add("NMB-001");
+        bookings.add(42);
+        bookings.add(true);
+
+        for (Object item : bookings) {
+            String id = (String) item;  // crashes on second iteration
+            System.out.println(id);
+        }
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: Raw type List accepts anything &mdash; no type safety at compile time</div>
+            <div class="breakdown-explain">Without generics, <code>bookings</code> can hold String, Integer, Boolean &mdash; anything. When you cast <code>(String) item</code> on the Integer 42, it throws ClassCastException at runtime.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Use generics &mdash; List&lt;String&gt; bookings = new ArrayList&lt;&gt;()</div>
+            <div class="breakdown-explain">Now <code>bookings.add(42)</code> won't even compile. The compiler catches the error before runtime. This is exactly what generics were designed for.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug 10: Missing @Override -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">10</span>
+      <span class="exercise-title">Missing @Override &mdash; Silent Bug</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>Two Users with the same email should be "equal", but HashSet stores both as separate entries. Why?</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">OverrideBug.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">import java.util.*;
+
+class User {
+    String email;
+    User(String email) { this.email = email; }
+
+    public boolean equals(User other) {  // Spot the bug!
+        return this.email.equals(other.email);
+    }
+}
+
+public class OverrideBug {
+    public static void main(String[] args) {
+        Set&lt;User&gt; users = new HashSet&lt;&gt;();
+        users.add(new User("darshan@nimbus.com"));
+        users.add(new User("darshan@nimbus.com"));
+
+        System.out.println(users.size()); // Expected 1, gets 2!
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Answer</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Bug &amp; Fix</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#128027;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Bug: equals(User) is NOT overriding Object.equals(Object)</div>
+            <div class="breakdown-explain">The parameter type is <code>User</code> instead of <code>Object</code>. This creates a new overloaded method, not an override. HashSet calls <code>equals(Object)</code> &mdash; which is still the default reference comparison from Object. Also missing: <code>hashCode()</code> &mdash; must override both.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#9989;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Fix: Use @Override with correct signature + implement hashCode()</div>
+            <div class="breakdown-explain"><code>@Override public boolean equals(Object obj)</code> with an instanceof check. If you'd used <code>@Override</code>, the compiler would have caught the wrong parameter type immediately. Always use <code>@Override</code> annotation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Write It Yourself                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="write-it-yourself">
+  <div class="section-tag">Section 03</div>
+  <h2>Write It Yourself</h2>
+  <p class="section-desc">Implement each from scratch. Try writing the full solution before peeking at the answer. These are the exact patterns you'll use in Nimbus.</p>
+
+  <!-- Write 1: Password Validation -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">1</span>
+      <span class="exercise-title">Nimbus Password Validator</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a method <code>boolean isValidPassword(String password)</code> that enforces Nimbus password rules:</p>
+      <ul class="requirement-list">
+        <li>8 to 30 characters long</li>
+        <li>At least one uppercase letter</li>
+        <li>At least one lowercase letter</li>
+        <li>At least one special character (!@#$%^&amp;*)</li>
+        <li>No three sequential characters (abc, 123, etc.)</li>
+      </ul>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">PasswordValidator.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">public static boolean isValidPassword(String password) {
+    if (password == null) return false;
+    if (password.length() &lt; 8 || password.length() &gt; 30) return false;
+
+    boolean hasUpper = false, hasLower = false, hasSpecial = false;
+    String specials = "!@#$%^&*";
+
+    for (char c : password.toCharArray()) {
+        if (Character.isUpperCase(c)) hasUpper = true;
+        if (Character.isLowerCase(c)) hasLower = true;
+        if (specials.indexOf(c) != -1) hasSpecial = true;
+    }
+
+    if (!hasUpper || !hasLower || !hasSpecial) return false;
+
+    // Check for 3 sequential characters
+    for (int i = 0; i &lt; password.length() - 2; i++) {
+        char c1 = password.charAt(i);
+        char c2 = password.charAt(i + 1);
+        char c3 = password.charAt(i + 2);
+        if (c2 == c1 + 1 &amp;&amp; c3 == c2 + 1) return false;
+    }
+
+    return true;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 2: equals and hashCode -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">2</span>
+      <span class="exercise-title">User.equals() and hashCode()</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write proper <code>equals()</code> and <code>hashCode()</code> for a <code>User</code> class with fields: <code>int userId</code> and <code>String email</code>. Two users are equal if they have the same email.</p>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">User.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">@Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;              // Same reference
+    if (obj == null) return false;             // Null check
+    if (getClass() != obj.getClass()) return false; // Type check
+    User other = (User) obj;                   // Safe cast
+    return this.email.equals(other.email);     // Field comparison
+}
+
+@Override
+public int hashCode() {
+    return email.hashCode();  // Must match equals logic
+    // If equals uses email, hashCode MUST use email
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 3: Generic Pair -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">3</span>
+      <span class="exercise-title">Generic Pair&lt;K, V&gt; Class</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a generic <code>Pair&lt;K, V&gt;</code> class with:</p>
+      <ul class="requirement-list">
+        <li>Two private fields: <code>key</code> and <code>value</code></li>
+        <li>Constructor, getters, setters</li>
+        <li>A <code>toString()</code> that prints <code>[key=X, value=Y]</code></li>
+      </ul>
+      <p>Test: <code>Pair&lt;String, Double&gt; p = new Pair&lt;&gt;("Express", 250.0);</code></p>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">Pair.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">public class Pair&lt;K, V&gt; {
+    private K key;
+    private V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey() { return key; }
+    public void setKey(K key) { this.key = key; }
+    public V getValue() { return value; }
+    public void setValue(V value) { this.value = value; }
+
+    @Override
+    public String toString() {
+        return "[key=" + key + ", value=" + value + "]";
+    }
+}
+
+// Usage:
+// Pair&lt;String, Double&gt; p = new Pair&lt;&gt;("Express", 250.0);
+// System.out.println(p);  // [key=Express, value=250.0]</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 4: Sort by Comparator -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">4</span>
+      <span class="exercise-title">Sort Bookings by Cost (Descending)</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Given a <code>List&lt;Booking&gt;</code> where each Booking has <code>String trackingId</code> and <code>double cost</code>, write a method that sorts by cost descending using a Comparator.</p>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">BookingSorter.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">// Method 1: Lambda (cleanest)
+public static void sortByCostDesc(List&lt;Booking&gt; bookings) {
+    bookings.sort((b1, b2) -&gt; Double.compare(b2.getCost(), b1.getCost()));
+}
+
+// Method 2: Comparator.comparing with reversed()
+public static void sortByCostDesc2(List&lt;Booking&gt; bookings) {
+    bookings.sort(Comparator.comparingDouble(Booking::getCost).reversed());
+}
+
+// Method 3: Anonymous class (verbose but explicit)
+public static void sortByCostDesc3(List&lt;Booking&gt; bookings) {
+    bookings.sort(new Comparator&lt;Booking&gt;() {
+        @Override
+        public int compare(Booking b1, Booking b2) {
+            return Double.compare(b2.getCost(), b1.getCost());
+        }
+    });
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 5: Try-with-resources JDBC -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">5</span>
+      <span class="exercise-title">Try-with-Resources JDBC Query</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a method <code>List&lt;Booking&gt; getBookingsByStatus(String status)</code> using try-with-resources, PreparedStatement, and proper result mapping.</p>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">BookingDAO.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">public List&lt;Booking&gt; getBookingsByStatus(String status) throws SQLException {
+    List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+    String sql = "SELECT tracking_id, sender_name, cost, status FROM bookings WHERE status = ?";
+
+    try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, status);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Booking b = new Booking();
+                b.setTrackingId(rs.getString("tracking_id"));
+                b.setSenderName(rs.getString("sender_name"));
+                b.setCost(rs.getDouble("cost"));
+                b.setStatus(rs.getString("status"));
+                bookings.add(b);
+            }
+        }
+    }
+    return bookings;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 6: BookingThread -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">6</span>
+      <span class="exercise-title">BookingThread &mdash; Parallel Processing</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a <code>BookingThread</code> that extends Thread and processes a booking (prints tracking ID + sleeps 1 second to simulate work). Create 3 threads in main and run them in parallel.</p>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">BookingThread.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">public class BookingThread extends Thread {
+    private String trackingId;
+
+    public BookingThread(String trackingId) {
+        this.trackingId = trackingId;
+    }
+
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName()
+            + " processing: " + trackingId);
+        try {
+            Thread.sleep(1000); // simulate database work
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted: " + trackingId);
+        }
+        System.out.println(Thread.currentThread().getName()
+            + " completed: " + trackingId);
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        BookingThread t1 = new BookingThread("NMB-001");
+        BookingThread t2 = new BookingThread("NMB-002");
+        BookingThread t3 = new BookingThread("NMB-003");
+
+        t1.start(); t2.start(); t3.start();
+
+        // Wait for all to finish
+        t1.join(); t2.join(); t3.join();
+        System.out.println("All bookings processed");
+    }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 7: HashMap Count -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">7</span>
+      <span class="exercise-title">Count Bookings per Status</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a method that takes <code>List&lt;String&gt; statuses</code> and returns a <code>Map&lt;String, Integer&gt;</code> counting occurrences of each status.</p>
+      <p>Input: <code>["BOOKED", "DELIVERED", "BOOKED", "IN_TRANSIT", "DELIVERED", "DELIVERED"]</code></p>
+      <p>Output: <code>{BOOKED=2, DELIVERED=3, IN_TRANSIT=1}</code></p>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">StatusCounter.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">public static Map&lt;String, Integer&gt; countByStatus(List&lt;String&gt; statuses) {
+    Map&lt;String, Integer&gt; counts = new HashMap&lt;&gt;();
+
+    for (String status : statuses) {
+        // getOrDefault returns 0 if key doesn't exist yet
+        counts.put(status, counts.getOrDefault(status, 0) + 1);
+    }
+
+    return counts;
+}
+
+// Alternative using merge:
+public static Map&lt;String, Integer&gt; countByStatus2(List&lt;String&gt; statuses) {
+    Map&lt;String, Integer&gt; counts = new HashMap&lt;&gt;();
+    for (String status : statuses) {
+        counts.merge(status, 1, Integer::sum);
+    }
+    return counts;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 8: CustomerTrackingService -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">8</span>
+      <span class="exercise-title">CustomerTrackingService &mdash; Own Bookings Only</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a <code>CustomerTrackingService</code> that:</p>
+      <ul class="requirement-list">
+        <li>Takes a <code>userId</code> in its constructor</li>
+        <li>Has method <code>getMyBookings()</code> that queries only bookings where <code>sender_id = userId</code></li>
+        <li>Has method <code>trackParcel(String trackingId)</code> that returns the booking ONLY if it belongs to the user, otherwise throws <code>UnauthorizedAccessException</code></li>
+      </ul>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">CustomerTrackingService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">public class CustomerTrackingService {
+    private int userId;
+
+    public CustomerTrackingService(int userId) {
+        this.userId = userId;
+    }
+
+    public List&lt;Booking&gt; getMyBookings() throws SQLException {
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+        String sql = "SELECT * FROM bookings WHERE sender_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, this.userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    bookings.add(mapToBooking(rs));
+                }
+            }
+        }
+        return bookings;
+    }
+
+    public Booking trackParcel(String trackingId) throws SQLException {
+        String sql = "SELECT * FROM bookings WHERE tracking_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, trackingId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    if (rs.getInt("sender_id") != this.userId) {
+                        throw new UnauthorizedAccessException(
+                            "Booking " + trackingId + " does not belong to user " + userId);
+                    }
+                    return mapToBooking(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    private Booking mapToBooking(ResultSet rs) throws SQLException {
+        Booking b = new Booking();
+        b.setTrackingId(rs.getString("tracking_id"));
+        b.setSenderId(rs.getInt("sender_id"));
+        b.setCost(rs.getDouble("cost"));
+        b.setStatus(rs.getString("status"));
+        return b;
+    }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 9: Custom Exception -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">9</span>
+      <span class="exercise-title">Custom InvalidBookingException</span>
+      <span class="difficulty easy">Easy</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a custom checked exception <code>InvalidBookingException</code> with:</p>
+      <ul class="requirement-list">
+        <li>A field <code>String bookingId</code></li>
+        <li>Constructors: one with message only, one with message + bookingId</li>
+        <li>Getter for bookingId</li>
+        <li>Then throw it from a <code>validateBooking()</code> method when weight &lt; 0</li>
+      </ul>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">InvalidBookingException.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">public class InvalidBookingException extends Exception {
+    private String bookingId;
+
+    public InvalidBookingException(String message) {
+        super(message);
+    }
+
+    public InvalidBookingException(String message, String bookingId) {
+        super(message);
+        this.bookingId = bookingId;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+}
+
+// Usage:
+public void validateBooking(String id, double weight)
+        throws InvalidBookingException {
+    if (weight &lt; 0) {
+        throw new InvalidBookingException(
+            "Weight cannot be negative: " + weight, id);
+    }
+}
+
+// Catching it:
+try {
+    validateBooking("NMB-001", -5.0);
+} catch (InvalidBookingException e) {
+    System.out.println("Error for booking " + e.getBookingId()
+        + ": " + e.getMessage());
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write 10: Booking ID Generator -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">10</span>
+      <span class="exercise-title">Booking ID Generator (NMB-YYMMDD-NNNN)</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Write a method <code>String generateBookingId(int sequenceNumber)</code> that generates IDs in the format <code>NMB-260423-0001</code> where:</p>
+      <ul class="requirement-list">
+        <li><code>NMB</code> is the prefix</li>
+        <li><code>260423</code> is today's date in YYMMDD</li>
+        <li><code>0001</code> is the sequence number zero-padded to 4 digits</li>
+      </ul>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal Solution</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">Solution</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">&#10003;</div>
+          <div class="breakdown-content">
+            <div class="breakdown-explain">
+              <div class="code-block" style="margin:8px 0">
+                <div class="code-header">
+                  <span class="code-filename">BookingIdGenerator.java</span>
+                  <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                </div>
+                <pre><code class="language-java">import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class BookingIdGenerator {
+
+    public static String generateBookingId(int sequenceNumber) {
+        // Get today's date in YYMMDD format
+        LocalDate today = LocalDate.now();
+        String dateStr = today.format(DateTimeFormatter.ofPattern("yyMMdd"));
+
+        // Zero-pad sequence number to 4 digits
+        String seqStr = String.format("%04d", sequenceNumber);
+
+        return "NMB-" + dateStr + "-" + seqStr;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(generateBookingId(1));    // NMB-260423-0001
+        System.out.println(generateBookingId(42));   // NMB-260423-0042
+        System.out.println(generateBookingId(9999)); // NMB-260423-9999
+    }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Mini Projects                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="mini-projects">
+  <div class="section-tag">Section 04</div>
+  <h2>Mini Projects</h2>
+  <p class="section-desc">Build something bigger. These are open-ended &mdash; no single "right" answer. Requirements only, no solutions. Design and implement your own way.</p>
+
+  <!-- Mini Project 1: IssueDAO CRUD -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">1</span>
+      <span class="exercise-title">Build an IssueDAO with CRUD</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>Create a full DAO class for an <code>Issue</code> table (think GitHub Issues for Nimbus).</p>
+      <ul class="requirement-list">
+        <li>Table: <code>issues(id INT PK AUTO_INCREMENT, title VARCHAR, description TEXT, status VARCHAR, priority VARCHAR, created_by INT FK, created_at TIMESTAMP)</code></li>
+        <li>Write the CREATE TABLE SQL</li>
+        <li>Implement: <code>createIssue(Issue)</code>, <code>getIssueById(int)</code>, <code>getAllIssues()</code>, <code>updateStatus(int, String)</code>, <code>deleteIssue(int)</code></li>
+        <li>Use PreparedStatement and try-with-resources everywhere</li>
+        <li>Return affected row count for update/delete</li>
+        <li>Create an <code>Issue</code> model class with all fields + getters/setters</li>
+      </ul>
+      <div class="callout think">
+        <div class="callout-title">&#128161; Design Decisions to Make</div>
+        <p>Should <code>createIssue</code> return the generated ID? How will you handle "not found" for <code>getIssueById</code>? Return null or throw an exception? What status values will you allow?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Project 2: Search by Keyword -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">2</span>
+      <span class="exercise-title">Add "Search by Keyword" to BookingDAO</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Add a search feature that finds bookings matching a keyword across multiple columns.</p>
+      <ul class="requirement-list">
+        <li>Method: <code>searchBookings(String keyword)</code></li>
+        <li>Search in: tracking_id, sender_name, receiver_name, sender_city, receiver_city</li>
+        <li>Case-insensitive search using SQL <code>LIKE</code></li>
+        <li>Return <code>List&lt;Booking&gt;</code> sorted by created_at descending</li>
+        <li>Handle empty keyword (return all bookings)</li>
+        <li>Use a single PreparedStatement with <code>%keyword%</code> pattern</li>
+      </ul>
+      <div class="callout think">
+        <div class="callout-title">&#128161; Think About</div>
+        <p>How do you set the same parameter value for 5 different LIKE clauses? What happens with SQL special characters like <code>%</code> or <code>_</code> in the keyword? How would you add pagination later?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Project 3: ReportService -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">3</span>
+      <span class="exercise-title">Create a ReportService</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>Build a service that generates booking statistics using SQL aggregate functions.</p>
+      <ul class="requirement-list">
+        <li>Method: <code>getBookingSummary()</code> &mdash; returns total bookings, total revenue, average cost</li>
+        <li>Method: <code>getStatusBreakdown()</code> &mdash; returns count and total revenue per status</li>
+        <li>Method: <code>getTopCustomers(int limit)</code> &mdash; returns customers with most bookings</li>
+        <li>Method: <code>getDailyReport(LocalDate date)</code> &mdash; bookings created on a specific date</li>
+        <li>Create a <code>BookingSummary</code> model class for results</li>
+        <li>Use SQL: COUNT, SUM, AVG, GROUP BY, ORDER BY, LIMIT</li>
+      </ul>
+      <div class="callout think">
+        <div class="callout-title">&#128161; Think About</div>
+        <p>Should ReportService use BookingDAO or have its own queries? What if there are no bookings for a date? How will you format the currency output? Consider using <code>BigDecimal</code> for money.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Project 4: PaymentService with Polymorphism -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">4</span>
+      <span class="exercise-title">PaymentService with CardPayment &amp; UPIPayment</span>
+      <span class="difficulty hard">Hard</span>
+    </div>
+    <div class="exercise-body">
+      <p>Build a payment system using polymorphism &mdash; the foundation of how real payment gateways work.</p>
+      <ul class="requirement-list">
+        <li>Abstract class or interface: <code>Payment</code> with method <code>processPayment(double amount)</code></li>
+        <li><code>CardPayment</code> &mdash; requires card number, expiry, CVV. Validates card number length (16 digits). Charges 2% processing fee.</li>
+        <li><code>UPIPayment</code> &mdash; requires UPI ID (format: name@bank). Validates format. No processing fee.</li>
+        <li><code>PaymentService</code> class that accepts any <code>Payment</code> type and processes it</li>
+        <li>Custom exception: <code>PaymentFailedException</code></li>
+        <li>Print receipt after successful payment</li>
+      </ul>
+      <div class="callout think">
+        <div class="callout-title">&#128161; Think About</div>
+        <p>Should Payment be an abstract class or interface? What's the benefit of PaymentService accepting the abstract type? How would you add a third payment type (NetBanking) without changing PaymentService?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Project 5: Pagination -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">5</span>
+      <span class="exercise-title">Add Pagination to Booking History</span>
+      <span class="difficulty medium">Medium</span>
+    </div>
+    <div class="exercise-body">
+      <p>Add LIMIT/OFFSET pagination so users can browse booking history page by page.</p>
+      <ul class="requirement-list">
+        <li>Method: <code>getBookingsPage(int pageNumber, int pageSize)</code></li>
+        <li>Method: <code>getTotalBookingCount()</code> for calculating total pages</li>
+        <li>Method: <code>getTotalPages(int pageSize)</code> &mdash; uses Math.ceil</li>
+        <li>Page numbers start from 1 (convert to 0-based OFFSET internally)</li>
+        <li>Handle edge cases: page 0 or negative, page beyond total</li>
+        <li>Create a <code>PageResult&lt;T&gt;</code> wrapper with: <code>List&lt;T&gt; data</code>, <code>int currentPage</code>, <code>int totalPages</code>, <code>boolean hasNext</code>, <code>boolean hasPrevious</code></li>
+      </ul>
+      <div class="callout think">
+        <div class="callout-title">&#128161; Think About</div>
+        <p>SQL: <code>SELECT * FROM bookings ORDER BY id LIMIT ? OFFSET ?</code>. Offset = (pageNumber - 1) * pageSize. What if someone requests page 999 of 10 total pages? Make <code>PageResult</code> generic so it works for any entity.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Debug Challenges                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="debug-challenges">
+  <div class="section-tag">Section 05</div>
+  <h2>Debug Challenges</h2>
+  <p class="section-desc">Full programs with MULTIPLE bugs hidden inside. Find ALL of them. These simulate real debugging scenarios where problems compound each other.</p>
+
+  <!-- Debug 1 -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">1</span>
+      <span class="exercise-title">Broken Parcel Cost Calculator</span>
+      <span class="bug-count">4 bugs</span>
+    </div>
+    <div class="exercise-body">
+      <p>This program should calculate parcel shipping cost based on weight and type. Find all 4 bugs.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">CostCalculator.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public class CostCalculator {
+    public static double calculateCost(double weight, String type) {
+        double rate;
+
+        switch (type) {
+            case "STANDARD":
+                rate = 10.0;
+            case "EXPRESS":
+                rate = 25.0;
+                break;
+            case "OVERNIGHT":
+                rate = 50.0;
+                break;
+        }
+
+        double cost = weight * rate;
+
+        if (weight &gt; 50)
+            cost = cost * 0.9;
+            System.out.println("Bulk discount applied!");
+
+        return cost;
+    }
+
+    public static void main(String[] args) {
+        String userType = new String("EXPRESS");
+        System.out.println("Cost: " + calculateCost(10, userType));
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal All Bugs</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">All 4 Bugs</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Missing break after STANDARD case</div>
+            <div class="breakdown-explain">Falls through to EXPRESS, so STANDARD always gets EXPRESS rate of 25.0.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Variable rate may not be initialized</div>
+            <div class="breakdown-explain">If <code>type</code> doesn't match any case, <code>rate</code> has no value &rarr; compile error. Add <code>default: rate = 10.0; break;</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Missing braces on the if-block (dangling else problem)</div>
+            <div class="breakdown-explain"><code>System.out.println("Bulk discount applied!")</code> runs EVERY time, not just when weight &gt; 50. Only the first statement after <code>if</code> is conditional without braces. Always use braces.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">4</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">No functional bug here, but style note</div>
+            <div class="breakdown-explain"><code>new String("EXPRESS")</code> is unnecessary but works fine with switch &mdash; switch uses <code>.equals()</code> internally for String cases. However, the "Bulk discount" message always printing is the real issue.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug 2 -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">2</span>
+      <span class="exercise-title">Broken User Registration</span>
+      <span class="bug-count">5 bugs</span>
+    </div>
+    <div class="exercise-body">
+      <p>This registration system has 5 bugs. Users report they can't register and get strange errors.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">UserRegistration.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">import java.util.*;
+import java.sql.*;
+
+public class UserRegistration {
+    private List&lt;String&gt; registeredEmails = new ArrayList&lt;&gt;();
+
+    public boolean registerUser(String name, String email, String password) {
+        // Validate email
+        if (email == null &amp;&amp; email.isEmpty()) {
+            System.out.println("Invalid email");
+            return false;
+        }
+
+        // Check duplicate
+        for (int i = 0; i &lt;= registeredEmails.size(); i++) {
+            if (registeredEmails.get(i) == email) {
+                System.out.println("Email already registered");
+                return false;
+            }
+        }
+
+        // Save to database
+        String sql = "INSERT INTO users (name, email, password) VALUES ('"
+                   + name + "', '" + email + "', '" + password + "')";
+
+        try {
+            Connection conn = DriverManager.getConnection(URL, USER, PASS);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            registeredEmails.add(email);
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Registration failed");
+            return false;
+        }
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal All Bugs</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">All 5 Bugs</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">email == null &amp;&amp; email.isEmpty()</div>
+            <div class="breakdown-explain">Should be <code>||</code> not <code>&amp;&amp;</code>. If email is null, <code>email.isEmpty()</code> throws NullPointerException. With <code>||</code>, short-circuit stops at null check.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">i &lt;= registeredEmails.size() &rarr; ArrayIndexOutOfBoundsException</div>
+            <div class="breakdown-explain">Should be <code>i &lt; registeredEmails.size()</code>. Also, use for-each or <code>.contains()</code> instead.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">== instead of .equals() for String comparison</div>
+            <div class="breakdown-explain"><code>registeredEmails.get(i) == email</code> compares references. Use <code>.equals()</code> to compare content.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">4</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">SQL Injection &mdash; string concatenation in SQL</div>
+            <div class="breakdown-explain">User could enter <code>'); DROP TABLE users; --</code> as their name. Use PreparedStatement with <code>?</code> placeholders.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">5</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Connection never closed &mdash; resource leak</div>
+            <div class="breakdown-explain">Use try-with-resources: <code>try (Connection conn = ...; PreparedStatement ps = ...) { ... }</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug 3 -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">3</span>
+      <span class="exercise-title">Broken Booking Tracker (Inheritance)</span>
+      <span class="bug-count">4 bugs</span>
+    </div>
+    <div class="exercise-body">
+      <p>The inheritance hierarchy has subtle bugs that cause wrong behavior.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">BookingTracker.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">class Shipment {
+    private String trackingId;
+
+    Shipment(String trackingId) {
+        this.trackingId = trackingId;
+    }
+
+    double calculateCost(double weight) {
+        return weight * 10;
+    }
+
+    public String toString() {
+        return "Shipment: " + trackingId;
+    }
+}
+
+class ExpressShipment extends Shipment {
+    private double surcharge;
+
+    ExpressShipment(String trackingId, double surcharge) {
+        this.surcharge = surcharge;
+    }
+
+    double calculateCost(double weight) {
+        double baseCost = calculateCost(weight);
+        return baseCost + surcharge;
+    }
+
+    public boolean equals(ExpressShipment other) {
+        return this.trackingId.equals(other.trackingId);
+    }
+}
+
+public class BookingTracker {
+    public static void main(String[] args) {
+        Shipment s = new ExpressShipment("NMB-001", 50.0);
+        System.out.println(s.calculateCost(5.0));
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal All Bugs</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">All 4 Bugs</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Missing super(trackingId) in ExpressShipment constructor</div>
+            <div class="breakdown-explain">Shipment has no no-arg constructor, so <code>ExpressShipment</code> must explicitly call <code>super(trackingId)</code>. This won't compile.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">calculateCost calls itself recursively &rarr; StackOverflowError</div>
+            <div class="breakdown-explain"><code>calculateCost(weight)</code> inside ExpressShipment calls itself, not the parent's version. Should be <code>super.calculateCost(weight)</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">trackingId is private in Shipment &mdash; can't access from subclass</div>
+            <div class="breakdown-explain"><code>this.trackingId</code> in equals won't compile. Either make it <code>protected</code> in Shipment, or add a getter <code>getTrackingId()</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">4</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">equals(ExpressShipment) doesn't override Object.equals(Object)</div>
+            <div class="breakdown-explain">Same bug as Find the Bug #10 &mdash; wrong parameter type. Should be <code>equals(Object obj)</code> with instanceof check. Also missing <code>hashCode()</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug 4 -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">4</span>
+      <span class="exercise-title">Broken Collection Processor</span>
+      <span class="bug-count">4 bugs</span>
+    </div>
+    <div class="exercise-body">
+      <p>This code processes a list of booking amounts but produces wrong results.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">CollectionProcessor.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">import java.util.*;
+
+public class CollectionProcessor {
+    public static void main(String[] args) {
+        List&lt;Double&gt; amounts = new ArrayList&lt;&gt;();
+        amounts.add(100.0);
+        amounts.add(250.0);
+        amounts.add(75.0);
+        amounts.add(300.0);
+
+        // Bug 1: Remove amounts under 100
+        for (Double amount : amounts) {
+            if (amount &lt; 100) {
+                amounts.remove(amount);
+            }
+        }
+
+        // Bug 2: Find max amount
+        double max = 0;
+        for (int i = 1; i &lt; amounts.size(); i++) {
+            if (amounts.get(i) &gt; max) {
+                max = amounts.get(i);
+            }
+        }
+        System.out.println("Max: " + max);
+
+        // Bug 3: Calculate average
+        int total = 0;
+        for (double a : amounts) {
+            total += a;
+        }
+        System.out.println("Average: " + total / amounts.size());
+
+        // Bug 4: Sort descending
+        Collections.sort(amounts);
+        System.out.println("Sorted desc: " + amounts);
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal All Bugs</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">All 4 Bugs</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">ConcurrentModificationException &mdash; modifying list during for-each</div>
+            <div class="breakdown-explain">Use <code>amounts.removeIf(a -&gt; a &lt; 100)</code> or use Iterator with <code>iterator.remove()</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Loop starts at i=1, skipping first element</div>
+            <div class="breakdown-explain">If index 0 has the max value, it's missed. Also <code>max = 0</code> fails if all values are negative. Initialize with <code>amounts.get(0)</code> and start from i=1, or use <code>Collections.max()</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">int total loses decimal precision + integer division</div>
+            <div class="breakdown-explain"><code>int total</code> truncates 250.0 to 250. Then <code>total / amounts.size()</code> is integer division. Use <code>double total</code> for both problems.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">4</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Collections.sort() sorts ascending, not descending</div>
+            <div class="breakdown-explain">Use <code>Collections.sort(amounts, Collections.reverseOrder())</code> or <code>amounts.sort(Comparator.reverseOrder())</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug 5 -->
+  <div class="exercise">
+    <div class="exercise-header">
+      <span class="exercise-num">5</span>
+      <span class="exercise-title">Broken JDBC BookingDAO</span>
+      <span class="bug-count">5 bugs</span>
+    </div>
+    <div class="exercise-body">
+      <p>This DAO method should insert a booking and return success. It compiles but fails at runtime in multiple ways.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">BookingDAO.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+        </div>
+        <pre><code class="language-java">public boolean createBooking(Booking booking) {
+    String sql = "INSERT INTO bookings (tracking_id, sender_name, weight, cost, status) "
+               + "VALUES (?, ?, ?, ?, ?)";
+
+    try {
+        Connection conn = DriverManager.getConnection(URL, USER, PASS);
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(0, booking.getTrackingId());
+        ps.setString(1, booking.getSenderName());
+        ps.setDouble(2, booking.getWeight());
+        ps.setDouble(3, booking.getCost());
+        ps.setString(4, booking.getStatus());
+
+        int rows = ps.executeQuery();
+
+        return rows &gt; 0;
+
+    } catch (Exception e) {
+        // silently swallow
+        return false;
+    }
+}</code></pre>
+      </div>
+      <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Reveal All Bugs</button>
+      <div class="code-breakdown">
+        <div class="breakdown-header">All 5 Bugs</div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">1</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Parameter index starts at 0 &mdash; should be 1</div>
+            <div class="breakdown-explain">JDBC parameter indices start at 1, not 0. <code>ps.setString(0, ...)</code> throws SQLException. Should be 1, 2, 3, 4, 5.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">2</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">executeQuery() for INSERT &mdash; should be executeUpdate()</div>
+            <div class="breakdown-explain"><code>executeQuery()</code> is for SELECT statements. INSERT/UPDATE/DELETE use <code>executeUpdate()</code> which returns an int (affected rows).</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">3</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">int rows = ps.executeQuery() &mdash; wrong return type</div>
+            <div class="breakdown-explain"><code>executeQuery()</code> returns ResultSet, not int. Even after fixing to <code>executeUpdate()</code>, the type is correct.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">4</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Connection and PreparedStatement never closed</div>
+            <div class="breakdown-explain">Wrap in try-with-resources: <code>try (Connection conn = ...; PreparedStatement ps = ...) { ... }</code>.</div>
+          </div>
+        </div>
+        <div class="breakdown-line">
+          <div class="breakdown-num">5</div>
+          <div class="breakdown-content">
+            <div class="breakdown-code">Exception silently swallowed &mdash; no logging</div>
+            <div class="breakdown-explain">At minimum: <code>e.printStackTrace()</code>. In production: use a logger. Silent catch blocks make debugging impossible &mdash; you'll never know why it failed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="nimbus-backend.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Nimbus Backend</span>
+  </a>
+  <a href="cheat-sheets.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Cheat Sheets</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

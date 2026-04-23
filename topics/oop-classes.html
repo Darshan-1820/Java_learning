@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classes, Objects &amp; Encapsulation &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link active"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is a Class vs Object?                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="class-vs-object">
+  <div class="section-tag">Section 01</div>
+  <h2>What is a Class vs Object?</h2>
+  <p class="section-desc">Everything in Java revolves around <strong>classes and objects</strong>. Understanding the difference between the two is the foundation of object-oriented programming.</p>
+
+  <h3>Blueprint vs Actual Thing</h3>
+
+  <p>A <strong>class</strong> is a blueprint. It describes what something <em>will</em> look like and what it <em>can</em> do. An <strong>object</strong> is an actual instance of that blueprint &mdash; a real thing in memory with real values.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>A class is a <strong>cookie cutter</strong>. An object is an <strong>actual cookie</strong>. One cookie cutter can make 100 cookies. Each cookie is a separate thing &mdash; you can eat one without affecting the others. Same shape (same class), different existence (different objects).</p>
+  </div>
+
+  <p>Another way to think about it:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Class (Blueprint)</th><th>Object (Instance)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Defines the structure</td><td>Lives in memory with actual data</td></tr>
+      <tr><td>Written once in a <code>.java</code> file</td><td>Created at runtime with <code>new</code></td></tr>
+      <tr><td>Has no data itself</td><td>Each object holds its own data</td></tr>
+      <tr><td><code>User</code> &mdash; the concept of a user</td><td><code>darshan</code> &mdash; a specific user with userId=1</td></tr>
+      <tr><td>One class</td><td>Many objects from same class</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Multiple objects from one class</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// One class definition
+public class User {
+    String fullName;
+    String email;
+}
+
+// Three separate objects from the SAME class
+User user1 = new User();
+user1.fullName = "Darshan";
+user1.email = "darshan@nimbus.com";
+
+User user2 = new User();
+user2.fullName = "Rahul";
+user2.email = "rahul@nimbus.com";
+
+User user3 = new User();
+user3.fullName = "Sneha";
+user3.email = "sneha@nimbus.com";
+
+// Each object is independent. Changing user1 does NOT affect user2.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>User</code> class is the blueprint for every person who uses the parcel management system &mdash; senders, receivers, admins. When someone registers, we create a <strong>new User object</strong> with their details. The system might have 500 users at runtime, but all of them were created from the same <code>User</code> class definition.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Anatomy of a Class                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="class-anatomy">
+  <div class="section-tag">Section 02</div>
+  <h2>Anatomy of a Class</h2>
+  <p class="section-desc">A class is made of four main parts: <strong>fields</strong>, <strong>constructors</strong>, <strong>methods</strong>, and <strong>access modifiers</strong> that control visibility.</p>
+
+  <div class="diagram">
+    <pre>
+  ┌─────────────────────────────────────────────────────┐
+  │               public class User                      │
+  ├─────────────────────────────────────────────────────┤
+  │  FIELDS (Instance Variables)                         │
+  │  ─────────────────────────                           │
+  │  private int userId;           // data the object    │
+  │  private String fullName;      // holds — each       │
+  │  private String email;         // object gets its    │
+  │  private String mobile;        // own copy            │
+  │  private String address;                              │
+  │  private String password;                             │
+  │  private String role;                                 │
+  ├─────────────────────────────────────────────────────┤
+  │  CONSTRUCTORS                                        │
+  │  ────────────                                        │
+  │  public User() { }             // empty (no-arg)     │
+  │  public User(all params) { }   // parameterized      │
+  ├─────────────────────────────────────────────────────┤
+  │  METHODS                                             │
+  │  ───────                                             │
+  │  public int getUserId() { }    // getters — read     │
+  │  public void setUserId() { }   // setters — write    │
+  │  public String toString() { }  // behavior           │
+  ├─────────────────────────────────────────────────────┤
+  │  ACCESS MODIFIERS                                    │
+  │  ────────────────                                    │
+  │  public  → class itself, constructors, methods       │
+  │  private → fields (encapsulation)                    │
+  └─────────────────────────────────────────────────────┘
+    </pre>
+    <div class="diagram-label">Full anatomy of the Nimbus User class</div>
+  </div>
+
+  <h4>Fields (Instance Variables)</h4>
+  <p>Fields are the data that each object carries. Every User object gets its own copy of <code>userId</code>, <code>fullName</code>, <code>email</code>, etc. When you write <code>private String fullName;</code>, you are saying: "every User will have a fullName, and nobody outside this class can touch it directly."</p>
+
+  <h4>Constructors</h4>
+  <p>Constructors are special methods that run when you create a new object with <code>new</code>. They set up the object's initial state. A class can have multiple constructors (overloading).</p>
+
+  <h4>Methods</h4>
+  <p>Methods define what the object can <em>do</em>. Getters read field values. Setters change field values. Other methods perform operations &mdash; like <code>toString()</code> which converts the object to a readable string.</p>
+
+  <h4>Access Modifiers</h4>
+  <p>Keywords like <code>public</code> and <code>private</code> control who can see and use each part of the class. This is the enforcement layer of encapsulation. More on this in Section 6.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Creating Objects                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="creating-objects">
+  <div class="section-tag">Section 03</div>
+  <h2>Creating Objects &mdash; The <code>new</code> Keyword</h2>
+  <p class="section-desc">When you write <code>new User()</code>, Java does three things: allocates memory on the heap, runs the constructor, and returns a reference to the object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Object creation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">User darshan = new User();
+//  │     │       │    │
+//  │     │       │    └── () calls the constructor
+//  │     │       └─────── new allocates memory on the HEAP
+//  │     └─────────────── darshan is a REFERENCE variable (on the STACK)
+//  └───────────────────── User is the type (which class)</code></pre>
+  </div>
+
+  <h3>What Happens in Memory</h3>
+
+  <p>Java splits memory into two areas: the <strong>stack</strong> (fast, for method calls and local variables) and the <strong>heap</strong> (larger, for objects). When you create an object:</p>
+
+  <ol class="steps">
+    <li><strong>Heap allocation:</strong> Java finds space on the heap and creates the actual User object there with all its fields (<code>userId</code>, <code>fullName</code>, <code>email</code>, etc.), initialized to defaults (<code>0</code> for int, <code>null</code> for String).</li>
+    <li><strong>Constructor runs:</strong> The constructor code executes, setting up field values if any were passed in.</li>
+    <li><strong>Reference returned:</strong> The <code>new</code> expression returns a <strong>reference</strong> &mdash; basically a pointer/address to where the object lives on the heap. This reference is stored in the variable <code>darshan</code> on the stack.</li>
+  </ol>
+
+  <div class="diagram">
+    <pre>
+    STACK (method frame)              HEAP (object storage)
+  ┌──────────────────┐           ┌──────────────────────────┐
+  │                  │           │  User object @0x7A3F     │
+  │  darshan ──────────────────► │  userId   = 0            │
+  │  [ref: 0x7A3F]   │           │  fullName = null         │
+  │                  │           │  email    = null         │
+  │  rahul ────────────────┐     │  mobile   = null         │
+  │  [ref: 0x8B2C]   │    │     │  address  = null         │
+  │                  │    │     │  password = null         │
+  └──────────────────┘    │     │  role     = null         │
+                          │     └──────────────────────────┘
+                          │     ┌──────────────────────────┐
+                          └───► │  User object @0x8B2C     │
+                                │  userId   = 0            │
+                                │  fullName = null         │
+                                │  ...                     │
+                                └──────────────────────────┘
+    </pre>
+    <div class="diagram-label">Stack holds references, Heap holds actual objects</div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>The variable <code>darshan</code> does NOT hold the User object itself. It holds a <strong>reference</strong> (memory address) that <em>points to</em> the object on the heap. This is why when you do <code>User copy = darshan;</code>, both <code>copy</code> and <code>darshan</code> point to the <strong>same</strong> object. Changing <code>copy.fullName</code> also changes <code>darshan.fullName</code> because they are the same object.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Reference vs Object</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">User darshan = new User();       // 1 object on heap, darshan points to it
+User copy = darshan;              // copy points to the SAME object
+
+copy.setFullName("Changed!");
+System.out.println(darshan.getFullName()); // "Changed!" — same object!
+
+User separate = new User();      // THIS creates a second, separate object
+separate.setFullName("Different");
+System.out.println(darshan.getFullName()); // Still "Changed!" — different object</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Constructors                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="constructors">
+  <div class="section-tag">Section 04</div>
+  <h2>Constructors</h2>
+  <p class="section-desc">Constructors are special methods that initialize objects when they are created. They have the <strong>same name as the class</strong> and <strong>no return type</strong> (not even void).</p>
+
+  <h3>Default (No-Arg) Constructor</h3>
+
+  <p>A no-arg constructor takes zero parameters. It creates an object with default/empty values. This is useful when you want to build up the object piece by piece after creation.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">No-arg constructor</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public User() {
+    // All fields stay at defaults: int=0, String=null, boolean=false
+}
+
+// Usage:
+User user = new User();
+user.setFullName("Darshan");  // set values one at a time
+user.setEmail("darshan@nimbus.com");</code></pre>
+  </div>
+
+  <h3>Parameterized Constructor</h3>
+
+  <p>A parameterized constructor takes arguments and uses them to set field values immediately during creation. One line creates a fully initialized object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Parameterized constructor</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public User(int userId, String fullName, String email,
+            String mobile, String address, String password, String role) {
+    this.userId = userId;
+    this.fullName = fullName;
+    this.email = email;
+    this.mobile = mobile;
+    this.address = address;
+    this.password = password;
+    this.role = role;
+}
+
+// Usage — fully initialized in one line:
+User darshan = new User(1, "Darshan", "darshan@nimbus.com",
+                        "9876543210", "Mumbai", "hashed_pw", "admin");</code></pre>
+  </div>
+
+  <h3>Constructor Overloading</h3>
+
+  <p>A class can have <strong>multiple constructors</strong> with different parameter lists. Java picks the right one based on what arguments you pass. This is called <strong>overloading</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Overloaded constructors</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    // Constructor 1: No-arg
+    public User() { }
+
+    // Constructor 2: All fields
+    public User(int userId, String fullName, String email,
+                String mobile, String address, String password, String role) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.password = password;
+        this.role = role;
+    }
+}
+
+// Java figures out which constructor to call:
+User empty = new User();                              // calls Constructor 1
+User full = new User(1, "Darshan", "d@n.com",
+                     "987", "Mumbai", "pw", "admin"); // calls Constructor 2</code></pre>
+  </div>
+
+  <h3>Constructor Chaining with <code>this()</code></h3>
+
+  <p>One constructor can call another constructor in the same class using <code>this()</code>. This avoids duplicating initialization code. The <code>this()</code> call <strong>must be the first statement</strong> in the constructor.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Constructor chaining</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    public User() {
+        this(0, "Unknown", "none@none.com", "", "", "", "user");
+        // Calls the full constructor with default values
+        // this() MUST be the first statement
+    }
+
+    public User(int userId, String fullName, String email,
+                String mobile, String address, String password, String role) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.password = password;
+        this.role = role;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The Nimbus <code>User</code> class has <strong>both</strong> an empty constructor and a full constructor. Why? The empty constructor is needed when building a User from a database <code>ResultSet</code>. You create an empty User, then loop through the ResultSet columns and call setters one by one: <code>user.setUserId(rs.getInt("user_id"))</code>, <code>user.setFullName(rs.getString("full_name"))</code>, etc. You cannot use the parameterized constructor because the values come from the ResultSet row by row, not all at once in code.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">What If You Write No Constructor?</div>
+    <p>If you do not write <strong>any</strong> constructor, Java silently provides a <strong>default no-arg constructor</strong> for you. But the moment you write <em>any</em> constructor (even a parameterized one), Java stops providing the default. If you then try <code>new User()</code> without writing your own no-arg constructor, you will get a compile error. This is a common trap.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: The this Keyword                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="this-keyword">
+  <div class="section-tag">Section 05</div>
+  <h2>The <code>this</code> Keyword</h2>
+  <p class="section-desc"><code>this</code> refers to the <strong>current object</strong> &mdash; the specific instance that the method or constructor is running on.</p>
+
+  <h3>Disambiguating Parameters from Fields</h3>
+
+  <p>The most common use of <code>this</code> is when a parameter has the <strong>same name</strong> as a field. Without <code>this</code>, Java thinks you are assigning the parameter to itself.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without this (BUG)</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin:0;">
+          <pre><code class="language-java">public void setFullName(String fullName) {
+    fullName = fullName;
+    // Assigns parameter to itself!
+    // Field stays null
+}</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With this (CORRECT)</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin:0;">
+          <pre><code class="language-java">public void setFullName(String fullName) {
+    this.fullName = fullName;
+    // this.fullName = the field
+    // fullName = the parameter
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3><code>this()</code> to Call Another Constructor</h3>
+  <p>As shown in the constructor chaining section, <code>this()</code> (with parentheses) calls another constructor of the same class. <code>this</code> (without parentheses) refers to the current object. Different things.</p>
+
+  <h3>When You MUST Use <code>this</code></h3>
+  <ul>
+    <li><strong>Parameter shadows field:</strong> When constructor/method parameter has the same name as a field &mdash; you MUST use <code>this.fieldName</code> to refer to the field.</li>
+    <li><strong>Constructor chaining:</strong> <code>this(args)</code> to call another constructor. Must be the first statement.</li>
+    <li><strong>Passing current object:</strong> When a method needs to pass the current object as an argument: <code>someMethod(this)</code>.</li>
+    <li><strong>Returning current object (fluent API):</strong> <code>return this;</code> to enable method chaining like <code>user.setName("X").setEmail("Y")</code>.</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Rule of Thumb</div>
+    <p>If the parameter name is <strong>different</strong> from the field name (e.g., parameter <code>name</code>, field <code>fullName</code>), you do not need <code>this</code>. But most professional code uses the <strong>same names</strong> for clarity, which makes <code>this</code> essential in every setter and constructor.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Access Modifiers                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="access-modifiers">
+  <div class="section-tag">Section 06</div>
+  <h2>Access Modifiers</h2>
+  <p class="section-desc">Access modifiers control <strong>who can see and use</strong> a class, field, method, or constructor. Java has four levels of access.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Modifier</th>
+        <th>Same Class</th>
+        <th>Same Package</th>
+        <th>Subclass (other pkg)</th>
+        <th>Everywhere</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>public</code></td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#22C55E;">Yes</td>
+      </tr>
+      <tr>
+        <td><code>protected</code></td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#EF4444;">No</td>
+      </tr>
+      <tr>
+        <td><em>default</em> (no keyword)</td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#EF4444;">No</td>
+        <td style="color:#EF4444;">No</td>
+      </tr>
+      <tr>
+        <td><code>private</code></td>
+        <td style="color:#22C55E;">Yes</td>
+        <td style="color:#EF4444;">No</td>
+        <td style="color:#EF4444;">No</td>
+        <td style="color:#EF4444;">No</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Why Each Exists</h3>
+
+  <ul>
+    <li><strong><code>public</code></strong> &mdash; Use for things the outside world needs to interact with: the class itself, getters, setters, service methods. The API surface.</li>
+    <li><strong><code>private</code></strong> &mdash; Use for internal data and helper methods. Nobody outside the class should know or care about these. This is the default choice for fields.</li>
+    <li><strong><code>protected</code></strong> &mdash; Use when subclasses (child classes) need access but the general public should not. Useful for inheritance hierarchies.</li>
+    <li><strong>default (package-private)</strong> &mdash; Use when classes within the same package need to collaborate closely but outsiders should not see the details. You get this by writing <strong>no modifier at all</strong>.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Access modifiers in practice</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {                    // public — anyone can use this class
+    private int userId;                // private — only User class can touch
+    private String fullName;           // private — only User class can touch
+    private String password;           // private — DEFINITELY only internal
+
+    public String getFullName() {      // public — external code reads the name
+        return this.fullName;
+    }
+
+    public void setPassword(String password) {  // public — external code sets pw
+        this.password = hashPassword(password); // but we control HOW it's set
+    }
+
+    private String hashPassword(String raw) {   // private — internal helper
+        // nobody outside needs to know about hashing
+        return BCrypt.hash(raw);
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every field in the Nimbus <code>User</code> class is <code>private</code>: <code>userId</code>, <code>fullName</code>, <code>email</code>, <code>mobile</code>, <code>address</code>, <code>password</code>, <code>role</code>. All access goes through <code>public</code> getters and setters. The class itself is <code>public</code> because other packages (<code>com.nimbus.dao</code>, <code>com.nimbus.service</code>) need to create and use User objects.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Encapsulation                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="encapsulation">
+  <div class="section-tag">Section 07</div>
+  <h2>Encapsulation</h2>
+  <p class="section-desc">Encapsulation is the practice of <strong>hiding internal data</strong> and only exposing controlled access through methods. It is the #1 reason for <code>private</code> fields + <code>public</code> getters/setters.</p>
+
+  <h3>Why Not Just Make Everything Public?</h3>
+
+  <p>If every field is public, anyone can set any value directly. There are no guardrails.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Public Fields (Dangerous)</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin:0;">
+          <pre><code class="language-java">public class User {
+    public String email; // anyone can set
+}
+
+User u = new User();
+u.email = "not-an-email"; // no validation!
+u.email = "";             // empty? sure!
+u.email = null;           // null? why not!</code></pre>
+        </div>
+        <p style="color:var(--red);margin-top:12px;">No control. Any garbage goes in. Bugs everywhere.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Private + Setter (Safe)</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin:0;">
+          <pre><code class="language-java">public class User {
+    private String email;
+
+    public void setEmail(String email) {
+        if (!email.contains("@")) {
+            throw new IllegalArgumentException(
+                "Invalid email");
+        }
+        this.email = email;
+    }
+}</code></pre>
+        </div>
+        <p style="color:var(--green);margin-top:12px;">Invalid data gets rejected. Object is always valid.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Future-Proofing: The Real Power</h3>
+
+  <p>The greatest benefit of encapsulation is <strong>future-proofing</strong>. Today your setter just assigns the value. Tomorrow you add validation, logging, formatting, or notifications &mdash; and <strong>no external code has to change</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Evolution of a setter over time</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Version 1: Simple assignment
+public void setEmail(String email) {
+    this.email = email;
+}
+
+// Version 2: Added validation (3 months later)
+public void setEmail(String email) {
+    if (email == null || !email.contains("@")) {
+        throw new IllegalArgumentException("Invalid email format");
+    }
+    this.email = email;
+}
+
+// Version 3: Added normalization (6 months later)
+public void setEmail(String email) {
+    if (email == null || !email.contains("@")) {
+        throw new IllegalArgumentException("Invalid email format");
+    }
+    this.email = email.trim().toLowerCase(); // normalize
+}
+
+// The external code NEVER changed. It always just called:
+// user.setEmail("Darshan@Nimbus.COM");
+// Encapsulation let us evolve the internals without breaking anything.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Right now, Nimbus <code>setEmail()</code> does a simple assignment. But imagine later we want to: (1) validate email format, (2) check for duplicate emails in the database, (3) convert to lowercase. With encapsulation, we just update the setter. Every place in the codebase that calls <code>user.setEmail()</code> &mdash; the registration servlet, the profile update, the admin panel &mdash; automatically gets the new behavior. Zero refactoring.</p>
+  </div>
+
+  <h3>The Three Rules of Encapsulation</h3>
+  <ol>
+    <li><strong>Make fields <code>private</code>.</strong> Always. No exceptions for model classes.</li>
+    <li><strong>Provide <code>public</code> getters</strong> for fields that external code needs to read.</li>
+    <li><strong>Provide <code>public</code> setters</strong> for fields that external code needs to write &mdash; with validation logic inside.</li>
+  </ol>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Getters and Setters                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="getters-setters">
+  <div class="section-tag">Section 08</div>
+  <h2>Getters and Setters</h2>
+  <p class="section-desc">Getters read field values. Setters write field values. They follow strict <strong>naming conventions</strong> that Java frameworks rely on.</p>
+
+  <h3>Naming Convention</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Field</th><th>Getter</th><th>Setter</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>String fullName</code></td><td><code>getFullName()</code></td><td><code>setFullName(String fullName)</code></td></tr>
+      <tr><td><code>int userId</code></td><td><code>getUserId()</code></td><td><code>setUserId(int userId)</code></td></tr>
+      <tr><td><code>String email</code></td><td><code>getEmail()</code></td><td><code>setEmail(String email)</code></td></tr>
+      <tr><td><code>boolean active</code></td><td><code>isActive()</code></td><td><code>setActive(boolean active)</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout important">
+    <div class="callout-title">Boolean Getters</div>
+    <p>For <code>boolean</code> fields, the getter convention is <code>isFieldName()</code>, not <code>getFieldName()</code>. So <code>boolean active</code> has <code>isActive()</code>, not <code>getActive()</code>. Java frameworks like Jackson and Hibernate rely on this convention to auto-detect boolean properties.</p>
+  </div>
+
+  <h3>Pattern: Every Getter and Setter Looks the Same</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Standard getter/setter pattern</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Getter: returns the field value
+public String getFullName() {
+    return this.fullName;       // or just: return fullName;
+}
+
+// Setter: takes a parameter, assigns to field
+public void setFullName(String fullName) {
+    this.fullName = fullName;   // this.field = parameter
+}
+
+// Boolean getter: uses "is" instead of "get"
+public boolean isActive() {
+    return this.active;
+}</code></pre>
+  </div>
+
+  <h3>Eclipse Auto-Generation Shortcut</h3>
+  <p>You do not have to type getters and setters by hand. In Eclipse:</p>
+  <ol>
+    <li>Write your private fields.</li>
+    <li>Right-click in the editor &rarr; <strong>Source</strong> &rarr; <strong>Generate Getters and Setters</strong>.</li>
+    <li>Select which fields you want getters/setters for.</li>
+    <li>Click <strong>Generate</strong>. Done in 3 seconds.</li>
+  </ol>
+  <p>Keyboard shortcut: <code>Alt + Shift + S</code>, then <code>R</code>.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Why Bother?</div>
+    <p>If getters and setters are so boilerplate, why have them? Because they give you a <strong>hook point</strong>. Today the getter just returns the field. Tomorrow you might add logging, caching, lazy loading, or computed values &mdash; and external code never knows. The contract (method signature) stays the same. The implementation evolves.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: static Keyword                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="static-keyword">
+  <div class="section-tag">Section 09</div>
+  <h2>The <code>static</code> Keyword</h2>
+  <p class="section-desc"><code>static</code> means "belongs to the class itself, not to any specific object." Static members are shared across all instances.</p>
+
+  <h3>Static Fields</h3>
+
+  <p>A <code>static</code> field exists <strong>once per class</strong>, not once per object. All objects share the same static field.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Static field example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    private static int userCount = 0;  // shared across ALL User objects
+    private int userId;                // each object has its own copy
+    private String fullName;
+
+    public User(String fullName) {
+        userCount++;                   // increment the shared counter
+        this.userId = userCount;       // assign unique ID
+        this.fullName = fullName;
+    }
+
+    public static int getUserCount() {
+        return userCount;              // access without creating an object
+    }
+}
+
+User u1 = new User("Darshan");    // userCount = 1
+User u2 = new User("Rahul");     // userCount = 2
+User u3 = new User("Sneha");     // userCount = 3
+
+System.out.println(User.getUserCount()); // 3 — called on the CLASS, not an object</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+  ┌─────────────────────────────────────────────────┐
+  │       User CLASS (shared static memory)          │
+  │                                                  │
+  │  static userCount = 3                            │
+  └─────────────────────────────────────────────────┘
+            │              │              │
+     ┌──────┴──────┐ ┌────┴──────┐ ┌────┴──────┐
+     │  u1 object  │ │ u2 object │ │ u3 object │
+     │  userId = 1 │ │ userId = 2│ │ userId = 3│
+     │  "Darshan"  │ │  "Rahul"  │ │  "Sneha"  │
+     └─────────────┘ └───────────┘ └───────────┘
+     Each object has        All objects share
+     its OWN userId         the SAME userCount
+    </pre>
+    <div class="diagram-label">Static field (shared) vs Instance field (per-object)</div>
+  </div>
+
+  <h3>Static Methods</h3>
+
+  <p>A <code>static</code> method belongs to the class, not an object. You call it on the class name: <code>User.getUserCount()</code>, not <code>user1.getUserCount()</code>. Static methods <strong>cannot access instance fields</strong> (because there is no specific object to read from).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Static method rules</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class MathUtils {
+    // Static utility method — no object needed
+    public static double calculateDistance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+}
+
+// Call directly on the class:
+double dist = MathUtils.calculateDistance(0, 0, 3, 4); // 5.0
+
+// Common examples you already use:
+Math.sqrt(16);           // Math is a class, sqrt is static
+Integer.parseInt("42");  // Integer is a class, parseInt is static
+Arrays.sort(myArray);    // Arrays is a class, sort is static</code></pre>
+  </div>
+
+  <h3>Why is <code>main()</code> Static?</h3>
+
+  <p>The JVM needs to start your program <strong>without creating any objects first</strong>. The entry point <code>main()</code> must be callable on the class directly: <code>App.main(args)</code>. If <code>main()</code> were an instance method, the JVM would need to do <code>new App().main(args)</code> &mdash; but who decides which constructor to call? What arguments? Static avoids this chicken-and-egg problem entirely.</p>
+
+  <h3>Static Block</h3>
+
+  <p>A <code>static</code> block runs <strong>once</strong> when the class is first loaded into memory, before any objects are created or static methods are called. Used for one-time initialization.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Static block</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class DatabaseConfig {
+    private static String dbUrl;
+
+    static {
+        // Runs once when class is loaded
+        dbUrl = System.getenv("DATABASE_URL");
+        if (dbUrl == null) {
+            dbUrl = "jdbc:mysql://localhost:3306/nimbus";
+        }
+        System.out.println("Database URL configured: " + dbUrl);
+    }
+}</code></pre>
+  </div>
+
+  <h3>When to Use Static vs Instance</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Use Static</th><th>Use Instance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Utility/helper methods (<code>Math.sqrt</code>)</td><td>Methods that use object data (<code>user.getEmail()</code>)</td></tr>
+      <tr><td>Constants (<code>MAX_LOGIN_ATTEMPTS</code>)</td><td>Data unique to each object (<code>fullName</code>)</td></tr>
+      <tr><td>Counters/trackers shared across all objects</td><td>State that varies per object</td></tr>
+      <tr><td>Factory methods (<code>User.createAdmin()</code>)</td><td>Behavior that depends on the object's state</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: final Keyword                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="final-keyword">
+  <div class="section-tag">Section 10</div>
+  <h2>The <code>final</code> Keyword</h2>
+  <p class="section-desc"><code>final</code> means "this cannot be changed." It applies to variables, methods, and classes &mdash; each with a different meaning.</p>
+
+  <h3>Final Variable (Constant)</h3>
+
+  <p>A <code>final</code> variable can only be assigned <strong>once</strong>. After that, any attempt to change it causes a compile error. Constants use the naming convention <code>ALL_CAPS_WITH_UNDERSCORES</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Final variables</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Class-level constant: static + final
+public static final int MAX_LOGIN_ATTEMPTS = 5;
+public static final String DEFAULT_ROLE = "user";
+public static final double TAX_RATE = 0.18;
+
+// Local constant:
+final String greeting = "Hello";
+greeting = "Hi"; // COMPILE ERROR — cannot reassign final variable
+
+// Usage:
+if (attempts &gt; MAX_LOGIN_ATTEMPTS) {
+    lockAccount();
+}</code></pre>
+  </div>
+
+  <h3>Final Method</h3>
+  <p>A <code>final</code> method <strong>cannot be overridden</strong> by subclasses. Use this when the method's behavior must stay exactly as written.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Final method</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    public final String getRole() {
+        return this.role;  // no subclass can override this
+    }
+}</code></pre>
+  </div>
+
+  <h3>Final Class</h3>
+  <p>A <code>final</code> class <strong>cannot be extended</strong> (no subclasses allowed). <code>String</code> is a final class in Java &mdash; you cannot write <code>class MyString extends String</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Final class</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public final class SecurityUtils {
+    // Nobody can extend this class and override its security methods
+    public static String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+}
+
+// This would cause a COMPILE ERROR:
+// public class MySecurityUtils extends SecurityUtils { }  // NOPE</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th><code>final</code> On</th><th>Meaning</th><th>Naming</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Variable</td><td>Cannot be reassigned</td><td><code>MAX_LOGIN_ATTEMPTS</code></td></tr>
+      <tr><td>Method</td><td>Cannot be overridden by subclasses</td><td>Normal camelCase</td></tr>
+      <tr><td>Class</td><td>Cannot be extended (no child classes)</td><td>Normal PascalCase</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: toString()                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="tostring">
+  <div class="section-tag">Section 11</div>
+  <h2><code>toString()</code></h2>
+  <p class="section-desc">Every Java object inherits a <code>toString()</code> method. The default one prints garbage like <code>User@7a81197d</code>. Override it for meaningful output.</p>
+
+  <h3>Why Override?</h3>
+
+  <p>When you print an object with <code>System.out.println(user)</code>, Java automatically calls <code>user.toString()</code>. Without an override, you get the class name + memory hash &mdash; completely useless for debugging.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Default toString()</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin:0;">
+          <pre><code class="language-java">System.out.println(user);
+// Output: User@7a81197d
+// What does that tell you? Nothing.</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Overridden toString()</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin:0;">
+          <pre><code class="language-java">System.out.println(user);
+// Output: User{userId=1,
+//   fullName='Darshan',
+//   email='d@n.com', role='admin'}
+// Instantly useful for debugging.</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Nimbus User toString()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User.java — toString()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+public String toString() {
+    return "User{" +
+            "userId=" + userId +
+            ", fullName='" + fullName + '\'' +
+            ", email='" + email + '\'' +
+            ", mobile='" + mobile + '\'' +
+            ", address='" + address + '\'' +
+            ", role='" + role + '\'' +
+            '}';
+    // Note: password is intentionally EXCLUDED — never print passwords
+}</code></pre>
+  </div>
+
+  <h3>Nimbus Booking toString()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking.java — toString()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+public String toString() {
+    return "Booking{" +
+            "bookingId=" + bookingId +
+            ", trackingNumber='" + trackingNumber + '\'' +
+            ", senderId=" + senderId +
+            ", senderName='" + senderName + '\'' +
+            ", receiverName='" + receiverName + '\'' +
+            ", receiverMobile='" + receiverMobile + '\'' +
+            ", receiverAddress='" + receiverAddress + '\'' +
+            ", parcelType='" + parcelType + '\'' +
+            ", weight=" + weight +
+            ", price=" + price +
+            ", status='" + status + '\'' +
+            ", bookingDate='" + bookingDate + '\'' +
+            ", deliveryDate='" + deliveryDate + '\'' +
+            ", assignedAgent='" + assignedAgent + '\'' +
+            ", notes='" + notes + '\'' +
+            '}';
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Detail</div>
+    <p>The <code>@Override</code> annotation tells the compiler "I am intentionally replacing the parent class version of this method." If you misspell <code>toString</code> (e.g., <code>tostring</code>), the annotation will throw a compile error instead of silently creating a new method that never gets called. Always use <code>@Override</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: equals() and hashCode()                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="equals-hashcode">
+  <div class="section-tag">Section 12</div>
+  <h2><code>equals()</code> and <code>hashCode()</code></h2>
+  <p class="section-desc"><code>==</code> checks if two references point to the <strong>same object in memory</strong>. <code>equals()</code> checks if two objects have the <strong>same content</strong>. This difference matters enormously.</p>
+
+  <h3>The Problem with ==</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">== vs equals()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">User user1 = new User(1, "Darshan", "d@n.com", "987", "Mumbai", "pw", "admin");
+User user2 = new User(1, "Darshan", "d@n.com", "987", "Mumbai", "pw", "admin");
+
+// Same data, but:
+System.out.println(user1 == user2);      // false — different objects in memory!
+System.out.println(user1.equals(user2)); // also false... by DEFAULT
+
+// Default equals() from Object class does the same thing as == (checks reference)
+// You must OVERRIDE equals() to compare content</code></pre>
+  </div>
+
+  <h3>Overriding equals()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Proper equals() for User</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+public boolean equals(Object obj) {
+    // 1. Same reference? Same object.
+    if (this == obj) return true;
+
+    // 2. Null or different class? Not equal.
+    if (obj == null || getClass() != obj.getClass()) return false;
+
+    // 3. Cast and compare the field(s) that define identity
+    User other = (User) obj;
+    return this.userId == other.userId;  // users are equal if same userId
+}
+
+// Now:
+System.out.println(user1.equals(user2)); // true — same userId!</code></pre>
+  </div>
+
+  <h3>The hashCode() Contract</h3>
+
+  <p><strong>Rule:</strong> If <code>equals()</code> returns <code>true</code> for two objects, their <code>hashCode()</code> <strong>must</strong> return the same value. If you override <code>equals()</code>, you <strong>must</strong> override <code>hashCode()</code>. Breaking this contract causes bugs in <code>HashMap</code>, <code>HashSet</code>, etc.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">hashCode() matching equals()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+public int hashCode() {
+    return Integer.hashCode(userId); // based on same field as equals()
+}
+
+// Or using Objects utility (for multiple fields):
+@Override
+public int hashCode() {
+    return java.util.Objects.hash(userId);
+}</code></pre>
+  </div>
+
+  <h3>When You NEED to Override</h3>
+
+  <p>You need <code>equals()</code> and <code>hashCode()</code> when you use objects in:</p>
+
+  <ul>
+    <li><strong><code>HashSet</code></strong> &mdash; to detect duplicates. Without proper <code>equals</code>/<code>hashCode</code>, a HashSet will treat two User objects with userId=1 as different entries.</li>
+    <li><strong><code>HashMap</code></strong> &mdash; as keys. The key lookup uses <code>hashCode()</code> to find the bucket and <code>equals()</code> to match the exact key.</li>
+    <li><strong><code>List.contains()</code></strong> &mdash; calls <code>equals()</code> to check if an element exists.</li>
+    <li><strong>Any deduplication logic</strong> in your code.</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>If you store User objects in a <code>HashSet&lt;User&gt;</code> (e.g., to track logged-in users), two User objects with <code>userId=1</code> would be treated as <em>two separate entries</em> without proper <code>equals()</code> and <code>hashCode()</code>. The same user could appear twice in the set. Override both methods, base them on <code>userId</code>, and the set correctly treats them as one.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Full Nimbus User.java                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-user">
+  <div class="section-tag">Section 13</div>
+  <h2>Full Nimbus User.java</h2>
+  <p class="section-desc">The complete <code>User</code> model class as used in Nimbus, with every line explained.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+public class User {
+
+    // ===== FIELDS (all private — encapsulation) =====
+    private int userId;
+    private String fullName;
+    private String email;
+    private String mobile;
+    private String address;
+    private String password;
+    private String role;
+
+    // ===== CONSTRUCTOR 1: No-arg (for ResultSet building) =====
+    public User() {
+    }
+
+    // ===== CONSTRUCTOR 2: Parameterized (for direct creation) =====
+    public User(int userId, String fullName, String email,
+                String mobile, String address, String password, String role) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.password = password;
+        this.role = role;
+    }
+
+    // ===== GETTERS =====
+    public int getUserId() { return userId; }
+    public String getFullName() { return fullName; }
+    public String getEmail() { return email; }
+    public String getMobile() { return mobile; }
+    public String getAddress() { return address; }
+    public String getPassword() { return password; }
+    public String getRole() { return role; }
+
+    // ===== SETTERS =====
+    public void setUserId(int userId) { this.userId = userId; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setEmail(String email) { this.email = email; }
+    public void setMobile(String mobile) { this.mobile = mobile; }
+    public void setAddress(String address) { this.address = address; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(String role) { this.role = role; }
+
+    // ===== toString =====
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", address='" + address + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">package com.nimbus.model;</div>
+        <div class="breakdown-explain">Declares this class lives in the <code>com.nimbus.model</code> package. Model classes represent data entities (User, Booking). Other packages import from here.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class User {</div>
+        <div class="breakdown-explain"><code>public</code> means any class in any package can use User. <code>class</code> defines the blueprint. <code>User</code> is the name (PascalCase convention).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5-11</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private int userId; / private String fullName; / ...</div>
+        <div class="breakdown-explain">Seven private fields. <code>private</code> = only accessible within this class. <code>int</code> for numeric ID, <code>String</code> for text. Each User object gets its own copy of all 7 fields.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">14</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public User() { }</div>
+        <div class="breakdown-explain">No-arg constructor. Creates a User with all defaults (userId=0, all Strings=null). Needed by DAO layer to build User objects from database ResultSet rows — you create empty, then set each field from the query result.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">17-25</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public User(int userId, String fullName, ...) { this.userId = userId; ... }</div>
+        <div class="breakdown-explain">Parameterized constructor. Takes all 7 values at once. <code>this.userId = userId</code> uses <code>this</code> to distinguish the field from the parameter (same name). Used when you already have all values (e.g., creating a test user in code).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">28-34</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public int getUserId() { return userId; } / ...</div>
+        <div class="breakdown-explain">Getters follow the <code>getFieldName()</code> convention. Return type matches the field type. These are the only way external code can read the private fields. Seven getters for seven fields.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">37-43</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void setUserId(int userId) { this.userId = userId; } / ...</div>
+        <div class="breakdown-explain">Setters follow the <code>setFieldName()</code> convention. Return <code>void</code> (they do not return anything). Take one parameter matching the field type. Seven setters for seven fields. Validation can be added here later without changing external code.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">46-54</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Override public String toString() { ... }</div>
+        <div class="breakdown-explain"><code>@Override</code> tells the compiler we are replacing the inherited toString(). Returns a formatted string with all fields except password (security). <code>System.out.println(user)</code> calls this automatically.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 14: Full Nimbus Booking.java                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-booking">
+  <div class="section-tag">Section 14</div>
+  <h2>Full Nimbus Booking.java</h2>
+  <p class="section-desc">The complete <code>Booking</code> model class &mdash; 15 fields, two constructors, full getters/setters, and toString().</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+public class Booking {
+
+    // ===== FIELDS =====
+    private int bookingId;
+    private String trackingNumber;
+    private int senderId;
+    private String senderName;
+    private String receiverName;
+    private String receiverMobile;
+    private String receiverAddress;
+    private String parcelType;
+    private double weight;
+    private double price;
+    private String status;
+    private String bookingDate;
+    private String deliveryDate;
+    private String assignedAgent;
+    private String notes;
+
+    // ===== CONSTRUCTOR 1: No-arg =====
+    public Booking() {
+    }
+
+    // ===== CONSTRUCTOR 2: Parameterized =====
+    public Booking(int bookingId, String trackingNumber, int senderId,
+                   String senderName, String receiverName, String receiverMobile,
+                   String receiverAddress, String parcelType, double weight,
+                   double price, String status, String bookingDate,
+                   String deliveryDate, String assignedAgent, String notes) {
+        this.bookingId = bookingId;
+        this.trackingNumber = trackingNumber;
+        this.senderId = senderId;
+        this.senderName = senderName;
+        this.receiverName = receiverName;
+        this.receiverMobile = receiverMobile;
+        this.receiverAddress = receiverAddress;
+        this.parcelType = parcelType;
+        this.weight = weight;
+        this.price = price;
+        this.status = status;
+        this.bookingDate = bookingDate;
+        this.deliveryDate = deliveryDate;
+        this.assignedAgent = assignedAgent;
+        this.notes = notes;
+    }
+
+    // ===== GETTERS =====
+    public int getBookingId() { return bookingId; }
+    public String getTrackingNumber() { return trackingNumber; }
+    public int getSenderId() { return senderId; }
+    public String getSenderName() { return senderName; }
+    public String getReceiverName() { return receiverName; }
+    public String getReceiverMobile() { return receiverMobile; }
+    public String getReceiverAddress() { return receiverAddress; }
+    public String getParcelType() { return parcelType; }
+    public double getWeight() { return weight; }
+    public double getPrice() { return price; }
+    public String getStatus() { return status; }
+    public String getBookingDate() { return bookingDate; }
+    public String getDeliveryDate() { return deliveryDate; }
+    public String getAssignedAgent() { return assignedAgent; }
+    public String getNotes() { return notes; }
+
+    // ===== SETTERS =====
+    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+    public void setTrackingNumber(String trackingNumber) { this.trackingNumber = trackingNumber; }
+    public void setSenderId(int senderId) { this.senderId = senderId; }
+    public void setSenderName(String senderName) { this.senderName = senderName; }
+    public void setReceiverName(String receiverName) { this.receiverName = receiverName; }
+    public void setReceiverMobile(String receiverMobile) { this.receiverMobile = receiverMobile; }
+    public void setReceiverAddress(String receiverAddress) { this.receiverAddress = receiverAddress; }
+    public void setParcelType(String parcelType) { this.parcelType = parcelType; }
+    public void setWeight(double weight) { this.weight = weight; }
+    public void setPrice(double price) { this.price = price; }
+    public void setStatus(String status) { this.status = status; }
+    public void setBookingDate(String bookingDate) { this.bookingDate = bookingDate; }
+    public void setDeliveryDate(String deliveryDate) { this.deliveryDate = deliveryDate; }
+    public void setAssignedAgent(String assignedAgent) { this.assignedAgent = assignedAgent; }
+    public void setNotes(String notes) { this.notes = notes; }
+
+    // ===== toString =====
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingId=" + bookingId +
+                ", trackingNumber='" + trackingNumber + '\'' +
+                ", senderId=" + senderId +
+                ", senderName='" + senderName + '\'' +
+                ", receiverName='" + receiverName + '\'' +
+                ", receiverMobile='" + receiverMobile + '\'' +
+                ", receiverAddress='" + receiverAddress + '\'' +
+                ", parcelType='" + parcelType + '\'' +
+                ", weight=" + weight +
+                ", price=" + price +
+                ", status='" + status + '\'' +
+                ", bookingDate='" + bookingDate + '\'' +
+                ", deliveryDate='" + deliveryDate + '\'' +
+                ", assignedAgent='" + assignedAgent + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">package com.nimbus.model;</div>
+        <div class="breakdown-explain">Same package as User. All model/entity classes live here together.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5-19</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private int bookingId; / private String trackingNumber; / ... (15 fields)</div>
+        <div class="breakdown-explain">15 private fields representing one parcel booking. Mix of types: <code>int</code> for IDs, <code>double</code> for weight/price (decimal numbers), <code>String</code> for text data. All private for encapsulation.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">22</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public Booking() { }</div>
+        <div class="breakdown-explain">Empty constructor for building from ResultSet. Same pattern as User. Create empty Booking, loop through database columns, call setters one by one.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">25-48</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public Booking(int bookingId, String trackingNumber, ...) { ... }</div>
+        <div class="breakdown-explain">Full parameterized constructor with all 15 parameters. 15 <code>this.field = param</code> assignments. Used when creating a booking with all values known upfront.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">51-65</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public int getBookingId() / public String getTrackingNumber() / ...</div>
+        <div class="breakdown-explain">15 getters, one per field. Return types match field types. Naming follows Java convention exactly: <code>getBookingId()</code> for <code>bookingId</code>, <code>getTrackingNumber()</code> for <code>trackingNumber</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">68-82</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void setBookingId(int bookingId) / ...</div>
+        <div class="breakdown-explain">15 setters, one per field. All <code>void</code> return type. Each uses <code>this.field = param</code> to assign. Validation can be added later (e.g., <code>setWeight</code> could reject negative values).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">85-100</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Override public String toString() { ... }</div>
+        <div class="breakdown-explain">Overrides Object.toString(). Includes all 15 fields. Numbers print directly (<code>bookingId</code>, <code>weight</code>, <code>price</code>), strings get single quotes. Used for debugging with <code>System.out.println(booking)</code>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 15: Memory Diagram                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="memory-diagram">
+  <div class="section-tag">Section 15</div>
+  <h2>Memory Diagram &mdash; Objects on the Heap</h2>
+  <p class="section-desc">A complete picture of how the stack and heap look when your Nimbus application creates User and Booking objects.</p>
+
+  <div class="diagram">
+    <pre>
+  ┌─────────── STACK ────────────┐     ┌──────────────── HEAP ─────────────────┐
+  │                              │     │                                        │
+  │  main() method frame:       │     │  ┌──────────────────────────────────┐  │
+  │  ┌────────────────────────┐  │     │  │  User object @0x001A             │  │
+  │  │ admin  ───────────────────────────►│  userId   = 1                    │  │
+  │  │ [ref: 0x001A]         │  │     │  │  fullName = "Darshan"            │  │
+  │  │                       │  │     │  │  email    = "darshan@nimbus.com" │  │
+  │  │ sender ───────────────────────┐│  │  mobile   = "9876543210"        │  │
+  │  │ [ref: 0x002B]         │  │   ││  │  address  = "Mumbai"             │  │
+  │  │                       │  │   ││  │  password = "hashed_abc123"      │  │
+  │  │ booking1 ─────────────────┐  ││  │  role     = "admin"              │  │
+  │  │ [ref: 0x003C]         │  │ │ ││  └──────────────────────────────────┘  │
+  │  │                       │  │ │ ││                                        │
+  │  │ booking2 ────────────────┐│ │ ││  ┌──────────────────────────────────┐  │
+  │  │ [ref: 0x004D]         │ ││ │ │└─►│  User object @0x002B             │  │
+  │  └────────────────────────┘ ││ │ │  │  userId   = 2                    │  │
+  │                             ││ │ │  │  fullName = "Rahul"              │  │
+  │  processBooking() frame:    ││ │ │  │  email    = "rahul@nimbus.com"   │  │
+  │  ┌────────────────────────┐ ││ │ │  │  ...                             │  │
+  │  │ currentUser ─────────────┘│ │ │  └──────────────────────────────────┘  │
+  │  │ [ref: 0x002B]         │  │ │ │                                        │
+  │  └────────────────────────┘ │ │ │  ┌──────────────────────────────────┐  │
+  │                             │ │ └─►│  Booking object @0x003C           │  │
+  │                             │ │    │  bookingId = 101                  │  │
+  │                             │ │    │  trackingNumber = "NB20260423001"│  │
+  │                             │ │    │  senderId = 2                    │  │
+  │                             │ │    │  senderName = "Rahul"            │  │
+  │                             │ │    │  weight = 2.5                    │  │
+  │                             │ │    │  price = 150.0                   │  │
+  │                             │ │    │  status = "booked"               │  │
+  │                             │ │    │  ...                             │  │
+  │                             │ │    └──────────────────────────────────┘  │
+  │                             │ │                                         │
+  │                             │ │    ┌──────────────────────────────────┐  │
+  │                             │ └───►│  Booking object @0x004D           │  │
+  │                             │      │  bookingId = 102                  │  │
+  │                             │      │  trackingNumber = "NB20260423002"│  │
+  │                             │      │  ...                             │  │
+  │                             │      └──────────────────────────────────┘  │
+  └─────────────────────────────┘     └────────────────────────────────────┘
+
+  KEY OBSERVATIONS:
+  1. sender (in main) and currentUser (in processBooking) point to the SAME object @0x002B
+  2. Each Booking is a separate object on the heap with its own 15 fields
+  3. When processBooking() finishes, currentUser reference is gone, but the object stays
+     on the heap because sender still points to it
+  4. Objects with NO references become eligible for garbage collection
+    </pre>
+    <div class="diagram-label">Full memory layout: stack references pointing to heap objects in a Nimbus session</div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Garbage Collection</div>
+    <p>When an object has <strong>zero references</strong> pointing to it, Java's garbage collector eventually reclaims that memory. You do not have to free memory manually (unlike C/C++). But creating too many objects in a tight loop can still cause performance issues because the garbage collector has to work harder.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 16: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 16</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Eight exercises that build from basic class creation to real Nimbus scenarios. Try each one before looking at the hints.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Create a Simple Class</div>
+    <p>Create a <code>Parcel</code> class with three private fields: <code>parcelId</code> (int), <code>description</code> (String), <code>weight</code> (double). Add a no-arg constructor, a parameterized constructor, getters, setters, and <code>toString()</code>. Then create two Parcel objects and print them.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: Encapsulation with Validation</div>
+    <p>Modify your <code>Parcel</code> class so that <code>setWeight(double weight)</code> throws an <code>IllegalArgumentException</code> if the weight is negative or zero. Test it by trying to set a weight of <code>-5.0</code> and catching the exception.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Static Counter</div>
+    <p>Add a <code>private static int parcelCount</code> to the <code>Parcel</code> class. Increment it in the constructors. Add a <code>public static int getParcelCount()</code> method. Create 5 parcels and verify the count is 5 without using any object &mdash; just <code>Parcel.getParcelCount()</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Constructor Chaining</div>
+    <p>Add a third constructor to <code>Parcel</code> that takes only <code>description</code> and <code>weight</code> (no parcelId). This constructor should call the full constructor using <code>this(0, description, weight)</code>. Verify that calling the two-arg constructor sets parcelId to 0.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: The this Bug</div>
+    <p>Deliberately write a setter <strong>without</strong> <code>this</code> (e.g., <code>description = description;</code>) and observe what happens when you try to set and then get the value. Why is it <code>null</code>? Fix it.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6: equals() and hashCode()</div>
+    <p>Override <code>equals()</code> and <code>hashCode()</code> on your <code>Parcel</code> class, comparing by <code>parcelId</code>. Create two Parcel objects with the same <code>parcelId</code> but different descriptions. Verify that <code>equals()</code> returns <code>true</code> and that a <code>HashSet&lt;Parcel&gt;</code> treats them as one entry.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7: Build a User from Simulated ResultSet</div>
+    <p>Simulate what the DAO layer does: create a <code>User</code> using the no-arg constructor, then call each setter individually (as if reading from a database row). Print the user using <code>System.out.println(user)</code> and verify toString() output is correct. This is exactly how <code>UserDAO.getUserById()</code> works in Nimbus.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8: Final Constants</div>
+    <p>Create a <code>NimbusConstants</code> class with these <code>public static final</code> fields: <code>MAX_PARCEL_WEIGHT</code> (50.0), <code>DEFAULT_STATUS</code> ("booked"), <code>TRACKING_PREFIX</code> ("NB"). Use these constants in your Parcel class &mdash; e.g., in <code>setWeight()</code>, reject any weight above <code>NimbusConstants.MAX_PARCEL_WEIGHT</code>.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="java-methods.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Methods &amp; Scope</span>
+  </a>
+  <a href="oop-inheritance.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Inheritance</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Annotations | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link active"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ===== SECTION 1: What are Annotations? ===== -->
+<section class="content-section" id="what-are-annotations">
+  <div class="section-tag">Section 01</div>
+  <h2>What are Annotations?</h2>
+  <p class="section-desc">Annotations are special instructions you write above classes, methods, or fields using the <code>@</code> symbol. They tell Spring what to do with your code — without you writing the boilerplate yourself.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of annotations as <strong>sticky notes</strong> you put on your classes. You walk into a kitchen (your codebase) and stick a note on a jar that says "Sugar." Now anyone (Spring) who walks in knows what that jar is and how to use it — without opening it.</p>
+    <p><code>@Service</code> on a class = a sticky note saying "This class handles business logic. Spring, manage it for me."</p>
+  </div>
+
+  <h3>The @ Symbol</h3>
+  <p>Every annotation starts with <code>@</code> followed by the annotation name. It goes <strong>above</strong> the class, method, or field it describes.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Basic Annotation Syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service                          // annotation on a class
+public class UserService {
+
+    @Autowired                    // annotation on a field
+    private UserDAO userDAO;
+
+    @PostConstruct                // annotation on a method
+    public void init() {
+        System.out.println("UserService is ready!");
+    }
+}</code></pre>
+  </div>
+
+  <h3>How Java Processes Annotations (Brief)</h3>
+  <p>You don't need to master this, but it helps to know there are two meta-annotations that control how annotations work:</p>
+
+  <ul>
+    <li><code>@Retention</code> — tells Java <strong>how long</strong> to keep the annotation. <code>RUNTIME</code> means Spring can read it while the app is running.</li>
+    <li><code>@Target</code> — tells Java <strong>where</strong> the annotation can be placed. <code>TYPE</code> = on classes, <code>METHOD</code> = on methods, <code>FIELD</code> = on fields.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">How @Service is Defined Internally (You Won't Write This)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Retention(RetentionPolicy.RUNTIME)   // available at runtime
+@Target(ElementType.TYPE)              // can only go on classes
+@Component                             // @Service IS a @Component
+public @interface Service {
+    String value() default "";
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Takeaway</div>
+    <p>You <strong>use</strong> annotations. Spring <strong>reads</strong> them at runtime and acts on them. That's the entire mental model. The rest of this page is learning which annotation does what.</p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 2: Stereotype Annotations (The Big 4) ===== -->
+<section class="content-section" id="stereotype-annotations">
+  <div class="section-tag">Section 02</div>
+  <h2>Stereotype Annotations (The Big 4)</h2>
+  <p class="section-desc">These four annotations tell Spring: "Hey, this class is a bean — create it, manage it, and make it available for dependency injection." Each one marks a specific <strong>role</strong> in your application.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">@Component<span class="flow-sub">Generic bean</span></div>
+    </div>
+    <div class="flow-arrow-down">&#9660;</div>
+    <div class="flow-row">
+      <div class="flow-box green">@Service<span class="flow-sub">Business logic</span></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box orange">@Repository<span class="flow-sub">Data access</span></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box purple">@Controller<span class="flow-sub">Web requests</span></div>
+    </div>
+    <div class="flow-label">All three are specialized versions of @Component</div>
+  </div>
+
+  <!-- @Component -->
+  <h3>@Component — "Hey Spring, Manage This Class"</h3>
+  <p><code>@Component</code> is the most generic stereotype annotation. It tells Spring: "Create an instance of this class and keep it in the container (ApplicationContext) so other classes can use it."</p>
+  <p><strong>When to use:</strong> On helper/utility classes that don't fit neatly into service, repository, or controller categories.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">EmailValidator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class EmailValidator {
+
+    public boolean isValid(String email) {
+        return email != null &amp;&amp; email.contains("@") &amp;&amp; email.contains(".");
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>@Component</code> could be used on a utility class like <code>EmailValidator</code> or a <code>TrackingIdGenerator</code>. These are helpers that don't hold business logic and don't talk to the database — they're just reusable tools.</p>
+  </div>
+
+  <p><strong>What happens if you DON'T use it?</strong> Spring will have no idea your class exists. It won't create an instance, it won't manage it, and any class that tries to <code>@Autowired</code> it will get a "No qualifying bean" error.</p>
+
+  <!-- @Service -->
+  <h3>@Service — "This Class Handles Business Logic"</h3>
+  <p><code>@Service</code> is a specialized <code>@Component</code>. Functionally it does the <strong>exact same thing</strong> — registers the class as a bean. But it communicates <strong>intent</strong>: this class contains business rules, calculations, validations, and orchestration logic.</p>
+  <p><strong>When to use:</strong> On every class that contains business logic. Services typically call DAOs/Repositories to get data, process it, and return results.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserService.java — Full Nimbus Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.UserDAO;
+import com.nimbus.model.User;
+import com.nimbus.exception.DuplicateEmailException;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Service
+public class UserService {
+
+    private final UserDAO userDAO;
+
+    @Autowired
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public User registerUser(User user) throws DuplicateEmailException {
+        // Business rule: check if email already exists
+        if (userDAO.findByEmail(user.getEmail()) != null) {
+            throw new DuplicateEmailException(
+                "Email " + user.getEmail() + " is already registered"
+            );
+        }
+
+        // Business rule: set default role if not specified
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("CUSTOMER");
+        }
+
+        return userDAO.save(user);
+    }
+
+    public User getUserById(int userId) {
+        return userDAO.findById(userId);
+    }
+
+    public User login(String email, String password) {
+        User user = userDAO.findByEmail(email);
+        if (user != null &amp;&amp; user.getPassword().equals(password)) {
+            return user;
+        }
+        return null; // login failed
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Service</div>
+        <div class="breakdown-explain">Tells Spring: "This is a business logic class. Create it as a bean and manage its lifecycle."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private final UserDAO userDAO;</div>
+        <div class="breakdown-explain">Declares a dependency on UserDAO. The <code>final</code> keyword means it MUST be set in the constructor and can never change — this is a best practice.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Autowired public UserService(UserDAO userDAO)</div>
+        <div class="breakdown-explain">Constructor injection — Spring looks in the container for a bean of type UserDAO and passes it here when creating UserService.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (userDAO.findByEmail(...) != null)</div>
+        <div class="breakdown-explain">Business rule: before registering, check if the email is already in use. The service DECIDES, the DAO just QUERIES.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">throw new DuplicateEmailException(...)</div>
+        <div class="breakdown-explain">If the email exists, throw a custom exception. The service enforces rules — it doesn't just pass data through.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">user.setRole("CUSTOMER")</div>
+        <div class="breakdown-explain">Another business rule: default role assignment. This logic belongs in the service, NOT in the DAO or controller.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>@Service</code> goes on: <strong>UserService</strong> (registration, login, profile), <strong>TrackingService</strong> (tracking parcels), <strong>CustomerTrackingService</strong> (customer-specific tracking), <strong>OfficerTrackingService</strong> (officer-specific tracking), <strong>BaseHistoryService</strong> (shared history logic), <strong>CustomerHistoryService</strong> (customer history), and <strong>BookingThread</strong> (async booking processing).</p>
+  </div>
+
+  <p><strong>What happens if you DON'T use it?</strong> Same as @Component — Spring won't create the bean. But also: anyone reading your code won't know this class is supposed to hold business logic. You lose readability and intent.</p>
+
+  <!-- @Repository -->
+  <h3>@Repository — "This Class Talks to the Database"</h3>
+  <p><code>@Repository</code> is another specialized <code>@Component</code>, but it has a <strong>superpower</strong>: it automatically translates database-specific exceptions (like <code>SQLException</code>) into Spring's unified <code>DataAccessException</code> hierarchy. This means your service layer doesn't need to know if you're using MySQL, PostgreSQL, or Oracle — the exception type is always the same.</p>
+  <p><strong>When to use:</strong> On every class that directly interacts with the database — your DAO (Data Access Object) classes.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserDAO.java — Full Nimbus Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.User;
+import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.sql.DataSource;
+import java.sql.*;
+
+@Repository
+public class UserDAO {
+
+    private final DataSource dataSource;
+
+    @Autowired
+    public UserDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public User findById(int userId) {
+        String sql = "SELECT * FROM tbl_UserProfile WHERE user_id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setRole(rs.getString("role"));
+                return user;
+            }
+        } catch (SQLException e) {
+            // @Repository converts this to DataAccessException automatically
+            throw new RuntimeException("Error finding user by ID", e);
+        }
+        return null;
+    }
+
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM tbl_UserProfile WHERE email = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setRole(rs.getString("role"));
+                return user;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding user by email", e);
+        }
+        return null;
+    }
+
+    public User save(User user) {
+        String sql = "INSERT INTO tbl_UserProfile (name, email, password, role) VALUES (?, ?, ?, ?)";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getRole());
+            ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                user.setUserId(keys.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error saving user", e);
+        }
+        return user;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Repository</div>
+        <div class="breakdown-explain">Marks this as a data access class. Spring creates the bean AND enables automatic exception translation from SQLException to DataAccessException.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private final DataSource dataSource;</div>
+        <div class="breakdown-explain">Instead of using DBConnection utility directly, we inject a DataSource bean. Spring manages the connection pool for us.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">dataSource.getConnection()</div>
+        <div class="breakdown-explain">Gets a database connection from the pool. The try-with-resources block ensures it's returned to the pool when done.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">PreparedStatement ps = conn.prepareStatement(sql)</div>
+        <div class="breakdown-explain">Uses parameterized queries (the ? placeholders) — prevents SQL injection attacks. NEVER concatenate user input into SQL strings.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Statement.RETURN_GENERATED_KEYS</div>
+        <div class="breakdown-explain">Tells MySQL to return the auto-generated user_id after INSERT so we can set it on the User object.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>@Repository</code> goes on: <strong>UserDAO</strong> (queries <code>tbl_UserProfile</code>) and <strong>BookingDAO</strong> (queries the <code>Booking</code> table). These are the ONLY classes that should contain SQL statements.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Why @Repository and Not Just @Component?</div>
+    <p>If you use plain <code>@Component</code> on a DAO, the bean still gets created — but you <strong>lose</strong> the automatic exception translation. A MySQL-specific <code>SQLException</code> would leak into your service layer, coupling your business logic to your database vendor. With <code>@Repository</code>, Spring wraps it in <code>DataAccessException</code> — a standard Spring exception your service can catch without knowing which database is underneath.</p>
+  </div>
+
+  <!-- @Controller -->
+  <h3>@Controller — "This Handles Web Requests"</h3>
+  <p><code>@Controller</code> is the fourth specialized <code>@Component</code>. It marks a class as an MVC controller — one that handles incoming HTTP requests and returns views (JSP pages) or data (JSON).</p>
+  <p><strong>When to use:</strong> On classes that receive web requests from users. This is the entry point of your web application.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserController.java — Preview (Covered in Spring MVC)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.service.UserService;
+import com.nimbus.model.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+
+@Controller
+@RequestMapping("/users")
+public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/register")
+    public String showRegisterForm() {
+        return "register";  // returns register.jsp
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute User user, Model model) {
+        try {
+            userService.registerUser(user);
+            return "redirect:/users/login";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "register";
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>@Controller</code> will be used when we build the web layer. Nimbus will have controllers for: <strong>UserController</strong> (register, login, profile), <strong>BookingController</strong> (create/view bookings), and <strong>TrackingController</strong> (track parcels). These are covered in depth in the <a href="spring-mvc.html" style="color: var(--accent);">Spring MVC topic</a>.</p>
+  </div>
+
+  <p><strong>What happens if you DON'T use it?</strong> Spring MVC won't recognize the class as a handler. No URL will be mapped to your methods, and your web endpoints will return 404.</p>
+
+  <!-- Comparison Table -->
+  <h3>Comparison: When to Use Which?</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Annotation</th>
+        <th>Layer</th>
+        <th>Purpose</th>
+        <th>Nimbus Classes</th>
+        <th>Special Power</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@Component</code></td>
+        <td>Any</td>
+        <td>Generic Spring bean</td>
+        <td>EmailValidator, TrackingIdGenerator</td>
+        <td>None (basic bean registration)</td>
+      </tr>
+      <tr>
+        <td><code>@Service</code></td>
+        <td>Service</td>
+        <td>Business logic</td>
+        <td>UserService, TrackingService, BookingThread</td>
+        <td>Communicates intent (business layer)</td>
+      </tr>
+      <tr>
+        <td><code>@Repository</code></td>
+        <td>DAO / Data</td>
+        <td>Database access</td>
+        <td>UserDAO, BookingDAO</td>
+        <td>Auto exception translation (SQLException &rarr; DataAccessException)</td>
+      </tr>
+      <tr>
+        <td><code>@Controller</code></td>
+        <td>Web / Presentation</td>
+        <td>Handle HTTP requests</td>
+        <td>UserController, BookingController</td>
+        <td>Maps URLs to methods, returns views</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Simple Rule</div>
+    <p>Touches the database? <code>@Repository</code>. Contains business rules? <code>@Service</code>. Handles web requests? <code>@Controller</code>. None of the above? <code>@Component</code>.</p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 3: @Autowired ===== -->
+<section class="content-section" id="autowired">
+  <div class="section-tag">Section 03</div>
+  <h2>@Autowired — Dependency Injection</h2>
+  <p class="section-desc">This is the annotation that makes Spring's dependency injection actually work. It tells Spring: "I need an instance of this type — find the matching bean in the container and inject it here."</p>
+
+  <h3>Three Places to Use @Autowired</h3>
+
+  <h4>1. Constructor Injection (BEST Practice)</h4>
+  <p>Put <code>@Autowired</code> on the constructor. Spring will pass the required beans as constructor arguments when creating the object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Constructor Injection — Recommended</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class UserService {
+
+    private final UserDAO userDAO;       // marked final — can't change after construction
+
+    @Autowired
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;          // Spring passes the UserDAO bean here
+    }
+}</code></pre>
+  </div>
+
+  <p><strong>Why it's the best:</strong></p>
+  <ul>
+    <li>Dependencies are <code>final</code> — they can't be changed after the object is created (immutable)</li>
+    <li>You can't create the object without its dependencies — catches missing beans early</li>
+    <li>Easy to test — just pass mocks in the constructor</li>
+    <li>If there's only ONE constructor, you can even skip <code>@Autowired</code> — Spring will auto-detect it</li>
+  </ul>
+
+  <h4>2. Setter Injection</h4>
+  <p>Put <code>@Autowired</code> on a setter method. Spring calls the setter after creating the object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Setter Injection</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class UserService {
+
+    private UserDAO userDAO;            // NOT final — can be changed
+
+    @Autowired
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+}</code></pre>
+  </div>
+
+  <p><strong>When to use:</strong> When a dependency is optional or when you might want to swap it out later. Rare in practice.</p>
+
+  <h4>3. Field Injection (Easiest but NOT Recommended)</h4>
+  <p>Put <code>@Autowired</code> directly on the field. Spring uses reflection to set it — no constructor or setter needed.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Field Injection — Avoid This</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class UserService {
+
+    @Autowired
+    private UserDAO userDAO;     // Spring injects via reflection — no constructor needed
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Why Field Injection Is Not Recommended</div>
+    <ul>
+      <li>Can't make the field <code>final</code> — so it could theoretically be changed</li>
+      <li>Hard to test — you can't pass in a mock without using reflection or a Spring test context</li>
+      <li>Hides dependencies — you can't tell what the class needs just by looking at its constructor</li>
+      <li>The class can be created without its dependencies (they'll be null until Spring injects them)</li>
+    </ul>
+    <p>It <strong>works</strong>, and you'll see it in tutorials, but professional Spring projects almost always use constructor injection.</p>
+  </div>
+
+  <!-- Comparison -->
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header good">Constructor Injection (Do This)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Dependencies are <code>final</code></li>
+          <li>Required at creation time</li>
+          <li>Easy to unit test</li>
+          <li>Explicit — you see all deps in the constructor</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header bad">Field Injection (Avoid This)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Dependencies can change</li>
+          <li>Object created without deps (they're null briefly)</li>
+          <li>Hard to unit test</li>
+          <li>Hidden — deps buried in field declarations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>What Happens Behind the Scenes</h3>
+  <p>When Spring starts your application and encounters <code>@Autowired</code>, here's the internal process:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Spring scans classes<span class="flow-sub">finds @Service, @Repository, etc.</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Creates beans<span class="flow-sub">instantiates each annotated class</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Resolves @Autowired<span class="flow-sub">looks for matching bean by type</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Injects dependency<span class="flow-sub">passes bean via constructor/setter/field</span></div>
+    </div>
+  </div>
+
+  <ol class="steps">
+    <li>Spring scans your packages and finds all classes annotated with <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, or <code>@Controller</code>.</li>
+    <li>It creates instances (beans) of each one and stores them in the <strong>ApplicationContext</strong> (the container).</li>
+    <li>For each <code>@Autowired</code> point, Spring looks in the container for a bean whose type matches the required parameter/field.</li>
+    <li>If it finds exactly ONE match, it injects it. If it finds ZERO, it throws an error. If it finds MORE THAN ONE, it also throws an error (unless you use <code>@Qualifier</code>).</li>
+  </ol>
+
+  <h3>Common Error: "No Qualifying Bean"</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error Message</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-text">NoSuchBeanDefinitionException: No qualifying bean of type
+'com.nimbus.dao.UserDAO' available: expected at least 1 bean
+which qualifies as autowire candidate.</code></pre>
+  </div>
+
+  <p><strong>This means:</strong> Spring is trying to inject <code>UserDAO</code> somewhere, but it can't find a bean of that type in the container.</p>
+  <p><strong>Common fixes:</strong></p>
+  <ul>
+    <li>Did you forget <code>@Repository</code> on <code>UserDAO</code>? Add it.</li>
+    <li>Is <code>UserDAO</code> in a package that <code>@ComponentScan</code> doesn't reach? Check your scan base package.</li>
+    <li>Is the class spelled correctly? Java is case-sensitive.</li>
+    <li>Did the class fail to compile? Check for compilation errors in the DAO.</li>
+  </ul>
+
+  <h3>Full Before/After: UserService Without and With @Autowired</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without @Autowired (Manual Wiring)</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0; padding: 0;">
+public class UserService {
+    private UserDAO userDAO;
+
+    public UserService() {
+        // Manually creating the dependency
+        this.userDAO = new UserDAO();
+    }
+}
+</pre>
+        <p style="margin-top: 12px; color: var(--red); font-size: 0.82rem;"><strong>Problems:</strong> Tight coupling. Can't swap implementations. Can't test without real DB. UserService controls UserDAO's lifecycle.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With @Autowired (Spring DI)</div>
+      <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); background: none; margin: 0; padding: 0;">
+@Service
+public class UserService {
+    private final UserDAO userDAO;
+
+    @Autowired
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+}
+</pre>
+        <p style="margin-top: 12px; color: var(--green); font-size: 0.82rem;"><strong>Benefits:</strong> Loose coupling. Spring injects the right bean. Easy to test with mocks. Spring controls the lifecycle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 4: @Configuration & @Bean ===== -->
+<section class="content-section" id="configuration-bean">
+  <div class="section-tag">Section 04</div>
+  <h2>@Configuration &amp; @Bean</h2>
+  <p class="section-desc">Sometimes you can't put <code>@Component</code> on a class — maybe it's from a 3rd-party library, or maybe you need custom setup logic. That's when you use <code>@Configuration</code> and <code>@Bean</code> to create beans manually.</p>
+
+  <h3>@Configuration — "This Class Defines Beans"</h3>
+  <p>A class annotated with <code>@Configuration</code> is a <strong>configuration class</strong>. It's like a recipe book — it tells Spring how to create specific beans that can't be auto-detected via component scanning.</p>
+
+  <h3>@Bean — "This Method Creates a Bean"</h3>
+  <p>A method annotated with <code>@Bean</code> inside a <code>@Configuration</code> class tells Spring: "Call this method, take whatever it returns, and register it as a bean in the container."</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AppConfig.java — Nimbus Configuration</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
+import org.apache.commons.dbcp2.BasicDataSource;
+import javax.sql.DataSource;
+
+@Configuration
+@ComponentScan("com.nimbus")
+public class AppConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        ds.setUrl("jdbc:mysql://localhost:3306/nimbus_db");
+        ds.setUsername("root");
+        ds.setPassword("password");
+        ds.setInitialSize(5);            // start with 5 connections in the pool
+        ds.setMaxTotal(10);              // max 10 connections
+        return ds;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Configuration</div>
+        <div class="breakdown-explain">Tells Spring: "This class contains bean definitions. Process it specially." Configuration classes are themselves beans, and Spring proxies them to ensure @Bean methods return singletons.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ComponentScan("com.nimbus")</div>
+        <div class="breakdown-explain">Tells Spring: "Scan the com.nimbus package and all its sub-packages for classes with @Component, @Service, @Repository, @Controller." Without this, Spring won't find your annotated classes.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Bean public DataSource dataSource()</div>
+        <div class="breakdown-explain">This method creates and returns a DataSource. Spring calls this method once, takes the returned object, and registers it as a bean named "dataSource" (the method name becomes the bean name).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">BasicDataSource ds = new BasicDataSource()</div>
+        <div class="breakdown-explain">BasicDataSource is from Apache Commons DBCP — a 3rd-party library. We can't put @Component on it because we didn't write it. That's WHY we need @Bean — to create it manually.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ds.setInitialSize(5); ds.setMaxTotal(10);</div>
+        <div class="breakdown-explain">Connection pool settings. Instead of creating a new DB connection for every query (slow), the pool pre-creates 5 connections and reuses them. Max 10 connections at once.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>AppConfig</code> class replaces the <code>DBConnection</code> utility class. Instead of manually getting connections via <code>DriverManager.getConnection()</code>, we define a <code>DataSource</code> bean with connection pooling. Every <code>@Repository</code> class can then <code>@Autowired</code> the <code>DataSource</code> and get connections from the pool.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">When to Use @Bean vs @Component?</div>
+    <p><strong>Use @Component/@Service/@Repository:</strong> On classes YOU write. Just annotate the class directly.</p>
+    <p><strong>Use @Bean:</strong> On 3rd-party classes you can't annotate (DataSource, RestTemplate, ObjectMapper, etc.) or when you need custom creation logic.</p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 5: @ComponentScan ===== -->
+<section class="content-section" id="component-scan">
+  <div class="section-tag">Section 05</div>
+  <h2>@ComponentScan</h2>
+  <p class="section-desc">Spring doesn't magically know where your annotated classes live. <code>@ComponentScan</code> tells it which packages to search.</p>
+
+  <h3>How It Works</h3>
+  <p>When Spring starts, it needs to find all classes with <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, and <code>@Controller</code>. <code>@ComponentScan</code> says: "Start looking in THIS package, and also check all its sub-packages."</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Default Scan — Package of the Configuration Class</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus;
+
+@Configuration
+@ComponentScan          // scans com.nimbus and ALL sub-packages
+public class AppConfig { }</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Custom Scan — Specific Packages</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Configuration
+@ComponentScan(basePackages = {"com.nimbus.service", "com.nimbus.dao"})
+public class AppConfig { }</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our package structure is <code>com.nimbus</code> with sub-packages: <code>com.nimbus.model</code>, <code>com.nimbus.dao</code>, <code>com.nimbus.service</code>, <code>com.nimbus.exception</code>, <code>com.nimbus.config</code>, <code>com.nimbus.controller</code>. Using <code>@ComponentScan("com.nimbus")</code> on the config class scans ALL of them — finding UserDAO, BookingDAO, UserService, TrackingService, etc.</p>
+  </div>
+
+  <h3>Nimbus Package Scanning Diagram</h3>
+
+  <div class="diagram">
+    <pre>
+@ComponentScan("com.nimbus")
+        |
+        v
+com.nimbus
+  |-- config/
+  |     AppConfig.java        (@Configuration -- already found)
+  |-- model/
+  |     User.java             (no annotation -- skipped, it's a plain POJO)
+  |     Booking.java          (no annotation -- skipped)
+  |-- dao/
+  |     UserDAO.java          (@Repository -- FOUND, bean created)
+  |     BookingDAO.java       (@Repository -- FOUND, bean created)
+  |-- service/
+  |     UserService.java      (@Service -- FOUND, bean created)
+  |     TrackingService.java  (@Service -- FOUND, bean created)
+  |     BookingThread.java    (@Service -- FOUND, bean created)
+  |-- exception/
+  |     DuplicateEmailException.java  (no annotation -- skipped)
+  |     BookingNotFoundException.java (no annotation -- skipped)
+  |-- controller/
+        UserController.java   (@Controller -- FOUND, bean created)
+    </pre>
+    <div class="diagram-label">Spring scans all sub-packages and registers every annotated class as a bean</div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>If your <code>@Configuration</code> class is in <code>com.nimbus.config</code> but you forget <code>@ComponentScan</code>, Spring will ONLY scan <code>com.nimbus.config</code> and its sub-packages. Your DAO and Service classes in other packages won't be found. Always set the base package to the root: <code>@ComponentScan("com.nimbus")</code>.</p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 6: @Scope ===== -->
+<section class="content-section" id="scope">
+  <div class="section-tag">Section 06</div>
+  <h2>@Scope — Bean Lifecycle Control</h2>
+  <p class="section-desc">By default, Spring creates <strong>one instance</strong> of each bean and shares it everywhere. <code>@Scope</code> lets you change that behavior.</p>
+
+  <h3>The Four Scopes</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Scope</th>
+        <th>Instances</th>
+        <th>When</th>
+        <th>Use Case</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>singleton</code></td>
+        <td>ONE instance total</td>
+        <td>Default — always</td>
+        <td>UserDAO, UserService — one instance shared by all requests</td>
+      </tr>
+      <tr>
+        <td><code>prototype</code></td>
+        <td>NEW instance every time</td>
+        <td>Every time someone asks for it</td>
+        <td>Report generators, form objects that should be fresh each time</td>
+      </tr>
+      <tr>
+        <td><code>request</code></td>
+        <td>ONE per HTTP request</td>
+        <td>Web apps only</td>
+        <td>Shopping cart data for the current request</td>
+      </tr>
+      <tr>
+        <td><code>session</code></td>
+        <td>ONE per user session</td>
+        <td>Web apps only</td>
+        <td>User preferences, logged-in user info persisting across pages</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Singleton (Default) — One Instance Shared Everywhere</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Repository
+// @Scope("singleton")   &lt;-- this is the DEFAULT, you don't need to write it
+public class UserDAO {
+    // Only ONE UserDAO instance exists. All services share it.
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Prototype — Fresh Instance Every Time</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Component
+@Scope("prototype")
+public class BookingReportGenerator {
+
+    private List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+    public void addBooking(Booking b) {
+        bookings.add(b);
+    }
+
+    public String generateReport() {
+        // Each time someone requests this bean, they get a fresh list
+        return "Report for " + bookings.size() + " bookings";
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>UserDAO</code> and <code>BookingDAO</code> should be <strong>singleton</strong> (default) — one instance reused for all database operations. They don't hold state specific to any user.</p>
+    <p>If you needed a fresh report generator for each request (so data from one user's report doesn't leak into another), you'd use <code>@Scope("prototype")</code>.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Request &amp; Session Scopes (Web Apps Only)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Component
+@Scope("request")
+public class RequestLogger {
+    // A new instance is created for EACH HTTP request
+    // Dies when the request is complete
+}
+
+@Component
+@Scope("session")
+public class UserSessionData {
+    // A new instance is created for EACH user session
+    // Lives as long as the user's session (until logout/timeout)
+    private String loggedInUsername;
+    private String role;
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 7: @Qualifier ===== -->
+<section class="content-section" id="qualifier">
+  <div class="section-tag">Section 07</div>
+  <h2>@Qualifier — Picking the Right Bean</h2>
+  <p class="section-desc">When you have <strong>two or more beans of the same type</strong>, Spring doesn't know which one to inject. <code>@Qualifier</code> tells it exactly which one you want.</p>
+
+  <h3>The Problem</h3>
+  <p>In Nimbus, <code>TrackingService</code> has two implementations: <code>CustomerTrackingService</code> and <code>OfficerTrackingService</code>. If another class asks Spring to inject a <code>TrackingService</code>, Spring finds <strong>two candidates</strong> and panics.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The Error You'll Get</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-text">NoUniqueBeanDefinitionException: No qualifying bean of type
+'com.nimbus.service.TrackingService' available: expected single
+matching bean but found 2: customerTrackingService, officerTrackingService</code></pre>
+  </div>
+
+  <h3>The Solution: @Qualifier</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java — Interface</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+public interface TrackingService {
+    String trackParcel(String trackingId);
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import org.springframework.stereotype.Service;
+
+@Service("customerTracker")
+public class CustomerTrackingService implements TrackingService {
+
+    @Override
+    public String trackParcel(String trackingId) {
+        // Customer sees: status + estimated delivery
+        return "Your parcel " + trackingId + " is in transit. ETA: 2 days.";
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OfficerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import org.springframework.stereotype.Service;
+
+@Service("officerTracker")
+public class OfficerTrackingService implements TrackingService {
+
+    @Override
+    public String trackParcel(String trackingId) {
+        // Officer sees: full route, handler info, timestamps
+        return "Parcel " + trackingId + " | Hub: Mumbai-Central | Handler: Officer #42 | Scanned: 14:32";
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Using @Qualifier to Pick the Right One</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class TrackingController {
+
+    private final TrackingService trackingService;
+
+    @Autowired
+    public TrackingController(
+            @Qualifier("customerTracker") TrackingService trackingService) {
+        this.trackingService = trackingService;
+    }
+
+    // This controller will use CustomerTrackingService
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Service("customerTracker")</div>
+        <div class="breakdown-explain">Registers this bean with the name "customerTracker". Without the name, the default would be "customerTrackingService" (class name with first letter lowercase).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Qualifier("customerTracker")</div>
+        <div class="breakdown-explain">Tells Spring: "I know there are multiple TrackingService beans. I specifically want the one named 'customerTracker'." This eliminates the ambiguity.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Alternative: @Primary</h3>
+  <p>If one implementation should be the default choice (and the other is only used explicitly), mark the default with <code>@Primary</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Using @Primary Instead</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+@Primary     // This becomes the default when no @Qualifier is specified
+public class CustomerTrackingService implements TrackingService {
+    // ...
+}
+
+@Service
+public class OfficerTrackingService implements TrackingService {
+    // ...
+}
+
+// Now this works WITHOUT @Qualifier — Spring picks the @Primary one
+@Autowired
+public TrackingController(TrackingService trackingService) {
+    // Gets CustomerTrackingService (the @Primary)
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">@Qualifier vs @Primary</div>
+    <p><strong>@Primary</strong> = "This is the default. Use it unless told otherwise." Set it once on the implementation.</p>
+    <p><strong>@Qualifier</strong> = "I specifically want THIS bean." Used at the injection point. Overrides @Primary.</p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 8: @Value ===== -->
+<section class="content-section" id="value">
+  <div class="section-tag">Section 08</div>
+  <h2>@Value — Injecting Configuration Values</h2>
+  <p class="section-desc">Hardcoding database URLs, passwords, and API keys in your Java code is a bad idea. <code>@Value</code> lets you read values from a properties file and inject them into your beans.</p>
+
+  <h3>The Properties File</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-properties"># Database Configuration
+db.driver=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/nimbus_db
+db.username=root
+db.password=nimbus2026
+
+# Application Settings
+app.name=Nimbus Parcel Management
+app.version=1.0
+app.max-bookings-per-day=50</code></pre>
+  </div>
+
+  <h3>Using @Value to Read Properties</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AppConfig.java — Using @Value for Database Config</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.apache.commons.dbcp2.BasicDataSource;
+import javax.sql.DataSource;
+
+@Configuration
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+
+    @Value("${db.driver}")
+    private String dbDriver;
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    @Value("${db.username}")
+    private String dbUsername;
+
+    @Value("${db.password}")
+    private String dbPassword;
+
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName(dbDriver);
+        ds.setUrl(dbUrl);
+        ds.setUsername(dbUsername);
+        ds.setPassword(dbPassword);
+        return ds;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PropertySource("classpath:application.properties")</div>
+        <div class="breakdown-explain">Tells Spring: "Load the file application.properties from the classpath (src/main/resources/) and make its key-value pairs available for @Value injection."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Value("${db.url}")</div>
+        <div class="breakdown-explain">The ${...} syntax is a placeholder. Spring looks up the key "db.url" in the loaded properties file and injects the value into this field. If the key doesn't exist, the app fails to start.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String dbUrl;</div>
+        <div class="breakdown-explain">This field will contain "jdbc:mysql://localhost:3306/nimbus_db" at runtime — read from the properties file, NOT hardcoded.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Default Values</h3>
+  <p>You can provide a fallback value in case the property is missing:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@Value with Defaults</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Value("${app.max-bookings-per-day:100}")    // default is 100 if property missing
+private int maxBookingsPerDay;
+
+@Value("${app.name:Nimbus}")                 // default is "Nimbus"
+private String appName;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The current <code>DBConnection</code> class has the database URL, username, and password <strong>hardcoded</strong> in the Java file. With <code>@Value</code>, these move to <code>application.properties</code>. Benefits:</p>
+    <ul>
+      <li>Change database config without recompiling Java code</li>
+      <li>Different properties for dev vs production (different files)</li>
+      <li>Sensitive values (passwords) not in source code</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 9: Lifecycle Annotations ===== -->
+<section class="content-section" id="lifecycle">
+  <div class="section-tag">Section 09</div>
+  <h2>Lifecycle Annotations</h2>
+  <p class="section-desc">Sometimes you need to run code right after a bean is created or just before it's destroyed. That's what <code>@PostConstruct</code> and <code>@PreDestroy</code> do.</p>
+
+  <h3>@PostConstruct — "Run This After the Bean is Ready"</h3>
+  <p>A method annotated with <code>@PostConstruct</code> runs <strong>once</strong>, right after the bean is created and all its dependencies are injected. Think of it as an initialization hook.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Bean Created<span class="flow-sub">constructor called</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Dependencies Injected<span class="flow-sub">@Autowired resolved</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">@PostConstruct Runs<span class="flow-sub">your init code here</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Bean Ready to Use<span class="flow-sub">fully initialized</span></div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DBConnection with @PostConstruct — Nimbus Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.sql.DataSource;
+import java.sql.Connection;
+
+@Component
+public class DatabaseHealthChecker {
+
+    private final DataSource dataSource;
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    public DatabaseHealthChecker(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @PostConstruct
+    public void checkConnectionOnStartup() {
+        System.out.println("=== Nimbus Database Health Check ===");
+        try (Connection conn = dataSource.getConnection()) {
+            if (conn.isValid(5)) {
+                System.out.println("Database connection OK: " + dbUrl);
+            } else {
+                System.out.println("WARNING: Database connection is NOT valid!");
+            }
+        } catch (Exception e) {
+            System.out.println("CRITICAL: Cannot connect to database: " + e.getMessage());
+        }
+    }
+
+    @PreDestroy
+    public void onShutdown() {
+        System.out.println("=== Nimbus Shutting Down — Closing DB pool ===");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PostConstruct public void checkConnectionOnStartup()</div>
+        <div class="breakdown-explain">This method runs automatically after the bean is created and DataSource is injected. Perfect for startup validation — "Can we even reach the database?"</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">conn.isValid(5)</div>
+        <div class="breakdown-explain">Tests if the connection is valid with a 5-second timeout. If the database is down, this returns false instead of hanging forever.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PreDestroy public void onShutdown()</div>
+        <div class="breakdown-explain">This method runs when the application is shutting down (e.g., server stop). Use it for cleanup — closing connections, flushing caches, saving state.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>@PreDestroy — "Run This Before the Bean is Destroyed"</h3>
+  <p>A method annotated with <code>@PreDestroy</code> runs just before Spring destroys the bean. Used for cleanup tasks:</p>
+  <ul>
+    <li>Closing database connection pools</li>
+    <li>Flushing caches to disk</li>
+    <li>Logging shutdown messages</li>
+    <li>Stopping background threads</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>@PostConstruct</code> is ideal for <strong>DBConnection</strong> (now <code>DatabaseHealthChecker</code>) — test the MySQL connection at startup and fail fast if the database is unreachable. <code>@PreDestroy</code> could be used on <code>BookingThread</code> to cleanly stop background processing when the application shuts down.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Import Note</div>
+    <p>In Java 9+, <code>javax.annotation.PostConstruct</code> and <code>javax.annotation.PreDestroy</code> were removed from the JDK. You need to add the dependency: <code>javax.annotation:javax.annotation-api:1.3.2</code> in your pom.xml. Or use Jakarta: <code>jakarta.annotation:jakarta.annotation-api:2.1.1</code>.</p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 10: Web Annotations Preview ===== -->
+<section class="content-section" id="web-annotations">
+  <div class="section-tag">Section 10</div>
+  <h2>Web Annotations Preview</h2>
+  <p class="section-desc">These annotations handle HTTP requests in Spring MVC. This is a quick preview — the full deep dive is in the <a href="spring-mvc.html" style="color: var(--accent);">Spring MVC topic</a>.</p>
+
+  <h3>Request Mapping Annotations</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Annotation</th>
+        <th>HTTP Method</th>
+        <th>Example</th>
+        <th>Nimbus Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@RequestMapping</code></td>
+        <td>Any (generic)</td>
+        <td><code>@RequestMapping("/users")</code></td>
+        <td>Base path for UserController</td>
+      </tr>
+      <tr>
+        <td><code>@GetMapping</code></td>
+        <td>GET</td>
+        <td><code>@GetMapping("/profile")</code></td>
+        <td>View user profile page</td>
+      </tr>
+      <tr>
+        <td><code>@PostMapping</code></td>
+        <td>POST</td>
+        <td><code>@PostMapping("/register")</code></td>
+        <td>Submit registration form</td>
+      </tr>
+      <tr>
+        <td><code>@PutMapping</code></td>
+        <td>PUT</td>
+        <td><code>@PutMapping("/profile")</code></td>
+        <td>Update user profile</td>
+      </tr>
+      <tr>
+        <td><code>@DeleteMapping</code></td>
+        <td>DELETE</td>
+        <td><code>@DeleteMapping("/{id}")</code></td>
+        <td>Cancel a booking</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Data Extraction Annotations</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Quick Preview — All Covered in Spring MVC Topic</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+@RequestMapping("/bookings")
+public class BookingController {
+
+    // @PathVariable — reads from URL path
+    // GET /bookings/1234
+    @GetMapping("/{bookingId}")
+    public String viewBooking(@PathVariable int bookingId, Model model) {
+        // bookingId = 1234
+        return "booking-details";
+    }
+
+    // @RequestParam — reads from query string
+    // GET /bookings/search?status=IN_TRANSIT
+    @GetMapping("/search")
+    public String searchBookings(@RequestParam String status, Model model) {
+        // status = "IN_TRANSIT"
+        return "booking-list";
+    }
+
+    // @RequestBody — reads from POST body (JSON)
+    // POST /bookings with JSON body
+    @PostMapping
+    @ResponseBody
+    public Booking createBooking(@RequestBody Booking booking) {
+        // booking object is populated from JSON
+        return bookingService.createBooking(booking);
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Coming Next</div>
+    <p>The <a href="spring-mvc.html" style="color: var(--accent);">Spring MVC topic</a> covers ALL these web annotations in full depth with complete Nimbus controller implementations, form handling, validation, error pages, and more.</p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 11: Complete Nimbus Spring Configuration ===== -->
+<section class="content-section" id="complete-config">
+  <div class="section-tag">Section 11</div>
+  <h2>Complete Nimbus Spring Configuration</h2>
+  <p class="section-desc">Here's every class in the Nimbus system with proper Spring annotations — the full picture of how everything connects.</p>
+
+  <h3>Project Structure</h3>
+
+  <div class="diagram">
+    <pre>
+src/main/java/com/nimbus/
+  |-- NimbusApp.java                   (Main class — bootstraps Spring)
+  |-- config/
+  |     AppConfig.java                 (@Configuration + @ComponentScan + @Bean)
+  |-- model/
+  |     User.java                      (Plain POJO — no annotation)
+  |     Booking.java                   (Plain POJO — no annotation)
+  |-- dao/
+  |     UserDAO.java                   (@Repository)
+  |     BookingDAO.java                (@Repository)
+  |-- service/
+  |     UserService.java               (@Service)
+  |     TrackingService.java           (Interface — no annotation)
+  |     CustomerTrackingService.java   (@Service)
+  |     OfficerTrackingService.java    (@Service)
+  |     BaseHistoryService.java        (@Service)
+  |     CustomerHistoryService.java    (@Service)
+  |     BookingThread.java             (@Service)
+  |-- exception/
+  |     DuplicateEmailException.java   (No annotation — just extends Exception)
+  |     BookingNotFoundException.java  (No annotation — just extends Exception)
+  |-- controller/
+        UserController.java            (@Controller)
+        BookingController.java         (@Controller)
+
+src/main/resources/
+  |-- application.properties           (DB config, app settings)
+    </pre>
+  </div>
+
+  <h3>application.properties</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-properties"># Nimbus Database Configuration
+db.driver=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/nimbus_db
+db.username=root
+db.password=nimbus2026
+
+# Connection Pool
+db.pool.initial-size=5
+db.pool.max-total=10
+
+# Application
+app.name=Nimbus Parcel Management System
+app.version=1.0</code></pre>
+  </div>
+
+  <h3>AppConfig.java — The Central Configuration</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/config/AppConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.apache.commons.dbcp2.BasicDataSource;
+import javax.sql.DataSource;
+
+@Configuration
+@ComponentScan("com.nimbus")
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+
+    @Value("${db.driver}")
+    private String dbDriver;
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    @Value("${db.username}")
+    private String dbUsername;
+
+    @Value("${db.password}")
+    private String dbPassword;
+
+    @Value("${db.pool.initial-size:5}")
+    private int poolInitialSize;
+
+    @Value("${db.pool.max-total:10}")
+    private int poolMaxTotal;
+
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName(dbDriver);
+        ds.setUrl(dbUrl);
+        ds.setUsername(dbUsername);
+        ds.setPassword(dbPassword);
+        ds.setInitialSize(poolInitialSize);
+        ds.setMaxTotal(poolMaxTotal);
+        return ds;
+    }
+}</code></pre>
+  </div>
+
+  <h3>User.java — The Model (No Annotation)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+// No Spring annotation — this is a plain POJO (data holder)
+// Models are NOT beans. They represent data, not services.
+public class User {
+    private int userId;
+    private String name;
+    private String email;
+    private String password;
+    private String role;      // CUSTOMER, OFFICER, SUPPORT
+
+    // Constructors
+    public User() {}
+
+    public User(String name, String email, String password, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    // Getters and Setters
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why No Annotation on Model Classes?</div>
+    <p>Model classes (User, Booking) are <strong>data holders</strong>. You create new instances of them all the time (<code>new User()</code>). They're not beans managed by Spring — they're just plain Java objects. Spring manages service classes, DAO classes, and controllers. Models are passed <em>through</em> them.</p>
+  </div>
+
+  <h3>BookingDAO.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Booking;
+import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+public class BookingDAO {
+
+    private final DataSource dataSource;
+
+    @Autowired
+    public BookingDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Booking findById(int bookingId) {
+        String sql = "SELECT * FROM Booking WHERE booking_id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return mapRowToBooking(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding booking", e);
+        }
+        return null;
+    }
+
+    public List&lt;Booking&gt; findByUserId(int userId) {
+        String sql = "SELECT * FROM Booking WHERE user_id = ? ORDER BY booking_date DESC";
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                bookings.add(mapRowToBooking(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding bookings by user", e);
+        }
+        return bookings;
+    }
+
+    public Booking save(Booking booking) {
+        String sql = "INSERT INTO Booking (user_id, sender_address, receiver_address, weight, status) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setInt(1, booking.getUserId());
+            ps.setString(2, booking.getSenderAddress());
+            ps.setString(3, booking.getReceiverAddress());
+            ps.setDouble(4, booking.getWeight());
+            ps.setString(5, "BOOKED");
+            ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                booking.setBookingId(keys.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error saving booking", e);
+        }
+        return booking;
+    }
+
+    private Booking mapRowToBooking(ResultSet rs) throws SQLException {
+        Booking b = new Booking();
+        b.setBookingId(rs.getInt("booking_id"));
+        b.setUserId(rs.getInt("user_id"));
+        b.setSenderAddress(rs.getString("sender_address"));
+        b.setReceiverAddress(rs.getString("receiver_address"));
+        b.setWeight(rs.getDouble("weight"));
+        b.setStatus(rs.getString("status"));
+        return b;
+    }
+}</code></pre>
+  </div>
+
+  <h3>NimbusApp.java — The Main Class</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/NimbusApp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus;
+
+import com.nimbus.config.AppConfig;
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class NimbusApp {
+
+    public static void main(String[] args) {
+
+        // Step 1: Create the Spring container using our config class
+        AnnotationConfigApplicationContext context =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+
+        // Step 2: Get beans from the container (NOT "new UserService()")
+        UserService userService = context.getBean(UserService.class);
+
+        // Step 3: Use the service — Spring has already injected UserDAO into it
+        try {
+            User newUser = new User("Darshan", "darshan@nimbus.com", "pass123", "CUSTOMER");
+            User saved = userService.registerUser(newUser);
+            System.out.println("Registered: " + saved.getName() + " (ID: " + saved.getUserId() + ")");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        // Step 4: Fetch a user
+        User found = userService.getUserById(1);
+        if (found != null) {
+            System.out.println("Found: " + found.getName() + " | Role: " + found.getRole());
+        }
+
+        // Step 5: Close the context (triggers @PreDestroy methods)
+        context.close();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">new AnnotationConfigApplicationContext(AppConfig.class)</div>
+        <div class="breakdown-explain">Creates the Spring container. Reads AppConfig, processes @ComponentScan, finds all annotated classes, creates beans, resolves @Autowired dependencies. Everything starts here.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">context.getBean(UserService.class)</div>
+        <div class="breakdown-explain">Asks the container: "Give me the UserService bean." Spring returns the singleton instance it already created, complete with UserDAO injected.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">userService.registerUser(newUser)</div>
+        <div class="breakdown-explain">Uses the service normally. Internally, registerUser() calls userDAO.findByEmail() and userDAO.save() — but we never created UserDAO ourselves. Spring did it all.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">context.close()</div>
+        <div class="breakdown-explain">Shuts down the Spring container. This triggers @PreDestroy methods on all beans, closes the connection pool, and cleans up resources. Always close the context.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>How It All Connects</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box dark">NimbusApp.main()<span class="flow-sub">creates ApplicationContext</span></div>
+    </div>
+    <div class="flow-arrow-down">&#9660;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">AppConfig<span class="flow-sub">@Configuration + @ComponentScan</span></div>
+    </div>
+    <div class="flow-arrow-down">&#9660;</div>
+    <div class="flow-row">
+      <div class="flow-box cyan">DataSource Bean<span class="flow-sub">@Bean in AppConfig</span></div>
+    </div>
+    <div class="flow-arrow-down">&#9660; injected into</div>
+    <div class="flow-row">
+      <div class="flow-box orange">UserDAO<span class="flow-sub">@Repository</span></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box orange">BookingDAO<span class="flow-sub">@Repository</span></div>
+    </div>
+    <div class="flow-arrow-down">&#9660; injected into</div>
+    <div class="flow-row">
+      <div class="flow-box green">UserService<span class="flow-sub">@Service</span></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box green">TrackingService(s)<span class="flow-sub">@Service</span></div>
+    </div>
+    <div class="flow-arrow-down">&#9660; injected into</div>
+    <div class="flow-row">
+      <div class="flow-box purple">UserController<span class="flow-sub">@Controller</span></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-box purple">BookingController<span class="flow-sub">@Controller</span></div>
+    </div>
+    <div class="flow-label">Spring builds the entire dependency chain automatically from bottom to top</div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 12: Annotation Cheat Sheet ===== -->
+<section class="content-section" id="cheat-sheet">
+  <div class="section-tag">Section 12</div>
+  <h2>Annotation Cheat Sheet</h2>
+  <p class="section-desc">Every annotation on one page. Bookmark this.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Annotation</th>
+        <th>What It Does</th>
+        <th>Where to Put It</th>
+        <th>Nimbus Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@Component</code></td>
+        <td>Registers class as a generic Spring bean</td>
+        <td>On a class</td>
+        <td>Utility/helper classes (EmailValidator)</td>
+      </tr>
+      <tr>
+        <td><code>@Service</code></td>
+        <td>Registers class as a business logic bean</td>
+        <td>On a class</td>
+        <td>UserService, TrackingService, BookingThread</td>
+      </tr>
+      <tr>
+        <td><code>@Repository</code></td>
+        <td>Registers class as a data access bean + exception translation</td>
+        <td>On a class</td>
+        <td>UserDAO, BookingDAO</td>
+      </tr>
+      <tr>
+        <td><code>@Controller</code></td>
+        <td>Registers class as a web request handler</td>
+        <td>On a class</td>
+        <td>UserController, BookingController</td>
+      </tr>
+      <tr>
+        <td><code>@Autowired</code></td>
+        <td>Injects a dependency (bean) from the container</td>
+        <td>Constructor, setter, or field</td>
+        <td>UserService needs UserDAO, BookingDAO needs DataSource</td>
+      </tr>
+      <tr>
+        <td><code>@Configuration</code></td>
+        <td>Marks class as a bean definition source</td>
+        <td>On a class</td>
+        <td>AppConfig.java</td>
+      </tr>
+      <tr>
+        <td><code>@Bean</code></td>
+        <td>Method return value becomes a bean</td>
+        <td>On a method inside @Configuration</td>
+        <td>DataSource creation in AppConfig</td>
+      </tr>
+      <tr>
+        <td><code>@ComponentScan</code></td>
+        <td>Tells Spring which packages to scan for annotated classes</td>
+        <td>On @Configuration class</td>
+        <td>@ComponentScan("com.nimbus") on AppConfig</td>
+      </tr>
+      <tr>
+        <td><code>@Scope</code></td>
+        <td>Controls how many instances Spring creates</td>
+        <td>On a class or @Bean method</td>
+        <td>Default singleton for DAOs/services; prototype for report generators</td>
+      </tr>
+      <tr>
+        <td><code>@Qualifier</code></td>
+        <td>Picks a specific bean when multiple match</td>
+        <td>Next to @Autowired</td>
+        <td>Choosing CustomerTrackingService vs OfficerTrackingService</td>
+      </tr>
+      <tr>
+        <td><code>@Primary</code></td>
+        <td>Makes a bean the default when multiple match</td>
+        <td>On a class</td>
+        <td>CustomerTrackingService as default TrackingService</td>
+      </tr>
+      <tr>
+        <td><code>@Value</code></td>
+        <td>Injects a value from a properties file</td>
+        <td>On a field</td>
+        <td>DB URL, username, password from application.properties</td>
+      </tr>
+      <tr>
+        <td><code>@PropertySource</code></td>
+        <td>Loads a properties file</td>
+        <td>On @Configuration class</td>
+        <td>Loading application.properties</td>
+      </tr>
+      <tr>
+        <td><code>@PostConstruct</code></td>
+        <td>Runs method after bean creation + injection</td>
+        <td>On a method</td>
+        <td>Database health check on startup</td>
+      </tr>
+      <tr>
+        <td><code>@PreDestroy</code></td>
+        <td>Runs method before bean destruction</td>
+        <td>On a method</td>
+        <td>Cleanup on shutdown (close pools, stop threads)</td>
+      </tr>
+      <tr>
+        <td><code>@RequestMapping</code></td>
+        <td>Maps URL to a controller class/method</td>
+        <td>On class or method</td>
+        <td>@RequestMapping("/users") on UserController</td>
+      </tr>
+      <tr>
+        <td><code>@GetMapping</code></td>
+        <td>Maps GET request to a method</td>
+        <td>On a method</td>
+        <td>View profile, view bookings</td>
+      </tr>
+      <tr>
+        <td><code>@PostMapping</code></td>
+        <td>Maps POST request to a method</td>
+        <td>On a method</td>
+        <td>Submit registration, create booking</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Common Mistakes and Fixes</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Mistake</th>
+        <th>Error You'll See</th>
+        <th>Fix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Forgot <code>@Service</code>/<code>@Repository</code> on class</td>
+        <td><code>NoSuchBeanDefinitionException</code></td>
+        <td>Add the annotation to the class</td>
+      </tr>
+      <tr>
+        <td>Class not in scanned package</td>
+        <td><code>NoSuchBeanDefinitionException</code></td>
+        <td>Check <code>@ComponentScan</code> base package</td>
+      </tr>
+      <tr>
+        <td>Two beans of same type, no <code>@Qualifier</code></td>
+        <td><code>NoUniqueBeanDefinitionException</code></td>
+        <td>Add <code>@Qualifier("name")</code> or <code>@Primary</code></td>
+      </tr>
+      <tr>
+        <td>Misspelled property key in <code>@Value</code></td>
+        <td><code>IllegalArgumentException: Could not resolve placeholder</code></td>
+        <td>Check the key name matches the properties file exactly</td>
+      </tr>
+      <tr>
+        <td>Missing <code>@PropertySource</code></td>
+        <td><code>@Value</code> fields are null or placeholder string</td>
+        <td>Add <code>@PropertySource("classpath:application.properties")</code></td>
+      </tr>
+      <tr>
+        <td>Circular dependency (A needs B, B needs A)</td>
+        <td><code>BeanCurrentlyInCreationException</code></td>
+        <td>Redesign classes or use setter injection on one side</td>
+      </tr>
+      <tr>
+        <td>Using <code>new UserService()</code> instead of getting from context</td>
+        <td>NullPointerException (dependencies not injected)</td>
+        <td>Always get beans from <code>ApplicationContext</code>, never <code>new</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ===== SECTION 13: Practice ===== -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 13</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Reinforce everything by writing code. Try these without looking at the answers first.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Annotate the Classes</div>
+    <p>You have these Nimbus classes. Add the correct stereotype annotation to each one:</p>
+    <ul>
+      <li><code>BookingService</code> — contains <code>createBooking()</code>, <code>cancelBooking()</code>, validates weight limits</li>
+      <li><code>BookingDAO</code> — contains <code>save()</code>, <code>findById()</code>, runs SQL queries</li>
+      <li><code>TrackingIdGenerator</code> — generates unique tracking IDs like "NIM-20260423-001"</li>
+      <li><code>BookingController</code> — handles <code>/bookings</code> URL requests</li>
+    </ul>
+    <p><strong>Answer:</strong> BookingService &rarr; <code>@Service</code>, BookingDAO &rarr; <code>@Repository</code>, TrackingIdGenerator &rarr; <code>@Component</code>, BookingController &rarr; <code>@Controller</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: Fix the Injection</div>
+    <p>This code has a bug. Find it and fix it:</p>
+    <div class="code-block" style="margin: 12px 0;">
+      <div class="code-header">
+        <span class="code-filename">Broken Code</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">@Service
+public class BookingService {
+
+    private BookingDAO bookingDAO;
+
+    public Booking createBooking(Booking b) {
+        return bookingDAO.save(b);  // NullPointerException!
+    }
+}</code></pre>
+    </div>
+    <p><strong>Answer:</strong> Missing <code>@Autowired</code>. Spring created BookingService but never injected BookingDAO — so <code>bookingDAO</code> is null. Fix: add a constructor with <code>@Autowired</code> that takes <code>BookingDAO</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Write the Configuration Class</div>
+    <p>Write a <code>NimbusConfig.java</code> that:</p>
+    <ol>
+      <li>Is marked as a configuration class</li>
+      <li>Scans the <code>com.nimbus</code> package</li>
+      <li>Loads <code>application.properties</code></li>
+      <li>Creates a <code>DataSource</code> bean using values from the properties file</li>
+    </ol>
+    <p><strong>Hint:</strong> You need <code>@Configuration</code>, <code>@ComponentScan</code>, <code>@PropertySource</code>, <code>@Value</code>, and <code>@Bean</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Resolve the Ambiguity</div>
+    <p>You have two implementations of <code>NotificationService</code>: <code>EmailNotificationService</code> and <code>SmsNotificationService</code>. A <code>BookingService</code> needs the email one. Write the code to:</p>
+    <ol>
+      <li>Create the interface</li>
+      <li>Create both implementations with named beans</li>
+      <li>Inject the correct one into BookingService using <code>@Qualifier</code></li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: Lifecycle Methods</div>
+    <p>Write a <code>CacheManager</code> class that:</p>
+    <ol>
+      <li>Is a Spring-managed bean</li>
+      <li>Has a <code>@PostConstruct</code> method that loads frequently-used data from the database (print "Loading cache...")</li>
+      <li>Has a <code>@PreDestroy</code> method that saves any unsaved data (print "Flushing cache to disk...")</li>
+      <li>Has a prototype scope (new instance each time)</li>
+    </ol>
+    <p><strong>Hint:</strong> Use <code>@Component</code>, <code>@Scope("prototype")</code>, <code>@PostConstruct</code>, and <code>@PreDestroy</code>.</p>
+  </div>
+</section>
+
+
+<!-- ===== BOTTOM NAV ===== -->
+<div class="topic-nav">
+  <a href="spring-ioc-di.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">IoC &amp; DI Deep Dive</span>
+  </a>
+  <a href="spring-mvc.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Spring MVC</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

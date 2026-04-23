@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 4 — REST APIs + Microservices + Angular | Nimbus Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0B1120; --bg-secondary: #131B2E; --bg-card: #1A2340; --bg-card-hover: #1F2B4D;
+      --text-primary: #F1F5F9; --text-secondary: #94A3B8; --text-muted: #64748B;
+      --accent: #3B82F6; --accent-glow: rgba(59, 130, 246, 0.15);
+      --green: #22C55E; --orange: #F59E0B; --purple: #A855F7; --red: #EF4444; --cyan: #06B6D4;
+      --border: rgba(148, 163, 184, 0.1); --radius: 12px; --radius-lg: 16px;
+    }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; min-height: 100vh; }
+    .header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo svg { width: 32px; height: 32px; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-primary); }
+    .logo-badge { background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .header-right { display: flex; gap: 12px; }
+    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+    .header-link:hover { color: var(--text-primary); background: var(--bg-card); }
+    .header-link.active { color: var(--purple); background: rgba(168, 85, 247, 0.15); }
+
+    .hero { padding: 60px 40px 40px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%); pointer-events: none; }
+    .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; line-height: 1.2; margin-bottom: 12px; position: relative; }
+    .hero h1 span { color: var(--purple); }
+    .hero p { color: var(--text-secondary); font-size: 1rem; max-width: 600px; margin: 0 auto 12px; position: relative; }
+    .hero-stat { display: inline-flex; gap: 32px; margin-top: 20px; position: relative; }
+    .hero-stat-item { text-align: center; }
+    .hero-stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--purple); }
+    .hero-stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+    .content { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 48px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .section-label .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .topic-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .topic-card { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 16px; padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; color: inherit; transition: all 0.2s; }
+    .topic-card:hover { background: var(--bg-card-hover); border-color: rgba(148, 163, 184, 0.2); transform: translateX(4px); }
+    .topic-num { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .topic-num.purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+    .topic-num.green { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+    .topic-num.cyan { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
+    .topic-num.orange { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+    .topic-info h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
+    .topic-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+    .topic-arrow { color: var(--text-muted); transition: all 0.2s; opacity: 0; transform: translateX(-4px); }
+    .topic-card:hover .topic-arrow { opacity: 1; transform: translateX(0); }
+    .start-section { text-align: center; margin: 48px 0; }
+    .start-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: white; font-size: 0.95rem; font-weight: 600; padding: 14px 32px; border-radius: 10px; text-decoration: none; transition: all 0.2s; }
+    .start-btn:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3); }
+    .footer { padding: 24px 40px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+    @media (max-width: 768px) { .header { padding: 0 20px; } .hero { padding: 40px 20px 30px; } .content { padding: 0 20px 60px; } .topic-card { grid-template-columns: 40px 1fr; } .topic-arrow { display: none; } }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="logo-text">nimbus</span>
+        <span class="logo-badge">Portal</span>
+      </a>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="sprint-2.html" class="header-link">Phase 2</a>
+      <a href="sprint-3.html" class="header-link">Phase 3</a>
+      <a href="sprint-4.html" class="header-link active">Phase 4</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Phase 4 — <span>REST + Microservices</span></h1>
+    <p>The final form of Nimbus. Build REST APIs with Spring Boot, split into microservices, connect an Angular frontend — full production-grade architecture.</p>
+    <div class="hero-stat">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">14</div>
+        <div class="hero-stat-label">Topics</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">REST APIs</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Microservices</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <div class="start-section">
+      <a href="phase4/rest-principles.html" class="start-btn">
+        Start Learning
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- REST APIs -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--purple);"></span>
+      REST APIs
+    </div>
+    <div class="topic-grid">
+      <a href="phase4/rest-principles.html" class="topic-card">
+        <div class="topic-num purple">01</div>
+        <div class="topic-info">
+          <h3>REST Principles</h3>
+          <p>What is REST, constraints, statelessness, resources, URIs, HTTP methods mapped to CRUD</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/json.html" class="topic-card">
+        <div class="topic-num purple">02</div>
+        <div class="topic-info">
+          <h3>JSON</h3>
+          <p>What is JSON, syntax, objects, arrays, Jackson library, serialization/deserialization</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/spring-boot.html" class="topic-card">
+        <div class="topic-num purple">03</div>
+        <div class="topic-info">
+          <h3>Spring Boot</h3>
+          <p>Auto-configuration, starters, application.properties, embedded Tomcat, Spring Initializr</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/rest-controllers.html" class="topic-card">
+        <div class="topic-num purple">04</div>
+        <div class="topic-info">
+          <h3>REST Controllers</h3>
+          <p>@RestController, @GetMapping, @PostMapping, @PutMapping, @PathVariable, @RequestBody, ResponseEntity</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/api-error-handling.html" class="topic-card">
+        <div class="topic-num purple">05</div>
+        <div class="topic-info">
+          <h3>API Error Handling & Validation</h3>
+          <p>@ExceptionHandler, @ControllerAdvice, @Valid, custom error responses, HTTP status codes</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/api-testing.html" class="topic-card">
+        <div class="topic-num purple">06</div>
+        <div class="topic-info">
+          <h3>API Testing</h3>
+          <p>Postman, curl, testing all 8 Nimbus endpoints, request/response examples</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- MICROSERVICES -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--green);"></span>
+      Microservices
+    </div>
+    <div class="topic-grid">
+      <a href="phase4/microservices-intro.html" class="topic-card">
+        <div class="topic-num green">07</div>
+        <div class="topic-info">
+          <h3>Microservices Architecture</h3>
+          <p>Monolith vs microservices, when to split, service boundaries, communication patterns</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/nimbus-microservices.html" class="topic-card">
+        <div class="topic-num green">08</div>
+        <div class="topic-info">
+          <h3>Nimbus as Microservices</h3>
+          <p>Splitting Nimbus: User Service, Booking Service, Tracking Service — inter-service communication</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- ANGULAR -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--orange);"></span>
+      Angular Frontend
+    </div>
+    <div class="topic-grid">
+      <a href="phase4/typescript.html" class="topic-card">
+        <div class="topic-num orange">09</div>
+        <div class="topic-info">
+          <h3>TypeScript Basics</h3>
+          <p>Types, interfaces, classes, modules — JavaScript with superpowers</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/angular-intro.html" class="topic-card">
+        <div class="topic-num orange">10</div>
+        <div class="topic-info">
+          <h3>Angular — The Big Picture</h3>
+          <p>Components, modules, templates, data binding, Angular CLI, project structure</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/angular-services.html" class="topic-card">
+        <div class="topic-num orange">11</div>
+        <div class="topic-info">
+          <h3>Angular Services & HTTP</h3>
+          <p>Services, HttpClient, Observables, connecting Angular to Spring Boot REST APIs</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/angular-routing.html" class="topic-card">
+        <div class="topic-num orange">12</div>
+        <div class="topic-info">
+          <h3>Angular Routing & Guards</h3>
+          <p>Router module, route params, navigation, auth guards, role-based access</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- BUILD IT -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--cyan);"></span>
+      Full Stack Build
+    </div>
+    <div class="topic-grid">
+      <a href="phase4/nimbus-fullstack.html" class="topic-card">
+        <div class="topic-num cyan">13</div>
+        <div class="topic-info">
+          <h3>Nimbus Full Stack — Complete Code</h3>
+          <p>Spring Boot backend + Angular frontend + MySQL — the complete system, copy-paste ready</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="phase4/cheat-sheets.html" class="topic-card">
+        <div class="topic-num cyan">14</div>
+        <div class="topic-info">
+          <h3>Cheat Sheets — REST + Angular</h3>
+          <p>Spring Boot annotations, REST patterns, Angular CLI commands, TypeScript syntax</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="footer">Nimbus Learning Portal &mdash; Team Nimbus, 2026</footer>
+</body>
+</html>

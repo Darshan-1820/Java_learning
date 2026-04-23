@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus Backend &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link active"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: OVERVIEW & SETUP                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="overview">
+  <div class="section-tag">Section 01</div>
+  <h2>Nimbus Complete Backend</h2>
+  <p class="section-desc">All 15 Java files, SQL setup, and Maven config &mdash; copy-paste ready for Eclipse. This is the <strong>entire working console application</strong> with JDBC. Copy these files, run the SQL, and you have a running parcel management system.</p>
+
+  <div class="callout important">
+    <div class="callout-title">How To Use This Page</div>
+    <p>Each file has a <strong>Copy</strong> button. Click it, paste into the correct file in Eclipse. The 5 most complex files also have a <strong>"Break it down"</strong> button that explains every section of the code.</p>
+  </div>
+
+  <h3>Project File Structure</h3>
+
+  <div class="diagram">
+    <pre>
+nimbus-backend/
+├── pom.xml
+├── src/main/resources/
+│   └── db.properties
+└── src/main/java/com/nimbus/
+    ├── app/
+    │   └── NimbusApp.java              ← Main class (entry point)
+    ├── model/
+    │   ├── User.java                   ← User POJO (7 fields)
+    │   └── Booking.java                ← Booking POJO (15 fields)
+    ├── util/
+    │   └── DBConnection.java           ← JDBC connection factory
+    ├── dao/
+    │   ├── UserDAO.java                ← User database operations
+    │   └── BookingDAO.java             ← Booking database operations
+    ├── exception/
+    │   ├── DuplicateEmailException.java
+    │   └── BookingNotFoundException.java
+    └── service/
+        ├── UserService.java            ← Registration + email check
+        ├── BookingThread.java           ← Threaded booking insert
+        ├── TrackingService.java         ← Abstract base (polymorphism)
+        ├── CustomerTrackingService.java ← Customer tracking (limited)
+        ├── OfficerTrackingService.java  ← Officer tracking (full access)
+        ├── BaseHistoryService.java      ← Abstract history display
+        └── CustomerHistoryService.java  ← Customer booking history
+    </pre>
+    <div class="diagram-label">15 Java files across 5 packages &mdash; following the layered architecture from the HLD/LLD topic.</div>
+  </div>
+
+  <h3>Setup Checklist</h3>
+
+  <ol class="steps">
+    <li><strong>Install MySQL</strong> &mdash; Download MySQL Community Server. During install, set root password (remember it for <code>db.properties</code>).</li>
+    <li><strong>Run the SQL script</strong> &mdash; Open MySQL Workbench or terminal, paste the SQL setup script from Section 2 below. This creates the database, tables, and seed data.</li>
+    <li><strong>Create Maven project in Eclipse</strong> &mdash; File &rarr; New &rarr; Maven Project &rarr; Group ID: <code>com.nimbus</code>, Artifact ID: <code>nimbus-backend</code>. Replace the generated <code>pom.xml</code> with the one from Section 3.</li>
+    <li><strong>Create packages</strong> &mdash; Right-click <code>src/main/java</code> &rarr; New &rarr; Package. Create: <code>com.nimbus.model</code>, <code>com.nimbus.util</code>, <code>com.nimbus.dao</code>, <code>com.nimbus.exception</code>, <code>com.nimbus.service</code>, <code>com.nimbus.app</code>.</li>
+    <li><strong>Create <code>db.properties</code></strong> &mdash; Right-click <code>src/main/resources</code> &rarr; New &rarr; File &rarr; name it <code>db.properties</code>. Paste the config from Section 4.</li>
+    <li><strong>Copy all 15 Java files</strong> &mdash; For each file below, create the class in the correct package and paste the code.</li>
+    <li><strong>Update Maven</strong> &mdash; Right-click project &rarr; Maven &rarr; Update Project (Alt+F5). This downloads the MySQL connector JAR.</li>
+    <li><strong>Run</strong> &mdash; Right-click <code>NimbusApp.java</code> &rarr; Run As &rarr; Java Application.</li>
+  </ol>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SQL SETUP SCRIPT                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="sql-setup">
+  <div class="section-tag">Section 02</div>
+  <h2>SQL Setup Script</h2>
+  <p class="section-desc">Run this entire script in MySQL Workbench or terminal. It creates the database, both tables, and inserts seed data (5 customers, 2 officers, 1 support agent, 3 bookings).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus_setup.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-sql">-- ============================
+-- NIMBUS DATABASE SETUP
+-- ============================
+
+CREATE DATABASE IF NOT EXISTS nimbus_db;
+USE nimbus_db;
+
+-- Users table
+CREATE TABLE users (
+    userId      VARCHAR(20)   NOT NULL,
+    firstName   VARCHAR(25)   NOT NULL,
+    middleName  VARCHAR(25),
+    lastName    VARCHAR(25)   NOT NULL,
+    fullName    VARCHAR(50)   NOT NULL,
+    email       VARCHAR(100)  NOT NULL,
+    countryCode VARCHAR(5)    DEFAULT '+91',
+    mobile      VARCHAR(10)   NOT NULL,
+    street      VARCHAR(100),
+    zipCode     VARCHAR(10),
+    city        VARCHAR(50),
+    state       VARCHAR(50),
+    country     VARCHAR(50)   DEFAULT 'India',
+    password    VARCHAR(30)   NOT NULL,
+    role        ENUM('customer', 'officer', 'support') NOT NULL DEFAULT 'customer',
+    preferences VARCHAR(100),
+    createdAt   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (userId),
+    UNIQUE KEY uk_email (email),
+    INDEX idx_role (role),
+    INDEX idx_city_state (city, state)
+);
+
+-- Bookings table
+CREATE TABLE bookings (
+    bookingId              VARCHAR(20)    NOT NULL,
+    userId                 VARCHAR(20)    NOT NULL,
+    recName                VARCHAR(50)    NOT NULL,
+    recAddress             VARCHAR(150)   NOT NULL,
+    recPin                 VARCHAR(6)     NOT NULL,
+    recMobile              VARCHAR(15)    NOT NULL,
+    parWeightGram          INT            NOT NULL,
+    parContentsDescription VARCHAR(200),
+    parDeliveryType        ENUM('Standard', 'Express', 'Overnight') NOT NULL DEFAULT 'Standard',
+    parPackingPreference   VARCHAR(50),
+    parPickupTime          DATETIME,
+    parDropoffTime         DATETIME,
+    parServiceCost         DECIMAL(10,2)  NOT NULL,
+    parPaymentTime         DATETIME,
+    parStatus              ENUM('Booked', 'Picked up', 'In Transit', 'Delivered', 'Returned')
+                           NOT NULL DEFAULT 'Booked',
+    paymentMethod          VARCHAR(20),
+    createdAt              TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (bookingId),
+    CONSTRAINT fk_booking_user FOREIGN KEY (userId) REFERENCES users(userId)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    INDEX idx_userId (userId),
+    INDEX idx_status (parStatus),
+    INDEX idx_createdAt (createdAt),
+    INDEX idx_deliveryType (parDeliveryType)
+);
+
+-- ============================
+-- SEED DATA
+-- ============================
+
+-- 5 Customers
+INSERT INTO users (userId, firstName, middleName, lastName, fullName, email, countryCode, mobile, street, zipCode, city, state, country, password, role, preferences)
+VALUES
+('CUST001', 'Amit',   NULL, 'Sharma', 'Amit Sharma',   'amit.sharma@email.com',  '+91', '9876543210', '12 MG Road',         '560001', 'Bangalore', 'Karnataka',   'India', 'Amit@1234',   'customer', 'Email notifications'),
+('CUST002', 'Priya',  'R',  'Nair',   'Priya R Nair',  'priya.nair@email.com',   '+91', '9876543211', '45 Anna Salai',      '600002', 'Chennai',   'Tamil Nadu',  'India', 'Priya@5678',  'customer', 'SMS notifications'),
+('CUST003', 'Rahul',  NULL, 'Verma',  'Rahul Verma',   'rahul.verma@email.com',  '+91', '9876543212', '78 Connaught Place', '110001', 'New Delhi', 'Delhi',       'India', 'Rahul@9012',  'customer', NULL),
+('CUST004', 'Sneha',  'K',  'Patil',  'Sneha K Patil', 'sneha.patil@email.com',  '+91', '9876543213', '23 FC Road',         '411004', 'Pune',      'Maharashtra', 'India', 'Sneha@3456',  'customer', 'Email notifications'),
+('CUST005', 'Vikram', NULL, 'Singh',  'Vikram Singh',  'vikram.singh@email.com', '+91', '9876543214', '56 Civil Lines',     '302001', 'Jaipur',    'Rajasthan',   'India', 'Vikram@7890', 'customer', NULL);
+
+-- 2 Officers
+INSERT INTO users (userId, firstName, middleName, lastName, fullName, email, countryCode, mobile, street, zipCode, city, state, country, password, role, preferences)
+VALUES
+('OFCR001', 'Deepak', NULL, 'Joshi', 'Deepak Joshi', 'deepak.joshi@nimbus.com', '+91', '9988776601', '10 Sector 5',   '400001', 'Mumbai',    'Maharashtra', 'India', 'Deepak@off1', 'officer', NULL),
+('OFCR002', 'Meera',  NULL, 'Iyer',  'Meera Iyer',   'meera.iyer@nimbus.com',   '+91', '9988776602', '22 Whitefield', '560066', 'Bangalore', 'Karnataka',   'India', 'Meera@off2',  'officer', NULL);
+
+-- 1 Support Agent
+INSERT INTO users (userId, firstName, middleName, lastName, fullName, email, countryCode, mobile, street, zipCode, city, state, country, password, role, preferences)
+VALUES
+('SUPP001', 'Arjun', NULL, 'Reddy', 'Arjun Reddy', 'arjun.reddy@nimbus.com', '+91', '9988776603', '5 Jubilee Hills', '500033', 'Hyderabad', 'Telangana', 'India', 'Arjun@sup1', 'support', NULL);
+
+-- 3 Bookings
+INSERT INTO bookings (bookingId, userId, recName, recAddress, recPin, recMobile, parWeightGram, parContentsDescription, parDeliveryType, parPackingPreference, parPickupTime, parDropoffTime, parServiceCost, parPaymentTime, parStatus, paymentMethod)
+VALUES
+('BKG001', 'CUST001', 'Ravi Kumar',    '99 Park Street, Kolkata',   '700016', '9123456780', 1500, 'Electronic gadgets',    'Express',   'Bubble Wrap',   '2026-04-01 10:00:00', NULL,                   250.00, '2026-04-01 09:55:00', 'In Transit', 'UPI'),
+('BKG002', 'CUST002', 'Lakshmi Menon', '34 Marine Drive, Mumbai',   '400002', '9123456781', 500,  'Books and stationery',  'Standard',  'Cardboard Box', '2026-04-02 14:00:00', '2026-04-05 11:30:00', 120.00, '2026-04-02 13:50:00', 'Delivered',  'Card'),
+('BKG003', 'CUST003', 'Suresh Gupta',  '12 Hazratganj, Lucknow',   '226001', '9123456782', 3000, 'Fragile ceramic items', 'Overnight', 'Wooden Crate',  '2026-04-03 08:00:00', NULL,                   580.00, '2026-04-03 07:45:00', 'Booked',     'Net Banking');
+
+SELECT 'Nimbus database setup complete!' AS status;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: POM.XML                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="pom-xml">
+  <div class="section-tag">Section 03</div>
+  <h2>pom.xml (Maven Config)</h2>
+  <p class="section-desc">Replace the default <code>pom.xml</code> Eclipse generates with this. It pulls in the MySQL JDBC driver automatically.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-backend&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;name&gt;Nimbus Parcel Management&lt;/name&gt;
+    &lt;description&gt;Console-based parcel management system with JDBC&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- MySQL JDBC Driver --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;version&gt;8.3.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.12.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;17&lt;/source&gt;
+                    &lt;target&gt;17&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: DB PROPERTIES                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="db-properties">
+  <div class="section-tag">Section 04</div>
+  <h2>db.properties</h2>
+  <p class="section-desc">Create this file at <code>src/main/resources/db.properties</code>. Change <code>db.password</code> to your MySQL root password.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/db.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java"># Nimbus Database Configuration
+db.url=jdbc:mysql://localhost:3306/nimbus_db
+db.user=root
+db.password=YOUR_PASSWORD_HERE
+db.driver=com.mysql.cj.jdbc.Driver</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Important</div>
+    <p>Replace <code>YOUR_PASSWORD_HERE</code> with the password you set during MySQL installation. If you used a blank password, leave the value empty: <code>db.password=</code></p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: MODEL — User.java                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-model">
+  <div class="section-tag">Section 05 &mdash; com.nimbus.model</div>
+  <h2>User.java</h2>
+  <p class="section-desc">The User model (POJO). Maps to the <code>users</code> table. 7 core fields with full constructor, empty constructor, all getters/setters, and <code>toString()</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+public class User {
+
+    // ── Fields ──
+    private String userId;
+    private String fullName;
+    private String email;
+    private String mobile;
+    private String password;
+    private String role;       // "customer", "officer", "support"
+    private String city;
+
+    // ── Full Constructor ──
+    public User(String userId, String fullName, String email,
+                String mobile, String password, String role, String city) {
+        this.userId   = userId;
+        this.fullName = fullName;
+        this.email    = email;
+        this.mobile   = mobile;
+        this.password = password;
+        this.role     = role;
+        this.city     = city;
+    }
+
+    // ── Empty Constructor (needed by DAO when building from ResultSet) ──
+    public User() {
+    }
+
+    // ── Getters ──
+    public String getUserId()   { return userId; }
+    public String getFullName() { return fullName; }
+    public String getEmail()    { return email; }
+    public String getMobile()   { return mobile; }
+    public String getPassword() { return password; }
+    public String getRole()     { return role; }
+    public String getCity()     { return city; }
+
+    // ── Setters ──
+    public void setUserId(String userId)     { this.userId = userId; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setEmail(String email)       { this.email = email; }
+    public void setMobile(String mobile)     { this.mobile = mobile; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(String role)         { this.role = role; }
+    public void setCity(String city)         { this.city = city; }
+
+    // ── toString ──
+    @Override
+    public String toString() {
+        return "User{" +
+               "userId='" + userId + '\'' +
+               ", fullName='" + fullName + '\'' +
+               ", email='" + email + '\'' +
+               ", mobile='" + mobile + '\'' +
+               ", role='" + role + '\'' +
+               ", city='" + city + '\'' +
+               '}';
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: MODEL — Booking.java                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-model">
+  <div class="section-tag">Section 06 &mdash; com.nimbus.model</div>
+  <h2>Booking.java</h2>
+  <p class="section-desc">The Booking model. Maps to the <code>bookings</code> table. 15 fields including <code>LocalDateTime</code> for date/time columns.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import java.time.LocalDateTime;
+
+public class Booking {
+
+    // ── Fields (15 total) ──
+    private String bookingId;
+    private String userId;
+    private String recName;
+    private String recAddress;
+    private String recPin;
+    private String recMobile;
+    private int parWeightGram;
+    private String parContentsDescription;
+    private String parDeliveryType;        // Standard, Express, Overnight
+    private String parPackingPreference;
+    private LocalDateTime parPickupTime;
+    private LocalDateTime parDropoffTime;
+    private double parServiceCost;
+    private String parStatus;              // Booked, Picked up, In Transit, Delivered, Returned
+    private String paymentMethod;
+
+    // ── Full Constructor ──
+    public Booking(String bookingId, String userId, String recName,
+                   String recAddress, String recPin, String recMobile,
+                   int parWeightGram, String parContentsDescription,
+                   String parDeliveryType, String parPackingPreference,
+                   LocalDateTime parPickupTime, LocalDateTime parDropoffTime,
+                   double parServiceCost, String parStatus, String paymentMethod) {
+        this.bookingId              = bookingId;
+        this.userId                 = userId;
+        this.recName                = recName;
+        this.recAddress             = recAddress;
+        this.recPin                 = recPin;
+        this.recMobile              = recMobile;
+        this.parWeightGram          = parWeightGram;
+        this.parContentsDescription = parContentsDescription;
+        this.parDeliveryType        = parDeliveryType;
+        this.parPackingPreference   = parPackingPreference;
+        this.parPickupTime          = parPickupTime;
+        this.parDropoffTime         = parDropoffTime;
+        this.parServiceCost         = parServiceCost;
+        this.parStatus              = parStatus;
+        this.paymentMethod          = paymentMethod;
+    }
+
+    // ── Empty Constructor ──
+    public Booking() {
+    }
+
+    // ── Getters ──
+    public String getBookingId()              { return bookingId; }
+    public String getUserId()                 { return userId; }
+    public String getRecName()                { return recName; }
+    public String getRecAddress()             { return recAddress; }
+    public String getRecPin()                 { return recPin; }
+    public String getRecMobile()              { return recMobile; }
+    public int getParWeightGram()             { return parWeightGram; }
+    public String getParContentsDescription() { return parContentsDescription; }
+    public String getParDeliveryType()        { return parDeliveryType; }
+    public String getParPackingPreference()   { return parPackingPreference; }
+    public LocalDateTime getParPickupTime()   { return parPickupTime; }
+    public LocalDateTime getParDropoffTime()  { return parDropoffTime; }
+    public double getParServiceCost()         { return parServiceCost; }
+    public String getParStatus()              { return parStatus; }
+    public String getPaymentMethod()          { return paymentMethod; }
+
+    // ── Setters ──
+    public void setBookingId(String bookingId)                           { this.bookingId = bookingId; }
+    public void setUserId(String userId)                                 { this.userId = userId; }
+    public void setRecName(String recName)                               { this.recName = recName; }
+    public void setRecAddress(String recAddress)                         { this.recAddress = recAddress; }
+    public void setRecPin(String recPin)                                 { this.recPin = recPin; }
+    public void setRecMobile(String recMobile)                           { this.recMobile = recMobile; }
+    public void setParWeightGram(int parWeightGram)                      { this.parWeightGram = parWeightGram; }
+    public void setParContentsDescription(String parContentsDescription) { this.parContentsDescription = parContentsDescription; }
+    public void setParDeliveryType(String parDeliveryType)               { this.parDeliveryType = parDeliveryType; }
+    public void setParPackingPreference(String parPackingPreference)     { this.parPackingPreference = parPackingPreference; }
+    public void setParPickupTime(LocalDateTime parPickupTime)            { this.parPickupTime = parPickupTime; }
+    public void setParDropoffTime(LocalDateTime parDropoffTime)          { this.parDropoffTime = parDropoffTime; }
+    public void setParServiceCost(double parServiceCost)                 { this.parServiceCost = parServiceCost; }
+    public void setParStatus(String parStatus)                           { this.parStatus = parStatus; }
+    public void setPaymentMethod(String paymentMethod)                   { this.paymentMethod = paymentMethod; }
+
+    // ── toString ──
+    @Override
+    public String toString() {
+        return "Booking{" +
+               "bookingId='" + bookingId + '\'' +
+               ", userId='" + userId + '\'' +
+               ", recName='" + recName + '\'' +
+               ", recAddress='" + recAddress + '\'' +
+               ", weight=" + parWeightGram + "g" +
+               ", type='" + parDeliveryType + '\'' +
+               ", cost=" + parServiceCost +
+               ", status='" + parStatus + '\'' +
+               '}';
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: UTIL — DBConnection.java                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="db-connection">
+  <div class="section-tag">Section 07 &mdash; com.nimbus.util</div>
+  <h2>DBConnection.java</h2>
+  <p class="section-desc">The database connection factory. Reads credentials from <code>db.properties</code>, loads the MySQL driver with <code>Class.forName()</code>, and returns a <code>Connection</code> object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/util/DBConnection.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+public class DBConnection {
+
+    private static final String URL;
+    private static final String USER;
+    private static final String PASSWORD;
+
+    // Static block — runs once when the class is first loaded
+    static {
+        Properties props = new Properties();
+        try (InputStream input = DBConnection.class
+                .getClassLoader()
+                .getResourceAsStream("db.properties")) {
+
+            if (input == null) {
+                throw new RuntimeException("db.properties not found in resources folder");
+            }
+            props.load(input);
+
+            // Load the MySQL driver class into memory
+            Class.forName(props.getProperty("db.driver"));
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Failed to initialize database config: " + e.getMessage(), e);
+        }
+
+        URL      = props.getProperty("db.url");
+        USER     = props.getProperty("db.user");
+        PASSWORD = props.getProperty("db.password");
+    }
+
+    /**
+     * Returns a new connection to the nimbus_db database.
+     * Every DAO method calls this, uses the connection, and closes it.
+     */
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    // Private constructor — prevents instantiation (utility class)
+    private DBConnection() {
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: DAO — UserDAO.java                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-dao">
+  <div class="section-tag">Section 08 &mdash; com.nimbus.dao</div>
+  <h2>UserDAO.java</h2>
+  <p class="section-desc">All database operations for users. Every method uses <code>PreparedStatement</code> with try-with-resources for automatic cleanup.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/UserDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.User;
+import com.nimbus.util.DBConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserDAO {
+
+    // ── INSERT ──
+    public boolean addUser(User user) {
+        String sql = "INSERT INTO users (userId, fullName, email, mobile, password, role, city) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getFullName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getMobile());
+            ps.setString(5, user.getPassword());
+            ps.setString(6, user.getRole());
+            ps.setString(7, user.getCity());
+
+            return ps.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error adding user: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ── LOGIN VALIDATION ──
+    public User validateLogin(String email, String password) {
+        String sql = "SELECT userId, fullName, email, mobile, password, role, city "
+                   + "FROM users WHERE email = ? AND password = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ps.setString(2, password);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return extractUser(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error validating login: " + e.getMessage());
+        }
+        return null;
+    }
+
+    // ── GET BY ID ──
+    public User getUserById(String userId) {
+        String sql = "SELECT userId, fullName, email, mobile, password, role, city "
+                   + "FROM users WHERE userId = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return extractUser(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching user: " + e.getMessage());
+        }
+        return null;
+    }
+
+    // ── EMAIL UNIQUENESS CHECK ──
+    public boolean isEmailUnique(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) == 0;  // true if no user has this email
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking email: " + e.getMessage());
+        }
+        return false;
+    }
+
+    // ── GET SUPPORT USERS ──
+    public List&lt;User&gt; getSupportUsers() {
+        String sql = "SELECT userId, fullName, email, mobile, password, role, city "
+                   + "FROM users WHERE role = 'support'";
+        List&lt;User&gt; supportUsers = new ArrayList&lt;&gt;();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                supportUsers.add(extractUser(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching support users: " + e.getMessage());
+        }
+        return supportUsers;
+    }
+
+    // ── HELPER: Build User object from ResultSet row ──
+    private User extractUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getString("userId"));
+        user.setFullName(rs.getString("fullName"));
+        user.setEmail(rs.getString("email"));
+        user.setMobile(rs.getString("mobile"));
+        user.setPassword(rs.getString("password"));
+        user.setRole(rs.getString("role"));
+        user.setCity(rs.getString("city"));
+        return user;
+    }
+}</code></pre>
+  </div>
+
+  <!-- BREAKDOWN: UserDAO -->
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">UserDAO &mdash; Section-by-Section Breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">addUser(User user)</div>
+        <div class="breakdown-explain">Takes a User object and INSERTs it into the <code>users</code> table. Uses <code>PreparedStatement</code> with <code>?</code> placeholders to prevent SQL injection. The <code>try-with-resources</code> block auto-closes both the Connection and PreparedStatement even if an exception occurs. Returns <code>true</code> if one row was inserted (<code>executeUpdate() &gt; 0</code>).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">validateLogin(String email, String password)</div>
+        <div class="breakdown-explain">Checks if a user exists with the given email AND password combination. If <code>rs.next()</code> returns <code>true</code>, a matching row exists &mdash; we build a User object from it. If no match, returns <code>null</code>. The nested <code>try (ResultSet rs ...)</code> ensures the ResultSet is also auto-closed.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getUserById(String userId)</div>
+        <div class="breakdown-explain">Fetches a single user by their primary key. Same pattern as <code>validateLogin</code>: prepare, execute, check <code>rs.next()</code>, extract or return null. Used by NimbusApp for "View Profile" feature.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">isEmailUnique(String email)</div>
+        <div class="breakdown-explain">Uses <code>SELECT COUNT(*)</code> to check if the email already exists. Returns <code>true</code> only when count is 0 (email is unique). Called by <code>UserService.registerUser()</code> before inserting a new user.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getSupportUsers()</div>
+        <div class="breakdown-explain">Returns a <code>List&lt;User&gt;</code> of all support agents. Notice the triple try-with-resources: Connection, PreparedStatement, AND ResultSet are all auto-closed. Uses <code>while (rs.next())</code> because there could be multiple support users.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extractUser(ResultSet rs)</div>
+        <div class="breakdown-explain">Private helper method. Creates a new User object and populates it from the current ResultSet row using <code>rs.getString("columnName")</code>. Every query method calls this instead of duplicating the mapping code. This is the DRY principle (Don't Repeat Yourself).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: DAO — BookingDAO.java                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-dao">
+  <div class="section-tag">Section 09 &mdash; com.nimbus.dao</div>
+  <h2>BookingDAO.java</h2>
+  <p class="section-desc">All database operations for bookings. Handles INSERT, SELECT (single/list/date-range), UPDATE status, UPDATE pickup/drop times, and a full list query for officers.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Booking;
+import com.nimbus.util.DBConnection;
+
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookingDAO {
+
+    // ── INSERT ──
+    public boolean addBooking(Booking b) {
+        String sql = "INSERT INTO bookings (bookingId, userId, recName, recAddress, recPin, "
+                   + "recMobile, parWeightGram, parContentsDescription, parDeliveryType, "
+                   + "parPackingPreference, parPickupTime, parDropoffTime, parServiceCost, "
+                   + "parStatus, paymentMethod) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1,  b.getBookingId());
+            ps.setString(2,  b.getUserId());
+            ps.setString(3,  b.getRecName());
+            ps.setString(4,  b.getRecAddress());
+            ps.setString(5,  b.getRecPin());
+            ps.setString(6,  b.getRecMobile());
+            ps.setInt(7,     b.getParWeightGram());
+            ps.setString(8,  b.getParContentsDescription());
+            ps.setString(9,  b.getParDeliveryType());
+            ps.setString(10, b.getParPackingPreference());
+            ps.setTimestamp(11, b.getParPickupTime() != null
+                    ? Timestamp.valueOf(b.getParPickupTime()) : null);
+            ps.setTimestamp(12, b.getParDropoffTime() != null
+                    ? Timestamp.valueOf(b.getParDropoffTime()) : null);
+            ps.setDouble(13, b.getParServiceCost());
+            ps.setString(14, b.getParStatus());
+            ps.setString(15, b.getPaymentMethod());
+
+            return ps.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error adding booking: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ── GET BY BOOKING ID ──
+    public Booking getBookingById(String bookingId) {
+        String sql = "SELECT * FROM bookings WHERE bookingId = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, bookingId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return extractBooking(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching booking: " + e.getMessage());
+        }
+        return null;
+    }
+
+    // ── GET ALL BOOKINGS BY USER ──
+    public List&lt;Booking&gt; getBookingsByUser(String userId) {
+        String sql = "SELECT * FROM bookings WHERE userId = ? ORDER BY createdAt DESC";
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    bookings.add(extractBooking(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching user bookings: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    // ── GET BOOKINGS BY DATE RANGE ──
+    public List&lt;Booking&gt; getBookingsByDateRange(LocalDateTime start, LocalDateTime end) {
+        String sql = "SELECT * FROM bookings WHERE createdAt BETWEEN ? AND ? ORDER BY createdAt DESC";
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setTimestamp(1, Timestamp.valueOf(start));
+            ps.setTimestamp(2, Timestamp.valueOf(end));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    bookings.add(extractBooking(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching bookings by date: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    // ── UPDATE STATUS ──
+    public boolean updateStatus(String bookingId, String newStatus) {
+        String sql = "UPDATE bookings SET parStatus = ? WHERE bookingId = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, newStatus);
+            ps.setString(2, bookingId);
+
+            return ps.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error updating status: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ── UPDATE PICKUP/DROP TIMES ──
+    public boolean updatePickupDrop(String bookingId, LocalDateTime pickup, LocalDateTime dropoff) {
+        String sql = "UPDATE bookings SET parPickupTime = ?, parDropoffTime = ? WHERE bookingId = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setTimestamp(1, pickup != null ? Timestamp.valueOf(pickup) : null);
+            ps.setTimestamp(2, dropoff != null ? Timestamp.valueOf(dropoff) : null);
+            ps.setString(3, bookingId);
+
+            return ps.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error updating pickup/drop: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ── GET ALL BOOKINGS (for Officers) ──
+    public List&lt;Booking&gt; getAllBookings() {
+        String sql = "SELECT * FROM bookings ORDER BY createdAt DESC";
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                bookings.add(extractBooking(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching all bookings: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    // ── HELPER: Build Booking object from ResultSet row ──
+    private Booking extractBooking(ResultSet rs) throws SQLException {
+        Booking b = new Booking();
+        b.setBookingId(rs.getString("bookingId"));
+        b.setUserId(rs.getString("userId"));
+        b.setRecName(rs.getString("recName"));
+        b.setRecAddress(rs.getString("recAddress"));
+        b.setRecPin(rs.getString("recPin"));
+        b.setRecMobile(rs.getString("recMobile"));
+        b.setParWeightGram(rs.getInt("parWeightGram"));
+        b.setParContentsDescription(rs.getString("parContentsDescription"));
+        b.setParDeliveryType(rs.getString("parDeliveryType"));
+        b.setParPackingPreference(rs.getString("parPackingPreference"));
+
+        // Convert SQL Timestamp → Java LocalDateTime (null-safe)
+        Timestamp pickupTs = rs.getTimestamp("parPickupTime");
+        b.setParPickupTime(pickupTs != null ? pickupTs.toLocalDateTime() : null);
+
+        Timestamp dropTs = rs.getTimestamp("parDropoffTime");
+        b.setParDropoffTime(dropTs != null ? dropTs.toLocalDateTime() : null);
+
+        b.setParServiceCost(rs.getDouble("parServiceCost"));
+        b.setParStatus(rs.getString("parStatus"));
+        b.setPaymentMethod(rs.getString("paymentMethod"));
+        return b;
+    }
+}</code></pre>
+  </div>
+
+  <!-- BREAKDOWN: BookingDAO -->
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">BookingDAO &mdash; Section-by-Section Breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">addBooking(Booking b)</div>
+        <div class="breakdown-explain">Inserts a new booking with 15 columns. The tricky part is <code>Timestamp</code> conversion: Java uses <code>LocalDateTime</code> but JDBC uses <code>java.sql.Timestamp</code>. The ternary <code>b.getParPickupTime() != null ? Timestamp.valueOf(...) : null</code> handles cases where pickup/dropoff haven't been set yet.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getBookingById(String bookingId)</div>
+        <div class="breakdown-explain">Fetches a single booking by its primary key. Uses <code>SELECT *</code> and lets the <code>extractBooking()</code> helper map all columns. Returns <code>null</code> if no booking matches &mdash; the caller (NimbusApp) checks for this and shows "Booking not found."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getBookingsByUser(String userId)</div>
+        <div class="breakdown-explain">Returns ALL bookings for a specific customer, sorted newest first (<code>ORDER BY createdAt DESC</code>). Uses <code>while (rs.next())</code> to loop through every matching row, building a list. Used by CustomerHistoryService to show "My Bookings."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getBookingsByDateRange(LocalDateTime start, LocalDateTime end)</div>
+        <div class="breakdown-explain">Filters bookings by creation date using SQL <code>BETWEEN</code>. Both <code>start</code> and <code>end</code> are converted to <code>Timestamp</code>. Useful for officers generating daily/weekly reports.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">updateStatus(String bookingId, String newStatus)</div>
+        <div class="breakdown-explain">Simple UPDATE query &mdash; changes only the <code>parStatus</code> column. Used by officers to move a parcel through: Booked &rarr; Picked up &rarr; In Transit &rarr; Delivered. Returns <code>true</code> if the row was actually updated.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">updatePickupDrop(String bookingId, LocalDateTime pickup, LocalDateTime dropoff)</div>
+        <div class="breakdown-explain">Updates the pickup and dropoff timestamps. Called when an officer schedules a pickup or records a delivery. Both values are nullable (a parcel might have a pickup scheduled but no dropoff yet).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getAllBookings()</div>
+        <div class="breakdown-explain">Returns every booking in the system. Only used by officers who need to see all parcels across all customers. Notice the triple try-with-resources: since no parameters need to be set, the PreparedStatement and ResultSet can be declared in the same try block.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extractBooking(ResultSet rs)</div>
+        <div class="breakdown-explain">The mapping helper. Creates a Booking object and pulls every column from the current ResultSet row. The null-safe Timestamp conversion (<code>pickupTs != null ? pickupTs.toLocalDateTime() : null</code>) prevents <code>NullPointerException</code> when a datetime column is NULL in the database.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: EXCEPTIONS                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="exceptions">
+  <div class="section-tag">Section 10 &mdash; com.nimbus.exception</div>
+  <h2>Custom Exceptions</h2>
+  <p class="section-desc">Two custom checked exceptions. They extend <code>Exception</code> (not <code>RuntimeException</code>) so the compiler <strong>forces</strong> callers to handle them with try-catch or throws.</p>
+
+  <h3>DuplicateEmailException.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/exception/DuplicateEmailException.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+/**
+ * Thrown when a user tries to register with an email
+ * that already exists in the database.
+ */
+public class DuplicateEmailException extends Exception {
+
+    public DuplicateEmailException(String message) {
+        super(message);
+    }
+}</code></pre>
+  </div>
+
+  <h3>BookingNotFoundException.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/exception/BookingNotFoundException.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+/**
+ * Thrown when a booking ID does not match any record
+ * in the database.
+ */
+public class BookingNotFoundException extends Exception {
+
+    public BookingNotFoundException(String message) {
+        super(message);
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: SERVICE — UserService.java                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-service">
+  <div class="section-tag">Section 11 &mdash; com.nimbus.service</div>
+  <h2>UserService.java</h2>
+  <p class="section-desc">Business logic for user registration. Checks email uniqueness before inserting. Throws <code>DuplicateEmailException</code> if the email is taken.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/UserService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.UserDAO;
+import com.nimbus.exception.DuplicateEmailException;
+import com.nimbus.model.User;
+
+public class UserService {
+
+    private final UserDAO userDAO = new UserDAO();
+
+    /**
+     * Registers a new user after checking email uniqueness.
+     * @throws DuplicateEmailException if the email already exists
+     */
+    public boolean registerUser(User user) throws DuplicateEmailException {
+        // Step 1: Check if email is unique
+        if (!userDAO.isEmailUnique(user.getEmail())) {
+            throw new DuplicateEmailException(
+                "Email '" + user.getEmail() + "' is already registered. Please use a different email."
+            );
+        }
+
+        // Step 2: Email is unique — insert the user
+        return userDAO.addUser(user);
+    }
+
+    /**
+     * Validates login credentials.
+     * Returns the User object if valid, null if invalid.
+     */
+    public User login(String email, String password) {
+        return userDAO.validateLogin(email, password);
+    }
+
+    /**
+     * Retrieves a user by their ID.
+     */
+    public User getUserById(String userId) {
+        return userDAO.getUserById(userId);
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: SERVICE — BookingThread.java                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-thread">
+  <div class="section-tag">Section 12 &mdash; com.nimbus.service</div>
+  <h2>BookingThread.java</h2>
+  <p class="section-desc">Extends <code>Thread</code> to process a booking in a separate thread. The main thread (NimbusApp) continues immediately while the database insert happens in the background.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/BookingThread.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.model.Booking;
+
+/**
+ * Processes a booking insertion in a background thread.
+ * Demonstrates Java threading — the UI doesn't freeze
+ * while the database insert happens.
+ */
+public class BookingThread extends Thread {
+
+    private final Booking booking;
+    private final BookingDAO bookingDAO;
+
+    public BookingThread(Booking booking) {
+        this.booking    = booking;
+        this.bookingDAO = new BookingDAO();
+        // Name the thread for identification in logs
+        setName("BookingThread-" + booking.getBookingId());
+    }
+
+    @Override
+    public void run() {
+        System.out.println("[" + getName() + "] Processing booking...");
+
+        try {
+            // Simulate network/processing delay (1 second)
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.err.println("[" + getName() + "] Thread interrupted: " + e.getMessage());
+            Thread.currentThread().interrupt();
+            return;
+        }
+
+        // Insert booking into database
+        boolean success = bookingDAO.addBooking(booking);
+
+        if (success) {
+            System.out.println("[" + getName() + "] Booking " + booking.getBookingId()
+                             + " saved successfully!");
+        } else {
+            System.err.println("[" + getName() + "] Failed to save booking "
+                             + booking.getBookingId());
+        }
+    }
+}</code></pre>
+  </div>
+
+  <!-- BREAKDOWN: BookingThread -->
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">BookingThread &mdash; Section-by-Section Breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extends Thread</div>
+        <div class="breakdown-explain">This class IS a Thread. When you call <code>new BookingThread(booking).start()</code>, Java creates a new OS-level thread and calls the <code>run()</code> method on it. The main thread (your console menu) continues running immediately without waiting.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private final Booking booking; / private final BookingDAO bookingDAO;</div>
+        <div class="breakdown-explain">The thread carries its own data (the Booking to insert) and its own DAO instance. Marked <code>final</code> because once the thread starts, these should not change. Each thread gets its own independent copy.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">setName("BookingThread-" + booking.getBookingId())</div>
+        <div class="breakdown-explain">Names the thread for easier debugging. When you see <code>[BookingThread-BKG004] Processing booking...</code> in the console, you know which thread produced that output.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Thread.sleep(1000)</div>
+        <div class="breakdown-explain">Simulates a real-world processing delay (API call, validation, etc.). The <code>InterruptedException</code> catch is mandatory &mdash; if another thread calls <code>interrupt()</code> on this thread while it's sleeping, this exception fires. We re-interrupt the thread with <code>Thread.currentThread().interrupt()</code> to preserve the interrupt flag.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookingDAO.addBooking(booking)</div>
+        <div class="breakdown-explain">The actual database insert happens here, inside the background thread. If it fails (returns false), we print an error. The main thread has already moved on &mdash; it showed "Booking submitted!" to the user and went back to the menu.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: SERVICE — TrackingService hierarchy                -->
+<!-- ============================================================ -->
+<section class="content-section" id="tracking-service">
+  <div class="section-tag">Section 13 &mdash; com.nimbus.service</div>
+  <h2>TrackingService Hierarchy</h2>
+  <p class="section-desc">Demonstrates <strong>polymorphism</strong> and <strong>method overriding</strong>. The base class defines <code>trackParcel()</code> and <code>displayResult()</code>. Subclasses override them with role-specific behavior: customers only see status, officers see everything.</p>
+
+  <h3>TrackingService.java (Base Class)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/TrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.model.Booking;
+
+/**
+ * Base class for tracking parcels.
+ * Subclasses override trackParcel() and displayResult()
+ * to provide role-specific behavior (polymorphism).
+ */
+public class TrackingService {
+
+    protected final BookingDAO bookingDAO = new BookingDAO();
+
+    /**
+     * Tracks a parcel by booking ID.
+     * Base implementation — returns the booking as-is.
+     * Subclasses can add ownership checks or extra logic.
+     */
+    public Booking trackParcel(String bookingId) {
+        return bookingDAO.getBookingById(bookingId);
+    }
+
+    /**
+     * Displays tracking result to the console.
+     * Base implementation shows basic info.
+     * OfficerTrackingService overrides this to show extra details.
+     */
+    public void displayResult(Booking booking) {
+        if (booking == null) {
+            System.out.println("  Booking not found.");
+            return;
+        }
+
+        System.out.println("\n  ╔══════════════════════════════════╗");
+        System.out.println("  ║       TRACKING RESULT            ║");
+        System.out.println("  ╠══════════════════════════════════╣");
+        System.out.printf("  ║  Booking ID : %-18s ║%n", booking.getBookingId());
+        System.out.printf("  ║  Status     : %-18s ║%n", booking.getParStatus());
+        System.out.printf("  ║  Receiver   : %-18s ║%n", booking.getRecName());
+        System.out.printf("  ║  Type       : %-18s ║%n", booking.getParDeliveryType());
+        System.out.println("  ╚══════════════════════════════════╝");
+    }
+}</code></pre>
+  </div>
+
+  <h3>CustomerTrackingService.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/CustomerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.model.Booking;
+
+/**
+ * Customer-specific tracking.
+ * Overrides trackParcel to add an ownership check:
+ * customers can ONLY track their OWN bookings.
+ */
+public class CustomerTrackingService extends TrackingService {
+
+    private final String currentUserId;
+
+    public CustomerTrackingService(String currentUserId) {
+        this.currentUserId = currentUserId;
+    }
+
+    @Override
+    public Booking trackParcel(String bookingId) {
+        Booking booking = super.trackParcel(bookingId);
+
+        // Ownership check — customer can only see their own bookings
+        if (booking != null &amp;&amp; !booking.getUserId().equals(currentUserId)) {
+            System.out.println("  Access denied: This booking does not belong to you.");
+            return null;
+        }
+
+        return booking;
+    }
+}</code></pre>
+  </div>
+
+  <h3>OfficerTrackingService.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/OfficerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.model.Booking;
+
+/**
+ * Officer-specific tracking.
+ * No ownership check — officers can track ANY booking.
+ * Overrides displayResult to show extra details (address, weight, cost).
+ */
+public class OfficerTrackingService extends TrackingService {
+
+    // trackParcel() is NOT overridden — uses the base class version
+    // which returns any booking without ownership check.
+
+    @Override
+    public void displayResult(Booking booking) {
+        if (booking == null) {
+            System.out.println("  Booking not found.");
+            return;
+        }
+
+        // Officer view — shows everything
+        System.out.println("\n  ╔══════════════════════════════════════════════╗");
+        System.out.println("  ║         TRACKING RESULT (OFFICER VIEW)      ║");
+        System.out.println("  ╠══════════════════════════════════════════════╣");
+        System.out.printf("  ║  Booking ID  : %-30s ║%n", booking.getBookingId());
+        System.out.printf("  ║  Customer ID : %-30s ║%n", booking.getUserId());
+        System.out.printf("  ║  Status      : %-30s ║%n", booking.getParStatus());
+        System.out.printf("  ║  Receiver    : %-30s ║%n", booking.getRecName());
+        System.out.printf("  ║  Address     : %-30s ║%n", booking.getRecAddress());
+        System.out.printf("  ║  Pin Code    : %-30s ║%n", booking.getRecPin());
+        System.out.printf("  ║  Weight      : %-27s g ║%n", booking.getParWeightGram());
+        System.out.printf("  ║  Type        : %-30s ║%n", booking.getParDeliveryType());
+        System.out.printf("  ║  Cost        : Rs. %-26.2f ║%n", booking.getParServiceCost());
+        System.out.printf("  ║  Payment     : %-30s ║%n", booking.getPaymentMethod());
+        System.out.println("  ╚══════════════════════════════════════════════╝");
+    }
+}</code></pre>
+  </div>
+
+  <!-- BREAKDOWN: TrackingService hierarchy -->
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">TrackingService Hierarchy &mdash; How Polymorphism Works Here</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">TrackingService (base class)</div>
+        <div class="breakdown-explain">The parent class defines the default behavior. <code>trackParcel()</code> just calls <code>bookingDAO.getBookingById()</code> and returns whatever it finds. <code>displayResult()</code> shows 4 basic fields. Both methods are <code>public</code> and non-abstract, so subclasses can choose to override them or use them as-is.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">protected final BookingDAO bookingDAO</div>
+        <div class="breakdown-explain"><code>protected</code> means subclasses (CustomerTrackingService, OfficerTrackingService) can access this field directly. <code>private</code> would block access. <code>final</code> means the DAO instance can't be replaced after construction.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">CustomerTrackingService overrides trackParcel()</div>
+        <div class="breakdown-explain">Calls <code>super.trackParcel(bookingId)</code> to get the booking from the parent, then adds an ownership check. If the booking's userId doesn't match the logged-in customer's ID, it returns <code>null</code> with an "Access denied" message. The customer never sees someone else's booking.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">OfficerTrackingService overrides displayResult()</div>
+        <div class="breakdown-explain">Does NOT override <code>trackParcel()</code> — officers can track any booking without restrictions. Instead, it overrides <code>displayResult()</code> to show a more detailed view with address, weight, cost, and payment method. Same data, different presentation based on the user's role.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Polymorphism in action (in NimbusApp)</div>
+        <div class="breakdown-explain">NimbusApp declares <code>TrackingService tracker</code> and assigns either <code>new CustomerTrackingService(userId)</code> or <code>new OfficerTrackingService()</code> depending on the role. Then <code>tracker.trackParcel()</code> and <code>tracker.displayResult()</code> automatically call the correct version. One variable, different behaviors. That is polymorphism.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 14: SERVICE — BaseHistoryService + CustomerHistory     -->
+<!-- ============================================================ -->
+<section class="content-section" id="history-service">
+  <div class="section-tag">Section 14 &mdash; com.nimbus.service</div>
+  <h2>History Service Hierarchy</h2>
+  <p class="section-desc">Demonstrates <strong>inheritance</strong> and <strong>abstract methods</strong>. The base class provides a formatted table display. The subclass adds role-specific data fetching.</p>
+
+  <h3>BaseHistoryService.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/BaseHistoryService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.model.Booking;
+
+import java.util.List;
+
+/**
+ * Base class for booking history.
+ * Provides the formatted table display.
+ * Subclasses implement the data-fetching logic.
+ */
+public abstract class BaseHistoryService {
+
+    protected final BookingDAO bookingDAO = new BookingDAO();
+
+    /**
+     * Displays a list of bookings in a formatted table.
+     */
+    public void displayHistory(List&lt;Booking&gt; bookings) {
+        if (bookings.isEmpty()) {
+            System.out.println("  No bookings found.");
+            return;
+        }
+
+        // Table header
+        System.out.println();
+        System.out.printf("  %-12s %-20s %-12s %-10s %-12s%n",
+                "Booking ID", "Receiver", "Type", "Cost", "Status");
+        System.out.println("  " + "-".repeat(70));
+
+        // Table rows
+        for (Booking b : bookings) {
+            System.out.printf("  %-12s %-20s %-12s Rs.%-7.2f %-12s%n",
+                    b.getBookingId(),
+                    truncate(b.getRecName(), 18),
+                    b.getParDeliveryType(),
+                    b.getParServiceCost(),
+                    b.getParStatus());
+        }
+
+        System.out.println("  " + "-".repeat(70));
+        System.out.printf("  Total: %d booking(s)%n", bookings.size());
+    }
+
+    /**
+     * Truncates a string if it exceeds maxLen, adding "..." at the end.
+     */
+    protected String truncate(String text, int maxLen) {
+        if (text == null) return "";
+        return text.length() &gt; maxLen ? text.substring(0, maxLen - 3) + "..." : text;
+    }
+}</code></pre>
+  </div>
+
+  <h3>CustomerHistoryService.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/CustomerHistoryService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.exception.BookingNotFoundException;
+import com.nimbus.model.Booking;
+
+import java.util.List;
+
+/**
+ * Customer-specific history.
+ * Fetches only the logged-in customer's bookings.
+ * Throws BookingNotFoundException if the customer has no bookings.
+ */
+public class CustomerHistoryService extends BaseHistoryService {
+
+    /**
+     * Gets all bookings for a specific customer.
+     * @throws BookingNotFoundException if the customer has zero bookings
+     */
+    public List&lt;Booking&gt; getMyBookings(String userId) throws BookingNotFoundException {
+        List&lt;Booking&gt; bookings = bookingDAO.getBookingsByUser(userId);
+
+        if (bookings.isEmpty()) {
+            throw new BookingNotFoundException(
+                "No bookings found for user '" + userId + "'. Book a parcel first!"
+            );
+        }
+
+        return bookings;
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 15: APP — NimbusApp.java                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-app">
+  <div class="section-tag">Section 15 &mdash; com.nimbus.app</div>
+  <h2>NimbusApp.java</h2>
+  <p class="section-desc">The main class. Contains all console menus (main, customer, officer, support), login, registration, booking, tracking (polymorphism), history (inheritance), status updates, and all helper methods. This is the entry point &mdash; the <code>main()</code> method lives here.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/app/NimbusApp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.app;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.dao.UserDAO;
+import com.nimbus.exception.BookingNotFoundException;
+import com.nimbus.exception.DuplicateEmailException;
+import com.nimbus.model.Booking;
+import com.nimbus.model.User;
+import com.nimbus.service.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Scanner;
+
+public class NimbusApp {
+
+    // ── Shared resources ──
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final UserService userService = new UserService();
+    private static final BookingDAO bookingDAO = new BookingDAO();
+    private static final UserDAO userDAO = new UserDAO();
+    private static User currentUser = null;
+
+    // ── Date formatter for display ──
+    private static final DateTimeFormatter DATE_FMT =
+            DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+    // ════════════════════════════════════════════
+    // MAIN METHOD — Entry Point
+    // ════════════════════════════════════════════
+    public static void main(String[] args) {
+        System.out.println("\n  ╔══════════════════════════════════════╗");
+        System.out.println("  ║    NIMBUS PARCEL MANAGEMENT SYSTEM   ║");
+        System.out.println("  ╚══════════════════════════════════════╝");
+
+        boolean running = true;
+        while (running) {
+            System.out.println("\n  ┌──────────────────────────┐");
+            System.out.println("  │       MAIN MENU          │");
+            System.out.println("  ├──────────────────────────┤");
+            System.out.println("  │  1. Login                │");
+            System.out.println("  │  2. Register             │");
+            System.out.println("  │  3. Exit                 │");
+            System.out.println("  └──────────────────────────┘");
+            System.out.print("  Enter choice: ");
+
+            int choice = readInt();
+            switch (choice) {
+                case 1 -&gt; login();
+                case 2 -&gt; register();
+                case 3 -&gt; {
+                    running = false;
+                    System.out.println("\n  Thank you for using Nimbus. Goodbye!");
+                }
+                default -&gt; System.out.println("  Invalid choice. Try again.");
+            }
+        }
+        scanner.close();
+    }
+
+    // ════════════════════════════════════════════
+    // LOGIN
+    // ════════════════════════════════════════════
+    private static void login() {
+        System.out.println("\n  ── LOGIN ──");
+        System.out.print("  Email: ");
+        String email = scanner.nextLine().trim();
+        System.out.print("  Password: ");
+        String password = scanner.nextLine().trim();
+
+        currentUser = userService.login(email, password);
+
+        if (currentUser == null) {
+            System.out.println("  Invalid email or password.");
+            return;
+        }
+
+        System.out.println("  Welcome, " + currentUser.getFullName()
+                         + "! (Role: " + currentUser.getRole() + ")");
+
+        // Route to role-specific menu
+        switch (currentUser.getRole()) {
+            case "customer" -&gt; customerMenu();
+            case "officer"  -&gt; officerMenu();
+            case "support"  -&gt; supportMenu();
+            default -&gt; System.out.println("  Unknown role: " + currentUser.getRole());
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // REGISTER
+    // ════════════════════════════════════════════
+    private static void register() {
+        System.out.println("\n  ── REGISTER NEW CUSTOMER ──");
+
+        System.out.print("  Full Name: ");
+        String name = scanner.nextLine().trim();
+        System.out.print("  Email: ");
+        String email = scanner.nextLine().trim();
+        System.out.print("  Mobile: ");
+        String mobile = scanner.nextLine().trim();
+        System.out.print("  Password: ");
+        String password = scanner.nextLine().trim();
+        System.out.print("  City: ");
+        String city = scanner.nextLine().trim();
+
+        // Generate user ID: CUST + timestamp suffix
+        String userId = generateUserId();
+
+        User newUser = new User(userId, name, email, mobile, password, "customer", city);
+
+        try {
+            boolean success = userService.registerUser(newUser);
+            if (success) {
+                System.out.println("  Registration successful! Your User ID: " + userId);
+                System.out.println("  You can now login with your email and password.");
+            } else {
+                System.out.println("  Registration failed. Please try again.");
+            }
+        } catch (DuplicateEmailException e) {
+            System.out.println("  Error: " + e.getMessage());
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // CUSTOMER MENU
+    // ════════════════════════════════════════════
+    private static void customerMenu() {
+        boolean active = true;
+        while (active) {
+            System.out.println("\n  ┌──────────────────────────┐");
+            System.out.println("  │     CUSTOMER MENU        │");
+            System.out.println("  ├──────────────────────────┤");
+            System.out.println("  │  1. Book a Parcel        │");
+            System.out.println("  │  2. Track Parcel         │");
+            System.out.println("  │  3. Booking History      │");
+            System.out.println("  │  4. View Profile         │");
+            System.out.println("  │  5. Contact Support      │");
+            System.out.println("  │  6. Logout               │");
+            System.out.println("  └──────────────────────────┘");
+            System.out.print("  Enter choice: ");
+
+            int choice = readInt();
+            switch (choice) {
+                case 1 -&gt; bookParcel();
+                case 2 -&gt; trackParcel();
+                case 3 -&gt; bookingHistory();
+                case 4 -&gt; viewProfile();
+                case 5 -&gt; contactSupport();
+                case 6 -&gt; {
+                    active = false;
+                    logout();
+                }
+                default -&gt; System.out.println("  Invalid choice.");
+            }
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // OFFICER MENU
+    // ════════════════════════════════════════════
+    private static void officerMenu() {
+        boolean active = true;
+        while (active) {
+            System.out.println("\n  ┌──────────────────────────┐");
+            System.out.println("  │      OFFICER MENU        │");
+            System.out.println("  ├──────────────────────────┤");
+            System.out.println("  │  1. Track Any Parcel     │");
+            System.out.println("  │  2. Update Delivery Status│");
+            System.out.println("  │  3. Schedule Pickup      │");
+            System.out.println("  │  4. View All Bookings    │");
+            System.out.println("  │  5. View Profile         │");
+            System.out.println("  │  6. Logout               │");
+            System.out.println("  └──────────────────────────┘");
+            System.out.print("  Enter choice: ");
+
+            int choice = readInt();
+            switch (choice) {
+                case 1 -&gt; trackParcel();
+                case 2 -&gt; updateDeliveryStatus();
+                case 3 -&gt; schedulePickup();
+                case 4 -&gt; viewAllBookings();
+                case 5 -&gt; viewProfile();
+                case 6 -&gt; {
+                    active = false;
+                    logout();
+                }
+                default -&gt; System.out.println("  Invalid choice.");
+            }
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // SUPPORT MENU
+    // ════════════════════════════════════════════
+    private static void supportMenu() {
+        boolean active = true;
+        while (active) {
+            System.out.println("\n  ┌──────────────────────────┐");
+            System.out.println("  │      SUPPORT MENU        │");
+            System.out.println("  ├──────────────────────────┤");
+            System.out.println("  │  1. Track Any Parcel     │");
+            System.out.println("  │  2. View All Bookings    │");
+            System.out.println("  │  3. View Profile         │");
+            System.out.println("  │  4. Logout               │");
+            System.out.println("  └──────────────────────────┘");
+            System.out.print("  Enter choice: ");
+
+            int choice = readInt();
+            switch (choice) {
+                case 1 -&gt; trackParcel();
+                case 2 -&gt; viewAllBookings();
+                case 3 -&gt; viewProfile();
+                case 4 -&gt; {
+                    active = false;
+                    logout();
+                }
+                default -&gt; System.out.println("  Invalid choice.");
+            }
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // BOOK PARCEL (Customer only)
+    // ════════════════════════════════════════════
+    private static void bookParcel() {
+        System.out.println("\n  ── BOOK A PARCEL ──");
+
+        System.out.print("  Receiver Name: ");
+        String recName = scanner.nextLine().trim();
+        System.out.print("  Receiver Address: ");
+        String recAddress = scanner.nextLine().trim();
+        System.out.print("  Receiver PIN Code: ");
+        String recPin = scanner.nextLine().trim();
+        System.out.print("  Receiver Mobile: ");
+        String recMobile = scanner.nextLine().trim();
+        System.out.print("  Parcel Weight (grams): ");
+        int weight = readInt();
+        System.out.print("  Contents Description: ");
+        String contents = scanner.nextLine().trim();
+
+        // Delivery type selection
+        System.out.println("  Delivery Type:");
+        System.out.println("    1. Standard");
+        System.out.println("    2. Express");
+        System.out.println("    3. Overnight");
+        System.out.print("  Choose (1-3): ");
+        int typeChoice = readInt();
+        String deliveryType = switch (typeChoice) {
+            case 2 -&gt; "Express";
+            case 3 -&gt; "Overnight";
+            default -&gt; "Standard";
+        };
+
+        System.out.print("  Packing Preference (e.g., Bubble Wrap, Cardboard Box): ");
+        String packing = scanner.nextLine().trim();
+
+        // Payment method
+        System.out.println("  Payment Method:");
+        System.out.println("    1. UPI");
+        System.out.println("    2. Card");
+        System.out.println("    3. Net Banking");
+        System.out.println("    4. Cash");
+        System.out.print("  Choose (1-4): ");
+        int payChoice = readInt();
+        String paymentMethod = switch (payChoice) {
+            case 1 -&gt; "UPI";
+            case 2 -&gt; "Card";
+            case 3 -&gt; "Net Banking";
+            case 4 -&gt; "Cash";
+            default -&gt; "UPI";
+        };
+
+        // Calculate cost
+        double cost = calculateCost(weight, deliveryType);
+        String bookingId = generateBookingId();
+
+        // Build the Booking object
+        Booking booking = new Booking(
+            bookingId, currentUser.getUserId(), recName, recAddress, recPin,
+            recMobile, weight, contents, deliveryType, packing,
+            null, null, cost, "Booked", paymentMethod
+        );
+
+        // Show summary
+        System.out.println("\n  ── BOOKING SUMMARY ──");
+        System.out.printf("  Booking ID   : %s%n", bookingId);
+        System.out.printf("  Receiver     : %s%n", recName);
+        System.out.printf("  Address      : %s%n", recAddress);
+        System.out.printf("  Weight       : %d g%n", weight);
+        System.out.printf("  Type         : %s%n", deliveryType);
+        System.out.printf("  Cost         : Rs. %.2f%n", cost);
+        System.out.printf("  Payment      : %s%n", paymentMethod);
+
+        System.out.print("\n  Confirm booking? (y/n): ");
+        String confirm = scanner.nextLine().trim();
+
+        if (confirm.equalsIgnoreCase("y")) {
+            // Use BookingThread to insert in background
+            BookingThread thread = new BookingThread(booking);
+            thread.start();
+
+            // Wait for the thread to finish (so user sees the result)
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                System.err.println("  Booking thread interrupted.");
+            }
+        } else {
+            System.out.println("  Booking cancelled.");
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // TRACK PARCEL (Polymorphism)
+    // ════════════════════════════════════════════
+    private static void trackParcel() {
+        System.out.print("\n  Enter Booking ID to track: ");
+        String bookingId = scanner.nextLine().trim();
+
+        // Polymorphism: same variable type, different behavior based on role
+        TrackingService tracker;
+        if ("customer".equals(currentUser.getRole())) {
+            tracker = new CustomerTrackingService(currentUser.getUserId());
+        } else {
+            tracker = new OfficerTrackingService();
+        }
+
+        Booking result = tracker.trackParcel(bookingId);
+        tracker.displayResult(result);
+    }
+
+    // ════════════════════════════════════════════
+    // BOOKING HISTORY (Inheritance)
+    // ════════════════════════════════════════════
+    private static void bookingHistory() {
+        CustomerHistoryService historyService = new CustomerHistoryService();
+
+        try {
+            List&lt;Booking&gt; bookings = historyService.getMyBookings(currentUser.getUserId());
+            historyService.displayHistory(bookings);
+        } catch (BookingNotFoundException e) {
+            System.out.println("  " + e.getMessage());
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // UPDATE DELIVERY STATUS (Officer only)
+    // ════════════════════════════════════════════
+    private static void updateDeliveryStatus() {
+        System.out.print("\n  Enter Booking ID: ");
+        String bookingId = scanner.nextLine().trim();
+
+        Booking booking = bookingDAO.getBookingById(bookingId);
+        if (booking == null) {
+            System.out.println("  Booking not found.");
+            return;
+        }
+
+        System.out.println("  Current status: " + booking.getParStatus());
+        System.out.println("\n  New Status:");
+        System.out.println("    1. Booked");
+        System.out.println("    2. Picked up");
+        System.out.println("    3. In Transit");
+        System.out.println("    4. Delivered");
+        System.out.println("    5. Returned");
+        System.out.print("  Choose (1-5): ");
+
+        int statusChoice = readInt();
+        String newStatus = switch (statusChoice) {
+            case 1 -&gt; "Booked";
+            case 2 -&gt; "Picked up";
+            case 3 -&gt; "In Transit";
+            case 4 -&gt; "Delivered";
+            case 5 -&gt; "Returned";
+            default -&gt; null;
+        };
+
+        if (newStatus == null) {
+            System.out.println("  Invalid status choice.");
+            return;
+        }
+
+        boolean updated = bookingDAO.updateStatus(bookingId, newStatus);
+        if (updated) {
+            System.out.println("  Status updated to: " + newStatus);
+        } else {
+            System.out.println("  Failed to update status.");
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // SCHEDULE PICKUP (Officer only)
+    // ════════════════════════════════════════════
+    private static void schedulePickup() {
+        System.out.print("\n  Enter Booking ID: ");
+        String bookingId = scanner.nextLine().trim();
+
+        Booking booking = bookingDAO.getBookingById(bookingId);
+        if (booking == null) {
+            System.out.println("  Booking not found.");
+            return;
+        }
+
+        System.out.println("  Scheduling pickup for booking: " + bookingId);
+        LocalDateTime pickupTime = LocalDateTime.now().plusHours(2);
+        System.out.println("  Pickup scheduled for: " + pickupTime.format(DATE_FMT));
+
+        boolean updated = bookingDAO.updatePickupDrop(bookingId, pickupTime, null);
+        if (updated) {
+            bookingDAO.updateStatus(bookingId, "Picked up");
+            System.out.println("  Pickup confirmed. Status updated to 'Picked up'.");
+        } else {
+            System.out.println("  Failed to schedule pickup.");
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // VIEW ALL BOOKINGS (Officer/Support)
+    // ════════════════════════════════════════════
+    private static void viewAllBookings() {
+        List&lt;Booking&gt; allBookings = bookingDAO.getAllBookings();
+
+        if (allBookings.isEmpty()) {
+            System.out.println("  No bookings in the system.");
+            return;
+        }
+
+        System.out.println("\n  ── ALL BOOKINGS ──");
+        System.out.printf("  %-12s %-10s %-20s %-12s %-10s %-12s%n",
+                "Booking ID", "User ID", "Receiver", "Type", "Cost", "Status");
+        System.out.println("  " + "-".repeat(80));
+
+        for (Booking b : allBookings) {
+            System.out.printf("  %-12s %-10s %-20s %-12s Rs.%-7.2f %-12s%n",
+                    b.getBookingId(),
+                    b.getUserId(),
+                    b.getRecName(),
+                    b.getParDeliveryType(),
+                    b.getParServiceCost(),
+                    b.getParStatus());
+        }
+        System.out.println("  " + "-".repeat(80));
+        System.out.printf("  Total: %d booking(s)%n", allBookings.size());
+    }
+
+    // ════════════════════════════════════════════
+    // VIEW PROFILE
+    // ════════════════════════════════════════════
+    private static void viewProfile() {
+        System.out.println("\n  ╔══════════════════════════════════╗");
+        System.out.println("  ║          YOUR PROFILE            ║");
+        System.out.println("  ╠══════════════════════════════════╣");
+        System.out.printf("  ║  User ID  : %-20s ║%n", currentUser.getUserId());
+        System.out.printf("  ║  Name     : %-20s ║%n", currentUser.getFullName());
+        System.out.printf("  ║  Email    : %-20s ║%n", currentUser.getEmail());
+        System.out.printf("  ║  Mobile   : %-20s ║%n", currentUser.getMobile());
+        System.out.printf("  ║  Role     : %-20s ║%n", currentUser.getRole());
+        System.out.printf("  ║  City     : %-20s ║%n", currentUser.getCity());
+        System.out.println("  ╚══════════════════════════════════╝");
+    }
+
+    // ════════════════════════════════════════════
+    // CONTACT SUPPORT
+    // ════════════════════════════════════════════
+    private static void contactSupport() {
+        List&lt;User&gt; supportUsers = userDAO.getSupportUsers();
+
+        if (supportUsers.isEmpty()) {
+            System.out.println("  No support agents available.");
+            return;
+        }
+
+        System.out.println("\n  ── SUPPORT CONTACTS ──");
+        for (User s : supportUsers) {
+            System.out.printf("  Name: %s | Email: %s | Mobile: %s%n",
+                    s.getFullName(), s.getEmail(), s.getMobile());
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // LOGOUT
+    // ════════════════════════════════════════════
+    private static void logout() {
+        System.out.println("  Logged out. Goodbye, " + currentUser.getFullName() + "!");
+        currentUser = null;
+    }
+
+    // ════════════════════════════════════════════
+    // HELPER: Calculate Cost
+    // ════════════════════════════════════════════
+    private static double calculateCost(int weightGrams, String deliveryType) {
+        // Base cost: Rs. 50 + Rs. 5 per 100 grams
+        double baseCost = 50.0 + (weightGrams / 100.0) * 5.0;
+
+        // Delivery type multiplier
+        double multiplier = switch (deliveryType) {
+            case "Express"   -&gt; 1.5;
+            case "Overnight" -&gt; 2.0;
+            default          -&gt; 1.0;  // Standard
+        };
+
+        return Math.round(baseCost * multiplier * 100.0) / 100.0;
+    }
+
+    // ════════════════════════════════════════════
+    // HELPER: Generate Booking ID
+    // ════════════════════════════════════════════
+    private static String generateBookingId() {
+        return "BKG" + System.currentTimeMillis() % 100000;
+    }
+
+    // ════════════════════════════════════════════
+    // HELPER: Generate User ID
+    // ════════════════════════════════════════════
+    private static String generateUserId() {
+        return "CUST" + System.currentTimeMillis() % 100000;
+    }
+
+    // ════════════════════════════════════════════
+    // HELPER: Safe Integer Reader
+    // ════════════════════════════════════════════
+    private static int readInt() {
+        try {
+            String line = scanner.nextLine().trim();
+            return Integer.parseInt(line);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+}</code></pre>
+  </div>
+
+  <!-- BREAKDOWN: NimbusApp -->
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">NimbusApp.java &mdash; Section-by-Section Breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Static fields (Scanner, UserService, DAOs, currentUser)</div>
+        <div class="breakdown-explain">All fields are <code>static</code> because every method in this class is static (called from <code>main()</code>). <code>currentUser</code> starts as <code>null</code> and gets set after a successful login. It acts as the "session" &mdash; every method can check who's logged in.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">main() &mdash; Main menu loop</div>
+        <div class="breakdown-explain">A <code>while (running)</code> loop shows the main menu repeatedly until the user chooses "Exit." Java 17's enhanced switch (<code>case 1 -&gt;</code> instead of <code>case 1:</code>) makes the code cleaner. No <code>break</code> needed.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">login() &mdash; Role-based routing</div>
+        <div class="breakdown-explain">Calls <code>userService.login()</code> which internally calls <code>UserDAO.validateLogin()</code>. If successful, checks the user's <code>role</code> field and routes to the correct menu. Each role sees different options. This is RBAC (Role-Based Access Control).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">register() &mdash; DuplicateEmailException handling</div>
+        <div class="breakdown-explain">Wraps <code>userService.registerUser()</code> in try-catch. If the email exists, the <code>DuplicateEmailException</code> is caught and its message is shown to the user. This is a real use of custom checked exceptions &mdash; the compiler forced us to handle it.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookParcel() &mdash; BookingThread usage</div>
+        <div class="breakdown-explain">Collects all inputs, calculates cost, builds a Booking object, then creates a <code>BookingThread</code> and calls <code>.start()</code>. The <code>thread.join()</code> call makes the main thread wait for the booking thread to finish, so the user sees the success/failure message before returning to the menu.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">trackParcel() &mdash; Polymorphism in action</div>
+        <div class="breakdown-explain">Declares <code>TrackingService tracker</code> (the parent type). Assigns either <code>CustomerTrackingService</code> or <code>OfficerTrackingService</code> based on the role. Then calls <code>tracker.trackParcel()</code> and <code>tracker.displayResult()</code>. Java's dynamic dispatch ensures the correct overridden version runs. One method, different behaviors. That is polymorphism.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookingHistory() &mdash; Inheritance in action</div>
+        <div class="breakdown-explain"><code>CustomerHistoryService</code> extends <code>BaseHistoryService</code>. It calls <code>getMyBookings()</code> (defined in the subclass) which throws <code>BookingNotFoundException</code> if empty. Then calls <code>displayHistory()</code> (defined in the parent class). The subclass adds data-fetching, the parent provides the display. That is inheritance.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">calculateCost() &mdash; Pricing logic</div>
+        <div class="breakdown-explain">Base cost is Rs. 50 + Rs. 5 per 100g. Express multiplies by 1.5x, Overnight by 2x. <code>Math.round(... * 100.0) / 100.0</code> rounds to 2 decimal places (standard trick for currency in Java without BigDecimal).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">readInt() &mdash; Safe integer input</div>
+        <div class="breakdown-explain">Reads a line as String, then parses to int. If the user types "abc" instead of a number, <code>NumberFormatException</code> is caught and <code>-1</code> is returned. This prevents the entire application from crashing on bad input. Never use <code>scanner.nextInt()</code> directly &mdash; it leaves a newline in the buffer and causes issues.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 16: CONCEPTS MAP                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="concepts-map">
+  <div class="section-tag">Section 16</div>
+  <h2>Concepts Demonstrated</h2>
+  <p class="section-desc">Every Java concept you studied in Topics 04&ndash;22 is used somewhere in these 15 files. Here is the map.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Concept</th>
+        <th>Where It's Used</th>
+        <th>File</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Encapsulation</strong></td>
+        <td>Private fields + public getters/setters</td>
+        <td><code>User.java</code>, <code>Booking.java</code></td>
+      </tr>
+      <tr>
+        <td><strong>Inheritance</strong></td>
+        <td><code>extends BaseHistoryService</code>, <code>extends TrackingService</code></td>
+        <td><code>CustomerHistoryService</code>, <code>CustomerTrackingService</code></td>
+      </tr>
+      <tr>
+        <td><strong>Polymorphism</strong></td>
+        <td>Parent type variable, child behavior at runtime</td>
+        <td><code>NimbusApp.trackParcel()</code></td>
+      </tr>
+      <tr>
+        <td><strong>Abstraction</strong></td>
+        <td><code>abstract class BaseHistoryService</code></td>
+        <td><code>BaseHistoryService.java</code></td>
+      </tr>
+      <tr>
+        <td><strong>Custom Exceptions</strong></td>
+        <td>Checked exceptions with <code>throws</code></td>
+        <td><code>DuplicateEmailException</code>, <code>BookingNotFoundException</code></td>
+      </tr>
+      <tr>
+        <td><strong>Collections</strong></td>
+        <td><code>ArrayList&lt;User&gt;</code>, <code>List&lt;Booking&gt;</code></td>
+        <td><code>UserDAO</code>, <code>BookingDAO</code></td>
+      </tr>
+      <tr>
+        <td><strong>Generics</strong></td>
+        <td><code>List&lt;Booking&gt;</code> type-safe collections</td>
+        <td>All DAO and Service classes</td>
+      </tr>
+      <tr>
+        <td><strong>Date &amp; Time API</strong></td>
+        <td><code>LocalDateTime</code>, <code>DateTimeFormatter</code></td>
+        <td><code>Booking.java</code>, <code>NimbusApp.java</code></td>
+      </tr>
+      <tr>
+        <td><strong>Threads</strong></td>
+        <td><code>extends Thread</code>, <code>start()</code>, <code>join()</code></td>
+        <td><code>BookingThread.java</code></td>
+      </tr>
+      <tr>
+        <td><strong>JDBC</strong></td>
+        <td><code>Connection</code>, <code>PreparedStatement</code>, <code>ResultSet</code></td>
+        <td><code>DBConnection</code>, <code>UserDAO</code>, <code>BookingDAO</code></td>
+      </tr>
+      <tr>
+        <td><strong>Try-with-Resources</strong></td>
+        <td>Auto-closing <code>Connection</code>, <code>PreparedStatement</code></td>
+        <td>Every DAO method</td>
+      </tr>
+      <tr>
+        <td><strong>DAO Pattern</strong></td>
+        <td>Data access separated from business logic</td>
+        <td><code>UserDAO</code>, <code>BookingDAO</code></td>
+      </tr>
+      <tr>
+        <td><strong>Layered Architecture</strong></td>
+        <td>Model &rarr; DAO &rarr; Service &rarr; App</td>
+        <td>Entire project structure</td>
+      </tr>
+      <tr>
+        <td><strong>Enhanced Switch</strong></td>
+        <td>Arrow syntax <code>case 1 -&gt;</code> (Java 14+)</td>
+        <td><code>NimbusApp.java</code></td>
+      </tr>
+      <tr>
+        <td><strong>Static Methods</strong></td>
+        <td><code>DBConnection.getConnection()</code></td>
+        <td><code>DBConnection.java</code>, <code>NimbusApp.java</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="unix.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Unix/Shell</span>
+  </a>
+  <a href="practice-lab.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Practice Lab</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

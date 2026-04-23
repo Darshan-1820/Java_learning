@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REST Controllers &mdash; Spring Boot | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link active"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> API Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Architecture</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus as Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular &mdash; Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Angular Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Angular Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: @RestController vs @Controller                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="restcontroller-vs-controller">
+  <div class="section-tag">Section 01</div>
+  <h2>@RestController vs @Controller</h2>
+  <p class="section-desc">Two annotations, two different jobs. Understanding this distinction is the first step to building REST APIs.</p>
+
+  <h3>@Controller &mdash; Returns Views</h3>
+
+  <p>In Phase 3, you used <code>@Controller</code> with Spring MVC. It returns <strong>view names</strong> &mdash; Spring looks up a JSP or Thymeleaf template and renders HTML:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@Controller &mdash; Returns HTML views</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Controller
+public class BookingController {
+
+    @GetMapping("/bookings")
+    public String showBookings(Model model) {
+        List&lt;Booking&gt; bookings = bookingService.getAll();
+        model.addAttribute("bookings", bookings);
+        return "booking-list";  // Returns a VIEW NAME
+        // Spring finds booking-list.jsp and renders HTML
+    }
+}</code></pre>
+  </div>
+
+  <h3>@RestController &mdash; Returns Data</h3>
+
+  <p>In Phase 4, you use <code>@RestController</code>. It returns <strong>data directly</strong> &mdash; no view, no HTML. The return value gets automatically converted to JSON:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@RestController &mdash; Returns JSON data</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@RestController
+public class BookingController {
+
+    @GetMapping("/api/bookings")
+    public List&lt;Booking&gt; getAllBookings() {
+        return bookingService.getAll();
+        // Returns the LIST DIRECTLY
+        // Spring converts it to JSON automatically
+        // [{"bookingId":1001,...},{"bookingId":1002,...}]
+    }
+}</code></pre>
+  </div>
+
+  <h3>The Technical Difference</h3>
+
+  <p><code>@RestController</code> = <code>@Controller</code> + <code>@ResponseBody</code> on every method. The <code>@ResponseBody</code> annotation tells Spring: "Don't look for a view &mdash; write the return value directly to the HTTP response body."</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">@Controller</div>
+      <div class="comparison-body">
+        <ul style="margin: 0; padding-left: 16px;">
+          <li>Returns view names (JSP, Thymeleaf)</li>
+          <li>Renders HTML on the server</li>
+          <li>Used in MVC web applications</li>
+          <li>Need <code>@ResponseBody</code> for JSON</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">@RestController</div>
+      <div class="comparison-body">
+        <ul style="margin: 0; padding-left: 16px;">
+          <li>Returns data directly (objects, lists)</li>
+          <li>Auto-converts to JSON via Jackson</li>
+          <li>Used for REST APIs</li>
+          <li><code>@ResponseBody</code> is built-in</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Phase 4 Nimbus uses <code>@RestController</code> for everything. The backend is a pure API &mdash; it only serves JSON data. The Angular frontend consumes this data and builds the UI. This is how modern production apps work: the backend doesn't generate any HTML.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: HTTP METHOD MAPPING                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="http-mappings">
+  <div class="section-tag">Section 02</div>
+  <h2>HTTP Method Mapping Annotations</h2>
+  <p class="section-desc">Each CRUD operation maps to an HTTP method, and each HTTP method has its own Spring annotation.</p>
+
+  <h3>The Four Core Mappings</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>HTTP Method</th>
+        <th>Annotation</th>
+        <th>CRUD</th>
+        <th>Nimbus Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>GET</strong></td>
+        <td><code>@GetMapping</code></td>
+        <td>Read</td>
+        <td>Get booking by ID, list all bookings</td>
+      </tr>
+      <tr>
+        <td><strong>POST</strong></td>
+        <td><code>@PostMapping</code></td>
+        <td>Create</td>
+        <td>Create new booking, register user</td>
+      </tr>
+      <tr>
+        <td><strong>PUT</strong></td>
+        <td><code>@PutMapping</code></td>
+        <td>Update</td>
+        <td>Update booking status, update pickup date</td>
+      </tr>
+      <tr>
+        <td><strong>DELETE</strong></td>
+        <td><code>@DeleteMapping</code></td>
+        <td>Delete</td>
+        <td>Cancel a booking</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">All four mappings in one controller</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@RestController
+@RequestMapping("/api/bookings")  // Base path for all endpoints
+public class BookingController {
+
+    @GetMapping           // GET /api/bookings
+    public List&lt;Booking&gt; getAll() { ... }
+
+    @GetMapping("/{id}")  // GET /api/bookings/1001
+    public Booking getById(@PathVariable int id) { ... }
+
+    @PostMapping          // POST /api/bookings
+    public Booking create(@RequestBody Booking booking) { ... }
+
+    @PutMapping("/{id}")  // PUT /api/bookings/1001
+    public Booking update(@PathVariable int id, @RequestBody Booking booking) { ... }
+
+    @DeleteMapping("/{id}")  // DELETE /api/bookings/1001
+    public void delete(@PathVariable int id) { ... }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RequestMapping("/api/bookings")</div>
+        <div class="breakdown-explain">Sets the base URL path for this controller. Every method's path is appended to this. So <code>@GetMapping("/{id}")</code> becomes <code>GET /api/bookings/{id}</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@GetMapping</div>
+        <div class="breakdown-explain">No extra path &mdash; handles <code>GET /api/bookings</code> (the base path). Returns all bookings.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@GetMapping("/{id}")</div>
+        <div class="breakdown-explain">Handles <code>GET /api/bookings/1001</code>. The <code>{id}</code> is a path variable &mdash; a dynamic segment. The value gets extracted and passed to the method via <code>@PathVariable</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">11</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PostMapping</div>
+        <div class="breakdown-explain">Handles <code>POST /api/bookings</code>. POST is for creating new resources. The booking data comes in the request body as JSON, captured by <code>@RequestBody</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">14</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PutMapping("/{id}")</div>
+        <div class="breakdown-explain">Handles <code>PUT /api/bookings/1001</code>. PUT is for updating. You need both the ID (which booking to update) and the new data (in the request body).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: @PathVariable                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="path-variable">
+  <div class="section-tag">Section 03</div>
+  <h2>@PathVariable</h2>
+  <p class="section-desc">Extracting values from the URL path itself &mdash; like getting the booking ID from /api/bookings/1001.</p>
+
+  <h3>Basic Usage</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@PathVariable &mdash; Single variable</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/api/bookings/{id}")
+public Booking getBooking(@PathVariable int id) {
+    // URL: GET /api/bookings/1001
+    // id = 1001 (extracted from URL, converted to int)
+    return bookingService.findById(id);
+}</code></pre>
+  </div>
+
+  <p>The <code>{id}</code> in the URL pattern is a placeholder. Spring extracts the value and passes it to the method parameter. The name must match: <code>{id}</code> matches <code>@PathVariable int id</code>.</p>
+
+  <h3>Multiple Path Variables</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@PathVariable &mdash; Multiple variables</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/api/users/{userId}/bookings/{bookingId}")
+public Booking getUserBooking(@PathVariable int userId,
+                              @PathVariable int bookingId) {
+    // URL: GET /api/users/1/bookings/1001
+    // userId = 1, bookingId = 1001
+    return bookingService.findByUserAndId(userId, bookingId);
+}</code></pre>
+  </div>
+
+  <h3>Custom Parameter Name</h3>
+
+  <p>When the URL placeholder name doesn't match the Java parameter name:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@PathVariable with explicit name</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/api/bookings/{booking-id}")
+public Booking getBooking(@PathVariable("booking-id") int bookingId) {
+    // "booking-id" has a hyphen, can't be a Java variable name
+    // So we map it explicitly
+    return bookingService.findById(bookingId);
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">@PathVariable vs @RequestParam</div>
+    <p><strong>@PathVariable</strong> is for identifying a specific resource: <code>/api/bookings/1001</code> (which booking?).<br>
+    <strong>@RequestParam</strong> is for filtering or optional parameters: <code>/api/bookings?status=Delivered</code> (which bookings?).<br>
+    If the value identifies a unique resource, put it in the path. If it filters or modifies the query, use a query parameter.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: @RequestParam                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="request-param">
+  <div class="section-tag">Section 04</div>
+  <h2>@RequestParam</h2>
+  <p class="section-desc">Query parameters in the URL &mdash; the part after the ? mark. Used for filtering, searching, pagination, and optional parameters.</p>
+
+  <h3>Basic Usage</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@RequestParam &mdash; Required parameter</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/api/bookings")
+public List&lt;Booking&gt; getByUser(@RequestParam int userId) {
+    // URL: GET /api/bookings?userId=1
+    // userId = 1
+    return bookingService.findByUserId(userId);
+}</code></pre>
+  </div>
+
+  <h3>Optional Parameters with Default Values</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@RequestParam &mdash; Optional with defaults</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/api/bookings")
+public List&lt;Booking&gt; searchBookings(
+        @RequestParam int userId,
+        @RequestParam(required = false) String status,
+        @RequestParam(defaultValue = "10") int limit,
+        @RequestParam(defaultValue = "0") int offset) {
+    // URL: GET /api/bookings?userId=1&amp;status=Delivered&amp;limit=5
+    // userId = 1 (required, must be present)
+    // status = "Delivered" (optional, could be null)
+    // limit = 5 (provided, overrides default of 10)
+    // offset = 0 (not provided, uses default)
+    return bookingService.search(userId, status, limit, offset);
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RequestParam int userId</div>
+        <div class="breakdown-explain">Required by default. If the URL doesn't include <code>?userId=X</code>, Spring returns a 400 Bad Request error automatically.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RequestParam(required = false) String status</div>
+        <div class="breakdown-explain">Optional parameter. If not provided, <code>status</code> will be <code>null</code>. Your code must handle the null case.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RequestParam(defaultValue = "10") int limit</div>
+        <div class="breakdown-explain">If <code>limit</code> isn't in the URL, it defaults to 10. Note: <code>defaultValue</code> is always a String &mdash; Spring converts <code>"10"</code> to <code>int 10</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Multiple Values for One Parameter</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@RequestParam &mdash; List of values</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@GetMapping("/api/bookings")
+public List&lt;Booking&gt; getByStatuses(
+        @RequestParam List&lt;String&gt; status) {
+    // URL: GET /api/bookings?status=BOOKED&amp;status=IN_TRANSIT
+    // status = ["BOOKED", "IN_TRANSIT"]
+    return bookingService.findByStatuses(status);
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: @RequestBody                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="request-body">
+  <div class="section-tag">Section 05</div>
+  <h2>@RequestBody</h2>
+  <p class="section-desc">Receiving JSON in the request body and having Jackson automatically convert it to a Java object.</p>
+
+  <h3>How It Works</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box orange">Client sends JSON
+        <span class="flow-sub">POST /api/bookings</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Spring receives body
+        <span class="flow-sub">raw JSON string</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Jackson deserializes
+        <span class="flow-sub">JSON &rarr; Java object</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Your method
+        <span class="flow-sub">gets a Booking object</span>
+      </div>
+    </div>
+    <div class="flow-label">@RequestBody tells Spring to read the HTTP body and convert it from JSON to the specified Java type</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@RequestBody &mdash; Creating a booking</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@PostMapping("/api/bookings")
+public Booking createBooking(@RequestBody Booking booking) {
+    // The client sends this JSON in the request body:
+    // {
+    //   "senderName": "Darshan",
+    //   "receiverName": "Amit",
+    //   "weight": 2.5
+    // }
+    //
+    // Jackson reads the JSON, creates a new Booking object,
+    // and calls setters: setSenderName("Darshan"), etc.
+    // By the time your code runs, 'booking' is a fully populated Java object.
+
+    return bookingService.create(booking);
+}</code></pre>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Content-Type Header Required</div>
+    <p>For <code>@RequestBody</code> to work, the client must send the HTTP header <code>Content-Type: application/json</code>. This tells Spring: "the body contains JSON, use Jackson to parse it." If this header is missing, Spring returns a 415 Unsupported Media Type error.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p><code>@RequestBody</code> is for POST and PUT requests that have a body. GET and DELETE requests typically do NOT have a body. Never use <code>@RequestBody</code> with <code>@GetMapping</code> &mdash; use <code>@PathVariable</code> or <code>@RequestParam</code> instead.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: ResponseEntity                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="response-entity">
+  <div class="section-tag">Section 06</div>
+  <h2>ResponseEntity</h2>
+  <p class="section-desc">Full control over the HTTP response &mdash; status code, headers, and body. The professional way to build API responses.</p>
+
+  <h3>Why Not Just Return Objects?</h3>
+
+  <p>Returning a Java object directly works, but Spring always uses <strong>200 OK</strong> as the status code. That's wrong for many cases:</p>
+
+  <ul>
+    <li>Creating a resource should return <strong>201 Created</strong></li>
+    <li>Deleting should return <strong>204 No Content</strong></li>
+    <li>Not found should return <strong>404 Not Found</strong></li>
+    <li>Bad input should return <strong>400 Bad Request</strong></li>
+  </ul>
+
+  <p><code>ResponseEntity</code> lets you set the exact status code, custom headers, and the response body:</p>
+
+  <h3>ResponseEntity Builder Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ResponseEntity &mdash; Common patterns</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// 200 OK with body
+ResponseEntity.ok(booking);
+// equivalent to: ResponseEntity.status(200).body(booking)
+
+// 201 Created with body and Location header
+ResponseEntity.created(URI.create("/api/bookings/1001")).body(booking);
+
+// 204 No Content (no body)
+ResponseEntity.noContent().build();
+
+// 404 Not Found (no body)
+ResponseEntity.notFound().build();
+
+// 400 Bad Request with error body
+ResponseEntity.badRequest().body(errorResponse);
+
+// Custom status code
+ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);  // 409</code></pre>
+  </div>
+
+  <h3>Full Example with Proper Status Codes</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingController &mdash; With ResponseEntity</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@RestController
+@RequestMapping("/api/bookings")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;Booking&gt; getById(@PathVariable int id) {
+        Booking booking = bookingService.findById(id);
+        if (booking == null) {
+            return ResponseEntity.notFound().build();        // 404
+        }
+        return ResponseEntity.ok(booking);                   // 200
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;Booking&gt; create(@RequestBody Booking booking) {
+        Booking created = bookingService.create(booking);
+        URI location = URI.create("/api/bookings/" + created.getBookingId());
+        return ResponseEntity.created(location).body(created);  // 201
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity&lt;Void&gt; delete(@PathVariable int id) {
+        bookingService.delete(id);
+        return ResponseEntity.noContent().build();           // 204
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ResponseEntity&lt;Booking&gt;</div>
+        <div class="breakdown-explain">The generic type <code>&lt;Booking&gt;</code> tells Java (and anyone reading the code) what type the response body will contain. For delete, we use <code>&lt;Void&gt;</code> because there's no body.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">12</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ResponseEntity.notFound().build()</div>
+        <div class="breakdown-explain">Returns HTTP 404 with no body. <code>.build()</code> is used when there's no response body. <code>.body()</code> is used when there is one.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">20-21</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ResponseEntity.created(location).body(created)</div>
+        <div class="breakdown-explain">Returns HTTP 201 with a <code>Location</code> header pointing to the new resource's URL, plus the created booking as the response body. This is the REST standard for resource creation.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Status Code Reference</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Meaning</th>
+        <th>When to Use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>200</strong></td>
+        <td>OK</td>
+        <td>GET success, PUT success</td>
+      </tr>
+      <tr>
+        <td><strong>201</strong></td>
+        <td>Created</td>
+        <td>POST success (new resource created)</td>
+      </tr>
+      <tr>
+        <td><strong>204</strong></td>
+        <td>No Content</td>
+        <td>DELETE success (nothing to return)</td>
+      </tr>
+      <tr>
+        <td><strong>400</strong></td>
+        <td>Bad Request</td>
+        <td>Invalid input data</td>
+      </tr>
+      <tr>
+        <td><strong>404</strong></td>
+        <td>Not Found</td>
+        <td>Resource doesn't exist</td>
+      </tr>
+      <tr>
+        <td><strong>409</strong></td>
+        <td>Conflict</td>
+        <td>Duplicate (e.g., email already registered)</td>
+      </tr>
+      <tr>
+        <td><strong>500</strong></td>
+        <td>Internal Server Error</td>
+        <td>Unhandled exception (bug)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: NIMBUS REST CONTROLLERS                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-controllers">
+  <div class="section-tag">Section 07</div>
+  <h2>Full Nimbus REST Controllers</h2>
+  <p class="section-desc">The complete UserController and BookingController for Nimbus. Every endpoint, production-ready.</p>
+
+  <h3>UserController</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/controller/UserController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.UserRegistrationRequest;
+import com.nimbus.dto.LoginRequest;
+import com.nimbus.dto.LoginResponse;
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.net.URI;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    // POST /api/users/register
+    @PostMapping("/register")
+    public ResponseEntity&lt;User&gt; register(
+            @RequestBody UserRegistrationRequest request) {
+        User created = userService.register(
+            request.getName(),
+            request.getEmail(),
+            request.getPassword(),
+            request.getRole()
+        );
+        URI location = URI.create("/api/users/" + created.getUserId());
+        return ResponseEntity.created(location).body(created);
+    }
+
+    // POST /api/users/login
+    @PostMapping("/login")
+    public ResponseEntity&lt;LoginResponse&gt; login(
+            @RequestBody LoginRequest request) {
+        LoginResponse response = userService.authenticate(
+            request.getEmail(),
+            request.getPassword()
+        );
+        return ResponseEntity.ok(response);
+    }
+}</code></pre>
+  </div>
+
+  <h3>BookingController</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/controller/BookingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.BookingRequest;
+import com.nimbus.dto.BookingResponse;
+import com.nimbus.dto.StatusUpdateRequest;
+import com.nimbus.dto.PickupUpdateRequest;
+import com.nimbus.model.Booking;
+import com.nimbus.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/bookings")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    // POST /api/bookings &mdash; Create a new booking
+    @PostMapping
+    public ResponseEntity&lt;BookingResponse&gt; create(
+            @RequestBody BookingRequest request) {
+        BookingResponse created = bookingService.createBooking(request);
+        URI location = URI.create("/api/bookings/" + created.getBookingId());
+        return ResponseEntity.created(location).body(created);
+    }
+
+    // GET /api/bookings/{id} &mdash; Get booking by ID
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;BookingResponse&gt; getById(@PathVariable int id) {
+        BookingResponse booking = bookingService.findById(id);
+        if (booking == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(booking);
+    }
+
+    // GET /api/bookings?userId=1&amp;status=DELIVERED &mdash; Get bookings for a user
+    @GetMapping
+    public ResponseEntity&lt;List&lt;BookingResponse&gt;&gt; getByUser(
+            @RequestParam int userId,
+            @RequestParam(required = false) String status) {
+        List&lt;BookingResponse&gt; bookings;
+        if (status != null) {
+            bookings = bookingService.findByUserAndStatus(userId, status);
+        } else {
+            bookings = bookingService.findByUserId(userId);
+        }
+        return ResponseEntity.ok(bookings);
+    }
+
+    // PUT /api/bookings/{id}/status &mdash; Update booking status
+    @PutMapping("/{id}/status")
+    public ResponseEntity&lt;BookingResponse&gt; updateStatus(
+            @PathVariable int id,
+            @RequestBody StatusUpdateRequest request) {
+        BookingResponse updated = bookingService.updateStatus(
+            id, request.getStatus()
+        );
+        return ResponseEntity.ok(updated);
+    }
+
+    // PUT /api/bookings/{id}/pickup &mdash; Update pickup date
+    @PutMapping("/{id}/pickup")
+    public ResponseEntity&lt;BookingResponse&gt; updatePickup(
+            @PathVariable int id,
+            @RequestBody PickupUpdateRequest request) {
+        BookingResponse updated = bookingService.updatePickupDate(
+            id, request.getPickupDate()
+        );
+        return ResponseEntity.ok(updated);
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Notice that the controllers are thin &mdash; they don't contain business logic. Their job is to: (1) receive the HTTP request, (2) extract the data (<code>@PathVariable</code>, <code>@RequestParam</code>, <code>@RequestBody</code>), (3) call the service, (4) wrap the result in a <code>ResponseEntity</code> with the right status code. All the real work happens in the service layer.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: DTO PATTERN                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="dto-pattern">
+  <div class="section-tag">Section 08</div>
+  <h2>DTO Pattern</h2>
+  <p class="section-desc">Why you never expose your entity directly through the API, and how DTOs solve this.</p>
+
+  <h3>The Problem &mdash; Exposing Entities</h3>
+
+  <p>If you return your <code>User</code> entity directly, every field goes to the client &mdash; including passwords, internal IDs, and fields the client doesn't need:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without DTO (Dangerous)</div>
+      <div class="comparison-body">
+        <p>Client receives:</p>
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); margin: 0; background: none;">
+{
+  "userId": 1,
+  "name": "Darshan",
+  "email": "darshan@nimbus.com",
+  "password": "hashed_pw_here",
+  "internalNotes": "VIP customer",
+  "createdAt": "..."
+}
+</pre>
+        <p style="margin-top: 8px; color: var(--red);">Password leaked!</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With DTO (Safe)</div>
+      <div class="comparison-body">
+        <p>Client receives:</p>
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); margin: 0; background: none;">
+{
+  "userId": 1,
+  "name": "Darshan",
+  "email": "darshan@nimbus.com",
+  "role": "CUSTOMER"
+}
+</pre>
+        <p style="margin-top: 8px; color: var(--green);">Only what the client needs</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>What is a DTO?</h3>
+
+  <p>A <strong>Data Transfer Object</strong> is a simple class that defines exactly what data goes in and out of the API. You create separate DTOs for requests and responses:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingRequest.java &mdash; What the client sends</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+public class BookingRequest {
+    private int userId;
+    private String senderName;
+    private String senderAddress;
+    private String receiverName;
+    private String receiverAddress;
+    private double weight;
+    private String pickupDate;
+
+    // Getters and setters only
+    // No business logic, no database annotations
+    // Just the fields the client needs to send
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingResponse.java &mdash; What the client receives</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
+
+public class BookingResponse {
+    private int bookingId;
+    private String senderName;
+    private String receiverName;
+    private double weight;
+    private String status;
+    private String pickupDate;
+    private String estimatedDelivery;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
+
+    // Getters and setters
+    // Notice: no userId, no internal tracking fields
+    // Only what the frontend needs to display
+}</code></pre>
+  </div>
+
+  <h3>Why DTOs Matter</h3>
+
+  <div class="callout think">
+    <div class="callout-title">Entity vs DTO</div>
+    <ul>
+      <li><strong>Entity</strong> = database representation. Has all fields, JPA annotations, relationships. Lives in the <code>model</code> package.</li>
+      <li><strong>Request DTO</strong> = what the client sends. Only the fields needed to create/update. Lives in the <code>dto</code> package.</li>
+      <li><strong>Response DTO</strong> = what the client receives. Only the fields the client should see. Lives in the <code>dto</code> package.</li>
+    </ul>
+    <p>The service layer converts between entities and DTOs. This gives you complete control over your API contract &mdash; you can change your database schema without breaking the API.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: CORS                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="cors">
+  <div class="section-tag">Section 09</div>
+  <h2>CORS</h2>
+  <p class="section-desc">Cross-Origin Resource Sharing &mdash; why your Angular app on localhost:4200 can't talk to your Spring Boot API on localhost:8080 without configuration.</p>
+
+  <h3>The Problem</h3>
+
+  <p>Browsers block requests between different origins by default. An <strong>origin</strong> is the combination of protocol + domain + port:</p>
+
+  <ul>
+    <li><code>http://localhost:4200</code> (Angular dev server) and <code>http://localhost:8080</code> (Spring Boot) are <strong>different origins</strong></li>
+    <li>The browser blocks Angular's API calls to Spring Boot &mdash; even though both are on your laptop</li>
+    <li>This is a security feature, not a bug</li>
+  </ul>
+
+  <h3>Solution 1: @CrossOrigin on Controller</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@CrossOrigin &mdash; Per-controller</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@RestController
+@RequestMapping("/api/bookings")
+@CrossOrigin(origins = "http://localhost:4200")  // Allow Angular
+public class BookingController {
+    // All endpoints in this controller now accept requests from Angular
+}</code></pre>
+  </div>
+
+  <h3>Solution 2: Global CORS Configuration (Recommended)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WebConfig.java &mdash; Global CORS config</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")              // All API endpoints
+                .allowedOrigins("http://localhost:4200")  // Angular dev server
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">11</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">registry.addMapping("/api/**")</div>
+        <div class="breakdown-explain">Apply CORS rules to all URLs starting with <code>/api/</code>. The <code>**</code> means any sub-path.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">12</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.allowedOrigins("http://localhost:4200")</div>
+        <div class="breakdown-explain">Only allow requests from this origin. In production, this would be your real domain like <code>"https://nimbus.com"</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">13</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.allowedMethods("GET", "POST", "PUT", "DELETE")</div>
+        <div class="breakdown-explain">Which HTTP methods to allow. Without this, browsers might block PUT/DELETE requests even if the origin is allowed.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">15</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.allowCredentials(true)</div>
+        <div class="breakdown-explain">Allows cookies and auth headers to be sent. Needed for session-based or token-based authentication.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Use the global config approach. One <code>WebConfig</code> class handles CORS for all controllers. During development, allow <code>localhost:4200</code>. In production, change it to your real domain. Never use <code>allowedOrigins("*")</code> in production &mdash; that opens your API to requests from any website.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: EXCEPTION HANDLING                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="exception-handling">
+  <div class="section-tag">Section 10</div>
+  <h2>Exception Handling</h2>
+  <p class="section-desc">When things go wrong, return structured JSON errors instead of Spring's default ugly HTML error page.</p>
+
+  <h3>The Problem</h3>
+
+  <p>Without custom exception handling, when your code throws an exception, Spring returns something like this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Default Spring error (ugly, exposes internals)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "timestamp": "2026-04-23T10:35:00.000+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "trace": "java.lang.NullPointerException at com.nimbus...",
+  "path": "/api/bookings/9999"
+}</code></pre>
+  </div>
+
+  <p>The <code>trace</code> field exposes your stack trace to the client &mdash; a security risk. And the format isn't consistent across different error types.</p>
+
+  <h3>Step 1: Custom Error Response Class</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ErrorResponse.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
+
+public class ErrorResponse {
+    private int status;
+    private String error;
+    private String message;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
+
+    public ErrorResponse(int status, String error, String message) {
+        this.status = status;
+        this.error = error;
+        this.message = message;
+        this.timestamp = LocalDateTime.now();
+    }
+
+    // Getters and setters
+}</code></pre>
+  </div>
+
+  <h3>Step 2: Custom Exceptions</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Custom Nimbus exceptions</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Thrown when a resource isn't found
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+
+// Thrown when input validation fails
+public class InvalidInputException extends RuntimeException {
+    public InvalidInputException(String message) {
+        super(message);
+    }
+}</code></pre>
+  </div>
+
+  <h3>Step 3: @ControllerAdvice &mdash; Global Exception Handler</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GlobalExceptionHandler.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice  // Applies to ALL controllers
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleNotFound(
+            ResourceNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse(
+            404, "Not Found", ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleBadInput(
+            InvalidInputException ex) {
+        ErrorResponse error = new ErrorResponse(
+            400, "Bad Request", ex.getMessage()
+        );
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(Exception.class)  // Catch-all for unexpected errors
+    public ResponseEntity&lt;ErrorResponse&gt; handleGeneral(Exception ex) {
+        ErrorResponse error = new ErrorResponse(
+            500, "Internal Server Error",
+            "Something went wrong. Please try again."
+            // Don't expose ex.getMessage() for 500 errors!
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(error);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ControllerAdvice</div>
+        <div class="breakdown-explain">Tells Spring: "This class handles exceptions for ALL controllers." Without it, you'd need <code>@ExceptionHandler</code> methods in every controller &mdash; duplication.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">10</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ExceptionHandler(ResourceNotFoundException.class)</div>
+        <div class="breakdown-explain">When any controller method throws a <code>ResourceNotFoundException</code>, this method catches it. Spring routes the exception here instead of returning its default error page.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">29</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@ExceptionHandler(Exception.class)</div>
+        <div class="breakdown-explain">Catch-all handler. If no specific handler matches the exception type, this one catches it. Notice we return a generic message &mdash; never expose internal error details (like stack traces or SQL queries) to the client.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Now the Controller Stays Clean</h3>
+
+  <p>With <code>@ControllerAdvice</code> in place, your controllers can throw exceptions freely &mdash; the handler catches them:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingService &mdash; Throws exceptions, handler catches them</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class BookingService {
+
+    public Booking findById(int id) {
+        Booking booking = bookingDAO.findById(id);
+        if (booking == null) {
+            throw new ResourceNotFoundException(
+                "Booking not found with ID: " + id
+            );
+            // GlobalExceptionHandler catches this
+            // Returns 404 with: {"status":404,"error":"Not Found","message":"Booking not found with ID: 9999"}
+        }
+        return booking;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>One <code>GlobalExceptionHandler</code> class handles errors for the entire API. The controller and service code never catches exceptions or builds error responses &mdash; they just throw. This keeps the code clean and ensures every error response has the same consistent JSON format that the Angular frontend can reliably parse.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: EXERCISES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 11</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build real REST controllers step by step, from basic to production-grade.</p>
+
+  <h3>Exercise 1: Hello World Controller (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1</div>
+    <p>Create a <code>@RestController</code> with a single <code>@GetMapping("/api/hello")</code> that returns the string <code>"Hello from Nimbus API!"</code>. Run the Spring Boot app and test it in your browser at <code>http://localhost:8080/api/hello</code>.</p>
+  </div>
+
+  <h3>Exercise 2: Path Variables (Easy-Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2</div>
+    <p>Create a <code>UserController</code> with <code>@GetMapping("/api/users/{id}")</code>. For now, return a hardcoded User object (no database). Test with different IDs in the URL: <code>/api/users/1</code>, <code>/api/users/42</code>. Verify the JSON response includes the correct ID.</p>
+  </div>
+
+  <h3>Exercise 3: Request Params with Filtering (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3</div>
+    <p>Create a <code>BookingController</code> with <code>@GetMapping("/api/bookings")</code> that accepts:</p>
+    <ul>
+      <li><code>userId</code> (required)</li>
+      <li><code>status</code> (optional, default: all statuses)</li>
+      <li><code>limit</code> (optional, default: 10)</li>
+    </ul>
+    <p>Return a hardcoded list of bookings filtered by the parameters. Test: <code>/api/bookings?userId=1</code>, <code>/api/bookings?userId=1&amp;status=DELIVERED&amp;limit=5</code>.</p>
+  </div>
+
+  <h3>Exercise 4: POST with @RequestBody (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4</div>
+    <p>Add a <code>@PostMapping("/api/bookings")</code> that receives a <code>BookingRequest</code> DTO in the request body. Create the <code>BookingRequest</code> class with fields: <code>senderName</code>, <code>receiverName</code>, <code>weight</code>. Return a <code>ResponseEntity</code> with status 201 and the created booking (with a generated ID). Test with Postman or curl.</p>
+  </div>
+
+  <h3>Exercise 5: Full Controller with DTOs (Medium-Hard)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5</div>
+    <p>Build the complete <code>BookingController</code> with all five endpoints: create, getById, getByUser, updateStatus, delete. Create proper DTOs (<code>BookingRequest</code>, <code>BookingResponse</code>, <code>StatusUpdateRequest</code>). Use appropriate status codes (201 for create, 204 for delete, 404 for not found). Store bookings in an in-memory <code>List</code> for now.</p>
+  </div>
+
+  <h3>Exercise 6: Exception Handling (Hard)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6</div>
+    <p>Add global exception handling to your controller from Exercise 5:</p>
+    <ul>
+      <li>Create <code>ErrorResponse</code>, <code>ResourceNotFoundException</code>, <code>InvalidInputException</code></li>
+      <li>Create <code>GlobalExceptionHandler</code> with <code>@ControllerAdvice</code></li>
+      <li>Throw <code>ResourceNotFoundException</code> when getById doesn't find a booking</li>
+      <li>Throw <code>InvalidInputException</code> when senderName is empty in create</li>
+      <li>Test that error responses return proper JSON with correct status codes</li>
+    </ul>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Self-Check Questions</div>
+    <ol>
+      <li>What's the difference between <code>@Controller</code> and <code>@RestController</code>? (@RestController = @Controller + @ResponseBody on every method)</li>
+      <li>When do you use <code>@PathVariable</code> vs <code>@RequestParam</code>? (Path for resource identity, param for filtering/optional)</li>
+      <li>Why use DTOs instead of entities? (Security, API contract stability, control over what's exposed)</li>
+      <li>What does <code>@ControllerAdvice</code> do? (Global exception handling across all controllers)</li>
+      <li>Why is CORS needed? (Browsers block cross-origin requests by default for security)</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="spring-boot.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Spring Boot</span>
+  </a>
+  <a href="api-error-handling.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">API Error Handling &amp; Validation</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>
