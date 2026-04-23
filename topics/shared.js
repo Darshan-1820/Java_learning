@@ -43,30 +43,72 @@ function toggleBreakdown(button) {
   }
 }
 
-// ====== ACTIVE SIDEBAR LINK ON SCROLL ======
+// ====== BUILD "ON THIS PAGE" SECTION IN SIDEBAR ======
 document.addEventListener('DOMContentLoaded', () => {
-  const sections = document.querySelectorAll('.content-section');
-  const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  const sidebar = document.querySelector('.sidebar');
+  const headings = document.querySelectorAll('.content-section h3, .content-section[id]');
+  const currentPage = window.location.pathname.split('/').pop();
 
-  if (sections.length && sidebarLinks.length) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          sidebarLinks.forEach(link => link.classList.remove('active'));
-          const activeLink = document.querySelector('.sidebar-link[href="#' + entry.target.id + '"]');
-          if (activeLink) activeLink.classList.add('active');
-        }
+  if (sidebar && headings.length > 0) {
+    // Collect sections (h3 with an id, or content-section with id)
+    const tocItems = [];
+    document.querySelectorAll('.content-section').forEach(section => {
+      if (section.id) {
+        const h2 = section.querySelector('h2');
+        if (h2) tocItems.push({ id: section.id, text: h2.textContent.trim() });
+      }
+    });
+
+    if (tocItems.length > 1) {
+      // Build "On This Page" nav at top of sidebar
+      const tocSection = document.createElement('div');
+      tocSection.className = 'sidebar-section';
+      tocSection.innerHTML = '<div class="sidebar-label" style="color: #22C55E;">On This Page</div>';
+
+      tocItems.forEach(item => {
+        const link = document.createElement('a');
+        link.href = '#' + item.id;
+        link.className = 'sidebar-link toc-link';
+        link.textContent = item.text.length > 28 ? item.text.substring(0, 28) + '...' : item.text;
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById(item.id).scrollIntoView({ behavior: 'smooth' });
+        });
+        tocSection.appendChild(link);
       });
-    }, { rootMargin: '-20% 0px -70% 0px' });
 
-    sections.forEach(section => observer.observe(section));
+      // Add separator
+      const sep = document.createElement('div');
+      sep.style.cssText = 'border-bottom: 1px solid rgba(148,163,184,0.1); margin: 16px 16px 8px;';
+
+      // Insert at top of sidebar
+      sidebar.insertBefore(sep, sidebar.firstChild);
+      sidebar.insertBefore(tocSection, sidebar.firstChild);
+    }
   }
 
-  // Highlight current page in sidebar
-  const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('.sidebar-link').forEach(link => {
+  // Highlight current page in sidebar topic list
+  document.querySelectorAll('.sidebar-link:not(.toc-link)').forEach(link => {
     if (link.getAttribute('href') === currentPage) {
       link.classList.add('active');
     }
   });
+
+  // Track scroll position for "On This Page" links
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const sections = document.querySelectorAll('.content-section[id]');
+
+  if (tocLinks.length && sections.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector('.toc-link[href="#' + entry.target.id + '"]');
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  }
 });
