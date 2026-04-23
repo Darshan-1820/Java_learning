@@ -187,18 +187,93 @@
     <!-- ============================================ -->
     <div id="setup" class="phase-header" style="margin-top: 0;">
       <span class="phase-dot" style="background: var(--text-muted);"></span>
-      <h2>Setup</h2>
-      <span class="phase-desc">Before writing any code</span>
+      <h2>Complete Eclipse Setup — Step by Step</h2>
+      <span class="phase-desc">Follow every step in order</span>
     </div>
 
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Step 1: Create Maven Project in Eclipse</h3>
     <div class="checklist">
-      <h4>Pre-Flight Checklist</h4>
-      <div class="checklist-item"><span class="check">1.</span> MySQL installed and running</div>
-      <div class="checklist-item"><span class="check">2.</span> Eclipse open with Maven project created (groupId: com.nimbus, artifactId: NimbusParcelSystem)</div>
-      <div class="checklist-item"><span class="check">3.</span> Create packages: com.nimbus.model, com.nimbus.dao, com.nimbus.service, com.nimbus.exception, com.nimbus.util, com.nimbus.app</div>
-      <div class="checklist-item"><span class="check">4.</span> pom.xml has MySQL connector dependency</div>
-      <div class="checklist-item"><span class="check">5.</span> Database created and tables built (run SQL below)</div>
-      <div class="checklist-item"><span class="check">6.</span> Update DBConnection.java with YOUR MySQL username/password</div>
+      <div class="checklist-item"><span class="check">1.</span> Open Eclipse &rarr; <strong>File &rarr; New &rarr; Maven Project</strong></div>
+      <div class="checklist-item"><span class="check">2.</span> Check <strong>"Create a simple project (skip archetype)"</strong> &rarr; Next</div>
+      <div class="checklist-item"><span class="check">3.</span> Group ID: <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">com.nimbus</code> &nbsp;|&nbsp; Artifact ID: <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">NimbusParcelSystem</code> &nbsp;|&nbsp; Version: <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">1.0</code></div>
+      <div class="checklist-item"><span class="check">4.</span> Click <strong>Finish</strong>. Maven creates the folder structure automatically.</div>
+    </div>
+
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Step 2: Create Packages</h3>
+    <p class="file-desc">Right-click <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">src/main/java</code> &rarr; <strong>New &rarr; Package</strong>. Create each of these:</p>
+    <div class="checklist">
+      <div class="checklist-item"><span class="check">&bull;</span> <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">com.nimbus.model</code> &mdash; Data classes (User, Booking)</div>
+      <div class="checklist-item"><span class="check">&bull;</span> <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">com.nimbus.dao</code> &mdash; Database access (UserDAO, BookingDAO)</div>
+      <div class="checklist-item"><span class="check">&bull;</span> <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">com.nimbus.service</code> &mdash; Business logic (UserService, TrackingService...)</div>
+      <div class="checklist-item"><span class="check">&bull;</span> <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">com.nimbus.exception</code> &mdash; Custom exceptions</div>
+      <div class="checklist-item"><span class="check">&bull;</span> <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">com.nimbus.util</code> &mdash; Helpers (DBConnection)</div>
+      <div class="checklist-item"><span class="check">&bull;</span> <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">com.nimbus.app</code> &mdash; Main application class</div>
+    </div>
+
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Step 3: Add MySQL Dependency</h3>
+    <p class="file-desc">Open <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">pom.xml</code> in your project root. Replace its content with the pom.xml below. Save. Maven auto-downloads the MySQL driver.</p>
+
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Step 4: Set Up MySQL Database</h3>
+    <p class="file-desc">Open MySQL command line or MySQL Workbench. Copy and run the SQL setup script below. This creates the database, tables, and seed data.</p>
+
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Step 5: Create Java Files</h3>
+    <p class="file-desc">For each file below: Right-click the correct package &rarr; <strong>New &rarr; Class</strong> &rarr; name it &rarr; paste the code. Start with models, then util, then exceptions, then DAOs, then services, then the main app.</p>
+
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Step 6: Update DBConnection</h3>
+    <div class="callout warning">
+      <p><strong>CRITICAL:</strong> Open <code>DBConnection.java</code> and change <code>USER</code> and <code>PASSWORD</code> to match YOUR MySQL credentials. Without this, nothing connects.</p>
+    </div>
+
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Step 7: Run</h3>
+    <div class="checklist">
+      <div class="checklist-item"><span class="check">1.</span> Right-click <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">NimbusApp.java</code> &rarr; <strong>Run As &rarr; Java Application</strong></div>
+      <div class="checklist-item"><span class="check">2.</span> Console opens with the Nimbus menu. Login with: <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">260401-AK01</code> / <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82em;">Amit@123</code></div>
+      <div class="checklist-item"><span class="check">3.</span> If you get <code>ClassNotFoundException</code> &rarr; Maven dependency not downloaded. Right-click project &rarr; Maven &rarr; Update Project.</div>
+      <div class="checklist-item"><span class="check">4.</span> If you get <code>Connection refused</code> &rarr; MySQL not running or wrong credentials in DBConnection.java.</div>
+    </div>
+
+    <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 24px 0 12px; color: var(--text-primary);">Project Structure in Eclipse</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">How it looks in Eclipse Package Explorer</span>
+      </div>
+      <pre><code class="language-none">NimbusParcelSystem/
+├── pom.xml
+├── src/main/java/
+│   └── com/nimbus/
+│       ├── app/
+│       │   └── NimbusApp.java          ← Run this (main class)
+│       ├── model/
+│       │   ├── User.java               ← User data (maps to tbl_UserProfile)
+│       │   └── Booking.java            ← Booking data (maps to Booking table)
+│       ├── dao/
+│       │   ├── UserDAO.java            ← All user DB operations
+│       │   └── BookingDAO.java         ← All booking DB operations
+│       ├── service/
+│       │   ├── UserService.java        ← Registration + email check
+│       │   ├── BookingThread.java      ← Threaded booking (Advanced Java)
+│       │   ├── TrackingService.java    ← Base tracking (Polymorphism)
+│       │   ├── CustomerTrackingService ← Customer: sees own bookings only
+│       │   ├── OfficerTrackingService  ← Officer: sees all bookings
+│       │   ├── BaseHistoryService      ← History display (Inheritance)
+│       │   └── CustomerHistoryService  ← Customer history
+│       ├── exception/
+│       │   ├── DuplicateEmailException ← Thrown if email exists
+│       │   └── BookingNotFoundException← Thrown if no bookings
+│       └── util/
+│           └── DBConnection.java       ← MySQL connection (CHANGE PASSWORD HERE)
+└── src/main/resources/
+    └── db.properties                   ← DB config (optional)</code></pre>
+    </div>
+
+    <div class="callout info">
+      <p><strong>What each layer does:</strong><br>
+      <strong>model/</strong> = What the data looks like (Java classes with fields matching DB columns)<br>
+      <strong>dao/</strong> = How to read/write from database (SQL queries via JDBC)<br>
+      <strong>service/</strong> = Business rules (email must be unique, customers can only see own bookings)<br>
+      <strong>exception/</strong> = Custom error types for specific failures<br>
+      <strong>util/</strong> = Shared tools (database connection)<br>
+      <strong>app/</strong> = The console menu that ties everything together</p>
     </div>
 
     <!-- DATABASE SETUP -->
