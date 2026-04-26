@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Officer Payment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h1>Payment</h1>
+      <p>Complete the payment to confirm this booking.</p>
+    </div>
+
+    <div class="content-card" style="max-width: 600px; margin: 0 auto;">
+
+      <!-- Order Summary -->
+      <h2>Order Summary</h2>
+      <div id="orderSummary" style="margin-bottom: var(--space-xl);"></div>
+
+      <!-- Card Visual -->
+      <div class="card-visual" id="cardVisual">
+        <div class="card-network" id="cardNetwork">CARD</div>
+        <div class="card-chip"></div>
+        <div class="card-number" id="cardNumberDisplay">**** **** **** ****</div>
+        <div class="card-bottom">
+          <div class="card-holder" id="cardHolderDisplay">CARDHOLDER NAME</div>
+          <div class="card-expiry" id="cardExpiryDisplay">MM/YY</div>
+        </div>
+      </div>
+
+      <!-- Payment Form -->
+      <div class="alert error" id="payAlert" style="display:none;"></div>
+
+      <div class="form-group">
+        <label class="form-label">Card Number *</label>
+        <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cardholder Name *</label>
+        <input type="text" class="form-input" id="cardHolder" placeholder="Name on card" maxlength="50">
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+        <div class="form-group">
+          <label class="form-label">Expiry *</label>
+          <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">CVV *</label>
+          <input type="password" class="form-input" id="cardCvv" placeholder="***" maxlength="4">
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full btn-lg" id="payBtn" onclick="processPayment()" style="margin-top: var(--space-md);">
+        Pay Now
+      </button>
+
+      <p style="text-align: center; font-size: 0.75rem; color: var(--nimbus-text-light); margin-top: var(--space-md);">
+        This is a simulated payment for demonstration purposes.
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/bin-data.js"></script>
+  <script src="../js/pricing.js"></script>
+  <script>
+    // Auth guard
+    const session = NimbusAuth.requireAuth(['officer']);
+    if (!session) throw new Error('Unauthorized');
+
+    NimbusNav.render('Payment', 'booking.html');
+
+    // Load pending booking
+    const pendingRaw = sessionStorage.getItem('nimbus_pending_booking');
+    if (!pendingRaw) {
+      window.location.href = 'booking.html';
+      throw new Error('No pending booking');
+    }
+    const bookingData = JSON.parse(pendingRaw);
+    const pricing = bookingData.pricing || { total: 0 };
+
+    // Render order summary
+    document.getElementById('orderSummary').innerHTML = `
+      <div class="invoice-row"><span class="label">Sender</span><span class="value">${bookingData.senderName || '-'}</span></div>
+      <div class="invoice-row"><span class="label">Receiver</span><span class="value">${bookingData.recName || '-'}</span></div>
+      <div class="invoice-row"><span class="label">Weight</span><span class="value">${bookingData.parWeightGram || 0}g</span></div>
+      <div class="invoice-row"><span class="label">Delivery</span><span class="value">${bookingData.parDeliveryType}</span></div>
+      <div class="invoice-row invoice-total"><span class="label">Amount Due</span><span class="value">Rs. ${pricing.total}</span></div>
+    `;
+
+    // Card number formatting + BIN detection
+    const cardInput = document.getElementById('cardNumber');
+    cardInput.addEventListener('input', function() {
+      let raw = this.value.replace(/\D/g, '').substring(0, 16);
+      this.value = formatCardNumber(raw);
+
+      // Update card visual
+      document.getElementById('cardNumberDisplay').textContent = this.value || '**** **** **** ****';
+
+      // BIN detection
+      const net = detectCardNetwork(raw);
+      document.getElementById('cardNetwork').textContent = net ? net.logo : 'CARD';
+      if (net) {
+        document.getElementById('cardVisual').style.background = `linear-gradient(135deg, ${net.color} 0%, #1B2A4A 100%)`;
+      }
+    });
+
+    document.getElementById('cardHolder').addEventListener('input', function() {
+      document.getElementById('cardHolderDisplay').textContent = this.value.toUpperCase() || 'CARDHOLDER NAME';
+    });
+
+    document.getElementById('cardExpiry').addEventListener('input', function() {
+      let raw = this.value.replace(/\D/g, '').substring(0, 4);
+      if (raw.length >= 3) raw = raw.substring(0, 2) + '/' + raw.substring(2);
+      this.value = raw;
+      document.getElementById('cardExpiryDisplay').textContent = this.value || 'MM/YY';
+    });
+
+    function processPayment() {
+      const cardNum = document.getElementById('cardNumber').value.replace(/\s/g, '');
+      const holder = document.getElementById('cardHolder').value.trim();
+      const expiry = document.getElementById('cardExpiry').value.trim();
+      const cvv = document.getElementById('cardCvv').value.trim();
+      const alertEl = document.getElementById('payAlert');
+
+      // Validate
+      if (cardNum.length < 13 || cardNum.length > 19) {
+        alertEl.textContent = 'Please enter a valid card number.';
+        alertEl.style.display = 'flex';
+        return;
+      }
+      if (!luhnCheck(cardNum)) {
+        alertEl.textContent = 'Invalid card number (Luhn check failed).';
+        alertEl.style.display = 'flex';
+        return;
+      }
+      if (!holder) {
+        alertEl.textContent = 'Cardholder name is required.';
+        alertEl.style.display = 'flex';
+        return;
+      }
+      if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+        alertEl.textContent = 'Enter expiry in MM/YY format.';
+        alertEl.style.display = 'flex';
+        return;
+      }
+      if (cvv.length < 3) {
+        alertEl.textContent = 'CVV must be at least 3 digits.';
+        alertEl.style.display = 'flex';
+        return;
+      }
+
+      alertEl.style.display = 'none';
+
+      // Disable button
+      const btn = document.getElementById('payBtn');
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+
+      // Simulate payment delay
+      setTimeout(function() {
+        // Create booking
+        const now = new Date();
+        const bookingId = NimbusDB.generateBookingId();
+
+        // Calculate pickup/dropoff times
+        const pickupTime = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        const deliveryDays = parseInt(pricing.deliveryDays) || 5;
+        const dropoffTime = new Date(now.getTime() + (deliveryDays + 1) * 24 * 60 * 60 * 1000);
+
+        const booking = {
+          bookingId: bookingId,
+          userId: bookingData.senderUserId || session.userId,
+          senderName: bookingData.senderName,
+          senderContact: bookingData.senderContact,
+          senderAddress: bookingData.senderAddress,
+          recName: bookingData.recName,
+          recAddress: bookingData.recAddress,
+          recPin: bookingData.recPin,
+          recMobile: bookingData.recMobile,
+          parWeightGram: bookingData.parWeightGram,
+          parContentsDescription: bookingData.parContentsDescription,
+          parDeliveryType: bookingData.parDeliveryType,
+          parPackingPreference: bookingData.parPackingPreference,
+          parInsurance: bookingData.parInsurance || 'None',
+          parPickupTime: pickupTime.toISOString(),
+          parDropoffTime: dropoffTime.toISOString(),
+          parServiceCost: pricing.total,
+          parPaymentTime: now.toISOString(),
+          parStatus: 'Booked',
+          paymentMethod: 'card',
+          bookedBy: session.userId,
+          createdAt: now.toISOString()
+        };
+
+        NimbusDB.addBooking(booking);
+
+        // Clear pending
+        sessionStorage.removeItem('nimbus_pending_booking');
+
+        // Redirect to invoice
+        window.location.href = 'invoice.html?id=' + bookingId;
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>

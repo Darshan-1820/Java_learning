@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — My Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .profile-card {
+      background: var(--nimbus-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      max-width: 680px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .profile-header {
+      background: var(--nimbus-primary);
+      padding: var(--space-xl) var(--space-xl) var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+    .profile-header-info h2 {
+      color: #fff;
+      font-size: 1.25rem;
+      margin-bottom: 2px;
+    }
+    .profile-header-meta {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+    .profile-header-meta span {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .profile-header-meta span strong {
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+    }
+    .profile-body {
+      padding: var(--space-xl);
+    }
+    .profile-section {
+      margin-bottom: var(--space-xl);
+    }
+    .profile-section:last-child { margin-bottom: 0; }
+    .profile-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--nimbus-text-light);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--nimbus-border);
+    }
+    .profile-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .profile-field:last-child { border-bottom: none; }
+    .profile-field-label {
+      font-size: 0.8125rem;
+      color: var(--nimbus-text-light);
+      flex-shrink: 0;
+      min-width: 140px;
+    }
+    .profile-field-value {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--nimbus-text);
+      text-align: right;
+    }
+
+    /* Edit mode */
+    .edit-group {
+      margin-bottom: var(--space-md);
+    }
+    .edit-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--nimbus-text-light);
+      margin-bottom: 4px;
+    }
+    .edit-group input {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: var(--font-primary);
+      font-size: 0.875rem;
+      border: 1.5px solid var(--nimbus-border);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+    .edit-group input:focus {
+      border-color: var(--nimbus-secondary);
+    }
+    .edit-group input[readonly] {
+      background: var(--nimbus-light);
+      color: var(--nimbus-text-light);
+      cursor: default;
+    }
+    .edit-row {
+      display: flex;
+      gap: 12px;
+    }
+    .edit-row .edit-group { flex: 1; }
+    .edit-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: var(--space-lg);
+    }
+    .msg {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      margin-bottom: var(--space-md);
+      display: none;
+    }
+    .msg.success { display: block; background: #E8F8EF; color: var(--nimbus-success); border: 1px solid #B7E4C7; }
+    .msg.error { display: block; background: #FDF0EF; color: var(--nimbus-danger); border: 1px solid #F5C6CB; }
+  </style>
+</head>
+<body>
+
+  <div class="main-content">
+
+    <!-- View Mode -->
+    <div id="viewMode">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" id="avatar"></div>
+          <div class="profile-header-info">
+            <h2 id="profileName"></h2>
+            <div class="profile-header-meta">
+              <span>ID: <strong id="profileId"></strong></span>
+              <span>Role: <strong id="profileRole"></strong></span>
+              <span>Member since: <strong id="profileSince"></strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-body">
+
+          <div class="profile-section">
+            <div class="profile-section-title">Personal Information</div>
+            <div class="profile-field">
+              <span class="profile-field-label">Full Name</span>
+              <span class="profile-field-value" id="fldName"></span>
+            </div>
+            <div class="profile-field">
+              <span class="profile-field-label">Email</span>
+              <span class="profile-field-value" id="fldEmail"></span>
+            </div>
+            <div class="profile-field">
+              <span class="profile-field-label">Mobile</span>
+              <span class="profile-field-value" id="fldMobile"></span>
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <div class="profile-section-title">Address</div>
+            <div class="profile-field">
+              <span class="profile-field-label">Street</span>
+              <span class="profile-field-value" id="fldStreet"></span>
+            </div>
+            <div class="profile-field">
+              <span class="profile-field-label">City, State</span>
+              <span class="profile-field-value" id="fldCityState"></span>
+            </div>
+            <div class="profile-field">
+              <span class="profile-field-label">ZIP Code</span>
+              <span class="profile-field-value" id="fldZip"></span>
+            </div>
+            <div class="profile-field">
+              <span class="profile-field-label">Country</span>
+              <span class="profile-field-value" id="fldCountry"></span>
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <div class="profile-section-title">Preferences</div>
+            <div class="profile-field">
+              <span class="profile-field-label">Notifications</span>
+              <span class="profile-field-value" id="fldPrefs"></span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="showEditMode()" style="margin-top: var(--space-md);">Edit Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Mode -->
+    <div id="editMode" style="display: none;">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" id="editAvatar"></div>
+          <div class="profile-header-info">
+            <h2>Edit Profile</h2>
+            <div class="profile-header-meta">
+              <span>Fields marked readonly cannot be changed</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-body">
+          <div id="editMsg" class="msg"></div>
+
+          <div class="profile-section">
+            <div class="profile-section-title">Personal (read-only)</div>
+            <div class="edit-row">
+              <div class="edit-group">
+                <label>User ID</label>
+                <input id="editUserId" readonly>
+              </div>
+              <div class="edit-group">
+                <label>Full Name</label>
+                <input id="editFullName" readonly>
+              </div>
+            </div>
+            <div class="edit-group">
+              <label>Email</label>
+              <input id="editEmail" readonly>
+            </div>
+            <div class="edit-group">
+              <label>Registered On</label>
+              <input id="editCreated" readonly>
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <div class="profile-section-title">Editable Fields</div>
+            <div class="edit-group">
+              <label>Mobile Number</label>
+              <input id="editMobile" type="tel" maxlength="15" placeholder="e.g. 9876543210">
+            </div>
+            <div class="edit-group">
+              <label>Street Address</label>
+              <input id="editStreet" placeholder="e.g. 45 MG Road, Koramangala">
+            </div>
+            <div class="edit-row">
+              <div class="edit-group">
+                <label>City</label>
+                <input id="editCity" placeholder="City">
+              </div>
+              <div class="edit-group">
+                <label>State</label>
+                <input id="editState" placeholder="State">
+              </div>
+              <div class="edit-group">
+                <label>ZIP Code</label>
+                <input id="editZip" placeholder="ZIP" maxlength="10">
+              </div>
+            </div>
+            <div class="edit-group">
+              <label>Country</label>
+              <input id="editCountry" placeholder="Country">
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <div class="profile-section-title">Change Password</div>
+            <div class="edit-group">
+              <label>Current Password</label>
+              <input id="editCurrentPw" type="password" placeholder="Enter current password">
+            </div>
+            <div class="edit-row">
+              <div class="edit-group">
+                <label>New Password</label>
+                <input id="editNewPw" type="password" placeholder="Leave blank to keep current" maxlength="30">
+              </div>
+              <div class="edit-group">
+                <label>Confirm New Password</label>
+                <input id="editConfirmPw" type="password" placeholder="Re-enter new password" maxlength="30">
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-actions">
+            <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+            <button class="btn btn-outline" onclick="cancelEdit()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    const session = NimbusAuth.requireAuth(['customer']);
+    if (!session) throw new Error('Unauthorized');
+    NimbusNav.render('My Profile', 'profile.html');
+
+    let currentUser = NimbusDB.getUserById(session.userId);
+
+    function loadViewMode() {
+      const u = currentUser;
+      const initials = (u.firstName || u.fullName[0] || '').charAt(0) + (u.lastName || u.fullName.split(' ').pop() || '').charAt(0);
+      document.getElementById('avatar').textContent = initials.toUpperCase();
+      document.getElementById('profileName').textContent = u.fullName;
+      document.getElementById('profileId').textContent = u.userId;
+      document.getElementById('profileRole').textContent = u.role.charAt(0).toUpperCase() + u.role.slice(1);
+      document.getElementById('profileSince').textContent = new Date(u.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+      document.getElementById('fldName').textContent = u.fullName;
+      document.getElementById('fldEmail').textContent = u.email;
+      document.getElementById('fldMobile').textContent = (u.countryCode || '') + '-' + (u.mobile || '');
+      document.getElementById('fldStreet').textContent = u.street || u.address || '-';
+      document.getElementById('fldCityState').textContent = [u.city, u.state].filter(Boolean).join(', ') || '-';
+      document.getElementById('fldZip').textContent = u.zipCode || '-';
+      document.getElementById('fldCountry').textContent = u.country || '-';
+      document.getElementById('fldPrefs').textContent = u.preferences || 'None';
+    }
+
+    function showEditMode() {
+      const u = currentUser;
+      const initials = (u.firstName || u.fullName[0] || '').charAt(0) + (u.lastName || u.fullName.split(' ').pop() || '').charAt(0);
+      document.getElementById('editAvatar').textContent = initials.toUpperCase();
+
+      document.getElementById('editUserId').value = u.userId;
+      document.getElementById('editFullName').value = u.fullName;
+      document.getElementById('editEmail').value = u.email;
+      document.getElementById('editCreated').value = new Date(u.createdAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      document.getElementById('editMobile').value = u.mobile || '';
+      document.getElementById('editStreet').value = u.street || '';
+      document.getElementById('editCity').value = u.city || '';
+      document.getElementById('editState').value = u.state || '';
+      document.getElementById('editZip').value = u.zipCode || '';
+      document.getElementById('editCountry').value = u.country || '';
+      document.getElementById('editCurrentPw').value = '';
+      document.getElementById('editNewPw').value = '';
+      document.getElementById('editConfirmPw').value = '';
+      document.getElementById('editMsg').className = 'msg';
+      document.getElementById('editMsg').textContent = '';
+
+      document.getElementById('viewMode').style.display = 'none';
+      document.getElementById('editMode').style.display = 'block';
+      window.scrollTo({ top: 0 });
+    }
+
+    function cancelEdit() {
+      document.getElementById('editMode').style.display = 'none';
+      document.getElementById('viewMode').style.display = 'block';
+      window.scrollTo({ top: 0 });
+    }
+
+    function saveProfile() {
+      const msgEl = document.getElementById('editMsg');
+      msgEl.className = 'msg';
+      msgEl.textContent = '';
+
+      const mobile = document.getElementById('editMobile').value.trim();
+      const street = document.getElementById('editStreet').value.trim();
+      const city = document.getElementById('editCity').value.trim();
+      const state = document.getElementById('editState').value.trim();
+      const zip = document.getElementById('editZip').value.trim();
+      const country = document.getElementById('editCountry').value.trim();
+      const currentPw = document.getElementById('editCurrentPw').value;
+      const newPw = document.getElementById('editNewPw').value;
+      const confirmPw = document.getElementById('editConfirmPw').value;
+
+      // Validate mobile
+      if (mobile && !/^\d{10}$/.test(mobile)) {
+        msgEl.className = 'msg error';
+        msgEl.textContent = 'Mobile number must be 10 digits.';
+        return;
+      }
+
+      // Validate password change
+      if (newPw || confirmPw || currentPw) {
+        if (!currentPw) {
+          msgEl.className = 'msg error';
+          msgEl.textContent = 'Enter your current password to change it.';
+          return;
+        }
+        if (currentPw !== currentUser.password) {
+          msgEl.className = 'msg error';
+          msgEl.textContent = 'Current password is incorrect.';
+          return;
+        }
+        if (newPw.length < 8) {
+          msgEl.className = 'msg error';
+          msgEl.textContent = 'New password must be at least 8 characters.';
+          return;
+        }
+        if (!/[A-Z]/.test(newPw) || !/[a-z]/.test(newPw) || !/[!@#$%^&*(),.?":{}|<>]/.test(newPw)) {
+          msgEl.className = 'msg error';
+          msgEl.textContent = 'New password must include uppercase, lowercase, and special character.';
+          return;
+        }
+        if (NimbusAuth.hasSequentialChars(newPw)) {
+          msgEl.className = 'msg error';
+          msgEl.textContent = 'New password must not contain 3 sequential characters.';
+          return;
+        }
+        if (newPw !== confirmPw) {
+          msgEl.className = 'msg error';
+          msgEl.textContent = 'New passwords do not match.';
+          return;
+        }
+      }
+
+      // Build updates
+      const updates = {};
+      if (mobile) updates.mobile = mobile;
+      if (street) updates.street = street;
+      if (city) updates.city = city;
+      if (state) updates.state = state;
+      if (zip) updates.zipCode = zip;
+      if (country) updates.country = country;
+      if (newPw) updates.password = newPw;
+
+      // Rebuild full address string
+      updates.address = [street, city, state, zip, country].filter(Boolean).join(', ');
+
+      // Save to storage
+      const users = NimbusDB.getUsers();
+      const idx = users.findIndex(u => u.userId === currentUser.userId);
+      if (idx !== -1) {
+        users[idx] = { ...users[idx], ...updates };
+        localStorage.setItem(NimbusDB.KEYS.USERS, JSON.stringify(users));
+        currentUser = users[idx];
+      }
+
+      // Refresh view
+      loadViewMode();
+      cancelEdit();
+
+      // Brief success flash
+      setTimeout(() => {
+        const viewMsg = document.createElement('div');
+        viewMsg.className = 'msg success';
+        viewMsg.textContent = 'Profile updated successfully.';
+        viewMsg.style.maxWidth = '680px';
+        viewMsg.style.margin = '0 auto var(--space-md)';
+        document.querySelector('.main-content').insertBefore(viewMsg, document.getElementById('viewMode'));
+        setTimeout(() => viewMsg.remove(), 3000);
+      }, 100);
+    }
+
+    // Init
+    loadViewMode();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Issues Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .issue-row { cursor: pointer; }
+    .issue-row:hover td { background: rgba(46,134,222,0.05); }
+    .issue-expand { display: none; }
+    .issue-expand.open { display: table-row; }
+    .issue-expand td {
+      background: var(--nimbus-light);
+      padding: var(--space-lg);
+      border-bottom: 2px solid var(--nimbus-border);
+    }
+    .issue-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+    }
+    .issue-detail-grid .detail-item {
+      margin-bottom: var(--space-sm);
+    }
+    .issue-detail-grid .detail-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--nimbus-text-light);
+      margin-bottom: 2px;
+    }
+    .issue-detail-grid .detail-value {
+      font-size: 0.875rem;
+      color: var(--nimbus-text);
+    }
+    .issue-actions {
+      display: flex;
+      gap: var(--space-md);
+      align-items: flex-end;
+      margin-top: var(--space-md);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--nimbus-border);
+    }
+    .issue-actions .form-group { margin-bottom: 0; flex: 1; }
+    .severity-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .severity-badge.low { background: #E8F8EF; color: #27AE60; }
+    .severity-badge.medium { background: #FFF8E1; color: #F39C12; }
+    .severity-badge.high { background: #FDE8E5; color: #E74C3C; }
+    .severity-badge.critical { background: #E74C3C; color: #fff; }
+    .issue-status-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+    }
+    .issue-status-badge.open { background: #EBF5FB; color: #2E86DE; }
+    .issue-status-badge.in-progress { background: #FFF8E1; color: #F39C12; }
+    .issue-status-badge.resolved { background: #E8F8EF; color: #27AE60; }
+  </style>
+</head>
+<body>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h1>Issues Management</h1>
+      <p>View, assign, and manage all customer issues.</p>
+    </div>
+
+    <div id="alertBox" class="alert" style="display: none;"></div>
+
+    <div class="content-card">
+      <h2>All Issues</h2>
+
+      <div id="noIssues" style="display: none; text-align: center; padding: 40px 0; color: var(--nimbus-text-light); font-style: italic;">
+        No issues reported yet.
+      </div>
+
+      <table class="data-table" id="issuesTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>Issue ID</th>
+            <th>Customer</th>
+            <th>Subject</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+          </tr>
+        </thead>
+        <tbody id="issuesBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    const session = NimbusAuth.requireAuth(['officer']);
+    if (!session) throw new Error('Unauthorized');
+
+    NimbusNav.render('Issues', 'issues.html');
+
+    // Get support users for assignment dropdown
+    const supportUsers = NimbusDB.getUsers().filter(u => u.role === 'support');
+
+    function showAlert(message, type) {
+      const el = document.getElementById('alertBox');
+      el.className = 'alert ' + type;
+      el.textContent = message;
+      el.style.display = 'flex';
+      setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+
+    function getSeverityClass(severity) {
+      return (severity || 'medium').toLowerCase();
+    }
+
+    function getIssueStatusClass(status) {
+      const map = { 'Open': 'open', 'In Progress': 'in-progress', 'Resolved': 'resolved' };
+      return map[status] || 'open';
+    }
+
+    function getAssignedName(userId) {
+      if (!userId) return 'Unassigned';
+      const user = NimbusDB.getUserById(userId);
+      return user ? user.fullName : 'Unknown';
+    }
+
+    function buildSupportDropdown(selectedId, issueId) {
+      let html = '<select class="form-input" id="assign-' + issueId + '">';
+      html += '<option value="">-- Unassigned --</option>';
+      supportUsers.forEach(u => {
+        const sel = u.userId === selectedId ? ' selected' : '';
+        html += '<option value="' + u.userId + '"' + sel + '>' + u.fullName + ' (' + u.userId + ')</option>';
+      });
+      html += '</select>';
+      return html;
+    }
+
+    function buildSeverityDropdown(currentSeverity, issueId) {
+      const severities = ['Low', 'Medium', 'High', 'Critical'];
+      let html = '<select class="form-input" id="severity-' + issueId + '">';
+      severities.forEach(s => {
+        const sel = s === currentSeverity ? ' selected' : '';
+        html += '<option value="' + s + '"' + sel + '>' + s + '</option>';
+      });
+      html += '</select>';
+      return html;
+    }
+
+    function toggleExpand(issueId) {
+      const row = document.getElementById('expand-' + issueId);
+      row.classList.toggle('open');
+    }
+
+    function updateIssue(issueId) {
+      const assignedTo = document.getElementById('assign-' + issueId).value;
+      const severity = document.getElementById('severity-' + issueId).value;
+
+      const result = NimbusDB.updateIssue(issueId, {
+        assignedTo: assignedTo || null,
+        severity: severity
+      });
+
+      if (result) {
+        showAlert('Issue ' + issueId + ' updated successfully.', 'success');
+        renderIssues();
+      } else {
+        showAlert('Failed to update issue.', 'error');
+      }
+    }
+
+    function renderIssues() {
+      const issues = NimbusDB.getIssues();
+
+      if (issues.length === 0) {
+        document.getElementById('noIssues').style.display = 'block';
+        document.getElementById('issuesTable').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('noIssues').style.display = 'none';
+      document.getElementById('issuesTable').style.display = 'table';
+
+      const tbody = document.getElementById('issuesBody');
+      tbody.innerHTML = '';
+
+      issues.forEach(issue => {
+        const customer = NimbusDB.getUserById(issue.userId);
+        const customerName = customer ? customer.fullName : 'Unknown';
+
+        // Summary row
+        const tr = document.createElement('tr');
+        tr.className = 'issue-row';
+        tr.onclick = function() { toggleExpand(issue.issueId); };
+        tr.innerHTML =
+          '<td style="font-weight: 600; font-family: monospace; font-size: 0.8125rem;">' + issue.issueId + '</td>' +
+          '<td>' + customerName + '</td>' +
+          '<td>' + issue.subject + '</td>' +
+          '<td><span class="severity-badge ' + getSeverityClass(issue.severity) + '">' + (issue.severity || 'Medium') + '</span></td>' +
+          '<td><span class="issue-status-badge ' + getIssueStatusClass(issue.status) + '">' + (issue.status || 'Open') + '</span></td>' +
+          '<td>' + getAssignedName(issue.assignedTo) + '</td>';
+        tbody.appendChild(tr);
+
+        // Expand row
+        const expandTr = document.createElement('tr');
+        expandTr.className = 'issue-expand';
+        expandTr.id = 'expand-' + issue.issueId;
+        expandTr.innerHTML =
+          '<td colspan="6">' +
+            '<div class="issue-detail-grid">' +
+              '<div class="detail-item"><div class="detail-label">Description</div><div class="detail-value">' + (issue.description || 'No description provided.') + '</div></div>' +
+              '<div class="detail-item"><div class="detail-label">Booking ID</div><div class="detail-value">' + (issue.bookingId || 'N/A') + '</div></div>' +
+              '<div class="detail-item"><div class="detail-label">Created At</div><div class="detail-value">' + (issue.createdAt ? new Date(issue.createdAt).toLocaleString('en-IN') : 'N/A') + '</div></div>' +
+              '<div class="detail-item"><div class="detail-label">Customer Email</div><div class="detail-value">' + (customer ? customer.email : 'N/A') + '</div></div>' +
+            '</div>' +
+            '<div class="issue-actions">' +
+              '<div class="form-group"><label class="form-label">Assign To Support</label>' + buildSupportDropdown(issue.assignedTo, issue.issueId) + '</div>' +
+              '<div class="form-group"><label class="form-label">Severity</label>' + buildSeverityDropdown(issue.severity || 'Medium', issue.issueId) + '</div>' +
+              '<button class="btn btn-primary" onclick="event.stopPropagation(); updateIssue(\'' + issue.issueId + '\')">Update Issue</button>' +
+            '</div>' +
+          '</td>';
+        tbody.appendChild(expandTr);
+      });
+    }
+
+    renderIssues();
+  </script>
+
+</body>
+</html>

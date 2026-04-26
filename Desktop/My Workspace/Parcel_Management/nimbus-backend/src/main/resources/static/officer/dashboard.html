@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Officer Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <div class="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 id="welcomeHeading">Welcome back</h1>
+      <p>Officer overview — all bookings across the system.</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-value" id="statTotal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="stat-label">In Transit</div>
+        <div class="stat-value" id="statTransit">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="stat-label">Delivered</div>
+        <div class="stat-value" id="statDelivered">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="stat-label">Pending Pickup</div>
+        <div class="stat-value" id="statPending">0</div>
+      </div>
+    </div>
+
+    <!-- Module Cards -->
+    <div class="modules-grid">
+
+      <a href="booking.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>Book Parcel</h3>
+        <p>Book a parcel for walk-in customers with editable sender details and live pricing.</p>
+      </a>
+
+      <a href="tracking.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>Track Parcels</h3>
+        <p>View all shipped packages. Search by Customer ID or Booking ID for quick lookup.</p>
+      </a>
+
+      <a href="delivery.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>Delivery Status</h3>
+        <p>Update delivery statuses for parcels in transit and confirm successful deliveries.</p>
+      </a>
+
+      <a href="pickup.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>Pickup Scheduling</h3>
+        <p>Schedule and manage parcel pickups. Assign time slots and update pickup status.</p>
+      </a>
+
+      <a href="history.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Booking History</h3>
+        <p>Search and filter all bookings by Customer ID and date range with full details.</p>
+      </a>
+
+      <a href="issues.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Issues</h3>
+        <p>Review and manage customer-reported issues. Update resolution status and notes.</p>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    // Auth guard
+    const session = NimbusAuth.requireAuth(['officer']);
+    if (!session) throw new Error('Unauthorized');
+
+    // Render navbar
+    NimbusNav.render('Dashboard', 'dashboard.html');
+
+    // Welcome message
+    document.getElementById('welcomeHeading').textContent = 'Welcome, ' + session.fullName;
+
+    // Load stats — officers see ALL bookings
+    const bookings = NimbusDB.getBookings();
+
+    const total = bookings.length;
+    const inTransit = bookings.filter(b => b.parStatus === 'In Transit').length;
+    const delivered = bookings.filter(b => b.parStatus === 'Delivered').length;
+    const pending = bookings.filter(b => b.parStatus === 'Booked').length;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statTransit').textContent = inTransit;
+    document.getElementById('statDelivered').textContent = delivered;
+    document.getElementById('statPending').textContent = pending;
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Track Parcel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h1>Track Parcel</h1>
+      <p>Enter your Booking ID to check the current status of your shipment.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="content-card">
+      <div class="search-bar">
+        <input
+          type="text"
+          id="trackingInput"
+          class="form-input"
+          placeholder="Enter Booking ID (e.g. NMB-260401-0001)"
+          maxlength="16"
+        >
+        <button class="btn btn-primary" id="searchBtn">Search</button>
+      </div>
+
+      <!-- Result Area -->
+      <div id="resultArea" style="display: none;"></div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    const session = NimbusAuth.requireAuth(['customer']);
+    if (!session) throw new Error('Unauthorized');
+
+    NimbusNav.render('Track Parcel', 'tracking.html');
+
+    const input = document.getElementById('trackingInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const resultArea = document.getElementById('resultArea');
+
+    function getStatusClass(status) {
+      const map = {
+        'Booked': 'booked',
+        'In Transit': 'in-transit',
+        'Delivered': 'delivered',
+        'Returned': 'returned',
+        'Picked Up': 'picked-up'
+      };
+      return map[status] || 'booked';
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '—';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function doSearch() {
+      const bookingId = input.value.trim().toUpperCase();
+      resultArea.style.display = 'block';
+
+      if (!bookingId) {
+        resultArea.innerHTML = '<div class="alert warning">Please enter a Booking ID.</div>';
+        return;
+      }
+
+      const booking = NimbusDB.getBookingById(bookingId);
+
+      if (!booking || booking.userId !== session.userId) {
+        resultArea.innerHTML = '<div class="alert warning">No booking found with this ID.</div>';
+        return;
+      }
+
+      // Get sender info
+      const sender = NimbusDB.getUserById(booking.userId);
+      const senderName = sender ? sender.fullName : '—';
+      const senderAddress = sender
+        ? [sender.street, sender.city, sender.state, sender.zipCode].filter(Boolean).join(', ')
+        : '—';
+
+      resultArea.innerHTML = `
+        <h2>Booking Details</h2>
+        <table class="data-table">
+          <tbody>
+            <tr>
+              <td style="font-weight: 600; color: var(--nimbus-text-light); width: 200px;">Booking ID</td>
+              <td style="font-family: monospace; font-weight: 600;">${booking.bookingId}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--nimbus-text-light);">Sender Name</td>
+              <td>${senderName}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--nimbus-text-light);">Sender Address</td>
+              <td>${senderAddress}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--nimbus-text-light);">Receiver Name</td>
+              <td>${booking.recName}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--nimbus-text-light);">Receiver Address</td>
+              <td>${booking.recAddress}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--nimbus-text-light);">Date of Booking</td>
+              <td>${formatDate(booking.createdAt)}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--nimbus-text-light);">Status</td>
+              <td><span class="status-badge ${getStatusClass(booking.parStatus)}">${booking.parStatus}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+    }
+
+    searchBtn.addEventListener('click', doSearch);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doSearch();
+    });
+  </script>
+
+</body>
+</html>

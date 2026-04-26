@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Book a Parcel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <div class="main-content">
+    <div class="content-card">
+
+      <h2>Book a Parcel</h2>
+
+      <!-- Step Progress Bar -->
+      <div class="step-bar" id="stepBar">
+        <div class="step-item active" data-step="1">
+          <div class="step-dot">1</div>
+          <div class="step-label">Sender</div>
+        </div>
+        <div class="step-line" id="line-1"></div>
+        <div class="step-item" data-step="2">
+          <div class="step-dot">2</div>
+          <div class="step-label">Receiver</div>
+        </div>
+        <div class="step-line" id="line-2"></div>
+        <div class="step-item" data-step="3">
+          <div class="step-dot">3</div>
+          <div class="step-label">Parcel</div>
+        </div>
+        <div class="step-line" id="line-3"></div>
+        <div class="step-item" data-step="4">
+          <div class="step-dot">4</div>
+          <div class="step-label">Shipping</div>
+        </div>
+        <div class="step-line" id="line-4"></div>
+        <div class="step-item" data-step="5">
+          <div class="step-dot">5</div>
+          <div class="step-label">Review & Pay</div>
+        </div>
+      </div>
+
+      <!-- Alert -->
+      <div id="bookingAlert" class="alert" style="display:none;"></div>
+
+      <!-- ===== STEP 1: Sender Info ===== -->
+      <div class="step-section" id="step-1">
+        <h3 style="margin-bottom: var(--space-lg); font-size: 1.125rem;">Sender Information</h3>
+        <p style="font-size: 0.8125rem; color: var(--nimbus-text-light); margin-bottom: var(--space-lg);">Pre-filled from your account. These fields are read-only.</p>
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" id="senderName" readonly style="background: var(--nimbus-light); cursor: default;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input type="text" class="form-input" id="senderAddress" readonly style="background: var(--nimbus-light); cursor: default;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+          <div class="form-group">
+            <label class="form-label">Mobile</label>
+            <input type="text" class="form-input" id="senderMobile" readonly style="background: var(--nimbus-light); cursor: default;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-input" id="senderEmail" readonly style="background: var(--nimbus-light); cursor: default;">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: var(--space-md); margin-top: var(--space-lg);">
+          <button class="btn btn-primary" onclick="goToStep(2)">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: Receiver Info ===== -->
+      <div class="step-section" id="step-2" style="display:none;">
+        <h3 style="margin-bottom: var(--space-lg); font-size: 1.125rem;">Receiver Information</h3>
+
+        <div class="form-group">
+          <label class="form-label">Receiver Name *</label>
+          <input type="text" class="form-input" id="recName" placeholder="Full name of the receiver" maxlength="50">
+          <span class="form-error" id="recNameError"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Receiver Address *</label>
+          <input type="text" class="form-input" id="recAddress" placeholder="Complete delivery address" maxlength="150">
+          <span class="form-error" id="recAddressError"></span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+          <div class="form-group">
+            <label class="form-label">Pin Code *</label>
+            <input type="text" class="form-input" id="recPin" placeholder="6-digit pin code" maxlength="6" data-numeric="true">
+            <span class="form-error" id="recPinError"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number *</label>
+            <input type="text" class="form-input" id="recMobile" placeholder="10-digit mobile number" maxlength="10" data-numeric="true">
+            <span class="form-error" id="recMobileError"></span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-lg);">
+          <button class="btn btn-outline" onclick="goToStep(1)">&larr; Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(3)">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: Parcel Details ===== -->
+      <div class="step-section" id="step-3" style="display:none;">
+        <h3 style="margin-bottom: var(--space-lg); font-size: 1.125rem;">Parcel Details</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+          <div class="form-group">
+            <label class="form-label">Weight (grams) *</label>
+            <input type="number" class="form-input" id="parWeight" placeholder="e.g. 500" min="1" max="50000">
+            <span class="form-error" id="parWeightError"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Size</label>
+            <select class="form-input" id="parSize">
+              <option value="Small">Small (up to 500g)</option>
+              <option value="Medium" selected>Medium (500g - 5kg)</option>
+              <option value="Large">Large (5kg+)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contents Description *</label>
+          <textarea class="form-input" id="parContents" placeholder="Describe the parcel contents (e.g. Books, Electronics, Clothing)" rows="3" maxlength="200" style="resize: vertical;"></textarea>
+          <span class="form-error" id="parContentsError"></span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-lg);">
+          <button class="btn btn-outline" onclick="goToStep(2)">&larr; Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(4)">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 4: Shipping Options ===== -->
+      <div class="step-section" id="step-4" style="display:none;">
+        <h3 style="margin-bottom: var(--space-lg); font-size: 1.125rem;">Shipping Options</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+          <div class="form-group">
+            <label class="form-label">Delivery Speed</label>
+            <select class="form-input" id="deliveryType">
+              <option value="Standard">Standard (5-7 days)</option>
+              <option value="Express">Express (2-3 days)</option>
+              <option value="Overnight">Overnight (next day)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Packaging</label>
+            <select class="form-input" id="packagingType">
+              <option value="Standard Packaging">Standard Packaging</option>
+              <option value="Custom Packaging">Custom Packaging (+Rs.50)</option>
+              <option value="Eco-friendly Packaging">Eco-friendly Packaging (+Rs.30)</option>
+              <option value="Fragile Item Handling">Fragile Item Handling (+Rs.80)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Insurance</label>
+          <select class="form-input" id="insuranceType">
+            <option value="None">No Insurance</option>
+            <option value="Basic">Basic (2% of declared value)</option>
+            <option value="Premium">Premium (5% of declared value)</option>
+          </select>
+        </div>
+
+        <div id="declaredValueGroup" class="form-group" style="display:none;">
+          <label class="form-label">Declared Value (Rs.) *</label>
+          <input type="number" class="form-input" id="declaredValue" placeholder="Enter parcel declared value" min="0">
+          <span class="form-error" id="declaredValueError"></span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+          <div class="form-group">
+            <label class="form-label">Preferred Pickup Time</label>
+            <input type="datetime-local" class="form-input" id="pickupTime">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Dropoff Time</label>
+            <input type="datetime-local" class="form-input" id="dropoffTime">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-lg);">
+          <button class="btn btn-outline" onclick="goToStep(3)">&larr; Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(5)">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 5: Review & Pay ===== -->
+      <div class="step-section" id="step-5" style="display:none;">
+        <h3 style="margin-bottom: var(--space-lg); font-size: 1.125rem;">Review & Pay</h3>
+
+        <div id="reviewSummary" style="margin-bottom: var(--space-xl);"></div>
+
+        <!-- Cost Breakdown -->
+        <div style="background: var(--nimbus-light); border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-xl);">
+          <h4 style="margin-bottom: var(--space-md); font-size: 1rem;">Cost Breakdown</h4>
+          <div id="costBreakdown"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-lg);">
+          <button class="btn btn-outline" onclick="goToStep(4)">&larr; Previous</button>
+          <button class="btn btn-primary btn-lg" onclick="proceedToPayment()">Proceed to Payment &rarr;</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/pricing.js"></script>
+  <script src="../js/utils.js"></script>
+  <script>
+    // --- Auth guard ---
+    const session = NimbusAuth.requireAuth(['customer']);
+    let currentStep = 1;
+    let currentUser = null;
+
+    if (session) {
+      NimbusNav.render('Book a Parcel', 'booking.html');
+      initBooking();
+    }
+
+    function initBooking() {
+      currentUser = NimbusDB.getUserById(session.userId);
+      if (!currentUser) return;
+
+      // Pre-fill sender info
+      document.getElementById('senderName').value = currentUser.fullName || '';
+      const address = [currentUser.street, currentUser.city, currentUser.state, currentUser.zipCode].filter(Boolean).join(', ') || currentUser.address || '';
+      document.getElementById('senderAddress').value = address;
+      document.getElementById('senderMobile').value = (currentUser.countryCode || '+91') + '-' + (currentUser.mobile || '');
+      document.getElementById('senderEmail').value = currentUser.email || '';
+
+      // Set default pickup/dropoff times
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(10, 0, 0, 0);
+      const weekLater = new Date(now);
+      weekLater.setDate(weekLater.getDate() + 7);
+      weekLater.setHours(18, 0, 0, 0);
+
+      document.getElementById('pickupTime').value = formatDatetimeLocal(tomorrow);
+      document.getElementById('dropoffTime').value = formatDatetimeLocal(weekLater);
+
+      // Insurance toggle
+      document.getElementById('insuranceType').addEventListener('change', function() {
+        document.getElementById('declaredValueGroup').style.display = this.value !== 'None' ? 'block' : 'none';
+      });
+    }
+
+    function formatDatetimeLocal(date) {
+      const pad = n => String(n).padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+
+    // --- Validation ---
+    function clearErrors() {
+      document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
+      document.querySelectorAll('.form-input.error').forEach(el => el.classList.remove('error'));
+      const alert = document.getElementById('bookingAlert');
+      alert.style.display = 'none';
+    }
+
+    function showError(fieldId, message) {
+      const input = document.getElementById(fieldId);
+      const errorEl = document.getElementById(fieldId + 'Error');
+      if (input) input.classList.add('error');
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+      }
+    }
+
+    function validateStep(step) {
+      clearErrors();
+      let valid = true;
+
+      if (step === 2) {
+        const recName = document.getElementById('recName').value.trim();
+        const recAddress = document.getElementById('recAddress').value.trim();
+        const recPin = document.getElementById('recPin').value.trim();
+        const recMobile = document.getElementById('recMobile').value.trim();
+
+        if (!recName || recName.length < 2) {
+          showError('recName', 'Receiver name is required (minimum 2 characters).');
+          valid = false;
+        }
+        if (!recAddress || recAddress.length < 5) {
+          showError('recAddress', 'Receiver address is required (minimum 5 characters).');
+          valid = false;
+        }
+        if (!recPin || !/^\d{6}$/.test(recPin)) {
+          showError('recPin', 'Please enter a valid 6-digit pin code.');
+          valid = false;
+        }
+        if (!recMobile || !/^\d{10}$/.test(recMobile)) {
+          showError('recMobile', 'Please enter a valid 10-digit mobile number.');
+          valid = false;
+        }
+      }
+
+      if (step === 3) {
+        const weight = document.getElementById('parWeight').value;
+        const contents = document.getElementById('parContents').value.trim();
+
+        if (!weight || parseInt(weight) < 1) {
+          showError('parWeight', 'Parcel weight is required (minimum 1 gram).');
+          valid = false;
+        } else if (parseInt(weight) > 50000) {
+          showError('parWeight', 'Maximum weight allowed is 50,000 grams (50 kg).');
+          valid = false;
+        }
+        if (!contents || contents.length < 3) {
+          showError('parContents', 'Please describe the parcel contents (minimum 3 characters).');
+          valid = false;
+        }
+      }
+
+      if (step === 4) {
+        const insurance = document.getElementById('insuranceType').value;
+        if (insurance !== 'None') {
+          const dv = document.getElementById('declaredValue').value;
+          if (!dv || parseFloat(dv) <= 0) {
+            showError('declaredValue', 'Please enter the declared value for insurance calculation.');
+            valid = false;
+          }
+        }
+      }
+
+      return valid;
+    }
+
+    // --- Step navigation ---
+    function goToStep(target) {
+      // Validate current step before moving forward
+      if (target > currentStep) {
+        for (let s = currentStep; s < target; s++) {
+          if (s >= 2 && !validateStep(s)) return;
+        }
+      }
+
+      // If going to review, build summary
+      if (target === 5) {
+        buildReview();
+      }
+
+      currentStep = target;
+      updateStepBar();
+
+      // Show/hide sections
+      document.querySelectorAll('.step-section').forEach(el => el.style.display = 'none');
+      document.getElementById('step-' + target).style.display = 'block';
+
+      // Scroll to top of card
+      document.querySelector('.content-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function updateStepBar() {
+      const items = document.querySelectorAll('.step-item');
+      const lines = document.querySelectorAll('.step-line');
+
+      items.forEach((item, i) => {
+        const step = i + 1;
+        item.classList.remove('active', 'completed');
+        if (step === currentStep) item.classList.add('active');
+        else if (step < currentStep) item.classList.add('completed');
+      });
+
+      lines.forEach((line, i) => {
+        line.classList.remove('completed');
+        if (i + 1 < currentStep) line.classList.add('completed');
+      });
+    }
+
+    // --- Review summary ---
+    function buildReview() {
+      const data = getFormData();
+      const pricing = NimbusPricing.calculate(
+        data.parWeightGram,
+        data.parDeliveryType,
+        data.parPackingPreference,
+        data.insuranceType,
+        data.declaredValue
+      );
+
+      const rows = [
+        ['Sender', currentUser.fullName],
+        ['Receiver Name', data.recName],
+        ['Receiver Address', data.recAddress],
+        ['Receiver Pin Code', data.recPin],
+        ['Receiver Mobile', data.recMobile],
+        ['Parcel Weight', data.parWeightGram + 'g'],
+        ['Parcel Size', data.parSize],
+        ['Contents', data.parContentsDescription],
+        ['Delivery Speed', data.parDeliveryType],
+        ['Packaging', data.parPackingPreference],
+        ['Insurance', data.insuranceType],
+        ['Pickup Time', data.parPickupTime ? new Date(data.parPickupTime).toLocaleString() : 'Not specified'],
+        ['Dropoff Time', data.parDropoffTime ? new Date(data.parDropoffTime).toLocaleString() : 'Not specified'],
+      ];
+
+      let html = '';
+      rows.forEach(([label, value]) => {
+        html += `<div class="invoice-row"><span class="label">${label}</span><span class="value">${value}</span></div>`;
+      });
+      document.getElementById('reviewSummary').innerHTML = html;
+
+      // Cost breakdown
+      let costHtml = '';
+      costHtml += `<div class="invoice-row"><span class="label">Base Cost (${data.parWeightGram}g x Rs.${NimbusPricing.BASE_RATE_PER_GRAM}/g x ${data.parDeliveryType})</span><span class="value">Rs. ${pricing.baseCost}</span></div>`;
+      costHtml += `<div class="invoice-row"><span class="label">Packaging Fee</span><span class="value">Rs. ${pricing.packagingFee}</span></div>`;
+      costHtml += `<div class="invoice-row"><span class="label">Insurance</span><span class="value">Rs. ${pricing.insuranceCost}</span></div>`;
+      costHtml += `<div class="invoice-row invoice-total"><span class="label">Total Service Cost</span><span class="value" style="color: var(--nimbus-secondary); font-size: 1.25rem;">Rs. ${pricing.total}</span></div>`;
+      document.getElementById('costBreakdown').innerHTML = costHtml;
+    }
+
+    function getFormData() {
+      return {
+        recName: document.getElementById('recName').value.trim(),
+        recAddress: document.getElementById('recAddress').value.trim(),
+        recPin: document.getElementById('recPin').value.trim(),
+        recMobile: '+91-' + document.getElementById('recMobile').value.trim(),
+        parWeightGram: parseInt(document.getElementById('parWeight').value) || 0,
+        parSize: document.getElementById('parSize').value,
+        parContentsDescription: document.getElementById('parContents').value.trim(),
+        parDeliveryType: document.getElementById('deliveryType').value,
+        parPackingPreference: document.getElementById('packagingType').value,
+        insuranceType: document.getElementById('insuranceType').value,
+        declaredValue: parseFloat(document.getElementById('declaredValue').value) || 0,
+        parPickupTime: document.getElementById('pickupTime').value,
+        parDropoffTime: document.getElementById('dropoffTime').value,
+      };
+    }
+
+    // --- Proceed to payment ---
+    function proceedToPayment() {
+      const data = getFormData();
+      const pricing = NimbusPricing.calculate(
+        data.parWeightGram,
+        data.parDeliveryType,
+        data.parPackingPreference,
+        data.insuranceType,
+        data.declaredValue
+      );
+
+      const bookingData = {
+        ...data,
+        parServiceCost: pricing.total,
+        pricingBreakdown: pricing,
+        userId: session.userId,
+        senderName: currentUser.fullName,
+      };
+
+      sessionStorage.setItem('nimbus_pending_booking', JSON.stringify(bookingData));
+      window.location.href = 'payment.html';
+    }
+  </script>
+
+</body>
+</html>

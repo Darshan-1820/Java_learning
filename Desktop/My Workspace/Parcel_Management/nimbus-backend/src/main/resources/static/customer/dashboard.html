@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <div class="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 id="welcomeHeading">Welcome back</h1>
+      <p>Here's an overview of your parcel activity.</p>
+    </div>
+
+    <!-- Quick Stats — flat inline -->
+    <div class="stats-row">
+      <div class="stat-card blue">
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-label">Bookings</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-value" id="statTransit">0</div>
+        <div class="stat-label">In Transit</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-value" id="statDelivered">0</div>
+        <div class="stat-label">Delivered</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-value" id="statPending">0</div>
+        <div class="stat-label">Pending</div>
+      </div>
+    </div>
+
+    <!-- Module Cards — Hero Grid -->
+    <div class="modules-grid">
+
+      <a href="booking.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="module-text">
+          <h3>Book Parcel</h3>
+          <p>Ship a new parcel with live pricing, express or standard delivery, and instant confirmation.</p>
+        </div>
+      </a>
+
+      <a href="tracking.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="module-text">
+          <h3>Track Parcel</h3>
+          <p>Enter your booking ID for real-time status updates, from pickup to final delivery.</p>
+        </div>
+      </a>
+
+      <a href="history.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="module-text">
+          <h3>Booking History</h3>
+          <p>View all past and current bookings with invoices, dates, and delivery status.</p>
+        </div>
+      </a>
+
+      <a href="support.html" class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="module-text">
+          <h3>Contact Support</h3>
+          <p>Raise an issue, report a problem, or get help from our support team.</p>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    // Auth guard
+    const session = NimbusAuth.requireAuth(['customer']);
+    if (!session) throw new Error('Unauthorized');
+
+    // Render navbar
+    NimbusNav.render('Dashboard', 'dashboard.html');
+
+    // Welcome message
+    document.getElementById('welcomeHeading').textContent = 'Welcome, ' + session.fullName;
+
+    // Load stats
+    const bookings = NimbusDB.getBookingsByUser(session.userId);
+
+    const total = bookings.length;
+    const inTransit = bookings.filter(b => b.parStatus === 'In Transit').length;
+    const delivered = bookings.filter(b => b.parStatus === 'Delivered').length;
+    const pending = bookings.filter(b => b.parStatus === 'Booked').length;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statTransit').textContent = inTransit;
+    document.getElementById('statDelivered').textContent = delivered;
+    document.getElementById('statPending').textContent = pending;
+  </script>
+
+</body>
+</html>

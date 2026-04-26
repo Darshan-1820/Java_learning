@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — My Issues</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .issue-item {
+      background: var(--nimbus-white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--nimbus-border);
+      margin-bottom: var(--space-md);
+      overflow: hidden;
+      transition: box-shadow var(--transition-base);
+    }
+    .issue-item:hover { box-shadow: var(--shadow-md); }
+    .issue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-lg);
+      cursor: pointer;
+      gap: var(--space-md);
+    }
+    .issue-header:hover { background: rgba(46,134,222,0.02); }
+    .issue-header-left h3 {
+      font-size: 0.9375rem;
+      margin-bottom: 4px;
+    }
+    .issue-header-meta {
+      font-size: 0.8125rem;
+      color: var(--nimbus-text-light);
+    }
+    .issue-header-badges {
+      display: flex;
+      gap: var(--space-sm);
+      flex-shrink: 0;
+    }
+    .issue-body {
+      display: none;
+      padding: 0 var(--space-lg) var(--space-lg);
+      border-top: 1px solid var(--nimbus-border);
+    }
+    .issue-body.open { display: block; }
+    .issue-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      padding-top: var(--space-lg);
+    }
+    .detail-item { margin-bottom: var(--space-sm); }
+    .detail-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--nimbus-text-light);
+      margin-bottom: 2px;
+    }
+    .detail-value {
+      font-size: 0.875rem;
+      color: var(--nimbus-text);
+    }
+    .issue-actions {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--nimbus-border);
+    }
+    .btn-warning {
+      background: var(--nimbus-warning);
+      color: var(--nimbus-white);
+    }
+    .btn-warning:hover {
+      background: #e08e0b;
+      box-shadow: 0 4px 15px rgba(243,156,18,0.35);
+      transform: translateY(-1px);
+    }
+    .btn-success {
+      background: var(--nimbus-success);
+      color: var(--nimbus-white);
+    }
+    .btn-success:hover {
+      background: #219a52;
+      box-shadow: 0 4px 15px rgba(39,174,96,0.35);
+      transform: translateY(-1px);
+    }
+    .severity-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .severity-badge.low { background: #E8F8EF; color: #27AE60; }
+    .severity-badge.medium { background: #FFF8E1; color: #F39C12; }
+    .severity-badge.high { background: #FDE8E5; color: #E74C3C; }
+    .severity-badge.critical { background: #E74C3C; color: #fff; }
+    .issue-status-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+    }
+    .issue-status-badge.open { background: #EBF5FB; color: #2E86DE; }
+    .issue-status-badge.in-progress { background: #FFF8E1; color: #F39C12; }
+    .issue-status-badge.resolved { background: #E8F8EF; color: #27AE60; }
+    .empty-state {
+      text-align: center;
+      padding: 60px var(--space-lg);
+      color: var(--nimbus-text-light);
+    }
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--nimbus-border);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-bottom: var(--space-md);
+    }
+    .empty-state p { font-size: 0.9375rem; font-style: italic; }
+    .alert-inline {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      margin-top: var(--space-sm);
+    }
+    .alert-inline.success { background: #E8F8EF; color: var(--nimbus-success); border: 1px solid #B7E4C7; }
+    .alert-inline.error { background: #FDF0EF; color: var(--nimbus-danger); border: 1px solid #F5C6CB; }
+  </style>
+</head>
+<body>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h1>My Issues</h1>
+      <p>Work on issues assigned to you. Update status as you resolve them.</p>
+    </div>
+
+    <div id="issuesList"></div>
+
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    const session = NimbusAuth.requireAuth(['support']);
+    if (!session) throw new Error('Unauthorized');
+
+    NimbusNav.render('Issues', 'issues.html');
+
+    function getSeverityClass(severity) {
+      return (severity || 'medium').toLowerCase();
+    }
+
+    function getIssueStatusClass(status) {
+      const map = { 'Open': 'open', 'In Progress': 'in-progress', 'Resolved': 'resolved' };
+      return map[status] || 'open';
+    }
+
+    function toggleIssue(issueId) {
+      const body = document.getElementById('body-' + issueId);
+      body.classList.toggle('open');
+    }
+
+    function markInProgress(issueId) {
+      const result = NimbusDB.updateIssue(issueId, { status: 'In Progress' });
+      if (result) {
+        renderIssues();
+        showInlineAlert(issueId, 'Issue marked as In Progress.', 'success');
+      }
+    }
+
+    function markResolved(issueId) {
+      const now = new Date();
+      const reopenDeadline = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000); // 5 days from now
+
+      const result = NimbusDB.updateIssue(issueId, {
+        status: 'Resolved',
+        resolvedAt: now.toISOString(),
+        reopenDeadline: reopenDeadline.toISOString()
+      });
+
+      if (result) {
+        renderIssues();
+        showInlineAlert(issueId, 'Issue resolved. Reopen deadline: ' + reopenDeadline.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + '.', 'success');
+      }
+    }
+
+    function showInlineAlert(issueId, message, type) {
+      // Open the issue body to show the alert
+      const body = document.getElementById('body-' + issueId);
+      if (body) body.classList.add('open');
+
+      const alertEl = document.getElementById('alert-' + issueId);
+      if (alertEl) {
+        alertEl.className = 'alert-inline ' + type;
+        alertEl.textContent = message;
+        alertEl.style.display = 'block';
+        setTimeout(() => { alertEl.style.display = 'none'; }, 4000);
+      }
+    }
+
+    function renderIssues() {
+      const allIssues = NimbusDB.getIssues();
+      const myIssues = allIssues.filter(i => i.assignedTo === session.userId);
+      const container = document.getElementById('issuesList');
+
+      if (myIssues.length === 0) {
+        container.innerHTML =
+          '<div class="content-card"><div class="empty-state">' +
+            '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' +
+            '<p>No issues assigned to you.</p>' +
+          '</div></div>';
+        return;
+      }
+
+      let html = '';
+      myIssues.forEach(issue => {
+        const customer = NimbusDB.getUserById(issue.userId);
+        const customerName = customer ? customer.fullName : 'Unknown';
+        const customerEmail = customer ? customer.email : 'N/A';
+        const isResolved = issue.status === 'Resolved';
+
+        html +=
+          '<div class="issue-item">' +
+            '<div class="issue-header" onclick="toggleIssue(\'' + issue.issueId + '\')">' +
+              '<div class="issue-header-left">' +
+                '<h3>' + issue.subject + '</h3>' +
+                '<div class="issue-header-meta">' + customerName + ' &middot; ' + issue.issueId + '</div>' +
+              '</div>' +
+              '<div class="issue-header-badges">' +
+                '<span class="severity-badge ' + getSeverityClass(issue.severity) + '">' + (issue.severity || 'Medium') + '</span>' +
+                '<span class="issue-status-badge ' + getIssueStatusClass(issue.status) + '">' + (issue.status || 'Open') + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="issue-body" id="body-' + issue.issueId + '">' +
+              '<div class="issue-detail-grid">' +
+                '<div class="detail-item"><div class="detail-label">Description</div><div class="detail-value">' + (issue.description || 'No description provided.') + '</div></div>' +
+                '<div class="detail-item"><div class="detail-label">Customer Email</div><div class="detail-value">' + customerEmail + '</div></div>' +
+                '<div class="detail-item"><div class="detail-label">Booking ID</div><div class="detail-value">' + (issue.bookingId || 'N/A') + '</div></div>' +
+                '<div class="detail-item"><div class="detail-label">Severity</div><div class="detail-value">' + (issue.severity || 'Medium') + '</div></div>' +
+                '<div class="detail-item"><div class="detail-label">Created At</div><div class="detail-value">' + (issue.createdAt ? new Date(issue.createdAt).toLocaleString('en-IN') : 'N/A') + '</div></div>' +
+                (issue.resolvedAt ? '<div class="detail-item"><div class="detail-label">Resolved At</div><div class="detail-value">' + new Date(issue.resolvedAt).toLocaleString('en-IN') + '</div></div>' : '') +
+                (issue.reopenDeadline ? '<div class="detail-item"><div class="detail-label">Reopen Deadline</div><div class="detail-value">' + new Date(issue.reopenDeadline).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + '</div></div>' : '') +
+              '</div>' +
+              '<div id="alert-' + issue.issueId + '" class="alert-inline" style="display: none;"></div>' +
+              (isResolved ? '' :
+                '<div class="issue-actions">' +
+                  (issue.status !== 'In Progress' ?
+                    '<button class="btn btn-warning" onclick="event.stopPropagation(); markInProgress(\'' + issue.issueId + '\')">' +
+                      '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+                      ' Mark In Progress' +
+                    '</button>' : '') +
+                  '<button class="btn btn-success" onclick="event.stopPropagation(); markResolved(\'' + issue.issueId + '\')">' +
+                    '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+                    ' Mark Resolved' +
+                  '</button>' +
+                '</div>'
+              ) +
+            '</div>' +
+          '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    renderIssues();
+  </script>
+
+</body>
+</html>

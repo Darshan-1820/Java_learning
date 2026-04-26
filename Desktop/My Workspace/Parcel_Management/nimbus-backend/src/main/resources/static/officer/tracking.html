@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Officer Tracking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h1>Track Parcels</h1>
+      <p>View all shipped packages across the system. Search by Customer ID or Booking ID.</p>
+    </div>
+
+    <div class="content-card">
+
+      <!-- Search -->
+      <div class="search-bar">
+        <input type="text" class="form-input" id="searchCustomerId" placeholder="Customer ID">
+        <input type="text" class="form-input" id="searchBookingId" placeholder="Booking ID">
+        <button class="btn btn-primary" onclick="searchBookings()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+        <button class="btn btn-outline" onclick="clearSearch()">Clear</button>
+      </div>
+
+      <!-- Results Table -->
+      <div style="overflow-x: auto;">
+        <table class="data-table" id="trackingTable">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer Name</th>
+              <th>Address</th>
+              <th>Receiver Name</th>
+              <th>Receiver Address</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="trackingBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    // Auth guard
+    const session = NimbusAuth.requireAuth(['officer']);
+    if (!session) throw new Error('Unauthorized');
+
+    NimbusNav.render('Track Parcels', 'tracking.html');
+
+    function getStatusClass(status) {
+      const map = {
+        'Booked': 'booked',
+        'In Transit': 'in-transit',
+        'Delivered': 'delivered',
+        'Returned': 'returned',
+        'Picked Up': 'picked-up'
+      };
+      return map[status] || 'booked';
+    }
+
+    function renderTable(bookings) {
+      const tbody = document.getElementById('trackingBody');
+
+      if (bookings.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No bookings found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = bookings.map(b => {
+        // Look up sender info
+        const sender = NimbusDB.getUserById(b.userId);
+        const senderName = b.senderName || (sender ? sender.fullName : b.userId);
+        const senderAddr = b.senderAddress || (sender ? [sender.street, sender.city, sender.state].filter(Boolean).join(', ') : '-');
+
+        const date = new Date(b.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        return `<tr>
+          <td style="font-family: monospace; font-weight: 600; color: var(--nimbus-secondary);">${b.bookingId}</td>
+          <td>${senderName}</td>
+          <td style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${senderAddr}</td>
+          <td>${b.recName}</td>
+          <td style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${b.recAddress}</td>
+          <td style="white-space: nowrap;">${date}</td>
+          <td><span class="status-badge ${getStatusClass(b.parStatus)}">${b.parStatus}</span></td>
+        </tr>`;
+      }).join('');
+    }
+
+    function searchBookings() {
+      const custId = document.getElementById('searchCustomerId').value.trim();
+      const bookId = document.getElementById('searchBookingId').value.trim();
+
+      let bookings = NimbusDB.getBookings();
+
+      if (custId) {
+        bookings = bookings.filter(b => b.userId.toLowerCase().includes(custId.toLowerCase()));
+      }
+      if (bookId) {
+        bookings = bookings.filter(b => b.bookingId.toLowerCase().includes(bookId.toLowerCase()));
+      }
+
+      // Sort latest first
+      bookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      renderTable(bookings);
+    }
+
+    function clearSearch() {
+      document.getElementById('searchCustomerId').value = '';
+      document.getElementById('searchBookingId').value = '';
+      loadAll();
+    }
+
+    function loadAll() {
+      const bookings = NimbusDB.getBookings().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      renderTable(bookings);
+    }
+
+    // Initial load
+    loadAll();
+  </script>
+
+</body>
+</html>

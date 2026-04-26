@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Payment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+  <div class="main-content">
+    <div class="content-card">
+
+      <h2>Make Payment</h2>
+
+      <!-- Alert -->
+      <div id="paymentAlert" class="alert" style="display:none;"></div>
+
+      <!-- Bill Amount -->
+      <div style="text-align: center; margin-bottom: var(--space-xl); padding: var(--space-lg); background: var(--nimbus-light); border-radius: var(--radius-md);">
+        <p style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--nimbus-text-light); margin-bottom: 4px;">Total Amount Due</p>
+        <p id="billAmount" style="font-size: 2rem; font-weight: 700; color: var(--nimbus-secondary); font-family: var(--font-display);">₹ 0</p>
+        <div id="priceBreakdown" style="display:none; margin-top: var(--space-md); max-width: 300px; margin-left:auto; margin-right:auto;"></div>
+      </div>
+
+      <!-- Payment Tabs -->
+      <div style="display: flex; gap: 0; margin-bottom: var(--space-xl); border-bottom: 2px solid var(--nimbus-border);">
+        <button class="payment-tab active" id="tabUPI" onclick="switchTab('upi')" style="flex: 1; padding: 12px; font-family: var(--font-primary); font-size: 0.9375rem; font-weight: 600; border: none; background: none; cursor: pointer; color: var(--nimbus-secondary); border-bottom: 2px solid var(--nimbus-secondary); margin-bottom: -2px; transition: all 150ms ease;">UPI</button>
+        <button class="payment-tab" id="tabCard" onclick="switchTab('card')" style="flex: 1; padding: 12px; font-family: var(--font-primary); font-size: 0.9375rem; font-weight: 600; border: none; background: none; cursor: pointer; color: var(--nimbus-text-light); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 150ms ease;">Card</button>
+      </div>
+
+      <!-- UPI Section -->
+      <div id="sectionUPI">
+        <div class="alert info" style="display: flex;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>UPI payment will be integrated shortly. Please use Card payment.</span>
+        </div>
+      </div>
+
+      <!-- Card Section -->
+      <div id="sectionCard" style="display:none;">
+
+        <!-- Card Visual -->
+        <div class="card-visual" id="cardVisual">
+          <div class="card-network" id="cardNetwork">VISA</div>
+          <div class="card-chip"></div>
+          <div class="card-number" id="cardDisplayNumber">**** **** **** ****</div>
+          <div class="card-bottom">
+            <div class="card-holder" id="cardDisplayHolder">CARD HOLDER</div>
+            <div class="card-expiry" id="cardDisplayExpiry">MM/YY</div>
+          </div>
+        </div>
+
+        <!-- Card Form -->
+        <div class="form-group">
+          <label class="form-label">Card Number *</label>
+          <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" data-numeric="true" data-allow-space="true" autocomplete="cc-number">
+          <span class="form-error" id="cardNumberError"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Card Holder Name *</label>
+          <input type="text" class="form-input" id="cardHolder" placeholder="Name as on card" maxlength="50" autocomplete="cc-name">
+          <span class="form-error" id="cardHolderError"></span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+          <div class="form-group">
+            <label class="form-label">Expiry Date *</label>
+            <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" maxlength="5" data-numeric="true" data-allow-slash="true" autocomplete="cc-exp">
+            <span class="form-error" id="cardExpiryError"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">CVV *</label>
+            <input type="password" class="form-input" id="cardCVV" placeholder="***" maxlength="3" data-numeric="true" autocomplete="cc-csc">
+            <span class="form-error" id="cardCVVError"></span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: var(--space-md); margin-top: var(--space-lg);">
+          <button class="btn btn-outline" onclick="window.location.href='booking.html';">&larr; Back to Booking</button>
+          <button class="btn btn-primary btn-lg" id="payBtn" onclick="makePayment()" style="flex: 1;">Make Payment</button>
+        </div>
+
+        <!-- Test Cards Hint -->
+        <div style="margin-top: var(--space-xl); padding: var(--space-lg); background: var(--nimbus-light); border-radius: var(--radius-md);">
+          <p style="font-weight: 600; color: var(--nimbus-dark); margin-bottom: var(--space-sm); font-size: 0.875rem;">Demo Test Cards</p>
+          <div style="font-size: 0.8125rem; color: var(--nimbus-text-light); line-height: 2;" id="testCardsHint"></div>
+        </div>
+      </div>
+
+      <!-- Success Overlay -->
+      <div id="successOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:200; align-items:center; justify-content:center;">
+        <div style="background: var(--nimbus-white); border-radius: var(--radius-lg); padding: var(--space-2xl); text-align: center; max-width: 420px; width: 90%; box-shadow: var(--shadow-xl);">
+          <div style="width: 64px; height: 64px; background: rgba(39,174,96,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#27AE60" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 style="margin-bottom: var(--space-sm);">Payment Successful!</h3>
+          <p style="color: var(--nimbus-text-light); margin-bottom: var(--space-md); font-size: 0.9375rem;">Your booking has been confirmed.</p>
+          <p style="font-family: monospace; font-size: 1.125rem; font-weight: 700; color: var(--nimbus-secondary); margin-bottom: var(--space-lg);" id="successBookingId"></p>
+          <p style="font-size: 0.8125rem; color: var(--nimbus-text-light);">Redirecting to invoice...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/pricing.js"></script>
+  <script src="../js/bin-data.js"></script>
+  <script src="../js/utils.js"></script>
+  <script>
+    // --- Auth guard ---
+    const session = NimbusAuth.requireAuth(['customer']);
+    let bookingData = null;
+
+    if (session) {
+      NimbusNav.render('Payment', 'booking.html');
+      initPayment();
+    }
+
+    function initPayment() {
+      // Load booking data from sessionStorage
+      const raw = sessionStorage.getItem('nimbus_pending_booking');
+      if (!raw) {
+        showAlert('error', 'No booking data found. Please start a new booking.');
+        return;
+      }
+      bookingData = JSON.parse(raw);
+      const cost = bookingData.parServiceCost || 0;
+      document.getElementById('billAmount').textContent = '₹ ' + cost;
+
+      // Show breakdown if available
+      if (bookingData.pricingBreakdown) {
+        const pb = bookingData.pricingBreakdown;
+        const breakdownEl = document.getElementById('priceBreakdown');
+        if (breakdownEl) {
+          breakdownEl.innerHTML = `
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; padding:4px 0;"><span style="color:var(--nimbus-text-light);">Base cost</span><span>₹ ${pb.baseCost}</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; padding:4px 0;"><span style="color:var(--nimbus-text-light);">Packaging</span><span>₹ ${pb.packagingFee}</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; padding:4px 0;"><span style="color:var(--nimbus-text-light);">Insurance</span><span>₹ ${pb.insuranceCost}</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8125rem; padding:4px 0; margin-top:4px; border-top:1px solid var(--nimbus-border); font-weight:600;"><span>Delivery (${pb.deliveryDays} days)</span><span>₹ ${pb.total}</span></div>
+          `;
+          breakdownEl.style.display = 'block';
+        }
+      }
+
+      // Render test cards
+      let hint = '';
+      DUMMY_CARDS.forEach(c => {
+        hint += `<strong>${c.network}:</strong> ${formatCardNumber(c.number)} | ${c.holder} | ${c.expiry} | CVV: ${c.cvv}<br>`;
+      });
+      document.getElementById('testCardsHint').innerHTML = hint;
+
+      // Card number live formatting + network detection
+      document.getElementById('cardNumber').addEventListener('input', function(e) {
+        let raw = this.value.replace(/\D/g, '').slice(0, 16);
+        let formatted = raw.replace(/(\d{4})/g, '$1 ').trim();
+        this.value = formatted;
+
+        // Update card visual
+        const display = raw.length > 0 ? formatted.replace(/(\d)/g, (m, d, i) => d).padEnd(19, '*').replace(/(.{4})/g, '$1 ').trim() : '**** **** **** ****';
+        let displayNum = '';
+        for (let i = 0; i < 16; i++) {
+          if (i < raw.length) displayNum += raw[i];
+          else displayNum += '*';
+          if ((i + 1) % 4 === 0 && i < 15) displayNum += ' ';
+        }
+        document.getElementById('cardDisplayNumber').textContent = displayNum;
+
+        // Network detection + card color
+        const network = detectCardNetwork(raw);
+        const cardEl = document.getElementById('cardVisual');
+        if (network) {
+          document.getElementById('cardNetwork').textContent = network.logo;
+          const colors = {
+            'VISA': 'linear-gradient(135deg, #1A1F71, #2E86DE)',
+            'MASTERCARD': 'linear-gradient(135deg, #1a1a2e, #EB001B)',
+            'RUPAY': 'linear-gradient(135deg, #003366, #097A44)',
+            'AMEX': 'linear-gradient(135deg, #002663, #006FCF)',
+            'DISCOVER': 'linear-gradient(135deg, #1a1a2e, #FF6000)'
+          };
+          cardEl.style.background = colors[network.network] || '';
+        } else {
+          document.getElementById('cardNetwork').textContent = '';
+          cardEl.style.background = '';
+        }
+      });
+
+      // Card holder live update
+      document.getElementById('cardHolder').addEventListener('input', function() {
+        document.getElementById('cardDisplayHolder').textContent = this.value.toUpperCase() || 'CARD HOLDER';
+      });
+
+      // Expiry live update + auto-format
+      document.getElementById('cardExpiry').addEventListener('input', function() {
+        let raw = this.value.replace(/\D/g, '').slice(0, 4);
+        if (raw.length >= 3) raw = raw.slice(0, 2) + '/' + raw.slice(2);
+        this.value = raw;
+        document.getElementById('cardDisplayExpiry').textContent = raw || 'MM/YY';
+      });
+
+      // CVV mask
+      document.getElementById('cardCVV').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 3);
+      });
+    }
+
+    function switchTab(tab) {
+      const tabUPI = document.getElementById('tabUPI');
+      const tabCard = document.getElementById('tabCard');
+      const sUPI = document.getElementById('sectionUPI');
+      const sCard = document.getElementById('sectionCard');
+
+      if (tab === 'upi') {
+        tabUPI.style.color = 'var(--nimbus-secondary)';
+        tabUPI.style.borderBottomColor = 'var(--nimbus-secondary)';
+        tabCard.style.color = 'var(--nimbus-text-light)';
+        tabCard.style.borderBottomColor = 'transparent';
+        sUPI.style.display = 'block';
+        sCard.style.display = 'none';
+      } else {
+        tabCard.style.color = 'var(--nimbus-secondary)';
+        tabCard.style.borderBottomColor = 'var(--nimbus-secondary)';
+        tabUPI.style.color = 'var(--nimbus-text-light)';
+        tabUPI.style.borderBottomColor = 'transparent';
+        sUPI.style.display = 'none';
+        sCard.style.display = 'block';
+      }
+    }
+
+    function showAlert(type, message) {
+      const alert = document.getElementById('paymentAlert');
+      alert.className = 'alert ' + type;
+      alert.textContent = message;
+      alert.style.display = 'flex';
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
+      document.querySelectorAll('.form-input.error').forEach(el => el.classList.remove('error'));
+      document.getElementById('paymentAlert').style.display = 'none';
+    }
+
+    function showError(fieldId, message) {
+      const input = document.getElementById(fieldId);
+      const errorEl = document.getElementById(fieldId + 'Error');
+      if (input) input.classList.add('error');
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+      }
+    }
+
+    function makePayment() {
+      clearErrors();
+      if (!bookingData) {
+        showAlert('error', 'No booking data. Please go back and create a booking first.');
+        return;
+      }
+
+      let valid = true;
+
+      // Card number
+      const cardNum = document.getElementById('cardNumber').value.replace(/\s/g, '');
+      if (!cardNum || cardNum.length !== 16 || !/^\d{16}$/.test(cardNum)) {
+        showError('cardNumber', 'Please enter a valid 16-digit card number.');
+        valid = false;
+      }
+
+      // Card holder
+      const holder = document.getElementById('cardHolder').value.trim();
+      if (!holder || holder.length < 2) {
+        showError('cardHolder', 'Card holder name is required.');
+        valid = false;
+      }
+
+      // Expiry
+      const expiry = document.getElementById('cardExpiry').value.trim();
+      if (!expiry || !/^\d{2}\/\d{2}$/.test(expiry)) {
+        showError('cardExpiry', 'Please enter expiry in MM/YY format.');
+        valid = false;
+      } else {
+        const [mm, yy] = expiry.split('/').map(Number);
+        if (mm < 1 || mm > 12) {
+          showError('cardExpiry', 'Invalid month. Must be 01-12.');
+          valid = false;
+        }
+        const now = new Date();
+        const expDate = new Date(2000 + yy, mm);
+        if (expDate <= now) {
+          showError('cardExpiry', 'Card has expired.');
+          valid = false;
+        }
+      }
+
+      // CVV
+      const cvv = document.getElementById('cardCVV').value.trim();
+      if (!cvv || !/^\d{3}$/.test(cvv)) {
+        showError('cardCVV', 'Please enter a valid 3-digit CVV.');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Disable button
+      const btn = document.getElementById('payBtn');
+      btn.textContent = 'Processing...';
+      btn.disabled = true;
+
+      // Simulate payment processing
+      setTimeout(() => {
+        const bookingId = NimbusDB.generateBookingId();
+        const now = new Date().toISOString();
+
+        const booking = {
+          bookingId: bookingId,
+          userId: bookingData.userId,
+          recName: bookingData.recName,
+          recAddress: bookingData.recAddress,
+          recPin: bookingData.recPin,
+          recMobile: bookingData.recMobile,
+          parWeightGram: bookingData.parWeightGram,
+          parContentsDescription: bookingData.parContentsDescription,
+          parDeliveryType: bookingData.parDeliveryType,
+          parPackingPreference: bookingData.parPackingPreference,
+          parPickupTime: bookingData.parPickupTime || now,
+          parDropoffTime: bookingData.parDropoffTime || '',
+          parServiceCost: bookingData.parServiceCost,
+          parPaymentTime: now,
+          parStatus: 'Booked',
+          paymentMethod: 'card',
+          createdAt: now
+        };
+
+        NimbusDB.addBooking(booking);
+
+        // Clean up sessionStorage
+        sessionStorage.removeItem('nimbus_pending_booking');
+
+        // Show success
+        document.getElementById('successBookingId').textContent = bookingId;
+        const overlay = document.getElementById('successOverlay');
+        overlay.style.display = 'flex';
+
+        // Redirect to invoice after delay
+        setTimeout(() => {
+          window.location.href = 'invoice.html?id=' + bookingId;
+        }, 2500);
+      }, 800);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus — Support Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .issue-card {
+      background: var(--nimbus-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--nimbus-border);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .issue-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--nimbus-secondary);
+      color: inherit;
+    }
+    .issue-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-sm);
+    }
+    .issue-card h3 {
+      font-size: 0.9375rem;
+      margin-bottom: 4px;
+    }
+    .issue-card-meta {
+      font-size: 0.8125rem;
+      color: var(--nimbus-text-light);
+    }
+    .issue-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-md);
+    }
+    .severity-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .severity-badge.low { background: #E8F8EF; color: #27AE60; }
+    .severity-badge.medium { background: #FFF8E1; color: #F39C12; }
+    .severity-badge.high { background: #FDE8E5; color: #E74C3C; }
+    .severity-badge.critical { background: #E74C3C; color: #fff; }
+    .issue-status-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+    }
+    .issue-status-badge.open { background: #EBF5FB; color: #2E86DE; }
+    .issue-status-badge.in-progress { background: #FFF8E1; color: #F39C12; }
+    .issue-status-badge.resolved { background: #E8F8EF; color: #27AE60; }
+    .badge-row {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px var(--space-lg);
+      color: var(--nimbus-text-light);
+    }
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--nimbus-border);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-bottom: var(--space-md);
+    }
+    .empty-state p {
+      font-size: 0.9375rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-content">
+
+    <div class="page-header">
+      <h1 id="welcomeHeading">Welcome back</h1>
+      <p>Here's an overview of your assigned issues.</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="stat-label">Assigned to Me</div>
+        <div class="stat-value" id="statAssigned">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="stat-label">Open</div>
+        <div class="stat-value" id="statOpen">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="stat-label">Resolved</div>
+        <div class="stat-value" id="statResolved">0</div>
+      </div>
+    </div>
+
+    <!-- My Issues -->
+    <div class="content-card">
+      <h2>My Issues</h2>
+      <div id="issuesList"></div>
+    </div>
+
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script>
+    const session = NimbusAuth.requireAuth(['support']);
+    if (!session) throw new Error('Unauthorized');
+
+    NimbusNav.render('Dashboard', 'dashboard.html');
+
+    document.getElementById('welcomeHeading').textContent = 'Welcome, ' + session.fullName;
+
+    function getSeverityClass(severity) {
+      return (severity || 'medium').toLowerCase();
+    }
+
+    function getIssueStatusClass(status) {
+      const map = { 'Open': 'open', 'In Progress': 'in-progress', 'Resolved': 'resolved' };
+      return map[status] || 'open';
+    }
+
+    // Load issues assigned to current user
+    const allIssues = NimbusDB.getIssues();
+    const myIssues = allIssues.filter(i => i.assignedTo === session.userId);
+
+    const assigned = myIssues.length;
+    const open = myIssues.filter(i => i.status === 'Open' || i.status === 'In Progress').length;
+    const resolved = myIssues.filter(i => i.status === 'Resolved').length;
+
+    document.getElementById('statAssigned').textContent = assigned;
+    document.getElementById('statOpen').textContent = open;
+    document.getElementById('statResolved').textContent = resolved;
+
+    // Render issue cards
+    const container = document.getElementById('issuesList');
+
+    if (myIssues.length === 0) {
+      container.innerHTML =
+        '<div class="empty-state">' +
+          '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' +
+          '<p>No issues assigned to you yet.</p>' +
+        '</div>';
+    } else {
+      let html = '<div class="issue-cards-grid">';
+      myIssues.forEach(issue => {
+        const customer = NimbusDB.getUserById(issue.userId);
+        const customerName = customer ? customer.fullName : 'Unknown';
+
+        html +=
+          '<a href="issues.html" class="issue-card">' +
+            '<div class="issue-card-header">' +
+              '<div>' +
+                '<h3>' + issue.subject + '</h3>' +
+                '<div class="issue-card-meta">' + customerName + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="badge-row">' +
+              '<span class="severity-badge ' + getSeverityClass(issue.severity) + '">' + (issue.severity || 'Medium') + '</span>' +
+              '<span class="issue-status-badge ' + getIssueStatusClass(issue.status) + '">' + (issue.status || 'Open') + '</span>' +
+            '</div>' +
+          '</a>';
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>
