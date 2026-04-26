@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring JDBC | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link active"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: PROBLEMS WITH RAW JDBC                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="raw-jdbc-problems">
+  <div class="section-tag">Section 01</div>
+  <h2>Problems with Raw JDBC</h2>
+  <p class="section-desc">Raw JDBC works but forces you to write the same boilerplate for every single query. Spring JDBC eliminates that.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Raw JDBC &mdash; Look at all this boilerplate</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public User findById(int id) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    try {
+        conn = DriverManager.getConnection(url, user, pass);  // boilerplate
+        ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+        ps.setInt(1, id);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            User u = new User();
+            u.setId(rs.getInt("id"));           // manual mapping
+            u.setName(rs.getString("name"));     // manual mapping
+            u.setEmail(rs.getString("email"));   // manual mapping
+            return u;
+        }
+        return null;
+    } catch (SQLException e) {                   // boilerplate
+        throw new RuntimeException(e);
+    } finally {
+        try { if (rs != null) rs.close(); } catch (SQLException e) {}   // boilerplate
+        try { if (ps != null) ps.close(); } catch (SQLException e) {}   // boilerplate
+        try { if (conn != null) conn.close(); } catch (SQLException e) {} // boilerplate
+    }
+}</code></pre>
+  </div>
+
+  <p>Every query has the same pattern: get connection, prepare statement, execute, map results, handle exceptions, close everything. Spring JDBC removes all of it.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Problem</th><th>Raw JDBC</th><th>Spring JDBC</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Connection management</td><td>Manual open/close</td><td>Automatic via DataSource</td></tr>
+      <tr><td>Exception handling</td><td>Checked <code>SQLException</code> everywhere</td><td>Unchecked <code>DataAccessException</code></td></tr>
+      <tr><td>ResultSet mapping</td><td>Manual <code>rs.getString()</code> for each column</td><td><code>RowMapper</code> or auto-map</td></tr>
+      <tr><td>Resource cleanup</td><td>try-finally for every resource</td><td>Automatic</td></tr>
+      <tr><td>Lines of code</td><td>~25 per query</td><td>~3 per query</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: JDBCTEMPLATE                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="jdbc-template">
+  <div class="section-tag">Section 02</div>
+  <h2>JdbcTemplate</h2>
+  <p class="section-desc">The core class of Spring JDBC. Handles connection, execution, mapping, and cleanup in one call.</p>
+
+  <h3>query() &mdash; Multiple Rows</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Get all users</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">List&lt;User&gt; users = jdbcTemplate.query(
+    "SELECT * FROM users WHERE role = ?",
+    new UserRowMapper(),   // maps each row to User object
+    "ADMIN"                // parameter value for ?
+);</code></pre>
+  </div>
+
+  <h3>queryForObject() &mdash; Single Row</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Get one user by ID</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">User user = jdbcTemplate.queryForObject(
+    "SELECT * FROM users WHERE id = ?",
+    new UserRowMapper(),
+    id
+);
+
+// For simple values (count, max, etc.)
+int count = jdbcTemplate.queryForObject(
+    "SELECT COUNT(*) FROM bookings WHERE user_id = ?",
+    Integer.class,
+    userId
+);</code></pre>
+  </div>
+
+  <h3>update() &mdash; INSERT, UPDATE, DELETE</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Modify data</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// INSERT
+int rowsInserted = jdbcTemplate.update(
+    "INSERT INTO users (name, email, role) VALUES (?, ?, ?)",
+    user.getName(), user.getEmail(), user.getRole()
+);
+
+// UPDATE
+int rowsUpdated = jdbcTemplate.update(
+    "UPDATE bookings SET status = ? WHERE tracking_number = ?",
+    "DELIVERED", trackingNumber
+);
+
+// DELETE
+int rowsDeleted = jdbcTemplate.update(
+    "DELETE FROM bookings WHERE status = ? AND created_at &lt; ?",
+    "CANCELLED", cutoffDate
+);</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: ROWMAPPER                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="row-mapper">
+  <div class="section-tag">Section 03</div>
+  <h2>RowMapper &amp; BeanPropertyRowMapper</h2>
+  <p class="section-desc">RowMapper tells Spring how to convert a ResultSet row into a Java object.</p>
+
+  <h3>Custom RowMapper</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserRowMapper.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class UserRowMapper implements RowMapper&lt;User&gt; {
+
+    @Override
+    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setName(rs.getString("name"));
+        user.setEmail(rs.getString("email"));
+        user.setRole(rs.getString("role"));
+        user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        return user;
+    }
+}</code></pre>
+  </div>
+
+  <h3>BeanPropertyRowMapper (Zero Code)</h3>
+  <p>If your column names match your field names (or use underscore-to-camelCase), Spring maps automatically:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Auto-mapping</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Column "created_at" maps to field "createdAt" automatically
+List&lt;User&gt; users = jdbcTemplate.query(
+    "SELECT * FROM users",
+    new BeanPropertyRowMapper&lt;&gt;(User.class)
+);
+
+// Works when:
+// DB column: user_name  &rarr;  Java field: userName
+// DB column: id         &rarr;  Java field: id
+// DB column: email      &rarr;  Java field: email</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">When to Use Which</div>
+    <p><strong>BeanPropertyRowMapper</strong>: Quick prototyping, columns match fields. <strong>Custom RowMapper</strong>: Complex mappings, computed fields, JOINs that span multiple objects, or when you need max control.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: DATASOURCE CONFIG                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="datasource">
+  <div class="section-tag">Section 04</div>
+  <h2>DataSource Configuration</h2>
+  <p class="section-desc">DataSource is the connection factory. Configure it once, inject everywhere.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DataSourceConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Configuration
+@PropertySource("classpath:application.properties")
+public class DataSourceConfig {
+
+    @Value("${db.url}")
+    private String url;
+
+    @Value("${db.user}")
+    private String username;
+
+    @Value("${db.password}")
+    private String password;
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        ds.setUrl(url);
+        ds.setUsername(username);
+        ds.setPassword(password);
+        return ds;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">db.url=jdbc:mysql://localhost:3306/nimbus_db?useSSL=false&amp;serverTimezone=UTC
+db.user=root
+db.password=secret</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>DataSource</code> bean is configured once in <code>DataSourceConfig</code>. Spring injects it into <code>JdbcTemplate</code>, which is then injected into all DAOs. No DAO ever touches <code>DriverManager</code> directly.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: NAMED PARAMETER                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="named-params">
+  <div class="section-tag">Section 05</div>
+  <h2>NamedParameterJdbcTemplate</h2>
+  <p class="section-desc">Use named parameters (<code>:name</code>) instead of positional <code>?</code> marks. Much more readable for complex queries.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">JdbcTemplate (positional ?)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;font-size:0.82rem;color:var(--text-secondary);"><code>jdbc.query(
+  "SELECT * FROM bookings " +
+  "WHERE status = ? " +
+  "AND user_id = ? " +
+  "AND weight &gt; ?",
+  mapper, status, userId, minWeight
+);</code></pre>
+        <p style="margin-top:8px;font-size:0.82rem;">Which <code>?</code> is which? Count carefully.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">NamedParameter (named)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;font-size:0.82rem;color:var(--text-secondary);"><code>namedJdbc.query(
+  "SELECT * FROM bookings " +
+  "WHERE status = :status " +
+  "AND user_id = :userId " +
+  "AND weight &gt; :minWeight",
+  params, mapper
+);</code></pre>
+        <p style="margin-top:8px;font-size:0.82rem;">Crystal clear what each value maps to.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NamedParameterJdbcTemplate Usage</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Repository
+public class BookingDAOImpl implements BookingDAO {
+
+    private final NamedParameterJdbcTemplate namedJdbc;
+
+    public BookingDAOImpl(DataSource dataSource) {
+        this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    public List&lt;Booking&gt; search(String status, int userId, double minWeight) {
+        String sql = "SELECT * FROM bookings " +
+                     "WHERE status = :status " +
+                     "AND user_id = :userId " +
+                     "AND weight &gt; :minWeight";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+            .addValue("status", status)
+            .addValue("userId", userId)
+            .addValue("minWeight", minWeight);
+
+        return namedJdbc.query(sql, params, new BookingRowMapper());
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: NIMBUS USERDAO BEFORE/AFTER                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-userdao">
+  <div class="section-tag">Section 06</div>
+  <h2>Nimbus UserDAO: Before &amp; After</h2>
+  <p class="section-desc">The same DAO, raw JDBC vs Spring JDBC. See the difference.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The raw JDBC version of <code>UserDAO</code> was 80+ lines for 3 methods. Spring JDBC brings it down to ~30 lines with zero boilerplate. Same functionality, fraction of the code.</p>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Raw JDBC (~25 lines per method)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;font-size:0.78rem;color:var(--text-secondary);"><code>public User findById(int id) {
+  Connection conn = null;
+  PreparedStatement ps = null;
+  ResultSet rs = null;
+  try {
+    conn = DBUtil.getConnection();
+    ps = conn.prepareStatement(
+      "SELECT * FROM users WHERE id=?");
+    ps.setInt(1, id);
+    rs = ps.executeQuery();
+    if (rs.next()) {
+      User u = new User();
+      u.setId(rs.getInt("id"));
+      u.setName(rs.getString("name"));
+      u.setEmail(rs.getString("email"));
+      return u;
+    }
+    return null;
+  } catch (SQLException e) {
+    throw new RuntimeException(e);
+  } finally {
+    DBUtil.close(rs, ps, conn);
+  }
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Spring JDBC (~3 lines per method)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;font-size:0.78rem;color:var(--text-secondary);"><code>public User findById(int id) {
+  return jdbcTemplate.queryForObject(
+    "SELECT * FROM users WHERE id = ?",
+    new UserRowMapper(),
+    id
+  );
+}
+
+// Connection? Automatic.
+// PreparedStatement? Automatic.
+// ResultSet closing? Automatic.
+// Exception handling? Automatic.
+// That's it. Done.</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Complete Spring JDBC UserDAO</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/UserDAOImpl.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Repository
+public class UserDAOImpl implements UserDAO {
+
+    private final JdbcTemplate jdbc;
+    private final RowMapper&lt;User&gt; rowMapper = new UserRowMapper();
+
+    public UserDAOImpl(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    @Override
+    public User findById(int id) {
+        return jdbc.queryForObject(
+            "SELECT * FROM users WHERE id = ?", rowMapper, id);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return jdbc.queryForObject(
+            "SELECT * FROM users WHERE email = ?", rowMapper, email);
+    }
+
+    @Override
+    public List&lt;User&gt; findAll() {
+        return jdbc.query("SELECT * FROM users ORDER BY name", rowMapper);
+    }
+
+    @Override
+    public void save(User user) {
+        jdbc.update(
+            "INSERT INTO users (name, email, role) VALUES (?, ?, ?)",
+            user.getName(), user.getEmail(), user.getRole());
+    }
+
+    @Override
+    public void update(User user) {
+        jdbc.update(
+            "UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?",
+            user.getName(), user.getEmail(), user.getRole(), user.getId());
+    }
+
+    @Override
+    public void deleteById(int id) {
+        jdbc.update("DELETE FROM users WHERE id = ?", id);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: BOOKING DAO                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-bookingdao">
+  <div class="section-tag">Section 07</div>
+  <h2>BookingDAO with JdbcTemplate</h2>
+  <p class="section-desc">Full BookingDAO for the Nimbus parcel system.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/BookingDAOImpl.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Repository
+public class BookingDAOImpl implements BookingDAO {
+
+    private final JdbcTemplate jdbc;
+
+    public BookingDAOImpl(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    @Override
+    public Booking findById(int id) {
+        return jdbc.queryForObject(
+            "SELECT * FROM bookings WHERE id = ?",
+            new BookingRowMapper(), id);
+    }
+
+    @Override
+    public Booking findByTrackingNumber(String trackingNumber) {
+        return jdbc.queryForObject(
+            "SELECT * FROM bookings WHERE tracking_number = ?",
+            new BookingRowMapper(), trackingNumber);
+    }
+
+    @Override
+    public List&lt;Booking&gt; findByUserId(int userId) {
+        return jdbc.query(
+            "SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC",
+            new BookingRowMapper(), userId);
+    }
+
+    @Override
+    public List&lt;Booking&gt; findByStatus(String status) {
+        return jdbc.query(
+            "SELECT * FROM bookings WHERE status = ?",
+            new BookingRowMapper(), status);
+    }
+
+    @Override
+    public void save(Booking booking) {
+        jdbc.update(
+            "INSERT INTO bookings (user_id, tracking_number, status, weight) " +
+            "VALUES (?, ?, ?, ?)",
+            booking.getUserId(), booking.getTrackingNumber(),
+            booking.getStatus(), booking.getWeight());
+    }
+
+    @Override
+    public void updateStatus(String trackingNumber, String status) {
+        jdbc.update(
+            "UPDATE bookings SET status = ? WHERE tracking_number = ?",
+            status, trackingNumber);
+    }
+
+    @Override
+    public int countByUserId(int userId) {
+        return jdbc.queryForObject(
+            "SELECT COUNT(*) FROM bookings WHERE user_id = ?",
+            Integer.class, userId);
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingRowMapper.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class BookingRowMapper implements RowMapper&lt;Booking&gt; {
+
+    @Override
+    public Booking mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Booking b = new Booking();
+        b.setId(rs.getInt("id"));
+        b.setUserId(rs.getInt("user_id"));
+        b.setTrackingNumber(rs.getString("tracking_number"));
+        b.setStatus(rs.getString("status"));
+        b.setWeight(rs.getDouble("weight"));
+        b.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        return b;
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: @TRANSACTIONAL                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="transactional">
+  <div class="section-tag">Section 08</div>
+  <h2>@Transactional</h2>
+  <p class="section-desc">When multiple DB operations must succeed or fail together. All-or-nothing.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class BookingService {
+
+    private final BookingDAO bookingDAO;
+    private final TrackingService trackingService;
+
+    public BookingService(BookingDAO bookingDAO, TrackingService trackingService) {
+        this.bookingDAO = bookingDAO;
+        this.trackingService = trackingService;
+    }
+
+    @Transactional  // if ANY exception, ALL changes roll back
+    public Booking createBooking(int userId, double weight) {
+        // Step 1: Generate tracking number
+        String trackingNum = trackingService.generateTrackingNumber();
+
+        // Step 2: Create booking
+        Booking booking = new Booking();
+        booking.setUserId(userId);
+        booking.setTrackingNumber(trackingNum);
+        booking.setStatus("PENDING");
+        booking.setWeight(weight);
+        bookingDAO.save(booking);
+
+        // Step 3: Update user's booking count
+        // If this fails, Step 2 also rolls back!
+        bookingDAO.incrementUserBookingCount(userId);
+
+        return booking;
+    }
+
+    @Transactional
+    public void cancelBooking(String trackingNumber) {
+        Booking booking = bookingDAO.findByTrackingNumber(trackingNumber);
+        if (!"PENDING".equals(booking.getStatus())) {
+            throw new IllegalStateException("Can only cancel PENDING bookings");
+        }
+        bookingDAO.updateStatus(trackingNumber, "CANCELLED");
+        bookingDAO.decrementUserBookingCount(booking.getUserId());
+    }
+}</code></pre>
+  </div>
+
+  <h3>How @Transactional Works</h3>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Method called</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">BEGIN TRANSACTION</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Execute method body</div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">Success?
+        <span class="flow-sub">COMMIT</span>
+      </div>
+      <div class="flow-arrow">&nbsp; or &nbsp;</div>
+      <div class="flow-box red">Exception?
+        <span class="flow-sub">ROLLBACK</span>
+      </div>
+    </div>
+    <div class="flow-label">Spring wraps the method in a proxy that manages the transaction.</div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">@Transactional Gotchas</div>
+    <ul>
+      <li>Only works on <strong>public</strong> methods (Spring proxies can't intercept private/protected).</li>
+      <li>By default, rolls back on <strong>unchecked</strong> exceptions (RuntimeException). For checked exceptions, use <code>@Transactional(rollbackFor = Exception.class)</code>.</li>
+      <li>Self-invocation doesn't work: if method A calls method B in the same class, B's <code>@Transactional</code> is ignored because the proxy isn't involved.</li>
+    </ul>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>BookingService.createBooking()</code> is transactional. If generating the tracking number succeeds but saving the booking fails, the tracking number allocation also rolls back. No orphaned tracking numbers.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: EXERCISES                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 09</div>
+  <h2>Exercises</h2>
+  <p class="section-desc">Convert raw JDBC to Spring JDBC and practice transactions.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Convert UserDAO</div>
+    <p>Take any raw JDBC DAO you've written and convert it to use <code>JdbcTemplate</code>. Compare the line counts. It should be at least 50% fewer lines.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Custom RowMapper</div>
+    <p>Create a <code>BookingRowMapper</code> that maps a JOIN query result: <code>SELECT b.*, u.name as user_name FROM bookings b JOIN users u ON b.user_id = u.id</code>. The <code>Booking</code> object should have a <code>userName</code> field populated from the join.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; NamedParameterJdbcTemplate Search</div>
+    <p>Build a <code>searchBookings()</code> method that accepts optional filters: status, minWeight, maxWeight, userId. Use <code>NamedParameterJdbcTemplate</code> and dynamically build the WHERE clause based on which parameters are provided.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; @Transactional Transfer</div>
+    <p>Create a <code>transferBooking(String trackingNumber, int fromUserId, int toUserId)</code> method that moves a booking from one user to another. It must update the booking's <code>user_id</code> AND decrement the old user's count AND increment the new user's count. Wrap it in <code>@Transactional</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; BeanPropertyRowMapper</div>
+    <p>Create a new <code>ParcelEvent</code> table (id, booking_id, event_type, description, event_time). Write a DAO using <code>BeanPropertyRowMapper</code> instead of a custom RowMapper. Verify that underscore column names auto-map to camelCase fields.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="spring-mvc.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Spring MVC</span>
+  </a>
+  <a href="nimbus-web-app.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Nimbus Web App</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

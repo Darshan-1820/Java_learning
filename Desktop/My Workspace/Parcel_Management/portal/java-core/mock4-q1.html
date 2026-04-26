@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Brand Service | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link active"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 4 &mdash; Question 1</div>
+    <h2>Mobile Brand Service</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge major">Major</span>
+      <span class="time-estimate">55&ndash;75 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Create the below classes and attributes:</p>
+
+      <p><strong>Brand:</strong></p>
+      <ul>
+        <li><code>brandId</code>: Integer</li>
+        <li><code>brandName</code>: String</li>
+        <li><code>mobileList</code>: List&lt;Mobile&gt;</li>
+      </ul>
+
+      <p><strong>Mobile:</strong></p>
+      <ul>
+        <li><code>modelNumber</code>: Integer</li>
+        <li><code>modelName</code>: String</li>
+        <li><code>price</code>: Double</li>
+        <li><code>storageCapacity</code>: Integer</li>
+      </ul>
+
+      <p>Implement two methods in a Solution class:</p>
+
+      <p><strong>Method 1: <code>calculateAveragePrice(List&lt;Brand&gt; brands)</code></strong></p>
+      <ul>
+        <li>Calculate the average price of mobiles for each brand.</li>
+        <li>Return a <strong>Map&lt;String, Double&gt;</strong> of brand names to their average mobile price.</li>
+        <li>If average cannot be determined (brand has no mobiles), throw custom exception <code>AverageCannotBeCalculatedException</code> with message <code>"Average cannot be calculated"</code>.</li>
+      </ul>
+
+      <p><strong>Method 2: <code>findMobilesInStorageRange(List&lt;Brand&gt; brands, int minStorage, int maxStorage)</code></strong></p>
+      <ul>
+        <li>Returns a list of mobiles whose storage capacity falls within the given range (inclusive).</li>
+        <li>If no mobile found, throw custom exception <code>NoMobileDetailsFoundException</code> with message <code>"No mobile found"</code>.</li>
+      </ul>
+
+      <p><strong>Output format for Method 1:</strong></p>
+      <pre>Average Price of each brand:
+&lt;BrandName&gt;: &lt;Average&gt;</pre>
+
+      <p><strong>Output format for Method 2:</strong></p>
+      <pre>Mobiles in the storage range (&lt;min&gt;GB - &lt;max&gt;GB):
+Brand: &lt;BrandName&gt;, Model Number: &lt;ModelNumber&gt;, Model Name: &lt;ModelName&gt;, Price: &lt;Price&gt;, Storage: &lt;Storage&gt;GB</pre>
+
+      <p><strong>Notes:</strong> Maintain insertion order. Case insensitive comparisons. Catch exceptions in main and print: <code>AverageCannotBeCalculatedException: Average cannot be calculated</code> or <code>NoMobileDetailsFoundException: No mobile found</code>.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is a <strong>heavy</strong> PRA major question. It combines composition, Maps, custom exceptions, and nested loops &mdash; all in one.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Concepts Tested</div>
+      <ul>
+        <li><strong>Composition</strong> &mdash; Brand HAS a List&lt;Mobile&gt; (one-to-many relationship)</li>
+        <li><strong>Map return type</strong> &mdash; Method 1 returns a Map, not void. Main prints it.</li>
+        <li><strong>TWO custom exceptions</strong> &mdash; Each method throws a different one</li>
+        <li><strong>LinkedHashMap</strong> &mdash; "Insertion order" means you need LinkedHashMap, not HashMap</li>
+        <li><strong>Nested loops</strong> &mdash; Loop brands, then loop each brand's mobiles</li>
+      </ul>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">Mobile Class<span class="flow-sub">modelNumber + modelName + price + storage</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box green">Brand Class<span class="flow-sub">brandId + brandName + List&lt;Mobile&gt;</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">Solution Class<span class="flow-sub">2 methods + 2 exceptions + main</span></div>
+      </div>
+      <div class="flow-label">Composition: Brand contains a List of Mobile objects</div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Key Insight: "return Map, not void"</div>
+      <p>The method returns data to main. Main then prints it. This is different from previous questions where methods printed directly. If you make it <code>void</code> and print inside the method, you lose control over exception handling in main.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: EXCEPTION CLASSES ===== -->
+  <div class="content-section" id="exceptions">
+    <div class="section-tag">Exceptions</div>
+    <h2>Custom Exception Classes</h2>
+    <p class="section-desc">Two custom exceptions, both following the same pattern: extend Exception, parameterized constructor with message, call <code>super(msg)</code>.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Exception Classes</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class AverageCannotBeCalculatedException extends Exception {
+    public AverageCannotBeCalculatedException(String msg) {
+        super(msg);
+    }
+}
+
+class NoMobileDetailsFoundException extends Exception {
+    public NoMobileDetailsFoundException(String msg) {
+        super(msg);
+    }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: MOBILE CLASS ===== -->
+  <div class="content-section" id="mobile-class">
+    <div class="section-tag">Class 1</div>
+    <h2>Mobile Class</h2>
+    <p class="section-desc">Standard POJO. Four fields, parameterized constructor, all getters and setters.</p>
+
+    <div class="class-card">
+      <div class="class-card-header model">Mobile</div>
+      <div class="class-card-body">
+        <div class="class-card-section">Attributes</div>
+        <div class="class-card-item"><span class="type">Integer</span> <span class="name">modelNumber</span></div>
+        <div class="class-card-item"><span class="type">String</span> <span class="name">modelName</span></div>
+        <div class="class-card-item"><span class="type">Double</span> <span class="name">price</span></div>
+        <div class="class-card-item"><span class="type">Integer</span> <span class="name">storageCapacity</span></div>
+        <div class="class-card-section">Methods</div>
+        <div class="class-card-item"><span class="name">Mobile</span><span class="params">(Integer, String, Double, Integer)</span></div>
+        <div class="class-card-item"><span class="type">get/set</span> <span class="name">for each attribute</span></div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Mobile.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Mobile {
+    private Integer modelNumber;
+    private String modelName;
+    private Double price;
+    private Integer storageCapacity;
+
+    public Mobile(Integer modelNumber, String modelName, Double price, Integer storageCapacity) {
+        this.modelNumber = modelNumber;
+        this.modelName = modelName;
+        this.price = price;
+        this.storageCapacity = storageCapacity;
+    }
+
+    public Integer getModelNumber() { return modelNumber; }
+    public void setModelNumber(Integer modelNumber) { this.modelNumber = modelNumber; }
+    public String getModelName() { return modelName; }
+    public void setModelName(String modelName) { this.modelName = modelName; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+    public Integer getStorageCapacity() { return storageCapacity; }
+    public void setStorageCapacity(Integer storageCapacity) { this.storageCapacity = storageCapacity; }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: BRAND CLASS ===== -->
+  <div class="content-section" id="brand-class">
+    <div class="section-tag">Class 2</div>
+    <h2>Brand Class</h2>
+    <p class="section-desc">Brand has a <code>List&lt;Mobile&gt;</code> &mdash; this is the composition. One brand owns many mobiles.</p>
+
+    <div class="class-card">
+      <div class="class-card-header model">Brand</div>
+      <div class="class-card-body">
+        <div class="class-card-section">Attributes</div>
+        <div class="class-card-item"><span class="type">Integer</span> <span class="name">brandId</span></div>
+        <div class="class-card-item"><span class="type">String</span> <span class="name">brandName</span></div>
+        <div class="class-card-item"><span class="type">List&lt;Mobile&gt;</span> <span class="name">mobileList</span> &larr; composition</div>
+        <div class="class-card-section">Methods</div>
+        <div class="class-card-item"><span class="name">Brand</span><span class="params">(Integer, String, List&lt;Mobile&gt;)</span></div>
+        <div class="class-card-item"><span class="type">get/set</span> <span class="name">for each attribute</span></div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Brand.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Brand {
+    private Integer brandId;
+    private String brandName;
+    private List&lt;Mobile&gt; mobileList;
+
+    public Brand(Integer brandId, String brandName, List&lt;Mobile&gt; mobileList) {
+        this.brandId = brandId;
+        this.brandName = brandName;
+        this.mobileList = mobileList;
+    }
+
+    public Integer getBrandId() { return brandId; }
+    public void setBrandId(Integer brandId) { this.brandId = brandId; }
+    public String getBrandName() { return brandName; }
+    public void setBrandName(String brandName) { this.brandName = brandName; }
+    public List&lt;Mobile&gt; getMobileList() { return mobileList; }
+    public void setMobileList(List&lt;Mobile&gt; mobileList) { this.mobileList = mobileList; }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: METHOD 1 ===== -->
+  <div class="content-section" id="method-1">
+    <div class="section-tag">Method 1</div>
+    <h2>calculateAveragePrice</h2>
+    <p class="section-desc">Returns a <code>Map&lt;String, Double&gt;</code> &mdash; brand name mapped to average price. Uses LinkedHashMap to maintain insertion order.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Method 1</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static Map&lt;String, Double&gt; calculateAveragePrice(List&lt;Brand&gt; brands)
+        throws AverageCannotBeCalculatedException {
+    Map&lt;String, Double&gt; result = new LinkedHashMap&lt;&gt;();
+    for (Brand b : brands) {
+        List&lt;Mobile&gt; mobiles = b.getMobileList();
+        if (mobiles == null || mobiles.isEmpty()) {
+            throw new AverageCannotBeCalculatedException("Average cannot be calculated");
+        }
+        double sum = 0;
+        for (Mobile m : mobiles) {
+            sum += m.getPrice();
+        }
+        result.put(b.getBrandName(), sum / mobiles.size());
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Map&lt;String, Double&gt; result = new LinkedHashMap&lt;&gt;();</div>
+          <div class="breakdown-explain">LinkedHashMap (not HashMap) because the question says "insertion order." HashMap does NOT guarantee order.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (mobiles == null || mobiles.isEmpty())</div>
+          <div class="breakdown-explain">If a brand has zero mobiles, we can't calculate average. Throw the exception immediately.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">sum += m.getPrice();</div>
+          <div class="breakdown-explain">Sum all mobile prices for this brand.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">result.put(b.getBrandName(), sum / mobiles.size());</div>
+          <div class="breakdown-explain">Average = total / count. Put into map with brand name as key.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">LinkedHashMap, NOT HashMap</div>
+      <p>If the question mentions "insertion order" or "order should be maintained," always use <code>LinkedHashMap</code>. A plain <code>HashMap</code> randomizes the order and your output will not match expected output &mdash; even if the values are correct.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: METHOD 2 ===== -->
+  <div class="content-section" id="method-2">
+    <div class="section-tag">Method 2</div>
+    <h2>findMobilesInStorageRange</h2>
+    <p class="section-desc">Returns a <code>List&lt;Mobile&gt;</code> of mobiles whose storage capacity is within the given range (inclusive). The tricky part: main needs the brand name for printing, but the method only returns mobiles.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Method 2</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static List&lt;Mobile&gt; findMobilesInStorageRange(List&lt;Brand&gt; brands,
+        int minStorage, int maxStorage) throws NoMobileDetailsFoundException {
+    List&lt;Mobile&gt; result = new ArrayList&lt;&gt;();
+    for (Brand b : brands) {
+        for (Mobile m : b.getMobileList()) {
+            if (m.getStorageCapacity() &gt;= minStorage &amp;&amp; m.getStorageCapacity() &lt;= maxStorage) {
+                result.add(m);
+            }
+        }
+    }
+    if (result.isEmpty()) {
+        throw new NoMobileDetailsFoundException("No mobile found");
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">How Main Gets the Brand Name</div>
+      <p>The method returns <code>List&lt;Mobile&gt;</code> &mdash; but the output format needs the brand name too. In main, loop through brands and their mobiles again, checking if each mobile is in the result list. This way you have access to both the brand and the mobile for printing.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 8: MAIN METHOD ===== -->
+  <div class="content-section" id="main-method">
+    <div class="section-tag">Main</div>
+    <h2>Main Method &mdash; Reading Input &amp; Printing</h2>
+    <p class="section-desc">The main method reads brands with their mobiles, reads the storage range, calls both methods, and handles exceptions with try-catch.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; main method</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int brandCount = sc.nextInt();
+    List&lt;Brand&gt; brands = new ArrayList&lt;&gt;();
+
+    for (int i = 0; i &lt; brandCount; i++) {
+        int brandId = sc.nextInt();
+        sc.nextLine(); // consume newline
+        String brandName = sc.nextLine();
+        int mobileCount = sc.nextInt();
+        List&lt;Mobile&gt; mobiles = new ArrayList&lt;&gt;();
+
+        for (int j = 0; j &lt; mobileCount; j++) {
+            int modelNumber = sc.nextInt();
+            sc.nextLine(); // consume newline
+            String modelName = sc.nextLine();
+            double price = sc.nextDouble();
+            int storage = sc.nextInt();
+            mobiles.add(new Mobile(modelNumber, modelName, price, storage));
+        }
+
+        brands.add(new Brand(brandId, brandName, mobiles));
+    }
+
+    int minStorage = sc.nextInt();
+    int maxStorage = sc.nextInt();
+
+    // Method 1: Calculate average price per brand
+    try {
+        Map&lt;String, Double&gt; avgMap = calculateAveragePrice(brands);
+        System.out.println("Average Price of each brand:");
+        for (Map.Entry&lt;String, Double&gt; entry : avgMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    } catch (AverageCannotBeCalculatedException e) {
+        System.out.println("AverageCannotBeCalculatedException: " + e.getMessage());
+    }
+
+    // Method 2: Find mobiles in storage range
+    try {
+        List&lt;Mobile&gt; rangeResult = findMobilesInStorageRange(brands, minStorage, maxStorage);
+        System.out.println("Mobiles in the storage range (" + minStorage + "GB - " + maxStorage + "GB):");
+        for (Brand b : brands) {
+            for (Mobile m : b.getMobileList()) {
+                if (rangeResult.contains(m)) {
+                    System.out.println("Brand: " + b.getBrandName()
+                        + ", Model Number: " + m.getModelNumber()
+                        + ", Model Name: " + m.getModelName()
+                        + ", Price: " + m.getPrice()
+                        + ", Storage: " + m.getStorageCapacity() + "GB");
+                }
+            }
+        }
+    } catch (NoMobileDetailsFoundException e) {
+        System.out.println("NoMobileDetailsFoundException: " + e.getMessage());
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">The "Printing After Exception" Pattern</div>
+      <p>Look at hidden test case 1: the brand has 0 mobiles. Method 1 throws the exception. But Method 2 <strong>still runs</strong> because each method call is in its own try-catch. If you put both methods in the same try block, Method 2 would get skipped when Method 1 throws. <strong>Always use separate try-catch blocks for each method.</strong></p>
+    </div>
+
+    <h3>Input Reading Flow</h3>
+    <div class="diagram">
+      <pre>
+<strong style="color: #3B82F6;">brandCount</strong>       &larr; nextInt()
+For each brand:
+  <strong style="color: #3B82F6;">brandId</strong>        &larr; nextInt()
+  <em style="color: #64748B;">consume \n</em>     &larr; nextLine()
+  <strong style="color: #3B82F6;">brandName</strong>      &larr; nextLine()
+  <strong style="color: #22C55E;">mobileCount</strong>    &larr; nextInt()
+  For each mobile:
+    <strong style="color: #22C55E;">modelNumber</strong>  &larr; nextInt()
+    <em style="color: #64748B;">consume \n</em>   &larr; nextLine()
+    <strong style="color: #22C55E;">modelName</strong>    &larr; nextLine()
+    <strong style="color: #22C55E;">price</strong>        &larr; nextDouble()
+    <strong style="color: #22C55E;">storage</strong>      &larr; nextInt()
+
+After all brands:
+  <strong style="color: #F59E0B;">minStorage</strong>     &larr; nextInt()
+  <strong style="color: #F59E0B;">maxStorage</strong>     &larr; nextInt()
+      </pre>
+      <div class="diagram-label">Nested reading: brands contain mobiles, so the loop is nested too</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 9: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Copy-paste ready. All classes, exceptions, and methods in one file.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete Program</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+class AverageCannotBeCalculatedException extends Exception {
+    public AverageCannotBeCalculatedException(String msg) {
+        super(msg);
+    }
+}
+
+class NoMobileDetailsFoundException extends Exception {
+    public NoMobileDetailsFoundException(String msg) {
+        super(msg);
+    }
+}
+
+class Mobile {
+    private Integer modelNumber;
+    private String modelName;
+    private Double price;
+    private Integer storageCapacity;
+
+    public Mobile(Integer modelNumber, String modelName, Double price, Integer storageCapacity) {
+        this.modelNumber = modelNumber;
+        this.modelName = modelName;
+        this.price = price;
+        this.storageCapacity = storageCapacity;
+    }
+
+    public Integer getModelNumber() { return modelNumber; }
+    public void setModelNumber(Integer modelNumber) { this.modelNumber = modelNumber; }
+    public String getModelName() { return modelName; }
+    public void setModelName(String modelName) { this.modelName = modelName; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+    public Integer getStorageCapacity() { return storageCapacity; }
+    public void setStorageCapacity(Integer storageCapacity) { this.storageCapacity = storageCapacity; }
+}
+
+class Brand {
+    private Integer brandId;
+    private String brandName;
+    private List&lt;Mobile&gt; mobileList;
+
+    public Brand(Integer brandId, String brandName, List&lt;Mobile&gt; mobileList) {
+        this.brandId = brandId;
+        this.brandName = brandName;
+        this.mobileList = mobileList;
+    }
+
+    public Integer getBrandId() { return brandId; }
+    public void setBrandId(Integer brandId) { this.brandId = brandId; }
+    public String getBrandName() { return brandName; }
+    public void setBrandName(String brandName) { this.brandName = brandName; }
+    public List&lt;Mobile&gt; getMobileList() { return mobileList; }
+    public void setMobileList(List&lt;Mobile&gt; mobileList) { this.mobileList = mobileList; }
+}
+
+public class Solution {
+
+    public static Map&lt;String, Double&gt; calculateAveragePrice(List&lt;Brand&gt; brands)
+            throws AverageCannotBeCalculatedException {
+        Map&lt;String, Double&gt; result = new LinkedHashMap&lt;&gt;();
+        for (Brand b : brands) {
+            List&lt;Mobile&gt; mobiles = b.getMobileList();
+            if (mobiles == null || mobiles.isEmpty()) {
+                throw new AverageCannotBeCalculatedException("Average cannot be calculated");
+            }
+            double sum = 0;
+            for (Mobile m : mobiles) {
+                sum += m.getPrice();
+            }
+            result.put(b.getBrandName(), sum / mobiles.size());
+        }
+        return result;
+    }
+
+    public static List&lt;Mobile&gt; findMobilesInStorageRange(List&lt;Brand&gt; brands,
+            int minStorage, int maxStorage) throws NoMobileDetailsFoundException {
+        List&lt;Mobile&gt; result = new ArrayList&lt;&gt;();
+        for (Brand b : brands) {
+            for (Mobile m : b.getMobileList()) {
+                if (m.getStorageCapacity() &gt;= minStorage &amp;&amp; m.getStorageCapacity() &lt;= maxStorage) {
+                    result.add(m);
+                }
+            }
+        }
+        if (result.isEmpty()) {
+            throw new NoMobileDetailsFoundException("No mobile found");
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int brandCount = sc.nextInt();
+        List&lt;Brand&gt; brands = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; brandCount; i++) {
+            int brandId = sc.nextInt();
+            sc.nextLine();
+            String brandName = sc.nextLine();
+            int mobileCount = sc.nextInt();
+            List&lt;Mobile&gt; mobiles = new ArrayList&lt;&gt;();
+
+            for (int j = 0; j &lt; mobileCount; j++) {
+                int modelNumber = sc.nextInt();
+                sc.nextLine();
+                String modelName = sc.nextLine();
+                double price = sc.nextDouble();
+                int storage = sc.nextInt();
+                mobiles.add(new Mobile(modelNumber, modelName, price, storage));
+            }
+
+            brands.add(new Brand(brandId, brandName, mobiles));
+        }
+
+        int minStorage = sc.nextInt();
+        int maxStorage = sc.nextInt();
+
+        // Method 1: Calculate average price per brand
+        try {
+            Map&lt;String, Double&gt; avgMap = calculateAveragePrice(brands);
+            System.out.println("Average Price of each brand:");
+            for (Map.Entry&lt;String, Double&gt; entry : avgMap.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+        } catch (AverageCannotBeCalculatedException e) {
+            System.out.println("AverageCannotBeCalculatedException: " + e.getMessage());
+        }
+
+        // Method 2: Find mobiles in storage range
+        try {
+            List&lt;Mobile&gt; rangeResult = findMobilesInStorageRange(brands, minStorage, maxStorage);
+            System.out.println("Mobiles in the storage range (" + minStorage + "GB - " + maxStorage + "GB):");
+            for (Brand b : brands) {
+                for (Mobile m : b.getMobileList()) {
+                    if (rangeResult.contains(m)) {
+                        System.out.println("Brand: " + b.getBrandName()
+                            + ", Model Number: " + m.getModelNumber()
+                            + ", Model Name: " + m.getModelName()
+                            + ", Price: " + m.getPrice()
+                            + ", Storage: " + m.getStorageCapacity() + "GB");
+                    }
+                }
+            }
+        } catch (NoMobileDetailsFoundException e) {
+            System.out.println("NoMobileDetailsFoundException: " + e.getMessage());
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 10: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Normal Flow</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">2
+101
+Samsung
+2
+1001
+Galaxy S21
+20300
+128
+1002
+Galaxy Note 20
+34000
+256
+102
+Apple
+2
+2001
+Iphone 13
+60000
+256
+2002
+Iphone 14
+70400
+64
+128
+256</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Average Price of each brand:
+Samsung: 27150.0
+Apple: 65200.0
+Mobiles in the storage range (128GB - 256GB):
+Brand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB
+Brand: Samsung, Model Number: 1002, Model Name: Galaxy Note 20, Price: 34000.0, Storage: 256GB
+Brand: Apple, Model Number: 2001, Model Name: Iphone 13, Price: 60000.0, Storage: 256GB</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; No Mobiles in Range</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">2
+101
+Samsung
+2
+1001
+Galaxy S21
+20300
+128
+1002
+Galaxy Note 20
+34000
+256
+102
+Apple
+2
+2001
+Iphone 13
+60000
+256
+2002
+Iphone 14
+70400
+64
+128
+23</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Average Price of each brand:
+Samsung: 27150.0
+Apple: 65200.0
+NoMobileDetailsFoundException: No mobile found</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 3 &mdash; Brand with No Mobiles (Hidden)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">1
+101
+OnePlus
+0
+64
+256</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">AverageCannotBeCalculatedException: Average cannot be calculated
+Mobiles in the storage range (64GB - 256GB):
+NoMobileDetailsFoundException: No mobile found</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 11: COMMON MISTAKES ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong: void return type</div>
+        <div class="comparison-body">
+          <p><code>public static void calculateAveragePrice(...)</code></p>
+          <p style="color: var(--red);">If the method returns void, main cannot get the Map to print it. You end up printing inside the method, which makes exception handling messy.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct: Map return type</div>
+        <div class="comparison-body">
+          <p><code>public static Map&lt;String, Double&gt; calculateAveragePrice(...)</code></p>
+          <p style="color: var(--green);">Method returns data. Main prints it. Exception handling stays clean in main's try-catch.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Using <code>HashMap</code> instead of <code>LinkedHashMap</code></td>
+        <td>Output order is random &mdash; brands print in wrong order</td>
+        <td>Use <code>LinkedHashMap</code> when insertion order matters</td>
+      </tr>
+      <tr>
+        <td>Making method <code>void</code> instead of return type</td>
+        <td>Cannot get the result in main, cannot print after header text</td>
+        <td>Read the return type carefully: <code>Map&lt;String, Double&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Both methods in single try-catch</td>
+        <td>If Method 1 throws, Method 2 never executes</td>
+        <td>Use <strong>separate</strong> try-catch blocks for each method call</td>
+      </tr>
+      <tr>
+        <td>Throwing exception in main instead of method</td>
+        <td>The method signature says <code>throws</code> &mdash; the method must throw</td>
+        <td><code>throw</code> inside method, <code>catch</code> inside main</td>
+      </tr>
+      <tr>
+        <td>Printing "Mobiles in the storage range..." before try</td>
+        <td>Header prints even when exception is thrown</td>
+        <td>Print the header <strong>inside</strong> the try block, after successful method call</td>
+      </tr>
+    </table>
+
+    <div class="callout warning">
+      <div class="callout-title">"throw" vs "catch" Confusion</div>
+      <p>The method <strong>throws</strong> the exception (creates it and sends it up). The main method <strong>catches</strong> the exception (receives it and prints the message). Never catch inside the method itself &mdash; that defeats the purpose. The whole point is that main decides what to do when something goes wrong.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock3-q2.html"><span class="nav-label">Previous</span><span class="nav-title">Area-Perimeter</span></a>
+    <a href="mock4-q2.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Consecutive Vowels</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

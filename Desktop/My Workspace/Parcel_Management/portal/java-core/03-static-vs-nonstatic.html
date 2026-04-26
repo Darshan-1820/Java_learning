@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Static vs Non-Static Methods | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link active"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECTION 1: STATIC METHODS IN PRA ==================== -->
+  <section class="content-section" id="static-methods">
+    <div class="section-tag">Section 01</div>
+    <h2>Static Methods in PRA</h2>
+    <p class="section-desc">In PRA, the methods you write inside the Solution class are almost always <code>static</code>. This is the most important keyword to understand for your exam methods.</p>
+
+    <h3>What Does <code>static</code> Mean?</h3>
+    <p>A <code>static</code> method belongs to the <strong>class itself</strong>, not to any specific object. You can call it directly without creating an object of that class.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">StaticCall.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// Static method — call directly on the class
+double avg = Solution.averageOfPositiveGains(investors);
+// No need to write: Solution s = new Solution(); s.averageOfPositiveGains(...)
+
+// Non-static method — need an object first
+Investor inv = new Investor(1, "Simon", 5000);
+String name = inv.getInvestorName(); // called ON the object</code></pre>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy — Static vs Non-Static</div>
+      <p>Think of a <strong>calculator app</strong> on your phone. The "calculate" function is <strong>static</strong> — you open the app and use it directly. You do not need to "create a calculator object" first.</p>
+      <p>Now think of a <strong>contact</strong> in your phone. To call someone, you need a specific contact (object) first — you cannot just "call" without knowing WHO. That is <strong>non-static</strong> — it needs an instance.</p>
+    </div>
+
+    <h3>Why Are PRA Methods Static?</h3>
+    <p>In PRA, your Solution class is a <strong>utility class</strong> — it does not hold any data of its own. It takes a collection of objects, processes them, and returns a result. Think of it as a tool: the tool does not own the data, it just works on whatever you give it.</p>
+    <p>Since the Solution class has no fields, there is no reason to create an object of it. So the methods are <code>static</code> — you call them directly from <code>main</code>.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Key Insight</div>
+      <p>The <code>main</code> method itself is <code>static</code>. A static method can only directly call other <strong>static</strong> methods in the same class. This is why your PRA solution methods MUST be static — otherwise <code>main</code> cannot call them without creating a Solution object.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: ANATOMY OF A PRA METHOD ==================== -->
+  <section class="content-section" id="method-anatomy">
+    <div class="section-tag">Section 02</div>
+    <h2>The PRA Method Signature — Anatomy</h2>
+    <p class="section-desc">Every word in a PRA method signature has a specific purpose. Let us break down a real example piece by piece.</p>
+
+    <div class="diagram">
+      <pre>
+public static double averageOfPositiveGains(Collection&lt;Investor&gt; investors)
+│       │      │       │                      │
+│       │      │       │                      └── Parameter: the data you work with
+│       │      │       │                          (a collection of Investor objects)
+│       │      │       │
+│       │      │       └── Method name: describes what it does
+│       │      │           (camelCase, always descriptive)
+│       │      │
+│       │      └── Return type: what the method gives back
+│       │          (double = a decimal number)
+│       │
+│       └── Static: belongs to the class, not an object
+│           (can call without creating Solution object)
+│
+└── Public: accessible from anywhere
+    (main method can call this)
+      </pre>
+    </div>
+
+    <h3>Reading a Method Signature Like a Sentence</h3>
+    <p>You can read any PRA method signature as an English sentence:</p>
+
+    <div class="callout template">
+      <div class="callout-title">Reading Template</div>
+      <p><code>public static [RETURN] [NAME]([PARAMETER])</code></p>
+      <p>Reads as: "This method takes [PARAMETER], does something, and gives back [RETURN]."</p>
+    </div>
+
+    <p>Examples:</p>
+    <ul>
+      <li><code>public static double averageOfPositiveGains(Collection&lt;Investor&gt; investors)</code><br>
+        "Takes a collection of investors, and gives back a double (the average of positive gains)."</li>
+      <li><code>public static Collection&lt;String&gt; negativeGainsInvestorNames(Collection&lt;Investor&gt; investors)</code><br>
+        "Takes a collection of investors, and gives back a collection of strings (names of investors with negative gains)."</li>
+      <li><code>public static Double findTotalOfPerformanceAverage(Collection&lt;Cricketer&gt; cricketers, String countryName)</code><br>
+        "Takes a collection of cricketers and a country name, and gives back a Double (total performance average for that country)."</li>
+    </ul>
+
+    <div class="callout warning">
+      <div class="callout-title">Watch Out — Double vs double</div>
+      <p><code>double</code> (lowercase) is a primitive type — it can only hold a number, never <code>null</code>.</p>
+      <p><code>Double</code> (uppercase) is a wrapper class — it can hold a number OR <code>null</code>.</p>
+      <p>Some PRA methods return <code>null</code> when no match is found. In those cases, the return type is <code>Double</code> (uppercase). If the question says "return null if not found", use <code>Double</code>.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: RETURN TYPES IN PRA ==================== -->
+  <section class="content-section" id="return-types">
+    <div class="section-tag">Section 03</div>
+    <h2>Return Types in PRA</h2>
+    <p class="section-desc">PRA methods return one of a few types. Knowing what to return determines how you structure the method body.</p>
+
+    <table class="info-table">
+      <tr>
+        <th>Return Type</th>
+        <th>When Used</th>
+        <th>Example Method</th>
+        <th>What You Do Inside</th>
+      </tr>
+      <tr>
+        <td><code>double</code></td>
+        <td>Averages, sums, totals</td>
+        <td><code>averageOfPositiveGains()</code></td>
+        <td>Calculate sum and count, return <code>sum / count</code></td>
+      </tr>
+      <tr>
+        <td><code>Double</code></td>
+        <td>Aggregates that can return null</td>
+        <td><code>findTotalOfPerformanceAverage()</code></td>
+        <td>Same as double, but return <code>null</code> if no match found</td>
+      </tr>
+      <tr>
+        <td><code>Collection&lt;T&gt;</code></td>
+        <td>Filtered lists of objects</td>
+        <td><code>findBooksByGenre()</code></td>
+        <td>Create result list, loop and filter, return list</td>
+      </tr>
+      <tr>
+        <td><code>Collection&lt;String&gt;</code></td>
+        <td>Filtered lists of names/strings</td>
+        <td><code>negativeGainsInvestorNames()</code></td>
+        <td>Create String list, extract names from matching objects</td>
+      </tr>
+      <tr>
+        <td><code>void</code></td>
+        <td>Print directly (rare in PRA)</td>
+        <td>Uncommon — most PRA methods return something</td>
+        <td>Print inside the method instead of returning</td>
+      </tr>
+    </table>
+
+    <h3>How Return Type Determines Method Structure</h3>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Returns a Number (double/Double)</div>
+        <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary);">
+double sum = 0;
+int count = 0;
+for (Item item : list) {
+    if (condition) {
+        sum += item.getValue();
+        count++;
+    }
+}
+return sum / count;
+</pre>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Returns a Collection</div>
+        <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary);">
+ArrayList&lt;Item&gt; result = new ArrayList&lt;&gt;();
+for (Item item : list) {
+    if (condition) {
+        result.add(item);
+    }
+}
+return result;
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>Look at the return type FIRST when reading the method signature. It tells you the entire structure of the method:</p>
+      <ul>
+        <li>Returns <code>double</code>? You need <code>sum</code> and <code>count</code> variables.</li>
+        <li>Returns <code>Collection</code>? You need a <code>new ArrayList&lt;&gt;()</code> to collect results.</li>
+        <li>Returns <code>null</code> in some case? Use <code>Double</code> (uppercase) as return type.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: NON-STATIC METHODS ==================== -->
+  <section class="content-section" id="non-static">
+    <div class="section-tag">Section 04</div>
+    <h2>Non-Static Methods</h2>
+    <p class="section-desc">Non-static methods are called on a specific object instance. In PRA, the most common non-static methods are the getters and setters you wrote in your POJO class.</p>
+
+    <h3>Where Non-Static Methods Appear in PRA</h3>
+    <p>You rarely write non-static methods yourself in the Solution class. But you USE them constantly:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">NonStaticUsage.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// Inside your static method, you CALL non-static methods on objects:
+for (Investor inv : investors) {
+    // inv.getGains() is a NON-STATIC method
+    // It is called ON the specific investor object "inv"
+    if (inv.getGains() > 0) {
+        sum += inv.getGains();  // non-static: called on "inv"
+        count++;
+    }
+}
+
+// inv.getGains()       → non-static (called on object)
+// Solution.calculate() → static (called on class)</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Key Distinction</div>
+      <p>In PRA, you <strong>write</strong> static methods (in Solution class) but you <strong>call</strong> non-static methods (getters on POJO objects). Understanding both is essential because they work together in every solution.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: STATIC VS NON-STATIC COMPARISON ==================== -->
+  <section class="content-section" id="comparison">
+    <div class="section-tag">Section 05</div>
+    <h2>Static vs Non-Static — Side by Side</h2>
+    <p class="section-desc">A complete comparison to cement the difference in your mind.</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Static Methods</div>
+        <div class="comparison-body">
+          <ul>
+            <li><strong>Belongs to:</strong> The class itself</li>
+            <li><strong>Called with:</strong> <code>ClassName.method()</code></li>
+            <li><strong>Needs object?</strong> No</li>
+            <li><strong>Can access:</strong> Only static members, and parameters</li>
+            <li><strong>PRA usage:</strong> Solution methods (filter, aggregate)</li>
+            <li><strong>Example:</strong> <code>Solution.averageOfPositiveGains(list)</code></li>
+            <li><strong>Think of it as:</strong> A tool in a toolbox — the tool does not own data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Non-Static Methods</div>
+        <div class="comparison-body">
+          <ul>
+            <li><strong>Belongs to:</strong> A specific object instance</li>
+            <li><strong>Called with:</strong> <code>object.method()</code></li>
+            <li><strong>Needs object?</strong> Yes, must create with <code>new</code></li>
+            <li><strong>Can access:</strong> Object's own fields (<code>this.field</code>)</li>
+            <li><strong>PRA usage:</strong> Getters, setters on POJO class</li>
+            <li><strong>Example:</strong> <code>investor.getGains()</code></li>
+            <li><strong>Think of it as:</strong> A person's skill — the person (object) uses it</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>Quick Memory Rule</h3>
+    <div class="diagram">
+      <pre>
+Static  → "Shared" — one copy, everyone uses it, no object needed
+          Example: Math.sqrt(16) — you don't create a Math object
+
+Non-static → "Personal" — each object has its own copy
+             Example: inv.getName() — each investor has their own name
+      </pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6: PRA METHOD TEMPLATES ==================== -->
+  <section class="content-section" id="templates">
+    <div class="section-tag">Section 06</div>
+    <h2>PRA Method Templates — Copy-Paste Ready</h2>
+    <p class="section-desc">These two templates cover approximately 80% of all PRA methods. Memorize them and adapt them to any question.</p>
+
+    <h3>Template 1: Filter Method</h3>
+    <p>Use when the question says: "find all items that match...", "return items where...", "get a list of..."</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">FilterTemplate.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// FILTER TEMPLATE — returns matching items from a collection
+public static Collection&lt;ClassName&gt; filterByCondition(
+        Collection&lt;ClassName&gt; list, Type filterValue) {
+
+    // Step 1: Create empty result list
+    ArrayList&lt;ClassName&gt; result = new ArrayList&lt;&gt;();
+
+    // Step 2: Loop through every item
+    for (ClassName item : list) {
+
+        // Step 3: Check if this item matches the condition
+        // For String comparison, ALWAYS use equalsIgnoreCase
+        if (item.getField().equalsIgnoreCase(filterValue)) {
+            // Step 4: Add matching item to result
+            result.add(item);
+        }
+    }
+
+    // Step 5: Return the filtered list
+    return result;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">When to use what comparison</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">item.getField().equalsIgnoreCase(filterValue)</div>
+          <div class="breakdown-explain">Use for String comparisons. Handles "Fiction" == "fiction" == "FICTION".</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">item.getValue() > threshold</div>
+          <div class="breakdown-explain">Use for numeric comparisons (int, double). Works with >, <, >=, <=, ==.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">item.getField().contains(searchTerm)</div>
+          <div class="breakdown-explain">Use when checking if a string CONTAINS another string (partial match).</div>
+        </div>
+      </div>
+    </div>
+
+    <h4>Variation: Return Names Instead of Objects</h4>
+    <p>Sometimes PRA asks for a list of names (strings) instead of objects:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">FilterNamesTemplate.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// Returns names (strings) of matching items
+public static Collection&lt;String&gt; getMatchingNames(
+        Collection&lt;ClassName&gt; list) {
+
+    ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+    for (ClassName item : list) {
+        if (item.getValue() &lt; 0) { // condition
+            names.add(item.getName()); // add the NAME, not the object
+        }
+    }
+    return names;
+}</code></pre>
+    </div>
+
+    <h3>Template 2: Aggregate Method</h3>
+    <p>Use when the question says: "calculate the average...", "find the sum of...", "count the number of..."</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">AggregateTemplate.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// AGGREGATE TEMPLATE — calculates a value from a collection
+public static double calculateAggregate(Collection&lt;ClassName&gt; list) {
+
+    // Step 1: Initialize accumulators
+    double sum = 0;
+    int count = 0;
+
+    // Step 2: Loop through every item
+    for (ClassName item : list) {
+
+        // Step 3: Check condition (if any)
+        if (item.getValue() > 0) {
+            // Step 4: Accumulate
+            sum += item.getValue();
+            count++;
+        }
+    }
+
+    // Step 5: Calculate and return (WATCH for division by zero!)
+    return count > 0 ? sum / count : 0;
+}</code></pre>
+    </div>
+
+    <h4>Variation: Return null If No Match (uses Double wrapper)</h4>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">AggregateNullTemplate.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// Returns null if nothing matches — note the uppercase Double
+public static Double findTotal(Collection&lt;ClassName&gt; list, String searchValue) {
+
+    double total = 0;
+    boolean found = false;
+
+    for (ClassName item : list) {
+        if (item.getField().equalsIgnoreCase(searchValue)) {
+            total += item.getValue();
+            found = true;
+        }
+    }
+
+    // Return null if nothing matched, otherwise return the total
+    return found ? total : null;
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Strategy</div>
+      <p>When you read a PRA method signature, immediately identify which template to use:</p>
+      <ul>
+        <li>Returns <code>Collection&lt;...&gt;</code>? Use the <strong>Filter Template</strong>.</li>
+        <li>Returns <code>double</code> or <code>Double</code>? Use the <strong>Aggregate Template</strong>.</li>
+      </ul>
+      <p>Then just fill in the condition and the field names from the question. The structure never changes.</p>
+    </div>
+
+    <h3>Real PRA Method Examples</h3>
+    <p>Here is how the templates map to actual PRA methods:</p>
+
+    <table class="info-table">
+      <tr>
+        <th>PRA Method</th>
+        <th>Template</th>
+        <th>Condition</th>
+      </tr>
+      <tr>
+        <td><code>negativeGainsInvestorNames()</code></td>
+        <td>Filter (names)</td>
+        <td><code>gains &lt; 0</code></td>
+      </tr>
+      <tr>
+        <td><code>averageOfPositiveGains()</code></td>
+        <td>Aggregate (average)</td>
+        <td><code>gains &gt; 0</code></td>
+      </tr>
+      <tr>
+        <td><code>findBooksByGenre()</code></td>
+        <td>Filter (objects)</td>
+        <td><code>genre.equalsIgnoreCase(input)</code></td>
+      </tr>
+      <tr>
+        <td><code>findTotalOfPerformanceAverage()</code></td>
+        <td>Aggregate (total, nullable)</td>
+        <td><code>countryName.equalsIgnoreCase(input)</code></td>
+      </tr>
+    </table>
+
+    <div class="callout practice">
+      <div class="callout-title">Practice Exercise</div>
+      <p>Without looking at the templates above, write a static method:</p>
+      <p><code>public static Collection&lt;Student&gt; findToppers(Collection&lt;Student&gt; students, double threshold)</code></p>
+      <p>It should return all students whose <code>marks</code> are above the <code>threshold</code>.</p>
+      <p>Then write another:</p>
+      <p><code>public static double averageMarks(Collection&lt;Student&gt; students, String department)</code></p>
+      <p>It should return the average marks of students in the given department.</p>
+      <p>Both use the templates above — just change the field names and conditions.</p>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <div class="topic-nav">
+    <a href="02-class-blueprint.html">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">Class Blueprint</span>
+    </a>
+    <a href="04-collections-pra.html" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">Collections for PRA</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

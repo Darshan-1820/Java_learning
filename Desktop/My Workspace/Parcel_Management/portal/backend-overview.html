@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Overview — Build the Engine | Nimbus Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0B1120;
+      --bg-secondary: #131B2E;
+      --bg-card: #1A2340;
+      --bg-card-hover: #1F2B4D;
+      --bg-surface: #0F172A;
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --accent: #3B82F6;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --green: #22C55E;
+      --orange: #F59E0B;
+      --purple: #A855F7;
+      --red: #EF4444;
+      --cyan: #06B6D4;
+      --border: rgba(148, 163, 184, 0.1);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo svg { width: 32px; height: 32px; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-primary); }
+    .logo-badge { background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .header-right { display: flex; gap: 12px; }
+    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+    .header-link:hover { color: var(--text-primary); background: var(--bg-card); }
+    .header-link.active { color: var(--accent); background: var(--accent-glow); }
+
+    /* Hero */
+    .hero { padding: 60px 40px 40px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; }
+    .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; line-height: 1.2; margin-bottom: 12px; position: relative; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--text-secondary); font-size: 1rem; max-width: 650px; margin: 0 auto 12px; position: relative; }
+    .hero-stat { display: inline-flex; gap: 32px; margin-top: 20px; position: relative; }
+    .hero-stat-item { text-align: center; }
+    .hero-stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--accent); }
+    .hero-stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Content */
+    .content { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px; }
+
+    /* Section headers */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 48px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Architecture Diagram */
+    .arch-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+
+    .arch-top-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 0;
+    }
+
+    .arch-box {
+      text-align: center;
+      padding: 20px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .arch-box.frontend { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.25); }
+    .arch-box.backend { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.25); }
+    .arch-box.database { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.25); }
+
+    .arch-box-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .arch-box.frontend .arch-box-title { color: var(--accent); }
+    .arch-box.backend .arch-box-title { color: var(--green); }
+    .arch-box.database .arch-box-title { color: var(--purple); }
+
+    .arch-box-tech {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .arch-box-folder {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      padding: 0 12px;
+    }
+
+    .arch-phases {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      position: relative;
+    }
+    .arch-phases::before {
+      content: '';
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 16px;
+      background: var(--text-muted);
+    }
+
+    .arch-phase {
+      text-align: center;
+      padding: 14px 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-width: 140px;
+      position: relative;
+    }
+    .arch-phase::before {
+      content: '';
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 16px;
+      background: var(--border);
+    }
+    .arch-phase-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    .arch-phase:nth-child(1) .arch-phase-title { color: var(--accent); }
+    .arch-phase:nth-child(2) .arch-phase-title { color: var(--green); }
+    .arch-phase:nth-child(3) .arch-phase-title { color: var(--orange); }
+    .arch-phase-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .arch-connector {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      height: 24px;
+    }
+    .arch-connector::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: var(--text-muted);
+    }
+    .arch-connector-branches {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      height: 1px;
+    }
+    .arch-connector-branches::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 340px;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Tech Map Table */
+    .tech-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .tech-table thead th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 14px 16px;
+      text-align: left;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .tech-table tbody td {
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .tech-table tbody tr:last-child td { border-bottom: none; }
+    .tech-table tbody tr:hover { background: var(--bg-card-hover); }
+    .tech-table .sprint-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .tech-table .sprint-label.blue { color: var(--accent); }
+    .tech-table .sprint-label.green { color: var(--green); }
+    .tech-table .sprint-label.orange { color: var(--orange); }
+    .tech-table .sprint-label.purple { color: var(--purple); }
+    .tech-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin: 2px 2px;
+      background: rgba(148, 163, 184, 0.08);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    /* Sprint Guide Cards */
+    .sprint-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .sprint-card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .sprint-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+    .sprint-card.blue::before { background: var(--accent); }
+    .sprint-card.green::before { background: var(--green); }
+    .sprint-card.orange::before { background: var(--orange); }
+    .sprint-card.purple::before { background: var(--purple); }
+
+    .sprint-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(148, 163, 184, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+    .sprint-card-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .sprint-card.blue .sprint-card-num { color: var(--accent); }
+    .sprint-card.green .sprint-card-num { color: var(--green); }
+    .sprint-card.orange .sprint-card-num { color: var(--orange); }
+    .sprint-card.purple .sprint-card-num { color: var(--purple); }
+
+    .sprint-card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .sprint-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+      flex: 1;
+    }
+    .sprint-card-arrow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: all 0.25s;
+    }
+    .sprint-card.blue .sprint-card-arrow { color: var(--accent); }
+    .sprint-card.green .sprint-card-arrow { color: var(--green); }
+    .sprint-card.orange .sprint-card-arrow { color: var(--orange); }
+    .sprint-card.purple .sprint-card-arrow { color: var(--purple); }
+    .sprint-card:hover .sprint-card-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Credentials */
+    .creds-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .cred-card {
+      padding: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .cred-role {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cred-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .cred-pass {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    .footer { padding: 24px 40px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+
+    @media (max-width: 768px) {
+      .header { padding: 0 20px; }
+      .header-right { flex-wrap: wrap; gap: 6px; }
+      .hero { padding: 40px 20px 30px; }
+      .content { padding: 0 20px 60px; }
+      .arch-top-row { grid-template-columns: 1fr; gap: 12px; }
+      .arch-arrow { transform: rotate(90deg); padding: 4px 0; }
+      .arch-phases { flex-direction: column; align-items: center; }
+      .arch-phases::before { display: none; }
+      .arch-phase::before { display: none; }
+      .sprint-cards { grid-template-columns: 1fr; }
+      .creds-grid { grid-template-columns: 1fr; }
+      .tech-table { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="logo-text">nimbus</span>
+        <span class="logo-badge">Portal</span>
+      </a>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="sprint-2.html" class="header-link">Phase 2</a>
+      <a href="sprint-3.html" class="header-link">Phase 3</a>
+      <a href="sprint-4.html" class="header-link">Phase 4</a>
+      <a href="backend-overview.html" class="header-link active">Backend</a>
+      <a href="java-core.html" class="header-link">Java Core</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Backend &mdash; <span>Build the Engine</span></h1>
+    <p>You built the frontend. Now connect it to a real database, add server-side logic, and build REST APIs. Follow each sprint in order.</p>
+    <div class="hero-stat">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Sprints</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">45+</div>
+        <div class="hero-stat-label">Files</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Layers</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Technologies</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <!-- ARCHITECTURE OVERVIEW -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--accent);"></span>
+      Architecture Overview
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-top-row">
+        <div class="arch-box frontend">
+          <div class="arch-box-title">Frontend</div>
+          <div class="arch-box-tech">HTML / CSS / JS</div>
+          <div class="arch-box-folder">nimbus/</div>
+        </div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-box backend">
+          <div class="arch-box-title">Backend</div>
+          <div class="arch-box-tech">Java + Spring Boot</div>
+          <div class="arch-box-folder">nimbus-backend/</div>
+        </div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-box database">
+          <div class="arch-box-title">Database</div>
+          <div class="arch-box-tech">H2 / Derby</div>
+          <div class="arch-box-folder">embedded</div>
+        </div>
+      </div>
+
+      <div class="arch-connector"></div>
+      <div class="arch-connector-branches"></div>
+
+      <div class="arch-phases">
+        <div class="arch-phase">
+          <div class="arch-phase-title">Phase 2</div>
+          <div class="arch-phase-desc">Console + JDBC</div>
+        </div>
+        <div class="arch-phase">
+          <div class="arch-phase-title">Phase 3</div>
+          <div class="arch-phase-desc">Servlets + JSP + Spring</div>
+        </div>
+        <div class="arch-phase">
+          <div class="arch-phase-title">Phase 4</div>
+          <div class="arch-phase-desc">REST APIs + Frontend Integration</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TECHNOLOGY MAP -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--green);"></span>
+      Technology Map
+    </div>
+
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Sprint</th>
+          <th>What You Build</th>
+          <th>Technologies</th>
+          <th>Files</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="sprint-label blue">Sprint 1</span></td>
+          <td>Move frontend to Eclipse project</td>
+          <td>
+            <span class="tech-tag">Eclipse</span>
+            <span class="tech-tag">Maven</span>
+          </td>
+          <td>pom.xml, project setup</td>
+        </tr>
+        <tr>
+          <td><span class="sprint-label green">Sprint 2</span></td>
+          <td>Console app + database</td>
+          <td>
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">JDBC</span>
+            <span class="tech-tag">H2</span>
+            <span class="tech-tag">Collections</span>
+          </td>
+          <td>14 files (models, DAOs, utils, console)</td>
+        </tr>
+        <tr>
+          <td><span class="sprint-label orange">Sprint 3</span></td>
+          <td>Web app with server-side pages</td>
+          <td>
+            <span class="tech-tag">Servlets</span>
+            <span class="tech-tag">JSP</span>
+            <span class="tech-tag">Spring</span>
+            <span class="tech-tag">JPA</span>
+          </td>
+          <td>20 files (repos, services, servlets, JSPs)</td>
+        </tr>
+        <tr>
+          <td><span class="sprint-label purple">Sprint 4</span></td>
+          <td>REST APIs + connect frontend</td>
+          <td>
+            <span class="tech-tag">REST</span>
+            <span class="tech-tag">JSON</span>
+            <span class="tech-tag">Controllers</span>
+          </td>
+          <td>11 files (DTOs, controllers, storage-api.js)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SPRINT GUIDES -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--orange);"></span>
+      Sprint Guides
+    </div>
+
+    <div class="sprint-cards">
+      <a href="backend/sprint1-to-eclipse.html" class="sprint-card blue">
+        <div class="sprint-card-num">Sprint 01</div>
+        <h3>Eclipse Setup</h3>
+        <p>Eclipse setup, project creation, moving your frontend into a proper Maven project structure.</p>
+        <div class="sprint-card-arrow">
+          Start Sprint
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a href="backend/sprint2-guide.html" class="sprint-card green">
+        <div class="sprint-card-num">Sprint 02</div>
+        <h3>Console + JDBC</h3>
+        <p>Java console app connected to H2 database. Models, DAOs, database operations, collections.</p>
+        <div class="sprint-card-arrow">
+          Start Sprint
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a href="backend/sprint3-guide.html" class="sprint-card orange">
+        <div class="sprint-card-num">Sprint 03</div>
+        <h3>Servlets + Spring</h3>
+        <p>Web app with JSP pages, servlet controllers, Spring framework, JPA repositories.</p>
+        <div class="sprint-card-arrow">
+          Start Sprint
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a href="backend/sprint4-guide.html" class="sprint-card purple">
+        <div class="sprint-card-num">Sprint 04</div>
+        <h3>REST APIs</h3>
+        <p>REST endpoints, JSON responses, connect your HTML frontend to the Java backend.</p>
+        <div class="sprint-card-arrow">
+          Start Sprint
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <!-- DEMO CREDENTIALS -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--cyan);"></span>
+      Demo Credentials
+    </div>
+
+    <div class="creds-grid">
+      <div class="cred-card">
+        <div class="cred-role">Customer</div>
+        <div class="cred-id">260401-AK01</div>
+        <div class="cred-pass">Amit@123</div>
+      </div>
+      <div class="cred-card">
+        <div class="cred-role">Officer</div>
+        <div class="cred-id">OFF-001</div>
+        <div class="cred-pass">Officer@123</div>
+      </div>
+      <div class="cred-card">
+        <div class="cred-role">Support</div>
+        <div class="cred-id">SUP-001</div>
+        <div class="cred-pass">Support@123</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    Nimbus Learning Portal &mdash; Team Nimbus, 2026
+  </footer>
+
+</body>
+</html>

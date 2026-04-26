@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Variables, Data Types &amp; Operators &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link active"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is a Variable?                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="variables">
+  <div class="section-tag">Section 01</div>
+  <h2>What is a Variable?</h2>
+  <p class="section-desc">Every program needs to store data &mdash; a user's name, a parcel's weight, a price. Variables are how you give data a name so you can use it later.</p>
+
+  <h3>The Named Box Analogy</h3>
+
+  <p>Think of your computer's memory as a giant warehouse full of empty boxes. A <strong>variable</strong> is when you pick a box, write a label on it (the variable name), specify what kind of thing goes in it (the data type), and optionally put something inside (the value).</p>
+
+  <div class="diagram">
+    <pre>
+  MEMORY (warehouse)
+  ┌──────────────────────────────────────────────────┐
+  │                                                  │
+  │   ┌─────────────┐   ┌─────────────┐             │
+  │   │ parcelWeight │   │  userName   │             │
+  │   │ ─────────── │   │ ─────────── │             │
+  │   │  type: int   │   │ type: String│             │
+  │   │  value: 500  │   │ value: "Raj"│             │
+  │   └─────────────┘   └─────────────┘             │
+  │                                                  │
+  │   ┌─────────────┐   ┌─────────────┐             │
+  │   │  baseCost    │   │  isPaid     │             │
+  │   │ ─────────── │   │ ─────────── │             │
+  │   │ type: double │   │type: boolean│             │
+  │   │  value: 75.0 │   │ value: true │             │
+  │   └─────────────┘   └─────────────┘             │
+  │                                                  │
+  └──────────────────────────────────────────────────┘
+    </pre>
+    <div class="diagram-label">Variables are named boxes in memory, each with a type and a value</div>
+  </div>
+
+  <h3>Declaration, Initialization, and Assignment</h3>
+
+  <p>There are three distinct steps when working with variables. You can do them separately or combine them.</p>
+
+  <h4>1. Declaration &mdash; creating the box</h4>
+  <p>You tell Java: "I need a box that holds this type of data, and I want to call it this name." No value goes in yet &mdash; the box is empty.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Declaration</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int parWeightGram;         // box labeled "parWeightGram", holds integers
+String fullName;           // box labeled "fullName", holds text
+double parServiceCost;     // box labeled "parServiceCost", holds decimal numbers
+boolean isDelivered;       // box labeled "isDelivered", holds true/false</code></pre>
+  </div>
+
+  <h4>2. Initialization &mdash; putting the first value in</h4>
+  <p>The very first time you put a value into the box. This is called <strong>initialization</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Initialization</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">parWeightGram = 500;
+fullName = "Raj Kumar";
+parServiceCost = 75.0;
+isDelivered = false;</code></pre>
+  </div>
+
+  <h4>3. Assignment &mdash; changing the value later</h4>
+  <p>Any time after initialization, you can put a <strong>new</strong> value in the box. The old value is thrown away.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Assignment (changing the value)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">parWeightGram = 750;       // was 500, now 750. Old value gone.
+parServiceCost = 112.5;    // recalculated after weight change</code></pre>
+  </div>
+
+  <h4>Combined &mdash; declare + initialize in one line</h4>
+  <p>This is what you will do 95% of the time in real code:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Declare + Initialize (most common)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int parWeightGram = 500;
+String fullName = "Raj Kumar";
+double parServiceCost = 75.0;
+boolean isDelivered = false;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int parWeightGram = 500;</div>
+        <div class="breakdown-explain"><strong>int</strong> = data type (whole number). <strong>parWeightGram</strong> = variable name. <strong>=</strong> means "put this value in." <strong>500</strong> = the value. <strong>;</strong> = end of statement.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String fullName = "Raj Kumar";</div>
+        <div class="breakdown-explain"><strong>String</strong> = text data type (capital S &mdash; it is a class, not a primitive). Text goes in double quotes.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">double parServiceCost = 75.0;</div>
+        <div class="breakdown-explain"><strong>double</strong> = decimal number type. Used for money, measurements, anything with a fractional part.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">boolean isDelivered = false;</div>
+        <div class="breakdown-explain"><strong>boolean</strong> = true or false. Only two possible values. Named after mathematician George Boole.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every field in the Nimbus system is a variable. The <code>User</code> class has <code>String userId</code>, <code>String fullName</code>, <code>String email</code>, <code>String mobile</code>, <code>String password</code>, <code>String role</code>. The <code>Booking</code> class has <code>String bookingId</code>, <code>int parWeightGram</code>, <code>double parServiceCost</code>, <code>String parStatus</code>, <code>LocalDateTime parPickupTime</code>. Each of these is a named box holding one piece of data about a user or a booking.</p>
+  </div>
+
+  <h3>Variable Naming Rules</h3>
+
+  <p>Java has strict rules about what you can name a variable:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Rule</th><th>Valid</th><th>Invalid</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Must start with a letter, <code>$</code>, or <code>_</code></td>
+        <td><code>userName</code>, <code>_count</code>, <code>$price</code></td>
+        <td><code>1stUser</code>, <code>-name</code></td>
+      </tr>
+      <tr>
+        <td>Cannot use Java keywords</td>
+        <td><code>classType</code>, <code>intValue</code></td>
+        <td><code>class</code>, <code>int</code>, <code>public</code></td>
+      </tr>
+      <tr>
+        <td>Case sensitive</td>
+        <td><code>userId</code> and <code>UserId</code> are different</td>
+        <td>&mdash;</td>
+      </tr>
+      <tr>
+        <td>Use camelCase by convention</td>
+        <td><code>parWeightGram</code>, <code>parServiceCost</code></td>
+        <td><code>par_weight_gram</code>, <code>PARWEIGHT</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>You <strong>cannot</strong> use a variable before initializing it inside a method. Java will refuse to compile. Class fields get default values automatically (0, null, false), but local variables inside methods do not.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Primitive Data Types                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="primitives">
+  <div class="section-tag">Section 02</div>
+  <h2>Primitive Data Types</h2>
+  <p class="section-desc">Java has exactly <strong>8 primitive types</strong> &mdash; the basic building blocks for storing simple values. They are built into the language and stored directly in memory (on the stack).</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of primitives as standard-size containers at a warehouse. A small jar holds a byte. A bucket holds an int. A barrel holds a long. You pick the right container based on how much data you need to store. Using a barrel when a jar would do wastes space.</p>
+  </div>
+
+  <h3>The Complete Primitive Types Table</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Size</th>
+        <th>Range</th>
+        <th>Default</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>byte</code></td>
+        <td>1 byte (8 bits)</td>
+        <td>-128 to 127</td>
+        <td><code>0</code></td>
+        <td><code>byte statusCode = 1;</code></td>
+      </tr>
+      <tr>
+        <td><code>short</code></td>
+        <td>2 bytes (16 bits)</td>
+        <td>-32,768 to 32,767</td>
+        <td><code>0</code></td>
+        <td><code>short pinCode = 411;</code></td>
+      </tr>
+      <tr>
+        <td><code>int</code></td>
+        <td>4 bytes (32 bits)</td>
+        <td>-2.1 billion to 2.1 billion</td>
+        <td><code>0</code></td>
+        <td><code>int parWeightGram = 500;</code></td>
+      </tr>
+      <tr>
+        <td><code>long</code></td>
+        <td>8 bytes (64 bits)</td>
+        <td>-9.2 quintillion to 9.2 quintillion</td>
+        <td><code>0L</code></td>
+        <td><code>long trackingNum = 9876543210L;</code></td>
+      </tr>
+      <tr>
+        <td><code>float</code></td>
+        <td>4 bytes (32 bits)</td>
+        <td>~6-7 decimal digits precision</td>
+        <td><code>0.0f</code></td>
+        <td><code>float rating = 4.5f;</code></td>
+      </tr>
+      <tr>
+        <td><code>double</code></td>
+        <td>8 bytes (64 bits)</td>
+        <td>~15-16 decimal digits precision</td>
+        <td><code>0.0</code></td>
+        <td><code>double parServiceCost = 75.0;</code></td>
+      </tr>
+      <tr>
+        <td><code>char</code></td>
+        <td>2 bytes (16 bits)</td>
+        <td>0 to 65,535 (Unicode)</td>
+        <td><code>'\u0000'</code></td>
+        <td><code>char grade = 'A';</code></td>
+      </tr>
+      <tr>
+        <td><code>boolean</code></td>
+        <td>~1 bit (JVM-dependent)</td>
+        <td><code>true</code> or <code>false</code> only</td>
+        <td><code>false</code></td>
+        <td><code>boolean isDelivered = true;</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Which Type to Use When</h3>
+
+  <p>In practice, you will use <strong>four</strong> of these constantly and the others rarely:</p>
+
+  <ul>
+    <li><strong><code>int</code></strong> &mdash; your go-to for whole numbers. Parcel weight, counts, IDs as numbers.</li>
+    <li><strong><code>double</code></strong> &mdash; your go-to for decimals. Prices, rates, percentages. Never use <code>float</code> for money.</li>
+    <li><strong><code>boolean</code></strong> &mdash; any yes/no decision. Is the parcel delivered? Is the user an admin?</li>
+    <li><strong><code>char</code></strong> &mdash; rare. A single character. You will almost always use <code>String</code> instead.</li>
+  </ul>
+
+  <p><code>byte</code> and <code>short</code> are used when memory is extremely tight (embedded systems, processing millions of records). <code>long</code> is for numbers bigger than 2.1 billion (timestamps, large IDs). <code>float</code> is almost never used &mdash; <code>double</code> is better in every way.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses <code>int parWeightGram</code> for parcel weight (a 2.1 billion gram limit is more than enough &mdash; that is 2,100 metric tons). It uses <code>double parServiceCost</code> for the cost because money needs decimal precision. <code>String parStatus</code> holds status text like "BOOKED", "IN_TRANSIT", "DELIVERED". The <code>double baseRate = 0.15</code> stores the per-gram rate used in pricing calculations.</p>
+  </div>
+
+  <h3>Literal Suffixes</h3>
+
+  <p>Some types need a suffix letter so Java knows which type you mean:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Literal suffixes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">long trackingNumber = 9876543210L;   // L suffix = long (without L, compiler error)
+float rating = 4.5f;                 // f suffix = float (without f, Java treats 4.5 as double)
+double cost = 75.0;                  // no suffix needed, decimals are double by default
+int weight = 500;                    // no suffix needed, whole numbers are int by default</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p><code>long bigNumber = 9876543210;</code> will <strong>not compile</strong>. Java sees <code>9876543210</code> as an <code>int</code> literal, but that number exceeds int's max (2.1 billion). You must write <code>9876543210L</code> with the <code>L</code> suffix. Use uppercase <code>L</code>, not lowercase <code>l</code> &mdash; lowercase looks like the number <code>1</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Reference Types                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="reference-types">
+  <div class="section-tag">Section 03</div>
+  <h2>Reference Types</h2>
+  <p class="section-desc">Everything that is not one of the 8 primitives is a <strong>reference type</strong>. This includes Strings, arrays, and any object you create from a class. The difference is fundamental to understanding Java.</p>
+
+  <h3>Primitives vs References &mdash; Where They Live</h3>
+
+  <p>Primitives store the <strong>actual value</strong> directly in the variable. Reference types store an <strong>address</strong> (a pointer) that tells Java where the actual data lives in a separate area of memory called the <strong>heap</strong>.</p>
+
+  <div class="diagram">
+    <pre>
+  STACK (fast, small)                    HEAP (large, shared)
+  ┌───────────────────────┐              ┌──────────────────────────┐
+  │                       │              │                          │
+  │  parWeightGram = 500  │  (direct)    │                          │
+  │                       │              │   ┌──────────────────┐   │
+  │  parServiceCost = 75.0│  (direct)    │   │ "Raj Kumar"      │   │
+  │                       │              │   │ (String object)  │   │
+  │  fullName = 0x3A7F ───┼──────────────┼──&gt;│ chars: R,a,j,... │   │
+  │                       │              │   └──────────────────┘   │
+  │  isDelivered = true   │  (direct)    │                          │
+  │                       │              │   ┌──────────────────┐   │
+  │  booking = 0x5B2E ────┼──────────────┼──&gt;│ Booking object   │   │
+  │                       │              │   │ id: "BK001"      │   │
+  │                       │              │   │ weight: 500      │   │
+  └───────────────────────┘              │   └──────────────────┘   │
+                                         └──────────────────────────┘
+    </pre>
+    <div class="diagram-label">Primitives hold values directly. References hold addresses pointing to heap objects.</div>
+  </div>
+
+  <h3>Why This Matters</h3>
+
+  <p>When you copy a primitive, you get an independent copy. When you copy a reference, both variables point to the <strong>same</strong> object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Primitive copy vs Reference copy</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Primitive copy: independent
+int weightA = 500;
+int weightB = weightA;   // weightB gets its own copy of 500
+weightB = 750;           // changing B does NOT affect A
+System.out.println(weightA); // 500 (unchanged)
+
+// Reference copy: shared object
+int[] scoresA = {90, 85, 70};
+int[] scoresB = scoresA;     // scoresB points to the SAME array
+scoresB[0] = 100;            // changing via B also changes A
+System.out.println(scoresA[0]); // 100 (changed!)</code></pre>
+  </div>
+
+  <h3>Common Reference Types You Will Use</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Type</th><th>What It Holds</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>String</code></td>
+        <td>Text (sequence of characters)</td>
+        <td><code>String userId = "USR001";</code></td>
+      </tr>
+      <tr>
+        <td><code>Arrays</code></td>
+        <td>Fixed-size collection of same type</td>
+        <td><code>String[] statuses = {"BOOKED", "IN_TRANSIT", "DELIVERED"};</code></td>
+      </tr>
+      <tr>
+        <td><code>Objects</code></td>
+        <td>Instance of any class</td>
+        <td><code>User customer = new User("USR001", "Raj");</code></td>
+      </tr>
+      <tr>
+        <td><code>LocalDateTime</code></td>
+        <td>Date and time combined</td>
+        <td><code>LocalDateTime parPickupTime = LocalDateTime.now();</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout important">
+    <div class="callout-title">Key Difference</div>
+    <p>A reference variable can be <code>null</code> &mdash; meaning the box exists but it does not point to anything. Primitives can <strong>never</strong> be null. If you try to use a null reference (like calling <code>null.length()</code>), you get the dreaded <code>NullPointerException</code>.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>User</code> and <code>Booking</code> classes are reference types. When the service layer passes a <code>Booking</code> object to the DAO layer, it is passing the <strong>address</strong>, not a copy. If the DAO modifies the booking's status, the service layer sees the change too &mdash; because both are looking at the same object in memory.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Type Casting                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="type-casting">
+  <div class="section-tag">Section 04</div>
+  <h2>Type Casting</h2>
+  <p class="section-desc">Sometimes you need to convert a value from one type to another. Java handles some conversions automatically and requires you to be explicit about others.</p>
+
+  <h3>Implicit Casting (Widening) &mdash; Automatic</h3>
+
+  <p>When you go from a <strong>smaller</strong> type to a <strong>larger</strong> type, Java does it automatically because no data can be lost. It is like pouring water from a small glass into a large bucket &mdash; nothing spills.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">byte<span class="flow-sub">1 byte</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">short<span class="flow-sub">2 bytes</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">int<span class="flow-sub">4 bytes</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">long<span class="flow-sub">8 bytes</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">float<span class="flow-sub">4 bytes</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">double<span class="flow-sub">8 bytes</span></div>
+    </div>
+    <div class="flow-label">Widening direction: automatic, safe, no data loss</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Implicit (widening) casting</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int parWeightGram = 500;
+double weightAsDouble = parWeightGram;  // int &rarr; double: automatic
+System.out.println(weightAsDouble);     // 500.0
+
+// Nimbus pricing calculation:
+int weight = 500;
+double baseRate = 0.15;
+double cost = weight * baseRate;        // int * double = double (automatic)
+System.out.println(cost);              // 75.0</code></pre>
+  </div>
+
+  <h3>Explicit Casting (Narrowing) &mdash; Manual</h3>
+
+  <p>When you go from a <strong>larger</strong> type to a <strong>smaller</strong> type, Java refuses to do it automatically because data could be lost. You must explicitly tell Java: "I know I might lose data, do it anyway." This is like pouring from a bucket into a glass &mdash; some water will spill.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Explicit (narrowing) casting</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">double parServiceCost = 112.75;
+int roundedCost = (int) parServiceCost;  // explicit cast: double &rarr; int
+System.out.println(roundedCost);         // 112 (decimal part LOST, not rounded!)
+
+// Without the cast, this line would NOT compile:
+// int roundedCost = parServiceCost;     // ERROR: incompatible types
+
+double expressCost = 135.99;
+int displayCost = (int) expressCost;     // 135 &mdash; .99 is chopped off, not rounded
+// If you want proper rounding:
+int properRound = (int) Math.round(expressCost);  // 136</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Data Loss</div>
+    <p>Narrowing does <strong>not</strong> round &mdash; it <strong>truncates</strong> (chops off the decimal). <code>(int) 99.99</code> gives you <code>99</code>, not <code>100</code>. If you need rounding, use <code>Math.round()</code> first.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When calculating <code>parServiceCost = parWeightGram * baseRate</code>, the <code>int</code> weight is automatically widened to <code>double</code> before multiplication. No explicit cast needed. But if you wanted to display the cost without decimals (like "Rs 75" instead of "Rs 75.00"), you would need an explicit cast: <code>(int) parServiceCost</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Wrapper Classes                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="wrapper-classes">
+  <div class="section-tag">Section 05</div>
+  <h2>Wrapper Classes</h2>
+  <p class="section-desc">Every primitive type has a corresponding <strong>wrapper class</strong> &mdash; an object version of the primitive. They exist because some parts of Java only work with objects, not primitives.</p>
+
+  <h3>Primitive &harr; Wrapper Mapping</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Primitive</th><th>Wrapper Class</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>byte</code></td><td><code>Byte</code></td><td><code>Byte b = 10;</code></td></tr>
+      <tr><td><code>short</code></td><td><code>Short</code></td><td><code>Short s = 100;</code></td></tr>
+      <tr><td><code>int</code></td><td><code>Integer</code></td><td><code>Integer weight = 500;</code></td></tr>
+      <tr><td><code>long</code></td><td><code>Long</code></td><td><code>Long id = 9876543210L;</code></td></tr>
+      <tr><td><code>float</code></td><td><code>Float</code></td><td><code>Float rating = 4.5f;</code></td></tr>
+      <tr><td><code>double</code></td><td><code>Double</code></td><td><code>Double cost = 75.0;</code></td></tr>
+      <tr><td><code>char</code></td><td><code>Character</code></td><td><code>Character grade = 'A';</code></td></tr>
+      <tr><td><code>boolean</code></td><td><code>Boolean</code></td><td><code>Boolean active = true;</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why Do Wrapper Classes Exist?</h3>
+
+  <p>Java's generics and collections (like <code>ArrayList</code>, <code>HashMap</code>) only work with <strong>objects</strong>. You cannot write <code>ArrayList&lt;int&gt;</code> &mdash; it must be <code>ArrayList&lt;Integer&gt;</code>. Wrapper classes bridge this gap.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Why wrappers are needed</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// This does NOT compile:
+// ArrayList&lt;int&gt; weights = new ArrayList&lt;int&gt;();  // ERROR
+
+// This works:
+ArrayList&lt;Integer&gt; weights = new ArrayList&lt;Integer&gt;();
+weights.add(500);    // adding an int, Java wraps it to Integer automatically
+weights.add(750);
+weights.add(300);
+
+int firstWeight = weights.get(0);  // returns Integer, Java unwraps to int automatically</code></pre>
+  </div>
+
+  <h3>Autoboxing and Unboxing</h3>
+
+  <p><strong>Autoboxing</strong> is when Java automatically converts a primitive to its wrapper. <strong>Unboxing</strong> is the reverse. You almost never have to do it manually.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Autoboxing and unboxing</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Autoboxing: int &rarr; Integer (automatic)
+Integer parWeight = 500;          // Java converts 500 (int) to Integer object
+
+// Unboxing: Integer &rarr; int (automatic)
+int rawWeight = parWeight;        // Java converts Integer back to int
+
+// Useful methods on wrapper classes:
+String weightText = "500";
+int parsedWeight = Integer.parseInt(weightText);   // String &rarr; int
+double parsedCost = Double.parseDouble("75.50");   // String &rarr; double
+boolean isActive = Boolean.parseBoolean("true");   // String &rarr; boolean
+
+// Reverse: number to String
+String costString = String.valueOf(75.0);          // double &rarr; String
+String weightString = Integer.toString(500);       // int &rarr; String</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When reading user input from a web form, everything arrives as a <code>String</code>. To use it as a number, you must parse it: <code>int weight = Integer.parseInt(request.getParameter("weight"));</code>. If the user types "abc" instead of a number, <code>parseInt</code> throws a <code>NumberFormatException</code> &mdash; which is why input validation matters.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Null Trap</div>
+    <p>A primitive <code>int</code> can never be null, but an <code>Integer</code> wrapper can. If you unbox a <code>null</code> Integer, you get a <code>NullPointerException</code>: <code>Integer x = null; int y = x;</code> &mdash; CRASH. Always check for null before unboxing.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: String Basics                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="strings">
+  <div class="section-tag">Section 06</div>
+  <h2>String Basics</h2>
+  <p class="section-desc">Strings are the most common reference type in Java. They hold text. But they have special rules that trip up every beginner &mdash; especially around <code>==</code> vs <code>.equals()</code>.</p>
+
+  <h3>Creating Strings</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Two ways to create a String</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Way 1: String literal (uses the String Pool)
+String role = "CUSTOMER";
+String anotherRole = "CUSTOMER";  // reuses the SAME object from pool
+
+// Way 2: new keyword (creates a NEW object on the heap, always)
+String roleNew = new String("CUSTOMER");  // different object, same text</code></pre>
+  </div>
+
+  <h3>String Immutability</h3>
+
+  <p>Once a String object is created, its content <strong>cannot be changed</strong>. When you think you are changing a String, Java is actually creating a <strong>new</strong> String object and pointing your variable to it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Strings are immutable</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String status = "BOOKED";
+status = "IN_TRANSIT";    // "BOOKED" is NOT modified. A new String "IN_TRANSIT"
+                          // is created, and status now points to it.
+                          // "BOOKED" is still in memory (until garbage collected).</code></pre>
+  </div>
+
+  <h3>The String Pool</h3>
+
+  <p>Java maintains a special memory area called the <strong>String Pool</strong>. When you create a string using a literal (quotes), Java first checks if that exact text already exists in the pool. If yes, it reuses the existing object. This saves memory.</p>
+
+  <div class="diagram">
+    <pre>
+  HEAP MEMORY
+  ┌────────────────────────────────────────────────────────┐
+  │                                                        │
+  │   STRING POOL                                          │
+  │   ┌──────────────────────────────────────┐             │
+  │   │                                      │             │
+  │   │   ┌────────────┐  ┌─────────────┐   │             │
+  │   │   │ "CUSTOMER"  │  │ "BOOKED"    │   │             │
+  │   │   └─────▲──▲───┘  └─────────────┘   │             │
+  │   │         │  │                         │             │
+  │   └─────────┼──┼─────────────────────────┘             │
+  │             │  │                                       │
+  │   role ─────┘  │                                       │
+  │   anotherRole ─┘   (both point to SAME object)        │
+  │                                                        │
+  │   OUTSIDE POOL                                         │
+  │   ┌────────────┐                                       │
+  │   │ "CUSTOMER"  │  &larr; roleNew (separate object)         │
+  │   └────────────┘                                       │
+  │                                                        │
+  └────────────────────────────────────────────────────────┘
+    </pre>
+    <div class="diagram-label">String Pool reuses literals. new String() always creates a separate object.</div>
+  </div>
+
+  <h3>== vs .equals() &mdash; THE Critical Trap</h3>
+
+  <p>This is one of the most common bugs in Java. You <strong>must</strong> understand this.</p>
+
+  <ul>
+    <li><code>==</code> compares <strong>addresses</strong> (are these the same object in memory?)</li>
+    <li><code>.equals()</code> compares <strong>content</strong> (do these contain the same text?)</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">== vs .equals() demo</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String a = "CUSTOMER";
+String b = "CUSTOMER";
+String c = new String("CUSTOMER");
+
+System.out.println(a == b);        // true  (same object in pool)
+System.out.println(a == c);        // false (different objects!)
+System.out.println(a.equals(c));   // true  (same content)
+
+// In Nimbus &mdash; checking if a user is an admin:
+String role = user.getRole();
+
+// WRONG (might work sometimes, fail other times):
+if (role == "ADMIN") { ... }
+
+// CORRECT (always works):
+if (role.equals("ADMIN")) { ... }
+
+// SAFEST (avoids NullPointerException if role is null):
+if ("ADMIN".equals(role)) { ... }</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Why == sometimes works and sometimes does not</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">a == b &rarr; true</div>
+        <div class="breakdown-explain">Both are string literals "CUSTOMER". Java puts the first one in the pool, then reuses it for <code>b</code>. Same object = same address = <code>==</code> returns true.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">a == c &rarr; false</div>
+        <div class="breakdown-explain"><code>new String()</code> always creates a new object outside the pool. Different object = different address = <code>==</code> returns false, even though the text is identical.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">a.equals(c) &rarr; true</div>
+        <div class="breakdown-explain"><code>.equals()</code> compares the actual characters. Both contain "CUSTOMER" so it returns true regardless of where the objects live in memory.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"ADMIN".equals(role)</div>
+        <div class="breakdown-explain">By putting the literal first, if <code>role</code> is <code>null</code>, you get <code>false</code> instead of a NullPointerException. This is a defensive coding pattern used in production code.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">The Rule</div>
+    <p><strong>Always use <code>.equals()</code> to compare Strings.</strong> Never use <code>==</code> for String comparison. The only exception is comparing to <code>null</code>: <code>if (str == null)</code> is correct because <code>null</code> is not an object and has no <code>.equals()</code> method.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>parStatus</code> field is a String. When checking if a parcel is delivered, always write <code>"DELIVERED".equals(parStatus)</code>, never <code>parStatus == "DELIVERED"</code>. The status often comes from database queries or user input, which creates new String objects &mdash; meaning <code>==</code> would return <code>false</code> even when the text matches.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Operators                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="operators">
+  <div class="section-tag">Section 07</div>
+  <h2>Operators</h2>
+  <p class="section-desc">Operators are symbols that tell Java to perform an operation &mdash; math, comparison, logic, or assignment. Every calculation in Nimbus uses them.</p>
+
+  <h3>Arithmetic Operators</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>+</code></td><td>Addition</td><td><code>500 + 250</code></td><td><code>750</code></td></tr>
+      <tr><td><code>-</code></td><td>Subtraction</td><td><code>750 - 500</code></td><td><code>250</code></td></tr>
+      <tr><td><code>*</code></td><td>Multiplication</td><td><code>500 * 0.15</code></td><td><code>75.0</code></td></tr>
+      <tr><td><code>/</code></td><td>Division</td><td><code>500 / 3</code></td><td><code>166</code> (integer div!)</td></tr>
+      <tr><td><code>%</code></td><td>Modulus (remainder)</td><td><code>500 % 3</code></td><td><code>2</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Integer Division Trap</div>
+    <p><code>500 / 3</code> gives <code>166</code>, not <code>166.67</code>. When both operands are integers, Java does <strong>integer division</strong> and discards the decimal part. To get a decimal result, make at least one operand a double: <code>500 / 3.0</code> gives <code>166.6667</code>. Or cast: <code>(double) 500 / 3</code>.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusArithmetic.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Nimbus pricing engine
+int parWeightGram = 500;
+double baseRate = 0.15;                          // Rs 0.15 per gram
+
+double standardCost = parWeightGram * baseRate;  // 500 * 0.15 = 75.0
+double expressCost = standardCost * 1.8;         // 75.0 * 1.8  = 135.0
+double overnightCost = standardCost * 3.0;       // 75.0 * 3.0  = 225.0
+
+System.out.println("Standard:  Rs " + standardCost);   // Rs 75.0
+System.out.println("Express:   Rs " + expressCost);     // Rs 135.0
+System.out.println("Overnight: Rs " + overnightCost);   // Rs 225.0
+
+// Modulus example: parcels per batch
+int totalParcels = 47;
+int batchSize = 10;
+int fullBatches = totalParcels / batchSize;   // 4 full batches
+int remaining = totalParcels % batchSize;     // 7 parcels left over</code></pre>
+  </div>
+
+  <h3>Assignment Operators</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Same As</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>=</code></td><td>Assign</td><td><code>cost = 75.0</code></td><td>&mdash;</td></tr>
+      <tr><td><code>+=</code></td><td>Add and assign</td><td><code>cost += 10</code></td><td><code>cost = cost + 10</code></td></tr>
+      <tr><td><code>-=</code></td><td>Subtract and assign</td><td><code>cost -= 5</code></td><td><code>cost = cost - 5</code></td></tr>
+      <tr><td><code>*=</code></td><td>Multiply and assign</td><td><code>cost *= 1.8</code></td><td><code>cost = cost * 1.8</code></td></tr>
+      <tr><td><code>/=</code></td><td>Divide and assign</td><td><code>cost /= 2</code></td><td><code>cost = cost / 2</code></td></tr>
+      <tr><td><code>%=</code></td><td>Modulus and assign</td><td><code>x %= 3</code></td><td><code>x = x % 3</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Assignment operators in action</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">double totalRevenue = 0;
+
+// Processing today's bookings
+totalRevenue += 75.0;    // booking 1 (standard)
+totalRevenue += 135.0;   // booking 2 (express)
+totalRevenue += 225.0;   // booking 3 (overnight)
+
+System.out.println("Today's revenue: Rs " + totalRevenue);  // Rs 435.0</code></pre>
+  </div>
+
+  <h3>Comparison Operators</h3>
+
+  <p>These return <code>true</code> or <code>false</code>. You use them in <code>if</code> statements to make decisions.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>==</code></td><td>Equal to</td><td><code>500 == 500</code></td><td><code>true</code></td></tr>
+      <tr><td><code>!=</code></td><td>Not equal to</td><td><code>500 != 300</code></td><td><code>true</code></td></tr>
+      <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>750 &gt; 500</code></td><td><code>true</code></td></tr>
+      <tr><td><code>&lt;</code></td><td>Less than</td><td><code>300 &lt; 500</code></td><td><code>true</code></td></tr>
+      <tr><td><code>&gt;=</code></td><td>Greater than or equal</td><td><code>500 &gt;= 500</code></td><td><code>true</code></td></tr>
+      <tr><td><code>&lt;=</code></td><td>Less than or equal</td><td><code>300 &lt;= 500</code></td><td><code>true</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">== For Primitives Only</div>
+    <p>Use <code>==</code> for comparing primitives (int, double, boolean, etc.). For objects (String, User, Booking), use <code>.equals()</code>. This was covered in the Strings section above &mdash; it is that important.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Comparison in Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int parWeightGram = 500;
+double parServiceCost = 75.0;
+
+// Weight limit check
+boolean isOverweight = parWeightGram &gt; 30000;     // false (30kg limit)
+boolean isHeavy = parWeightGram &gt;= 10000;         // false
+boolean needsInsurance = parServiceCost &gt; 500.0;   // false
+
+// Status check (for Strings, use .equals() not ==)
+String parStatus = "BOOKED";
+boolean isBooked = "BOOKED".equals(parStatus);    // true</code></pre>
+  </div>
+
+  <h3>Logical Operators</h3>
+
+  <p>Combine multiple conditions into one.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operator</th><th>Name</th><th>Meaning</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>&amp;&amp;</code></td><td>AND</td><td>Both must be true</td><td><code>isBooked &amp;&amp; isPaid</code></td></tr>
+      <tr><td><code>||</code></td><td>OR</td><td>At least one must be true</td><td><code>isAdmin || isOfficer</code></td></tr>
+      <tr><td><code>!</code></td><td>NOT</td><td>Flips true/false</td><td><code>!isDelivered</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Logical operators in Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">boolean isBooked = true;
+boolean isPaid = true;
+boolean isOverweight = false;
+
+// AND: both must be true
+boolean canShip = isBooked &amp;&amp; isPaid &amp;&amp; !isOverweight;
+System.out.println(canShip);  // true (booked + paid + not overweight)
+
+// OR: at least one
+String role = "OFFICER";
+boolean canViewAll = "ADMIN".equals(role) || "OFFICER".equals(role);
+System.out.println(canViewAll);  // true
+
+// NOT: flip
+boolean isDelivered = false;
+boolean needsTracking = !isDelivered;
+System.out.println(needsTracking);  // true</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Short-Circuit Evaluation</div>
+    <p><code>&amp;&amp;</code> stops evaluating as soon as it finds a <code>false</code> (because if one is false, the whole AND is false). <code>||</code> stops as soon as it finds a <code>true</code>. This is called <strong>short-circuiting</strong>. It matters when the second condition has a side effect or could throw an error: <code>user != null &amp;&amp; user.isAdmin()</code> &mdash; if <code>user</code> is null, Java never calls <code>isAdmin()</code>, avoiding a crash.</p>
+  </div>
+
+  <h3>Increment and Decrement (++ and --)</h3>
+
+  <p>Add or subtract 1 from a variable. Two versions: <strong>prefix</strong> (before the variable) and <strong>postfix</strong> (after).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Prefix vs Postfix</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int deliveryCount = 10;
+
+// Postfix: use current value FIRST, then increment
+int x = deliveryCount++;   // x = 10, deliveryCount becomes 11
+System.out.println("x = " + x);                // 10
+System.out.println("count = " + deliveryCount); // 11
+
+// Prefix: increment FIRST, then use new value
+int y = ++deliveryCount;   // deliveryCount becomes 12, y = 12
+System.out.println("y = " + y);                // 12
+System.out.println("count = " + deliveryCount); // 12
+
+// Same rules apply for --
+int pending = 5;
+pending--;    // now 4
+--pending;    // now 3</code></pre>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p><strong>Postfix (i++)</strong> is like a cashier who gives you the current price, then updates the price tag after. <strong>Prefix (++i)</strong> is like a cashier who updates the price tag first, then charges you the new price.</p>
+  </div>
+
+  <h3>Ternary Operator ( ? : )</h3>
+
+  <p>A compact one-line <code>if-else</code>. Structure: <code>condition ? valueIfTrue : valueIfFalse</code></p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Ternary operator</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Standard if-else (3 lines)
+String label;
+if (parWeightGram &gt; 10000) {
+    label = "HEAVY";
+} else {
+    label = "STANDARD";
+}
+
+// Same thing with ternary (1 line)
+String label = parWeightGram &gt; 10000 ? "HEAVY" : "STANDARD";
+
+// Nimbus: determine service multiplier
+double multiplier = "EXPRESS".equals(serviceType) ? 1.8 : 1.0;
+
+// Nested (use sparingly &mdash; hard to read)
+String tier = parWeightGram &gt; 10000 ? "HEAVY"
+            : parWeightGram &gt; 5000  ? "MEDIUM"
+            : "LIGHT";</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The pricing engine uses the ternary extensively: <code>double multiplier = "OVERNIGHT".equals(type) ? 3.0 : "EXPRESS".equals(type) ? 1.8 : 1.0;</code> This picks the correct multiplier (3.0x for overnight, 1.8x for express, 1.0x for standard) in a single expression.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Type Promotion in Expressions                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="type-promotion">
+  <div class="section-tag">Section 08</div>
+  <h2>Type Promotion in Expressions</h2>
+  <p class="section-desc">Java has a surprising rule: when you do math with small types like <code>byte</code> and <code>short</code>, Java automatically promotes them to <code>int</code>. This catches beginners off guard.</p>
+
+  <h3>The Surprising Rule</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">byte + byte = int (not byte!)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">byte a = 50;
+byte b = 60;
+// byte c = a + b;   // COMPILER ERROR! a + b produces an int, not a byte.
+int c = a + b;       // Works: result is int
+byte d = (byte)(a + b);  // Works: explicit cast back to byte
+
+short x = 100;
+short y = 200;
+// short z = x + y;  // COMPILER ERROR! Same rule.
+int z = x + y;       // Works</code></pre>
+  </div>
+
+  <h3>Why Java Does This</h3>
+
+  <p>Safety. A <code>byte</code> can hold up to 127. If you add two bytes like <code>100 + 100 = 200</code>, the result does not fit in a byte. Instead of silently overflowing and giving you a wrong answer, Java promotes everything to <code>int</code> (which can hold up to 2.1 billion) so the result is always safe.</p>
+
+  <h3>Full Promotion Rules</h3>
+
+  <ol class="steps">
+    <li>If any operand is <code>double</code> &rarr; the other is promoted to <code>double</code></li>
+    <li>Else if any operand is <code>float</code> &rarr; the other is promoted to <code>float</code></li>
+    <li>Else if any operand is <code>long</code> &rarr; the other is promoted to <code>long</code></li>
+    <li>Else everything (<code>byte</code>, <code>short</code>, <code>char</code>) is promoted to <code>int</code></li>
+  </ol>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Promotion in Nimbus pricing</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int parWeightGram = 500;       // int
+double baseRate = 0.15;         // double
+
+// Rule 1 applies: int * double &rarr; int promoted to double
+double cost = parWeightGram * baseRate;  // 500.0 * 0.15 = 75.0
+// The result is double, which is what we want for a price.
+
+// What if we did integer math by mistake?
+int wrongCost = 500 / 3;       // 166 (not 166.667 &mdash; decimal lost!)
+double rightCost = 500 / 3.0;  // 166.6667 (3.0 forces double division)</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The expression <code>parWeightGram * baseRate</code> works correctly because <code>baseRate</code> is a <code>double</code>, so the <code>int</code> weight gets promoted automatically. If both were <code>int</code> (like <code>500 * 0</code>), you would lose all decimal precision. This is why <code>baseRate</code> is declared as <code>double</code>, not <code>int</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Constants                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="constants">
+  <div class="section-tag">Section 09</div>
+  <h2>Constants &mdash; The final Keyword</h2>
+  <p class="section-desc">Some values should never change after being set. The <code>final</code> keyword enforces this at the compiler level &mdash; if anyone tries to change a <code>final</code> variable, the code will not compile.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Constants in Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Naming convention: ALL_CAPS with underscores
+final double BASE_RATE_PER_GRAM = 0.15;
+final double EXPRESS_MULTIPLIER = 1.8;
+final double OVERNIGHT_MULTIPLIER = 3.0;
+final int MAX_WEIGHT_GRAMS = 30000;    // 30 kg limit
+final String DEFAULT_STATUS = "BOOKED";
+
+// These will NOT compile:
+// BASE_RATE_PER_GRAM = 0.20;    // ERROR: cannot assign a value to final variable
+// MAX_WEIGHT_GRAMS = 50000;     // ERROR: cannot assign a value to final variable
+
+// Using constants in pricing:
+int parWeightGram = 500;
+double standardCost = parWeightGram * BASE_RATE_PER_GRAM;       // 75.0
+double expressCost = standardCost * EXPRESS_MULTIPLIER;          // 135.0
+double overnightCost = standardCost * OVERNIGHT_MULTIPLIER;     // 225.0</code></pre>
+  </div>
+
+  <h3>Why Use Constants?</h3>
+
+  <ul>
+    <li><strong>Prevents accidents</strong> &mdash; if someone accidentally types <code>BASE_RATE = 0</code>, the compiler catches it instantly</li>
+    <li><strong>Single source of truth</strong> &mdash; change the rate in one place, every calculation updates automatically</li>
+    <li><strong>Self-documenting</strong> &mdash; <code>BASE_RATE_PER_GRAM</code> is clearer than a mystery number <code>0.15</code> scattered through the code</li>
+  </ul>
+
+  <div class="callout warning">
+    <div class="callout-title">Magic Numbers</div>
+    <p>A "magic number" is a raw number in code with no explanation: <code>cost = weight * 0.15 * 1.8;</code>. What is 0.15? What is 1.8? Nobody knows without context. Always replace magic numbers with named constants: <code>cost = weight * BASE_RATE_PER_GRAM * EXPRESS_MULTIPLIER;</code>. Now anyone can read it.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Scanner for Input                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="scanner">
+  <div class="section-tag">Section 10</div>
+  <h2>Scanner for Input</h2>
+  <p class="section-desc">To make your programs interactive, you need to read input from the user. Java's <code>Scanner</code> class reads from the keyboard (System.in).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusBookingInput.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class NimbusBookingInput {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your full name: ");
+        String fullName = scanner.nextLine();          // reads entire line
+
+        System.out.print("Enter parcel weight (grams): ");
+        int parWeightGram = scanner.nextInt();         // reads one integer
+
+        System.out.print("Enter base rate per gram: ");
+        double baseRate = scanner.nextDouble();        // reads one decimal
+
+        double cost = parWeightGram * baseRate;
+
+        System.out.println("\n--- Booking Summary ---");
+        System.out.println("Customer: " + fullName);
+        System.out.println("Weight:   " + parWeightGram + "g");
+        System.out.println("Cost:     Rs " + cost);
+
+        scanner.close();  // always close when done
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">import java.util.Scanner;</div>
+        <div class="breakdown-explain">Import the Scanner class from Java's utility library. Without this line, Java does not know what Scanner is.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Scanner scanner = new Scanner(System.in);</div>
+        <div class="breakdown-explain">Create a Scanner object that reads from keyboard input (<code>System.in</code>).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">scanner.nextLine()</div>
+        <div class="breakdown-explain">Reads an entire line of text until the user presses Enter. Used for names, addresses, etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">scanner.nextInt()</div>
+        <div class="breakdown-explain">Reads one integer from input. If the user types "abc", throws <code>InputMismatchException</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">scanner.nextDouble()</div>
+        <div class="breakdown-explain">Reads one decimal number. Same error risk as nextInt if user types non-numeric text.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">scanner.close()</div>
+        <div class="breakdown-explain">Release the Scanner resource. Good practice, though not strictly required for System.in in small programs.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Newline Trap &mdash; nextInt() then nextLine()</h3>
+
+  <p>This is the #1 Scanner bug that every beginner hits. When you call <code>nextInt()</code>, it reads the number but <strong>leaves the newline character (Enter key) in the buffer</strong>. The next <code>nextLine()</code> reads that leftover newline and returns an empty string.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The newline trap (BROKEN)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Scanner scanner = new Scanner(System.in);
+
+System.out.print("Enter weight: ");
+int weight = scanner.nextInt();     // reads "500", leaves "\n" in buffer
+
+System.out.print("Enter name: ");
+String name = scanner.nextLine();   // reads the leftover "\n" immediately!
+// name is now "" (empty string) &mdash; user never got to type!
+
+System.out.println("Name: '" + name + "'");  // prints: Name: ''</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The fix: consume the leftover newline</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Scanner scanner = new Scanner(System.in);
+
+System.out.print("Enter weight: ");
+int weight = scanner.nextInt();
+scanner.nextLine();   // &larr; CONSUME the leftover newline (throwaway call)
+
+System.out.print("Enter name: ");
+String name = scanner.nextLine();   // now this works correctly
+
+System.out.println("Name: '" + name + "'");  // prints: Name: 'Raj Kumar'</code></pre>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">The Rule</div>
+    <p>After <strong>every</strong> <code>nextInt()</code>, <code>nextDouble()</code>, or <code>nextFloat()</code>, add a throwaway <code>scanner.nextLine()</code> call before using <code>nextLine()</code> to read actual text. This clears the leftover newline from the buffer.</p>
+  </div>
+
+  <h3>Scanner Methods Summary</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>Reads</th><th>Example Input</th><th>Returns</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>nextLine()</code></td><td>Entire line until Enter</td><td><code>Raj Kumar</code></td><td><code>"Raj Kumar"</code></td></tr>
+      <tr><td><code>next()</code></td><td>One word (until space)</td><td><code>Raj Kumar</code></td><td><code>"Raj"</code></td></tr>
+      <tr><td><code>nextInt()</code></td><td>One integer</td><td><code>500</code></td><td><code>500</code></td></tr>
+      <tr><td><code>nextDouble()</code></td><td>One decimal number</td><td><code>75.50</code></td><td><code>75.50</code></td></tr>
+      <tr><td><code>nextBoolean()</code></td><td>true or false</td><td><code>true</code></td><td><code>true</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Putting It All Together                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="together">
+  <div class="section-tag">Section 11</div>
+  <h2>Putting It All Together</h2>
+  <p class="section-desc">A complete Nimbus pricing calculator using every concept from this page &mdash; variables, types, casting, constants, operators, and Scanner input.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusPricingCalculator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class NimbusPricingCalculator {
+
+    // Constants (final + ALL_CAPS)
+    static final double BASE_RATE_PER_GRAM = 0.15;
+    static final double EXPRESS_MULTIPLIER = 1.8;
+    static final double OVERNIGHT_MULTIPLIER = 3.0;
+    static final int MAX_WEIGHT_GRAMS = 30000;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Read customer name (String - reference type)
+        System.out.print("Customer name: ");
+        String fullName = scanner.nextLine();
+
+        // Read email (String - reference type)
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+
+        // Read weight (int - primitive type)
+        System.out.print("Parcel weight (grams): ");
+        int parWeightGram = scanner.nextInt();
+        scanner.nextLine();  // consume newline (the trap!)
+
+        // Read service type (String - reference type)
+        System.out.print("Service (STANDARD / EXPRESS / OVERNIGHT): ");
+        String serviceType = scanner.nextLine().toUpperCase();
+
+        // Weight validation (comparison operator)
+        boolean isOverweight = parWeightGram &gt; MAX_WEIGHT_GRAMS;
+        if (isOverweight) {
+            System.out.println("ERROR: Weight exceeds " + MAX_WEIGHT_GRAMS + "g limit.");
+            scanner.close();
+            return;
+        }
+
+        // Calculate cost (arithmetic + type promotion: int * double = double)
+        double baseCost = parWeightGram * BASE_RATE_PER_GRAM;
+
+        // Select multiplier (ternary operator + .equals() for Strings)
+        double multiplier = "OVERNIGHT".equals(serviceType) ? OVERNIGHT_MULTIPLIER
+                          : "EXPRESS".equals(serviceType)   ? EXPRESS_MULTIPLIER
+                          : 1.0;
+
+        double parServiceCost = baseCost * multiplier;
+
+        // Status (constant String)
+        String parStatus = "BOOKED";
+
+        // Display results (String concatenation with + operator)
+        System.out.println("\n============================");
+        System.out.println("  NIMBUS BOOKING RECEIPT");
+        System.out.println("============================");
+        System.out.println("Customer:  " + fullName);
+        System.out.println("Email:     " + email);
+        System.out.println("Weight:    " + parWeightGram + "g");
+        System.out.println("Service:   " + serviceType);
+        System.out.println("Base cost: Rs " + baseCost);
+        System.out.println("Multiplier: " + multiplier + "x");
+        System.out.println("Total:     Rs " + parServiceCost);
+        System.out.println("Status:    " + parStatus);
+        System.out.println("============================");
+
+        scanner.close();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Concepts used in this program</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">static final double BASE_RATE_PER_GRAM = 0.15;</div>
+        <div class="breakdown-explain"><strong>Constants</strong> (Section 9). <code>final</code> prevents changes. <code>static</code> makes it shared across the class. ALL_CAPS naming convention.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String fullName = scanner.nextLine();</div>
+        <div class="breakdown-explain"><strong>Scanner</strong> (Section 10) + <strong>Reference type</strong> (Section 3). Reads a full line of text from keyboard.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int parWeightGram = scanner.nextInt();</div>
+        <div class="breakdown-explain"><strong>Primitive type</strong> (Section 2) + <strong>Scanner</strong>. Reads an integer. Followed by <code>nextLine()</code> to fix the newline trap.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">parWeightGram * BASE_RATE_PER_GRAM</div>
+        <div class="breakdown-explain"><strong>Type promotion</strong> (Section 8). <code>int * double</code> = <code>double</code>. Java automatically widens the int.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"OVERNIGHT".equals(serviceType) ? ... : ...</div>
+        <div class="breakdown-explain"><strong>Ternary operator</strong> (Section 7) + <strong>.equals()</strong> for String comparison (Section 6). Literal-first pattern prevents NullPointerException.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">parWeightGram &gt; MAX_WEIGHT_GRAMS</div>
+        <div class="breakdown-explain"><strong>Comparison operator</strong> (Section 7). Returns a boolean used for validation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 12</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Test your understanding. Try to answer each one <strong>without running the code</strong> first, then verify.</p>
+
+  <h3>Exercise 1: Output Prediction</h3>
+  <p>What does this print?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise1.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int a = 10;
+int b = 3;
+System.out.println(a / b);
+System.out.println(a % b);
+System.out.println((double) a / b);</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">3</div>
+        <div class="breakdown-explain">Integer division: 10 / 3 = 3 (remainder discarded)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">1</div>
+        <div class="breakdown-explain">Modulus: 10 % 3 = 1 (remainder after dividing 10 by 3)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">3.3333333333333335</div>
+        <div class="breakdown-explain">Cast <code>a</code> to double first (10.0), then 10.0 / 3 = 3.333... Double division preserves decimals.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 2: Output Prediction &mdash; Increment</h3>
+  <p>What does this print?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise2.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int count = 5;
+System.out.println(count++);
+System.out.println(count);
+System.out.println(++count);</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">5</div>
+        <div class="breakdown-explain">Postfix: prints current value (5), THEN increments to 6.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">6</div>
+        <div class="breakdown-explain">count is now 6 from the previous postfix increment.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">7</div>
+        <div class="breakdown-explain">Prefix: increments FIRST (6 &rarr; 7), then prints the new value (7).</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 3: String Comparison</h3>
+  <p>What does this print?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise3.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String s1 = "BOOKED";
+String s2 = "BOOKED";
+String s3 = new String("BOOKED");
+
+System.out.println(s1 == s2);
+System.out.println(s1 == s3);
+System.out.println(s1.equals(s3));</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">true</div>
+        <div class="breakdown-explain">Both are literals &rarr; same object in String Pool &rarr; same address &rarr; == is true.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">false</div>
+        <div class="breakdown-explain"><code>new String()</code> creates a different object outside the pool. Different address &rarr; == is false.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">true</div>
+        <div class="breakdown-explain"><code>.equals()</code> compares characters. Both contain "BOOKED" &rarr; true.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 4: Type Casting</h3>
+  <p>What does this print?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise4.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">double cost = 135.99;
+int rounded = (int) cost;
+System.out.println(rounded);
+
+int weight = 500;
+double asDouble = weight;
+System.out.println(asDouble);</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">135</div>
+        <div class="breakdown-explain">Narrowing cast (double &rarr; int): truncates, does NOT round. .99 is chopped off.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">500.0</div>
+        <div class="breakdown-explain">Widening cast (int &rarr; double): automatic, no data loss. 500 becomes 500.0.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 5: Logical Operators</h3>
+  <p>What does this print?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise5.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">boolean isPaid = true;
+boolean isBooked = true;
+boolean isOverweight = true;
+
+System.out.println(isPaid &amp;&amp; isBooked);
+System.out.println(isPaid &amp;&amp; !isOverweight);
+System.out.println(isPaid || isOverweight);
+System.out.println(!isPaid &amp;&amp; isBooked);</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">true</div>
+        <div class="breakdown-explain">true AND true = true</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">false</div>
+        <div class="breakdown-explain">true AND NOT true = true AND false = false</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">true</div>
+        <div class="breakdown-explain">true OR true = true (OR only needs one to be true)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">false</div>
+        <div class="breakdown-explain">NOT true AND true = false AND true = false</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 6: Type Promotion</h3>
+  <p>Will this compile? If not, how to fix it?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise6.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">byte x = 10;
+byte y = 20;
+byte z = x + y;</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">DOES NOT COMPILE</div>
+        <div class="breakdown-explain"><code>byte + byte</code> is promoted to <code>int</code>. An <code>int</code> cannot be assigned to a <code>byte</code> without a cast.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">byte z = (byte)(x + y);  // FIX: explicit cast</div>
+        <div class="breakdown-explain">Cast the result back to byte. Or use <code>int z = x + y;</code> to accept the promoted type.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 7: Nimbus Cost Calculator</h3>
+  <p>Write a program that calculates the shipping cost for a 750g express parcel. Use constants for the base rate (0.15) and express multiplier (1.8). Print the result.</p>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show solution
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">final double BASE_RATE = 0.15;</div>
+        <div class="breakdown-explain">Constant for per-gram rate</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">final double EXPRESS_MULT = 1.8;</div>
+        <div class="breakdown-explain">Constant for express multiplier</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int weight = 750;</div>
+        <div class="breakdown-explain">Parcel weight in grams</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">double cost = weight * BASE_RATE * EXPRESS_MULT;</div>
+        <div class="breakdown-explain">750 * 0.15 = 112.5, then 112.5 * 1.8 = 202.5</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">System.out.println("Express cost: Rs " + cost);</div>
+        <div class="breakdown-explain">Output: Express cost: Rs 202.5</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 8: Ternary Practice</h3>
+  <p>What does this print?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise8.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int weight = 12000;
+String category = weight &gt; 10000 ? "HEAVY" : weight &gt; 5000 ? "MEDIUM" : "LIGHT";
+System.out.println(category);</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">HEAVY</div>
+        <div class="breakdown-explain">12000 &gt; 10000 is true, so the first branch ("HEAVY") is selected. The second ternary is never evaluated.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 9: Wrapper Class Trap</h3>
+  <p>What happens when this runs?</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise9.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Integer weight = null;
+int rawWeight = weight;</code></pre>
+  </div>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">NullPointerException at runtime</div>
+        <div class="breakdown-explain">Java tries to unbox <code>null</code> (Integer &rarr; int). You cannot convert nothing into a number. The code compiles fine but crashes when it runs. Always check for null before unboxing.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 10: Build a Booking Summary</h3>
+  <p>Write a complete program using Scanner that reads a booking ID, customer name, weight, and service type, then calculates and displays the total cost. Use all three Nimbus multipliers (standard 1.0x, express 1.8x, overnight 3.0x) and the base rate of 0.15 per gram. Handle the Scanner newline trap correctly.</p>
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show solution
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">import java.util.Scanner;</div>
+        <div class="breakdown-explain">Import Scanner for reading keyboard input</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Scanner sc = new Scanner(System.in);</div>
+        <div class="breakdown-explain">Create scanner instance</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String bookingId = sc.nextLine(); String name = sc.nextLine();</div>
+        <div class="breakdown-explain">Read booking ID and name (both full lines)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int weight = sc.nextInt(); sc.nextLine();</div>
+        <div class="breakdown-explain">Read weight as int, then consume leftover newline (the trap fix!)</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String type = sc.nextLine().toUpperCase();</div>
+        <div class="breakdown-explain">Read service type, convert to uppercase for safe comparison</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">final double BASE = 0.15;</div>
+        <div class="breakdown-explain">Constant base rate</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">double mult = "OVERNIGHT".equals(type) ? 3.0 : "EXPRESS".equals(type) ? 1.8 : 1.0;</div>
+        <div class="breakdown-explain">Ternary to select multiplier. .equals() for String comparison. Literal first for null safety.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">double cost = weight * BASE * mult;</div>
+        <div class="breakdown-explain">int * double * double = double (type promotion). All arithmetic in one expression.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">System.out.println("Booking: " + bookingId + " | " + name + " | " + weight + "g | Rs " + cost);</div>
+        <div class="breakdown-explain">String concatenation with + to build the output. Print all details in one line.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="java-how-it-works.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">How Java Works</span>
+  </a>
+  <a href="java-strings.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Strings</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

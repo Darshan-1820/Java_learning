@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maven | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link active"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS MAVEN?                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-maven">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Maven?</h2>
+  <p class="section-desc">Maven is a <strong>build tool</strong> that manages your Java project's dependencies, compilation, testing, and packaging &mdash; all from a single configuration file.</p>
+
+  <h3>The Contractor Analogy</h3>
+
+  <p>Imagine you want to build a house. You could go to every supplier yourself &mdash; one shop for bricks, another for cement, another for pipes, another for wiring. You'd have to know the exact brand, size, and quantity for each item. You'd carry everything to the construction site yourself. Then you'd need to know the right order to build: foundation first, then walls, then roof, then plumbing.</p>
+
+  <p>Or you could hire a <strong>contractor</strong>. You give the contractor a <strong>shopping list</strong> (what materials you need), and the contractor:</p>
+
+  <ul>
+    <li>Goes to the right suppliers and <strong>gets everything</strong> for you</li>
+    <li>Makes sure the versions are <strong>compatible</strong> (you don't get pipes that don't fit your faucets)</li>
+    <li>Knows the right <strong>order to build</strong> things (can't put the roof before the walls)</li>
+    <li>Handles the entire <strong>build process</strong> from start to finish</li>
+  </ul>
+
+  <p><strong>Maven is that contractor.</strong> Your shopping list is a file called <code>pom.xml</code>. You write down what libraries (JARs) you need, and Maven downloads them, sets them up, compiles your code, runs your tests, and packages everything into a deployable file.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Maven = Contractor</div>
+    <p><strong>You</strong> = the architect. You decide what the house looks like.<br>
+    <strong>pom.xml</strong> = the shopping list. What materials you need.<br>
+    <strong>Maven</strong> = the contractor. Goes and gets everything, builds it in the right order.<br>
+    <strong>Maven Central</strong> = the hardware store. Where all the materials are available.<br>
+    <strong>.m2 folder</strong> = your local storage shed. Once Maven buys something, it stores a copy here so it doesn't have to buy it again.</p>
+  </div>
+
+  <h3>What Did We Do Before Maven?</h3>
+
+  <p>Before Maven, Java developers had to:</p>
+
+  <ol>
+    <li><strong>Manually download JARs</strong> &mdash; Go to each library's website, find the right version, download the .jar file</li>
+    <li><strong>Copy JARs into the project</strong> &mdash; Drop them into a <code>lib/</code> folder</li>
+    <li><strong>Configure the classpath</strong> &mdash; Tell Java exactly where every JAR is</li>
+    <li><strong>Hope versions are compatible</strong> &mdash; If Library A needs version 2 of something and Library B needs version 3, you're in trouble</li>
+    <li><strong>Repeat for every team member</strong> &mdash; Everyone has to manually download the same JARs</li>
+  </ol>
+
+  <p>This was a nightmare for teams. One developer's project works, another's doesn't, because they have slightly different JARs. Maven solved all of this with <strong>one configuration file</strong> that everyone shares.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p>When you clone a Maven project from Git, you don't get any JAR files. You get the <code>pom.xml</code>. Maven reads it and downloads everything automatically. <strong>Every developer gets the exact same dependencies.</strong> No "works on my machine" problems.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: POM.XML ANATOMY                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="pom-anatomy">
+  <div class="section-tag">Section 02</div>
+  <h2>pom.xml Anatomy</h2>
+  <p class="section-desc">The <code>pom.xml</code> (Project Object Model) is the single file that describes everything about your Maven project. Let's break down every piece.</p>
+
+  <h3>The Minimal pom.xml</h3>
+
+  <p>Every Maven project needs at least this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (minimal)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-parcel&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+&lt;/project&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1-4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;project xmlns="..."&gt;</div>
+        <div class="breakdown-explain">Root element. The xmlns stuff is just XML boilerplate telling the parser "this is a Maven POM file." You never change this.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</div>
+        <div class="breakdown-explain">Always 4.0.0. This is the POM schema version. Never changes.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;groupId&gt;com.nimbus&lt;/groupId&gt;</div>
+        <div class="breakdown-explain">Your organization's reverse domain name. Like a family name. All Nimbus projects share this.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;artifactId&gt;nimbus-parcel&lt;/artifactId&gt;</div>
+        <div class="breakdown-explain">The project's unique name within the group. Like a first name. This is what your built file will be called.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">10</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</div>
+        <div class="breakdown-explain">Current version. SNAPSHOT means "in development, not final." When you release, you remove -SNAPSHOT.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">11</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;packaging&gt;war&lt;/packaging&gt;</div>
+        <div class="breakdown-explain">What type of output to create. "war" = Web Application Archive (for web apps deployed to Tomcat). "jar" = Java Archive (for standalone apps).</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The GAV Coordinates</h3>
+
+  <p>Every Maven artifact (library, project, plugin) in the world is uniquely identified by three values &mdash; <strong>groupId</strong>, <strong>artifactId</strong>, and <strong>version</strong>. Together they're called <strong>GAV coordinates</strong>, like GPS coordinates for a library.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Coordinate</th><th>What It Is</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>groupId</code></td>
+        <td>Organization/company identifier. Reverse domain convention.</td>
+        <td><code>com.mysql</code>, <code>org.springframework</code>, <code>com.nimbus</code></td>
+      </tr>
+      <tr>
+        <td><code>artifactId</code></td>
+        <td>Specific project/library name within that organization.</td>
+        <td><code>mysql-connector-j</code>, <code>spring-core</code>, <code>nimbus-parcel</code></td>
+      </tr>
+      <tr>
+        <td><code>version</code></td>
+        <td>Which release of that library. Semantic versioning: major.minor.patch.</td>
+        <td><code>8.0.33</code>, <code>5.3.30</code>, <code>1.0-SNAPSHOT</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Think of it like a postal address: <strong>groupId</strong> is the city, <strong>artifactId</strong> is the street, <strong>version</strong> is the house number. With all three, Maven can find <em>exactly</em> the right JAR file on Maven Central.</p>
+
+  <h3>Properties Section</h3>
+
+  <p>Properties are like <strong>variables</strong> for your pom.xml. Instead of writing the same version number in 10 places, you define it once and reference it everywhere.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (properties)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;properties&gt;
+    &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;spring.version&gt;5.3.30&lt;/spring.version&gt;
+&lt;/properties&gt;</code></pre>
+  </div>
+
+  <ul>
+    <li><code>maven.compiler.source</code> and <code>maven.compiler.target</code> &mdash; Tell Maven what Java version to compile with. We use Java 17.</li>
+    <li><code>project.build.sourceEncoding</code> &mdash; Character encoding. UTF-8 is the standard. Without this, Maven throws warnings.</li>
+    <li><code>spring.version</code> &mdash; A custom property. Reference it later with <code>${spring.version}</code> instead of typing <code>5.3.30</code> everywhere.</li>
+  </ul>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: DEPENDENCIES                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="dependencies">
+  <div class="section-tag">Section 03</div>
+  <h2>Dependencies</h2>
+  <p class="section-desc">Dependencies are the external libraries your project needs. Maven downloads them automatically so you never have to manually hunt for JAR files.</p>
+
+  <h3>How Maven Downloads JARs</h3>
+
+  <p>When you add a dependency to <code>pom.xml</code> and run any Maven command, here's what happens:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Maven reads pom.xml<span class="flow-sub">finds &lt;dependencies&gt;</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Checks local .m2<span class="flow-sub">~/.m2/repository/</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Found locally?<span class="flow-sub">Yes = use it</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr; No</div>
+    <div class="flow-row">
+      <div class="flow-box purple">Downloads from Maven Central<span class="flow-sub">repo.maven.apache.org</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">Saves to .m2<span class="flow-sub">cached for next time</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Added to classpath<span class="flow-sub">available in your code</span></div>
+    </div>
+  </div>
+
+  <h3>Maven Central Repository</h3>
+
+  <p><strong>Maven Central</strong> (<a href="https://repo.maven.apache.org" style="color: var(--accent);">repo.maven.apache.org</a>) is the world's largest repository of Java libraries. It's like npm for JavaScript or pip for Python, but for Java. When you search for a library, go to <a href="https://search.maven.org" style="color: var(--accent);">search.maven.org</a> or <a href="https://mvnrepository.com" style="color: var(--accent);">mvnrepository.com</a> &mdash; both show you the exact XML to copy into your pom.xml.</p>
+
+  <h3>Dependency Coordinates</h3>
+
+  <p>Every dependency uses the same GAV coordinates we discussed. Here's how you add MySQL connector:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (single dependency)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+        &lt;version&gt;8.0.33&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+  </div>
+
+  <p>This tells Maven: "Go find the library made by <code>com.mysql</code>, named <code>mysql-connector-j</code>, version <code>8.0.33</code>, and download it." Maven translates these coordinates into a folder path inside <code>.m2</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Where Maven stores it</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">~/.m2/repository/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
+//               ^groupId^  ^artifactId^      ^ver^  ^actual JAR file^</code></pre>
+  </div>
+
+  <h3>Transitive Dependencies</h3>
+
+  <p>This is where Maven gets really powerful. Say you add Spring MVC as a dependency. But Spring MVC itself needs Spring Core, Spring Beans, and Spring Context to work. Do you have to list all of those too? <strong>No.</strong></p>
+
+  <p>Maven handles <strong>transitive dependencies</strong> automatically. If Library A depends on Library B, and Library B depends on Library C &mdash; you only add A. Maven downloads B and C automatically.</p>
+
+  <div class="diagram">
+    <pre>
+You add:        spring-webmvc (5.3.30)
+                    |
+Maven also      +---+--- spring-web (5.3.30)
+downloads:      |   +--- spring-context (5.3.30)
+                |   +--- spring-beans (5.3.30)
+                |   +--- spring-core (5.3.30)
+                |   +--- spring-expression (5.3.30)
+                |
+You write 1 dependency. Maven downloads 6.
+    </pre>
+    <div class="diagram-label">Transitive dependency resolution: Maven walks the entire tree.</div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Watch Out</div>
+    <p>Transitive dependencies can cause <strong>version conflicts</strong>. If Library A needs <code>commons-logging 1.2</code> and Library B needs <code>commons-logging 1.3</code>, Maven picks the one "closest" to your project in the dependency tree. You can override this with <code>&lt;exclusions&gt;</code> or by declaring the specific version yourself.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: PROJECT STRUCTURE                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="project-structure">
+  <div class="section-tag">Section 04</div>
+  <h2>Maven Project Structure</h2>
+  <p class="section-desc">Maven enforces a standard directory layout. Every Maven project on Earth follows this same structure. Once you learn it, you can navigate any project.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Standard Maven Web Project Structure</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">nimbus-parcel/
+├── pom.xml                          // The brain of the project
+├── src/
+│   ├── main/
+│   │   ├── java/                    // Your Java source code
+│   │   │   └── com/nimbus/
+│   │   │       ├── app/             // Servlets (presentation layer)
+│   │   │       ├── service/         // Business logic
+│   │   │       ├── dao/             // Database access
+│   │   │       ├── model/           // Data classes (User, Booking)
+│   │   │       ├── util/            // Helpers (DBConnection)
+│   │   │       └── exception/       // Custom exceptions
+│   │   ├── resources/               // Config files (db.properties)
+│   │   └── webapp/                  // Web files (JSP, CSS, JS)
+│   │       ├── WEB-INF/
+│   │       │   └── web.xml          // Deployment descriptor
+│   │       ├── css/
+│   │       ├── js/
+│   │       └── index.jsp
+│   └── test/
+│       └── java/                    // Unit tests (JUnit)
+│           └── com/nimbus/
+│               └── dao/
+│                   └── UserDAOTest.java
+└── target/                          // Maven's output (compiled code, WAR file)
+    ├── classes/                     // Compiled .class files
+    ├── test-classes/                // Compiled test classes
+    └── nimbus-parcel-1.0-SNAPSHOT.war</code></pre>
+  </div>
+
+  <h3>Why This Structure?</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Directory</th><th>Purpose</th><th>Why It Exists</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>src/main/java</code></td>
+        <td>All your application Java code</td>
+        <td>Separates source from output. Maven knows exactly where to find code to compile.</td>
+      </tr>
+      <tr>
+        <td><code>src/main/resources</code></td>
+        <td>Config files like <code>db.properties</code></td>
+        <td>These get copied to <code>target/classes</code> during build, so they're on the classpath at runtime.</td>
+      </tr>
+      <tr>
+        <td><code>src/main/webapp</code></td>
+        <td>Web assets: JSP, HTML, CSS, JS, <code>web.xml</code></td>
+        <td>Only for <code>war</code> projects. This becomes the root of your web application.</td>
+      </tr>
+      <tr>
+        <td><code>src/test/java</code></td>
+        <td>Unit test classes</td>
+        <td>Tests are separate from production code. They compile and run during <code>mvn test</code> but don't go into the final WAR.</td>
+      </tr>
+      <tr>
+        <td><code>target/</code></td>
+        <td>Everything Maven generates</td>
+        <td><strong>Never edit files here.</strong> <code>mvn clean</code> deletes this entire folder. It's regenerated on every build.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our Nimbus parcel management project follows this exact structure. Your servlets go in <code>src/main/java/com/nimbus/app/</code>, your DAO classes in <code>dao/</code>, your business logic in <code>service/</code>, and all JSP pages in <code>src/main/webapp/</code>. The <code>db.properties</code> file with MySQL connection details goes in <code>src/main/resources/</code>.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Putting Java files in the wrong directory. If your class is in <code>src/main/java</code> but your package declaration says <code>package com.nimbus.dao;</code>, then the file MUST be at <code>src/main/java/com/nimbus/dao/YourClass.java</code>. The folder path must match the package. Maven will fail to compile if they don't match.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: BUILD LIFECYCLE                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="build-lifecycle">
+  <div class="section-tag">Section 05</div>
+  <h2>Build Lifecycle</h2>
+  <p class="section-desc">Maven doesn't just compile your code. It runs a <strong>sequence of phases</strong>, each building on the last. This sequence is called the <strong>build lifecycle</strong>.</p>
+
+  <h3>The Default Lifecycle</h3>
+
+  <p>When you run a Maven command like <code>mvn package</code>, Maven doesn't just run the "package" step. It runs <strong>every step before it</strong>, in order. Think of it like a recipe &mdash; you can't frost a cake before baking it.</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">validate</div>
+      <div class="layer-detail">Checks if the project structure is correct and <code>pom.xml</code> is valid. "Do we have everything we need to start?"</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name cyan">compile</div>
+      <div class="layer-detail">Compiles all <code>.java</code> files in <code>src/main/java</code> into <code>.class</code> files in <code>target/classes</code>.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">test</div>
+      <div class="layer-detail">Runs all unit tests in <code>src/test/java</code> using JUnit/TestNG. If any test fails, the build <strong>stops</strong>.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">package</div>
+      <div class="layer-detail">Takes compiled code and packages it into a <code>.war</code> or <code>.jar</code> file in <code>target/</code>.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">install</div>
+      <div class="layer-detail">Copies the built <code>.war</code>/<code>.jar</code> into your local <code>.m2</code> repository so other local projects can use it as a dependency.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name">deploy</div>
+      <div class="layer-detail">Uploads the artifact to a remote repository (like a company's private Maven repo) for other developers to use.</div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>If you run <code>mvn package</code>, Maven automatically runs validate &rarr; compile &rarr; test &rarr; package. You don't need to run each step manually. Each phase includes all phases before it.</p>
+  </div>
+
+  <h3>Maven Commands You'll Actually Use</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Command</th><th>What It Does</th><th>When You Use It</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>mvn clean</code></td>
+        <td>Deletes the entire <code>target/</code> folder. Fresh start.</td>
+        <td>When something feels stale or broken. "Turn it off and on again."</td>
+      </tr>
+      <tr>
+        <td><code>mvn compile</code></td>
+        <td>Runs validate &rarr; compile. Produces <code>.class</code> files.</td>
+        <td>Quick check: "Does my code even compile?"</td>
+      </tr>
+      <tr>
+        <td><code>mvn test</code></td>
+        <td>Runs validate &rarr; compile &rarr; test.</td>
+        <td>Before committing: "Do all my tests pass?"</td>
+      </tr>
+      <tr>
+        <td><code>mvn package</code></td>
+        <td>Runs validate &rarr; compile &rarr; test &rarr; package.</td>
+        <td>Creates the WAR file for deployment.</td>
+      </tr>
+      <tr>
+        <td><code>mvn install</code></td>
+        <td>Runs everything through install.</td>
+        <td>When other local projects need this as a dependency.</td>
+      </tr>
+      <tr>
+        <td><code>mvn clean package</code></td>
+        <td>Deletes target/ first, then does a full build.</td>
+        <td><strong>Most common command.</strong> Clean build every time.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>For Nimbus, your most-used command will be <code>mvn clean package</code>. This creates <code>target/nimbus-parcel-1.0-SNAPSHOT.war</code>, which you then deploy to Tomcat. During development in Eclipse, the IDE runs <code>mvn compile</code> automatically when you save a file.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: PLUGINS                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="plugins">
+  <div class="section-tag">Section 06</div>
+  <h2>Plugins</h2>
+  <p class="section-desc">Plugins are what actually do the work in Maven. Every lifecycle phase is executed by a plugin. Think of phases as job titles and plugins as the people who do those jobs.</p>
+
+  <h3>How Plugins Work</h3>
+
+  <p>Maven itself is just a framework. It doesn't know how to compile Java, run tests, or create WAR files. It delegates everything to plugins. When you run <code>mvn compile</code>, Maven calls the <code>maven-compiler-plugin</code> to do the actual compilation.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">mvn compile<span class="flow-sub">you type this</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Maven Framework<span class="flow-sub">looks up "compile" phase</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">maven-compiler-plugin<span class="flow-sub">does the actual work</span></div>
+    </div>
+  </div>
+
+  <h3>Key Plugins for Nimbus</h3>
+
+  <h4>1. maven-compiler-plugin</h4>
+  <p>Controls how Java source code is compiled. You configure the Java version here.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (compiler plugin)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.11.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;17&lt;/source&gt;
+        &lt;target&gt;17&lt;/target&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+  </div>
+
+  <p><code>&lt;source&gt;17&lt;/source&gt;</code> means "accept Java 17 syntax." <code>&lt;target&gt;17&lt;/target&gt;</code> means "produce bytecode that runs on JRE 17+."</p>
+
+  <h4>2. maven-war-plugin</h4>
+  <p>Creates the <code>.war</code> file from your web application. Packages compiled classes, dependencies, JSPs, and web.xml into a single deployable archive.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (war plugin)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.4.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+  </div>
+
+  <p><code>failOnMissingWebXml</code> set to false means Maven won't fail if you don't have a <code>web.xml</code> &mdash; useful when using annotations like <code>@WebServlet</code> instead.</p>
+
+  <h4>3. maven-surefire-plugin</h4>
+  <p>Runs your unit tests during the <code>test</code> phase. It finds all classes ending in <code>Test</code> or <code>Tests</code> in <code>src/test/java</code> and executes them.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (surefire plugin)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.1.2&lt;/version&gt;
+&lt;/plugin&gt;</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Plugin vs Dependency</div>
+    <p>A <strong>dependency</strong> is a library your code uses at runtime (like MySQL connector). A <strong>plugin</strong> is a tool Maven uses during the build process (like the compiler). Dependencies go in <code>&lt;dependencies&gt;</code>. Plugins go in <code>&lt;build&gt;&lt;plugins&gt;</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: SCOPES                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="scopes">
+  <div class="section-tag">Section 07</div>
+  <h2>Dependency Scopes</h2>
+  <p class="section-desc">Not every dependency is needed at every stage. Scopes control <strong>when</strong> a dependency is available and whether it gets packaged into the final WAR/JAR.</p>
+
+  <h3>The Six Scopes</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Scope</th><th>Compile</th><th>Test</th><th>Runtime</th><th>In WAR?</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>compile</code></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td><code>spring-webmvc</code> &mdash; needed everywhere</td>
+      </tr>
+      <tr>
+        <td><code>provided</code></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td><strong>No</strong></td>
+        <td><strong>No</strong></td>
+        <td><code>servlet-api</code> &mdash; Tomcat provides it</td>
+      </tr>
+      <tr>
+        <td><code>runtime</code></td>
+        <td><strong>No</strong></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td><code>mysql-connector-j</code> &mdash; not needed at compile time, loaded by JDBC at runtime</td>
+      </tr>
+      <tr>
+        <td><code>test</code></td>
+        <td><strong>No</strong></td>
+        <td>Yes</td>
+        <td><strong>No</strong></td>
+        <td><strong>No</strong></td>
+        <td><code>junit</code> &mdash; only for testing, never in production</td>
+      </tr>
+      <tr>
+        <td><code>system</code></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td><strong>No</strong></td>
+        <td><strong>No</strong></td>
+        <td>Local JAR from a specific path. <strong>Avoid this scope.</strong></td>
+      </tr>
+      <tr>
+        <td><code>import</code></td>
+        <td colspan="4">Special: only for <code>&lt;dependencyManagement&gt;</code> to import another POM's dependency list.</td>
+        <td>Spring BOM</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Why "provided" Matters</h3>
+
+  <p>This is the most confusing scope for beginners, so let's be clear. <code>servlet-api</code> is a library you need to <strong>compile</strong> your servlets. But at <strong>runtime</strong>, Tomcat already has its own copy of <code>servlet-api</code>. If you package your copy into the WAR too, you get two copies and they <strong>conflict</strong>.</p>
+
+  <p>The <code>provided</code> scope says: "I need this to compile, but don't put it in the WAR &mdash; the server will provide it."</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (provided scope)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+    &lt;version&gt;4.0.1&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;   &lt;!-- Tomcat has this --&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our Nimbus project uses three scopes: <strong>compile</strong> for Spring and JSTL (packaged in WAR), <strong>provided</strong> for servlet-api (Tomcat provides it), and <strong>runtime</strong> for MySQL connector (loaded by JDBC driver manager, not referenced directly in code imports).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: FULL NIMBUS POM.XML                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-pom">
+  <div class="section-tag">Section 08</div>
+  <h2>The Complete Nimbus pom.xml</h2>
+  <p class="section-desc">Here's the full <code>pom.xml</code> for the Nimbus Parcel Management project, with every dependency explained.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus-parcel/pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-parcel&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;spring.version&gt;5.3.30&lt;/spring.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+
+        &lt;!-- ===== Servlet API (Tomcat provides this) ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== JSP API (Tomcat provides this) ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet.jsp-api&lt;/artifactId&gt;
+            &lt;version&gt;2.3.3&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== JSTL (JSP Standard Tag Library) ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== MySQL JDBC Driver ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;version&gt;8.0.33&lt;/version&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== Spring Core ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== Spring Context (DI container) ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== Spring Web MVC ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== Spring JDBC ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== JUnit 5 (Testing) ===== --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+            &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+            &lt;version&gt;5.10.0&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.11.0&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;17&lt;/source&gt;
+                    &lt;target&gt;17&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.4.0&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.1.2&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Dependency-by-dependency explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">javax.servlet-api (provided)</div>
+        <div class="breakdown-explain">The Servlet API gives you HttpServletRequest, HttpServletResponse, HttpServlet, etc. Scope is "provided" because Tomcat already has this JAR &mdash; we only need it to compile against.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">javax.servlet.jsp-api (provided)</div>
+        <div class="breakdown-explain">The JSP API for writing JSP pages with embedded Java. Also provided by Tomcat.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">jstl 1.2 (compile &mdash; default)</div>
+        <div class="breakdown-explain">JSP Standard Tag Library. Gives you &lt;c:forEach&gt;, &lt;c:if&gt;, &lt;fmt:formatDate&gt; etc. This IS packaged in the WAR because Tomcat does NOT include it.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">mysql-connector-j (runtime)</div>
+        <div class="breakdown-explain">JDBC driver for MySQL. Your code never directly imports MySQL classes &mdash; you use java.sql.Connection. The driver is loaded at runtime via Class.forName() or DriverManager.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring-core</div>
+        <div class="breakdown-explain">Foundation of Spring Framework. Contains core utilities, resource loading, and the base abstractions that all other Spring modules depend on.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring-context</div>
+        <div class="breakdown-explain">The dependency injection (DI) container. This is where @Component, @Autowired, @Service, @Repository live. It manages object creation and wiring.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring-webmvc</div>
+        <div class="breakdown-explain">Spring's web framework. Provides DispatcherServlet, @Controller, @RequestMapping, view resolvers. This is what turns Spring into a web application framework.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring-jdbc</div>
+        <div class="breakdown-explain">Spring's JDBC abstraction. Provides JdbcTemplate which eliminates the boilerplate try-catch-finally of raw JDBC. Handles connection management, exception translation.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">9</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">junit-jupiter (test)</div>
+        <div class="breakdown-explain">JUnit 5 testing framework. Only available in src/test/java, never packaged in the WAR. Used for unit testing DAO, Service, and utility classes.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Notice how Spring dependencies all use <code>${spring.version}</code>. This references the property we defined in <code>&lt;properties&gt;</code>. When Spring releases a new version, you change <strong>one number</strong> and all four update together. No chance of version mismatch.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: CREATING MAVEN PROJECT IN ECLIPSE                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="eclipse-maven">
+  <div class="section-tag">Section 09</div>
+  <h2>Creating a Maven Project in Eclipse</h2>
+  <p class="section-desc">Step-by-step guide to creating the Nimbus project as a Maven web application in Eclipse IDE.</p>
+
+  <h3>Step-by-Step Process</h3>
+
+  <ol class="steps">
+    <li><strong>Open Eclipse</strong> and go to <code>File &rarr; New &rarr; Maven Project</code>. If you don't see "Maven Project," go to <code>File &rarr; New &rarr; Other</code> and search for "Maven."</li>
+
+    <li><strong>Skip archetype selection.</strong> Check "Create a simple project (skip archetype selection)" and click Next. Archetypes are templates, but they often create outdated structures. We'll set up everything ourselves.</li>
+
+    <li><strong>Fill in project coordinates:</strong>
+      <ul>
+        <li>Group Id: <code>com.nimbus</code></li>
+        <li>Artifact Id: <code>nimbus-parcel</code></li>
+        <li>Version: <code>1.0-SNAPSHOT</code> (default, keep it)</li>
+        <li>Packaging: <strong>war</strong> (dropdown &mdash; select "war" not "jar")</li>
+      </ul>
+      Click Finish.
+    </li>
+
+    <li><strong>Eclipse creates the project</strong> with the standard Maven structure. You'll see <code>src/main/java</code>, <code>src/main/resources</code>, <code>src/test/java</code>, and <code>pom.xml</code> in the Package Explorer.</li>
+
+    <li><strong>Create the webapp folder.</strong> Right-click <code>src/main</code> &rarr; New &rarr; Folder &rarr; name it <code>webapp</code>. Inside <code>webapp</code>, create a folder called <code>WEB-INF</code>.</li>
+
+    <li><strong>Open pom.xml</strong> and paste the complete Nimbus pom.xml from Section 8 above. Save the file. Eclipse will show a notification.</li>
+
+    <li><strong>Update Maven project.</strong> Right-click the project &rarr; <code>Maven &rarr; Update Project</code> (or press <code>Alt+F5</code>). This tells Eclipse to re-read the pom.xml and download all dependencies. Watch the bottom-right progress bar &mdash; Maven is downloading JARs to your <code>.m2</code> folder.</li>
+
+    <li><strong>Verify dependencies.</strong> Expand "Maven Dependencies" in the Package Explorer. You should see all the JARs listed: mysql-connector, spring jars, jstl, junit. If you see red X marks, right-click &rarr; Maven &rarr; Update Project again.</li>
+
+    <li><strong>Set the JDK.</strong> Right-click project &rarr; Properties &rarr; Java Build Path &rarr; Libraries tab. Make sure "JRE System Library" shows Java 17 (or JDK 17). If not, click it &rarr; Edit &rarr; select "Workspace default JRE" or choose the installed JDK 17.</li>
+
+    <li><strong>Create packages.</strong> Right-click <code>src/main/java</code> &rarr; New &rarr; Package. Create:
+      <ul>
+        <li><code>com.nimbus.app</code></li>
+        <li><code>com.nimbus.service</code></li>
+        <li><code>com.nimbus.dao</code></li>
+        <li><code>com.nimbus.model</code></li>
+        <li><code>com.nimbus.util</code></li>
+        <li><code>com.nimbus.exception</code></li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">If Dependencies Don't Download</div>
+    <p>Check your internet connection first. Then try: Right-click project &rarr; Maven &rarr; Update Project &rarr; check "Force Update of Snapshots/Releases" &rarr; OK. If still stuck, delete the <code>~/.m2/repository</code> folder and try again. Maven will re-download everything fresh.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Eclipse + Maven Integration</div>
+    <p>Eclipse has a built-in Maven plugin called <strong>m2e</strong> (Maven 2 Eclipse). It reads your pom.xml and automatically configures your project's classpath, Java version, and build settings. When you change pom.xml, do <code>Alt+F5</code> to sync. Eclipse also runs <code>mvn compile</code> automatically every time you save a file (incremental compilation).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: COMMON ERRORS                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-errors">
+  <div class="section-tag">Section 10</div>
+  <h2>Common Maven Errors</h2>
+  <p class="section-desc">Every Java developer hits these errors eventually. Here's what they mean and how to fix them.</p>
+
+  <h3>1. Dependency Not Found</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error output</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Could not find artifact com.mysql:mysql-connector:jar:8.0.33
+in central (https://repo.maven.apache.org/maven2)</code></pre>
+  </div>
+
+  <p><strong>Cause:</strong> Wrong GAV coordinates. Maybe you typed <code>mysql-connector</code> instead of <code>mysql-connector-j</code>. Maven can't find something that doesn't exist at that exact address.</p>
+
+  <p><strong>Fix:</strong> Go to <a href="https://mvnrepository.com" style="color: var(--accent);">mvnrepository.com</a>, search for the library, and copy the exact XML. Don't type it from memory.</p>
+
+  <h3>2. Version Conflict</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error output</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">java.lang.NoSuchMethodError: org.springframework.core.ResolvableType.forClass()
+// or
+java.lang.ClassNotFoundException: org.springframework.beans.factory.BeanFactory</code></pre>
+  </div>
+
+  <p><strong>Cause:</strong> You have Spring Core 5.3.30 but Spring Web 6.0.0. They're incompatible. Different major versions of Spring don't work together.</p>
+
+  <p><strong>Fix:</strong> Use the same version for all Spring modules. That's why we use <code>${spring.version}</code> property &mdash; one value, all in sync.</p>
+
+  <h3>3. Cannot Resolve Symbol / Import Not Found</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error in IDE</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import javax.servlet.http.HttpServlet;  // Red underline: "cannot resolve"</code></pre>
+  </div>
+
+  <p><strong>Cause:</strong> The dependency isn't in your pom.xml, or you haven't done <code>Maven &rarr; Update Project</code> after adding it.</p>
+
+  <p><strong>Fix:</strong> Add <code>javax.servlet-api</code> to pom.xml, save, then <code>Alt+F5</code>.</p>
+
+  <h3>4. Compilation Error: Source/Target Version</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error output</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">error: source option 5 is no longer supported. Use 7 or later.</code></pre>
+  </div>
+
+  <p><strong>Cause:</strong> You didn't set <code>maven.compiler.source</code> and <code>maven.compiler.target</code> in properties. Maven defaults to Java 5, which modern JDKs refuse.</p>
+
+  <p><strong>Fix:</strong> Add the <code>&lt;properties&gt;</code> section with source and target set to <code>17</code>.</p>
+
+  <h3>5. WAR Build Fails: web.xml Missing</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Error output</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Error assembling WAR: webxml attribute is required</code></pre>
+  </div>
+
+  <p><strong>Cause:</strong> Maven expects a <code>web.xml</code> in <code>src/main/webapp/WEB-INF/</code>, but you're using <code>@WebServlet</code> annotations instead.</p>
+
+  <p><strong>Fix:</strong> Add <code>maven-war-plugin</code> with <code>&lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;</code>, or create a minimal <code>web.xml</code>.</p>
+
+  <div class="callout important">
+    <div class="callout-title">Nuclear Option: Clean .m2</div>
+    <p>If nothing else works and Maven is behaving strangely, delete the entire <code>~/.m2/repository</code> folder. This forces Maven to re-download every dependency from scratch. It takes a few minutes but fixes most corruption issues. On Windows: <code>C:\Users\YourName\.m2\repository</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 11</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Hands-on exercises to solidify your Maven understanding. Do these in Eclipse.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Create from Scratch</div>
+    <p>Create a new Maven project in Eclipse called <code>hello-maven</code> with groupId <code>com.practice</code>, packaging <code>jar</code>. Add a single class <code>com.practice.App</code> with a <code>main</code> method that prints "Hello Maven!" Run <code>mvn clean package</code> from the terminal. Find the generated JAR in <code>target/</code>.</p>
+    <p><strong>Success criteria:</strong> You see <code>BUILD SUCCESS</code> and <code>hello-maven-1.0-SNAPSHOT.jar</code> exists in target.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: Add a Dependency</div>
+    <p>To your <code>hello-maven</code> project, add the <code>gson</code> dependency (Google's JSON library). GAV: <code>com.google.code.gson : gson : 2.10.1</code>. Create a class that converts a Java object to JSON string using <code>new Gson().toJson(object)</code>. Run <code>mvn compile</code>.</p>
+    <p><strong>Success criteria:</strong> Code compiles without errors. Check <code>.m2/repository/com/google/code/gson/</code> &mdash; the JAR should be there.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Understand Scopes</div>
+    <p>Add JUnit 5 with <code>&lt;scope&gt;test&lt;/scope&gt;</code>. Try importing <code>org.junit.jupiter.api.Test</code> in a class inside <code>src/main/java</code>. What happens? Now move that class to <code>src/test/java</code>. What changes?</p>
+    <p><strong>Success criteria:</strong> Import fails in main, works in test. You understand why: test-scoped dependencies are only on the classpath for test sources.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Break and Fix</div>
+    <p>In your pom.xml, deliberately change the MySQL version to <code>99.99.99</code> (doesn't exist). Run <code>mvn compile</code>. Read the error message carefully. Now fix it back to <code>8.0.33</code>. Remove the <code>&lt;properties&gt;</code> section entirely. Run <code>mvn compile</code> again. What error do you get? Fix it.</p>
+    <p><strong>Success criteria:</strong> You can read Maven error messages and know which part of pom.xml to fix.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: Nimbus Setup</div>
+    <p>Follow Section 9 to create the full Nimbus project. Use the complete pom.xml from Section 8. Create all six packages. Add a simple <code>User.java</code> model class in <code>com.nimbus.model</code> with fields <code>userId</code>, <code>name</code>, <code>email</code>, <code>password</code>. Run <code>mvn clean compile</code>.</p>
+    <p><strong>Success criteria:</strong> BUILD SUCCESS. All packages visible in Eclipse. User.java compiles. Maven Dependencies shows all JARs.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="jdbc.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">JDBC</span>
+  </a>
+  <a href="unix.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Unix/Shell</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

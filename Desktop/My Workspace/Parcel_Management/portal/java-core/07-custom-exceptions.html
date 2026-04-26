@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Exceptions | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link active"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: WHAT PRA ASKS ===== -->
+  <div class="content-section" id="what-pra-asks">
+    <div class="section-tag">Overview</div>
+    <h2>What PRA Asks</h2>
+    <p class="section-desc">PRA sometimes asks you to create a custom exception class and use it. Don't panic &mdash; it's one of the easiest things in the exam. The entire exception class is just 4 lines of code. The real challenge is knowing WHEN to throw it and how to catch it.</p>
+
+    <p>The pattern in PRA is always the same:</p>
+    <ol>
+      <li><strong>Create a class</strong> that extends <code>Exception</code></li>
+      <li><strong>Add a constructor</strong> that takes a <code>String message</code></li>
+      <li><strong>Call <code>super(message)</code></strong> inside the constructor</li>
+      <li><strong>That's it</strong> &mdash; 4 lines of code</li>
+    </ol>
+
+    <p>Then in your main code:</p>
+    <ol>
+      <li><strong>Calculate something</strong> (sum, product, comparison)</li>
+      <li><strong>Check a condition</strong> &mdash; if true, throw the exception</li>
+      <li><strong>Wrap it in try-catch</strong> in the main method</li>
+    </ol>
+
+    <div class="callout analogy">
+      <div class="callout-title">&#x1F4DA; Analogy</div>
+      <p>Think of a custom exception like a custom alarm. Java comes with built-in alarms (NullPointerException, ArrayIndexOutOfBoundsException). But PRA asks you to build your own alarm with a custom name and a custom message. When something bad happens, you trigger (throw) this alarm, and somewhere else in your code, you listen for it (catch) and handle it.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: CREATING THE CLASS ===== -->
+  <div class="content-section" id="creating-exception">
+    <div class="section-tag">Step 1</div>
+    <h2>Creating the Custom Exception Class</h2>
+    <p class="section-desc">The simplest class you'll ever write. Literally 4 lines.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">OddEvenException.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class OddEvenException extends Exception {
+    public OddEvenException(String message) {
+        super(message);
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class OddEvenException extends Exception {</div>
+          <div class="breakdown-explain"><code>extends Exception</code> makes this a <strong>checked exception</strong>. Java forces you to either catch it or declare it with <code>throws</code>. The name can be anything the question asks for.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public OddEvenException(String message) {</div>
+          <div class="breakdown-explain">Constructor that takes a message string. When you throw this exception, you pass in the error message here.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">super(message);</div>
+          <div class="breakdown-explain">Passes the message up to the parent <code>Exception</code> class. This is what makes <code>e.getMessage()</code> work later when you catch the exception.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Exception Class Hierarchy</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box dark">Throwable<span class="flow-sub">The root of all errors</span></div>
+      </div>
+      <div class="flow-arrow-down">&darr;</div>
+      <div class="flow-row">
+        <div class="flow-box red">Error<span class="flow-sub">System crashes (don't catch)</span></div>
+        <div class="flow-arrow">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="flow-box blue">Exception<span class="flow-sub">YOUR code extends this</span></div>
+      </div>
+      <div class="flow-arrow-down">&darr;</div>
+      <div class="flow-row">
+        <div class="flow-box orange">RuntimeException<span class="flow-sub">Unchecked (NullPointer, etc.)</span></div>
+        <div class="flow-arrow">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="flow-box green">OddEvenException<span class="flow-sub">Your custom exception!</span></div>
+      </div>
+      <div class="flow-label">PRA always asks you to extend Exception (checked), never RuntimeException (unchecked)</div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; PRA Tip</div>
+      <p>Always extend <code>Exception</code>, not <code>RuntimeException</code>. PRA wants checked exceptions. If you extend <code>RuntimeException</code>, the compiler won't force you to handle it, and you might miss the try-catch which loses marks.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: WHEN TO THROW ===== -->
+  <div class="content-section" id="when-to-throw">
+    <div class="section-tag">Step 2</div>
+    <h2>When to Throw</h2>
+    <p class="section-desc">PRA gives you a condition: "If X happens, throw the exception with this message." The pattern is always: calculate something, compare, throw if the condition is met.</p>
+
+    <h3>The Throw Statement</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Throwing an Exception</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">if (sumOfOdds &gt; productOfEvens) {
+    throw new OddEvenException("Sum is greater");
+}</code></pre>
+    </div>
+
+    <h4>Breaking Down the Throw</h4>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Part</th>
+          <th>What It Does</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>throw</code></td>
+          <td>Java keyword that triggers the exception. Execution stops here and jumps to the nearest <code>catch</code> block.</td>
+        </tr>
+        <tr>
+          <td><code>new OddEvenException(...)</code></td>
+          <td>Creates a new instance of your custom exception. It's an object, just like any other class.</td>
+        </tr>
+        <tr>
+          <td><code>"Sum is greater"</code></td>
+          <td>The message string. This is what <code>e.getMessage()</code> returns later. Use the EXACT message from the question.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Common Mistake</div>
+      <p>Don't confuse <code>throw</code> (the action) with <code>throws</code> (the declaration). <code>throw</code> actually triggers the exception. <code>throws</code> goes in the method signature to warn callers. They're different keywords!</p>
+    </div>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">throw (action)</div>
+        <div class="comparison-body">
+          <p><code>throw new OddEvenException("msg");</code></p>
+          <p>Used <strong>inside</strong> the method body</p>
+          <p>Actually triggers the exception</p>
+          <p>Execution stops here</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">throws (declaration)</div>
+        <div class="comparison-body">
+          <p><code>public void method() throws OddEvenException</code></p>
+          <p>Used in the <strong>method signature</strong></p>
+          <p>Just a warning: "this method might throw"</p>
+          <p>No exception is actually thrown here</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: TRY-CATCH IN MAIN ===== -->
+  <div class="content-section" id="try-catch">
+    <div class="section-tag">Step 3</div>
+    <h2>Try-Catch in Main</h2>
+    <p class="section-desc">The main method is where you catch the exception and handle it. PRA always specifies the exact output format for the catch block.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Main Method with Try-Catch</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void main(String[] args) {
+    try {
+        // ... read input, do calculations ...
+
+        if (sumOfOdds &gt; productOfEvens) {
+            throw new OddEvenException("Sum is greater");
+        } else {
+            System.out.println(productOfEvens);
+        }
+    } catch (OddEvenException e) {
+        System.out.println("OddEvenException: " + e.getMessage());
+    }
+}</code></pre>
+    </div>
+
+    <h3>How Try-Catch Works</h3>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">try block starts<span class="flow-sub">Code runs normally</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">Condition checked<span class="flow-sub">if (sumOfOdds > productOfEvens)</span></div>
+      </div>
+      <div class="flow-arrow-down">&darr;</div>
+      <div class="flow-row">
+        <div class="flow-box green">Condition FALSE<span class="flow-sub">print result, skip catch</span></div>
+        <div class="flow-arrow">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="flow-box red">Condition TRUE<span class="flow-sub">throw exception, jump to catch</span></div>
+      </div>
+      <div class="flow-arrow-down">&darr;</div>
+      <div class="flow-row">
+        <div class="flow-box dark">Program continues after try-catch</div>
+      </div>
+      <div class="flow-label">When throw executes, Java immediately jumps to the matching catch block &mdash; all remaining code in try is skipped</div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; PRA Tip</div>
+      <p>The catch block print format is ALWAYS specified in the question. Common patterns:</p>
+      <ul>
+        <li><code>"OddEvenException: " + e.getMessage()</code></li>
+        <li><code>"Exception: " + e.getMessage()</code></li>
+        <li>Just <code>e.getMessage()</code></li>
+      </ul>
+      <p><strong>Copy the exact format from the question.</strong> One wrong space or missing colon = wrong answer.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: THE THROWS KEYWORD ===== -->
+  <div class="content-section" id="throws-keyword">
+    <div class="section-tag">Step 4</div>
+    <h2>The throws Keyword</h2>
+    <p class="section-desc">If your method can throw a checked exception but doesn't catch it itself, you MUST declare it in the method signature with <code>throws</code>. This tells the caller: "Hey, I might throw this exception &mdash; you need to handle it."</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Method with throws Declaration</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void processNumbers(Collection&lt;Integer&gt; numbers) throws OddEvenException {
+    // ... calculations ...
+    if (sumOfOdds &gt; productOfEvens) {
+        throw new OddEvenException("Sum is greater");
+    }
+    // This method throws but doesn't catch
+    // The caller (main) must catch it
+}</code></pre>
+    </div>
+
+    <h4>When Do You Need <code>throws</code>?</h4>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Need <code>throws</code>?</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Method throws AND catches the exception</td>
+          <td>No</td>
+          <td>The exception is handled internally</td>
+        </tr>
+        <tr>
+          <td>Method throws but does NOT catch</td>
+          <td><strong>Yes</strong></td>
+          <td>Caller needs to know this method can explode</td>
+        </tr>
+        <tr>
+          <td>main() method with try-catch</td>
+          <td>No</td>
+          <td>main catches it, so no one else needs to know</td>
+        </tr>
+        <tr>
+          <td>main() throws without catching</td>
+          <td>Yes (but unusual in PRA)</td>
+          <td><code>public static void main(String[] args) throws OddEvenException</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout think">
+      <div class="callout-title">&#x1F4A1; In PRA Context</div>
+      <p>Most PRA exception questions have you throw AND catch inside the same main method. You usually don't need <code>throws</code> on main. But if the question structures it as a separate method that throws, add <code>throws ExceptionName</code> to that method's signature.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Solution</div>
+    <h2>Complete OddEven Exception Solution</h2>
+    <p class="section-desc">This is the complete working solution from Mock 1 Q2. Read n integers, separate odds and evens, sum odds, multiply evens, compare and throw/print. Study this as your exception template.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete OddEven Exception</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+// Step 1: Custom Exception Class
+class OddEvenException extends Exception {
+    public OddEvenException(String message) {
+        super(message);
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Step 2: Read input
+        int n = sc.nextInt();
+        ArrayList&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            numbers.add(sc.nextInt());
+        }
+
+        // Step 3: Separate odds and evens
+        int sumOfOdds = 0;
+        int productOfEvens = 1;   // start at 1 for multiplication!
+        boolean hasEven = false;
+
+        for (int num : numbers) {
+            if (num % 2 != 0) {
+                sumOfOdds += num;           // odd: add to sum
+            } else {
+                productOfEvens *= num;      // even: multiply
+                hasEven = true;
+            }
+        }
+
+        // If no evens found, product stays at 1 (initial)
+        if (!hasEven) {
+            productOfEvens = 0;
+        }
+
+        // Step 4: Compare and throw or print
+        try {
+            if (sumOfOdds &gt; productOfEvens) {
+                throw new OddEvenException("Sum of odd numbers is greater");
+            } else {
+                System.out.println(productOfEvens);
+            }
+        } catch (OddEvenException e) {
+            System.out.println("OddEvenException: " + e.getMessage());
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Key decisions explained</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int productOfEvens = 1;</div>
+          <div class="breakdown-explain">Initialize product at 1, not 0. If you start at 0, multiplying anything by 0 gives 0. Product starts at 1 because 1 is the identity element for multiplication (1 * x = x).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">boolean hasEven = false;</div>
+          <div class="breakdown-explain">Edge case handling: if there are NO even numbers, productOfEvens stays at 1 (initial value). We use this flag to detect that case and set product to 0 instead.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">num % 2 != 0</div>
+          <div class="breakdown-explain">Modulo operator: if a number divided by 2 has a remainder, it's odd. If remainder is 0, it's even.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">"OddEvenException: " + e.getMessage()</div>
+          <div class="breakdown-explain">Exact output format from the question. Notice the colon, space, then the message. Always copy this format precisely.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Test Cases</h3>
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Exception Thrown</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">5
+1 2 3 4 5</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">OddEvenException: Sum of odd numbers is greater</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -8px;">Odds: 1+3+5 = 9. Evens: 2*4 = 8. 9 > 8, so exception is thrown.</p>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; Normal Output</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">4
+1 2 4 6</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">48</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -8px;">Odds: 1. Evens: 2*4*6 = 48. 1 < 48, so print product.</p>
+  </div>
+
+  <!-- ===== SECTION 7: EXCEPTION CHECKLIST ===== -->
+  <div class="content-section" id="checklist">
+    <div class="section-tag">Checklist</div>
+    <h2>Exception Checklist</h2>
+    <p class="section-desc">Before submitting your exception solution on HackerRank, verify every item on this list. Missing any one of these is the difference between full marks and zero.</p>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; Pre-Submit Checklist</div>
+      <ul>
+        <li><strong>Did you extend <code>Exception</code></strong> (not <code>RuntimeException</code>)?</li>
+        <li><strong>Did you call <code>super(message)</code></strong> in the constructor?</li>
+        <li><strong>Did you add try-catch in main?</strong></li>
+        <li><strong>Does your catch print in the EXACT format</strong> the question asks?</li>
+        <li><strong>Is the exception class name</strong> exactly what the question specifies?</li>
+        <li><strong>Is the error message string</strong> exactly what the question specifies?</li>
+        <li><strong>Product initialized at 1</strong> (not 0) if you're multiplying?</li>
+        <li><strong>Edge case handled</strong> for empty categories (no odds / no evens)?</li>
+      </ul>
+    </div>
+
+    <h3>Common Mistakes That Lose Marks</h3>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong</div>
+        <div class="comparison-body">
+          <p><code>class MyException extends RuntimeException</code></p>
+          <p style="font-size: 0.82rem;">Unchecked &mdash; compiler won't force try-catch</p>
+          <hr style="border-color: var(--border); margin: 12px 0;">
+          <p><code>int product = 0;</code></p>
+          <p style="font-size: 0.82rem;">0 * anything = 0. Product will always be 0.</p>
+          <hr style="border-color: var(--border); margin: 12px 0;">
+          <p><code>System.out.println(e);</code></p>
+          <p style="font-size: 0.82rem;">Prints the full exception toString, not just the message</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct</div>
+        <div class="comparison-body">
+          <p><code>class MyException extends Exception</code></p>
+          <p style="font-size: 0.82rem;">Checked &mdash; must handle, as PRA expects</p>
+          <hr style="border-color: var(--border); margin: 12px 0;">
+          <p><code>int product = 1;</code></p>
+          <p style="font-size: 0.82rem;">1 is the identity for multiplication</p>
+          <hr style="border-color: var(--border); margin: 12px 0;">
+          <p><code>System.out.println("ExName: " + e.getMessage());</code></p>
+          <p style="font-size: 0.82rem;">Exact format the question asks for</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout template">
+      <div class="callout-title">&#x1F4CB; Universal Exception Template</div>
+      <p>Copy this template for any PRA exception question. Just change the class name, condition, and message.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Template &mdash; Custom Exception</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// 1. Exception class (change name)
+class YourException extends Exception {
+    public YourException(String message) {
+        super(message);
+    }
+}
+
+// 2. In main method:
+try {
+    // ... your calculations ...
+    if (/* bad condition */) {
+        throw new YourException("Your error message");
+    } else {
+        System.out.println(/* normal result */);
+    }
+} catch (YourException e) {
+    System.out.println("YourException: " + e.getMessage());
+}</code></pre>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="06-collection-methods.html"><span class="nav-label">Previous</span><span class="nav-title">Collection Methods</span></a>
+    <a href="08-scanner-input.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Scanner Input</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

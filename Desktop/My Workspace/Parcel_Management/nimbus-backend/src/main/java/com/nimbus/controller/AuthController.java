@@ -94,6 +94,14 @@ public class AuthController {
     }
 
     /**
+     * GET /api/auth/users — Get all users.
+     */
+    @GetMapping("/users")
+    public ResponseEntity<ApiResponse> getAllUsers() {
+        return ResponseEntity.ok(ApiResponse.ok(userService.getAllUsers()));
+    }
+
+    /**
      * GET /api/auth/user/{userId}
      */
     @GetMapping("/user/{userId}")

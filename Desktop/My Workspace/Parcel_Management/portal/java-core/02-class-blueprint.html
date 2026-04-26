@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Blueprint | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link active"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECTION 1: THE PRA CLASS PATTERN ==================== -->
+  <section class="content-section" id="pra-class-pattern">
+    <div class="section-tag">Section 01</div>
+    <h2>The PRA Class Pattern</h2>
+    <p class="section-desc">Every PRA question starts with "Create a class X with the following attributes." This is the most predictable part of the exam — the structure is ALWAYS the same. Learn it once, use it forever.</p>
+
+    <h3>The Universal POJO Template</h3>
+    <p>POJO stands for <strong>Plain Old Java Object</strong>. It is a class that only holds data — no complex logic, no database connections, just fields with getters and setters. Here is the exact template every PRA class follows:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">POJOTemplate.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class ClassName {
+    // Step 1: Private fields
+    private type field1;
+    private type field2;
+    private type field3;
+
+    // Step 2: Parameterized constructor
+    public ClassName(type field1, type field2, type field3) {
+        this.field1 = field1;
+        this.field2 = field2;
+        this.field3 = field3;
+    }
+
+    // Step 3: Getter and Setter for EACH field
+    public type getField1() {
+        return field1;
+    }
+    public void setField1(type field1) {
+        this.field1 = field1;
+    }
+
+    public type getField2() {
+        return field2;
+    }
+    public void setField2(type field2) {
+        this.field2 = field2;
+    }
+
+    public type getField3() {
+        return field3;
+    }
+    public void setField3(type field3) {
+        this.field3 = field3;
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class ClassName {</div>
+          <div class="breakdown-explain">Declares a new class. Replace "ClassName" with whatever the question asks (Investor, Book, etc.)</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2-4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">private type field1;</div>
+          <div class="breakdown-explain"><strong>private</strong> means only this class can directly access the field. Others must use getters/setters. This is called <strong>encapsulation</strong>.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">7-11</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public ClassName(type field1, ...) { this.field1 = field1; }</div>
+          <div class="breakdown-explain">The <strong>constructor</strong> — called when you create an object with <code>new ClassName(...)</code>. <code>this.field1</code> refers to the class field, <code>field1</code> without "this" refers to the parameter.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">14-16</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public type getField1() { return field1; }</div>
+          <div class="breakdown-explain">The <strong>getter</strong> — allows other classes to READ the private field. Always starts with "get" + field name (capitalized).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">17-19</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public void setField1(type field1) { this.field1 = field1; }</div>
+          <div class="breakdown-explain">The <strong>setter</strong> — allows other classes to WRITE the private field. Returns <code>void</code> (nothing). Always starts with "set" + field name.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy — Think of a Bank Locker</div>
+      <p>Your fields are like items inside a bank locker (<code>private</code> — only you can access directly). The getter is like requesting the bank to show you what is inside. The setter is like requesting the bank to put something new inside. The bank (class) controls access — nobody can just reach in and grab things.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: FIELD TYPES IN PRA ==================== -->
+  <section class="content-section" id="field-types">
+    <div class="section-tag">Section 02</div>
+    <h2>Field Types in PRA</h2>
+    <p class="section-desc">PRA questions use a small set of data types. Here is every type you will encounter and when it appears.</p>
+
+    <table class="info-table">
+      <tr>
+        <th>Type</th>
+        <th>Used For</th>
+        <th>Example Declaration</th>
+        <th>Getter Returns</th>
+      </tr>
+      <tr>
+        <td><code>int</code></td>
+        <td>IDs, counts, age, rank, quantity</td>
+        <td><code>private int investorId;</code></td>
+        <td><code>int</code></td>
+      </tr>
+      <tr>
+        <td><code>String</code></td>
+        <td>Names, categories, gender, country, genre</td>
+        <td><code>private String name;</code></td>
+        <td><code>String</code></td>
+      </tr>
+      <tr>
+        <td><code>double</code></td>
+        <td>Money, scores, averages, prices, gains</td>
+        <td><code>private double gains;</code></td>
+        <td><code>double</code></td>
+      </tr>
+      <tr>
+        <td><code>boolean</code></td>
+        <td>Active/inactive, yes/no flags (rare in PRA)</td>
+        <td><code>private boolean isActive;</code></td>
+        <td><code>boolean</code> (getter uses <code>is</code> prefix)</td>
+      </tr>
+      <tr>
+        <td><code>List&lt;T&gt;</code></td>
+        <td>Nested collections (composition)</td>
+        <td><code>private List&lt;Statistics&gt; stats;</code></td>
+        <td><code>List&lt;Statistics&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>ClassName</code></td>
+        <td>Composition — one object inside another</td>
+        <td><code>private Author author;</code></td>
+        <td><code>Author</code></td>
+      </tr>
+    </table>
+
+    <div class="callout think">
+      <div class="callout-title">Key Point</div>
+      <p>Notice that PRA mostly uses just <strong>3 types</strong>: <code>int</code>, <code>String</code>, and <code>double</code>. The last two types (<code>List&lt;T&gt;</code> and <code>ClassName</code>) only appear when the question involves composition — covered in detail on <a href="05-composition.html" style="color: var(--accent);">Page 05</a>.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: PARAMETERIZED CONSTRUCTOR ==================== -->
+  <section class="content-section" id="constructor">
+    <div class="section-tag">Section 03</div>
+    <h2>Parameterized Constructor — Deep Dive</h2>
+    <p class="section-desc">The constructor is called every time you create a new object. Understanding the <code>this</code> keyword here is critical.</p>
+
+    <h3>Why Do We Use <code>this</code>?</h3>
+    <p>Look at this constructor:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ThisKeyword.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Investor {
+    private int investorId;     // This is the CLASS FIELD
+    private String name;        // This is the CLASS FIELD
+
+    public Investor(int investorId, String name) {
+        //    ↑ parameter name SAME as field name
+        //    Java gets confused: which "investorId" do you mean?
+
+        this.investorId = investorId;
+        // ↑ "this." says "I mean the CLASS FIELD"
+        //                  ↑ without "this" means "the PARAMETER"
+
+        this.name = name;
+    }
+}</code></pre>
+    </div>
+
+    <p>When the parameter name matches the field name (which it ALWAYS does in PRA), Java cannot tell which one you mean. The <code>this</code> keyword resolves this ambiguity:</p>
+
+    <div class="diagram">
+      <pre>
+this.investorId = investorId;
+│                 │
+│                 └── The VALUE coming in (parameter)
+│
+└── The FIELD inside the object (class variable)
+
+Translation: "Set MY field to the value that was passed in"
+      </pre>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy</div>
+      <p>Imagine you are filling out a form. The form field (left side, <code>this.name</code>) says "Name:" and you write in the value someone told you (right side, <code>name</code>). <code>this</code> always points to "my own form" — the object being created.</p>
+    </div>
+
+    <h3>What If You Forget <code>this</code>?</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ForgotThis.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// WRONG — assigns parameter to itself, field stays null/0!
+public Investor(int investorId, String name) {
+    investorId = investorId; // Does NOTHING useful
+    name = name;             // Does NOTHING useful
+}
+
+// After this constructor, investor.getInvestorId() returns 0
+// and investor.getName() returns null. Your code breaks silently.</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Warning</div>
+      <p>This mistake does NOT cause a compilation error. Your code compiles fine but produces wrong output. The fields remain at their default values (<code>0</code> for int, <code>null</code> for String, <code>0.0</code> for double). Always use <code>this.</code> in the constructor.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: GETTERS AND SETTERS ==================== -->
+  <section class="content-section" id="getters-setters">
+    <div class="section-tag">Section 04</div>
+    <h2>Getters and Setters</h2>
+    <p class="section-desc">For every private field, you write one getter (to read the value) and one setter (to change the value). The naming convention is strict.</p>
+
+    <h3>Naming Convention</h3>
+    <table class="info-table">
+      <tr>
+        <th>Field</th>
+        <th>Getter</th>
+        <th>Setter</th>
+      </tr>
+      <tr>
+        <td><code>private int investorId;</code></td>
+        <td><code>public int getInvestorId()</code></td>
+        <td><code>public void setInvestorId(int investorId)</code></td>
+      </tr>
+      <tr>
+        <td><code>private String name;</code></td>
+        <td><code>public String getName()</code></td>
+        <td><code>public void setName(String name)</code></td>
+      </tr>
+      <tr>
+        <td><code>private double gains;</code></td>
+        <td><code>public double getGains()</code></td>
+        <td><code>public void setGains(double gains)</code></td>
+      </tr>
+      <tr>
+        <td><code>private boolean active;</code></td>
+        <td><code>public boolean isActive()</code> (note: <strong>is</strong>, not get)</td>
+        <td><code>public void setActive(boolean active)</code></td>
+      </tr>
+      <tr>
+        <td><code>private List&lt;Statistics&gt; statistics;</code></td>
+        <td><code>public List&lt;Statistics&gt; getStatistics()</code></td>
+        <td><code>public void setStatistics(List&lt;Statistics&gt; statistics)</code></td>
+      </tr>
+    </table>
+
+    <h3>The Pattern</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">GetterSetterPattern.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// GETTER pattern:
+// public [return-type] get[FieldName]() { return fieldName; }
+
+public double getGains() {
+    return gains;
+}
+
+// SETTER pattern:
+// public void set[FieldName]([type] fieldName) { this.fieldName = fieldName; }
+
+public void setGains(double gains) {
+    this.gains = gains;
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>In PRA, you almost <strong>never use setters</strong> in your solution logic. You always create objects via the constructor and read values via getters. But you MUST still write the setters because the question asks for them, and hidden test cases may test that they exist.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: REAL PRA EXAMPLES ==================== -->
+  <section class="content-section" id="real-examples">
+    <div class="section-tag">Section 05</div>
+    <h2>Real PRA Examples — Complete Classes</h2>
+    <p class="section-desc">These are actual classes from PRA mock questions. Each one is copy-paste ready. Study how the template maps to real exam questions.</p>
+
+    <h3>Example 1: Investor Class (Mock 1 Q1)</h3>
+    <p>Fields: <code>investorId</code> (int), <code>investorName</code> (String), <code>gains</code> (double)</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Investor.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Investor {
+    private int investorId;
+    private String investorName;
+    private double gains;
+
+    public Investor(int investorId, String investorName, double gains) {
+        this.investorId = investorId;
+        this.investorName = investorName;
+        this.gains = gains;
+    }
+
+    public int getInvestorId() {
+        return investorId;
+    }
+    public void setInvestorId(int investorId) {
+        this.investorId = investorId;
+    }
+
+    public String getInvestorName() {
+        return investorName;
+    }
+    public void setInvestorName(String investorName) {
+        this.investorName = investorName;
+    }
+
+    public double getGains() {
+        return gains;
+    }
+    public void setGains(double gains) {
+        this.gains = gains;
+    }
+}</code></pre>
+    </div>
+
+    <h3>Example 2: Cricketer Class (Mock 2 Q1)</h3>
+    <p>Fields: <code>CricketerId</code> (int), <code>CricketerName</code> (String), <code>CricketerAge</code> (int), <code>CricketerGender</code> (String), <code>statistics</code> (List&lt;Statistics&gt;)</p>
+    <p>Note: This uses <strong>List Composition</strong> — a Cricketer contains a list of Statistics objects.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Cricketer.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Cricketer {
+    private int CricketerId;
+    private String CricketerName;
+    private int CricketerAge;
+    private String CricketerGender;
+    private List&lt;Statistics&gt; statistics;
+
+    public Cricketer(int CricketerId, String CricketerName, int CricketerAge,
+                     String CricketerGender, List&lt;Statistics&gt; statistics) {
+        this.CricketerId = CricketerId;
+        this.CricketerName = CricketerName;
+        this.CricketerAge = CricketerAge;
+        this.CricketerGender = CricketerGender;
+        this.statistics = statistics;
+    }
+
+    public int getCricketerId() { return CricketerId; }
+    public void setCricketerId(int CricketerId) { this.CricketerId = CricketerId; }
+
+    public String getCricketerName() { return CricketerName; }
+    public void setCricketerName(String CricketerName) { this.CricketerName = CricketerName; }
+
+    public int getCricketerAge() { return CricketerAge; }
+    public void setCricketerAge(int CricketerAge) { this.CricketerAge = CricketerAge; }
+
+    public String getCricketerGender() { return CricketerGender; }
+    public void setCricketerGender(String CricketerGender) { this.CricketerGender = CricketerGender; }
+
+    public List&lt;Statistics&gt; getStatistics() { return statistics; }
+    public void setStatistics(List&lt;Statistics&gt; statistics) { this.statistics = statistics; }
+}</code></pre>
+    </div>
+
+    <h3>Example 3: Statistics Class (Mock 2 Q1)</h3>
+    <p>Fields: <code>Rank</code> (int), <code>LeagueName</code> (String), <code>PerformanceAverage</code> (double), <code>CountryName</code> (String)</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Statistics.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Statistics {
+    private int Rank;
+    private String LeagueName;
+    private double PerformanceAverage;
+    private String CountryName;
+
+    public Statistics(int Rank, String LeagueName, double PerformanceAverage,
+                      String CountryName) {
+        this.Rank = Rank;
+        this.LeagueName = LeagueName;
+        this.PerformanceAverage = PerformanceAverage;
+        this.CountryName = CountryName;
+    }
+
+    public int getRank() { return Rank; }
+    public void setRank(int Rank) { this.Rank = Rank; }
+
+    public String getLeagueName() { return LeagueName; }
+    public void setLeagueName(String LeagueName) { this.LeagueName = LeagueName; }
+
+    public double getPerformanceAverage() { return PerformanceAverage; }
+    public void setPerformanceAverage(double PerformanceAverage) { this.PerformanceAverage = PerformanceAverage; }
+
+    public String getCountryName() { return CountryName; }
+    public void setCountryName(String CountryName) { this.CountryName = CountryName; }
+}</code></pre>
+    </div>
+
+    <h3>Example 4: Author Class (Mock 3 Q1)</h3>
+    <p>Fields: <code>authorId</code> (int), <code>authorName</code> (String)</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Author.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Author {
+    private int authorId;
+    private String authorName;
+
+    public Author(int authorId, String authorName) {
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
+
+    public int getAuthorId() { return authorId; }
+    public void setAuthorId(int authorId) { this.authorId = authorId; }
+
+    public String getAuthorName() { return authorName; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
+}</code></pre>
+    </div>
+
+    <h3>Example 5: Book Class (Mock 3 Q1)</h3>
+    <p>Fields: <code>bookId</code> (int), <code>title</code> (String), <code>genre</code> (String), <code>price</code> (double), <code>author</code> (Author)</p>
+    <p>Note: This uses <strong>Simple Composition</strong> — a Book contains one Author object.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Book.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Book {
+    private int bookId;
+    private String title;
+    private String genre;
+    private double price;
+    private Author author;
+
+    public Book(int bookId, String title, String genre, double price, Author author) {
+        this.bookId = bookId;
+        this.title = title;
+        this.genre = genre;
+        this.price = price;
+        this.author = author;
+    }
+
+    public int getBookId() { return bookId; }
+    public void setBookId(int bookId) { this.bookId = bookId; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+
+    public Author getAuthor() { return author; }
+    public void setAuthor(Author author) { this.author = author; }
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Notice the Pattern</div>
+      <p>Every single class above follows the <strong>exact same structure</strong>: private fields, parameterized constructor with <code>this</code>, getters, setters. The only things that change are the class name, field names, and field types. Once your fingers know this pattern, writing a POJO class in PRA takes under 5 minutes.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6: SPEED TRICK ==================== -->
+  <section class="content-section" id="speed-trick">
+    <div class="section-tag">Section 06</div>
+    <h2>Speed Trick — Write the POJO First</h2>
+    <p class="section-desc">A tactical tip that makes the rest of the exam easier.</p>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Speed Trick</div>
+      <p>Always write the POJO class <strong>FIRST</strong>. It is the easiest 5 minutes of your exam. While your fingers are busy typing the class (which requires zero thinking — it is pure mechanical work), your <strong>brain is processing the method logic</strong> in the background.</p>
+      <p>By the time you finish writing the class, you already have a mental plan for how the methods should work. This is called <strong>"productive autopilot"</strong> — your hands do easy work while your brain does hard work.</p>
+    </div>
+
+    <h3>The Order of Typing</h3>
+    <ol class="steps">
+      <li><strong>Write <code>import java.util.*;</code></strong> at the top. Do this FIRST so you never forget it.</li>
+      <li><strong>Write the POJO class(es).</strong> If there are two classes (Author + Book), write the simpler one first (Author), then the one that contains it (Book).</li>
+      <li><strong>Write the Solution class shell</strong> — <code>class Solution { }</code> with empty method signatures inside.</li>
+      <li><strong>Write main method</strong> — Scanner, input reading, method calls, output.</li>
+      <li><strong>Fill in method logic</strong> — now you know exactly what data you have and what you need to return.</li>
+    </ol>
+
+    <div class="callout practice">
+      <div class="callout-title">Practice Exercise</div>
+      <p>Right now, without looking at the examples above, try writing a POJO class for a <strong>Student</strong> with these fields:</p>
+      <ul>
+        <li><code>studentId</code> (int)</li>
+        <li><code>studentName</code> (String)</li>
+        <li><code>marks</code> (double)</li>
+        <li><code>department</code> (String)</li>
+      </ul>
+      <p>Time yourself. Your goal: under 3 minutes. If you can do it in under 3 minutes, the POJO section of PRA is locked in.</p>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <div class="topic-nav">
+    <a href="03-static-vs-nonstatic.html" class="next" style="margin-left: auto;">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">Static vs Non-Static</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

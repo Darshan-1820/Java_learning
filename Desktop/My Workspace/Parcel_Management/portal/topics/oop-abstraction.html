@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OOP Abstraction &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link active"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is Abstraction?                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-abstraction">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Abstraction?</h2>
+  <p class="section-desc">Abstraction is the OOP principle of <strong>hiding internal complexity</strong> and <strong>exposing only what the user needs</strong>. You define <em>what</em> something does, not <em>how</em> it does it.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy &mdash; Driving a Car</div>
+    <p>When you drive a car, you interact with the <strong>steering wheel</strong>, <strong>accelerator</strong>, <strong>brake</strong>, and <strong>gear shift</strong>. You do not need to know how the engine combustion cycle works, how the transmission converts RPM to wheel torque, or how the ABS controller pulses the brake calipers 15 times per second. All of that complexity is <em>abstracted away</em>. You get a simple interface: turn the wheel, press the pedal, the car moves.</p>
+    <p>Software abstraction works the same way. You expose simple methods like <code>trackParcel(id)</code>. The caller does not care if you query a database, call a REST API, or read from a cache internally. They just want the result.</p>
+  </div>
+
+  <h3>Why Abstraction Matters</h3>
+
+  <p>Without abstraction, every class that uses your tracking system would need to know about database connections, SQL queries, result set parsing, error handling, caching logic, and retry mechanisms. Change any internal detail and every caller breaks.</p>
+
+  <p>With abstraction, callers depend on a <strong>contract</strong> (the method signature), not the implementation. You can completely rewrite the internals &mdash; switch from MySQL to PostgreSQL, add Redis caching, change the algorithm &mdash; and no caller needs to change a single line of code.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a customer calls <code>trackParcel("NB-20260423-0001")</code>, they do not care whether the system queries a local database, calls the courier partner's API, or checks a Redis cache. They just want the parcel status. The tracking service <em>abstracts</em> all of that complexity behind a single method call.</p>
+  </div>
+
+  <h3>Two Tools for Abstraction in Java</h3>
+
+  <p>Java gives you two mechanisms to achieve abstraction:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Mechanism</th>
+        <th>Abstraction Level</th>
+        <th>Use When</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Abstract Class</strong></td>
+        <td>Partial (0&ndash;100%)</td>
+        <td>Related classes share common code + some methods must be customized</td>
+      </tr>
+      <tr>
+        <td><strong>Interface</strong></td>
+        <td>Full (100% before Java 8)</td>
+        <td>Unrelated classes need to follow the same contract</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>We will cover both in depth. By the end of this page you will know exactly when to use each one and why.</p>
+
+  <div class="diagram">
+    <pre>
+           Abstraction in Java
+          ________|________
+         |                 |
+   Abstract Class       Interface
+         |                 |
+  - Partial contract   - Full contract
+  - Has constructors   - No constructors
+  - Has fields         - Only constants
+  - Single inherit     - Multiple inherit
+  - "is-a" base        - "can-do" capability
+    </pre>
+    <div class="diagram-label">Two paths to abstraction &mdash; different tools for different problems</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Abstract Classes                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="abstract-classes">
+  <div class="section-tag">Section 02</div>
+  <h2>Abstract Classes</h2>
+  <p class="section-desc">An abstract class is a class declared with the <code>abstract</code> keyword. It <strong>cannot be instantiated</strong> directly &mdash; it exists only to be extended by subclasses.</p>
+
+  <h3>The Rules</h3>
+
+  <ul>
+    <li>Declared with the <code>abstract</code> keyword before <code>class</code></li>
+    <li><strong>Cannot create objects</strong> with <code>new AbstractClass()</code> &mdash; compile error</li>
+    <li>Can have <strong>abstract methods</strong> (no body) and <strong>concrete methods</strong> (with body)</li>
+    <li>Can have <strong>instance fields</strong>, <strong>constructors</strong>, and <strong>static methods</strong></li>
+    <li>A subclass <strong>must override all abstract methods</strong>, or it must also be declared abstract</li>
+    <li>Can have any access modifier on methods (<code>public</code>, <code>protected</code>, <code>private</code>)</li>
+  </ul>
+
+  <h3>Nimbus Example: Abstract TrackingService</h3>
+
+  <p>In Nimbus, tracking a parcel involves common steps (validate booking ID, check if parcel exists, log the request) and role-specific steps (what data to display). The common logic belongs in the abstract class. The role-specific logic is forced onto subclasses.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public abstract class TrackingService {
+
+    // Instance field - shared by all subclasses
+    protected BookingDAO bookingDAO;
+
+    // Constructor - subclasses call this via super()
+    public TrackingService(BookingDAO bookingDAO) {
+        this.bookingDAO = bookingDAO;
+    }
+
+    // CONCRETE method - shared logic, same for everyone
+    public void trackParcel(String bookingId) {
+        // Step 1: Validate (common)
+        if (bookingId == null || bookingId.isEmpty()) {
+            System.out.println("Error: Booking ID cannot be empty.");
+            return;
+        }
+
+        // Step 2: Fetch parcel (common)
+        Parcel parcel = bookingDAO.getParcelByBookingId(bookingId);
+        if (parcel == null) {
+            System.out.println("No parcel found for: " + bookingId);
+            return;
+        }
+
+        // Step 3: Display result (DIFFERENT per role)
+        displayResult(parcel);
+    }
+
+    // ABSTRACT method - each subclass MUST implement this
+    public abstract void displayResult(Parcel parcel);
+
+    // Another concrete method - shared utility
+    protected String formatDate(long timestamp) {
+        return new java.text.SimpleDateFormat("dd-MMM-yyyy HH:mm")
+                   .format(new java.util.Date(timestamp));
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public abstract class TrackingService {</div>
+        <div class="breakdown-explain">The <strong>abstract</strong> keyword means: this class cannot be instantiated directly. You cannot write <code>new TrackingService()</code>. It exists to be a parent.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">protected BookingDAO bookingDAO;</div>
+        <div class="breakdown-explain">Abstract classes CAN have fields. <code>protected</code> means subclasses can access this directly. Every subclass inherits this DAO reference.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public TrackingService(BookingDAO bookingDAO)</div>
+        <div class="breakdown-explain">Abstract classes CAN have constructors. They run when a subclass calls <code>super(bookingDAO)</code>. This ensures every subclass has a properly initialized DAO.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void trackParcel(String bookingId)</div>
+        <div class="breakdown-explain">A <strong>concrete method</strong> (has a body). All subclasses inherit this exact logic. Validation and fetching are the same regardless of user role.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public abstract void displayResult(Parcel parcel);</div>
+        <div class="breakdown-explain">An <strong>abstract method</strong> &mdash; no body, just a semicolon. Every subclass MUST provide its own implementation. This is the "contract" that forces customization.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">protected String formatDate(long timestamp)</div>
+        <div class="breakdown-explain">Another concrete method. Shared utility that all subclasses can use without rewriting. <code>protected</code> means only subclasses and same-package classes can call it.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Subclasses Implement the Abstract Method</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CustomerTrackingService extends TrackingService {
+
+    public CustomerTrackingService(BookingDAO bookingDAO) {
+        super(bookingDAO);  // Calls abstract class constructor
+    }
+
+    @Override
+    public void displayResult(Parcel parcel) {
+        // Customer sees: status + ETA only
+        System.out.println("=== Your Parcel Status ===");
+        System.out.println("Booking ID : " + parcel.getBookingId());
+        System.out.println("Status     : " + parcel.getStatus());
+        System.out.println("ETA        : " + formatDate(parcel.getEta()));
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OfficerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class OfficerTrackingService extends TrackingService {
+
+    public OfficerTrackingService(BookingDAO bookingDAO) {
+        super(bookingDAO);
+    }
+
+    @Override
+    public void displayResult(Parcel parcel) {
+        // Officer sees: everything including route + driver
+        System.out.println("=== Officer Tracking View ===");
+        System.out.println("Booking ID : " + parcel.getBookingId());
+        System.out.println("Status     : " + parcel.getStatus());
+        System.out.println("Origin     : " + parcel.getOriginCity());
+        System.out.println("Destination: " + parcel.getDestCity());
+        System.out.println("Route      : " + parcel.getRouteDetails());
+        System.out.println("Driver     : " + parcel.getAssignedDriver());
+        System.out.println("ETA        : " + formatDate(parcel.getEta()));
+        System.out.println("Last Scan  : " + formatDate(parcel.getLastScanTime()));
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Notice the <strong>Template Method pattern</strong> at work. The abstract class defines the algorithm skeleton in <code>trackParcel()</code>: validate &rarr; fetch &rarr; display. Steps 1 and 2 are fixed. Step 3 is delegated to subclasses via the abstract method. The overall flow is locked; only the variable part is customizable.</p>
+  </div>
+
+  <h3>What You Cannot Do</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Compile Errors with Abstract Classes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// ERROR 1: Cannot instantiate abstract class
+TrackingService ts = new TrackingService(dao);
+// Compiler: "TrackingService is abstract; cannot be instantiated"
+
+// ERROR 2: Subclass that does NOT override abstract method
+public class LazyTracker extends TrackingService {
+    public LazyTracker(BookingDAO dao) { super(dao); }
+    // Missing displayResult() override!
+}
+// Compiler: "LazyTracker must implement abstract method displayResult()"
+
+// FIX: Either implement it OR declare LazyTracker as abstract too
+public abstract class LazyTracker extends TrackingService {
+    // OK - but now LazyTracker itself cannot be instantiated
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Abstract Methods                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="abstract-methods">
+  <div class="section-tag">Section 03</div>
+  <h2>Abstract Methods</h2>
+  <p class="section-desc">An abstract method is a <strong>method signature with no body</strong>. It declares <em>what</em> must be done but leaves <em>how</em> to the subclass.</p>
+
+  <h3>Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Abstract Method Syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Abstract method - note the semicolon, NO curly braces
+public abstract void displayResult(Parcel parcel);
+
+// Concrete method - has curly braces with a body
+public void trackParcel(String bookingId) {
+    // ... actual code here ...
+}</code></pre>
+  </div>
+
+  <h3>Rules for Abstract Methods</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Rule</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Can only exist inside an <code>abstract class</code> or <code>interface</code></td>
+        <td>A non-abstract class must have all methods implemented</td>
+      </tr>
+      <tr>
+        <td>Cannot be <code>private</code></td>
+        <td>Subclasses need to see and override the method</td>
+      </tr>
+      <tr>
+        <td>Cannot be <code>final</code></td>
+        <td><code>final</code> prevents overriding &mdash; contradicts the purpose</td>
+      </tr>
+      <tr>
+        <td>Cannot be <code>static</code></td>
+        <td>Static methods belong to the class, not instances &mdash; cannot be overridden polymorphically</td>
+      </tr>
+      <tr>
+        <td>Ends with a semicolon <code>;</code></td>
+        <td>No body, so no curly braces &mdash; just the signature</td>
+      </tr>
+      <tr>
+        <td>First concrete subclass <strong>must</strong> implement it</td>
+        <td>Otherwise that subclass must also be abstract</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Chain of Abstraction</h3>
+
+  <p>If an abstract class extends another abstract class, it does NOT have to implement the parent's abstract methods. The obligation passes down until a concrete class appears.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Abstract Chain Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Level 1: defines the contract
+public abstract class TrackingService {
+    public abstract void displayResult(Parcel parcel);
+    public abstract void logAccess(String userId);
+}
+
+// Level 2: implements ONE, leaves the other abstract
+public abstract class RoleBasedTracker extends TrackingService {
+    @Override
+    public void logAccess(String userId) {
+        System.out.println("Access logged for: " + userId);
+    }
+    // displayResult() is still abstract - passes to next level
+}
+
+// Level 3: MUST implement displayResult() - first concrete class
+public class CustomerTracker extends RoleBasedTracker {
+    @Override
+    public void displayResult(Parcel parcel) {
+        System.out.println("Status: " + parcel.getStatus());
+    }
+}</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+  TrackingService (abstract)
+  ├── abstract displayResult()
+  └── abstract logAccess()
+         │
+         ▼
+  RoleBasedTracker (abstract)
+  ├── abstract displayResult()   ← still abstract, passed down
+  └── logAccess()                ← implemented here
+         │
+         ▼
+  CustomerTracker (concrete)
+  └── displayResult()            ← MUST implement here
+    </pre>
+    <div class="diagram-label">Abstract methods flow down until a concrete class handles them</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Interfaces                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="interfaces">
+  <div class="section-tag">Section 04</div>
+  <h2>Interfaces</h2>
+  <p class="section-desc">An interface is a <strong>pure contract</strong>. It defines <em>what</em> a class can do without saying <em>how</em>. Before Java 8, every method in an interface was implicitly abstract. Think of it as a job description &mdash; it lists required skills, but each employee brings their own way of doing the work.</p>
+
+  <h3>Basic Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Trackable.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+
+    // Abstract method (public abstract by default)
+    void trackParcel(String bookingId);
+
+    // Another abstract method
+    void displayResult(Parcel parcel);
+
+    // Constant (public static final by default)
+    String TRACKING_PREFIX = "NB-";
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public interface Trackable {</div>
+        <div class="breakdown-explain">Uses <code>interface</code> keyword instead of <code>class</code>. Naming convention: often an adjective ending in "-able" (Trackable, Serializable, Comparable) or a noun describing a role (Runnable, Iterator).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">void trackParcel(String bookingId);</div>
+        <div class="breakdown-explain">No <code>abstract</code> keyword needed &mdash; interface methods are abstract by default. No <code>public</code> keyword needed &mdash; interface methods are public by default. Just the signature.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String TRACKING_PREFIX = "NB-";</div>
+        <div class="breakdown-explain">Interface fields are <code>public static final</code> by default &mdash; always constants. You cannot have instance variables in an interface. This constant is shared across all implementing classes.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Implementing an Interface</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerTrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// "implements" keyword - the class signs the contract
+public class CustomerTrackingService implements Trackable {
+
+    private BookingDAO bookingDAO;
+
+    public CustomerTrackingService(BookingDAO bookingDAO) {
+        this.bookingDAO = bookingDAO;
+    }
+
+    @Override
+    public void trackParcel(String bookingId) {
+        Parcel parcel = bookingDAO.getParcelByBookingId(bookingId);
+        if (parcel != null) {
+            displayResult(parcel);
+        } else {
+            System.out.println("Parcel not found: " + bookingId);
+        }
+    }
+
+    @Override
+    public void displayResult(Parcel parcel) {
+        System.out.println("Status: " + parcel.getStatus());
+        System.out.println("ETA   : " + parcel.getEta());
+    }
+}</code></pre>
+  </div>
+
+  <h3>Interface Rules</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Allowed?</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Instance fields</td>
+        <td>No</td>
+        <td>Only <code>public static final</code> constants</td>
+      </tr>
+      <tr>
+        <td>Constructors</td>
+        <td>No</td>
+        <td>Interfaces cannot be instantiated</td>
+      </tr>
+      <tr>
+        <td>Abstract methods</td>
+        <td>Yes</td>
+        <td>Implicitly <code>public abstract</code></td>
+      </tr>
+      <tr>
+        <td>Default methods</td>
+        <td>Yes (Java 8+)</td>
+        <td>Concrete method with <code>default</code> keyword</td>
+      </tr>
+      <tr>
+        <td>Static methods</td>
+        <td>Yes (Java 8+)</td>
+        <td>Called on interface: <code>Trackable.helper()</code></td>
+      </tr>
+      <tr>
+        <td>Private methods</td>
+        <td>Yes (Java 9+)</td>
+        <td>Helper for default methods, not visible to implementors</td>
+      </tr>
+      <tr>
+        <td>Multiple inheritance</td>
+        <td>Yes</td>
+        <td>A class can <code>implements A, B, C</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Interface Methods Evolution                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="interface-methods">
+  <div class="section-tag">Section 05</div>
+  <h2>Interface Methods &mdash; Java 8, 9, and Beyond</h2>
+  <p class="section-desc">Interfaces evolved significantly starting with Java 8. What was once a pure contract can now include shared behavior through <code>default</code>, <code>static</code>, and <code>private</code> methods.</p>
+
+  <h3>Abstract Methods (Original &mdash; Pre-Java 8)</h3>
+
+  <p>The classic interface method. No body. Every implementing class must provide the implementation.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Abstract Method in Interface</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+    void trackParcel(String bookingId);  // must be implemented
+}</code></pre>
+  </div>
+
+  <h3>Default Methods (Java 8+)</h3>
+
+  <p>The <code>default</code> keyword lets you add a method <strong>with a body</strong> to an interface. Implementing classes <em>inherit</em> this method automatically. They can override it if they want, but they do not have to.</p>
+
+  <p><strong>Why this was added:</strong> Before Java 8, adding a new method to an interface would break every class that implements it. Imagine the <code>List</code> interface in Java &mdash; thousands of classes implement it. When Java wanted to add <code>forEach()</code>, they could not make it abstract (every existing class would break). So they added it as a <code>default</code> method with a provided body.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Default Method Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+
+    // Abstract - must implement
+    void trackParcel(String bookingId);
+
+    // Default - already has a body, optional to override
+    default void printTrackingHeader() {
+        System.out.println("============================");
+        System.out.println("   NIMBUS PARCEL TRACKING   ");
+        System.out.println("============================");
+    }
+
+    // Default with logic
+    default boolean isValidBookingId(String id) {
+        return id != null
+            &amp;&amp; id.startsWith("NB-")
+            &amp;&amp; id.length() == 18;
+    }
+}
+
+// Implementing class - gets printTrackingHeader() for free
+public class CustomerTracker implements Trackable {
+
+    @Override
+    public void trackParcel(String bookingId) {
+        printTrackingHeader();  // Inherited from interface!
+        System.out.println("Tracking: " + bookingId);
+    }
+    // No need to implement printTrackingHeader or isValidBookingId
+}</code></pre>
+  </div>
+
+  <h3>Static Methods (Java 8+)</h3>
+
+  <p>Static methods in interfaces work like static methods in classes. They belong to the interface itself, not to implementing classes. Called as <code>InterfaceName.methodName()</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Static Method in Interface</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+
+    void trackParcel(String bookingId);
+
+    // Static utility method
+    static String generateBookingId(String city) {
+        String date = java.time.LocalDate.now()
+                          .format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
+        int random = (int)(Math.random() * 10000);
+        return "NB-" + date + "-" + String.format("%04d", random);
+    }
+}
+
+// Usage - called on the INTERFACE, not on an object
+String id = Trackable.generateBookingId("Mumbai");
+// "NB-20260423-0583"</code></pre>
+  </div>
+
+  <h3>Private Methods (Java 9+)</h3>
+
+  <p>When multiple default methods share common logic, you extract it into a private method. These are <strong>not visible</strong> to implementing classes &mdash; purely internal to the interface.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Private Method in Interface (Java 9+)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+
+    void trackParcel(String bookingId);
+
+    default void printSuccess(String bookingId) {
+        printMessage("Parcel " + bookingId + " found successfully.");
+    }
+
+    default void printError(String bookingId) {
+        printMessage("ERROR: Parcel " + bookingId + " not found.");
+    }
+
+    // Private helper - shared by both default methods above
+    // NOT visible to implementing classes
+    private void printMessage(String msg) {
+        System.out.println("[NIMBUS] " + msg);
+    }
+}</code></pre>
+  </div>
+
+  <h3>Evolution Summary</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        Pre-Java 8
+        <span class="flow-sub">Abstract only</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">
+        Java 8
+        <span class="flow-sub">+ default + static</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">
+        Java 9+
+        <span class="flow-sub">+ private methods</span>
+      </div>
+    </div>
+    <div class="flow-label">Interfaces went from pure contracts to contracts with shared behavior</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Abstract Class vs Interface                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="abstract-vs-interface">
+  <div class="section-tag">Section 06</div>
+  <h2>Abstract Class vs Interface &mdash; The Big Comparison</h2>
+  <p class="section-desc">This is the most-asked interview question in Java OOP. Know every difference cold.</p>
+
+  <h3>The 15+ Differences Table</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Abstract Class</th>
+        <th>Interface</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Keyword</td>
+        <td><code>abstract class</code></td>
+        <td><code>interface</code></td>
+      </tr>
+      <tr>
+        <td>Method types</td>
+        <td>Abstract + concrete (any mix)</td>
+        <td>Abstract + default + static + private</td>
+      </tr>
+      <tr>
+        <td>Constructors</td>
+        <td>Yes</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>Instance fields</td>
+        <td>Yes (any type, any modifier)</td>
+        <td>No (only <code>public static final</code> constants)</td>
+      </tr>
+      <tr>
+        <td>Access modifiers on methods</td>
+        <td>Any (<code>public</code>, <code>protected</code>, <code>private</code>)</td>
+        <td><code>public</code> only (abstract/default), <code>private</code> (Java 9+)</td>
+      </tr>
+      <tr>
+        <td>Multiple inheritance</td>
+        <td>No (single <code>extends</code>)</td>
+        <td>Yes (multiple <code>implements</code>)</td>
+      </tr>
+      <tr>
+        <td>Can extend</td>
+        <td>One class (abstract or concrete)</td>
+        <td>Multiple interfaces</td>
+      </tr>
+      <tr>
+        <td>Instantiation</td>
+        <td>No</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>State (mutable data)</td>
+        <td>Yes (instance fields change)</td>
+        <td>No (constants only)</td>
+      </tr>
+      <tr>
+        <td><code>final</code> methods</td>
+        <td>Yes</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><code>static</code> blocks</td>
+        <td>Yes</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>Speed</td>
+        <td>Slightly faster (direct method dispatch)</td>
+        <td>Slightly slower (virtual table lookup)</td>
+      </tr>
+      <tr>
+        <td>Relationship</td>
+        <td>"is-a" (Dog is-a Animal)</td>
+        <td>"can-do" (Dog can-do Trainable)</td>
+      </tr>
+      <tr>
+        <td>Use case</td>
+        <td>Shared base for closely related classes</td>
+        <td>Common capability for unrelated classes</td>
+      </tr>
+      <tr>
+        <td>Evolution</td>
+        <td>Add concrete methods freely</td>
+        <td>Add <code>default</code> methods (Java 8+) without breaking implementors</td>
+      </tr>
+      <tr>
+        <td>Example</td>
+        <td><code>abstract class TrackingService</code></td>
+        <td><code>interface Trackable</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Decision Flowchart</h3>
+
+  <div class="diagram">
+    <pre>
+  Do the classes share common CODE (not just a contract)?
+      │
+      ├── YES ──&gt; Does the shared code need instance fields?
+      │               │
+      │               ├── YES ──&gt; Use ABSTRACT CLASS
+      │               │
+      │               └── NO ──&gt; Could different class hierarchies
+      │                           need this capability?
+      │                               │
+      │                               ├── YES ──&gt; Use INTERFACE
+      │                               │           (with default methods)
+      │                               │
+      │                               └── NO ──&gt; Use ABSTRACT CLASS
+      │
+      └── NO ──&gt; Do the classes need to "promise" they can do something?
+                      │
+                      ├── YES ──&gt; Use INTERFACE
+                      │
+                      └── NO ──&gt; You might not need abstraction at all
+    </pre>
+    <div class="diagram-label">When in doubt, prefer interface. You can always add an abstract class later.</div>
+  </div>
+
+  <h3>Side-by-Side Comparison</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Abstract Class</div>
+      <div class="comparison-body">
+        <p><strong>When to use:</strong></p>
+        <ul>
+          <li>Classes are closely related (all are "tracking services")</li>
+          <li>You need shared state (fields like <code>bookingDAO</code>)</li>
+          <li>You want to provide a constructor that initializes shared state</li>
+          <li>You need <code>protected</code> methods (only for subclasses)</li>
+          <li>You want to enforce a template (Template Method pattern)</li>
+        </ul>
+        <p><strong>Nimbus:</strong> <code>abstract class TrackingService</code> &mdash; all tracker types share the same DAO, same validation, same flow.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Interface</div>
+      <div class="comparison-body">
+        <p><strong>When to use:</strong></p>
+        <ul>
+          <li>Unrelated classes need the same capability</li>
+          <li>A class needs to "wear multiple hats" (implement several interfaces)</li>
+          <li>You want to define a contract without forcing an inheritance hierarchy</li>
+          <li>You are designing an API that others will implement</li>
+          <li>You need multiple inheritance of type</li>
+        </ul>
+        <p><strong>Nimbus:</strong> <code>interface Trackable</code> &mdash; both <code>CustomerTrackingService</code> and a future <code>ThirdPartyTracker</code> can be Trackable, even if they have no common parent class.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Do not use an abstract class just because you want to add one shared method. If the classes are unrelated, use an interface with a <code>default</code> method instead. Abstract class = "these classes are fundamentally the same thing." Interface = "these classes can do the same thing."</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Multiple Interface Implementation                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="multiple-interfaces">
+  <div class="section-tag">Section 07</div>
+  <h2>Multiple Interface Implementation</h2>
+  <p class="section-desc">A class in Java can extend only <strong>one</strong> class, but it can implement <strong>multiple</strong> interfaces. This is Java's answer to multiple inheritance.</p>
+
+  <h3>One Class, Multiple Interfaces</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Multiple Interfaces in Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+    void trackParcel(String bookingId);
+    void displayResult(Parcel parcel);
+}
+
+public interface Bookable {
+    Booking createBooking(BookingRequest request);
+}
+
+public interface HistoryViewable {
+    List&lt;Parcel&gt; getHistory(String customerId);
+    void displayHistory(List&lt;Parcel&gt; parcels);
+}
+
+// One class implements ALL three interfaces
+public class CustomerService implements Trackable, Bookable, HistoryViewable {
+
+    @Override
+    public void trackParcel(String bookingId) {
+        System.out.println("Tracking: " + bookingId);
+    }
+
+    @Override
+    public void displayResult(Parcel parcel) {
+        System.out.println("Status: " + parcel.getStatus());
+    }
+
+    @Override
+    public Booking createBooking(BookingRequest request) {
+        System.out.println("Booking created for: " + request.getSenderName());
+        return new Booking(request);
+    }
+
+    @Override
+    public List&lt;Parcel&gt; getHistory(String customerId) {
+        return bookingDAO.getParcelsByCustomer(customerId);
+    }
+
+    @Override
+    public void displayHistory(List&lt;Parcel&gt; parcels) {
+        for (Parcel p : parcels) {
+            System.out.println(p.getBookingId() + " - " + p.getStatus());
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>CustomerService</code> wears three hats: it can track parcels (Trackable), create bookings (Bookable), and show booking history (HistoryViewable). With interfaces, you can pass a <code>CustomerService</code> object anywhere a <code>Trackable</code> is expected, anywhere a <code>Bookable</code> is expected, or anywhere a <code>HistoryViewable</code> is expected. One object, multiple types.</p>
+  </div>
+
+  <h3>The Diamond Problem with Default Methods</h3>
+
+  <p>What happens when two interfaces have a default method with the <strong>same signature</strong>?</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Diamond Problem</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+    default void printHeader() {
+        System.out.println("=== TRACKING ===");
+    }
+}
+
+public interface Bookable {
+    default void printHeader() {
+        System.out.println("=== BOOKING ===");
+    }
+}
+
+// COMPILE ERROR: class inherits unrelated defaults for printHeader()
+public class CustomerService implements Trackable, Bookable {
+    // Must resolve the conflict!
+}
+
+// SOLUTION: Override and choose (or combine)
+public class CustomerService implements Trackable, Bookable {
+
+    @Override
+    public void printHeader() {
+        // Option 1: Pick one
+        Trackable.super.printHeader();
+
+        // Option 2: Combine both
+        // Trackable.super.printHeader();
+        // Bookable.super.printHeader();
+
+        // Option 3: Write your own
+        // System.out.println("=== CUSTOMER SERVICE ===");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Resolving the diamond problem</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Trackable.super.printHeader();</div>
+        <div class="breakdown-explain"><code>InterfaceName.super.method()</code> lets you explicitly call a specific interface's default method. This is the resolution syntax Java requires when two interfaces collide.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">The class MUST override the conflicting method</div>
+        <div class="breakdown-explain">Java will not guess which default to use. If you do not override, you get a compile error. The implementing class is always in control.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <pre>
+       Trackable          Bookable
+    printHeader()       printHeader()
+          \                 /
+           \               /
+            ▼             ▼
+         CustomerService
+      MUST override printHeader()
+      to resolve the conflict
+    </pre>
+    <div class="diagram-label">Diamond problem: two interfaces, same default method, one implementing class</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Functional Interfaces                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="functional-interfaces">
+  <div class="section-tag">Section 08</div>
+  <h2>Functional Interfaces</h2>
+  <p class="section-desc">A functional interface has <strong>exactly one abstract method</strong>. It is the foundation of lambda expressions in Java 8+.</p>
+
+  <h3>Definition and Rules</h3>
+
+  <ul>
+    <li>Exactly <strong>one</strong> abstract method (called SAM &mdash; Single Abstract Method)</li>
+    <li>Can have any number of <code>default</code> and <code>static</code> methods</li>
+    <li>Annotated with <code>@FunctionalInterface</code> (optional but recommended &mdash; compiler enforces the rule)</li>
+    <li>Can be used as the target for a lambda expression or method reference</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Custom Functional Interface for Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@FunctionalInterface
+public interface ParcelFilter {
+    boolean test(Parcel parcel);  // The ONE abstract method
+
+    // Default methods are fine - don't count
+    default ParcelFilter and(ParcelFilter other) {
+        return (parcel) -&gt; this.test(parcel) &amp;&amp; other.test(parcel);
+    }
+}
+
+// Usage with lambda expression (preview - covered in depth later)
+ParcelFilter inTransit = parcel -&gt; parcel.getStatus().equals("In Transit");
+ParcelFilter toMumbai  = parcel -&gt; parcel.getDestCity().equals("Mumbai");
+
+// Combine filters using the default method
+ParcelFilter inTransitToMumbai = inTransit.and(toMumbai);
+
+// Apply to a list
+for (Parcel p : allParcels) {
+    if (inTransitToMumbai.test(p)) {
+        System.out.println(p.getBookingId());
+    }
+}</code></pre>
+  </div>
+
+  <h3>Built-in Functional Interfaces You Will See</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Interface</th>
+        <th>Abstract Method</th>
+        <th>Purpose</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Comparable&lt;T&gt;</code></td>
+        <td><code>compareTo(T o)</code></td>
+        <td>Natural ordering of objects</td>
+        <td>Sort parcels by date</td>
+      </tr>
+      <tr>
+        <td><code>Runnable</code></td>
+        <td><code>run()</code></td>
+        <td>Task to execute in a thread</td>
+        <td>Background parcel status check</td>
+      </tr>
+      <tr>
+        <td><code>Comparator&lt;T&gt;</code></td>
+        <td><code>compare(T a, T b)</code></td>
+        <td>Custom ordering</td>
+        <td>Sort parcels by weight, by city</td>
+      </tr>
+      <tr>
+        <td><code>Predicate&lt;T&gt;</code></td>
+        <td><code>test(T t)</code></td>
+        <td>Test a condition</td>
+        <td>Filter delivered parcels</td>
+      </tr>
+      <tr>
+        <td><code>Function&lt;T,R&gt;</code></td>
+        <td><code>apply(T t)</code></td>
+        <td>Transform one type to another</td>
+        <td>Convert Parcel to ParcelDTO</td>
+      </tr>
+      <tr>
+        <td><code>Consumer&lt;T&gt;</code></td>
+        <td><code>accept(T t)</code></td>
+        <td>Perform action, return nothing</td>
+        <td>Print parcel details</td>
+      </tr>
+      <tr>
+        <td><code>Supplier&lt;T&gt;</code></td>
+        <td><code>get()</code></td>
+        <td>Provide a value, take nothing</td>
+        <td>Generate booking ID</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Lambda Preview</div>
+    <p>Functional interfaces are the <em>type</em> that lambda expressions target. Instead of creating an anonymous class with one overridden method, you write a compact arrow expression: <code>parcel -&gt; parcel.getStatus().equals("Delivered")</code>. Lambdas are covered fully in a later topic, but functional interfaces are the prerequisite.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Comparable in Nimbus - Sorting Parcels</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Parcel implements Comparable&lt;Parcel&gt; {
+
+    private String bookingId;
+    private double weight;
+    private long bookingDate;
+
+    // Natural ordering: by booking date (most recent first)
+    @Override
+    public int compareTo(Parcel other) {
+        return Long.compare(other.bookingDate, this.bookingDate);
+    }
+}
+
+// Now you can sort a list of parcels
+List&lt;Parcel&gt; parcels = bookingDAO.getAllParcels();
+Collections.sort(parcels);  // Uses compareTo automatically</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Marker Interfaces                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="marker-interfaces">
+  <div class="section-tag">Section 09</div>
+  <h2>Marker Interfaces</h2>
+  <p class="section-desc">A marker interface is an <strong>empty interface</strong> with zero methods. It "marks" or "tags" a class as having a certain property.</p>
+
+  <h3>Why Empty Interfaces Exist</h3>
+
+  <p>Sometimes you do not need the class to <em>do</em> anything new. You just need to tell the JVM or a framework: "this class is special in this way." The interface acts as a flag.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Built-in Marker Interfaces</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// java.io.Serializable - marks a class as safe to convert to bytes
+public interface Serializable {
+    // EMPTY - no methods
+}
+
+// java.lang.Cloneable - marks a class as safe to clone
+public interface Cloneable {
+    // EMPTY - no methods
+}
+
+// Usage: Nimbus Parcel can be serialized (saved to file/sent over network)
+public class Parcel implements Serializable {
+    private String bookingId;
+    private String status;
+    private double weight;
+    // ... all fields automatically become serializable
+}
+
+// Now you can do this:
+ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("parcel.dat"));
+out.writeObject(parcel);  // Works because Parcel implements Serializable
+
+// Without Serializable:
+// out.writeObject(parcel);  // Throws NotSerializableException at runtime</code></pre>
+  </div>
+
+  <h3>Custom Marker Interface for Nimbus</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Custom Marker Interface</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Marker: classes that can be audited (logged for compliance)
+public interface Auditable {
+    // Empty - just a tag
+}
+
+// Mark specific classes
+public class Booking implements Auditable {
+    // ... booking fields and methods
+}
+
+public class Payment implements Auditable {
+    // ... payment fields and methods
+}
+
+public class TempCalculation {
+    // NOT auditable - internal temporary data
+}
+
+// Audit system checks the marker
+public class AuditLogger {
+    public void log(Object entity) {
+        if (entity instanceof Auditable) {
+            System.out.println("AUDIT: " + entity.getClass().getSimpleName()
+                             + " at " + System.currentTimeMillis());
+        } else {
+            System.out.println("Skipped: " + entity.getClass().getSimpleName()
+                             + " is not auditable");
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Modern Alternative</div>
+    <p>In modern Java, <strong>annotations</strong> (<code>@Auditable</code>) are often preferred over marker interfaces because they do not affect the type hierarchy. But marker interfaces still have an advantage: they can be used as a <em>type</em>. You can write <code>void process(Auditable entity)</code> &mdash; the compiler enforces that only Auditable objects are passed. Annotations cannot do that.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Nimbus Redesign with Interfaces                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-interfaces">
+  <div class="section-tag">Section 10</div>
+  <h2>Nimbus Redesign with Interfaces</h2>
+  <p class="section-desc">Let us redesign key parts of Nimbus using interfaces to see how abstraction makes the system flexible, testable, and extensible.</p>
+
+  <h3>Three Core Interfaces</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Trackable.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+
+    /**
+     * Tracks a parcel by its booking ID.
+     * @param bookingId the unique booking identifier (e.g., "NB-20260423-0001")
+     */
+    void trackParcel(String bookingId);
+
+    /**
+     * Displays the tracking result to the user.
+     * Each role shows different information.
+     */
+    void displayResult(Parcel parcel);
+
+    /**
+     * Validates a booking ID format.
+     * Default implementation - can be overridden.
+     */
+    default boolean isValidId(String bookingId) {
+        return bookingId != null
+            &amp;&amp; bookingId.startsWith("NB-")
+            &amp;&amp; bookingId.length() &gt;= 10;
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Bookable.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Bookable {
+
+    /**
+     * Creates a new parcel booking.
+     * @return the generated booking ID
+     */
+    String createBooking(String senderName, String receiverName,
+                         String originCity, String destCity,
+                         double weight);
+
+    /**
+     * Calculates the cost of a booking.
+     */
+    double calculateCost(double weight, String originCity, String destCity);
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HistoryViewable.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface HistoryViewable {
+
+    /**
+     * Retrieves parcel history for a customer.
+     */
+    List&lt;Parcel&gt; getHistory(String customerId);
+
+    /**
+     * Displays formatted history to the console.
+     */
+    void displayHistory(List&lt;Parcel&gt; parcels);
+
+    /**
+     * Default: display count summary
+     */
+    default void displaySummary(List&lt;Parcel&gt; parcels) {
+        long delivered = parcels.stream()
+            .filter(p -&gt; "Delivered".equals(p.getStatus()))
+            .count();
+        System.out.println("Total: " + parcels.size()
+                         + " | Delivered: " + delivered
+                         + " | In Transit: " + (parcels.size() - delivered));
+    }
+}</code></pre>
+  </div>
+
+  <h3>Full Implementation &mdash; Combining Abstract Class + Interfaces</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerService.java &mdash; The Full Picture</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Abstract class provides shared infrastructure
+// Interfaces provide capabilities
+public class CustomerService extends TrackingService
+                             implements Bookable, HistoryViewable {
+
+    private BookingDAO bookingDAO;
+
+    public CustomerService(BookingDAO bookingDAO) {
+        super(bookingDAO);
+        this.bookingDAO = bookingDAO;
+    }
+
+    // From TrackingService (abstract class) - role-specific display
+    @Override
+    public void displayResult(Parcel parcel) {
+        System.out.println("=== Your Parcel ===");
+        System.out.println("ID     : " + parcel.getBookingId());
+        System.out.println("Status : " + parcel.getStatus());
+        System.out.println("ETA    : " + formatDate(parcel.getEta()));
+    }
+
+    // From Bookable interface
+    @Override
+    public String createBooking(String senderName, String receiverName,
+                                String originCity, String destCity,
+                                double weight) {
+        double cost = calculateCost(weight, originCity, destCity);
+        Parcel parcel = new Parcel(senderName, receiverName,
+                                   originCity, destCity, weight, cost);
+        bookingDAO.save(parcel);
+        System.out.println("Booking created! Cost: Rs. " + cost);
+        return parcel.getBookingId();
+    }
+
+    @Override
+    public double calculateCost(double weight, String origin, String dest) {
+        double baseCost = 50.0;
+        double perKg = 15.0;
+        double distanceFactor = origin.equals(dest) ? 1.0 : 2.5;
+        return (baseCost + (weight * perKg)) * distanceFactor;
+    }
+
+    // From HistoryViewable interface
+    @Override
+    public List&lt;Parcel&gt; getHistory(String customerId) {
+        return bookingDAO.getParcelsByCustomer(customerId);
+    }
+
+    @Override
+    public void displayHistory(List&lt;Parcel&gt; parcels) {
+        System.out.println("=== Your Booking History ===");
+        displaySummary(parcels);  // Uses default method from interface!
+        System.out.println("---");
+        for (Parcel p : parcels) {
+            System.out.println(p.getBookingId() + " | "
+                + p.getStatus() + " | " + p.getDestCity());
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Architecture breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extends TrackingService implements Bookable, HistoryViewable</div>
+        <div class="breakdown-explain"><strong>extends</strong> one abstract class (shared state + template). <strong>implements</strong> multiple interfaces (capabilities). This is the standard Java pattern: single class inheritance + multiple interface implementation.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">displayResult() from TrackingService</div>
+        <div class="breakdown-explain">The abstract method from <code>TrackingService</code>. This class fulfills the contract by showing customer-appropriate data (status + ETA only, no internal route details).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">createBooking() + calculateCost() from Bookable</div>
+        <div class="breakdown-explain">Both methods from the <code>Bookable</code> interface. This class can now be used anywhere a <code>Bookable</code> is expected.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">displaySummary(parcels) - default method</div>
+        <div class="breakdown-explain">Called inside <code>displayHistory()</code> but never explicitly implemented. It comes from the <code>HistoryViewable</code> interface's <code>default</code> method. Free shared logic.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Polymorphism in Action</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Using Interface Types</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">CustomerService service = new CustomerService(dao);
+
+// Same object, different type views:
+Trackable       tracker = service;  // sees trackParcel, displayResult
+Bookable        booker  = service;  // sees createBooking, calculateCost
+HistoryViewable viewer  = service;  // sees getHistory, displayHistory
+TrackingService base    = service;  // sees trackParcel, displayResult, formatDate
+
+// A method that accepts ANY Trackable
+public void showStatus(Trackable tracker, String id) {
+    tracker.trackParcel(id);  // Works with CustomerService, OfficerService, any Trackable
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Interface Segregation                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="interface-segregation">
+  <div class="section-tag">Section 11</div>
+  <h2>Interface Segregation Principle</h2>
+  <p class="section-desc">No class should be forced to implement methods it does not use. Keep interfaces <strong>small and focused</strong>.</p>
+
+  <h3>The Problem: Fat Interfaces</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">BAD &mdash; One Fat Interface</div>
+      <div class="comparison-body">
+<pre style="font-size:0.78rem;color:var(--text-secondary);background:none;font-family:'JetBrains Mono',monospace;line-height:1.6;">
+interface ParcelService {
+  void trackParcel(String id);
+  void displayResult(Parcel p);
+  String createBooking(...);
+  double calculateCost(...);
+  List&lt;Parcel&gt; getHistory(String id);
+  void displayHistory(List&lt;Parcel&gt; p);
+  void updateStatus(String id, String s);
+  void assignDriver(String id, String d);
+  void generateReport();
+}
+</pre>
+        <p style="margin-top:8px;"><strong>Problem:</strong> A <code>CustomerService</code> must implement <code>assignDriver()</code> and <code>generateReport()</code> even though customers never do those things. Empty methods or <code>UnsupportedOperationException</code> everywhere.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">GOOD &mdash; Small Focused Interfaces</div>
+      <div class="comparison-body">
+<pre style="font-size:0.78rem;color:var(--text-secondary);background:none;font-family:'JetBrains Mono',monospace;line-height:1.6;">
+interface Trackable {
+  void trackParcel(String id);
+  void displayResult(Parcel p);
+}
+
+interface Bookable {
+  String createBooking(...);
+  double calculateCost(...);
+}
+
+interface HistoryViewable {
+  List&lt;Parcel&gt; getHistory(String id);
+  void displayHistory(List&lt;Parcel&gt; p);
+}
+
+interface Assignable {
+  void assignDriver(String id, String d);
+}
+</pre>
+        <p style="margin-top:8px;"><strong>Result:</strong> Each class implements only what it needs. <code>CustomerService implements Trackable, Bookable, HistoryViewable</code>. <code>OfficerService implements Trackable, Assignable</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">SOLID Connection</div>
+    <p>Interface Segregation is the <strong>"I"</strong> in SOLID. The five SOLID principles are: <strong>S</strong>ingle Responsibility, <strong>O</strong>pen/Closed, <strong>L</strong>iskov Substitution, <strong>I</strong>nterface Segregation, <strong>D</strong>ependency Inversion. You covered S, O, and L in the Software Engineering topic. Here is I. D comes with dependency injection patterns.</p>
+  </div>
+
+  <h3>How to Know If Your Interface Is Too Big</h3>
+
+  <ul>
+    <li>Any implementing class has methods that throw <code>UnsupportedOperationException</code></li>
+    <li>Any implementing class has empty method bodies <code>{ }</code></li>
+    <li>The interface has methods that only some implementors need</li>
+    <li>You cannot describe the interface's purpose in one sentence</li>
+    <li>The interface has more than 5-6 methods (not a hard rule, but a smell)</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>We split the original monolithic <code>ParcelService</code> into four focused interfaces: <code>Trackable</code>, <code>Bookable</code>, <code>HistoryViewable</code>, and <code>Assignable</code>. Now <code>CustomerService</code> only implements Trackable + Bookable + HistoryViewable. <code>OfficerService</code> implements Trackable + Assignable. Neither class is forced to implement methods it does not use. Clean. Focused. SOLID.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Full Code Example                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="full-code">
+  <div class="section-tag">Section 12</div>
+  <h2>Full Code &mdash; Abstract Class + Interface + Implementation</h2>
+  <p class="section-desc">Everything tied together in one complete, runnable example that shows how abstract classes and interfaces work side by side.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Trackable.java &mdash; The Interface Contract</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+    void trackParcel(String bookingId);
+    void displayResult(Parcel parcel);
+
+    default boolean isValidId(String id) {
+        return id != null &amp;&amp; id.startsWith("NB-") &amp;&amp; id.length() &gt;= 10;
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java &mdash; Abstract Base Class</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public abstract class TrackingService implements Trackable {
+
+    protected BookingDAO bookingDAO;
+
+    public TrackingService(BookingDAO bookingDAO) {
+        this.bookingDAO = bookingDAO;
+    }
+
+    // Template method - defines the algorithm skeleton
+    @Override
+    public void trackParcel(String bookingId) {
+        if (!isValidId(bookingId)) {
+            System.out.println("Invalid booking ID format.");
+            return;
+        }
+
+        Parcel parcel = bookingDAO.getParcelByBookingId(bookingId);
+        if (parcel == null) {
+            System.out.println("No parcel found for: " + bookingId);
+            return;
+        }
+
+        displayResult(parcel);  // Abstract - subclass decides
+    }
+
+    // displayResult is still abstract - from Trackable interface
+    // Subclasses MUST implement it
+
+    protected String formatDate(long timestamp) {
+        return new java.text.SimpleDateFormat("dd-MMM-yyyy HH:mm")
+                   .format(new java.util.Date(timestamp));
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerTracker.java &mdash; Concrete Implementation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CustomerTracker extends TrackingService {
+
+    public CustomerTracker(BookingDAO bookingDAO) {
+        super(bookingDAO);
+    }
+
+    @Override
+    public void displayResult(Parcel parcel) {
+        System.out.println("+---------------------------+");
+        System.out.println("|     PARCEL STATUS         |");
+        System.out.println("+---------------------------+");
+        System.out.println("| Booking  : " + parcel.getBookingId());
+        System.out.println("| Status   : " + parcel.getStatus());
+        System.out.println("| From     : " + parcel.getOriginCity());
+        System.out.println("| To       : " + parcel.getDestCity());
+        System.out.println("| ETA      : " + formatDate(parcel.getEta()));
+        System.out.println("+---------------------------+");
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OfficerTracker.java &mdash; Another Implementation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class OfficerTracker extends TrackingService {
+
+    public OfficerTracker(BookingDAO bookingDAO) {
+        super(bookingDAO);
+    }
+
+    @Override
+    public void displayResult(Parcel parcel) {
+        System.out.println("=== OFFICER VIEW ===");
+        System.out.println("Booking   : " + parcel.getBookingId());
+        System.out.println("Status    : " + parcel.getStatus());
+        System.out.println("Origin    : " + parcel.getOriginCity());
+        System.out.println("Dest      : " + parcel.getDestCity());
+        System.out.println("Weight    : " + parcel.getWeight() + " kg");
+        System.out.println("Route     : " + parcel.getRouteDetails());
+        System.out.println("Driver    : " + parcel.getAssignedDriver());
+        System.out.println("ETA       : " + formatDate(parcel.getEta()));
+        System.out.println("Last Scan : " + formatDate(parcel.getLastScanTime()));
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Main.java &mdash; Putting It All Together</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Main {
+    public static void main(String[] args) {
+        BookingDAO dao = new BookingDAO();
+
+        // Polymorphism via abstract class type
+        TrackingService tracker;
+
+        String role = "customer";  // Could come from login
+
+        if (role.equals("customer")) {
+            tracker = new CustomerTracker(dao);
+        } else {
+            tracker = new OfficerTracker(dao);
+        }
+
+        // Same method call - different output based on actual type
+        tracker.trackParcel("NB-20260423-0001");
+
+        // Polymorphism via interface type
+        Trackable anyTracker = new CustomerTracker(dao);
+        anyTracker.trackParcel("NB-20260423-0002");
+
+        // Using default method from interface
+        System.out.println("Valid ID? " + anyTracker.isValidId("NB-20260423-0001"));
+        System.out.println("Valid ID? " + anyTracker.isValidId("INVALID"));
+    }
+}</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+                    &lt;&lt;interface&gt;&gt;
+                     Trackable
+               trackParcel(String)
+               displayResult(Parcel)
+               isValidId(String) [default]
+                        │
+                        │ implements
+                        │
+              ┌─────────┴─────────┐
+              │                   │
+     TrackingService         (any other class
+       (abstract)            can also implement
+     bookingDAO field        Trackable directly)
+     trackParcel() [template]
+     formatDate() [utility]
+              │
+              │ extends
+     ┌────────┴────────┐
+     │                 │
+CustomerTracker   OfficerTracker
+displayResult()   displayResult()
+(status + ETA)    (full details)
+    </pre>
+    <div class="diagram-label">Abstract class + interface working together in Nimbus</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 13</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">8 exercises that build from basic abstract classes to full interface-driven design. Try each one before looking at hints.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Basic Abstract Class</div>
+    <p>Create an abstract class <code>NotificationService</code> with:</p>
+    <ul>
+      <li>A <code>protected String recipientId</code> field</li>
+      <li>A constructor that takes <code>recipientId</code></li>
+      <li>An abstract method <code>void send(String message)</code></li>
+      <li>A concrete method <code>String formatMessage(String msg)</code> that prepends <code>"[NIMBUS] "</code></li>
+    </ul>
+    <p>Then create two subclasses: <code>SmsNotification</code> (prints "SMS to {recipientId}: {message}") and <code>EmailNotification</code> (prints "Email to {recipientId}: {message}"). Both should use <code>formatMessage()</code> before sending.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Interface Implementation</div>
+    <p>Create an interface <code>Cancellable</code> with:</p>
+    <ul>
+      <li>Abstract method: <code>boolean cancelBooking(String bookingId)</code></li>
+      <li>Abstract method: <code>double calculateRefund(String bookingId)</code></li>
+      <li>Default method: <code>void printCancellationReceipt(String bookingId, double refund)</code> that prints a formatted receipt</li>
+    </ul>
+    <p>Implement this interface in a <code>CustomerCancellationService</code> class. The refund should be 80% of the booking cost if cancelled within 24 hours, 50% otherwise.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Multiple Interfaces</div>
+    <p>Create three interfaces: <code>Printable</code> (with <code>void printReceipt()</code>), <code>Emailable</code> (with <code>void emailReceipt(String email)</code>), and <code>Exportable</code> (with <code>String exportToCSV()</code>). Create a class <code>BookingReceipt</code> that implements all three. The class should hold booking details and format them differently for each output method.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Abstract + Interface Combo</div>
+    <p>Create an interface <code>Deliverable</code> with methods <code>void deliver(String address)</code> and <code>double getDeliveryCharge()</code>. Create an abstract class <code>ParcelType</code> with a <code>protected double weight</code> field, a constructor, and an abstract method <code>String getCategory()</code>. Create two concrete classes: <code>StandardParcel extends ParcelType implements Deliverable</code> (delivery charge = weight * 10) and <code>ExpressParcel extends ParcelType implements Deliverable</code> (delivery charge = weight * 25 + 100 express fee).</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Diamond Problem</div>
+    <p>Create two interfaces: <code>Logger</code> (with default method <code>void log(String msg)</code> that prints to console) and <code>FileLogger</code> (with default method <code>void log(String msg)</code> that prints "[FILE] " + msg). Create a class <code>AuditService</code> that implements both. Resolve the diamond conflict by calling both default methods in sequence.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; Functional Interface</div>
+    <p>Create a <code>@FunctionalInterface</code> called <code>StatusChecker</code> with a single abstract method <code>boolean check(Parcel parcel)</code>. Write a method <code>List&lt;Parcel&gt; filterParcels(List&lt;Parcel&gt; parcels, StatusChecker checker)</code> that returns only parcels matching the checker. Test it by passing different lambda expressions: one that checks for "Delivered" status, one that checks for parcels over 5 kg.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7 &mdash; Marker Interface</div>
+    <p>Create a marker interface <code>PriorityHandling</code>. Create two parcel classes: <code>RegularParcel</code> and <code>VIPParcel implements PriorityHandling</code>. Write a <code>DispatchService</code> with a method <code>void dispatch(Object parcel)</code> that checks <code>instanceof PriorityHandling</code> and prints "PRIORITY QUEUE" or "STANDARD QUEUE" accordingly.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8 &mdash; Interface Segregation Redesign</div>
+    <p>You are given this fat interface:</p>
+<pre style="font-size:0.82rem;color:var(--text-secondary);background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;font-family:'JetBrains Mono',monospace;line-height:1.6;margin-top:8px;">
+interface ParcelManager {
+    void createParcel(String sender, String receiver);
+    void trackParcel(String id);
+    void deleteParcel(String id);
+    void assignDriver(String id, String driverId);
+    void updateRoute(String id, String route);
+    void generateInvoice(String id);
+    void emailInvoice(String id, String email);
+    void printLabel(String id);
+}
+</pre>
+    <p style="margin-top:12px;">Refactor it into 4 smaller interfaces following the Interface Segregation Principle. Then create two classes: <code>CustomerParcelManager</code> (implements only the interfaces a customer needs) and <code>OfficerParcelManager</code> (implements only what an officer needs). Explain which interfaces each class implements and why.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="oop-polymorphism.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Polymorphism</span>
+  </a>
+  <a href="exceptions.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Exception Handling</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

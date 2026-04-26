@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consecutive Vowels | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link active"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 4 &mdash; Question 2</div>
+    <h2>Consecutive Vowels</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge minor">Minor</span>
+      <span class="time-estimate">10&ndash;15 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Write a Java program to find the <strong>count of consecutive vowels</strong> in a given string.</p>
+      <p>A "consecutive vowel" group is where 2 or more vowels appear next to each other (e.g., "au", "ea", "oui").</p>
+      <p>Assume the program accepts only lowercase values as input.</p>
+      <p>If no consecutive vowels are present in the string, print <code>"No consecutive vowels present"</code></p>
+      <p><strong>Example:</strong> "The augmented reality is the near future." &rarr; The consecutive groups are: "au", "ea" (in reality), "ea" (in near) = <strong>3</strong></p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">Pure string traversal. No OOP, no collections. The trick is understanding what "consecutive" means &mdash; it's about <strong>groups</strong>, not individual vowels.</p>
+
+    <div class="callout think">
+      <div class="callout-title">What "Consecutive Vowels" Means</div>
+      <ul>
+        <li><strong>NOT</strong> counting every individual vowel in the string</li>
+        <li><strong>NOT</strong> counting every pair of vowels</li>
+        <li>Counting <strong>groups</strong> where 2 or more vowels appear next to each other</li>
+        <li>"au" = 1 group. "eau" = still 1 group. "a" alone = 0 groups (needs 2+).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: WALKTHROUGH ===== -->
+  <div class="content-section" id="walkthrough">
+    <div class="section-tag">Walkthrough</div>
+    <h2>Character-by-Character Example</h2>
+    <p class="section-desc">Let's trace through: <code>"the augmented reality is the near future"</code></p>
+
+    <div class="diagram">
+      <pre>
+t  h  e  <em style="color: #64748B;">(space)</em>  <strong style="color: #EF4444;">a  u</strong>  g  m  e  n  t  e  d
+                  <strong style="color: #EF4444;">^^^^ GROUP 1</strong>         (single e's don't count)
+
+r  <strong style="color: #EF4444;">e  a</strong>  l  i  t  y  <em style="color: #64748B;">(space)</em>  i  s
+   <strong style="color: #EF4444;">^^^^ GROUP 2</strong>              (single i doesn't count)
+
+t  h  e  <em style="color: #64748B;">(space)</em>  n  <strong style="color: #EF4444;">e  a</strong>  r
+                        <strong style="color: #EF4444;">^^^^ GROUP 3</strong>
+
+f  u  t  u  r  e
+   (single vowels scattered &mdash; no groups)
+      </pre>
+      <div class="diagram-label">Total consecutive vowel groups: 3</div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">The Classic Mistake</div>
+      <p>Counting every vowel in the string gives you 12. Counting every pair gives you a different number. The correct answer is <strong>3 groups</strong>. A group is a continuous run of 2+ vowels. Once the run ends (a consonant or space appears), you count it as one group and move on.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: ALGORITHM ===== -->
+  <div class="content-section" id="algorithm">
+    <div class="section-tag">Algorithm</div>
+    <h2>The Algorithm Step by Step</h2>
+
+    <ul class="steps">
+      <li><strong>Step 1:</strong> Start at index 0. Set count = 0.</li>
+      <li><strong>Step 2:</strong> If current character is a vowel, start a sub-loop: keep moving forward while characters are vowels.</li>
+      <li><strong>Step 3:</strong> When the sub-loop ends, check: did we move 2 or more positions? If yes, that's one group &mdash; increment count.</li>
+      <li><strong>Step 4:</strong> Continue from where the sub-loop stopped.</li>
+      <li><strong>Step 5:</strong> If current character is NOT a vowel, just move to next character.</li>
+      <li><strong>Step 6:</strong> After full traversal, if count is 0, print the "No consecutive vowels" message. Otherwise print the count.</li>
+    </ul>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Key Line of Code</div>
+      <p><code>if (j - i &gt;= 2)</code> &mdash; this is the core logic. <code>i</code> is where the vowel run started, <code>j</code> is where it ended. If the difference is 2 or more, that means 2+ vowels were together. Count it as one group.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Short and clean. The entire solution is under 25 lines.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine().trim().toLowerCase();
+        String vowels = "aeiou";
+        int count = 0;
+        int i = 0;
+
+        while (i &lt; input.length()) {
+            if (vowels.indexOf(input.charAt(i)) != -1) {
+                // Found a vowel — start scanning the run
+                int j = i;
+                while (j &lt; input.length() &amp;&amp; vowels.indexOf(input.charAt(j)) != -1) {
+                    j++;
+                }
+                // j - i = length of the vowel run
+                if (j - i &gt;= 2) {
+                    count++;
+                }
+                i = j; // skip past the entire run
+            } else {
+                i++;
+            }
+        }
+
+        if (count == 0) {
+            System.out.println("No consecutive vowels present");
+        } else {
+            System.out.println(count);
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">String input = sc.nextLine().trim().toLowerCase();</div>
+          <div class="breakdown-explain">Read the full line. <code>trim()</code> removes leading/trailing spaces. <code>toLowerCase()</code> ensures all characters are lowercase for consistent comparison.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">String vowels = "aeiou";</div>
+          <div class="breakdown-explain">A string of all vowels. We use <code>indexOf()</code> to check if a character is a vowel. If <code>indexOf()</code> returns -1, the character is not in the string (not a vowel).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (vowels.indexOf(input.charAt(i)) != -1)</div>
+          <div class="breakdown-explain">Check if the current character is a vowel. <code>charAt(i)</code> gets the character at position i. <code>indexOf()</code> returns its position in "aeiou" or -1 if not found.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int j = i; while (j &lt; ... &amp;&amp; vowels.indexOf(...) != -1) { j++; }</div>
+          <div class="breakdown-explain">Inner loop: starting from i, keep advancing j while characters are vowels. When j stops, the vowel run is from index i to j-1.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (j - i &gt;= 2) { count++; }</div>
+          <div class="breakdown-explain">The magic line. If the run length is 2 or more, count it as one consecutive group. Single vowels (j - i == 1) are ignored.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">i = j;</div>
+          <div class="breakdown-explain">Jump i to where j stopped. This skips the entire vowel run we just processed, so we don't double-count.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Multiple Groups</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">The augmented reality is the near future.</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; No Consecutive Vowels</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">How r u?</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">No consecutive vowels present</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 3 &mdash; Multiple Groups (beautiful ocean view)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">beautiful ocean view</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 4 &mdash; No Vowels At All</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">xyz pqr</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">No consecutive vowels present</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: WHY YOUR CODE WAS WRONG ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong: Counting all vowels</div>
+        <div class="comparison-body">
+          <p>Counting every vowel individually gives 12 for the first test case.</p>
+          <p>Counting pairs like (a,u), (e,a), (e,a) seems right but you might accidentally count overlapping pairs in longer runs like "eau" as 2 instead of 1.</p>
+          <p style="color: var(--red);">The fundamental error: thinking "consecutive" means "individual vowels" rather than "groups."</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct: Counting groups</div>
+        <div class="comparison-body">
+          <p>Find a vowel. Scan forward until you hit a non-vowel. If the run was 2+ characters long, that's ONE group.</p>
+          <p><code>if (j - i &gt;= 2) count++;</code></p>
+          <p style="color: var(--green);">This is the key insight. "eau" = 1 group, "au" = 1 group, "a" = 0 groups.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Counting individual vowels</td>
+        <td>Answer is 12 instead of 3</td>
+        <td>Count <strong>groups</strong> of 2+ consecutive vowels, not individual ones</td>
+      </tr>
+      <tr>
+        <td>Using <code>for</code> loop with <code>i++</code></td>
+        <td>After finding a group, you re-scan the same vowels</td>
+        <td>Use <code>while</code> with <code>i = j</code> to skip past the entire group</td>
+      </tr>
+      <tr>
+        <td>Forgetting <code>.toLowerCase()</code></td>
+        <td>Uppercase vowels (A, E, I, O, U) are missed</td>
+        <td>Convert input to lowercase first, or check both cases</td>
+      </tr>
+      <tr>
+        <td>Using <code>==</code> to compare characters against a string</td>
+        <td>Type mismatch error</td>
+        <td>Use <code>vowels.indexOf(ch) != -1</code> or check against individual chars</td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Exam Strategy: This is Your Free Marks</div>
+      <p>This is a minor question. It should take 5&ndash;10 minutes. Do this <strong>first</strong>, get the marks in the bank, then tackle the major question. The algorithm is simple: scan for vowel runs, count runs of length 2+.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock4-q1.html"><span class="nav-label">Previous</span><span class="nav-title">Mobile Brand Service</span></a>
+    <a href="../java-core.html" class="next"><span class="nav-label">Back to</span><span class="nav-title">Java Core Home</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

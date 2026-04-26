@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How the Web Works &mdash; HTTP Basics | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link active"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: CLIENT-SERVER MODEL                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="client-server">
+  <div class="section-tag">Section 01</div>
+  <h2>Client-Server Model</h2>
+  <p class="section-desc">Every time you open a website, two computers are talking to each other. One asks, one answers. That's the entire internet in two sentences.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Restaurant Analogy</div>
+    <p>You (the <strong>client</strong>) sit at a table and place an order. The kitchen (the <strong>server</strong>) prepares your food and sends it back. You never walk into the kitchen. The kitchen never walks to your table uninvited. There's a clear protocol: you ask, they deliver.</p>
+    <p>A web browser is you at the table. A web server is the kitchen. HTTP is the waiter &mdash; the rules for how orders are placed and food is delivered.</p>
+  </div>
+
+  <h3>The Two Players</h3>
+
+  <ul>
+    <li><strong>Client</strong> &mdash; the program that sends requests. Usually a web browser (Chrome, Firefox), but can also be a mobile app, Postman, or another server.</li>
+    <li><strong>Server</strong> &mdash; the program that receives requests, processes them, and sends back responses. Runs 24/7 waiting for incoming connections. Examples: Apache Tomcat, Nginx, Node.js.</li>
+  </ul>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Client
+        <span class="flow-sub">Browser / Mobile App</span>
+      </div>
+      <div class="flow-arrow">&rarr; HTTP Request &rarr;</div>
+      <div class="flow-box green">Server
+        <span class="flow-sub">Tomcat / Nginx</span>
+      </div>
+    </div>
+    <div class="flow-row" style="margin-top: 12px;">
+      <div class="flow-box blue">Client
+        <span class="flow-sub">Renders the page</span>
+      </div>
+      <div class="flow-arrow">&larr; HTTP Response &larr;</div>
+      <div class="flow-box green">Server
+        <span class="flow-sub">Processes &amp; returns data</span>
+      </div>
+    </div>
+    <div class="flow-label">Request-response cycle &mdash; the foundation of every web interaction</div>
+  </div>
+
+  <p>Key principle: the <strong>client always initiates</strong>. The server never sends data unless asked. This is called a <strong>request-response</strong> model.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHAT IS HTTP                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-http">
+  <div class="section-tag">Section 02</div>
+  <h2>What is HTTP?</h2>
+  <p class="section-desc">HTTP stands for <strong>HyperText Transfer Protocol</strong>. It's the set of rules that clients and servers follow to communicate. Without these rules, they wouldn't understand each other.</p>
+
+  <h3>Breaking Down the Name</h3>
+
+  <ul>
+    <li><strong>HyperText</strong> &mdash; originally designed for HTML documents (text with links). Now carries JSON, images, videos, anything.</li>
+    <li><strong>Transfer</strong> &mdash; moving data from one computer to another over the internet.</li>
+    <li><strong>Protocol</strong> &mdash; a set of rules both sides agree to follow. Like how a phone call has rules: you say "hello," the other person responds, you take turns talking.</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Key Properties of HTTP</div>
+    <ul>
+      <li><strong>Stateless</strong> &mdash; every request is independent. The server doesn't remember previous requests. Each request must contain ALL the information the server needs.</li>
+      <li><strong>Text-based</strong> &mdash; HTTP messages are plain text (human-readable). You can literally read a raw HTTP request.</li>
+      <li><strong>Port 80</strong> (HTTP) or <strong>Port 443</strong> (HTTPS) by default.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: URL ANATOMY                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="url-anatomy">
+  <div class="section-tag">Section 03</div>
+  <h2>URL Anatomy</h2>
+  <p class="section-desc">A URL (Uniform Resource Locator) is the address of a resource on the web. Every part has a specific purpose.</p>
+
+  <div class="diagram">
+    <pre>
+  https://www.nimbus.com:8080/api/bookings?status=active&amp;page=2#results
+  ──┬──   ──────┬──────  ─┬─  ─────┬─────  ──────────┬──────────  ──┬───
+protocol      host      port     path            query string     fragment
+    </pre>
+    <div class="diagram-label">Every URL follows this structure. Most parts are optional.</div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Part</th>
+        <th>Example</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>protocol</code></td>
+        <td><code>https://</code></td>
+        <td>Which rules to use (HTTP or HTTPS for encrypted)</td>
+      </tr>
+      <tr>
+        <td><code>host</code></td>
+        <td><code>www.nimbus.com</code></td>
+        <td>Which server to talk to (domain name or IP address)</td>
+      </tr>
+      <tr>
+        <td><code>port</code></td>
+        <td><code>:8080</code></td>
+        <td>Which door on the server (default 80 for HTTP, 443 for HTTPS, 8080 for Tomcat)</td>
+      </tr>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>/api/bookings</code></td>
+        <td>Which resource on the server (like a file path)</td>
+      </tr>
+      <tr>
+        <td><code>query string</code></td>
+        <td><code>?status=active&amp;page=2</code></td>
+        <td>Extra parameters sent as key=value pairs, separated by <code>&amp;</code></td>
+      </tr>
+      <tr>
+        <td><code>fragment</code></td>
+        <td><code>#results</code></td>
+        <td>Jump to a section on the page (handled by browser only, NOT sent to server)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When you run Nimbus locally, the URL is <code>http://localhost:8080/nimbus/bookings?userId=5</code>. Here: protocol = <code>http</code>, host = <code>localhost</code> (your own machine), port = <code>8080</code> (Tomcat's default), path = <code>/nimbus/bookings</code>, query = <code>userId=5</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: HTTP REQUEST                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="http-request">
+  <div class="section-tag">Section 04</div>
+  <h2>HTTP Request</h2>
+  <p class="section-desc">When your browser asks the server for something, it sends an HTTP request. Every request has three parts: request line, headers, and (optionally) a body.</p>
+
+  <h3>Structure of an HTTP Request</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Raw HTTP Request &mdash; What the browser actually sends</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">GET /api/bookings?userId=5 HTTP/1.1
+Host: www.nimbus.com
+Accept: text/html, application/json
+User-Agent: Mozilla/5.0 (Windows NT 10.0)
+Cookie: JSESSIONID=abc123
+Connection: keep-alive</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">GET /api/bookings?userId=5 HTTP/1.1</div>
+        <div class="breakdown-explain"><strong>Request line.</strong> Three parts: method (<code>GET</code> = "give me data"), path (<code>/api/bookings?userId=5</code> = which resource), protocol version (<code>HTTP/1.1</code>).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Host: www.nimbus.com</div>
+        <div class="breakdown-explain">Which server this request is for. Required in HTTP/1.1 because one server can host multiple websites.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Accept: text/html, application/json</div>
+        <div class="breakdown-explain">Tells the server what formats the client can understand. "I can read HTML and JSON &mdash; send me whichever you prefer."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User-Agent: Mozilla/5.0 (Windows NT 10.0)</div>
+        <div class="breakdown-explain">Identifies the client. Servers use this to send different content to mobile vs desktop browsers.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Cookie: JSESSIONID=abc123</div>
+        <div class="breakdown-explain">Sends stored cookies back to the server. This is how sessions work &mdash; the server gave you this ID earlier, and you send it back so it knows who you are.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Request with a Body (POST)</h3>
+
+  <p>When you send data to the server (like submitting a form or creating a booking), the request includes a <strong>body</strong>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Raw HTTP POST Request &mdash; Sending data to create a booking</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">POST /api/bookings HTTP/1.1
+Host: www.nimbus.com
+Content-Type: application/json
+Content-Length: 98
+
+{
+    "senderName": "John Doe",
+    "receiverName": "Jane Smith",
+    "weight": 2.5,
+    "destination": "Mumbai"
+}</code></pre>
+  </div>
+
+  <p>Notice the <strong>blank line</strong> between headers and body. That blank line is required &mdash; it tells the server "headers are done, body starts now."</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: HTTP RESPONSE                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="http-response">
+  <div class="section-tag">Section 05</div>
+  <h2>HTTP Response</h2>
+  <p class="section-desc">The server processes your request and sends back a response. Same structure: status line, headers, body.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Raw HTTP Response &mdash; What the server sends back</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 156
+Set-Cookie: JSESSIONID=xyz789; Path=/; HttpOnly
+Date: Wed, 23 Apr 2026 10:30:00 GMT
+
+{
+    "bookingId": 1001,
+    "senderName": "John Doe",
+    "receiverName": "Jane Smith",
+    "status": "BOOKED",
+    "trackingNumber": "NIM-20260423-1001"
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">HTTP/1.1 200 OK</div>
+        <div class="breakdown-explain"><strong>Status line.</strong> Protocol version + status code (<code>200</code>) + reason phrase (<code>OK</code>). This means "your request succeeded."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Content-Type: application/json</div>
+        <div class="breakdown-explain">Tells the browser what format the body is in. The browser uses this to decide how to render it (parse as JSON, display as HTML, show as image, etc.).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Content-Length: 156</div>
+        <div class="breakdown-explain">Size of the body in bytes. The browser knows exactly how many bytes to read.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Set-Cookie: JSESSIONID=xyz789; Path=/; HttpOnly</div>
+        <div class="breakdown-explain">Server tells the browser: "Store this cookie. Send it back with every future request to <code>/</code>. <code>HttpOnly</code> means JavaScript can't access it (security)."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: HTTP METHODS DEEP DIVE                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="http-methods">
+  <div class="section-tag">Section 06</div>
+  <h2>HTTP Methods Deep Dive</h2>
+  <p class="section-desc">HTTP methods (also called "verbs") tell the server what action to perform. Think of them as different types of orders at a restaurant.</p>
+
+  <h3>GET &mdash; Read Data</h3>
+
+  <ul>
+    <li><strong>Purpose:</strong> Retrieve/read a resource. "Give me this data."</li>
+    <li><strong>Has body?</strong> No. Data goes in the URL (query string).</li>
+    <li><strong>Cacheable?</strong> Yes. Browsers can cache GET responses.</li>
+    <li><strong>Bookmarkable?</strong> Yes. The full URL with parameters can be saved.</li>
+    <li><strong>Safe?</strong> Yes. Should never modify server data.</li>
+    <li><strong>Idempotent?</strong> Yes. Calling it 10 times gives the same result as calling it once.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GET Examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">GET /api/bookings              // Get all bookings
+GET /api/bookings/1001         // Get booking #1001
+GET /api/users?role=customer   // Get all customers
+GET /api/tracking?id=NIM-001   // Track a parcel</code></pre>
+  </div>
+
+  <h3>POST &mdash; Create / Submit</h3>
+
+  <ul>
+    <li><strong>Purpose:</strong> Submit data to create a new resource. "Here's data, do something with it."</li>
+    <li><strong>Has body?</strong> Yes. Data goes in the request body.</li>
+    <li><strong>Cacheable?</strong> No.</li>
+    <li><strong>Bookmarkable?</strong> No. Data is in the body, not the URL.</li>
+    <li><strong>Safe?</strong> No. Creates or modifies data on the server.</li>
+    <li><strong>Idempotent?</strong> No. Calling it twice creates two resources.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">POST Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">POST /api/bookings
+Content-Type: application/json
+
+{"senderName": "John", "destination": "Mumbai", "weight": 2.5}</code></pre>
+  </div>
+
+  <h3>PUT &mdash; Update (Full Replace)</h3>
+
+  <ul>
+    <li><strong>Purpose:</strong> Replace an entire resource with new data. "Here's the complete updated version."</li>
+    <li><strong>Has body?</strong> Yes. The complete updated resource.</li>
+    <li><strong>Idempotent?</strong> Yes. Calling it 10 times gives the same result as once.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PUT Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">PUT /api/bookings/1001
+Content-Type: application/json
+
+{"bookingId": 1001, "status": "IN_TRANSIT", "currentLocation": "Delhi Hub"}</code></pre>
+  </div>
+
+  <h3>DELETE &mdash; Remove</h3>
+
+  <ul>
+    <li><strong>Purpose:</strong> Delete a resource. "Remove this."</li>
+    <li><strong>Has body?</strong> Usually no.</li>
+    <li><strong>Idempotent?</strong> Yes. Deleting something twice still results in it being deleted.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DELETE Example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">DELETE /api/bookings/1001      // Cancel booking #1001</code></pre>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">CRUD Mapping</div>
+    <p>The four methods map directly to database operations:</p>
+    <ul>
+      <li><strong>C</strong>reate &rarr; POST</li>
+      <li><strong>R</strong>ead &rarr; GET</li>
+      <li><strong>U</strong>pdate &rarr; PUT</li>
+      <li><strong>D</strong>elete &rarr; DELETE</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: STATUS CODES                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="status-codes">
+  <div class="section-tag">Section 07</div>
+  <h2>HTTP Status Codes</h2>
+  <p class="section-desc">Every response includes a 3-digit status code that tells the client what happened. The first digit tells you the category.</p>
+
+  <h3>1xx &mdash; Informational</h3>
+  <p>Rarely seen directly. The server is saying "I got your request, still working on it."</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>100</code></td><td>Continue</td><td>Server received headers, client should send the body</td></tr>
+      <tr><td><code>101</code></td><td>Switching Protocols</td><td>Server is switching to WebSocket</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2xx &mdash; Success</h3>
+  <p>Your request worked.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When It Happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>200</code></td><td>OK</td><td>Standard success. GET returned data. PUT updated successfully.</td></tr>
+      <tr><td><code>201</code></td><td>Created</td><td>POST created a new resource. "Your booking was created."</td></tr>
+      <tr><td><code>204</code></td><td>No Content</td><td>Success but nothing to return. Common after DELETE.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3xx &mdash; Redirection</h3>
+  <p>The resource moved. The browser should go somewhere else.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When It Happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>301</code></td><td>Moved Permanently</td><td>This URL has permanently moved to a new one. Bookmarks should update.</td></tr>
+      <tr><td><code>302</code></td><td>Found (Temporary)</td><td>Temporarily redirecting. After login, redirect to dashboard.</td></tr>
+      <tr><td><code>304</code></td><td>Not Modified</td><td>The cached version is still valid. Don't download again.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4xx &mdash; Client Error</h3>
+  <p>YOU (the client) made a mistake.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When It Happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>400</code></td><td>Bad Request</td><td>Your request is malformed. Missing required fields, bad JSON, etc.</td></tr>
+      <tr><td><code>401</code></td><td>Unauthorized</td><td>You're not logged in. "Who are you? Show your ID."</td></tr>
+      <tr><td><code>403</code></td><td>Forbidden</td><td>You're logged in but don't have permission. "I know who you are, but you can't do this."</td></tr>
+      <tr><td><code>404</code></td><td>Not Found</td><td>The resource doesn't exist. Wrong URL or deleted resource.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">401 vs 403 &mdash; Common Confusion</div>
+    <p><strong>401 Unauthorized</strong> = "I don't know who you are" (not authenticated). Fix: log in.</p>
+    <p><strong>403 Forbidden</strong> = "I know who you are, but you can't access this" (not authorized). Fix: get the right permissions. In Nimbus, a customer trying to access the officer dashboard gets 403.</p>
+  </div>
+
+  <h3>5xx &mdash; Server Error</h3>
+  <p>THE SERVER made a mistake. Not your fault.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Code</th><th>Name</th><th>When It Happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>500</code></td><td>Internal Server Error</td><td>Something broke on the server. A bug in the code, unhandled exception.</td></tr>
+      <tr><td><code>502</code></td><td>Bad Gateway</td><td>Server A asked Server B for data, and Server B failed.</td></tr>
+      <tr><td><code>503</code></td><td>Service Unavailable</td><td>Server is overloaded or under maintenance. "Try again later."</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a user enters wrong credentials, Nimbus returns <code>401</code>. When a customer tries to access <code>/officer/dashboard</code>, it returns <code>403</code>. When booking ID doesn't exist, it returns <code>404</code>. When the database is down, it returns <code>500</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: HTTP HEADERS                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="headers">
+  <div class="section-tag">Section 08</div>
+  <h2>HTTP Headers</h2>
+  <p class="section-desc">Headers are metadata &mdash; extra information about the request or response. They're key-value pairs sent alongside the actual data.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Header</th><th>Direction</th><th>Purpose</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Content-Type</code></td>
+        <td>Both</td>
+        <td>Format of the body</td>
+        <td><code>application/json</code>, <code>text/html</code>, <code>application/x-www-form-urlencoded</code></td>
+      </tr>
+      <tr>
+        <td><code>Accept</code></td>
+        <td>Request</td>
+        <td>What formats the client accepts</td>
+        <td><code>text/html, application/json</code></td>
+      </tr>
+      <tr>
+        <td><code>Authorization</code></td>
+        <td>Request</td>
+        <td>Credentials for authentication</td>
+        <td><code>Bearer eyJhbGciOi...</code> (JWT token)</td>
+      </tr>
+      <tr>
+        <td><code>Cookie</code></td>
+        <td>Request</td>
+        <td>Send stored cookies to server</td>
+        <td><code>JSESSIONID=abc123; theme=dark</code></td>
+      </tr>
+      <tr>
+        <td><code>Set-Cookie</code></td>
+        <td>Response</td>
+        <td>Tell browser to store a cookie</td>
+        <td><code>JSESSIONID=abc123; Path=/; HttpOnly</code></td>
+      </tr>
+      <tr>
+        <td><code>Content-Length</code></td>
+        <td>Both</td>
+        <td>Size of body in bytes</td>
+        <td><code>256</code></td>
+      </tr>
+      <tr>
+        <td><code>Cache-Control</code></td>
+        <td>Response</td>
+        <td>How long the browser can cache this</td>
+        <td><code>max-age=3600</code> (1 hour)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Content-Type Matters</div>
+    <p>The most important header for web development. It tells the receiver how to parse the body:</p>
+    <ul>
+      <li><code>application/json</code> &mdash; JSON data (APIs)</li>
+      <li><code>text/html</code> &mdash; HTML page (browsers)</li>
+      <li><code>application/x-www-form-urlencoded</code> &mdash; HTML form submission (key=value&amp;key=value)</li>
+      <li><code>multipart/form-data</code> &mdash; File uploads</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: GET VS POST                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="get-vs-post">
+  <div class="section-tag">Section 09</div>
+  <h2>GET vs POST &mdash; Comparison</h2>
+  <p class="section-desc">The two most common methods. This is a question that comes up in every interview.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>GET</th>
+        <th>POST</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Purpose</strong></td>
+        <td>Read / Retrieve data</td>
+        <td>Create / Submit data</td>
+      </tr>
+      <tr>
+        <td><strong>Data location</strong></td>
+        <td>In the URL (query string)</td>
+        <td>In the request body</td>
+      </tr>
+      <tr>
+        <td><strong>Data visible?</strong></td>
+        <td>Yes &mdash; in URL bar, browser history, server logs</td>
+        <td>No &mdash; hidden in body (but NOT encrypted unless HTTPS)</td>
+      </tr>
+      <tr>
+        <td><strong>Data limit</strong></td>
+        <td>~2,048 characters (URL length limit)</td>
+        <td>No practical limit</td>
+      </tr>
+      <tr>
+        <td><strong>Cacheable?</strong></td>
+        <td>Yes</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><strong>Bookmarkable?</strong></td>
+        <td>Yes</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><strong>Safe?</strong></td>
+        <td>Yes (should not modify data)</td>
+        <td>No (modifies server state)</td>
+      </tr>
+      <tr>
+        <td><strong>Idempotent?</strong></td>
+        <td>Yes (10 GETs = same as 1 GET)</td>
+        <td>No (10 POSTs may create 10 records)</td>
+      </tr>
+      <tr>
+        <td><strong>Back button</strong></td>
+        <td>Harmless (just re-fetches)</td>
+        <td>Browser warns "Resubmit form data?"</td>
+      </tr>
+      <tr>
+        <td><strong>Use for passwords?</strong></td>
+        <td>NEVER &mdash; visible in URL</td>
+        <td>Yes (with HTTPS)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Never send sensitive data via GET. The URL <code>/login?username=john&amp;password=secret123</code> exposes the password in browser history, server access logs, and proxy logs. Always use POST for login forms.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: HOW A WEB PAGE LOADS                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="page-load-flow">
+  <div class="section-tag">Section 10</div>
+  <h2>How a Web Page Loads &mdash; Full Flow</h2>
+  <p class="section-desc">When you type <code>www.nimbus.com</code> and press Enter, here's every step that happens behind the scenes.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">1. DNS Lookup
+        <span class="flow-sub">nimbus.com &rarr; 93.184.216.34</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">2. TCP Connection
+        <span class="flow-sub">3-way handshake</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">3. TLS Handshake
+        <span class="flow-sub">if HTTPS (encryption)</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">6. Browser Renders
+        <span class="flow-sub">HTML &rarr; DOM &rarr; paint</span>
+      </div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box cyan">5. HTTP Response
+        <span class="flow-sub">200 OK + HTML body</span>
+      </div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box red">4. HTTP Request
+        <span class="flow-sub">GET / HTTP/1.1</span>
+      </div>
+    </div>
+    <div class="flow-label">Full journey: URL &rarr; IP address &rarr; connection &rarr; request &rarr; response &rarr; render</div>
+  </div>
+
+  <h3>Step-by-Step Breakdown</h3>
+
+  <ol class="steps">
+    <li><strong>DNS Lookup:</strong> Your browser asks a DNS server: "What's the IP address of nimbus.com?" DNS responds: "93.184.216.34". Domain names are for humans; computers use IP addresses.</li>
+    <li><strong>TCP Connection:</strong> Your browser opens a connection to the server at that IP address on port 80 (HTTP) or 443 (HTTPS). Uses a "3-way handshake": SYN &rarr; SYN-ACK &rarr; ACK. Like calling someone: ring &rarr; "hello?" &rarr; "hi, it's me."</li>
+    <li><strong>TLS Handshake (HTTPS only):</strong> Browser and server agree on encryption. They exchange certificates and encryption keys. Everything after this is encrypted.</li>
+    <li><strong>HTTP Request:</strong> Browser sends <code>GET / HTTP/1.1</code> with headers (Host, User-Agent, Accept, Cookies).</li>
+    <li><strong>Server Processes:</strong> The web server (Tomcat) receives the request, finds the right Servlet, runs your Java code, queries the database, builds the HTML response.</li>
+    <li><strong>HTTP Response:</strong> Server sends back <code>HTTP/1.1 200 OK</code> with headers and the HTML body.</li>
+    <li><strong>Browser Renders:</strong> Browser parses HTML into a DOM tree, applies CSS styling, executes JavaScript, and paints pixels on screen. If the HTML references CSS/JS/images, the browser sends additional GET requests for each one.</li>
+  </ol>
+
+  <div class="callout important">
+    <div class="callout-title">Multiple Requests Per Page</div>
+    <p>Loading a single web page typically sends <strong>10-100+ HTTP requests</strong>. One for the HTML, one for each CSS file, one for each JS file, one for each image. Chrome DevTools (F12 &rarr; Network tab) shows you every single request.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: NIMBUS ENDPOINTS                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-endpoints">
+  <div class="section-tag">Section 11</div>
+  <h2>Nimbus: GET vs POST Endpoints</h2>
+  <p class="section-desc">How HTTP methods map to real Nimbus functionality.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every user action in Nimbus maps to either a GET or POST request. Here's how:</p>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Action</th><th>Method</th><th>URL</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>View login page</td>
+        <td><code>GET</code></td>
+        <td><code>/login</code></td>
+        <td>Reading a page, no data submitted</td>
+      </tr>
+      <tr>
+        <td>Submit login form</td>
+        <td><code>POST</code></td>
+        <td><code>/login</code></td>
+        <td>Sending credentials (username + password)</td>
+      </tr>
+      <tr>
+        <td>View dashboard</td>
+        <td><code>GET</code></td>
+        <td><code>/dashboard</code></td>
+        <td>Reading data to display</td>
+      </tr>
+      <tr>
+        <td>Create a booking</td>
+        <td><code>POST</code></td>
+        <td><code>/bookings</code></td>
+        <td>Submitting form data to create a record</td>
+      </tr>
+      <tr>
+        <td>View booking details</td>
+        <td><code>GET</code></td>
+        <td><code>/bookings/1001</code></td>
+        <td>Reading a specific booking</td>
+      </tr>
+      <tr>
+        <td>Update booking status</td>
+        <td><code>POST</code></td>
+        <td><code>/bookings/1001/status</code></td>
+        <td>Submitting new status (officer action)</td>
+      </tr>
+      <tr>
+        <td>Track a parcel</td>
+        <td><code>GET</code></td>
+        <td><code>/track?id=NIM-001</code></td>
+        <td>Reading tracking information</td>
+      </tr>
+      <tr>
+        <td>Register new user</td>
+        <td><code>POST</code></td>
+        <td><code>/register</code></td>
+        <td>Submitting registration form</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Pattern:</strong> Viewing pages and fetching data = GET. Submitting forms and creating/updating data = POST.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: EXERCISES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 12</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Test your understanding of HTTP fundamentals.</p>
+
+  <h3>Exercise 1: Read a Raw Request (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1</div>
+    <p>Look at this raw HTTP request and answer the questions below:</p>
+    <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin: 12px 0;">POST /api/users HTTP/1.1
+Host: nimbus.com
+Content-Type: application/json
+Authorization: Bearer abc123
+
+{"name": "Darshan", "email": "darshan@mail.com"}</pre>
+    <ol>
+      <li>What HTTP method is being used?</li>
+      <li>What path is being requested?</li>
+      <li>What format is the body in?</li>
+      <li>Is the user authenticated? How do you know?</li>
+      <li>What is this request trying to do?</li>
+    </ol>
+  </div>
+
+  <h3>Exercise 2: Status Code Matching (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2</div>
+    <p>Match each scenario with the correct status code:</p>
+    <ol>
+      <li>User submits a login form with wrong password</li>
+      <li>User requests <code>/api/bookings/9999</code> but booking 9999 doesn't exist</li>
+      <li>User successfully creates a new booking</li>
+      <li>The database server crashed</li>
+      <li>A customer tries to access <code>/officer/dashboard</code></li>
+    </ol>
+    <p><strong>Options:</strong> <code>201</code>, <code>401</code>, <code>403</code>, <code>404</code>, <code>500</code></p>
+  </div>
+
+  <h3>Exercise 3: Write a Raw Request (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3</div>
+    <p>Write the raw HTTP request for the following scenario:</p>
+    <p>A Nimbus officer wants to update booking #2050 with status "DELIVERED". The officer is logged in with session ID <code>JSESSIONID=officer789</code>. The data should be sent as JSON.</p>
+    <p>Write out: the request line, all necessary headers, the blank line, and the body.</p>
+  </div>
+
+  <h3>Exercise 4: URL Breakdown (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4</div>
+    <p>Break down this URL into its parts (protocol, host, port, path, query string, fragment):</p>
+    <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;">https://nimbus.com:8443/api/bookings?status=IN_TRANSIT&amp;page=3#details</pre>
+    <p>Then answer: Which part is NOT sent to the server?</p>
+  </div>
+
+  <h3>Exercise 5: Chrome DevTools (Hands-On)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5</div>
+    <p>Open Chrome DevTools (press F12), go to the <strong>Network</strong> tab, and visit any website. Pick any request from the list and find:</p>
+    <ol>
+      <li>The HTTP method used</li>
+      <li>The status code returned</li>
+      <li>The <code>Content-Type</code> header in the response</li>
+      <li>How many total requests the page made</li>
+      <li>Which request took the longest (sort by Time column)</li>
+    </ol>
+    <p>This is the most important exercise. DevTools is how you debug every web problem.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="tomcat.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Web Servers &amp; Tomcat</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

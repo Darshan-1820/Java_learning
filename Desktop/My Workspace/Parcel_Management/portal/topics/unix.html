@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unix/Shell Commands &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link active"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is Unix/Shell?                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-unix">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Unix/Shell?</h2>
+  <p class="section-desc">Before GUIs existed, every computer was operated by typing text commands. Unix is the operating system that started it all &mdash; and its command line is still the fastest way to process files, automate tasks, and manage servers.</p>
+
+  <h3>GUI vs Command Line</h3>
+
+  <p>You already know the GUI way: click a folder, double-click a file, drag to delete. The <strong>command line interface (CLI)</strong> does all of this with typed commands. It looks scary at first, but it is far more powerful.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">GUI (Graphical)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Click, drag, scroll</li>
+          <li>Easy to learn</li>
+          <li>Slow for repetitive tasks</li>
+          <li>Cannot automate easily</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">CLI (Command Line)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Type commands</li>
+          <li>Small learning curve</li>
+          <li>Lightning fast for bulk operations</li>
+          <li>Fully scriptable &amp; automatable</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Why Developers Use It</h3>
+
+  <p>In Nimbus, the parcel data lives in text files (<code>Parcel.txt</code>, <code>booking.txt</code>, <code>customer.txt</code>). Instead of writing a full Java program to search, filter, or update these files, you can do it in a <strong>single shell command</strong>. That is the power of Unix.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus requires 6 shell commands that search, count, sort, and update data across three text files. Every command you learn in this page builds directly toward those 6.</p>
+  </div>
+
+  <h3>The Shell</h3>
+
+  <p>The <strong>shell</strong> is the program that reads your commands and executes them. Think of it as a translator between you and the operating system. The most common shell is <strong>Bash</strong> (Bourne Again Shell). When you open a terminal, you are inside a shell.</p>
+
+  <div class="diagram">
+    <pre>
+  You type a command
+        |
+        v
+  +-----------+      +-----------------+      +------------+
+  |   Shell   | --&gt;  | Operating System | --&gt;  |   Result   |
+  |  (Bash)   |      |   (Unix/Linux)   |      |  (Output)  |
+  +-----------+      +-----------------+      +------------+
+    </pre>
+    <div class="diagram-label">The shell interprets your commands and talks to the OS</div>
+  </div>
+
+  <h3>The Prompt</h3>
+
+  <p>When the shell is ready, it shows a <strong>prompt</strong> &mdash; usually ending with <code>$</code>. This is where you type.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">user@machine:~/nimbus$ ls
+Parcel.txt  booking.txt  customer.txt</code></pre>
+  </div>
+
+  <p>Everything before <code>$</code> is info (user, machine, current directory). Everything after <code>$</code> is what you type.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Basic Commands                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="basic-commands">
+  <div class="section-tag">Section 02</div>
+  <h2>Basic Commands</h2>
+  <p class="section-desc">These are the commands you will use every day. They handle navigation, file management, and viewing file contents.</p>
+
+  <h3>Navigation</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Command</th><th>What It Does</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>pwd</code></td><td>Print Working Directory &mdash; shows where you are</td><td><code>pwd</code> &rarr; <code>/home/user/nimbus</code></td></tr>
+      <tr><td><code>ls</code></td><td>List files and folders in current directory</td><td><code>ls</code> &rarr; <code>Parcel.txt booking.txt</code></td></tr>
+      <tr><td><code>ls -l</code></td><td>Long listing &mdash; shows permissions, size, date</td><td><code>ls -l Parcel.txt</code></td></tr>
+      <tr><td><code>ls -a</code></td><td>Show hidden files too (files starting with <code>.</code>)</td><td><code>ls -a</code></td></tr>
+      <tr><td><code>cd</code></td><td>Change Directory &mdash; move into a folder</td><td><code>cd nimbus</code></td></tr>
+      <tr><td><code>cd ..</code></td><td>Go up one level (parent folder)</td><td><code>cd ..</code></td></tr>
+      <tr><td><code>cd ~</code></td><td>Go to home directory</td><td><code>cd ~</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>File Operations</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Command</th><th>What It Does</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>mkdir</code></td><td>Make a new directory (folder)</td><td><code>mkdir backups</code></td></tr>
+      <tr><td><code>touch</code></td><td>Create an empty file</td><td><code>touch notes.txt</code></td></tr>
+      <tr><td><code>cp</code></td><td>Copy a file</td><td><code>cp Parcel.txt Parcel_backup.txt</code></td></tr>
+      <tr><td><code>mv</code></td><td>Move or rename a file</td><td><code>mv old.txt new.txt</code></td></tr>
+      <tr><td><code>rm</code></td><td>Remove (delete) a file &mdash; no recycle bin!</td><td><code>rm temp.txt</code></td></tr>
+      <tr><td><code>rm -r</code></td><td>Remove a directory and everything inside it</td><td><code>rm -r old_folder</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Warning</div>
+    <p><code>rm</code> is permanent. There is no undo, no recycle bin. Always double-check before deleting. Never run <code>rm -rf /</code> &mdash; it deletes your entire system.</p>
+  </div>
+
+  <h3>Viewing File Contents</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Command</th><th>What It Does</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>cat</code></td><td>Print entire file to screen</td><td><code>cat Parcel.txt</code></td></tr>
+      <tr><td><code>head</code></td><td>Show first 10 lines (or <code>-n 5</code> for first 5)</td><td><code>head -n 3 Parcel.txt</code></td></tr>
+      <tr><td><code>tail</code></td><td>Show last 10 lines</td><td><code>tail -n 5 booking.txt</code></td></tr>
+      <tr><td><code>wc</code></td><td>Word count &mdash; lines, words, characters</td><td><code>wc -l Parcel.txt</code> &rarr; line count</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Try these on Parcel.txt</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># See the whole file
+cat Parcel.txt
+
+# Just the first 3 lines
+head -n 3 Parcel.txt
+
+# How many lines total?
+wc -l Parcel.txt</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: File Permissions                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="permissions">
+  <div class="section-tag">Section 03</div>
+  <h2>File Permissions</h2>
+  <p class="section-desc">Unix controls who can read, write, or execute every file. Understanding permissions is essential for managing files on servers.</p>
+
+  <h3>The rwx System</h3>
+
+  <p>Every file has three permission types for three groups of users:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Permission</th><th>Letter</th><th>Number</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Read</td><td><code>r</code></td><td>4</td><td>Can view the file contents</td></tr>
+      <tr><td>Write</td><td><code>w</code></td><td>2</td><td>Can modify the file</td></tr>
+      <tr><td>Execute</td><td><code>x</code></td><td>1</td><td>Can run the file as a program</td></tr>
+    </tbody>
+  </table>
+
+  <p>Three groups: <strong>Owner</strong> (u), <strong>Group</strong> (g), <strong>Others</strong> (o).</p>
+
+  <div class="diagram">
+    <pre>
+  ls -l Parcel.txt
+  -rw-r--r--  1  user  staff  2048  Apr 23  Parcel.txt
+   |__|__|__
+    |   |  |
+    |   |  +-- Others: r-- (read only)
+    |   +----- Group:  r-- (read only)
+    +--------- Owner:  rw- (read + write)
+    </pre>
+    <div class="diagram-label">Breaking down the permission string from ls -l</div>
+  </div>
+
+  <h3>chmod &mdash; Change Permissions</h3>
+
+  <p>Use <code>chmod</code> with numbers (add up r=4, w=2, x=1 for each group):</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Permission Examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Owner: rwx (7), Group: r-x (5), Others: r-- (4)
+chmod 754 script.sh
+
+# Make a file readable and writable by everyone
+chmod 666 Parcel.txt
+
+# Make a script executable
+chmod +x deploy.sh</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p><code>chmod 755</code> means 7 (rwx) for owner, 5 (r-x) for group, 5 (r-x) for others. The owner can do everything; others can read and run the file but not modify it. This is the most common permission for scripts.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Pipe Operator                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="pipes">
+  <div class="section-tag">Section 04</div>
+  <h2>The Pipe Operator |</h2>
+  <p class="section-desc">The pipe is Unix's superpower. It lets you chain commands together &mdash; the output of one command flows directly as input to the next.</p>
+
+  <h3>The Assembly Line Analogy</h3>
+
+  <p>Imagine a factory assembly line. Raw material enters station 1, gets processed, moves to station 2 for more processing, then station 3 for finishing. Each station does one thing well, and the product flows between them.</p>
+
+  <p>That is exactly what <code>|</code> (pipe) does with commands:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">cat Parcel.txt<span class="flow-sub">Read the file</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">grep "Delivered"<span class="flow-sub">Filter rows</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">wc -l<span class="flow-sub">Count lines</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Result: 5<span class="flow-sub">Final output</span></div>
+    </div>
+    <div class="flow-label">Each command processes data and passes it to the next via the pipe (|)</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Pipe in action</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Without pipe: two separate steps
+grep "Delivered" Parcel.txt &gt; temp.txt
+wc -l temp.txt
+
+# With pipe: one clean command
+grep "Delivered" Parcel.txt | wc -l</code></pre>
+  </div>
+
+  <p>Key rules of pipes:</p>
+  <ul>
+    <li>The <code>|</code> symbol connects two commands</li>
+    <li><strong>stdout</strong> (standard output) of the left command becomes <strong>stdin</strong> (standard input) of the right command</li>
+    <li>You can chain as many pipes as you need: <code>cmd1 | cmd2 | cmd3 | cmd4</code></li>
+    <li>Each command in the chain does one specific job &mdash; the Unix philosophy</li>
+  </ul>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of pipe as a conveyor belt. <code>cat Parcel.txt</code> dumps all parcels onto the belt. <code>grep "Delivered"</code> picks out only delivered ones. <code>wc -l</code> counts how many came through. No temporary files, no mess.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: grep                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="grep">
+  <div class="section-tag">Section 05</div>
+  <h2>grep &mdash; Pattern Matching</h2>
+  <p class="section-desc">grep searches through text and prints every line that matches your pattern. It is the most-used command in Unix.</p>
+
+  <h3>Basic Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">grep syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">grep "pattern" filename</code></pre>
+  </div>
+
+  <p><code>grep</code> reads each line of the file. If the line contains the pattern, it prints it. If not, it skips it.</p>
+
+  <h3>Essential Flags</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Flag</th><th>Meaning</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>-i</code></td><td>Case insensitive &mdash; "delivered" matches "Delivered"</td><td><code>grep -i "delivered" Parcel.txt</code></td></tr>
+      <tr><td><code>-c</code></td><td>Count matching lines (just the number, not the lines)</td><td><code>grep -c "Delivered" Parcel.txt</code></td></tr>
+      <tr><td><code>-v</code></td><td>Invert &mdash; show lines that do NOT match</td><td><code>grep -v "Delivered" Parcel.txt</code></td></tr>
+      <tr><td><code>-n</code></td><td>Show line numbers alongside matches</td><td><code>grep -n "Pending" Parcel.txt</code></td></tr>
+      <tr><td><code>-w</code></td><td>Match whole word only</td><td><code>grep -w "Del" Parcel.txt</code> (won't match "Delivered")</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Regex Basics with grep</h3>
+
+  <p>grep supports <strong>regular expressions</strong> &mdash; patterns with special characters:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Pattern</th><th>Meaning</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>^</code></td><td>Start of line</td><td><code>grep "^C101" Parcel.txt</code> &mdash; lines starting with C101</td></tr>
+      <tr><td><code>$</code></td><td>End of line</td><td><code>grep "Delivered$" Parcel.txt</code> &mdash; lines ending with Delivered</td></tr>
+      <tr><td><code>.</code></td><td>Any single character</td><td><code>grep "B.01" booking.txt</code> &mdash; B followed by any char then 01</td></tr>
+      <tr><td><code>*</code></td><td>Zero or more of preceding char</td><td><code>grep "An*" customer.txt</code></td></tr>
+      <tr><td><code>[]</code></td><td>Character class</td><td><code>grep "[Dd]eliver" Parcel.txt</code> &mdash; matches Deliver or deliver</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Command 1</div>
+    <p><strong>Count parcels with status "Delivered":</strong></p>
+    <p><code>grep -c "Delivered" Parcel.txt</code></p>
+    <p>The <code>-c</code> flag counts matching lines and prints just the number. No pipes needed for this one.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">grep examples on Nimbus data</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Count delivered parcels
+grep -c "Delivered" Parcel.txt
+# Output: 5
+
+# Show all pending parcels
+grep "Pending" Parcel.txt
+
+# Search booking.txt for a specific booking ID
+grep "B001" booking.txt
+
+# Find customers whose name starts with "An" (customer.txt is comma-delimited)
+grep ",An" customer.txt</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: awk                                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="awk">
+  <div class="section-tag">Section 06</div>
+  <h2>awk &mdash; Column Processing</h2>
+  <p class="section-desc">awk is a mini programming language built for processing structured text. It reads a file line by line, splits each line into columns, and lets you pick, filter, and transform specific columns.</p>
+
+  <h3>How awk Thinks</h3>
+
+  <p>awk sees every line as a row of columns separated by a delimiter. By default, it splits on whitespace. For Nimbus data files (pipe-delimited), you tell it to split on <code>|</code> with <code>-F'|'</code>.</p>
+
+  <div class="diagram">
+    <pre>
+  Line: C101|B001|2024-01-15|Ravi|Mumbai|500|Delivered
+
+  awk -F'|' splits this into:
+  $1 = C101           (Customer ID)
+  $2 = B001           (Booking ID)
+  $3 = 2024-01-15     (Booking Date)
+  $4 = Ravi           (Receiver Name)
+  $5 = Mumbai         (Delivered Address)
+  $6 = 500            (Amount)
+  $7 = Delivered       (Status)
+
+  $0 = the entire line
+  NR = current line number
+  NF = number of fields in current line
+    </pre>
+    <div class="diagram-label">awk splits each line into numbered columns ($1, $2, $3...)</div>
+  </div>
+
+  <h3>Basic Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">awk syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Print specific columns
+awk -F'|' '{print $1, $2}' Parcel.txt
+
+# With condition: only print if column 7 is "Delivered"
+awk -F'|' '$7 == "Delivered" {print $1, $2, $6}' Parcel.txt
+
+# Custom output separator
+awk -F'|' '{print $1 " | " $4 " | " $7}' Parcel.txt</code></pre>
+  </div>
+
+  <h3>Conditions in awk</h3>
+
+  <p>awk can filter rows using conditions before the <code>{action}</code> block:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">awk conditions</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Only rows where amount &gt; 300
+awk -F'|' '$6 &gt; 300 {print $1, $4, $6}' Parcel.txt
+
+# Pattern matching with ~ (contains)
+awk -F'|' '$7 ~ /Deliver/ {print $0}' Parcel.txt
+
+# Multiple conditions with &amp;&amp; (AND) and || (OR)
+awk -F'|' '$6 &gt; 200 &amp;&amp; $7 == "Delivered" {print $2, $6}' Parcel.txt</code></pre>
+  </div>
+
+  <h3>BEGIN and END Blocks</h3>
+
+  <p><code>BEGIN</code> runs once before processing any line. <code>END</code> runs once after all lines are processed. Useful for headers, totals, and counters.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BEGIN and END</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Print header, then data, then total
+awk -F'|' '
+  BEGIN { print "BookingID | Customer | Amount" }
+  { total += $6; print $2 " | " $4 " | " $6 }
+  END { print "---"; print "Total: " total }
+' Parcel.txt</code></pre>
+  </div>
+
+  <h3>Associative Arrays (Counting)</h3>
+
+  <p>awk has built-in associative arrays (like Java's HashMap). This is how you count things by group.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Counting with arrays</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Count bookings per customer
+awk -F'|' '{count[$2]++} END {for (c in count) print c, count[c]}' booking.txt</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Command 2</div>
+    <p><strong>Search booking by BookingID, display BookingId | CustomerName | Par_Status:</strong></p>
+    <p><code>awk -F'|' -v id="B001" '$1 == id {found=1; print $1 " | " $2 " | " $7} END {if (!found) print "Booking details Not Found"}' booking.txt</code></p>
+    <p>The <code>-v id="B001"</code> passes the search value as a variable. If no match is found after processing all lines, the END block prints the error message.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line: Booking search command</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">awk -F'|'</div>
+        <div class="breakdown-explain">Start awk, set field separator to pipe character</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">-v id="B001"</div>
+        <div class="breakdown-explain">Pass a variable called <code>id</code> with value "B001" into the awk program</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">$1 == id</div>
+        <div class="breakdown-explain">Condition: only process lines where column 1 (BookingID) equals the id variable</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">{found=1; print $1 " | " $2 " | " $7}</div>
+        <div class="breakdown-explain">Set a flag that we found it, print BookingId, CustomerName, and Par_Status</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">END {if (!found) print "Booking details Not Found"}</div>
+        <div class="breakdown-explain">After all lines: if found was never set to 1, print the error message</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: sed                                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="sed">
+  <div class="section-tag">Section 07</div>
+  <h2>sed &mdash; Stream Editor</h2>
+  <p class="section-desc">sed reads text line by line, applies transformations (find &amp; replace, delete, insert), and outputs the result. Think of it as "Find &amp; Replace" for the command line.</p>
+
+  <h3>Substitute Command</h3>
+
+  <p>The most common sed operation is substitution:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">sed syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Basic: replace first occurrence on each line
+sed 's/old/new/' filename
+
+# Replace ALL occurrences on each line (g = global)
+sed 's/old/new/g' filename
+
+# Case insensitive replace
+sed 's/old/new/gi' filename</code></pre>
+  </div>
+
+  <h3>In-Place Editing with -i</h3>
+
+  <p>By default, sed prints the modified text to screen but does NOT change the file. To actually modify the file, use <code>-i</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">In-place editing</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Preview the change (no -i, just prints to screen)
+sed 's/old@email.com/new@email.com/' customer.txt
+
+# Actually modify the file (-i = in-place)
+sed -i 's/old@email.com/new@email.com/' customer.txt
+
+# Create a backup before modifying (-i.bak saves original as customer.txt.bak)
+sed -i.bak 's/old@email.com/new@email.com/' customer.txt</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Warning</div>
+    <p><code>sed -i</code> modifies the file permanently. Always preview without <code>-i</code> first, or use <code>-i.bak</code> to keep a backup.</p>
+  </div>
+
+  <h3>Other sed Operations</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">More sed tricks</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Delete lines containing "Cancelled"
+sed '/Cancelled/d' Parcel.txt
+
+# Delete line 3
+sed '3d' Parcel.txt
+
+# Print only lines 2-5
+sed -n '2,5p' Parcel.txt
+
+# Replace only on line 4
+sed '4s/old/new/' filename</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Command 5</div>
+    <p><strong>Update email of customer in customer.txt:</strong></p>
+    <p><code>sed -i 's/ravi@old.com/ravi@new.com/' customer.txt</code></p>
+    <p>This finds the exact old email and replaces it with the new one, modifying the file directly. Since customer.txt is comma-delimited, the email is just another field in the line &mdash; sed does not care about delimiters, it matches text anywhere in the line.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: sort                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="sort">
+  <div class="section-tag">Section 08</div>
+  <h2>sort &mdash; Ordering Data</h2>
+  <p class="section-desc">sort arranges lines of text in a specific order &mdash; alphabetical, numerical, ascending, descending, or by a specific column.</p>
+
+  <h3>Basic Usage</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">sort basics</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Alphabetical sort (default)
+sort names.txt
+
+# Reverse (descending) sort
+sort -r names.txt
+
+# Numeric sort (treats content as numbers, not text)
+sort -n numbers.txt
+
+# Numeric descending
+sort -rn numbers.txt</code></pre>
+  </div>
+
+  <h3>Sorting by Column</h3>
+
+  <p>For structured files, you sort by a specific column using <code>-k</code> (key) and <code>-t</code> (delimiter):</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Flag</th><th>Meaning</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>-t'|'</code></td><td>Set field delimiter to pipe</td><td><code>sort -t'|' ...</code></td></tr>
+      <tr><td><code>-k2</code></td><td>Sort by column 2</td><td><code>sort -t'|' -k2 booking.txt</code></td></tr>
+      <tr><td><code>-k3,3</code></td><td>Sort by column 3 only (start and end at 3)</td><td><code>sort -t'|' -k3,3 Parcel.txt</code></td></tr>
+      <tr><td><code>-r</code></td><td>Reverse (descending)</td><td><code>sort -t'|' -k1,1r booking.txt</code></td></tr>
+      <tr><td><code>-n</code></td><td>Numeric sort</td><td><code>sort -t'|' -k6,6nr Parcel.txt</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Command 6</div>
+    <p><strong>Display Booking ID, Customer Name, Date of Booking in descending order of Booking ID:</strong></p>
+    <p><code>awk -F'|' '{print $1 "|" $2 "|" $6}' booking.txt | sort -t'|' -k1,1r</code></p>
+    <p>First, awk extracts columns 1, 2, and 6 from booking.txt. Then sort orders them by column 1 (Booking ID) in reverse (descending). The pipe connects the two commands.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line: Sort by Booking ID descending</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">awk -F'|'</div>
+        <div class="breakdown-explain">Start awk with pipe as the field separator</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">'{print $1 "|" $2 "|" $6}'</div>
+        <div class="breakdown-explain">For each line, print Booking ID ($1), Customer Name ($2), Date of Booking ($6), separated by pipes</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">booking.txt</div>
+        <div class="breakdown-explain">Read from the booking.txt file</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">| sort -t'|' -k1,1r</div>
+        <div class="breakdown-explain">Pipe output to sort: <code>-t'|'</code> sets delimiter, <code>-k1,1</code> sorts by column 1, <code>r</code> makes it descending</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: cut                                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="cut">
+  <div class="section-tag">Section 09</div>
+  <h2>cut &mdash; Extracting Columns</h2>
+  <p class="section-desc">cut is a simpler alternative to awk when you just need to extract columns without any logic or conditions.</p>
+
+  <h3>Basic Usage</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">cut examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Extract column 1 from pipe-delimited file
+cut -d'|' -f1 Parcel.txt
+
+# Extract columns 1 and 4
+cut -d'|' -f1,4 Parcel.txt
+
+# Extract columns 1 through 3
+cut -d'|' -f1-3 booking.txt
+
+# Extract column 4 from comma-delimited file
+cut -d',' -f4 customer.txt</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Flag</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>-d','</code></td><td>Set delimiter (comma, pipe, tab, etc.)</td></tr>
+      <tr><td><code>-f1</code></td><td>Extract field 1</td></tr>
+      <tr><td><code>-f1,3,5</code></td><td>Extract fields 1, 3, and 5</td></tr>
+      <tr><td><code>-f2-4</code></td><td>Extract fields 2 through 4</td></tr>
+    </tbody>
+  </table>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">cut</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Simple column extraction</li>
+          <li>No conditions or logic</li>
+          <li>Faster for basic tasks</li>
+          <li><code>cut -d'|' -f1,4 file</code></li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">awk</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Column extraction + logic</li>
+          <li>Conditions, math, counting</li>
+          <li>More powerful, more complex</li>
+          <li><code>awk -F'|' '{print $1,$4}' file</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: uniq                                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="uniq">
+  <div class="section-tag">Section 10</div>
+  <h2>uniq &mdash; Removing Duplicates</h2>
+  <p class="section-desc">uniq removes consecutive duplicate lines. The critical rule: the data MUST be sorted first, because uniq only compares each line with the one directly above it.</p>
+
+  <div class="callout important">
+    <div class="callout-title">Critical Rule</div>
+    <p><code>uniq</code> only removes <strong>adjacent</strong> duplicates. If duplicates are scattered across the file, they will NOT be removed. Always <code>sort</code> first!</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">uniq examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># WRONG: uniq without sort (will miss non-adjacent duplicates)
+cut -d'|' -f7 Parcel.txt | uniq
+
+# CORRECT: sort first, then uniq
+cut -d'|' -f7 Parcel.txt | sort | uniq
+
+# Count occurrences of each unique value
+cut -d'|' -f7 Parcel.txt | sort | uniq -c
+
+# Show only duplicate lines
+cut -d'|' -f7 Parcel.txt | sort | uniq -d
+
+# Show only unique (non-duplicate) lines
+cut -d'|' -f7 Parcel.txt | sort | uniq -u</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Flag</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>-c</code></td><td>Prefix lines with count of occurrences</td></tr>
+      <tr><td><code>-d</code></td><td>Only show duplicated lines</td></tr>
+      <tr><td><code>-u</code></td><td>Only show unique (non-repeated) lines</td></tr>
+      <tr><td><code>-i</code></td><td>Case insensitive comparison</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Sample Data Files                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="sample-data">
+  <div class="section-tag">Section 11</div>
+  <h2>Sample Data Files</h2>
+  <p class="section-desc">These are the three data files used in Nimbus. All commands in the next section work on this data.</p>
+
+  <h3>Parcel.txt (pipe-delimited)</h3>
+  <p>Columns: Customer ID | Booking ID | Booking Date | Receiver Name | Delivered Address | Amount | Status</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Parcel.txt</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">C101|B001|2024-01-15|Ravi Kumar|Mumbai|500|Delivered
+C102|B002|2024-01-16|Anita Sharma|Delhi|750|Pending
+C103|B003|2024-01-17|Suresh Patel|Pune|300|Delivered
+C101|B004|2024-01-18|Meena Gupta|Chennai|450|Cancelled
+C104|B005|2024-01-19|Arjun Reddy|Hyderabad|600|Delivered
+C102|B006|2024-01-20|Priya Nair|Bangalore|800|Pending
+C105|B007|2024-01-21|Deepak Singh|Jaipur|350|Delivered
+C103|B008|2024-01-22|Kavita Joshi|Kolkata|550|Delivered
+C101|B009|2024-01-23|Anjali Verma|Lucknow|400|Pending
+C106|B010|2024-02-01|Rahul Mehta|Ahmedabad|650|Cancelled</code></pre>
+  </div>
+
+  <h3>booking.txt (pipe-delimited)</h3>
+  <p>Columns: Booking ID | CustomerName | Address | Rec_Name | Rec_Address | Date of Booking | Par_Status</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking.txt</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">B001|Rajesh Kumar|Mumbai|Ravi Kumar|Delhi|2024-01-15|Delivered
+B002|Anita Sharma|Delhi|Suresh Patel|Pune|2024-01-16|Pending
+B003|Suresh Patel|Pune|Meena Gupta|Chennai|2024-01-17|Delivered
+B004|Rajesh Kumar|Mumbai|Arjun Reddy|Hyderabad|2024-01-18|Cancelled
+B005|Priya Nair|Bangalore|Deepak Singh|Jaipur|2024-01-19|Delivered
+B006|Anita Sharma|Delhi|Kavita Joshi|Kolkata|2024-01-20|Pending
+B007|Deepak Singh|Jaipur|Anjali Verma|Lucknow|2024-01-21|Delivered
+B008|Rajesh Kumar|Mumbai|Rahul Mehta|Ahmedabad|2024-01-22|Delivered
+B009|Anita Sharma|Delhi|Ravi Kumar|Mumbai|2024-01-23|Pending
+B010|Priya Nair|Bangalore|Suresh Patel|Pune|2024-02-01|Cancelled</code></pre>
+  </div>
+
+  <h3>customer.txt (comma-delimited)</h3>
+  <p>Columns: Customer ID, Customer Name, Address, Email, Mobile</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">customer.txt</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">C101,Rajesh Kumar,Mumbai,rajesh@email.com,9876543210
+C102,Anita Sharma,Delhi,anita@email.com,9876543211
+C103,Suresh Patel,Pune,suresh@email.com,9876543212
+C104,Arjun Reddy,Hyderabad,arjun@email.com,9876543213
+C105,Deepak Singh,Jaipur,deepak@email.com,9876543214
+C106,Anjali Verma,Lucknow,anjali@email.com,9876543215
+C107,Priya Nair,Bangalore,priya@email.com,9876543216
+C108,Anand Mehta,Ahmedabad,anand@email.com,9876543217</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Notice</div>
+    <p>Parcel.txt and booking.txt use <code>|</code> (pipe) as delimiter. customer.txt uses <code>,</code> (comma). This matters when setting delimiters in awk (<code>-F</code>), cut (<code>-d</code>), and sort (<code>-t</code>).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: All 6 Nimbus Commands                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-commands">
+  <div class="section-tag">Section 12</div>
+  <h2>All 6 Nimbus Commands</h2>
+  <p class="section-desc">These are the exact commands required for Nimbus. Each one is explained step by step with expected output based on the sample data above.</p>
+
+  <!-- Command 1 -->
+  <h3>Command 1: Count Delivered Parcels</h3>
+
+  <p><strong>Task:</strong> Count parcels with status "Delivered" from Parcel.txt</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Command 1</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">grep -c "Delivered" Parcel.txt</code></pre>
+  </div>
+
+  <p><strong>Output:</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Output</span></div>
+    <pre><code class="language-bash">5</code></pre>
+  </div>
+
+  <p><strong>How it works:</strong> <code>grep</code> scans every line of Parcel.txt. The <code>-c</code> flag counts how many lines contain the text "Delivered" and prints just the number.</p>
+
+  <!-- Command 2 -->
+  <h3>Command 2: Search Booking by ID</h3>
+
+  <p><strong>Task:</strong> Search booking by BookingID, display BookingId | CustomerName | Par_Status. If not found, print "Booking details Not Found".</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Command 2</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">awk -F'|' -v id="B003" '$1 == id {found=1; print $1 " | " $2 " | " $7} END {if (!found) print "Booking details Not Found"}' booking.txt</code></pre>
+  </div>
+
+  <p><strong>Output (found):</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Output when B003 exists</span></div>
+    <pre><code class="language-bash">B003 | Suresh Patel | Delivered</code></pre>
+  </div>
+
+  <p><strong>Output (not found):</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Output when B999 does not exist</span></div>
+    <pre><code class="language-bash">Booking details Not Found</code></pre>
+  </div>
+
+  <p><strong>How it works:</strong> <code>-v id="B003"</code> passes the search ID as a variable. For each line, awk checks if column 1 matches. If yes, it sets <code>found=1</code> and prints the three columns. After all lines are processed, the <code>END</code> block checks if <code>found</code> was never set &mdash; if so, it prints the error message.</p>
+
+  <!-- Command 3 -->
+  <h3>Command 3: Total Bookings per Customer in Date Range</h3>
+
+  <p><strong>Task:</strong> Find total bookings by customer within a date range. Display Booking ID | CustomerName | Number of bookings in descending order.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Command 3</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">awk -F'|' -v start="2024-01-15" -v end="2024-01-22" '
+  $6 &gt;= start &amp;&amp; $6 &lt;= end {
+    count[$2]++
+    bookings[$2] = bookings[$2] $1 ","
+  }
+  END {
+    for (c in count) {
+      sub(/,$/, "", bookings[c])
+      print bookings[c] " | " c " | " count[c]
+    }
+  }
+' booking.txt | sort -t'|' -k3,3nr</code></pre>
+  </div>
+
+  <p><strong>Output:</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Output</span></div>
+    <pre><code class="language-bash">B001,B004,B008 | Rajesh Kumar | 3
+B002,B006 | Anita Sharma | 2
+B005 | Priya Nair | 1
+B003 | Suresh Patel | 1
+B007 | Deepak Singh | 1</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line: Bookings per customer in date range</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">-v start="2024-01-15" -v end="2024-01-22"</div>
+        <div class="breakdown-explain">Pass start and end dates as awk variables</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">$6 &gt;= start &amp;&amp; $6 &lt;= end</div>
+        <div class="breakdown-explain">Condition: column 6 (Date of Booking) must be within the date range. String comparison works because dates are in YYYY-MM-DD format</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">count[$2]++</div>
+        <div class="breakdown-explain">Increment the counter for this customer name ($2). Associative array acts like a HashMap</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookings[$2] = bookings[$2] $1 ","</div>
+        <div class="breakdown-explain">Append the Booking ID ($1) to a comma-separated list for this customer</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">END { for (c in count) ... }</div>
+        <div class="breakdown-explain">After all lines: loop through each customer and print their booking IDs, name, and count</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">| sort -t'|' -k3,3nr</div>
+        <div class="breakdown-explain">Pipe to sort by column 3 (count) in numeric reverse (descending) order</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command 4 -->
+  <h3>Command 4: Customers Starting with "An"</h3>
+
+  <p><strong>Task:</strong> Search customers whose name starts with "An" from customer.txt</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Command 4</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">awk -F',' '$2 ~ /^An/' customer.txt</code></pre>
+  </div>
+
+  <p><strong>Output:</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Output</span></div>
+    <pre><code class="language-bash">C102,Anita Sharma,Delhi,anita@email.com,9876543211
+C106,Anjali Verma,Lucknow,anjali@email.com,9876543215
+C108,Anand Mehta,Ahmedabad,anand@email.com,9876543217</code></pre>
+  </div>
+
+  <p><strong>How it works:</strong> customer.txt is comma-delimited, so <code>-F','</code>. Column 2 is Customer Name. The regex <code>/^An/</code> matches names that start with "An". The <code>~</code> operator means "matches pattern".</p>
+
+  <div class="callout think">
+    <div class="callout-title">Alternative Approach</div>
+    <p>You could also use grep: <code>grep ",An" customer.txt</code> &mdash; but this is less precise because it matches "An" anywhere after a comma, not specifically in the name column. The awk approach targets column 2 exactly.</p>
+  </div>
+
+  <!-- Command 5 -->
+  <h3>Command 5: Update Customer Email</h3>
+
+  <p><strong>Task:</strong> Update email of a customer in customer.txt using sed</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Command 5</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Preview the change first (no -i)
+sed 's/rajesh@email.com/rajesh.kumar@newmail.com/' customer.txt
+
+# Apply the change to the file
+sed -i 's/rajesh@email.com/rajesh.kumar@newmail.com/' customer.txt</code></pre>
+  </div>
+
+  <p><strong>Before:</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Before</span></div>
+    <pre><code class="language-bash">C101,Rajesh Kumar,Mumbai,rajesh@email.com,9876543210</code></pre>
+  </div>
+
+  <p><strong>After:</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">After</span></div>
+    <pre><code class="language-bash">C101,Rajesh Kumar,Mumbai,rajesh.kumar@newmail.com,9876543210</code></pre>
+  </div>
+
+  <p><strong>How it works:</strong> <code>sed 's/old/new/'</code> replaces the first occurrence of <code>old</code> with <code>new</code> on each line. The <code>-i</code> flag makes the change directly in the file instead of just printing to screen.</p>
+
+  <!-- Command 6 -->
+  <h3>Command 6: Bookings Sorted by ID (Descending)</h3>
+
+  <p><strong>Task:</strong> Display Booking ID, Customer Name, Date of Booking in descending order of Booking ID</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Command 6</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">awk -F'|' '{print $1 " | " $2 " | " $6}' booking.txt | sort -t'|' -k1,1r</code></pre>
+  </div>
+
+  <p><strong>Output:</strong></p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Output</span></div>
+    <pre><code class="language-bash">B010 | Priya Nair | 2024-02-01
+B009 | Anita Sharma | 2024-01-23
+B008 | Rajesh Kumar | 2024-01-22
+B007 | Deepak Singh | 2024-01-21
+B006 | Anita Sharma | 2024-01-20
+B005 | Priya Nair | 2024-01-19
+B004 | Rajesh Kumar | 2024-01-18
+B003 | Suresh Patel | 2024-01-17
+B002 | Anita Sharma | 2024-01-16
+B001 | Rajesh Kumar | 2024-01-15</code></pre>
+  </div>
+
+  <p><strong>How it works:</strong> awk extracts three specific columns from booking.txt. The pipe sends this to sort, which sorts by column 1 in reverse order. Since Booking IDs are "B001", "B002" etc., alphabetical reverse gives descending order.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Chaining Commands                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="chaining">
+  <div class="section-tag">Section 13</div>
+  <h2>Chaining Commands with Pipes</h2>
+  <p class="section-desc">Real-world data processing often needs 3, 4, or even 5 commands chained together. Here are practical examples using Nimbus data.</p>
+
+  <h3>Multi-Step Pipeline</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Chaining examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># List all unique statuses from Parcel.txt, sorted
+cut -d'|' -f7 Parcel.txt | sort | uniq
+
+# Count how many parcels each status has, sorted by count
+cut -d'|' -f7 Parcel.txt | sort | uniq -c | sort -rn
+
+# Top 3 highest-amount parcels (columns: CustomerID, Amount, Status)
+awk -F'|' '{print $1 "|" $6 "|" $7}' Parcel.txt | sort -t'|' -k2,2nr | head -n 3
+
+# All delivered parcels, show only receiver and address, sorted alphabetically
+grep "Delivered" Parcel.txt | awk -F'|' '{print $4 " - " $5}' | sort
+
+# Customer IDs with the most bookings
+cut -d'|' -f1 Parcel.txt | sort | uniq -c | sort -rn</code></pre>
+  </div>
+
+  <h3>Reading a Pipeline Left to Right</h3>
+
+  <p>Every pipeline is a story. Read it left to right, one command at a time:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">cut -d'|' -f7<span class="flow-sub">Extract status column</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">sort<span class="flow-sub">Alphabetize</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">uniq -c<span class="flow-sub">Count each unique value</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">sort -rn<span class="flow-sub">Sort by count descending</span></div>
+    </div>
+    <div class="flow-label">Each step transforms the data and passes it to the next</div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Building Pipelines</div>
+    <p>When building a complex pipeline, start with just the first command and run it. Then add the next pipe and run again. Keep adding one step at a time until you get the result you want. Never write the full pipeline at once &mdash; build it piece by piece.</p>
+  </div>
+
+  <h3>Redirection: Saving Output to Files</h3>
+
+  <p>Instead of printing to screen, you can save output to a file:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Output redirection</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash"># Save to a new file (overwrites if exists)
+grep "Delivered" Parcel.txt &gt; delivered_parcels.txt
+
+# Append to a file (does not overwrite)
+grep "Pending" Parcel.txt &gt;&gt; status_report.txt
+
+# Redirect errors to a file
+grep "xyz" Parcel.txt 2&gt; errors.txt
+
+# Redirect both output and errors
+grep "Delivered" Parcel.txt &gt; output.txt 2&gt;&amp;1</code></pre>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operator</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>&gt;</code></td><td>Redirect output to file (overwrite)</td></tr>
+      <tr><td><code>&gt;&gt;</code></td><td>Redirect output to file (append)</td></tr>
+      <tr><td><code>2&gt;</code></td><td>Redirect errors to file</td></tr>
+      <tr><td><code>2&gt;&amp;1</code></td><td>Redirect errors to same place as output</td></tr>
+      <tr><td><code>&lt;</code></td><td>Read input from a file</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 14: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 14</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Try these exercises on the sample data. Each one builds on the commands you have learned. Answers are hidden &mdash; try first, then check.</p>
+
+  <!-- Exercise 1 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Count Pending Parcels</div>
+    <p>Count the number of parcels with status "Pending" in Parcel.txt.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">grep -c "Pending" Parcel.txt</div>
+        <div class="breakdown-explain">Output: <code>3</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 2 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: List Unique Customer Names from booking.txt</div>
+    <p>Extract all unique customer names (column 2) from booking.txt, sorted alphabetically.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">cut -d'|' -f2 booking.txt | sort | uniq</div>
+        <div class="breakdown-explain">Extract column 2, sort to group duplicates, uniq to remove them</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 3 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Find Total Amount of Delivered Parcels</div>
+    <p>Calculate the total amount (column 6) of all delivered parcels from Parcel.txt.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">awk -F'|' '$7 == "Delivered" {sum += $6} END {print "Total: " sum}' Parcel.txt</div>
+        <div class="breakdown-explain">Filter for Delivered, accumulate amount in <code>sum</code>, print total at the end. Output: <code>Total: 2200</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 4 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Find Customers from Mumbai</div>
+    <p>Display Customer ID and Customer Name from customer.txt where Address is "Mumbai".</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">awk -F',' '$3 == "Mumbai" {print $1 ", " $2}' customer.txt</div>
+        <div class="breakdown-explain">Comma delimiter, check column 3 for "Mumbai", print ID and name</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 5 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: Replace a Status</div>
+    <p>Use sed to change all "Cancelled" statuses to "Refunded" in Parcel.txt (preview only, no -i).</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">sed 's/Cancelled/Refunded/g' Parcel.txt</div>
+        <div class="breakdown-explain">The <code>g</code> flag replaces all occurrences per line. No <code>-i</code> so it only prints, does not modify</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 6 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6: Top 3 Customers by Parcel Count</div>
+    <p>Find the top 3 Customer IDs with the most parcels from Parcel.txt, showing the count.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">cut -d'|' -f1 Parcel.txt | sort | uniq -c | sort -rn | head -n 3</div>
+        <div class="breakdown-explain">Extract Customer ID &rarr; sort &rarr; count each &rarr; sort by count descending &rarr; take top 3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 7 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7: Bookings in January 2024</div>
+    <p>List all Booking IDs and Customer Names from booking.txt where the booking date is in January 2024.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">awk -F'|' '$6 ~ /2024-01/ {print $1 " | " $2}' booking.txt</div>
+        <div class="breakdown-explain">The <code>~</code> operator checks if column 6 matches the pattern "2024-01" (January 2024)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise 8 -->
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8: Combined Pipeline Challenge</div>
+    <p>Find the average parcel amount for delivered parcels in Parcel.txt. Hint: use awk with a counter and sum.</p>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show Answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">awk -F'|' '$7 == "Delivered" {sum += $6; count++} END {print "Average: " sum/count}' Parcel.txt</div>
+        <div class="breakdown-explain">Track both total and count for delivered parcels. In END, divide to get average. Output: <code>Average: 440</code></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="maven.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Maven</span>
+  </a>
+  <a href="nimbus-backend.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Nimbus Backend</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheat Sheets | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link active"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: JAVA SYNTAX                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="java-syntax">
+  <div class="section-tag">Section 01</div>
+  <h2>Java Syntax</h2>
+  <p class="section-desc">Quick-fire Java syntax. Copy, paste, modify.</p>
+
+  <h3>Variables &amp; Data Types</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Variables</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int age = 25;                    // integer
+double price = 99.99;            // decimal
+boolean active = true;           // true/false
+char grade = 'A';                // single character
+String name = "Nimbus";          // text (object, not primitive)
+final int MAX = 100;             // constant (cannot change)
+int[] nums = {1, 2, 3};          // array
+var list = new ArrayList&lt;String&gt;(); // type inference (Java 10+)</code></pre>
+  </div>
+
+  <h3>Loops</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Loops</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// for loop
+for (int i = 0; i &lt; 10; i++) { }
+
+// while loop
+while (condition) { }
+
+// do-while (runs at least once)
+do { } while (condition);
+
+// enhanced for (foreach)
+for (String item : list) { }
+
+// break &amp; continue
+for (int i = 0; i &lt; 10; i++) {
+    if (i == 5) break;       // exit loop
+    if (i % 2 == 0) continue; // skip iteration
+}</code></pre>
+  </div>
+
+  <h3>Methods</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Methods</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// void method (no return)
+public void printName(String name) {
+    System.out.println(name);
+}
+
+// method with return value
+public int add(int a, int b) {
+    return a + b;
+}
+
+// static method (call without object)
+public static double calculateTax(double amount) {
+    return amount * 0.18;
+}</code></pre>
+  </div>
+
+  <h3>Classes</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    private String name;            // field
+    private String email;
+
+    public User(String name, String email) {  // constructor
+        this.name = name;
+        this.email = email;
+    }
+
+    public String getName() { return name; }           // getter
+    public void setName(String name) { this.name = name; } // setter
+
+    @Override
+    public String toString() {
+        return "User{name='" + name + "', email='" + email + "'}";
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: OOP                                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="oop">
+  <div class="section-tag">Section 02</div>
+  <h2>OOP Quick Reference</h2>
+  <p class="section-desc">The four pillars, key comparisons, and patterns.</p>
+
+  <h3>Four Pillars</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Pillar</th><th>What</th><th>Keyword/Mechanism</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Encapsulation</strong></td><td>Hide internal data, expose via methods</td><td><code>private</code> fields + getters/setters</td><td><code>User.getName()</code></td></tr>
+      <tr><td><strong>Inheritance</strong></td><td>Child class gets parent's stuff</td><td><code>extends</code></td><td><code>Admin extends User</code></td></tr>
+      <tr><td><strong>Polymorphism</strong></td><td>Same method, different behavior</td><td><code>@Override</code></td><td><code>user.getRole()</code> returns different things</td></tr>
+      <tr><td><strong>Abstraction</strong></td><td>Show what, hide how</td><td><code>abstract</code> / <code>interface</code></td><td><code>UserDAO</code> interface</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Abstract Class vs Interface</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Feature</th><th>Abstract Class</th><th>Interface</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Methods</td><td>Abstract + concrete</td><td>Abstract only (pre-Java 8), default allowed (8+)</td></tr>
+      <tr><td>Fields</td><td>Instance variables</td><td>Only <code>public static final</code></td></tr>
+      <tr><td>Constructors</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Inheritance</td><td>Single (<code>extends</code>)</td><td>Multiple (<code>implements</code>)</td></tr>
+      <tr><td>Use when</td><td>Shared state + partial implementation</td><td>Contract/capability definition</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Overloading vs Overriding</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Feature</th><th>Overloading</th><th>Overriding</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Where</td><td>Same class</td><td>Parent-child classes</td></tr>
+      <tr><td>Method name</td><td>Same</td><td>Same</td></tr>
+      <tr><td>Parameters</td><td>Must differ</td><td>Must be same</td></tr>
+      <tr><td>Return type</td><td>Can differ</td><td>Same or covariant</td></tr>
+      <tr><td>Binding</td><td>Compile-time (static)</td><td>Runtime (dynamic)</td></tr>
+      <tr><td>Annotation</td><td>None</td><td><code>@Override</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>UserDAO</code> is an interface (abstraction). <code>UserDAOImpl</code> overrides its methods. <code>BookingService</code> has overloaded <code>search()</code> methods &mdash; one by ID, one by tracking number.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: EXCEPTIONS                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="exceptions">
+  <div class="section-tag">Section 03</div>
+  <h2>Exceptions</h2>
+  <p class="section-desc">Hierarchy, templates, and the 10 exceptions you'll see most.</p>
+
+  <h3>Hierarchy</h3>
+  <div class="diagram">
+    <pre>
+              Throwable
+              /       \
+          Error      Exception
+          (JVM)      /         \
+                IOException  RuntimeException
+                (checked)    (unchecked)
+                  |              |
+           SQLException    NullPointerException
+           FileNotFound    ArrayIndexOutOfBounds
+                           ClassCastException
+                           IllegalArgumentException
+    </pre>
+    <div class="diagram-label">Checked = must handle. Unchecked = your bug.</div>
+  </div>
+
+  <h3>try-catch Template</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exception Handling</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">try {
+    // risky code
+    Connection conn = DriverManager.getConnection(url, user, pass);
+} catch (SQLException e) {
+    // handle specific exception
+    System.err.println("DB Error: " + e.getMessage());
+} catch (Exception e) {
+    // catch-all (put specific catches FIRST)
+    e.printStackTrace();
+} finally {
+    // ALWAYS runs (cleanup)
+    if (conn != null) conn.close();
+}
+
+// try-with-resources (auto-closes)
+try (Connection conn = DriverManager.getConnection(url, user, pass);
+     PreparedStatement ps = conn.prepareStatement(sql)) {
+    // use conn and ps
+} // auto-closed here, no finally needed</code></pre>
+  </div>
+
+  <h3>10 Common Exceptions</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>#</th><th>Exception</th><th>When It Happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><code>NullPointerException</code></td><td>Calling method on <code>null</code> reference</td></tr>
+      <tr><td>2</td><td><code>ArrayIndexOutOfBoundsException</code></td><td>Index &lt; 0 or &gt;= array.length</td></tr>
+      <tr><td>3</td><td><code>ClassCastException</code></td><td>Invalid cast: <code>(String) obj</code> when obj isn't String</td></tr>
+      <tr><td>4</td><td><code>NumberFormatException</code></td><td><code>Integer.parseInt("abc")</code></td></tr>
+      <tr><td>5</td><td><code>IllegalArgumentException</code></td><td>Method receives invalid parameter</td></tr>
+      <tr><td>6</td><td><code>StackOverflowError</code></td><td>Infinite recursion</td></tr>
+      <tr><td>7</td><td><code>SQLException</code></td><td>DB query fails, bad SQL, connection lost</td></tr>
+      <tr><td>8</td><td><code>IOException</code></td><td>File not found, stream read failure</td></tr>
+      <tr><td>9</td><td><code>ConcurrentModificationException</code></td><td>Modifying collection while iterating</td></tr>
+      <tr><td>10</td><td><code>ClassNotFoundException</code></td><td>JDBC driver not in classpath</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: COLLECTIONS                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="collections">
+  <div class="section-tag">Section 04</div>
+  <h2>Collections</h2>
+  <p class="section-desc">Which collection to use and their key methods.</p>
+
+  <h3>When to Use Which</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Need</th><th>Use</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Ordered list, duplicates OK</td><td><code>ArrayList</code></td><td>Fast random access by index</td></tr>
+      <tr><td>Frequent insert/remove at ends</td><td><code>LinkedList</code></td><td>O(1) add/remove at head/tail</td></tr>
+      <tr><td>No duplicates</td><td><code>HashSet</code></td><td>O(1) contains/add/remove</td></tr>
+      <tr><td>No duplicates + sorted</td><td><code>TreeSet</code></td><td>Natural ordering maintained</td></tr>
+      <tr><td>Key-value pairs</td><td><code>HashMap</code></td><td>O(1) get/put by key</td></tr>
+      <tr><td>Key-value + sorted keys</td><td><code>TreeMap</code></td><td>Keys in natural order</td></tr>
+      <tr><td>FIFO queue</td><td><code>LinkedList</code> (as Queue)</td><td><code>offer()</code>, <code>poll()</code>, <code>peek()</code></td></tr>
+      <tr><td>LIFO stack</td><td><code>Deque</code> / <code>ArrayDeque</code></td><td><code>push()</code>, <code>pop()</code>, <code>peek()</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Key Methods</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Collections Cheat Sheet</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// === List ===
+List&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add("A");              // append
+list.add(0, "B");           // insert at index
+list.get(0);                // access by index
+list.set(0, "C");           // replace at index
+list.remove(0);             // remove by index
+list.remove("A");           // remove by value
+list.size();                // count
+list.contains("A");         // search
+list.indexOf("A");          // find position
+Collections.sort(list);     // sort
+
+// === Map ===
+Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put("parcels", 42);    // add/update
+map.get("parcels");         // retrieve (null if missing)
+map.getOrDefault("x", 0);  // retrieve with fallback
+map.containsKey("parcels"); // check key
+map.containsValue(42);     // check value
+map.remove("parcels");     // delete
+map.keySet();               // all keys
+map.values();               // all values
+map.entrySet();             // all key-value pairs
+
+// === Set ===
+Set&lt;String&gt; set = new HashSet&lt;&gt;();
+set.add("A");               // add (ignores duplicates)
+set.contains("A");          // search
+set.remove("A");            // delete</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>BookingDAO.getAllBookings()</code> returns a <code>List&lt;Booking&gt;</code>. <code>TrackingService</code> uses a <code>Map&lt;String, Booking&gt;</code> internally to look up parcels by tracking number in O(1).</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: SQL                                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="sql">
+  <div class="section-tag">Section 05</div>
+  <h2>SQL Templates</h2>
+  <p class="section-desc">Copy-paste SQL for every common operation.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SQL Quick Reference</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- CREATE TABLE
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    role VARCHAR(20) DEFAULT 'USER',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE bookings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    tracking_number VARCHAR(20) UNIQUE NOT NULL,
+    status VARCHAR(20) DEFAULT 'PENDING',
+    weight DECIMAL(5,2),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- INSERT
+INSERT INTO users (name, email) VALUES ('Darshan', 'darshan@nimbus.com');
+INSERT INTO bookings (user_id, tracking_number, weight)
+VALUES (1, 'NMB-20260423-001', 2.5);
+
+-- SELECT
+SELECT * FROM users;
+SELECT name, email FROM users WHERE role = 'ADMIN';
+SELECT * FROM bookings WHERE status = 'PENDING' ORDER BY created_at DESC;
+SELECT COUNT(*), status FROM bookings GROUP BY status;
+SELECT * FROM bookings WHERE weight BETWEEN 1.0 AND 5.0;
+
+-- JOIN
+SELECT u.name, b.tracking_number, b.status
+FROM users u
+INNER JOIN bookings b ON u.id = b.user_id
+WHERE b.status = 'DELIVERED';
+
+-- LEFT JOIN (all users, even without bookings)
+SELECT u.name, COUNT(b.id) AS total_bookings
+FROM users u
+LEFT JOIN bookings b ON u.id = b.user_id
+GROUP BY u.name;
+
+-- UPDATE
+UPDATE bookings SET status = 'SHIPPED' WHERE tracking_number = 'NMB-20260423-001';
+
+-- DELETE
+DELETE FROM bookings WHERE status = 'CANCELLED' AND created_at &lt; '2026-01-01';</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: JDBC                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="jdbc">
+  <div class="section-tag">Section 06</div>
+  <h2>JDBC Templates</h2>
+  <p class="section-desc">Connection, PreparedStatement, and ResultSet patterns.</p>
+
+  <h3>Connection Template</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DBConnection.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// 1. Load driver (once, at app startup)
+Class.forName("com.mysql.cj.jdbc.Driver");
+
+// 2. Get connection
+String url = "jdbc:mysql://localhost:3306/nimbus_db";
+Connection conn = DriverManager.getConnection(url, "root", "password");</code></pre>
+  </div>
+
+  <h3>PreparedStatement &mdash; INSERT</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Insert with PreparedStatement</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String sql = "INSERT INTO users (name, email, role) VALUES (?, ?, ?)";
+try (PreparedStatement ps = conn.prepareStatement(sql)) {
+    ps.setString(1, user.getName());
+    ps.setString(2, user.getEmail());
+    ps.setString(3, user.getRole());
+    int rows = ps.executeUpdate();  // returns affected row count
+    System.out.println(rows + " row(s) inserted");
+}</code></pre>
+  </div>
+
+  <h3>PreparedStatement &mdash; SELECT</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Query with ResultSet</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String sql = "SELECT * FROM users WHERE role = ?";
+try (PreparedStatement ps = conn.prepareStatement(sql)) {
+    ps.setString(1, "ADMIN");
+    try (ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String email = rs.getString("email");
+            // build User object from these values
+        }
+    }
+}</code></pre>
+  </div>
+
+  <h3>Key ResultSet Methods</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>Returns</th><th>Use For</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>rs.getInt("col")</code></td><td><code>int</code></td><td>INT columns</td></tr>
+      <tr><td><code>rs.getString("col")</code></td><td><code>String</code></td><td>VARCHAR, TEXT</td></tr>
+      <tr><td><code>rs.getDouble("col")</code></td><td><code>double</code></td><td>DECIMAL, FLOAT</td></tr>
+      <tr><td><code>rs.getBoolean("col")</code></td><td><code>boolean</code></td><td>BOOLEAN, TINYINT</td></tr>
+      <tr><td><code>rs.getTimestamp("col")</code></td><td><code>Timestamp</code></td><td>DATETIME, TIMESTAMP</td></tr>
+      <tr><td><code>rs.next()</code></td><td><code>boolean</code></td><td>Move cursor to next row</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>UserDAO</code> uses <code>PreparedStatement</code> for all queries (never string concatenation &mdash; prevents SQL injection). <code>BookingDAO.findByTrackingNumber()</code> uses <code>ps.setString(1, trackingNum)</code> to safely query.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: ECLIPSE SHORTCUTS                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="eclipse">
+  <div class="section-tag">Section 07</div>
+  <h2>Eclipse Shortcuts</h2>
+  <p class="section-desc">15 shortcuts that save hours.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Shortcut</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Ctrl + Space</code></td><td>Autocomplete (code assist)</td></tr>
+      <tr><td><code>Ctrl + Shift + O</code></td><td>Organize imports (add missing, remove unused)</td></tr>
+      <tr><td><code>Ctrl + Shift + F</code></td><td>Format code</td></tr>
+      <tr><td><code>Ctrl + D</code></td><td>Delete current line</td></tr>
+      <tr><td><code>Alt + Up/Down</code></td><td>Move line up/down</td></tr>
+      <tr><td><code>Ctrl + /</code></td><td>Toggle line comment</td></tr>
+      <tr><td><code>Ctrl + Shift + /</code></td><td>Block comment</td></tr>
+      <tr><td><code>Ctrl + 1</code></td><td>Quick fix (red underline solutions)</td></tr>
+      <tr><td><code>F3</code></td><td>Go to declaration</td></tr>
+      <tr><td><code>Ctrl + Shift + R</code></td><td>Open resource (any file by name)</td></tr>
+      <tr><td><code>Ctrl + Shift + T</code></td><td>Open type (any class by name)</td></tr>
+      <tr><td><code>F11</code></td><td>Run in debug mode</td></tr>
+      <tr><td><code>Ctrl + F11</code></td><td>Run application</td></tr>
+      <tr><td><code>Ctrl + Shift + L</code></td><td>Show all shortcuts</td></tr>
+      <tr><td><code>Alt + Shift + R</code></td><td>Rename (refactor everywhere)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: COMMON ERRORS                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="errors">
+  <div class="section-tag">Section 08</div>
+  <h2>Common Errors &amp; Fixes</h2>
+  <p class="section-desc">15 errors you'll hit. What they mean and how to fix them instantly.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>#</th><th>Error</th><th>Fix</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><code>cannot find symbol</code></td><td>Typo in variable/method name, or forgot to import</td></tr>
+      <tr><td>2</td><td><code>'; ' expected</code></td><td>Missing semicolon at end of statement</td></tr>
+      <tr><td>3</td><td><code>incompatible types</code></td><td>Wrong type assignment. Cast or fix the type.</td></tr>
+      <tr><td>4</td><td><code>non-static method cannot be referenced from a static context</code></td><td>Create an object first, or make the method <code>static</code></td></tr>
+      <tr><td>5</td><td><code>NullPointerException</code></td><td>Something is <code>null</code>. Check with <code>if (obj != null)</code> before using.</td></tr>
+      <tr><td>6</td><td><code>ArrayIndexOutOfBoundsException</code></td><td>Index too high or negative. Check <code>array.length</code>.</td></tr>
+      <tr><td>7</td><td><code>ClassNotFoundException: com.mysql.cj.jdbc.Driver</code></td><td>MySQL connector JAR not in classpath. Add to <code>pom.xml</code> or <code>lib/</code>.</td></tr>
+      <tr><td>8</td><td><code>Communications link failure</code></td><td>MySQL not running. Start the MySQL service.</td></tr>
+      <tr><td>9</td><td><code>Access denied for user 'root'@'localhost'</code></td><td>Wrong password in JDBC URL. Check credentials.</td></tr>
+      <tr><td>10</td><td><code>Table 'nimbus_db.users' doesn't exist</code></td><td>Table not created. Run your CREATE TABLE script first.</td></tr>
+      <tr><td>11</td><td><code>Duplicate entry for key 'PRIMARY'</code></td><td>Inserting row with existing PK. Use AUTO_INCREMENT.</td></tr>
+      <tr><td>12</td><td><code>unreported exception; must be caught or declared</code></td><td>Checked exception not handled. Add try-catch or <code>throws</code>.</td></tr>
+      <tr><td>13</td><td><code>ConcurrentModificationException</code></td><td>Modifying list while iterating. Use <code>Iterator.remove()</code> or copy the list.</td></tr>
+      <tr><td>14</td><td><code>method does not override or implement</code></td><td>Signature doesn't match parent. Check parameters and return type.</td></tr>
+      <tr><td>15</td><td><code>java.lang.StackOverflowError</code></td><td>Infinite recursion. Add a base case to stop recursion.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="practice-lab.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Practice Lab</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

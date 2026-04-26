@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Author-Book BookStore | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link active"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 3 &mdash; Question 1</div>
+    <h2>Author-Book BookStore</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge major">Major</span>
+      <span class="time-estimate">45&ndash;55 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Create the below Classes and attributes.</p>
+
+      <p><strong>Author:</strong></p>
+      <ul>
+        <li><code>authorId</code>: Integer</li>
+        <li><code>authorName</code>: String</li>
+      </ul>
+
+      <p><strong>Book:</strong></p>
+      <ul>
+        <li><code>bookId</code>: Integer</li>
+        <li><code>title</code>: String</li>
+        <li><code>genre</code>: String</li>
+        <li><code>price</code>: double</li>
+        <li><code>author</code>: Author</li>
+      </ul>
+
+      <p>Create a business class and implement the following functionalities:</p>
+
+      <p><strong>getBooksBelongingToAGenre:</strong></p>
+      <ul>
+        <li>Takes a list of Book and genre as input parameters.</li>
+        <li>Find all books belonging to the input genre and return the list of books matching the genre.</li>
+        <li>If no matching genre is found, print error message <code>"Genre is not available in the list"</code></li>
+      </ul>
+
+      <p><strong>calculateDiscountedPrice:</strong></p>
+      <ul>
+        <li>Takes a list of Book, genre and discount percentage as input parameters.</li>
+        <li>Find books matching the genre and apply the discount to the book.</li>
+        <li>Return list of books matching the genre after applying the discount. Output should be printed followed by: <code>"Discounted &lt;genre&gt; Books:"</code></li>
+        <li>If no matching genre is found, print error message <code>"Discounted books are unavailable in the given genre."</code></li>
+        <li>Discounted Price = Price - (Price * discount%)</li>
+      </ul>
+
+      <p><strong>Notes:</strong></p>
+      <ul>
+        <li>All string comparisons need to be <strong>case-insensitive</strong>.</li>
+        <li>Assume an author has written only one book.</li>
+      </ul>
+
+      <p><strong>Input order:</strong></p>
+      <ol>
+        <li>Read number of Author objects</li>
+        <li>Read Author attributes (authorId, authorName)</li>
+        <li>Read Book attributes (bookId, title, genre, price) &mdash; author is the one just read</li>
+        <li>Repeat for all</li>
+        <li>Read parameters for methods (genre for method 1, genre + discount for method 2)</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is a classic PRA major question. It tests the full stack of OOP concepts you've learned.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Concepts Tested</div>
+      <ul>
+        <li><strong>Composition</strong> &mdash; Book HAS an Author (object inside object)</li>
+        <li><strong>Two static methods</strong> &mdash; filter by genre + discount calculation</li>
+        <li><strong>Case-insensitive comparison</strong> &mdash; <code>equalsIgnoreCase()</code></li>
+        <li><strong>Input reading</strong> with composed objects (Author first, then Book wrapping Author)</li>
+        <li><strong>ArrayList</strong> &mdash; dynamic list of Book objects</li>
+      </ul>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">Author Class<span class="flow-sub">id + name</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box green">Book Class<span class="flow-sub">id + title + genre + price + Author</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">Solution Class<span class="flow-sub">2 methods + main</span></div>
+      </div>
+      <div class="flow-label">Composition: Book contains an Author object</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: AUTHOR CLASS ===== -->
+  <div class="content-section" id="author-class">
+    <div class="section-tag">Class 1</div>
+    <h2>Author Class</h2>
+    <p class="section-desc">Simple POJO with two fields. Nothing special &mdash; just attributes, constructor, getters, and setters.</p>
+
+    <div class="class-card">
+      <div class="class-card-header model">Author</div>
+      <div class="class-card-body">
+        <div class="class-card-section">Attributes</div>
+        <div class="class-card-item"><span class="type">int</span> <span class="name">authorId</span></div>
+        <div class="class-card-item"><span class="type">String</span> <span class="name">authorName</span></div>
+        <div class="class-card-section">Methods</div>
+        <div class="class-card-item"><span class="name">Author</span><span class="params">(int authorId, String authorName)</span></div>
+        <div class="class-card-item"><span class="type">get/set</span> <span class="name">for each attribute</span></div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Author.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Author {
+    private int authorId;
+    private String authorName;
+
+    public Author(int authorId, String authorName) {
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
+
+    public int getAuthorId() { return authorId; }
+    public void setAuthorId(int authorId) { this.authorId = authorId; }
+    public String getAuthorName() { return authorName; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: BOOK CLASS ===== -->
+  <div class="content-section" id="book-class">
+    <div class="section-tag">Class 2</div>
+    <h2>Book Class</h2>
+    <p class="section-desc">Book has 5 attributes. The key one is <code>author</code> &mdash; it's not a String, it's an <strong>Author object</strong>. This is composition.</p>
+
+    <div class="class-card">
+      <div class="class-card-header model">Book</div>
+      <div class="class-card-body">
+        <div class="class-card-section">Attributes</div>
+        <div class="class-card-item"><span class="type">int</span> <span class="name">bookId</span></div>
+        <div class="class-card-item"><span class="type">String</span> <span class="name">title</span></div>
+        <div class="class-card-item"><span class="type">String</span> <span class="name">genre</span></div>
+        <div class="class-card-item"><span class="type">double</span> <span class="name">price</span></div>
+        <div class="class-card-item"><span class="type">Author</span> <span class="name">author</span> &larr; composition</div>
+        <div class="class-card-section">Methods</div>
+        <div class="class-card-item"><span class="name">Book</span><span class="params">(int, String, String, double, Author)</span></div>
+        <div class="class-card-item"><span class="type">get/set</span> <span class="name">for each attribute (including author)</span></div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Book.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Book {
+    private int bookId;
+    private String title;
+    private String genre;
+    private double price;
+    private Author author;
+
+    public Book(int bookId, String title, String genre, double price, Author author) {
+        this.bookId = bookId;
+        this.title = title;
+        this.genre = genre;
+        this.price = price;
+        this.author = author;
+    }
+
+    public int getBookId() { return bookId; }
+    public void setBookId(int bookId) { this.bookId = bookId; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+    public Author getAuthor() { return author; }
+    public void setAuthor(Author author) { this.author = author; }
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>Always include <strong>all getters and setters</strong> even if the question doesn't explicitly ask. HackerRank test cases may call them. Missing a setter = compilation error = zero marks.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: METHOD 1 ===== -->
+  <div class="content-section" id="method-1">
+    <div class="section-tag">Method 1</div>
+    <h2>getBooksBelongingToAGenre</h2>
+    <p class="section-desc">Classic filter pattern: loop through all books, check if genre matches, collect matches into a result list.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Method 1</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static List&lt;Book&gt; getBooksBelongingToAGenre(List&lt;Book&gt; books, String genre) {
+    List&lt;Book&gt; result = new ArrayList&lt;&gt;();
+    for (Book book : books) {
+        if (book.getGenre().equalsIgnoreCase(genre)) {
+            result.add(book);
+        }
+    }
+    if (result.isEmpty()) {
+        System.out.println("Genre is not available in the list");
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">List&lt;Book&gt; result = new ArrayList&lt;&gt;();</div>
+          <div class="breakdown-explain">Empty result list. We'll fill it with books that match the genre.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Book book : books)</div>
+          <div class="breakdown-explain">Loop through every Book in the input list. Enhanced for-loop &mdash; cleanest way.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">book.getGenre().equalsIgnoreCase(genre)</div>
+          <div class="breakdown-explain">Case-insensitive comparison. "Crime" matches "crime", "CRIME", etc. The question explicitly requires this.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (result.isEmpty()) { ... }</div>
+          <div class="breakdown-explain">After the loop, if no books matched, print the error message. We still return the empty list.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Common Mistake</div>
+      <p>Using <code>.equals()</code> instead of <code>.equalsIgnoreCase()</code>. The question says "case-insensitive." If the input genre is "crime" but the book has "Crime", <code>.equals()</code> returns false. You lose test cases silently.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: METHOD 2 ===== -->
+  <div class="content-section" id="method-2">
+    <div class="section-tag">Method 2</div>
+    <h2>calculateDiscountedPrice</h2>
+    <p class="section-desc">Same filter pattern as Method 1, but with an extra step: apply the discount formula to matching books before returning them.</p>
+
+    <div class="callout template">
+      <div class="callout-title">Discount Formula</div>
+      <p><code>Discounted Price = Price - (Price * discount / 100.0)</code></p>
+      <p>Example: Book costs 30.0, discount is 20% &rarr; <code>30.0 - (30.0 * 20 / 100.0) = 30.0 - 6.0 = 24.0</code></p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Method 2</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static List&lt;Book&gt; calculateDiscountedPrice(List&lt;Book&gt; books, String genre, int discount) {
+    List&lt;Book&gt; result = new ArrayList&lt;&gt;();
+    for (Book book : books) {
+        if (book.getGenre().equalsIgnoreCase(genre)) {
+            double newPrice = book.getPrice() - (book.getPrice() * discount / 100.0);
+            book.setPrice(newPrice);
+            result.add(book);
+        }
+    }
+    if (result.isEmpty()) {
+        System.out.println("Discounted books are unavailable in the given genre.");
+    } else {
+        System.out.println("Discounted " + genre + " Books:");
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double newPrice = book.getPrice() - (book.getPrice() * discount / 100.0);</div>
+          <div class="breakdown-explain">Calculate the discounted price. Note <code>100.0</code> (not 100) &mdash; this forces double division so we don't lose decimal places.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">book.setPrice(newPrice);</div>
+          <div class="breakdown-explain">Update the book's price in-place. This modifies the original object &mdash; important because the question says "apply the discount to the book."</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">System.out.println("Discounted " + genre + " Books:");</div>
+          <div class="breakdown-explain">Print this header ONLY if matches were found. The genre variable in the print comes from the method parameter &mdash; it prints whatever case the user typed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Critical: 100.0, not 100</div>
+      <p>If you write <code>discount / 100</code> (integer division), then <code>20 / 100 = 0</code> in Java. The discount becomes zero. Always use <code>100.0</code> to force floating-point division.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: MAIN METHOD ===== -->
+  <div class="content-section" id="main-method">
+    <div class="section-tag">Main</div>
+    <h2>Main Method &mdash; Reading Input</h2>
+    <p class="section-desc">The trickiest part of this question is reading the input correctly. Author and Book are read together in pairs.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; main method</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt();
+    List&lt;Book&gt; books = new ArrayList&lt;&gt;();
+
+    for (int i = 0; i &lt; n; i++) {
+        int authorId = sc.nextInt();
+        sc.nextLine(); // consume leftover newline
+        String authorName = sc.nextLine();
+
+        int bookId = sc.nextInt();
+        sc.nextLine(); // consume leftover newline
+        String title = sc.nextLine();
+        String genre = sc.nextLine();
+        double price = sc.nextDouble();
+
+        Author author = new Author(authorId, authorName);
+        Book book = new Book(bookId, title, genre, price, author);
+        books.add(book);
+    }
+
+    sc.nextLine(); // consume leftover newline
+    String searchGenre = sc.nextLine();
+    String discountGenre = sc.nextLine();
+    int discount = sc.nextInt();
+
+    // Method 1
+    List&lt;Book&gt; genreBooks = getBooksBelongingToAGenre(books, searchGenre);
+    for (Book b : genreBooks) {
+        System.out.println("AuthorName: " + b.getAuthor().getAuthorName()
+            + ", Title: " + b.getTitle());
+    }
+
+    // Method 2
+    List&lt;Book&gt; discountedBooks = calculateDiscountedPrice(books, discountGenre, discount);
+    for (Book b : discountedBooks) {
+        System.out.println("AuthorName: " + b.getAuthor().getAuthorName()
+            + ", Title: " + b.getTitle()
+            + ", Updated Price: " + b.getPrice());
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">The sc.nextLine() Trap</div>
+      <p>After <code>sc.nextInt()</code> or <code>sc.nextDouble()</code>, the newline character <code>\n</code> stays in the buffer. The next <code>sc.nextLine()</code> reads that empty newline instead of the actual text. Fix: always call <code>sc.nextLine()</code> after <code>nextInt()</code>/<code>nextDouble()</code> to consume the leftover newline.</p>
+    </div>
+
+    <h3>Input Reading Flow</h3>
+    <div class="diagram">
+      <pre>
+For each of n iterations:
+  <strong style="color: #3B82F6;">authorId</strong>     &larr; nextInt()
+  <em style="color: #64748B;">consume \n</em>   &larr; nextLine()
+  <strong style="color: #3B82F6;">authorName</strong>   &larr; nextLine()
+  <strong style="color: #22C55E;">bookId</strong>       &larr; nextInt()
+  <em style="color: #64748B;">consume \n</em>   &larr; nextLine()
+  <strong style="color: #22C55E;">title</strong>        &larr; nextLine()
+  <strong style="color: #22C55E;">genre</strong>        &larr; nextLine()
+  <strong style="color: #22C55E;">price</strong>        &larr; nextDouble()
+
+After the loop:
+  <em style="color: #64748B;">consume \n</em>   &larr; nextLine()
+  <strong style="color: #F59E0B;">searchGenre</strong>  &larr; nextLine()
+  <strong style="color: #F59E0B;">discountGenre</strong> &larr; nextLine()
+  <strong style="color: #F59E0B;">discount</strong>     &larr; nextInt()
+      </pre>
+      <div class="diagram-label">Every nextInt()/nextDouble() leaves a \n that the next nextLine() must consume</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 8: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Copy-paste ready. All classes in one file. All imports included.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete Program</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Author {
+    private int authorId;
+    private String authorName;
+
+    public Author(int authorId, String authorName) {
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
+
+    public int getAuthorId() { return authorId; }
+    public void setAuthorId(int authorId) { this.authorId = authorId; }
+    public String getAuthorName() { return authorName; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
+}
+
+class Book {
+    private int bookId;
+    private String title;
+    private String genre;
+    private double price;
+    private Author author;
+
+    public Book(int bookId, String title, String genre, double price, Author author) {
+        this.bookId = bookId;
+        this.title = title;
+        this.genre = genre;
+        this.price = price;
+        this.author = author;
+    }
+
+    public int getBookId() { return bookId; }
+    public void setBookId(int bookId) { this.bookId = bookId; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+    public Author getAuthor() { return author; }
+    public void setAuthor(Author author) { this.author = author; }
+}
+
+public class Solution {
+
+    public static List&lt;Book&gt; getBooksBelongingToAGenre(List&lt;Book&gt; books, String genre) {
+        List&lt;Book&gt; result = new ArrayList&lt;&gt;();
+        for (Book book : books) {
+            if (book.getGenre().equalsIgnoreCase(genre)) {
+                result.add(book);
+            }
+        }
+        if (result.isEmpty()) {
+            System.out.println("Genre is not available in the list");
+        }
+        return result;
+    }
+
+    public static List&lt;Book&gt; calculateDiscountedPrice(List&lt;Book&gt; books, String genre, int discount) {
+        List&lt;Book&gt; result = new ArrayList&lt;&gt;();
+        for (Book book : books) {
+            if (book.getGenre().equalsIgnoreCase(genre)) {
+                double newPrice = book.getPrice() - (book.getPrice() * discount / 100.0);
+                book.setPrice(newPrice);
+                result.add(book);
+            }
+        }
+        if (result.isEmpty()) {
+            System.out.println("Discounted books are unavailable in the given genre.");
+        } else {
+            System.out.println("Discounted " + genre + " Books:");
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        List&lt;Book&gt; books = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            int authorId = sc.nextInt();
+            sc.nextLine();
+            String authorName = sc.nextLine();
+
+            int bookId = sc.nextInt();
+            sc.nextLine();
+            String title = sc.nextLine();
+            String genre = sc.nextLine();
+            double price = sc.nextDouble();
+
+            Author author = new Author(authorId, authorName);
+            Book book = new Book(bookId, title, genre, price, author);
+            books.add(book);
+        }
+
+        sc.nextLine();
+        String searchGenre = sc.nextLine();
+        String discountGenre = sc.nextLine();
+        int discount = sc.nextInt();
+
+        // Method 1: Filter by genre
+        List&lt;Book&gt; genreBooks = getBooksBelongingToAGenre(books, searchGenre);
+        for (Book b : genreBooks) {
+            System.out.println("AuthorName: " + b.getAuthor().getAuthorName()
+                + ", Title: " + b.getTitle());
+        }
+
+        // Method 2: Discount by genre
+        List&lt;Book&gt; discountedBooks = calculateDiscountedPrice(books, discountGenre, discount);
+        for (Book b : discountedBooks) {
+            System.out.println("AuthorName: " + b.getAuthor().getAuthorName()
+                + ", Title: " + b.getTitle()
+                + ", Updated Price: " + b.getPrice());
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 9: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Normal Flow</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">5
+101
+Agatha Christie
+201
+Murder on the Orient Express
+Crime
+25.0
+102
+Arthur Conan Doyle
+202
+Sherlock Holmes
+Crime
+30.0
+103
+Stephen King
+203
+The Shining
+Horror
+20.0
+104
+Clayton Emery
+204
+Magic: The Gathering
+Fantasy
+30.0
+105
+Trisha Ashley
+205
+The Christmas Shoppe
+Fantasy
+35.0
+Crime
+Fantasy
+20</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">AuthorName: Agatha Christie, Title: Murder on the Orient Express
+AuthorName: Arthur Conan Doyle, Title: Sherlock Holmes
+Discounted Fantasy Books:
+AuthorName: Clayton Emery, Title: Magic: The Gathering, Updated Price: 24.0
+AuthorName: Trisha Ashley, Title: The Christmas Shoppe, Updated Price: 28.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; Genre Not Found</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">(same books as above)
+Romance
+Romance
+20</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Genre is not available in the list
+Discounted books are unavailable in the given genre.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock2-q2.html"><span class="nav-label">Previous</span><span class="nav-title">Sum of Digits</span></a>
+    <a href="mock3-q2.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Area-Perimeter</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

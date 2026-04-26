@@ -1,0 +1,2608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polymorphism — Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link active"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is Polymorphism?                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-polymorphism">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Polymorphism?</h2>
+  <p class="section-desc">The most powerful concept in Object-Oriented Programming. One name, many behaviors. This is what separates amateur code from professional, flexible, extensible software.</p>
+
+  <h3>The Word Itself</h3>
+
+  <p>Polymorphism comes from two Greek words:</p>
+  <ul>
+    <li><strong>Poly</strong> = many</li>
+    <li><strong>Morph</strong> = forms</li>
+  </ul>
+  <p>So polymorphism literally means <strong>"many forms."</strong> In Java, it means that a single method name or a single variable type can take on <em>different behaviors</em> depending on the context.</p>
+
+  <p>That is the entire concept in one sentence. But understanding <em>how</em> it works, <em>why</em> it matters, and <em>when</em> to use it &mdash; that is what the rest of this page covers in extreme detail.</p>
+
+  <h3>Real-World Analogy: The Word "Play"</h3>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think about the English word <strong>"play"</strong>:</p>
+    <ul>
+      <li><strong>"Play music"</strong> &mdash; your hands move across a guitar, sound comes out</li>
+      <li><strong>"Play a game"</strong> &mdash; you kick a football around a field</li>
+      <li><strong>"Play a role"</strong> &mdash; you act as a character in a movie</li>
+      <li><strong>"Play a video"</strong> &mdash; you press a button and a video starts</li>
+    </ul>
+    <p>Same word. Four completely different actions. Your brain figures out which "play" is meant based on <strong>context</strong> &mdash; what comes after the word.</p>
+    <p>Java does the exact same thing with methods. Same method name, but the behavior changes based on <strong>which object calls it</strong> or <strong>what arguments you pass</strong>.</p>
+  </div>
+
+  <h3>Another Analogy: A Remote Control</h3>
+
+  <p>You have a universal remote with a <strong>"power" button</strong>. Press it while pointing at:</p>
+  <ul>
+    <li>A <strong>TV</strong> &mdash; the TV turns on, screen lights up</li>
+    <li>An <strong>AC</strong> &mdash; the compressor starts, cold air flows</li>
+    <li>A <strong>speaker</strong> &mdash; music starts playing</li>
+  </ul>
+  <p>Same button. Same action (press). But the <em>behavior</em> depends on which <em>device</em> receives the signal. In Java terms: same method call, but the actual code that runs depends on which <em>object</em> is behind the reference.</p>
+
+  <h3>Why Polymorphism Matters</h3>
+
+  <p>Without polymorphism, your code is rigid. Every time you add a new type, you must change existing code everywhere. With polymorphism, you write code <strong>once</strong> and it automatically works with new types you add later. This is the foundation of flexible, professional software.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without Polymorphism</div>
+      <div class="comparison-body">
+        <p>You write a separate method for each type:</p>
+        <ul>
+          <li><code>trackForCustomer()</code></li>
+          <li><code>trackForOfficer()</code></li>
+          <li><code>trackForAdmin()</code></li>
+        </ul>
+        <p>Adding a new role? Go find every place in the codebase that has if/else for roles, and add another case. Miss one? Bug.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With Polymorphism</div>
+      <div class="comparison-body">
+        <p>You write ONE method call:</p>
+        <ul>
+          <li><code>tracker.trackParcel()</code></li>
+        </ul>
+        <p>Adding a new role? Create a new class that extends TrackingService. Zero changes to existing code. Zero risk of breaking anything.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus has three user roles: Customer, Officer, and Support. Each tracks parcels differently. Instead of writing <code>if (role == "customer") { ... } else if (role == "officer") { ... }</code> everywhere, Nimbus uses polymorphism: <code>TrackingService</code> is the parent, and <code>CustomerTrackingService</code> and <code>OfficerTrackingService</code> each override <code>trackParcel()</code>. One method call, different behavior based on the object.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Two Types of Polymorphism                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="two-types">
+  <div class="section-tag">Section 02</div>
+  <h2>Two Types of Polymorphism</h2>
+  <p class="section-desc">Polymorphism in Java comes in exactly two flavors. They work differently, they are resolved at different times, and they serve different purposes. You must understand both deeply.</p>
+
+  <h3>The Two Types at a Glance</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue" style="min-width: 200px;">
+        <strong>Polymorphism</strong>
+        <span class="flow-sub">"many forms"</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">
+        <strong>Compile-Time</strong>
+        <span class="flow-sub">(Static Polymorphism)</span>
+      </div>
+      <div class="flow-arrow" style="padding: 0 32px;">&amp;</div>
+      <div class="flow-box green">
+        <strong>Runtime</strong>
+        <span class="flow-sub">(Dynamic Polymorphism)</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">
+        <strong>Method Overloading</strong>
+        <span class="flow-sub">Same name, different params</span>
+      </div>
+      <div class="flow-arrow" style="padding: 0 32px;">&amp;</div>
+      <div class="flow-box green">
+        <strong>Method Overriding</strong>
+        <span class="flow-sub">Child redefines parent's method</span>
+      </div>
+    </div>
+    <div class="flow-label">The two branches of polymorphism in Java</div>
+  </div>
+
+  <h3>Detailed Comparison</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Aspect</th>
+        <th>Compile-Time (Overloading)</th>
+        <th>Runtime (Overriding)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Also called</strong></td>
+        <td>Static polymorphism, early binding</td>
+        <td>Dynamic polymorphism, late binding</td>
+      </tr>
+      <tr>
+        <td><strong>Mechanism</strong></td>
+        <td>Method overloading</td>
+        <td>Method overriding</td>
+      </tr>
+      <tr>
+        <td><strong>When is it resolved?</strong></td>
+        <td>At compile time (before program runs)</td>
+        <td>At runtime (while program is running)</td>
+      </tr>
+      <tr>
+        <td><strong>What decides which method?</strong></td>
+        <td>The <strong>arguments</strong> you pass (number, type, order)</td>
+        <td>The <strong>actual object</strong> behind the variable</td>
+      </tr>
+      <tr>
+        <td><strong>Requires inheritance?</strong></td>
+        <td>No &mdash; can be in the same class</td>
+        <td>Yes &mdash; must have parent-child relationship</td>
+      </tr>
+      <tr>
+        <td><strong>Method signature</strong></td>
+        <td>Same name, <strong>different</strong> parameters</td>
+        <td>Same name, <strong>same</strong> parameters</td>
+      </tr>
+      <tr>
+        <td><strong>Return type</strong></td>
+        <td>Can be different (but won't resolve alone)</td>
+        <td>Must be same or covariant (subtype)</td>
+      </tr>
+      <tr>
+        <td><strong>Example</strong></td>
+        <td><code>calculateCost(int)</code> vs <code>calculateCost(int, String)</code></td>
+        <td>Parent <code>trackParcel()</code> vs child <code>trackParcel()</code></td>
+      </tr>
+      <tr>
+        <td><strong>Power level</strong></td>
+        <td>Convenient &mdash; makes API cleaner</td>
+        <td>Powerful &mdash; enables extensible architecture</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Why These Names Make Sense</h3>
+
+  <h4>Compile-Time (Static)</h4>
+  <p>When you write <code>calculateCost(10)</code> vs <code>calculateCost(10, "express")</code>, the Java compiler can look at the arguments <strong>right now, at compile time</strong>, and decide which version to call. It does not need to wait until the program actually runs. The decision is "static" &mdash; fixed before execution.</p>
+
+  <h4>Runtime (Dynamic)</h4>
+  <p>When you write <code>tracker.trackParcel(bookingId, userId)</code>, the compiler has <em>no idea</em> which version of <code>trackParcel()</code> to call. Why? Because <code>tracker</code> could be pointing to a <code>CustomerTrackingService</code> object or an <code>OfficerTrackingService</code> object &mdash; and that is only decided <strong>while the program is running</strong> (based on who logged in, for example). The JVM checks the actual object at runtime and calls the correct version. The decision is "dynamic" &mdash; made during execution.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p><strong>Compile-time polymorphism</strong> is about giving the programmer convenience &mdash; multiple versions of a method for different inputs. <strong>Runtime polymorphism</strong> is about giving the program flexibility &mdash; the ability to behave differently based on which object is actually present. Runtime polymorphism is the far more powerful and important concept. It is what makes OOP truly powerful.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Compile-Time Polymorphism — Method Overloading     -->
+<!-- ============================================================ -->
+<section class="content-section" id="overloading">
+  <div class="section-tag">Section 03</div>
+  <h2>Compile-Time Polymorphism &mdash; Method Overloading</h2>
+  <p class="section-desc">Same method name, different parameter lists. The compiler decides which version to call based on the arguments you pass. It is like ordering food &mdash; you say "I want a coffee" but the specifics change: black coffee, coffee with milk, coffee with milk and sugar.</p>
+
+  <h3>What is Method Overloading?</h3>
+
+  <p>Method overloading means you have <strong>multiple methods with the same name</strong> in the same class, but each version takes a <strong>different set of parameters</strong>. Java uses the parameters to figure out which one you mean.</p>
+
+  <p>Think of it like a restaurant order:</p>
+  <ul>
+    <li><code>orderCoffee()</code> &mdash; plain black coffee</li>
+    <li><code>orderCoffee("milk")</code> &mdash; coffee with milk</li>
+    <li><code>orderCoffee("milk", 2)</code> &mdash; coffee with milk and 2 sugars</li>
+  </ul>
+  <p>Same action (ordering coffee), but different levels of detail change the result.</p>
+
+  <h3>The Rules of Overloading</h3>
+
+  <p>For two methods to be valid overloads, their parameter lists must differ in <strong>at least one</strong> of these ways:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Can Differ In</th>
+        <th>Example</th>
+        <th>Valid?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Number of parameters</strong></td>
+        <td><code>add(int a)</code> vs <code>add(int a, int b)</code></td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td><strong>Type of parameters</strong></td>
+        <td><code>print(String s)</code> vs <code>print(int n)</code></td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td><strong>Order of parameter types</strong></td>
+        <td><code>display(String s, int n)</code> vs <code>display(int n, String s)</code></td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td><strong>Only return type</strong></td>
+        <td><code>int getValue()</code> vs <code>String getValue()</code></td>
+        <td><strong>NO!</strong> Compile error</td>
+      </tr>
+      <tr>
+        <td><strong>Only parameter names</strong></td>
+        <td><code>add(int x)</code> vs <code>add(int y)</code></td>
+        <td><strong>NO!</strong> Same signature</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p><strong>Changing ONLY the return type is NOT valid overloading.</strong> If you have <code>int calculate(int x)</code> and try to add <code>double calculate(int x)</code>, Java will give you a compile error. Why? Because when you call <code>calculate(5)</code>, Java has no way to know which one you want &mdash; you might not even use the return value! The compiler can only look at the <em>arguments</em> to decide, not at what you do with the result.</p>
+  </div>
+
+  <h3>Example 1: PricingCalculator with Different Cost Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PricingCalculator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class PricingCalculator {
+
+    // Version 1: Just weight
+    public double calculateCost(int weightInGrams) {
+        double baseRate = 50.0;  // Rs. 50 base
+        return baseRate + (weightInGrams * 0.1);
+    }
+
+    // Version 2: Weight + service type
+    public double calculateCost(int weightInGrams, String serviceType) {
+        double base = calculateCost(weightInGrams);  // reuse version 1!
+        if (serviceType.equals("express")) {
+            return base * 1.5;  // 50% extra for express
+        } else if (serviceType.equals("overnight")) {
+            return base * 2.0;  // double for overnight
+        }
+        return base;
+    }
+
+    // Version 3: Weight + service type + packing
+    public double calculateCost(int weightInGrams, String serviceType, String packingType) {
+        double base = calculateCost(weightInGrams, serviceType);  // reuse version 2!
+        if (packingType.equals("fragile")) {
+            return base + 100.0;  // extra for fragile packing
+        } else if (packingType.equals("insured")) {
+            return base + 200.0;  // extra for insurance
+        }
+        return base;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public double calculateCost(int weightInGrams)</div>
+        <div class="breakdown-explain">Version 1 &mdash; takes only weight. The simplest form. Returns a cost based on base rate + weight factor.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public double calculateCost(int weightInGrams, String serviceType)</div>
+        <div class="breakdown-explain">Version 2 &mdash; takes weight AND service type. Calls version 1 internally (reuse!), then applies a multiplier for express/overnight.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public double calculateCost(int weightInGrams, String serviceType, String packingType)</div>
+        <div class="breakdown-explain">Version 3 &mdash; takes weight, service type, AND packing. Calls version 2 internally, then adds packing surcharge. Each version builds on the previous one &mdash; elegant reuse.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Now when you use this class:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Usage</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">PricingCalculator calc = new PricingCalculator();
+
+double cost1 = calc.calculateCost(500);                              // Version 1
+double cost2 = calc.calculateCost(500, "express");                   // Version 2
+double cost3 = calc.calculateCost(500, "express", "fragile");        // Version 3
+
+// Java looks at the ARGUMENTS and picks the right version at COMPILE TIME</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This is exactly how <code>PricingCalculator.calculateServiceCost()</code> works in the Nimbus codebase. Customers can request a basic delivery (just weight), an express delivery (weight + service type), or a fragile insured delivery (weight + service type + packing). One method name, three versions, each handling different levels of detail. The caller uses whichever version matches their needs.</p>
+  </div>
+
+  <h3>Example 2: print() with Different Data Types</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Logger.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Logger {
+
+    public void log(String message) {
+        System.out.println("[LOG] " + message);
+    }
+
+    public void log(int errorCode) {
+        System.out.println("[LOG] Error code: " + errorCode);
+    }
+
+    public void log(double value) {
+        System.out.println("[LOG] Value: " + String.format("%.2f", value));
+    }
+
+    public void log(String message, int errorCode) {
+        System.out.println("[LOG] " + message + " (Code: " + errorCode + ")");
+    }
+
+    public void log(String message, boolean urgent) {
+        if (urgent) {
+            System.out.println("[URGENT] " + message);
+        } else {
+            System.out.println("[LOG] " + message);
+        }
+    }
+}</code></pre>
+  </div>
+
+  <p>Five methods, all called <code>log</code>. The compiler picks the right one based on what arguments you pass:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Usage</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Logger logger = new Logger();
+logger.log("Parcel booked");           // calls log(String)
+logger.log(404);                        // calls log(int)
+logger.log(99.95);                      // calls log(double)
+logger.log("Not found", 404);          // calls log(String, int)
+logger.log("Server down!", true);      // calls log(String, boolean)</code></pre>
+  </div>
+
+  <h3>Example 3: Constructor Overloading</h3>
+
+  <p>Constructors can be overloaded too &mdash; and this is very common. It lets you create objects with different levels of information.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    private String name;
+    private String email;
+    private String phone;
+    private String role;
+
+    // Constructor 1: Minimal — just a name
+    public User(String name) {
+        this.name = name;
+        this.email = "not provided";
+        this.phone = "not provided";
+        this.role = "customer";  // default role
+    }
+
+    // Constructor 2: Name + email
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+        this.phone = "not provided";
+        this.role = "customer";
+    }
+
+    // Constructor 3: Full details
+    public User(String name, String email, String phone, String role) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public User(String name)</div>
+        <div class="breakdown-explain">Minimal constructor &mdash; when you only know the name. Sets defaults for everything else. Useful for quick testing or when a customer signs up with just a name.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public User(String name, String email)</div>
+        <div class="breakdown-explain">Partial constructor &mdash; name and email. Phone and role get defaults. Common in registration forms where phone is optional.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public User(String name, String email, String phone, String role)</div>
+        <div class="breakdown-explain">Full constructor &mdash; everything provided. Used by admin when creating any type of user (customer, officer, support).</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Usage:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Usage</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">User u1 = new User("Darshan");                                  // Constructor 1
+User u2 = new User("Priya", "priya@email.com");                 // Constructor 2
+User u3 = new User("Admin", "admin@nimbus.com", "999", "officer"); // Constructor 3</code></pre>
+  </div>
+
+  <h3>Example 4: Order of Parameter Types Matters</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OrderMatters.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Display {
+
+    // Version A: String first, then int
+    public void show(String label, int value) {
+        System.out.println(label + ": " + value);
+    }
+
+    // Version B: int first, then String
+    public void show(int value, String label) {
+        System.out.println(value + " (" + label + ")");
+    }
+}
+
+// Usage:
+Display d = new Display();
+d.show("Weight", 500);   // calls Version A → "Weight: 500"
+d.show(500, "Weight");   // calls Version B → "500 (Weight)"</code></pre>
+  </div>
+
+  <p>Same number of parameters, same types &mdash; but different <em>order</em>. Java sees <code>(String, int)</code> and <code>(int, String)</code> as different signatures, so this is valid overloading.</p>
+
+  <h3>Example 5: Java's Own Overloading &mdash; System.out.println()</h3>
+
+  <p>You have been using method overloading since day one without realizing it. <code>System.out.println()</code> has <strong>10 overloaded versions</strong> built into Java:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Java's println overloads</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// All of these call DIFFERENT versions of println:
+System.out.println();                // println()         — empty line
+System.out.println("Hello");         // println(String)
+System.out.println(42);              // println(int)
+System.out.println(3.14);            // println(double)
+System.out.println(true);            // println(boolean)
+System.out.println('A');             // println(char)
+System.out.println(new User("D"));   // println(Object) — calls toString()</code></pre>
+  </div>
+
+  <p>When you write <code>System.out.println(42)</code>, Java sees the argument is an <code>int</code> and picks <code>println(int)</code>. When you write <code>System.out.println("Hello")</code>, it picks <code>println(String)</code>. This is compile-time polymorphism happening right under your nose.</p>
+
+  <h3>How the Compiler Decides: The Resolution Process</h3>
+
+  <p>When Java encounters a method call like <code>calc.calculateCost(500, "express")</code>, the compiler follows these steps:</p>
+
+  <ol class="steps">
+    <li>Look at the method name: <code>calculateCost</code></li>
+    <li>Look at the arguments: <code>(int, String)</code></li>
+    <li>Find all methods named <code>calculateCost</code> in the class</li>
+    <li>Filter to ones whose parameter types match <code>(int, String)</code></li>
+    <li>If exactly one match found: that is the one. If zero: compile error. If multiple (ambiguous): compile error.</li>
+  </ol>
+
+  <p>This all happens at <strong>compile time</strong> &mdash; before the program ever runs. That is why it is called static/compile-time polymorphism. The decision is baked into the compiled bytecode.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Tricky Case: Type Widening</div>
+    <p>What happens if you call <code>log(5)</code> but there is no <code>log(int)</code>, only <code>log(double)</code>? Java will automatically <strong>widen</strong> the <code>int</code> to a <code>double</code> and call <code>log(double)</code>. This is called implicit type widening. It can cause subtle bugs when you have multiple overloads because Java prefers the closest match: <code>int &rarr; long &rarr; float &rarr; double</code>.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Runtime Polymorphism — Method Overriding            -->
+<!-- ============================================================ -->
+<section class="content-section" id="overriding">
+  <div class="section-tag">Section 04</div>
+  <h2>Runtime Polymorphism &mdash; Method Overriding</h2>
+  <p class="section-desc">This is the BIG one. Method overriding is what makes Object-Oriented Programming truly powerful. A child class provides its own implementation of a method that already exists in the parent class. Same name, same parameters, different behavior.</p>
+
+  <h3>What is Method Overriding?</h3>
+
+  <p>When a parent class has a method, and a child class defines a method with the <strong>exact same name and exact same parameters</strong>, the child's version <strong>replaces</strong> (overrides) the parent's version for objects of the child type.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Your father taught you how to make chai. He uses ginger and elaichi. You learned his recipe, but you make it differently &mdash; you add tulsi leaves and less sugar. Same recipe name ("make chai"), same inputs (water, milk, tea leaves), but your <em>implementation</em> is different. You <strong>overrode</strong> your father's version.</p>
+  </div>
+
+  <h3>The Rules of Overriding</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Rule</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Method name</strong></td>
+        <td>Must be EXACTLY the same</td>
+      </tr>
+      <tr>
+        <td><strong>Parameters</strong></td>
+        <td>Must be EXACTLY the same (number, types, order)</td>
+      </tr>
+      <tr>
+        <td><strong>Return type</strong></td>
+        <td>Must be the same, OR a subtype (covariant return)</td>
+      </tr>
+      <tr>
+        <td><strong>Access modifier</strong></td>
+        <td>Can be SAME or MORE visible. Cannot reduce visibility. (If parent is <code>protected</code>, child can be <code>protected</code> or <code>public</code>, but NOT <code>private</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>Requires inheritance</strong></td>
+        <td>Yes &mdash; the method must exist in a parent class or interface</td>
+      </tr>
+      <tr>
+        <td><strong>static methods</strong></td>
+        <td>Cannot be overridden (they are hidden, not overridden &mdash; different concept)</td>
+      </tr>
+      <tr>
+        <td><strong>final methods</strong></td>
+        <td>Cannot be overridden (that is the whole point of <code>final</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>private methods</strong></td>
+        <td>Cannot be overridden (child class cannot even see them)</td>
+      </tr>
+      <tr>
+        <td><strong>Constructors</strong></td>
+        <td>Cannot be overridden (constructors are not inherited)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>The @Override Annotation</h3>
+
+  <p>Java provides the <code>@Override</code> annotation. You put it right above the method you intend to override:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">@Override usage</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+public void trackParcel(String bookingId, String userId) {
+    // child's own implementation
+}</code></pre>
+  </div>
+
+  <p><strong>What does @Override actually do?</strong> It is a safety check. It tells the compiler: "I <em>intend</em> this to be an override. If the parent class does NOT have a method with this exact signature, give me a compile error." Without it, if you accidentally misspell the method name (e.g., <code>trackParcle</code> instead of <code>trackParcel</code>), Java would silently create a NEW method instead of overriding. You would never know until a bug shows up in production.</p>
+
+  <div class="callout important">
+    <div class="callout-title">Always Use @Override</div>
+    <p>You should put <code>@Override</code> on <strong>every single method</strong> that you intend to override. It is not technically required, but skipping it is a recipe for bugs. Every professional Java codebase enforces this as a rule. It costs nothing to write and can save hours of debugging.</p>
+  </div>
+
+  <h3>Full Nimbus Example: TrackingService Hierarchy</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java (Parent)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class TrackingService {
+
+    public String trackParcel(String bookingId, String userId) {
+        // Default: basic tracking info available to everyone
+        return "Booking " + bookingId + " — Status: In Transit";
+    }
+
+    public void displayTrackingInfo(String bookingId, String userId) {
+        String result = trackParcel(bookingId, userId);
+        System.out.println("=== Tracking Result ===");
+        System.out.println(result);
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CustomerTrackingService.java (Child)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CustomerTrackingService extends TrackingService {
+
+    @Override
+    public String trackParcel(String bookingId, String userId) {
+        // Customer can only see THEIR OWN parcels
+        // First verify this booking belongs to this user
+        if (!belongsToUser(bookingId, userId)) {
+            return "Access denied: This booking does not belong to you.";
+        }
+        return "Booking " + bookingId + " — Status: In Transit | ETA: 2 days";
+    }
+
+    private boolean belongsToUser(String bookingId, String userId) {
+        // Database check: does this booking belong to this user?
+        // Simplified for learning
+        return true;
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">OfficerTrackingService.java (Child)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class OfficerTrackingService extends TrackingService {
+
+    @Override
+    public String trackParcel(String bookingId, String userId) {
+        // Officer can see ANY parcel with FULL details
+        return "Booking " + bookingId
+            + " — Status: In Transit"
+            + " | Sender: User#" + userId
+            + " | Current Location: Mumbai Hub"
+            + " | Assigned Officer: OFC-2045"
+            + " | Weight: 2.5kg"
+            + " | Route: Mumbai → Delhi → Lucknow";
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">How overriding works here</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">TrackingService (parent)</div>
+        <div class="breakdown-explain">Has a basic <code>trackParcel()</code> that returns minimal info. This is the default behavior if no child overrides it.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">CustomerTrackingService (child)</div>
+        <div class="breakdown-explain">Overrides <code>trackParcel()</code> to add ownership verification. A customer should NOT see someone else's parcel. Returns limited info + ETA.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">OfficerTrackingService (child)</div>
+        <div class="breakdown-explain">Overrides <code>trackParcel()</code> to show FULL details. An officer needs to see location, route, weight, assigned officer &mdash; everything.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Same method signature everywhere</div>
+        <div class="breakdown-explain">All three versions have the SAME name (<code>trackParcel</code>) and SAME parameters (<code>String, String</code>). That is what makes it overriding, not overloading.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Magic: Which Method Actually Runs?</h3>
+
+  <p>This is the most important concept in all of runtime polymorphism. Read this carefully:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The Magic of Runtime Binding</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// The variable TYPE is TrackingService (parent)
+// But the ACTUAL OBJECT is CustomerTrackingService (child)
+TrackingService tracker = new CustomerTrackingService();
+
+// Which trackParcel() runs?
+// Answer: CustomerTrackingService's version!
+tracker.trackParcel("BK001", "USR42");
+// → "Access denied..." or "Booking BK001 — Status: In Transit | ETA: 2 days"
+
+// Now point the SAME variable at a DIFFERENT object
+tracker = new OfficerTrackingService();
+
+// Which trackParcel() runs now?
+// Answer: OfficerTrackingService's version!
+tracker.trackParcel("BK001", "USR42");
+// → "Booking BK001 — Status: In Transit | Sender: ... | Current Location: ..."</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">The Golden Rule</div>
+    <p><strong>The method that runs depends on the ACTUAL OBJECT (right side of =), NOT the variable type (left side of =).</strong></p>
+    <p>In <code>TrackingService tracker = new CustomerTrackingService()</code>:</p>
+    <ul>
+      <li>Variable type (<code>TrackingService</code>) determines what methods you <em>can call</em></li>
+      <li>Actual object (<code>CustomerTrackingService</code>) determines what code <em>actually runs</em></li>
+    </ul>
+    <p>This distinction is EVERYTHING in runtime polymorphism. The variable is like a label on a box. The object is what is actually inside the box. When you call a method, Java opens the box, looks at the real object, and calls that object's version.</p>
+  </div>
+
+  <h3>How the JVM Decides at Runtime</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>tracker.trackParcel(...)</strong>
+        <span class="flow-sub">Method call in your code</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box orange">
+        <strong>JVM checks: What object is "tracker" pointing to?</strong>
+        <span class="flow-sub">Looks at the actual object in heap memory</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box purple">
+        <strong>Found: CustomerTrackingService object</strong>
+        <span class="flow-sub">The real object behind the variable</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">
+        <strong>Runs CustomerTrackingService.trackParcel()</strong>
+        <span class="flow-sub">The overridden version in the child class</span>
+      </div>
+    </div>
+    <div class="flow-label">This decision happens every time the method is called, at runtime</div>
+  </div>
+
+  <h3>Calling the Parent's Version: super</h3>
+
+  <p>Sometimes you do not want to completely replace the parent's behavior &mdash; you want to <em>extend</em> it. Use <code>super.methodName()</code> to call the parent's version from within the child's override:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Using super in an override</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CustomerTrackingService extends TrackingService {
+
+    @Override
+    public String trackParcel(String bookingId, String userId) {
+        // First, get the basic info from parent
+        String basicInfo = super.trackParcel(bookingId, userId);
+
+        // Then add customer-specific details
+        return basicInfo + " | ETA: 2 days | Contact support: 1800-NIMBUS";
+    }
+}</code></pre>
+  </div>
+
+  <p><code>super.trackParcel()</code> explicitly calls the <strong>parent class's version</strong>. The child adds extra info on top. This is common when the parent has useful logic you want to keep, and the child just needs to add more.</p>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Upcasting and Downcasting                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="casting">
+  <div class="section-tag">Section 05</div>
+  <h2>Upcasting and Downcasting</h2>
+  <p class="section-desc">Polymorphism relies on treating a child object as its parent type. This is called upcasting. Sometimes you need to go the other way &mdash; downcasting. Understanding both is essential for writing polymorphic code.</p>
+
+  <h3>Upcasting: Child Treated as Parent</h3>
+
+  <p><strong>Upcasting</strong> means storing a child object in a parent-type variable. It is automatic, safe, and the foundation of runtime polymorphism.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Upcasting</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Upcasting — happens AUTOMATICALLY (implicit)
+TrackingService tracker = new CustomerTrackingService();
+//   ^^ parent type           ^^ child object
+
+// This works because: a CustomerTrackingService IS-A TrackingService
+// Just like: a Dog IS-AN Animal, a Car IS-A Vehicle</code></pre>
+  </div>
+
+  <p><strong>Why does upcasting work?</strong> Because of the IS-A relationship from inheritance. A <code>CustomerTrackingService</code> IS a <code>TrackingService</code>. It has everything a <code>TrackingService</code> has (and possibly more). So storing it in a <code>TrackingService</code> variable is perfectly safe &mdash; you are just choosing to see it as the simpler parent type.</p>
+
+  <p><strong>What you can access after upcasting:</strong> Only the methods defined in the parent type. Even though the actual object is a <code>CustomerTrackingService</code> and might have extra methods like <code>belongsToUser()</code>, you cannot call them through a <code>TrackingService</code> variable. The variable type determines what you <em>can call</em>; the object determines what <em>runs</em>.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of upcasting like describing yourself on a form. You are a "Java Developer" (specific), but on the form you write "Software Engineer" (general). You have not lost any of your Java skills &mdash; the form just sees you as the broader category. If someone asks "Software Engineer, can you write code?" you say yes. Your specific Java skills are still there &mdash; the label just does not show them.</p>
+  </div>
+
+  <h3>Downcasting: Parent Variable Back to Child</h3>
+
+  <p><strong>Downcasting</strong> means converting a parent-type variable back to the child type. It is manual (you must explicitly cast), and it is <strong>risky</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Downcasting</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">TrackingService tracker = new CustomerTrackingService();  // upcasted
+
+// To access CustomerTrackingService-specific methods, you must downcast:
+CustomerTrackingService cst = (CustomerTrackingService) tracker;  // explicit cast
+// Now you can call customer-specific methods:
+// cst.belongsToUser(...);</code></pre>
+  </div>
+
+  <h3>When Downcasting Goes Wrong: ClassCastException</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ClassCastException — runtime crash</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">TrackingService tracker = new OfficerTrackingService();  // actual object is Officer
+
+// DANGER: trying to cast an Officer object to Customer type
+CustomerTrackingService cst = (CustomerTrackingService) tracker;
+// ^^^ RUNTIME CRASH! ClassCastException!
+// OfficerTrackingService is NOT a CustomerTrackingService</code></pre>
+  </div>
+
+  <p>The compiler will not catch this &mdash; it only checks if the cast is theoretically possible (both are subtypes of <code>TrackingService</code>, so maybe). But at runtime, the JVM sees that the actual object is an <code>OfficerTrackingService</code>, which is NOT a <code>CustomerTrackingService</code>, and throws a <code>ClassCastException</code>.</p>
+
+  <h3>The Safe Way: instanceof</h3>
+
+  <p>Always check with <code>instanceof</code> before downcasting:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Safe downcasting with instanceof</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">TrackingService tracker = getTrackerForRole(role);  // could be any subtype
+
+if (tracker instanceof CustomerTrackingService) {
+    CustomerTrackingService cst = (CustomerTrackingService) tracker;
+    // Safe! We verified the type first
+    cst.showCustomerDashboard();
+} else if (tracker instanceof OfficerTrackingService) {
+    OfficerTrackingService ost = (OfficerTrackingService) tracker;
+    ost.showOfficerPanel();
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">tracker instanceof CustomerTrackingService</div>
+        <div class="breakdown-explain">Returns <code>true</code> if the actual object behind <code>tracker</code> is a CustomerTrackingService (or a subclass of it). Returns <code>false</code> otherwise. Safe, never crashes.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">(CustomerTrackingService) tracker</div>
+        <div class="breakdown-explain">Now we KNOW it is a CustomerTrackingService (because instanceof returned true), so the cast is guaranteed safe. We can call customer-specific methods.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Nimbus Example: Choosing Tracker by Role</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">RoleBasedTracker.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class ParcelController {
+
+    public TrackingService getTrackerForRole(String role) {
+        // Upcasting happens automatically in each return
+        if (role.equals("customer")) {
+            return new CustomerTrackingService();   // upcast to TrackingService
+        } else if (role.equals("officer")) {
+            return new OfficerTrackingService();    // upcast to TrackingService
+        } else {
+            return new TrackingService();           // base version
+        }
+    }
+
+    public void handleTrackRequest(String role, String bookingId, String userId) {
+        TrackingService tracker = getTrackerForRole(role);
+
+        // This single line calls DIFFERENT code depending on the role!
+        String result = tracker.trackParcel(bookingId, userId);
+        System.out.println(result);
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This pattern is the heart of Nimbus's role-based system. <code>getTrackerForRole()</code> uses upcasting to return any tracker type as a <code>TrackingService</code>. The <code>handleTrackRequest()</code> method does not care which type it gets &mdash; it just calls <code>trackParcel()</code> and the correct version runs automatically. No if/else in the tracking logic. Clean, extensible, professional.</p>
+  </div>
+
+  <h3>Upcasting vs Downcasting Summary</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Aspect</th>
+        <th>Upcasting</th>
+        <th>Downcasting</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Direction</strong></td>
+        <td>Child &rarr; Parent</td>
+        <td>Parent &rarr; Child</td>
+      </tr>
+      <tr>
+        <td><strong>Implicit/Explicit</strong></td>
+        <td>Implicit (automatic)</td>
+        <td>Explicit (manual cast required)</td>
+      </tr>
+      <tr>
+        <td><strong>Safe?</strong></td>
+        <td>Always safe</td>
+        <td>Can crash with ClassCastException</td>
+      </tr>
+      <tr>
+        <td><strong>Use case</strong></td>
+        <td>Treat all children uniformly</td>
+        <td>Access child-specific methods</td>
+      </tr>
+      <tr>
+        <td><strong>How common?</strong></td>
+        <td>Very common &mdash; used constantly</td>
+        <td>Rare &mdash; avoid if possible</td>
+      </tr>
+      <tr>
+        <td><strong>Best practice</strong></td>
+        <td>Use freely</td>
+        <td>Always use <code>instanceof</code> first</td>
+      </tr>
+    </tbody>
+  </table>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Polymorphism with Abstract Classes                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="abstract-classes">
+  <div class="section-tag">Section 06</div>
+  <h2>Polymorphism with Abstract Classes</h2>
+  <p class="section-desc">Abstract classes take overriding to the next level: instead of providing a default implementation that children <em>can</em> override, you provide no implementation at all and <em>force</em> children to override. The parent says "you MUST implement this method" and refuses to let you forget.</p>
+
+  <h3>What is an Abstract Method?</h3>
+
+  <p>An <strong>abstract method</strong> is a method that is <em>declared</em> but has <strong>no body</strong>. No curly braces, no code inside &mdash; just the signature followed by a semicolon.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Abstract method syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Regular method — has a body
+public String trackParcel(String bookingId, String userId) {
+    return "Basic tracking info";
+}
+
+// Abstract method — NO body, just declaration
+public abstract String trackParcel(String bookingId, String userId);</code></pre>
+  </div>
+
+  <h3>What is an Abstract Class?</h3>
+
+  <p>If a class has <strong>even one</strong> abstract method, the class itself must be declared <code>abstract</code>. An abstract class:</p>
+  <ul>
+    <li><strong>Cannot be instantiated.</strong> You cannot write <code>new TrackingService()</code> if it is abstract.</li>
+    <li><strong>Can have both abstract and regular methods.</strong> Some methods have implementations (shared code), some do not (forced overrides).</li>
+    <li><strong>Can have fields, constructors, everything else.</strong> It is still a class. Just an incomplete one.</li>
+    <li><strong>Children MUST override all abstract methods</strong>, or the child must also be declared abstract.</li>
+  </ul>
+
+  <h3>Nimbus: Making TrackingService Abstract</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java (abstract version)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public abstract class TrackingService {
+
+    // Abstract — every child MUST implement this
+    public abstract String trackParcel(String bookingId, String userId);
+
+    // Concrete — shared by all children, no need to override
+    public void displayTrackingInfo(String bookingId, String userId) {
+        String result = trackParcel(bookingId, userId);  // calls child's version!
+        System.out.println("=== Tracking Result ===");
+        System.out.println(result);
+        System.out.println("=======================");
+    }
+
+    // Concrete — shared utility method
+    public String formatBookingId(String rawId) {
+        return "BK-" + rawId.toUpperCase();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">What each part does</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public abstract class TrackingService</div>
+        <div class="breakdown-explain">The <code>abstract</code> keyword on the class means: you cannot do <code>new TrackingService()</code>. It is incomplete &mdash; it is a blueprint that children must finish.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public abstract String trackParcel(...);</div>
+        <div class="breakdown-explain">Abstract method &mdash; no body. Every non-abstract child MUST provide its own implementation. The parent is saying: "I know you need this method, but I do not know what it should do for each role. You figure it out."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void displayTrackingInfo(...)</div>
+        <div class="breakdown-explain">Concrete method &mdash; has a body, is shared by all children. Notice it calls <code>trackParcel()</code> which is abstract! At runtime, the child's version of <code>trackParcel()</code> will run. This is called the <strong>Template Method pattern</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Children must implement abstract methods</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CustomerTrackingService extends TrackingService {
+
+    @Override
+    public String trackParcel(String bookingId, String userId) {
+        // MUST implement — compiler forces you
+        return "Booking " + bookingId + " — Customer view | ETA: 2 days";
+    }
+    // displayTrackingInfo() and formatBookingId() are inherited — no need to override
+}
+
+public class OfficerTrackingService extends TrackingService {
+
+    @Override
+    public String trackParcel(String bookingId, String userId) {
+        // MUST implement — compiler forces you
+        return "Booking " + bookingId + " — Officer view | Full route + details";
+    }
+}
+
+// What happens if you forget to implement trackParcel()?
+// public class BrokenService extends TrackingService { }
+// ^^^ COMPILE ERROR: "BrokenService must implement abstract method trackParcel()"</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why Use Abstract?</div>
+    <p>Without <code>abstract</code>, a developer could create a <code>CustomerTrackingService</code> and forget to override <code>trackParcel()</code>. The parent's default version would silently run, returning generic info. The bug would not show up until a customer complains "Why can I see everyone's parcels?" With <code>abstract</code>, the <strong>compiler catches the mistake immediately</strong>. You cannot even compile until you provide an implementation. That is the safety net.</p>
+  </div>
+
+  <h3>Another Nimbus Example: BaseHistoryService</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BaseHistoryService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public abstract class BaseHistoryService {
+
+    // Abstract — each role sees different bookings
+    public abstract List&lt;Booking&gt; getMyBookings(String userId);
+
+    // Concrete — shared display logic
+    public void displayHistory(String userId) {
+        List&lt;Booking&gt; bookings = getMyBookings(userId);  // calls child's version
+        if (bookings.isEmpty()) {
+            System.out.println("No bookings found.");
+            return;
+        }
+        System.out.println("Found " + bookings.size() + " bookings:");
+        for (Booking b : bookings) {
+            System.out.println("  - " + b.toString());
+        }
+    }
+}
+
+public class CustomerHistoryService extends BaseHistoryService {
+
+    @Override
+    public List&lt;Booking&gt; getMyBookings(String userId) {
+        // Customer sees ONLY their own bookings
+        return BookingDAO.findByCustomerId(userId);
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>BaseHistoryService</code> has shared display logic (<code>displayHistory()</code>) that all roles use. But <em>which bookings to fetch</em> is role-specific, so <code>getMyBookings()</code> is abstract. <code>CustomerHistoryService</code> overrides it to only return that customer's bookings. If an <code>OfficerHistoryService</code> is added later, it would return all bookings in their assigned area. The display code never changes.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Polymorphism with Interfaces                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="interfaces">
+  <div class="section-tag">Section 07</div>
+  <h2>Polymorphism with Interfaces</h2>
+  <p class="section-desc">An interface is a pure contract &mdash; it says "any class that claims to be this type MUST have these methods." No implementation, no fields (mostly), just method signatures. Interfaces enable the most flexible form of polymorphism.</p>
+
+  <h3>What is an Interface?</h3>
+
+  <p>An interface defines <strong>what</strong> a class must do, without specifying <strong>how</strong>. Every method in an interface is implicitly <code>public</code> and <code>abstract</code> (you do not need to write those keywords, though you can).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Interface syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+    String getTrackingStatus();
+    String getLocation();
+    String getEstimatedDelivery();
+}
+
+public interface Printable {
+    void printDetails();
+    String toFormattedString();
+}</code></pre>
+  </div>
+
+  <h3>Implementing an Interface</h3>
+
+  <p>A class uses the <code>implements</code> keyword (not <code>extends</code>) to adopt an interface. It must provide implementations for <strong>every method</strong> in the interface.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking implementing Trackable and Printable</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Booking implements Trackable, Printable {
+
+    private String bookingId;
+    private String status;
+    private String currentLocation;
+    private String eta;
+
+    public Booking(String bookingId, String status, String location, String eta) {
+        this.bookingId = bookingId;
+        this.status = status;
+        this.currentLocation = location;
+        this.eta = eta;
+    }
+
+    // ====== Trackable methods ======
+    @Override
+    public String getTrackingStatus() {
+        return status;
+    }
+
+    @Override
+    public String getLocation() {
+        return currentLocation;
+    }
+
+    @Override
+    public String getEstimatedDelivery() {
+        return eta;
+    }
+
+    // ====== Printable methods ======
+    @Override
+    public void printDetails() {
+        System.out.println(toFormattedString());
+    }
+
+    @Override
+    public String toFormattedString() {
+        return String.format("[%s] Status: %s | Location: %s | ETA: %s",
+            bookingId, status, currentLocation, eta);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key concepts</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">implements Trackable, Printable</div>
+        <div class="breakdown-explain">A class can implement MULTIPLE interfaces (separated by commas). This is unlike <code>extends</code> where you can only extend ONE class. This is one of the biggest advantages of interfaces.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Override on every method</div>
+        <div class="breakdown-explain">Every interface method implementation should have @Override. The compiler will error if the method signature does not match the interface.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Must implement ALL methods from BOTH interfaces</div>
+        <div class="breakdown-explain">Booking must implement all 3 Trackable methods AND both Printable methods. Miss one? Compile error.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Key Difference: extends vs implements</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">extends (Inheritance)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Used with <strong>classes</strong></li>
+          <li>Can extend only <strong>ONE</strong> class</li>
+          <li>Inherits implementation (actual code)</li>
+          <li>IS-A relationship with shared behavior</li>
+        </ul>
+        <p><code>class Dog extends Animal</code></p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">implements (Interface)</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Used with <strong>interfaces</strong></li>
+          <li>Can implement <strong>MULTIPLE</strong> interfaces</li>
+          <li>No implementation inherited (must write your own)</li>
+          <li>CAN-DO relationship (capability contract)</li>
+        </ul>
+        <p><code>class Dog implements Trainable, Feedable</code></p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Polymorphism Through Interfaces</h3>
+
+  <p>Just like with classes, you can use an interface type as the variable type:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Interface polymorphism</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Different classes can implement the same interface
+Trackable item1 = new Booking("BK001", "In Transit", "Mumbai", "2 days");
+Trackable item2 = new Vehicle("VH100", "En Route", "Highway NH48", "4 hours");
+
+// Both can be treated as Trackable — same method calls, different behavior
+System.out.println(item1.getTrackingStatus());  // "In Transit"
+System.out.println(item2.getTrackingStatus());  // "En Route"
+
+// You can put them in a list and process uniformly
+List&lt;Trackable&gt; trackableItems = new ArrayList&lt;&gt;();
+trackableItems.add(item1);
+trackableItems.add(item2);
+
+for (Trackable item : trackableItems) {
+    System.out.println(item.getLocation());  // each one runs its own version
+}</code></pre>
+  </div>
+
+  <h3>You Can Use Both: extends + implements</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Combining class inheritance with interfaces</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// A class can extend ONE class AND implement MULTIPLE interfaces
+public class CustomerTrackingService extends TrackingService
+    implements Trackable, Printable {
+
+    @Override
+    public String trackParcel(String bookingId, String userId) { ... }
+
+    @Override
+    public String getTrackingStatus() { ... }
+
+    @Override
+    public String getLocation() { ... }
+
+    @Override
+    public String getEstimatedDelivery() { ... }
+
+    @Override
+    public void printDetails() { ... }
+
+    @Override
+    public String toFormattedString() { ... }
+}</code></pre>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Abstract Class vs Interface                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="abstract-vs-interface">
+  <div class="section-tag">Section 08</div>
+  <h2>Abstract Class vs Interface &mdash; When to Use Which</h2>
+  <p class="section-desc">This is one of the most frequently asked interview questions and one of the most confusing topics. Here is the complete breakdown with 10+ differences, decision rules, and Nimbus examples.</p>
+
+  <h3>Complete Comparison Table</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Abstract Class</th>
+        <th>Interface</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Keyword</strong></td>
+        <td><code>abstract class</code></td>
+        <td><code>interface</code></td>
+      </tr>
+      <tr>
+        <td><strong>Methods</strong></td>
+        <td>Can have abstract + concrete methods</td>
+        <td>All abstract by default (Java 8+: can have <code>default</code> methods)</td>
+      </tr>
+      <tr>
+        <td><strong>Fields / Variables</strong></td>
+        <td>Can have instance variables of any type</td>
+        <td>Only <code>public static final</code> constants</td>
+      </tr>
+      <tr>
+        <td><strong>Constructors</strong></td>
+        <td>Can have constructors</td>
+        <td>Cannot have constructors</td>
+      </tr>
+      <tr>
+        <td><strong>Multiple inheritance</strong></td>
+        <td>A class can extend only ONE abstract class</td>
+        <td>A class can implement MULTIPLE interfaces</td>
+      </tr>
+      <tr>
+        <td><strong>Access modifiers</strong></td>
+        <td>Methods can be any: public, protected, private</td>
+        <td>Methods are implicitly <code>public</code></td>
+      </tr>
+      <tr>
+        <td><strong>Instantiation</strong></td>
+        <td>Cannot instantiate directly</td>
+        <td>Cannot instantiate directly</td>
+      </tr>
+      <tr>
+        <td><strong>Keyword to use</strong></td>
+        <td><code>extends</code></td>
+        <td><code>implements</code></td>
+      </tr>
+      <tr>
+        <td><strong>Speed</strong></td>
+        <td>Slightly faster (direct method call)</td>
+        <td>Slightly slower (indirect lookup, but negligible)</td>
+      </tr>
+      <tr>
+        <td><strong>Relationship</strong></td>
+        <td>IS-A (strong: "Dog IS-A Animal")</td>
+        <td>CAN-DO (capability: "Dog CAN-DO Trainable")</td>
+      </tr>
+      <tr>
+        <td><strong>When things change</strong></td>
+        <td>Add a concrete method &rarr; all children get it free</td>
+        <td>Add a method &rarr; all implementors break (unless <code>default</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>State (data)</strong></td>
+        <td>Can hold state (instance variables)</td>
+        <td>Cannot hold state (no instance variables)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Decision Flowchart</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>Do you have shared code / common fields?</strong>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">
+        <strong>YES &rarr; Abstract Class</strong>
+        <span class="flow-sub">Put shared code in parent, force overrides with abstract</span>
+      </div>
+      <div class="flow-arrow">&nbsp; | &nbsp;</div>
+      <div class="flow-box orange">
+        <strong>NO &rarr; Go to next question</strong>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>Do unrelated classes need this capability?</strong>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">
+        <strong>YES &rarr; Interface</strong>
+        <span class="flow-sub">Booking and Vehicle both Trackable? Interface.</span>
+      </div>
+      <div class="flow-arrow">&nbsp; | &nbsp;</div>
+      <div class="flow-box orange">
+        <strong>NO &rarr; Go to next question</strong>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>Does the class need multiple contracts?</strong>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">
+        <strong>YES &rarr; Interface</strong>
+        <span class="flow-sub">Can implement multiple. Can't extend multiple.</span>
+      </div>
+      <div class="flow-arrow">&nbsp; | &nbsp;</div>
+      <div class="flow-box purple">
+        <strong>NO &rarr; Either works. Choose based on intent.</strong>
+      </div>
+    </div>
+    <div class="flow-label">Follow this flowchart when deciding between abstract class and interface</div>
+  </div>
+
+  <h3>Nimbus Examples</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Abstract Class: BaseHistoryService</div>
+      <div class="comparison-body">
+        <p><strong>Why abstract class?</strong></p>
+        <ul>
+          <li>Has shared code: <code>displayHistory()</code> is the same for all roles</li>
+          <li>Has shared state: could have a <code>dateFormat</code> field</li>
+          <li>Children are closely related: all are "history services"</li>
+        </ul>
+        <p>Abstract method: <code>getMyBookings()</code> &mdash; each role fetches different bookings.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Interface: Trackable</div>
+      <div class="comparison-body">
+        <p><strong>Why interface?</strong></p>
+        <ul>
+          <li>No shared code: each implementor has completely different tracking logic</li>
+          <li>Unrelated classes: Booking, Vehicle, and Package can all be Trackable</li>
+          <li>Just a contract: "if you are Trackable, you must provide these methods"</li>
+        </ul>
+        <p>Pure capability: any class can declare "I am Trackable."</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Java 8+ Default Methods: Blurring the Line</h3>
+
+  <p>Since Java 8, interfaces can have <code>default</code> methods &mdash; methods with actual implementations. This blurs the distinction between interfaces and abstract classes.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Default method in interface</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface Trackable {
+    String getTrackingStatus();   // abstract — must implement
+    String getLocation();         // abstract — must implement
+
+    // Default — has implementation! Implementors get this for free.
+    default String getTrackingSummary() {
+        return "Status: " + getTrackingStatus() + " | Location: " + getLocation();
+    }
+}
+
+// Booking does NOT need to implement getTrackingSummary() — it's inherited
+// But it CAN override it if it wants a custom version</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">So When Do You Use What Now?</div>
+    <p><strong>Even with default methods,</strong> the rule of thumb remains: use <strong>abstract classes</strong> when you have shared state (fields) and a strong IS-A hierarchy. Use <strong>interfaces</strong> when you want to define capabilities that unrelated classes can adopt, or when a class needs multiple contracts. Default methods are mainly for backward compatibility &mdash; adding a method to an existing interface without breaking all implementors.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: The Power — Real Polymorphism in Action             -->
+<!-- ============================================================ -->
+<section class="content-section" id="power">
+  <div class="section-tag">Section 09</div>
+  <h2>The Power &mdash; Real Polymorphism in Action</h2>
+  <p class="section-desc">Everything you have learned comes together here. This is where you see WHY polymorphism matters and how it makes your code elegant, extensible, and professional.</p>
+
+  <h3>The Complete Nimbus Polymorphism Example</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusApp.java — Polymorphism in action</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class NimbusApp {
+
+    public static void main(String[] args) {
+        String role = "customer";       // could come from login
+        String bookingId = "BK-2045";
+        String userId = "USR-007";
+
+        // POLYMORPHISM: one variable, behavior decided at runtime
+        TrackingService tracker;
+
+        if (role.equals("customer")) {
+            tracker = new CustomerTrackingService();
+        } else if (role.equals("officer")) {
+            tracker = new OfficerTrackingService();
+        } else {
+            tracker = new SupportTrackingService();
+        }
+
+        // THIS is the power — SAME method call, DIFFERENT behavior
+        tracker.trackParcel(bookingId, userId);
+        // If customer logged in → shows limited info + ownership check
+        // If officer logged in  → shows full route + all details
+        // If support logged in  → shows customer info + complaint history
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Why this is powerful</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">TrackingService tracker;</div>
+        <div class="breakdown-explain">Variable type is the PARENT. This means it can hold ANY child type. The variable does not care which specific tracking service it holds.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (role.equals(...)) tracker = new ___TrackingService();</div>
+        <div class="breakdown-explain">The decision of WHICH object to create happens at runtime based on the logged-in user's role. This is the only place that knows about specific types.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">tracker.trackParcel(bookingId, userId);</div>
+        <div class="breakdown-explain">ONE line of code. But it runs completely different logic depending on the role. No if/else in the tracking logic itself. The polymorphic dispatch handles everything.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Real Power: Adding a New Role</h3>
+
+  <p>Imagine the Nimbus product manager says: "We need an Admin role that can see all parcels across all regions with analytics." Without polymorphism, you would have to:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without Polymorphism</div>
+      <div class="comparison-body">
+        <ol>
+          <li>Find every if/else that checks for roles</li>
+          <li>Add <code>else if (role == "admin")</code> everywhere</li>
+          <li>Hope you did not miss any</li>
+          <li>Test all existing roles again because you touched their code</li>
+          <li>Risk breaking customer/officer tracking</li>
+        </ol>
+        <p><strong>Changes needed:</strong> Dozens of files</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With Polymorphism</div>
+      <div class="comparison-body">
+        <ol>
+          <li>Create <code>AdminTrackingService extends TrackingService</code></li>
+          <li>Override <code>trackParcel()</code> with admin logic</li>
+          <li>Add one line in the factory/if-else that creates trackers</li>
+          <li>Done. Customer and officer code untouched.</li>
+        </ol>
+        <p><strong>Changes needed:</strong> 1 new file + 1 line in factory</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AdminTrackingService.java — Adding a new role</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class AdminTrackingService extends TrackingService {
+
+    @Override
+    public String trackParcel(String bookingId, String userId) {
+        return "ADMIN VIEW — Booking " + bookingId
+            + " | All regions visible"
+            + " | Total parcels today: 1,247"
+            + " | Delayed: 23"
+            + " | On-time rate: 98.1%";
+    }
+}</code></pre>
+  </div>
+
+  <p>And the only change to existing code:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">One line added to the factory</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Before:
+if (role.equals("customer")) tracker = new CustomerTrackingService();
+else if (role.equals("officer")) tracker = new OfficerTrackingService();
+
+// After — just add one else-if:
+if (role.equals("customer")) tracker = new CustomerTrackingService();
+else if (role.equals("officer")) tracker = new OfficerTrackingService();
+else if (role.equals("admin")) tracker = new AdminTrackingService();  // NEW!</code></pre>
+  </div>
+
+  <h3>The Open/Closed Principle</h3>
+
+  <div class="callout think">
+    <div class="callout-title">Design Principle</div>
+    <p>What you just saw is the <strong>Open/Closed Principle</strong> &mdash; one of the five SOLID principles of software design. It states:</p>
+    <p><em>"Software entities should be <strong>open for extension</strong> (you can add new behavior) but <strong>closed for modification</strong> (you do not change existing working code)."</em></p>
+    <p>Polymorphism makes this possible. New roles, new payment types, new shipping methods &mdash; all added by creating new classes that extend/implement existing ones. The rest of the system does not even know they exist until they are plugged in.</p>
+  </div>
+
+  <h3>Processing a Collection Polymorphically</h3>
+
+  <p>One of the most common and elegant uses of polymorphism &mdash; processing a list of different types uniformly:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Processing mixed types</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// A list that holds DIFFERENT types of tracking services
+List&lt;TrackingService&gt; allTrackers = new ArrayList&lt;&gt;();
+allTrackers.add(new CustomerTrackingService());
+allTrackers.add(new OfficerTrackingService());
+allTrackers.add(new AdminTrackingService());
+
+// Process ALL of them with ONE loop — each runs its own version
+for (TrackingService tracker : allTrackers) {
+    System.out.println(tracker.trackParcel("BK-001", "USR-42"));
+    System.out.println("---");
+}
+
+// Output:
+// Booking BK-001 — Customer view | ETA: 2 days
+// ---
+// Booking BK-001 — Officer view | Full route + details
+// ---
+// ADMIN VIEW — Booking BK-001 | All regions visible | Total parcels today: 1,247 ...
+// ---</code></pre>
+  </div>
+
+  <p>One loop. Three different behaviors. No if/else. No instanceof. Just polymorphism doing its thing.</p>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: toString(), equals(), hashCode()                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="object-methods">
+  <div class="section-tag">Section 10</div>
+  <h2>toString(), equals(), hashCode()</h2>
+  <p class="section-desc">Every class in Java extends <code>Object</code> &mdash; even if you do not write <code>extends Object</code>. The <code>Object</code> class has several methods that you will commonly override. This is polymorphism in its most everyday form.</p>
+
+  <h3>The Object Class: The Root of Everything</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>Object</strong>
+        <span class="flow-sub">java.lang.Object — root of ALL classes</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">User</div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-box green">Booking</div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-box green">String</div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-box green">ArrayList</div>
+    </div>
+    <div class="flow-label">Every class automatically extends Object, whether you write it or not</div>
+  </div>
+
+  <p><code>Object</code> provides these methods that you can (and should) override:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Default Behavior</th>
+        <th>Why Override?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>toString()</code></td>
+        <td>Returns <code>ClassName@hashcode</code> (e.g., <code>User@4a574795</code>)</td>
+        <td>To show meaningful info when printing</td>
+      </tr>
+      <tr>
+        <td><code>equals(Object o)</code></td>
+        <td>Compares memory addresses (same as <code>==</code>)</td>
+        <td>To compare objects by their field values</td>
+      </tr>
+      <tr>
+        <td><code>hashCode()</code></td>
+        <td>Returns memory-based hash</td>
+        <td>Required for HashMap/HashSet to work correctly</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Overriding toString()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Without toString() override</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">User user = new User("Darshan", "darshan@nimbus.com", "9876543210", "customer");
+System.out.println(user);
+// Output: com.nimbus.model.User@4a574795
+// ^^^ USELESS! Just the class name and memory address</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User.java — With toString() override</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User {
+    private String name;
+    private String email;
+    private String phone;
+    private String role;
+
+    // ... constructor, getters, setters ...
+
+    @Override
+    public String toString() {
+        return "User{name='" + name + "', email='" + email
+            + "', role='" + role + "'}";
+    }
+}
+
+// Now:
+User user = new User("Darshan", "darshan@nimbus.com", "9876543210", "customer");
+System.out.println(user);
+// Output: User{name='Darshan', email='darshan@nimbus.com', role='customer'}
+// ^^^ USEFUL! You can actually see what's in the object</code></pre>
+  </div>
+
+  <h3>Nimbus Booking toString()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking.java — toString()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Booking {
+    private String bookingId;
+    private String senderId;
+    private String receiverName;
+    private double weight;
+    private String status;
+
+    @Override
+    public String toString() {
+        return "Booking{id='" + bookingId
+            + "', sender='" + senderId
+            + "', receiver='" + receiverName
+            + "', weight=" + weight + "kg"
+            + ", status='" + status + "'}";
+    }
+}
+
+// Usage:
+Booking b = new Booking("BK-001", "USR-42", "Priya", 2.5, "In Transit");
+System.out.println(b);
+// Output: Booking{id='BK-001', sender='USR-42', receiver='Priya', weight=2.5kg, status='In Transit'}</code></pre>
+  </div>
+
+  <h3>Overriding equals()</h3>
+
+  <p>By default, <code>equals()</code> checks if two variables point to the <strong>same object in memory</strong> (same as <code>==</code>). But usually, you want to check if two objects have the <strong>same field values</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Default equals() problem</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">User u1 = new User("Darshan", "d@email.com", "999", "customer");
+User u2 = new User("Darshan", "d@email.com", "999", "customer");
+
+System.out.println(u1.equals(u2));  // false !!!
+// ^^^ Two DIFFERENT objects in memory, even though fields are identical</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User.java — equals() override</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+public boolean equals(Object obj) {
+    // 1. Same reference? Same object.
+    if (this == obj) return true;
+
+    // 2. Null or different class? Not equal.
+    if (obj == null || getClass() != obj.getClass()) return false;
+
+    // 3. Cast and compare fields
+    User other = (User) obj;
+    return this.name.equals(other.name)
+        &amp;&amp; this.email.equals(other.email)
+        &amp;&amp; this.role.equals(other.role);
+}
+
+// Now:
+System.out.println(u1.equals(u2));  // true — same field values!</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">equals() step by step</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (this == obj) return true;</div>
+        <div class="breakdown-explain">Optimization: if both variables point to the exact same object in memory, they are obviously equal. No need to check fields.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (obj == null || getClass() != obj.getClass()) return false;</div>
+        <div class="breakdown-explain">Safety checks: if the other object is null, or is a different class entirely (comparing a User to a Booking), return false immediately.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User other = (User) obj; return this.name.equals(other.name) ...</div>
+        <div class="breakdown-explain">Downcast to User (safe because we checked the class), then compare the fields that define equality. You choose which fields matter.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The equals-hashCode Contract</h3>
+
+  <div class="callout important">
+    <div class="callout-title">Critical Rule</div>
+    <p><strong>If you override <code>equals()</code>, you MUST also override <code>hashCode()</code>.</strong> This is a contract in Java. If two objects are equal (according to <code>equals()</code>), they must return the same <code>hashCode()</code>. If you break this contract, <code>HashMap</code>, <code>HashSet</code>, and other hash-based collections will not work correctly &mdash; you will get bugs like "I added the user to the set but <code>contains()</code> says it is not there."</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">hashCode() override</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Override
+public int hashCode() {
+    return Objects.hash(name, email, role);
+    // Uses the same fields as equals() — this is the rule
+}</code></pre>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Common Mistakes                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="mistakes">
+  <div class="section-tag">Section 11</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">These are the mistakes every beginner makes with polymorphism. Learn to recognize them so you can avoid hours of debugging.</p>
+
+  <h3>Mistake 1: Confusing Overloading with Overriding</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Overloading</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Same class</li>
+          <li>Same name, <strong>DIFFERENT</strong> parameters</li>
+          <li>Compile-time decision</li>
+        </ul>
+<pre style="font-size: 0.8rem; color: var(--text-secondary);">
+add(int a, int b)
+add(int a, int b, int c)
+</pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Overriding</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Parent-child classes</li>
+          <li>Same name, <strong>SAME</strong> parameters</li>
+          <li>Runtime decision</li>
+        </ul>
+<pre style="font-size: 0.8rem; color: var(--text-secondary);">
+Parent: trackParcel(String, String)
+Child:  trackParcel(String, String)
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 2: Forgetting @Override (Silent Bug)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The silent bug</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class CustomerTrackingService extends TrackingService {
+
+    // TYPO: "Parcle" instead of "Parcel" — but no @Override, so no error!
+    public String trackParcle(String bookingId, String userId) {
+        return "Customer view...";
+    }
+    // This is NOT an override — it is a completely NEW method.
+    // The parent's trackParcel() still runs when you call tracker.trackParcel()
+    // The customer version NEVER executes. Good luck finding this bug.
+}
+
+// WITH @Override, the compiler catches it:
+// @Override
+// public String trackParcle(...)  → COMPILE ERROR: method does not override
+//                                    anything from superclass</code></pre>
+  </div>
+
+  <h3>Mistake 3: Trying to Override static Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Static methods cannot be overridden</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Parent {
+    public static void greet() {
+        System.out.println("Hello from Parent");
+    }
+}
+
+class Child extends Parent {
+    // This looks like an override, but it is NOT.
+    // This is "method hiding" — a completely different concept.
+    public static void greet() {
+        System.out.println("Hello from Child");
+    }
+}
+
+Parent ref = new Child();
+ref.greet();  // Prints "Hello from Parent" !!!
+// ^^^ Because static methods use the VARIABLE type, not the object type.
+// Static binding, not dynamic binding. No polymorphism for static methods.</code></pre>
+  </div>
+
+  <p><strong>Why?</strong> Static methods belong to the <em>class</em>, not to an object. Polymorphism works with objects. Since static methods are resolved at compile time based on the declared variable type, there is no "which object is behind the variable?" question to ask at runtime.</p>
+
+  <h3>Mistake 4: Trying to Override final Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">final prevents overriding</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Parent {
+    public final void validate() {
+        System.out.println("Validation logic — CANNOT be changed");
+    }
+}
+
+class Child extends Parent {
+    @Override
+    public void validate() {  // COMPILE ERROR!
+        // "validate() in Child cannot override validate() in Parent
+        //  — overridden method is final"
+    }
+}
+
+// Use "final" when you want to LOCK a method —
+// no child should ever change this behavior.
+// Common for security checks, validation, audit logging.</code></pre>
+  </div>
+
+  <h3>Mistake 5: Reducing Visibility in Override</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Cannot make an override less visible</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Parent {
+    public void display() {   // public visibility
+        System.out.println("Parent display");
+    }
+}
+
+class Child extends Parent {
+    @Override
+    private void display() {   // COMPILE ERROR!
+        // Cannot reduce visibility from public to private
+    }
+
+    @Override
+    protected void display() { // ALSO COMPILE ERROR!
+        // Cannot reduce visibility from public to protected
+    }
+
+    @Override
+    public void display() {    // OK — same visibility
+        System.out.println("Child display");
+    }
+}</code></pre>
+  </div>
+
+  <p><strong>Why this rule?</strong> Imagine code that has <code>TrackingService tracker = new CustomerTrackingService()</code> and calls <code>tracker.trackParcel()</code>. The code sees <code>trackParcel()</code> as <code>public</code> (because it is public in TrackingService). If the child made it <code>private</code>, this call would suddenly fail at runtime. Java prevents this by enforcing: you can keep the same visibility or make it <em>more</em> visible (protected &rarr; public is OK), but never less.</p>
+
+  <h3>Mistake 6: Thinking Return Type Alone Creates an Overload</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Return type does NOT create overload</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Calculator {
+    public int calculate(int x) { return x * 2; }
+    public double calculate(int x) { return x * 2.0; }  // COMPILE ERROR!
+    // Both take (int) — return type alone is not enough to differentiate
+}</code></pre>
+  </div>
+
+  <h3>Quick Reference: What Can and Cannot Be Overridden</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Method Type</th>
+        <th>Can Override?</th>
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Regular instance method</td>
+        <td>Yes</td>
+        <td>This is what overriding is for</td>
+      </tr>
+      <tr>
+        <td><code>static</code> method</td>
+        <td>No (hidden, not overridden)</td>
+        <td>Belongs to class, not object</td>
+      </tr>
+      <tr>
+        <td><code>final</code> method</td>
+        <td>No</td>
+        <td>Explicitly locked by parent</td>
+      </tr>
+      <tr>
+        <td><code>private</code> method</td>
+        <td>No</td>
+        <td>Not visible to child class</td>
+      </tr>
+      <tr>
+        <td>Constructor</td>
+        <td>No</td>
+        <td>Not inherited</td>
+      </tr>
+      <tr>
+        <td><code>abstract</code> method</td>
+        <td>Must override</td>
+        <td>No implementation exists yet</td>
+      </tr>
+    </tbody>
+  </table>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Practice Exercises                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 12</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Do not just read &mdash; code. Each exercise builds on what you learned. Try solving them yourself before looking at hints.</p>
+
+  <h3>Exercise 1: Output Prediction &mdash; Overloading</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>What does this code print? Work it out on paper before checking.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise1.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Printer {
+    public void print(int x)        { System.out.println("int: " + x); }
+    public void print(double x)     { System.out.println("double: " + x); }
+    public void print(String x)     { System.out.println("String: " + x); }
+    public void print(int x, int y) { System.out.println("two ints: " + x + ", " + y); }
+}
+
+Printer p = new Printer();
+p.print(42);
+p.print(3.14);
+p.print("hello");
+p.print(10, 20);
+p.print('A');        // What does this print? Think carefully!</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">p.print(42) &rarr; "int: 42"</div>
+        <div class="breakdown-explain">42 is an int literal, matches <code>print(int)</code></div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">p.print(3.14) &rarr; "double: 3.14"</div>
+        <div class="breakdown-explain">3.14 is a double literal, matches <code>print(double)</code></div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">p.print("hello") &rarr; "String: hello"</div>
+        <div class="breakdown-explain">"hello" is a String, matches <code>print(String)</code></div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">p.print(10, 20) &rarr; "two ints: 10, 20"</div>
+        <div class="breakdown-explain">Two int arguments, matches <code>print(int, int)</code></div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">p.print('A') &rarr; "int: 65"</div>
+        <div class="breakdown-explain"><strong>Tricky!</strong> There is no <code>print(char)</code>, so Java widens <code>char</code> to <code>int</code> (char 'A' = 65 in ASCII). It prints "int: 65", not "String: A".</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 2: Output Prediction &mdash; Overriding</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>What does this code print? Pay attention to the variable type vs object type.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Exercise2.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">class Animal {
+    public void speak() { System.out.println("..."); }
+}
+
+class Dog extends Animal {
+    @Override
+    public void speak() { System.out.println("Woof!"); }
+}
+
+class Cat extends Animal {
+    @Override
+    public void speak() { System.out.println("Meow!"); }
+}
+
+Animal a1 = new Dog();
+Animal a2 = new Cat();
+Animal a3 = new Animal();
+
+a1.speak();
+a2.speak();
+a3.speak();</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Answer</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">a1.speak() &rarr; "Woof!"</div>
+        <div class="breakdown-explain">Variable type is Animal, but actual object is Dog. Dog's overridden <code>speak()</code> runs.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">a2.speak() &rarr; "Meow!"</div>
+        <div class="breakdown-explain">Actual object is Cat. Cat's overridden <code>speak()</code> runs.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">a3.speak() &rarr; "..."</div>
+        <div class="breakdown-explain">Actual object is Animal itself (no override). Animal's original <code>speak()</code> runs.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 3: Create a PaymentService</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create the following class hierarchy for Nimbus payment processing:</p>
+    <ol>
+      <li>An <strong>abstract class <code>PaymentService</code></strong> with:
+        <ul>
+          <li>An abstract method <code>processPayment(double amount)</code> returning a String</li>
+          <li>A concrete method <code>generateReceipt(double amount, String method)</code> that prints a formatted receipt</li>
+        </ul>
+      </li>
+      <li>Three child classes:
+        <ul>
+          <li><strong><code>CashPayment</code></strong> &mdash; returns "Cash received: Rs. {amount}"</li>
+          <li><strong><code>CardPayment</code></strong> &mdash; returns "Card charged: Rs. {amount} | Last 4 digits: XXXX"</li>
+          <li><strong><code>UPIPayment</code></strong> &mdash; returns "UPI payment of Rs. {amount} | Txn ID: UPI{timestamp}"</li>
+        </ul>
+      </li>
+      <li>A main method that creates all three, stores them in a <code>PaymentService</code> array, and loops through calling <code>processPayment(500)</code> on each</li>
+    </ol>
+  </div>
+
+  <h3>Exercise 4: Add AdminTrackingService to Nimbus</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Write a complete <code>AdminTrackingService</code> class that:</p>
+    <ol>
+      <li>Extends <code>TrackingService</code></li>
+      <li>Overrides <code>trackParcel()</code> to show: booking details, sender info, receiver info, current location, all past locations, assigned officer, weight, cost, and a system health summary</li>
+      <li>Has an additional method <code>getAllParcelsInRegion(String region)</code> that returns a list of booking IDs</li>
+    </ol>
+    <p>Then modify the factory method to handle the "admin" role.</p>
+  </div>
+
+  <h3>Exercise 5: Debug This Code</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>This code has 3 bugs related to polymorphism. Find and fix them all.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BuggyCode.java — Find 3 bugs</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">abstract class Shape {
+    public abstract double area();
+    public final void describe() {
+        System.out.println("Area = " + area());
+    }
+}
+
+class Circle extends Shape {
+    double radius;
+    Circle(double r) { this.radius = r; }
+
+    // Bug 1: What is wrong here?
+    public double area(double r) {
+        return 3.14 * r * r;
+    }
+
+    // Bug 2: What is wrong here?
+    @Override
+    public void describe() {
+        System.out.println("Circle with radius " + radius);
+    }
+}
+
+class Square extends Shape {
+    double side;
+    Square(double s) { this.side = s; }
+
+    @Override
+    public double area() { return side * side; }
+
+    // Bug 3: What is wrong here?
+    @Override
+    private double perimeter() {
+        return 4 * side;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">All 3 bugs explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Bug 1: area(double r) instead of area()</div>
+        <div class="breakdown-explain">This is <strong>overloading</strong>, not overriding. The abstract method is <code>area()</code> with no parameters. <code>area(double r)</code> is a new method. Circle still has not implemented the abstract <code>area()</code>, so this will not compile. Fix: <code>public double area() { return 3.14 * radius * radius; }</code></div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Bug 2: describe() is final in Shape</div>
+        <div class="breakdown-explain"><code>describe()</code> is marked <code>final</code> in the parent class Shape, which means it cannot be overridden. Compile error. Fix: either remove <code>final</code> from Shape, or remove the override from Circle.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Bug 3: @Override on a method that does not exist in parent</div>
+        <div class="breakdown-explain"><code>perimeter()</code> does not exist in Shape. You cannot override something that was never defined in the parent. Also, <code>private</code> would reduce visibility. Fix: remove <code>@Override</code> and make it <code>public</code> &mdash; this is just a new method, not an override.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 6: Interface Implementation</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create an interface called <code>Notifiable</code> with methods:</p>
+    <ul>
+      <li><code>sendNotification(String message, String recipient)</code></li>
+      <li><code>getNotificationType()</code> &mdash; returns a String like "EMAIL", "SMS", "PUSH"</li>
+    </ul>
+    <p>Implement it in three classes: <code>EmailNotifier</code>, <code>SMSNotifier</code>, <code>PushNotifier</code>.</p>
+    <p>Write a method that takes a <code>List&lt;Notifiable&gt;</code> and sends the same message through ALL notification channels.</p>
+  </div>
+
+  <h3>Exercise 7: Overloading Challenge</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>Create a <code>BookingSearch</code> class with overloaded <code>search()</code> methods:</p>
+    <ul>
+      <li><code>search(String bookingId)</code> &mdash; search by exact booking ID</li>
+      <li><code>search(String city, String status)</code> &mdash; search by city and status</li>
+      <li><code>search(String userId, int limit)</code> &mdash; search by user, return limited results</li>
+      <li><code>search(double minWeight, double maxWeight)</code> &mdash; search by weight range</li>
+    </ul>
+    <p>Each method should print what it is searching by. Then call all four from main.</p>
+  </div>
+
+  <h3>Exercise 8: Full Polymorphism Challenge</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise</div>
+    <p>This is the big one. Build a complete <strong>Notification System</strong> for Nimbus:</p>
+    <ol>
+      <li>Abstract class <code>NotificationService</code> with abstract <code>send(String to, String message)</code> and concrete <code>log(String message)</code></li>
+      <li>Interface <code>Schedulable</code> with <code>scheduleAt(String time)</code></li>
+      <li>Class <code>EmailService extends NotificationService implements Schedulable</code></li>
+      <li>Class <code>SMSService extends NotificationService</code></li>
+      <li>Class <code>WhatsAppService extends NotificationService implements Schedulable</code></li>
+      <li>A method that takes <code>NotificationService[]</code> and sends a booking confirmation to all</li>
+      <li>A method that takes <code>Schedulable[]</code> and schedules a reminder at "9:00 AM"</li>
+    </ol>
+    <p>This exercise uses: inheritance, abstract classes, interfaces, overriding, upcasting, and processing collections polymorphically &mdash; all in one program.</p>
+  </div>
+
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="oop-inheritance.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Inheritance</span>
+  </a>
+  <a href="oop-abstraction.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Abstraction</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

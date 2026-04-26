@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoC &amp; DI Deep Dive | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link"><span class="num">04</span> JSP</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link active"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: CONSTRUCTOR INJECTION                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="constructor-injection">
+  <div class="section-tag">Section 01</div>
+  <h2>Constructor Injection</h2>
+  <p class="section-desc">The recommended way. Dependencies are passed via the constructor, making the object immutable and always in a valid state.</p>
+
+  <h3>Why Constructor Injection Wins</h3>
+  <ul>
+    <li><strong>Immutable</strong> &mdash; Fields are <code>final</code>. Once set, they can't change.</li>
+    <li><strong>Required dependencies</strong> &mdash; The object can't be created without them. No null surprises.</li>
+    <li><strong>Testable</strong> &mdash; Pass mocks directly in the constructor. No reflection hacks needed.</li>
+    <li><strong>No circular dependency hiding</strong> &mdash; Fails fast at startup if there's a circular dependency.</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class UserService {
+
+    private final UserDAO userDAO;        // final = immutable
+    private final EmailService emailService;
+
+    @Autowired  // optional if single constructor (Spring 4.3+)
+    public UserService(UserDAO userDAO, EmailService emailService) {
+        this.userDAO = userDAO;
+        this.emailService = emailService;
+    }
+
+    public User registerUser(User user) {
+        userDAO.save(user);
+        emailService.sendWelcome(user.getEmail());
+        return user;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>UserService</code> depends on <code>UserDAO</code> (database access) and <code>EmailService</code> (notifications). Both are injected via constructor. The service can't exist without them &mdash; exactly what we want.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Single Constructor Rule</div>
+    <p>If your class has only one constructor, Spring automatically uses it for injection. No <code>@Autowired</code> needed. With multiple constructors, mark the one Spring should use with <code>@Autowired</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SETTER INJECTION                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="setter-injection">
+  <div class="section-tag">Section 02</div>
+  <h2>Setter Injection</h2>
+  <p class="section-desc">For optional dependencies that have sensible defaults.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class BookingService {
+
+    private final BookingDAO bookingDAO;  // required
+    private NotificationService notifier; // optional
+
+    @Autowired
+    public BookingService(BookingDAO bookingDAO) {
+        this.bookingDAO = bookingDAO;
+    }
+
+    @Autowired(required = false)  // won't crash if no bean found
+    public void setNotifier(NotificationService notifier) {
+        this.notifier = notifier;
+    }
+
+    public Booking createBooking(Booking booking) {
+        bookingDAO.save(booking);
+        if (notifier != null) {
+            notifier.send("Booking created: " + booking.getTrackingNumber());
+        }
+        return booking;
+    }
+}</code></pre>
+  </div>
+
+  <h3>When to Use Setter vs Constructor</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Scenario</th><th>Use</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Required dependency</td><td>Constructor</td><td>Object is invalid without it</td></tr>
+      <tr><td>Optional dependency</td><td>Setter</td><td>Has a fallback if not provided</td></tr>
+      <tr><td>Immutable service</td><td>Constructor</td><td>Fields can be <code>final</code></td></tr>
+      <tr><td>Reconfigurable at runtime</td><td>Setter</td><td>Can change after creation</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: FIELD INJECTION                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="field-injection">
+  <div class="section-tag">Section 03</div>
+  <h2>Field Injection (Why It's Discouraged)</h2>
+  <p class="section-desc">Looks clean but hides dependencies and makes testing harder.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Field Injection (Avoid)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;font-size:0.82rem;color:var(--text-secondary);"><code>@Service
+public class TrackingService {
+    @Autowired
+    private BookingDAO dao;
+
+    @Autowired
+    private CacheService cache;
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Constructor Injection (Prefer)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;font-size:0.82rem;color:var(--text-secondary);"><code>@Service
+public class TrackingService {
+    private final BookingDAO dao;
+    private final CacheService cache;
+
+    public TrackingService(BookingDAO dao,
+                           CacheService cache) {
+        this.dao = dao;
+        this.cache = cache;
+    }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Problems with Field Injection</h3>
+  <ul>
+    <li><strong>Hidden dependencies</strong> &mdash; You can't tell what a class needs just by looking at its constructor.</li>
+    <li><strong>Not testable with <code>new</code></strong> &mdash; <code>new TrackingService()</code> has null fields. You need Spring or reflection to inject.</li>
+    <li><strong>Can't be <code>final</code></strong> &mdash; Fields must be mutable for reflection to set them.</li>
+    <li><strong>Circular dependencies hidden</strong> &mdash; Field injection lets circular deps slip through. Constructor injection catches them at startup.</li>
+  </ul>
+
+  <div class="callout warning">
+    <div class="callout-title">IDE Warning</div>
+    <p>IntelliJ and Eclipse both show a warning on <code>@Autowired</code> fields: "Field injection is not recommended." They suggest constructor injection. Listen to your IDE.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: CIRCULAR DEPENDENCIES                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="circular-deps">
+  <div class="section-tag">Section 04</div>
+  <h2>Circular Dependencies</h2>
+  <p class="section-desc">A depends on B, and B depends on A. Spring can't create either. How to fix it.</p>
+
+  <h3>The Problem</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Circular Dependency</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// A needs B to be created
+@Service
+public class UserService {
+    private final BookingService bookingService;
+    public UserService(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+}
+
+// B needs A to be created &mdash; DEADLOCK
+@Service
+public class BookingService {
+    private final UserService userService;
+    public BookingService(UserService userService) {
+        this.userService = userService;
+    }
+}
+// Result: BeanCurrentlyInCreationException</code></pre>
+  </div>
+
+  <h3>Fixes</h3>
+
+  <h4>Fix 1: Redesign (Best)</h4>
+  <p>Extract the shared logic into a third service. If A and B both need each other, they're probably doing too much.</p>
+
+  <h4>Fix 2: <code>@Lazy</code></h4>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Lazy Break</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class UserService {
+    private final BookingService bookingService;
+
+    public UserService(@Lazy BookingService bookingService) {
+        this.bookingService = bookingService;  // proxy injected, not real bean
+    }
+}</code></pre>
+  </div>
+
+  <h4>Fix 3: Setter Injection on One Side</h4>
+  <p>Use constructor injection for A and setter injection for B. Breaks the cycle because B can be partially created first.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: BEAN LIFECYCLE                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="bean-lifecycle">
+  <div class="section-tag">Section 05</div>
+  <h2>Bean Lifecycle</h2>
+  <p class="section-desc">From birth to death &mdash; what happens to a Spring bean.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Instantiate
+        <span class="flow-sub">new UserService()</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Populate
+        <span class="flow-sub">Inject dependencies</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Init
+        <span class="flow-sub">@PostConstruct</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Ready
+        <span class="flow-sub">Bean in use</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">Destroy
+        <span class="flow-sub">@PreDestroy</span>
+      </div>
+    </div>
+    <div class="flow-label">Spring manages the entire lifecycle. You hook into init and destroy.</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Lifecycle Hooks</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class TrackingService {
+
+    private final BookingDAO bookingDAO;
+    private Map&lt;String, Booking&gt; cache;
+
+    public TrackingService(BookingDAO bookingDAO) {
+        this.bookingDAO = bookingDAO;
+    }
+
+    @PostConstruct  // runs AFTER constructor + injection
+    public void init() {
+        // Load frequently accessed bookings into cache
+        cache = new HashMap&lt;&gt;();
+        System.out.println("TrackingService initialized, cache ready");
+    }
+
+    @PreDestroy  // runs BEFORE bean is destroyed
+    public void cleanup() {
+        cache.clear();
+        System.out.println("TrackingService cache cleared");
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: @LAZY                                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="lazy">
+  <div class="section-tag">Section 06</div>
+  <h2>@Lazy Initialization</h2>
+  <p class="section-desc">By default, Spring creates all singleton beans at startup. <code>@Lazy</code> delays creation until first use.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Lazy Bean</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+@Lazy  // not created until someone asks for it
+public class ReportService {
+
+    public ReportService() {
+        System.out.println("ReportService created");  // only prints on first use
+    }
+
+    public byte[] generatePDF(int bookingId) {
+        // heavy PDF generation
+        return new byte[0];
+    }
+}</code></pre>
+  </div>
+
+  <h3>When to Use</h3>
+  <ul>
+    <li><strong>Expensive beans</strong> &mdash; If a bean takes 5 seconds to initialize and is rarely used, make it lazy.</li>
+    <li><strong>Faster startup</strong> &mdash; Fewer beans at startup = faster app launch.</li>
+    <li><strong>Breaking circular deps</strong> &mdash; <code>@Lazy</code> on a constructor parameter injects a proxy first.</li>
+  </ul>
+
+  <div class="callout warning">
+    <div class="callout-title">Trade-off</div>
+    <p>Lazy beans delay errors to runtime. If a lazy bean has a config problem, you won't know until someone actually uses it. Eager (default) beans fail fast at startup &mdash; which is usually better for catching bugs early.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: @PROFILE                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="profiles">
+  <div class="section-tag">Section 07</div>
+  <h2>@Profile for Dev/Prod</h2>
+  <p class="section-desc">Different beans for different environments. Dev uses an in-memory DB, prod uses MySQL.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Profile-Specific Beans</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Only active when profile = "dev"
+@Repository
+@Profile("dev")
+public class InMemoryUserDAO implements UserDAO {
+    private final List&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+    @Override
+    public User findById(int id) {
+        return users.stream()
+            .filter(u -&gt; u.getId() == id)
+            .findFirst().orElse(null);
+    }
+}
+
+// Only active when profile = "prod"
+@Repository
+@Profile("prod")
+public class MySQLUserDAO implements UserDAO {
+    private final JdbcTemplate jdbc;
+
+    public MySQLUserDAO(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    @Override
+    public User findById(int id) {
+        return jdbc.queryForObject("SELECT * FROM users WHERE id = ?",
+            new UserRowMapper(), id);
+    }
+}</code></pre>
+  </div>
+
+  <h3>Activating a Profile</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java"># In application.properties
+spring.profiles.active=dev
+
+# Or via command line
+java -jar nimbus.jar --spring.profiles.active=prod
+
+# Or via environment variable
+export SPRING_PROFILES_ACTIVE=prod</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Dev profile uses <code>InMemoryUserDAO</code> (no MySQL needed) for quick testing. Prod profile uses <code>MySQLUserDAO</code> with the real database. Same <code>UserService</code> code works in both &mdash; it just gets a different <code>UserDAO</code> implementation injected.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: @VALUE AND @PROPERTYSOURCE                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="value-property">
+  <div class="section-tag">Section 08</div>
+  <h2>@Value and @PropertySource</h2>
+  <p class="section-desc">Inject configuration values from properties files into your beans.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java"># Database config
+db.url=jdbc:mysql://localhost:3306/nimbus_db
+db.user=root
+db.password=secret
+
+# App config
+app.name=Nimbus Parcel Management
+app.max-parcels-per-user=50
+app.tracking-prefix=NMB</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AppConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Configuration
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    @Value("${db.user}")
+    private String dbUser;
+
+    @Value("${app.max-parcels-per-user}")
+    private int maxParcels;
+
+    @Value("${app.tracking-prefix:TRK}")  // default value after colon
+    private String trackingPrefix;
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setUrl(dbUrl);
+        ds.setUsername(dbUser);
+        return ds;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Default Values</div>
+    <p><code>@Value("${some.key:defaultValue}")</code> &mdash; the part after the colon is the fallback if the property isn't found. Without a default, Spring throws an error if the property is missing.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: NIMBUS FULL DI EXAMPLE                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-di">
+  <div class="section-tag">Section 09</div>
+  <h2>Full Nimbus with Proper DI</h2>
+  <p class="section-desc">All Nimbus services with dependencies properly wired using constructor injection.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The complete dependency tree: <code>BookingController</code> &rarr; <code>BookingService</code> &rarr; <code>BookingDAO</code> + <code>TrackingService</code>. <code>TrackingService</code> &rarr; <code>BookingDAO</code>. All wired via constructor injection.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/UserDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public interface UserDAO {
+    User findById(int id);
+    User findByEmail(String email);
+    void save(User user);
+    void update(User user);
+    List&lt;User&gt; findAll();
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/UserDAOImpl.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Repository
+public class UserDAOImpl implements UserDAO {
+
+    private final JdbcTemplate jdbc;
+
+    public UserDAOImpl(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    @Override
+    public User findById(int id) {
+        return jdbc.queryForObject(
+            "SELECT * FROM users WHERE id = ?",
+            new UserRowMapper(), id
+        );
+    }
+
+    @Override
+    public void save(User user) {
+        jdbc.update("INSERT INTO users (name, email, role) VALUES (?, ?, ?)",
+            user.getName(), user.getEmail(), user.getRole());
+    }
+
+    // ... other methods
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/UserService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class UserService {
+
+    private final UserDAO userDAO;
+    private final BookingDAO bookingDAO;
+
+    @Value("${app.max-parcels-per-user:50}")
+    private int maxParcelsPerUser;
+
+    public UserService(UserDAO userDAO, BookingDAO bookingDAO) {
+        this.userDAO = userDAO;
+        this.bookingDAO = bookingDAO;
+    }
+
+    public User getUser(int id) {
+        return userDAO.findById(id);
+    }
+
+    public boolean canBookMore(int userId) {
+        int current = bookingDAO.countByUserId(userId);
+        return current &lt; maxParcelsPerUser;
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/TrackingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@Service
+public class TrackingService {
+
+    private final BookingDAO bookingDAO;
+
+    @Value("${app.tracking-prefix:NMB}")
+    private String prefix;
+
+    public TrackingService(BookingDAO bookingDAO) {
+        this.bookingDAO = bookingDAO;
+    }
+
+    public String generateTrackingNumber() {
+        String date = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        int seq = bookingDAO.getNextSequence();
+        return String.format("%s-%s-%03d", prefix, date, seq);
+    }
+
+    public Booking track(String trackingNumber) {
+        return bookingDAO.findByTrackingNumber(trackingNumber);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: EXERCISES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 10</div>
+  <h2>Exercises</h2>
+  <p class="section-desc">Practice DI patterns with these challenges.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Constructor vs Setter</div>
+    <p>Create a <code>PaymentService</code> with a required <code>PaymentGateway</code> (constructor injection) and an optional <code>FraudDetector</code> (setter injection). Write a <code>processPayment()</code> method that checks fraud only if the detector is available.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Profile Switching</div>
+    <p>Create two implementations of <code>BookingDAO</code>: one <code>@Profile("dev")</code> using an in-memory <code>ArrayList</code>, one <code>@Profile("prod")</code> using JDBC. Inject into <code>BookingService</code> and verify switching profiles changes the DAO used.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; @Value Configuration</div>
+    <p>Create <code>application.properties</code> with <code>app.name</code>, <code>app.version</code>, <code>app.admin-email</code>. Inject all three into an <code>AppInfoService</code> bean. Add a method <code>getAbout()</code> that returns <code>"Nimbus v1.0 | admin@nimbus.com"</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Lifecycle Hooks</div>
+    <p>Add <code>@PostConstruct</code> to <code>TrackingService</code> that pre-loads the last 100 bookings into a <code>HashMap</code> cache. Add <code>@PreDestroy</code> that clears the cache and logs the number of entries cleared.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Fix the Circular Dependency</div>
+    <p>Given: <code>OrderService</code> needs <code>InventoryService</code>, and <code>InventoryService</code> needs <code>OrderService</code>. Both use constructor injection. The app crashes on startup. Fix it using three different approaches: redesign, <code>@Lazy</code>, and setter injection.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="spring-intro.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Spring &mdash; Big Picture</span>
+  </a>
+  <a href="spring-annotations.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Spring Annotations</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

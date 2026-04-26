@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint 3: Servlets, JSP &amp; Spring &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="#web-server" class="sidebar-link"><span class="num">01</span> What is a Web Server?</a>
+    <a href="#servlet" class="sidebar-link"><span class="num">02</span> What is a Servlet?</a>
+    <a href="#jsp" class="sidebar-link"><span class="num">03</span> What is JSP?</a>
+    <a href="#spring" class="sidebar-link"><span class="num">04</span> What is Spring?</a>
+    <a href="#spring-data-jpa" class="sidebar-link"><span class="num">05</span> What is Spring Data JPA?</a>
+    <a href="#dao-vs-repo" class="sidebar-link"><span class="num">06</span> DAO vs Repository</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Config</div>
+    <a href="#nimbus-application" class="sidebar-link"><span class="num">07</span> NimbusApplication.java</a>
+    <a href="#data-seeder" class="sidebar-link"><span class="num">08</span> DataSeeder</a>
+    <a href="#servlet-config" class="sidebar-link"><span class="num">09</span> ServletConfig</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Repositories</div>
+    <a href="#user-repository" class="sidebar-link"><span class="num">10</span> UserRepository</a>
+    <a href="#booking-repository" class="sidebar-link"><span class="num">11</span> BookingRepository</a>
+    <a href="#issue-repository" class="sidebar-link"><span class="num">12</span> IssueRepository</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Services</div>
+    <a href="#user-service" class="sidebar-link"><span class="num">13</span> UserService</a>
+    <a href="#booking-service" class="sidebar-link"><span class="num">14</span> BookingService</a>
+    <a href="#issue-service" class="sidebar-link"><span class="num">15</span> IssueService</a>
+    <a href="#pricing-service" class="sidebar-link"><span class="num">16</span> PricingService</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets</div>
+    <a href="#login-servlet" class="sidebar-link"><span class="num">17</span> LoginServlet</a>
+    <a href="#register-servlet" class="sidebar-link"><span class="num">18</span> RegisterServlet</a>
+    <a href="#booking-servlet" class="sidebar-link"><span class="num">19</span> BookingServlet</a>
+    <a href="#tracking-servlet" class="sidebar-link"><span class="num">20</span> TrackingServlet</a>
+    <a href="#dashboard-servlet" class="sidebar-link"><span class="num">21</span> DashboardServlet</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">JSP Pages</div>
+    <a href="#login-jsp" class="sidebar-link"><span class="num">22</span> login.jsp</a>
+    <a href="#register-jsp" class="sidebar-link"><span class="num">23</span> register.jsp</a>
+    <a href="#dashboard-jsp" class="sidebar-link"><span class="num">24</span> dashboard.jsp</a>
+    <a href="#booking-jsp" class="sidebar-link"><span class="num">25</span> booking.jsp</a>
+    <a href="#tracking-jsp" class="sidebar-link"><span class="num">26</span> tracking.jsp</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Run &amp; Test</div>
+    <a href="#how-to-run" class="sidebar-link"><span class="num">27</span> How to Run</a>
+    <a href="#test-servlets" class="sidebar-link"><span class="num">28</span> Test Servlets</a>
+    <a href="#test-h2" class="sidebar-link"><span class="num">29</span> Test H2 Console</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+  <a href="../backend-overview.html" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Backend Overview
+  </a>
+
+  <!-- ==================== THE BIG PICTURE ==================== -->
+  <section class="content-section" id="big-picture">
+    <span class="section-tag">The Big Picture</span>
+    <h2>From Console App to Web App</h2>
+    <p class="section-desc">In Sprint 2, you built a console app &mdash; you type commands in the terminal. But users don't use terminals. They use browsers. Sprint 3 converts your console app into a web app that runs in a browser.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p>Your Sprint 2 app works, but only YOU can use it on YOUR computer. What if 100 customers want to book parcels at the same time? They can't all sit at your terminal. They need a website they can open in Chrome.</p>
+    </div>
+
+    <h3>How the Architecture Changes</h3>
+    <p>Here's the shift from Sprint 2 to Sprint 3 &mdash; every layer of the stack changes:</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Sprint 2 (Console)</div>
+        <div class="comparison-body">
+          <p><strong>User</strong> types in terminal</p>
+          <p><strong>ConsoleApp.java</strong> reads input</p>
+          <p><strong>DAO</strong> runs SQL manually</p>
+          <p><strong>Database</strong> stores data</p>
+          <p>Output: <code>System.out.println()</code></p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Sprint 3 (Web App)</div>
+        <div class="comparison-body">
+          <p><strong>User</strong> opens Chrome</p>
+          <p><strong>Servlet</strong> handles HTTP request</p>
+          <p><strong>Service</strong> runs business logic</p>
+          <p><strong>Repository</strong> auto-generates SQL</p>
+          <p>Output: <strong>JSP</strong> renders HTML page</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">Browser (Chrome)<span class="flow-sub">User clicks "Login"</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box green">HTTP Request<span class="flow-sub">POST /servlet/login</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">Servlet<span class="flow-sub">LoginServlet.doPost()</span></div>
+      </div>
+      <div class="flow-arrow-down">&darr;</div>
+      <div class="flow-row">
+        <div class="flow-box purple">Service<span class="flow-sub">UserService.validateLogin()</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box cyan">Repository<span class="flow-sub">UserRepository.findByUserIdAndPassword()</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box dark">Database<span class="flow-sub">H2 (SQL)</span></div>
+      </div>
+      <div class="flow-arrow-down">&darr;</div>
+      <div class="flow-row">
+        <div class="flow-box green">JSP Page<span class="flow-sub">dashboard.jsp renders HTML</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box blue">Browser<span class="flow-sub">User sees the dashboard</span></div>
+      </div>
+      <div class="flow-label">Full request lifecycle: Browser &rarr; Servlet &rarr; Service &rarr; Repository &rarr; DB &rarr; JSP &rarr; Browser</div>
+    </div>
+  </section>
+
+  <!-- ==================== WHAT IS A WEB SERVER ==================== -->
+  <section class="content-section" id="web-server">
+    <span class="section-tag">Concept</span>
+    <h2>What is a Web Server?</h2>
+    <p class="section-desc">When you type a URL in your browser, something has to RECEIVE that request and send back HTML. That something is a web server.</p>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy</div>
+      <p>Think of a web server like a restaurant host. When you (the browser) walk in and say "I want table 5" (a URL), the host (web server) takes you to the right table (routes you to the right code). The chef (your Java code) prepares the food (HTML), and the waiter (HTTP response) brings it back to you.</p>
+    </div>
+
+    <p>In our case, the web server is <strong>Tomcat</strong> &mdash; and Spring Boot runs Tomcat <strong>inside</strong> your Java app automatically. You don't install Tomcat separately. When you run <code>NimbusApplication.java</code>, Spring Boot starts Tomcat on port 8080, and it's ready to receive HTTP requests.</p>
+
+    <div class="callout nimbus">
+      <div class="callout-title">In Nimbus</div>
+      <p>When you run the app and open <code>http://localhost:8080/servlet/login</code>, here's what happens:</p>
+      <ol>
+        <li>Your browser sends a GET request to <code>localhost:8080</code></li>
+        <li>Tomcat (running inside Spring Boot) receives it</li>
+        <li>Tomcat sees the URL <code>/servlet/login</code> and routes it to <code>LoginServlet</code></li>
+        <li><code>LoginServlet.doGet()</code> forwards to <code>login.jsp</code></li>
+        <li>The JSP generates HTML and sends it back to the browser</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ==================== WHAT IS A SERVLET ==================== -->
+  <section class="content-section" id="servlet">
+    <span class="section-tag">Concept</span>
+    <h2>What is a Servlet?</h2>
+    <p class="section-desc">A Servlet is a Java class that handles HTTP requests. When someone visits a URL, Tomcat routes that request to the right Servlet.</p>
+
+    <p>Think of it like this: In your Phase 1 frontend, you had <code>login.html</code> with a form. When the user clicks "Login", the form submitted to... nowhere (it used JavaScript and LocalStorage). Now, the form submits to a Servlet, which runs Java code on the server.</p>
+
+    <div class="diagram">
+      <pre>
+Browser: POST /servlet/login (userId=260401-AK01, password=Amit@123)
+    |
+    v
+Tomcat receives the HTTP request
+    |
+    v
+Routes to LoginServlet.doPost()
+    |
+    v
+LoginServlet calls UserRepository.findByUserIdAndPassword()
+    |
+    v
+If match found --> create session --> redirect to dashboard
+If no match   --> show error message on login page
+      </pre>
+      <div class="diagram-label">Login flow: from browser to Servlet to database and back</div>
+    </div>
+
+    <h3>The Two Main Methods</h3>
+    <p>Every Servlet has two methods that handle requests:</p>
+
+    <table class="info-table">
+      <thead>
+        <tr><th>Method</th><th>When It Runs</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>doGet()</code></td><td>User visits a URL (types it or clicks a link)</td><td>User opens <code>/servlet/login</code> &mdash; show the login form</td></tr>
+        <tr><td><code>doPost()</code></td><td>User submits a form</td><td>User fills in ID + password and clicks "Login" &mdash; process the login</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p><strong>GET</strong> = "Show me something" (display a page). <strong>POST</strong> = "Do something with this data" (submit a form). When you open a website, that's a GET. When you fill a form and click submit, that's a POST.</p>
+    </div>
+  </section>
+
+  <!-- ==================== WHAT IS JSP ==================== -->
+  <section class="content-section" id="jsp">
+    <span class="section-tag">Concept</span>
+    <h2>What is JSP?</h2>
+    <p class="section-desc">JSP = JavaServer Pages. It's HTML with Java code embedded inside it. Instead of returning plain text from a Servlet, you forward to a JSP page that generates beautiful HTML.</p>
+
+    <p>In Sprint 2, your output was <code>System.out.println("Welcome, Amit!")</code> &mdash; just text in a terminal. With JSP, you generate a full HTML page with styling, buttons, and links.</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Sprint 2 Output (Console)</div>
+        <div class="comparison-body">
+          <code style="font-size: 0.82rem;">System.out.println("Welcome, " + user.getFullName());</code>
+          <p style="margin-top: 8px;">Shows text in terminal. No colors, no buttons, no links.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Sprint 3 Output (JSP)</div>
+        <div class="comparison-body">
+          <code style="font-size: 0.82rem;">&lt;h2&gt;Welcome, ${sessionScope.fullName}!&lt;/h2&gt;</code>
+          <p style="margin-top: 8px;">Shows a styled webpage in Chrome. Colors, buttons, navigation.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Key JSP Syntax</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Syntax</th><th>What It Does</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>${variable}</code></td><td>Prints a Java variable in HTML</td><td><code>${user.fullName}</code> &rarr; "Amit Kumar"</td></tr>
+        <tr><td><code>&lt;c:if&gt;</code></td><td>Conditional: show HTML only if condition is true</td><td>Show "Book Parcel" only for customers</td></tr>
+        <tr><td><code>&lt;c:forEach&gt;</code></td><td>Loop: repeat HTML for each item in a list</td><td>Show each booking in a table row</td></tr>
+        <tr><td><code>${sessionScope.role}</code></td><td>Reads data from the HTTP session</td><td>Check if logged-in user is "customer" or "officer"</td></tr>
+        <tr><td><code>${param.userId}</code></td><td>Reads URL parameters</td><td><code>?userId=260401-AK01</code> &rarr; shows the ID</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <div class="callout-title">Why WEB-INF?</div>
+      <p>JSP files go inside <code>src/main/webapp/WEB-INF/jsp/</code>. The <code>WEB-INF</code> folder is special &mdash; users CANNOT directly access files inside it by typing a URL. They can only be reached through a Servlet's <code>forward()</code>. This is a security feature. If JSPs were outside WEB-INF, anyone could open them directly and bypass your login check.</p>
+    </div>
+  </section>
+
+  <!-- ==================== WHAT IS SPRING ==================== -->
+  <section class="content-section" id="spring">
+    <span class="section-tag">Concept</span>
+    <h2>What is Spring?</h2>
+    <p class="section-desc">Spring is a framework that reduces boilerplate code. Without Spring, you write hundreds of lines of configuration. With Spring, you add annotations and Spring wires everything together.</p>
+
+    <h3>The Core Idea: Dependency Injection</h3>
+    <p>In Sprint 2, YOU created every object manually:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Sprint 2 &mdash; Manual object creation</span>
+      </div>
+      <pre><code class="language-java">// YOU create objects manually, YOU manage them
+UserDAO userDAO = new UserDAO();
+BookingDAO bookingDAO = new BookingDAO();
+IssueDAO issueDAO = new IssueDAO();</code></pre>
+    </div>
+
+    <p>With Spring, you never write <code>new UserRepository()</code>. Spring creates it and passes it in automatically. This is called <strong>Dependency Injection</strong> (DI).</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Sprint 3 &mdash; Spring injects dependencies</span>
+      </div>
+      <pre><code class="language-java">@Service
+public class UserService {
+    private final UserRepository userRepository;  // Spring creates this
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;  // Spring passes it automatically
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy</div>
+      <p>Imagine building a house. In Sprint 2, you personally go to the market, buy bricks, cement, and pipes, and carry them to the site. With Spring (DI), you just tell the builder "I need plumbing" and the builder delivers a plumber to your door. You don't care WHERE the plumber came from &mdash; you just use them.</p>
+    </div>
+
+    <h3>Key Spring Annotations</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Annotation</th><th>Goes On</th><th>What It Means</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>@SpringBootApplication</code></td><td>Main class</td><td>"Start Spring, scan for components, configure everything"</td></tr>
+        <tr><td><code>@Service</code></td><td>Service class</td><td>"This class contains business logic. Spring, manage it."</td></tr>
+        <tr><td><code>@Repository</code></td><td>Repository interface</td><td>"This talks to the database. Spring, generate the SQL."</td></tr>
+        <tr><td><code>@Component</code></td><td>Any class</td><td>"Spring, create and manage this object."</td></tr>
+        <tr><td><code>@Configuration</code></td><td>Config class</td><td>"This class defines beans (objects for Spring to manage)."</td></tr>
+        <tr><td><code>@Bean</code></td><td>A method</td><td>"The object returned by this method &mdash; Spring, manage it."</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== WHAT IS SPRING DATA JPA ==================== -->
+  <section class="content-section" id="spring-data-jpa">
+    <span class="section-tag">Concept</span>
+    <h2>What is Spring Data JPA?</h2>
+    <p class="section-desc">Remember your DAOs from Sprint 2? You wrote 50+ lines of SQL for each one. Spring Data JPA eliminates all of that. You write an INTERFACE (not a class) with method NAMES, and Spring generates the SQL automatically.</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Sprint 2: Manual SQL (UserDAO)</div>
+        <div class="comparison-body">
+<pre style="font-size: 0.78rem; color: var(--text-secondary); margin: 0; background: none;">public User findByEmail(String email) {
+    String sql = "SELECT * FROM users WHERE email = ?";
+    PreparedStatement ps = conn.prepareStatement(sql);
+    ps.setString(1, email);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+        User user = new User();
+        user.setUserId(rs.getString("user_id"));
+        user.setEmail(rs.getString("email"));
+        user.setFirstName(rs.getString("first_name"));
+        // ... 10 more fields
+        return user;
+    }
+    return null;
+}</pre>
+          <p style="margin-top: 8px; color: var(--red);">~20 lines of repetitive code for ONE query</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Sprint 3: Spring Data JPA</div>
+        <div class="comparison-body">
+<pre style="font-size: 0.78rem; color: var(--text-secondary); margin: 0; background: none;">public interface UserRepository
+    extends JpaRepository&lt;User, String&gt; {
+
+    Optional&lt;User&gt; findByEmail(String email);
+    // That's it. Spring writes the SQL.
+}</pre>
+          <p style="margin-top: 8px; color: var(--green);">1 line. Spring generates the SQL from the method name.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>How Method Name Queries Work</h3>
+    <p>Spring reads the method name and generates SQL. The pattern is: <code>findBy</code> + <code>FieldName</code> + optional operators.</p>
+
+    <table class="info-table">
+      <thead>
+        <tr><th>Method Name</th><th>Generated SQL</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>findByEmail(String email)</code></td><td><code>SELECT * FROM users WHERE email = ?</code></td></tr>
+        <tr><td><code>findByUserIdAndPassword(String id, String pw)</code></td><td><code>SELECT * FROM users WHERE user_id = ? AND password = ?</code></td></tr>
+        <tr><td><code>findByRole(String role)</code></td><td><code>SELECT * FROM users WHERE role = ?</code></td></tr>
+        <tr><td><code>existsByEmail(String email)</code></td><td><code>SELECT COUNT(*) > 0 FROM users WHERE email = ?</code></td></tr>
+        <tr><td><code>countByUserId(String userId)</code></td><td><code>SELECT COUNT(*) FROM bookings WHERE user_id = ?</code></td></tr>
+        <tr><td><code>findByUserIdOrderByCreatedAtDesc(String id)</code></td><td><code>SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p>Spring reads <code>findByUserIdAndPassword</code> and breaks it down: <code>findBy</code> = SELECT, <code>UserId</code> = WHERE user_id = ?, <code>And</code> = AND, <code>Password</code> = password = ?. It's like a naming convention that becomes real SQL.</p>
+    </div>
+  </section>
+
+  <!-- ==================== DAO VS REPOSITORY ==================== -->
+  <section class="content-section" id="dao-vs-repo">
+    <span class="section-tag">Concept</span>
+    <h2>DAO vs Repository &mdash; What Changed?</h2>
+    <p class="section-desc">Both DAOs and Repositories do the same job: talk to the database. The difference is HOW MUCH code YOU write.</p>
+
+    <table class="info-table">
+      <thead>
+        <tr><th>Aspect</th><th>Sprint 2 (DAO)</th><th>Sprint 3 (Repository)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Type</strong></td><td>Regular Java class</td><td>Java interface</td></tr>
+        <tr><td><strong>SQL</strong></td><td>You write every SQL query manually</td><td>Spring generates SQL from method names</td></tr>
+        <tr><td><strong>Connection</strong></td><td>You manage Connection, PreparedStatement, ResultSet</td><td>Spring handles all of it</td></tr>
+        <tr><td><strong>Error handling</strong></td><td>You write try-catch for every query</td><td>Spring handles exceptions</td></tr>
+        <tr><td><strong>Lines of code</strong></td><td>100+ lines per DAO</td><td>5-15 lines per Repository</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout nimbus">
+      <div class="callout-title">In Nimbus</div>
+      <p>The Sprint 2 DAOs (<code>UserDAO.java</code>, <code>BookingDAO.java</code>, <code>IssueDAO.java</code>) still exist in the project for learning and reference. Sprint 3 Repositories REPLACE them &mdash; same job, 90% less code. The Services now use Repositories, not DAOs. You can compare both approaches side by side.</p>
+    </div>
+
+    <div class="layer-stack">
+      <div class="layer">
+        <div class="layer-name blue">Servlet</div>
+        <div class="layer-detail">Receives HTTP request, extracts form data, calls Service</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name orange">Service</div>
+        <div class="layer-detail">Business logic: validation, rules, calculations. Calls Repository.</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name green">Repository</div>
+        <div class="layer-detail">Database access. Spring generates SQL. Replaces DAO.</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name purple">Model (Entity)</div>
+        <div class="layer-detail">Java class mapped to a database table. Same as Sprint 2 models.</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name cyan">JSP (View)</div>
+        <div class="layer-detail">HTML template with Java variables. Renders the final page.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== NIMBUS APPLICATION ==================== -->
+  <section class="content-section" id="nimbus-application">
+    <span class="section-tag">Config</span>
+    <h2>NimbusApplication.java</h2>
+    <p class="section-desc">The main class. Starts the embedded Tomcat server, loads all Spring beans, and serves everything.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p>This is the entry point &mdash; like <code>ConsoleApp.main()</code> in Sprint 2. But instead of starting a menu loop, it starts a web server that listens for HTTP requests forever (until you stop it).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/NimbusApplication.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+
+/**
+ * NimbusApplication &mdash; Spring Boot main entry point.
+ *
+ * This starts the embedded Tomcat server with:
+ *   - REST API controllers (Phase 4)
+ *   - Servlet endpoints (Phase 3)
+ *   - JSP pages (Phase 3)
+ *   - Static frontend files (Phase 1 HTML/CSS/JS)
+ *   - H2 database console
+ *
+ * HOW TO RUN IN ECLIPSE:
+ *   Right-click this file > Run As > Spring Boot App
+ *   (or Run As > Java Application)
+ *
+ * ENDPOINTS:
+ *   http://localhost:8080/             &rarr; Static frontend (login.html)
+ *   http://localhost:8080/h2-console   &rarr; Database browser
+ *   http://localhost:8080/servlet/*    &rarr; Servlet/JSP pages (Phase 3)
+ *   http://localhost:8080/api/*        &rarr; REST APIs (Phase 4)
+ */
+@SpringBootApplication
+@ServletComponentScan
+public class NimbusApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApplication.class, args);
+        System.out.println("\n========================================");
+        System.out.println("  NIMBUS is running!");
+        System.out.println("  Frontend:    http://localhost:8080/login.html");
+        System.out.println("  H2 Console:  http://localhost:8080/h2-console");
+        System.out.println("  REST API:    http://localhost:8080/api/");
+        System.out.println("  Servlets:    http://localhost:8080/servlet/login");
+        System.out.println("========================================\n");
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">@SpringBootApplication</div>
+          <div class="breakdown-explain">This one annotation does THREE things: enables auto-configuration, component scanning (finds all @Service, @Repository, etc.), and marks this as a Spring config class.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">@ServletComponentScan</div>
+          <div class="breakdown-explain">Tells Spring Boot to scan for traditional Servlet classes (our Phase 3 servlets). Without this, Spring wouldn't register them.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">SpringApplication.run(NimbusApplication.class, args);</div>
+          <div class="breakdown-explain">Starts the entire application: creates Spring container, starts embedded Tomcat, loads all beans, opens port 8080. This one line does what would take 50+ lines of XML configuration.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DATA SEEDER ==================== -->
+  <section class="content-section" id="data-seeder">
+    <span class="section-tag">Config</span>
+    <h2>DataSeeder.java</h2>
+    <p class="section-desc">Runs automatically on startup. Logs the seed data state so you know the demo data is loaded.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/config/DataSeeder.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.config;
+
+import com.nimbus.repository.UserRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+/**
+ * DataSeeder &mdash; Runs on application startup.
+ * Logs the initial data state. The actual seed data comes from data.sql.
+ */
+@Component
+public class DataSeeder implements CommandLineRunner {
+
+    private final UserRepository userRepository;
+
+    public DataSeeder(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public void run(String... args) {
+        long userCount = userRepository.count();
+        System.out.println("[DataSeeder] Database initialized with " + userCount + " users.");
+        System.out.println("[DataSeeder] Demo credentials:");
+        System.out.println("  Customer: 260401-AK01 / Amit@123");
+        System.out.println("  Officer:  OFF-001 / Officer@123");
+        System.out.println("  Support:  SUP-001 / Support@123");
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">@Component</div>
+          <div class="breakdown-explain">Tells Spring: "Create an instance of this class and manage it." Spring will automatically find it during startup.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">implements CommandLineRunner</div>
+          <div class="breakdown-explain">CommandLineRunner has one method: run(). Spring calls this method AFTER the application starts. Perfect for initialization tasks like logging or checking data.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public DataSeeder(UserRepository userRepository)</div>
+          <div class="breakdown-explain">Constructor injection. Spring sees this constructor needs a UserRepository, finds the one it already created, and passes it in. You never write <code>new UserRepository()</code>.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SERVLET CONFIG ==================== -->
+  <section class="content-section" id="servlet-config">
+    <span class="section-tag">Config</span>
+    <h2>ServletConfig.java</h2>
+    <p class="section-desc">Registers our Servlets with Spring Boot. Maps URLs to Servlet classes.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p>In a traditional Servlet project (no Spring Boot), you would configure URL mappings in a file called <code>web.xml</code>. Spring Boot replaces that with Java code &mdash; each <code>@Bean</code> method registers one Servlet and maps it to a URL pattern.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/config/ServletConfig.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.config;
+
+import com.nimbus.servlet.BookingServlet;
+import com.nimbus.servlet.DashboardServlet;
+import com.nimbus.servlet.LoginServlet;
+import com.nimbus.servlet.RegisterServlet;
+import com.nimbus.servlet.TrackingServlet;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * ServletConfig &mdash; Registers traditional Servlets inside Spring Boot.
+ *
+ * This lets us demonstrate Phase 3 Servlets alongside Phase 4 REST controllers.
+ * Each Servlet is mapped to /servlet/* URLs.
+ *
+ * In a pure Servlet project (no Spring Boot), you'd configure these in web.xml.
+ * Spring Boot's ServletRegistrationBean is the Java-config equivalent.
+ */
+@Configuration
+public class ServletConfig {
+
+    @Bean
+    public ServletRegistrationBean&lt;LoginServlet&gt; loginServlet() {
+        return new ServletRegistrationBean&lt;&gt;(new LoginServlet(), "/servlet/login");
+    }
+
+    @Bean
+    public ServletRegistrationBean&lt;RegisterServlet&gt; registerServlet() {
+        return new ServletRegistrationBean&lt;&gt;(new RegisterServlet(), "/servlet/register");
+    }
+
+    @Bean
+    public ServletRegistrationBean&lt;BookingServlet&gt; bookingServlet() {
+        return new ServletRegistrationBean&lt;&gt;(new BookingServlet(), "/servlet/booking");
+    }
+
+    @Bean
+    public ServletRegistrationBean&lt;TrackingServlet&gt; trackingServlet() {
+        return new ServletRegistrationBean&lt;&gt;(new TrackingServlet(), "/servlet/tracking");
+    }
+
+    @Bean
+    public ServletRegistrationBean&lt;DashboardServlet&gt; dashboardServlet() {
+        return new ServletRegistrationBean&lt;&gt;(new DashboardServlet(), "/servlet/dashboard");
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">URL Mapping Summary</div>
+      <p>After this config, here's where each Servlet listens:</p>
+      <ul>
+        <li><code>/servlet/login</code> &rarr; LoginServlet</li>
+        <li><code>/servlet/register</code> &rarr; RegisterServlet</li>
+        <li><code>/servlet/booking</code> &rarr; BookingServlet</li>
+        <li><code>/servlet/tracking</code> &rarr; TrackingServlet</li>
+        <li><code>/servlet/dashboard</code> &rarr; DashboardServlet</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== USER REPOSITORY ==================== -->
+  <section class="content-section" id="user-repository">
+    <span class="section-tag">Repository</span>
+    <h2>UserRepository.java</h2>
+    <p class="section-desc">Spring Data JPA interface for the users table. Replaces UserDAO from Sprint 2.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/repository/UserRepository.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.repository;
+
+import com.nimbus.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * UserRepository &mdash; Spring Data JPA interface for the users table.
+ *
+ * This replaces UserDAO from Phase 2. Instead of writing SQL manually,
+ * Spring generates the SQL from method names automatically.
+ *
+ * Phase 2: UserDAO.findByEmail("amit@email.com")  &rarr; manual SQL + PreparedStatement
+ * Phase 3: userRepository.findByEmail("amit@email.com") &rarr; Spring generates the SQL
+ *
+ * JpaRepository provides: save(), findById(), findAll(), deleteById(), count(), etc.
+ * We just add custom query methods below.
+ */
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, String&gt; {
+
+    /** Find a user by email address (for duplicate check). */
+    Optional&lt;User&gt; findByEmail(String email);
+
+    /** Validate login: find user by both userId and password. */
+    Optional&lt;User&gt; findByUserIdAndPassword(String userId, String password);
+
+    /** Get all users with a specific role (customer, officer, support). */
+    List&lt;User&gt; findByRole(String role);
+
+    /** Check if an email already exists. */
+    boolean existsByEmail(String email);
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public interface UserRepository</div>
+          <div class="breakdown-explain">Notice: this is an INTERFACE, not a class. You never write the implementation. Spring creates it at runtime.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">extends JpaRepository&lt;User, String&gt;</div>
+          <div class="breakdown-explain">JpaRepository&lt;Entity, IdType&gt;. User is the entity class, String is the type of its primary key (userId). This gives you save(), findById(), findAll(), delete(), count() for FREE.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Optional&lt;User&gt; findByEmail(String email);</div>
+          <div class="breakdown-explain">Spring reads "findByEmail" and generates: SELECT * FROM users WHERE email = ?. Returns Optional because the user might not exist.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">boolean existsByEmail(String email);</div>
+          <div class="breakdown-explain">Spring generates: SELECT COUNT(*) > 0 FROM users WHERE email = ?. Returns true/false. Used during registration to check duplicates.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== BOOKING REPOSITORY ==================== -->
+  <section class="content-section" id="booking-repository">
+    <span class="section-tag">Repository</span>
+    <h2>BookingRepository.java</h2>
+    <p class="section-desc">Spring Data JPA interface for the bookings table. Replaces BookingDAO from Sprint 2.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/repository/BookingRepository.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.repository;
+
+import com.nimbus.model.Booking;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * BookingRepository &mdash; Spring Data JPA interface for the bookings table.
+ * Replaces BookingDAO from Phase 2.
+ */
+@Repository
+public interface BookingRepository extends JpaRepository&lt;Booking, String&gt; {
+
+    /** Get all bookings for a user, sorted newest first. */
+    List&lt;Booking&gt; findByUserIdOrderByCreatedAtDesc(String userId);
+
+    /** Get bookings by status. */
+    List&lt;Booking&gt; findByParStatus(String parStatus);
+
+    /** Get bookings by user and status. */
+    List&lt;Booking&gt; findByUserIdAndParStatus(String userId, String parStatus);
+
+    /** Get bookings within a date range (for history filtering). */
+    @Query("SELECT b FROM Booking b WHERE " +
+           "(:userId IS NULL OR b.userId = :userId) AND " +
+           "(:startDate IS NULL OR b.createdAt >= :startDate) AND " +
+           "(:endDate IS NULL OR b.createdAt &lt;= :endDate) " +
+           "ORDER BY b.createdAt DESC")
+    List&lt;Booking&gt; findByDateRange(
+            @Param("userId") String userId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
+    /** Count bookings for a specific user. */
+    long countByUserId(String userId);
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p>Notice the <code>@Query</code> annotation on <code>findByDateRange()</code>. When the method name gets too complex (multiple optional filters), you can write JPQL (Java Persistence Query Language) directly. JPQL looks like SQL but uses Java class names instead of table names. <code>Booking b</code> instead of <code>bookings b</code>.</p>
+    </div>
+  </section>
+
+  <!-- ==================== ISSUE REPOSITORY ==================== -->
+  <section class="content-section" id="issue-repository">
+    <span class="section-tag">Repository</span>
+    <h2>IssueRepository.java</h2>
+    <p class="section-desc">Spring Data JPA interface for the issues table. Replaces IssueDAO from Sprint 2.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/repository/IssueRepository.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.repository;
+
+import com.nimbus.model.Issue;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * IssueRepository &mdash; Spring Data JPA interface for the issues table.
+ * Replaces IssueDAO from Phase 2.
+ */
+@Repository
+public interface IssueRepository extends JpaRepository&lt;Issue, String&gt; {
+
+    /** Get issues reported by a specific user. */
+    List&lt;Issue&gt; findByUserIdOrderByCreatedAtDesc(String userId);
+
+    /** Get issues assigned to a specific support agent. */
+    List&lt;Issue&gt; findByAssignedToOrderByCreatedAtDesc(String assignedTo);
+
+    /** Get issues by status. */
+    List&lt;Issue&gt; findByStatus(String status);
+
+    /** Get issues by severity. */
+    List&lt;Issue&gt; findBySeverity(String severity);
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== USER SERVICE ==================== -->
+  <section class="content-section" id="user-service">
+    <span class="section-tag">Service</span>
+    <h2>UserService.java</h2>
+    <p class="section-desc">Business logic for user operations: registration, login, validation. Uses UserRepository instead of UserDAO.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Why a Service Layer?</div>
+      <p>Why not call the Repository directly from the Servlet? Because the Service layer contains BUSINESS RULES: "validate the email format", "check for duplicate accounts", "generate a user ID". If you put business logic in the Servlet, and later build a REST API (Sprint 4), you'd have to duplicate all that logic. With a Service, both Servlets and Controllers share the same business rules.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/service/UserService.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.model.User;
+import com.nimbus.repository.UserRepository;
+import com.nimbus.util.IdGenerator;
+import com.nimbus.util.InputValidator;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * UserService &mdash; Business logic for user operations.
+ * Used by both Servlets (Phase 3) and REST Controllers (Phase 4).
+ *
+ * This layer sits between the Controller/Servlet and the Repository.
+ * It contains validation, business rules, and data transformation.
+ */
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    /**
+     * Register a new customer.
+     * Validates input, checks for duplicate email, generates user ID, and saves.
+     */
+    public User register(String firstName, String middleName, String lastName,
+                         String email, String countryCode, String mobile,
+                         String street, String zipCode, String city, String state, String country,
+                         String password, String confirmPassword, String preferences) {
+
+        // Validate input
+        List&lt;String&gt; errors = InputValidator.validateRegistration(
+                firstName, lastName, email, mobile, street, zipCode, city, state, password, confirmPassword);
+
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("Validation failed: " + String.join("; ", errors));
+        }
+
+        // Check duplicate email
+        String normalizedEmail = email.trim().toLowerCase();
+        if (userRepository.existsByEmail(normalizedEmail)) {
+            throw new IllegalArgumentException("This email is already registered.");
+        }
+
+        // Generate User ID
+        List&lt;String&gt; existingIds = userRepository.findAll().stream()
+                .map(User::getUserId)
+                .collect(Collectors.toList());
+        String userId = IdGenerator.generateUserId(firstName.trim(), lastName.trim(), existingIds);
+
+        // Create User
+        User user = new User(userId, firstName.trim(),
+                middleName != null ? middleName.trim() : "",
+                lastName.trim(), normalizedEmail,
+                countryCode != null ? countryCode : "+91",
+                mobile.trim(), street.trim(), zipCode.trim(),
+                city.trim(), state.trim(),
+                country != null &amp;&amp; !country.isEmpty() ? country.trim() : "India",
+                password,
+                "customer",
+                preferences != null ? preferences : "Email notifications");
+
+        return userRepository.save(user);
+    }
+
+    /**
+     * Register an admin/officer user (for registerAdmin endpoint).
+     */
+    public User registerAdmin(String firstName, String lastName, String email,
+                              String mobile, String password, String role) {
+
+        String normalizedEmail = email.trim().toLowerCase();
+        if (userRepository.existsByEmail(normalizedEmail)) {
+            throw new IllegalArgumentException("This email is already registered.");
+        }
+
+        List&lt;String&gt; existingIds = userRepository.findAll().stream()
+                .map(User::getUserId).collect(Collectors.toList());
+
+        // Officers and support get different ID prefix
+        String userId;
+        if ("officer".equals(role)) {
+            long count = userRepository.findByRole("officer").size();
+            userId = "OFF-" + String.format("%03d", count + 1);
+        } else if ("support".equals(role)) {
+            long count = userRepository.findByRole("support").size();
+            userId = "SUP-" + String.format("%03d", count + 1);
+        } else {
+            userId = IdGenerator.generateUserId(firstName.trim(), lastName.trim(), existingIds);
+        }
+
+        User user = new User(userId, firstName.trim(), "", lastName.trim(),
+                normalizedEmail, "+91", mobile.trim(),
+                "Office", "000000", "Office", "Office", "India",
+                password, role, "");
+
+        return userRepository.save(user);
+    }
+
+    /**
+     * Validate login credentials.
+     * Returns the user if valid, throws exception if invalid.
+     */
+    public User validateLogin(String userId, String password) {
+        if (InputValidator.isBlank(userId) || InputValidator.isBlank(password)) {
+            throw new IllegalArgumentException("User ID and password are required.");
+        }
+
+        Optional&lt;User&gt; user = userRepository.findByUserIdAndPassword(userId.trim(), password);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("Invalid credentials.");
+        }
+
+        return user.get();
+    }
+
+    /** Get a user by ID. */
+    public User getUserById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("User not found: " + userId));
+    }
+
+    /** Get all users. */
+    public List&lt;User&gt; getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    /** Get users by role. */
+    public List&lt;User&gt; getUsersByRole(String role) {
+        return userRepository.findByRole(role);
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== BOOKING SERVICE ==================== -->
+  <section class="content-section" id="booking-service">
+    <span class="section-tag">Service</span>
+    <h2>BookingService.java</h2>
+    <p class="section-desc">Business logic for booking operations: create booking, track, update status, history.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/service/BookingService.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.model.Booking;
+import com.nimbus.repository.BookingRepository;
+import com.nimbus.util.IdGenerator;
+import com.nimbus.util.PricingCalculator;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * BookingService &mdash; Business logic for booking operations.
+ * Used by Servlets (Phase 3) and REST Controllers (Phase 4).
+ */
+@Service
+public class BookingService {
+
+    private final BookingRepository bookingRepository;
+
+    public BookingService(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
+
+    /**
+     * Create a new booking.
+     * Generates booking ID, calculates cost, and saves.
+     */
+    public Booking createBooking(String userId, String recName, String recAddress,
+                                  String recPin, String recMobile, int parWeightGram,
+                                  String parContentsDescription, String parDeliveryType,
+                                  String parPackingPreference, String paymentMethod) {
+
+        // Validate required fields
+        if (recName == null || recName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Receiver name is required.");
+        }
+        if (recAddress == null || recAddress.trim().isEmpty()) {
+            throw new IllegalArgumentException("Receiver address is required.");
+        }
+        if (parWeightGram &lt;= 0) {
+            throw new IllegalArgumentException("Weight must be greater than 0.");
+        }
+
+        // Generate Booking ID
+        int totalBookings = (int) bookingRepository.count();
+        String bookingId = IdGenerator.generateBookingId(totalBookings);
+
+        // Calculate cost
+        double cost = PricingCalculator.calculateSimple(
+                parWeightGram,
+                parDeliveryType != null ? parDeliveryType : "Standard",
+                parPackingPreference != null ? parPackingPreference : "Standard Packaging");
+
+        // Calculate estimated pickup and dropoff times
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime pickupTime = now.plusDays(1);
+        int deliveryDays = switch (parDeliveryType != null ? parDeliveryType : "Standard") {
+            case "Express" -&gt; 3;
+            case "Overnight" -&gt; 1;
+            default -&gt; 7;
+        };
+        LocalDateTime dropoffTime = pickupTime.plusDays(deliveryDays);
+
+        // Create booking
+        Booking booking = new Booking();
+        booking.setBookingId(bookingId);
+        booking.setUserId(userId);
+        booking.setRecName(recName.trim());
+        booking.setRecAddress(recAddress.trim());
+        booking.setRecPin(recPin != null ? recPin.trim() : "");
+        booking.setRecMobile(recMobile != null ? recMobile.trim() : "");
+        booking.setParWeightGram(parWeightGram);
+        booking.setParContentsDescription(parContentsDescription != null ? parContentsDescription.trim() : "");
+        booking.setParDeliveryType(parDeliveryType != null ? parDeliveryType : "Standard");
+        booking.setParPackingPreference(parPackingPreference != null ? parPackingPreference : "Standard Packaging");
+        booking.setParPickupTime(pickupTime);
+        booking.setParDropoffTime(dropoffTime);
+        booking.setParServiceCost(cost);
+        booking.setParPaymentTime(now);
+        booking.setPaymentMethod(paymentMethod != null ? paymentMethod : "card");
+        booking.setParStatus("Booked");
+        booking.setCreatedAt(now);
+
+        return bookingRepository.save(booking);
+    }
+
+    /**
+     * Track a booking by ID.
+     * Customers can only see their own bookings; officers can see any.
+     */
+    public Booking trackBooking(String bookingId, String userId, String role) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Booking not found: " + bookingId));
+
+        // Security: customers can only track their own bookings
+        if ("customer".equals(role) &amp;&amp; !booking.getUserId().equals(userId)) {
+            throw new SecurityException("Access denied. This booking belongs to another user.");
+        }
+
+        return booking;
+    }
+
+    /**
+     * Update delivery status (officer operation).
+     */
+    public Booking updateDeliveryStatus(String bookingId, String newStatus) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Booking not found: " + bookingId));
+
+        // Validate status value
+        List&lt;String&gt; validStatuses = List.of("Booked", "Picked Up", "In Transit", "Delivered", "Returned");
+        if (!validStatuses.contains(newStatus)) {
+            throw new IllegalArgumentException("Invalid status: " + newStatus);
+        }
+
+        booking.setParStatus(newStatus);
+        return bookingRepository.save(booking);
+    }
+
+    /**
+     * Update pickup and dropoff times (officer scheduling).
+     */
+    public Booking updatePickupDropoff(String bookingId, LocalDateTime pickupTime, LocalDateTime dropoffTime) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Booking not found: " + bookingId));
+
+        booking.setParPickupTime(pickupTime);
+        booking.setParDropoffTime(dropoffTime);
+        return bookingRepository.save(booking);
+    }
+
+    /**
+     * Get booking history with optional filters.
+     */
+    public List&lt;Booking&gt; getHistory(String userId, String role, String startDate, String endDate) {
+        if ("customer".equals(role)) {
+            // Customers see only their own bookings
+            if (startDate != null || endDate != null) {
+                LocalDateTime start = startDate != null ?
+                        LocalDateTime.parse(startDate + "T00:00:00") : null;
+                LocalDateTime end = endDate != null ?
+                        LocalDateTime.parse(endDate + "T23:59:59") : null;
+                return bookingRepository.findByDateRange(userId, start, end);
+            }
+            return bookingRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        } else {
+            // Officers see all bookings (optionally filtered)
+            if (userId != null || startDate != null || endDate != null) {
+                LocalDateTime start = startDate != null ?
+                        LocalDateTime.parse(startDate + "T00:00:00") : null;
+                LocalDateTime end = endDate != null ?
+                        LocalDateTime.parse(endDate + "T23:59:59") : null;
+                return bookingRepository.findByDateRange(userId, start, end);
+            }
+            return bookingRepository.findAll();
+        }
+    }
+
+    /** Get a single booking by ID. */
+    public Booking getBookingById(String bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Booking not found: " + bookingId));
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== ISSUE SERVICE ==================== -->
+  <section class="content-section" id="issue-service">
+    <span class="section-tag">Service</span>
+    <h2>IssueService.java</h2>
+    <p class="section-desc">Business logic for support issue operations: create issues, update status, assign to support agents.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/service/IssueService.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.model.Issue;
+import com.nimbus.repository.IssueRepository;
+import com.nimbus.util.IdGenerator;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * IssueService &mdash; Business logic for support issue operations.
+ */
+@Service
+public class IssueService {
+
+    private final IssueRepository issueRepository;
+
+    public IssueService(IssueRepository issueRepository) {
+        this.issueRepository = issueRepository;
+    }
+
+    /** Create a new support issue (customer action). */
+    public Issue createIssue(String userId, String bookingId, String subject,
+                              String description, String severity) {
+
+        if (subject == null || subject.trim().isEmpty()) {
+            throw new IllegalArgumentException("Subject is required.");
+        }
+
+        int count = (int) issueRepository.count();
+        String issueId = IdGenerator.generateIssueId(count);
+
+        Issue issue = new Issue(issueId, userId,
+                bookingId != null &amp;&amp; !bookingId.isEmpty() ? bookingId : null,
+                subject.trim(),
+                description != null ? description.trim() : "",
+                severity != null ? severity : "Low");
+
+        return issueRepository.save(issue);
+    }
+
+    /** Update issue status, assignment, and notes (officer/support action). */
+    public Issue updateIssue(String issueId, String status, String assignedTo, String notes) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Issue not found: " + issueId));
+
+        if (status != null) issue.setStatus(status);
+        if (assignedTo != null) issue.setAssignedTo(assignedTo);
+        if (notes != null) issue.setNotes(notes);
+        issue.setUpdatedAt(LocalDateTime.now());
+
+        return issueRepository.save(issue);
+    }
+
+    /** Get all issues. */
+    public List&lt;Issue&gt; getAllIssues() {
+        return issueRepository.findAll();
+    }
+
+    /** Get issues by user. */
+    public List&lt;Issue&gt; getIssuesByUser(String userId) {
+        return issueRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
+
+    /** Get issues assigned to a support agent. */
+    public List&lt;Issue&gt; getAssignedIssues(String supportUserId) {
+        return issueRepository.findByAssignedToOrderByCreatedAtDesc(supportUserId);
+    }
+
+    /** Get a single issue. */
+    public Issue getIssueById(String issueId) {
+        return issueRepository.findById(issueId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Issue not found: " + issueId));
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== PRICING SERVICE ==================== -->
+  <section class="content-section" id="pricing-service">
+    <span class="section-tag">Service</span>
+    <h2>PricingService.java</h2>
+    <p class="section-desc">Spring-managed wrapper around PricingCalculator. Makes the pricing logic injectable into Controllers and Servlets.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Why Wrap a Static Class?</div>
+      <p><code>PricingCalculator</code> from Sprint 2 uses static methods &mdash; you call <code>PricingCalculator.calculate()</code> directly. But Spring's dependency injection works with objects, not static methods. <code>PricingService</code> wraps those static calls so they can be injected with <code>@Service</code> just like everything else.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/service/PricingService.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.util.PricingCalculator;
+import org.springframework.stereotype.Service;
+
+/**
+ * PricingService &mdash; Spring-managed wrapper around PricingCalculator.
+ * Makes the pricing logic injectable into Controllers and Servlets.
+ */
+@Service
+public class PricingService {
+
+    /** Calculate full pricing with breakdown. */
+    public PricingCalculator.PricingResult calculate(int weightGram, String deliveryType,
+                                                      String packagingType, String insuranceType,
+                                                      double declaredValue) {
+        return PricingCalculator.calculate(weightGram, deliveryType, packagingType, insuranceType, declaredValue);
+    }
+
+    /** Calculate simple total (no insurance). */
+    public double calculateSimple(int weightGram, String deliveryType, String packagingType) {
+        return PricingCalculator.calculateSimple(weightGram, deliveryType, packagingType);
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== LOGIN SERVLET ==================== -->
+  <section class="content-section" id="login-servlet">
+    <span class="section-tag">Servlet</span>
+    <h2>LoginServlet.java</h2>
+    <p class="section-desc">Handles login. GET shows the login page, POST processes the login form.</p>
+
+    <div class="callout nimbus">
+      <div class="callout-title">How Login Works</div>
+      <p>This is the most important Servlet to understand. Here's the full flow:</p>
+      <ol>
+        <li>User opens <code>/servlet/login</code> &rarr; <code>doGet()</code> runs &rarr; forwards to <code>login.jsp</code> &rarr; user sees the login form</li>
+        <li>User types ID + password and clicks "Login" &rarr; form sends POST to <code>/servlet/login</code></li>
+        <li><code>doPost()</code> runs &rarr; extracts userId and password from the form &rarr; queries the database</li>
+        <li>If credentials match: creates an HTTP session (stores user data on server) &rarr; redirects to dashboard</li>
+        <li>If credentials don't match: sets error message &rarr; forwards back to login.jsp &rarr; user sees "Invalid User ID or Password"</li>
+      </ol>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/servlet/LoginServlet.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.model.User;
+import com.nimbus.repository.UserRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import java.io.IOException;
+import java.util.Optional;
+
+/**
+ * LoginServlet &mdash; Phase 3 traditional Servlet for login.
+ *
+ * GET  /servlet/login  &rarr; Shows the login JSP page
+ * POST /servlet/login  &rarr; Processes login form, creates session, redirects to dashboard
+ *
+ * This demonstrates the Servlet lifecycle:
+ *   1. Client sends HTTP request
+ *   2. Tomcat routes to this Servlet based on URL mapping
+ *   3. doGet/doPost handles the request
+ *   4. Forward to JSP (view) or redirect to another URL
+ */
+public class LoginServlet extends HttpServlet {
+
+    /**
+     * GET &mdash; Display the login page.
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Forward to the JSP view
+        request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+    }
+
+    /**
+     * POST &mdash; Process login form submission.
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String userId = request.getParameter("userId");
+        String password = request.getParameter("password");
+
+        // Get Spring's UserRepository from the application context
+        WebApplicationContext ctx = WebApplicationContextUtils
+                .getWebApplicationContext(getServletContext());
+        UserRepository userRepository = ctx.getBean(UserRepository.class);
+
+        // Validate login
+        Optional&lt;User&gt; userOpt = userRepository.findByUserIdAndPassword(userId, password);
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+
+            // Create HTTP session (stores user info on the server)
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            session.setAttribute("userId", user.getUserId());
+            session.setAttribute("fullName", user.getFullName());
+            session.setAttribute("role", user.getRole());
+
+            // Redirect to dashboard JSP
+            response.sendRedirect(request.getContextPath() + "/servlet/dashboard?role=" + user.getRole());
+        } else {
+            // Login failed &mdash; show error on login page
+            request.setAttribute("error", "Invalid User ID or Password.");
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Key concepts explained</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">request.getParameter("userId")</div>
+          <div class="breakdown-explain">Gets the value the user typed in the form's "userId" input field. Like reading what someone wrote on a paper form.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">WebApplicationContextUtils.getWebApplicationContext(getServletContext())</div>
+          <div class="breakdown-explain">Since Servlets are NOT Spring-managed beans, they can't use @Autowired. This line manually gets Spring's container so we can retrieve the UserRepository bean.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">HttpSession session = request.getSession();</div>
+          <div class="breakdown-explain">Creates a server-side session for this user. Think of it as a locker at the server &mdash; you store user data there, and it persists across multiple page visits until they log out or close the browser.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">response.sendRedirect(...) vs request.getRequestDispatcher(...).forward(...)</div>
+          <div class="breakdown-explain"><strong>Redirect:</strong> tells the browser "go to this new URL" (browser makes a NEW request). <strong>Forward:</strong> server internally sends the request to another page (browser URL doesn't change). Use redirect after success (POST-Redirect-GET pattern), forward for showing errors on the same page.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== REGISTER SERVLET ==================== -->
+  <section class="content-section" id="register-servlet">
+    <span class="section-tag">Servlet</span>
+    <h2>RegisterServlet.java</h2>
+    <p class="section-desc">Handles customer registration. GET shows the form, POST processes it.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/servlet/RegisterServlet.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import java.io.IOException;
+
+/**
+ * RegisterServlet &mdash; Phase 3 Servlet for customer registration.
+ *
+ * GET  /servlet/register &rarr; Shows the registration form (JSP)
+ * POST /servlet/register &rarr; Processes registration, redirects to login on success
+ */
+public class RegisterServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        WebApplicationContext ctx = WebApplicationContextUtils
+                .getWebApplicationContext(getServletContext());
+        UserService userService = ctx.getBean(UserService.class);
+
+        try {
+            User user = userService.register(
+                    request.getParameter("firstName"),
+                    request.getParameter("middleName"),
+                    request.getParameter("lastName"),
+                    request.getParameter("email"),
+                    request.getParameter("countryCode"),
+                    request.getParameter("mobile"),
+                    request.getParameter("street"),
+                    request.getParameter("zipCode"),
+                    request.getParameter("city"),
+                    request.getParameter("state"),
+                    request.getParameter("country"),
+                    request.getParameter("password"),
+                    request.getParameter("confirmPassword"),
+                    request.getParameter("preferences")
+            );
+
+            // Success &mdash; redirect to login with the generated User ID
+            response.sendRedirect(request.getContextPath() +
+                    "/servlet/login?registered=true&amp;userId=" + user.getUserId());
+
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(request, response);
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Pattern: Try-Catch with Forward</div>
+      <p>Notice the try-catch pattern. If registration succeeds: redirect to login page (with a success message in the URL). If it fails (validation error, duplicate email): catch the exception, set the error message as a request attribute, and forward back to the same form so the user sees what went wrong. This is the standard error-handling pattern for Servlets.</p>
+    </div>
+  </section>
+
+  <!-- ==================== BOOKING SERVLET ==================== -->
+  <section class="content-section" id="booking-servlet">
+    <span class="section-tag">Servlet</span>
+    <h2>BookingServlet.java</h2>
+    <p class="section-desc">Handles parcel booking. GET shows the form, POST creates a booking.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/servlet/BookingServlet.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.model.Booking;
+import com.nimbus.model.User;
+import com.nimbus.service.BookingService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import java.io.IOException;
+
+/**
+ * BookingServlet &mdash; Phase 3 Servlet for creating bookings.
+ *
+ * GET  /servlet/booking &rarr; Shows the booking form (JSP)
+ * POST /servlet/booking &rarr; Processes booking, shows confirmation
+ */
+public class BookingServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Check if user is logged in
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect(request.getContextPath() + "/servlet/login");
+            return;
+        }
+
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("sender", user);
+        request.getRequestDispatcher("/WEB-INF/jsp/booking.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect(request.getContextPath() + "/servlet/login");
+            return;
+        }
+
+        WebApplicationContext ctx = WebApplicationContextUtils
+                .getWebApplicationContext(getServletContext());
+        BookingService bookingService = ctx.getBean(BookingService.class);
+
+        User user = (User) session.getAttribute("user");
+
+        try {
+            int weight = Integer.parseInt(request.getParameter("weight"));
+
+            Booking booking = bookingService.createBooking(
+                    user.getUserId(),
+                    request.getParameter("recName"),
+                    request.getParameter("recAddress"),
+                    request.getParameter("recPin"),
+                    request.getParameter("recMobile"),
+                    weight,
+                    request.getParameter("contents"),
+                    request.getParameter("deliveryType"),
+                    request.getParameter("packagingType"),
+                    request.getParameter("paymentMethod")
+            );
+
+            request.setAttribute("booking", booking);
+            request.setAttribute("success", "Booking confirmed! ID: " + booking.getBookingId());
+            request.setAttribute("sender", user);
+            request.getRequestDispatcher("/WEB-INF/jsp/booking.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            request.setAttribute("error", e.getMessage());
+            request.setAttribute("sender", user);
+            request.getRequestDispatcher("/WEB-INF/jsp/booking.jsp").forward(request, response);
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Session Check (Authentication Guard)</div>
+      <p>Notice the session check at the top of both <code>doGet()</code> and <code>doPost()</code>. The code checks if the user is logged in by looking for the "user" attribute in the HTTP session. If no session exists (user never logged in), they get redirected to the login page. This is how you protect pages from unauthorized access in Servlets.</p>
+    </div>
+  </section>
+
+  <!-- ==================== TRACKING SERVLET ==================== -->
+  <section class="content-section" id="tracking-servlet">
+    <span class="section-tag">Servlet</span>
+    <h2>TrackingServlet.java</h2>
+    <p class="section-desc">Handles parcel tracking. GET shows the search form, POST searches by booking ID.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/servlet/TrackingServlet.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.model.Booking;
+import com.nimbus.service.BookingService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import java.io.IOException;
+
+/**
+ * TrackingServlet &mdash; Phase 3 Servlet for tracking parcels.
+ *
+ * GET  /servlet/tracking &rarr; Shows tracking search form (JSP)
+ * POST /servlet/tracking &rarr; Searches by booking ID, shows result
+ */
+public class TrackingServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/tracking.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String bookingId = request.getParameter("bookingId");
+
+        WebApplicationContext ctx = WebApplicationContextUtils
+                .getWebApplicationContext(getServletContext());
+        BookingService bookingService = ctx.getBean(BookingService.class);
+
+        try {
+            // Get role from session for access control
+            HttpSession session = request.getSession(false);
+            String userId = session != null ? (String) session.getAttribute("userId") : null;
+            String role = session != null ? (String) session.getAttribute("role") : "customer";
+
+            Booking booking = bookingService.trackBooking(bookingId.trim(), userId, role);
+            request.setAttribute("booking", booking);
+
+        } catch (Exception e) {
+            request.setAttribute("error", e.getMessage());
+        }
+
+        request.getRequestDispatcher("/WEB-INF/jsp/tracking.jsp").forward(request, response);
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== DASHBOARD SERVLET ==================== -->
+  <section class="content-section" id="dashboard-servlet">
+    <span class="section-tag">Servlet</span>
+    <h2>DashboardServlet.java</h2>
+    <p class="section-desc">Serves the dashboard page based on user role. The simplest Servlet &mdash; just checks login and forwards to the JSP.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/servlet/DashboardServlet.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.servlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+
+/**
+ * DashboardServlet &mdash; Serves the dashboard JSP based on user role.
+ * GET /servlet/dashboard &rarr; Shows role-specific dashboard
+ */
+public class DashboardServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("role") == null) {
+            response.sendRedirect(request.getContextPath() + "/servlet/login");
+            return;
+        }
+
+        request.getRequestDispatcher("/WEB-INF/jsp/dashboard.jsp").forward(request, response);
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Simplest Servlet Pattern</div>
+      <p>This is the simplest Servlet you'll see. It does three things: (1) check if user is logged in, (2) if not, redirect to login, (3) if yes, forward to dashboard.jsp. The JSP itself handles showing different content based on role using <code>&lt;c:if test="${sessionScope.role == 'customer'}"&gt;</code>.</p>
+    </div>
+  </section>
+
+  <!-- ==================== LOGIN JSP ==================== -->
+  <section class="content-section" id="login-jsp">
+    <span class="section-tag">JSP Page</span>
+    <h2>login.jsp</h2>
+    <p class="section-desc">The login form. Shows error messages and success messages (after registration). Uses JSTL tags for conditional display.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/webapp/WEB-INF/jsp/login.jsp</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Nimbus &mdash; Login&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #F0F4F8; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; border-radius: 12px; padding: 40px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1B2A4A; text-align: center; margin-bottom: 8px; }
+        .subtitle { color: #7F8C9B; text-align: center; margin-bottom: 30px; }
+        label { display: block; color: #2C3E50; font-weight: 600; margin-bottom: 6px; margin-top: 16px; }
+        input { width: 100%; padding: 12px; border: 1px solid #DDE4EB; border-radius: 8px; font-size: 14px; }
+        input:focus { outline: none; border-color: #2E86DE; }
+        .btn { width: 100%; padding: 14px; background: #1B2A4A; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 24px; }
+        .btn:hover { background: #2E86DE; }
+        .error { background: #fee; color: #c00; padding: 10px; border-radius: 6px; margin-bottom: 16px; text-align: center; }
+        .success { background: #efe; color: #060; padding: 10px; border-radius: 6px; margin-bottom: 16px; text-align: center; }
+        .demo { margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 8px; font-size: 13px; }
+        .demo h3 { font-size: 14px; color: #1B2A4A; margin-bottom: 8px; }
+        .demo code { background: #e9ecef; padding: 2px 6px; border-radius: 4px; }
+        a { color: #2E86DE; text-decoration: none; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="card"&gt;
+        &lt;h1&gt;Nimbus&lt;/h1&gt;
+        &lt;p class="subtitle"&gt;Parcel Management System &mdash; Login&lt;/p&gt;
+
+        &lt;c:if test="${not empty error}"&gt;
+            &lt;div class="error"&gt;${error}&lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;c:if test="${param.registered == 'true'}"&gt;
+            &lt;div class="success"&gt;Registration successful! Your User ID: &lt;strong&gt;${param.userId}&lt;/strong&gt;&lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/login"&gt;
+            &lt;label for="userId"&gt;User ID&lt;/label&gt;
+            &lt;input type="text" id="userId" name="userId" placeholder="e.g., 260401-AK01" required&gt;
+
+            &lt;label for="password"&gt;Password&lt;/label&gt;
+            &lt;input type="password" id="password" name="password" placeholder="Enter password" required&gt;
+
+            &lt;button type="submit" class="btn"&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;p style="text-align:center; margin-top:16px"&gt;
+            New user? &lt;a href="${pageContext.request.contextPath}/servlet/register"&gt;Register here&lt;/a&gt;
+        &lt;/p&gt;
+
+        &lt;div class="demo"&gt;
+            &lt;h3&gt;Demo Credentials&lt;/h3&gt;
+            Customer: &lt;code&gt;260401-AK01&lt;/code&gt; / &lt;code&gt;Amit@123&lt;/code&gt;&lt;br&gt;
+            Officer: &lt;code&gt;OFF-001&lt;/code&gt; / &lt;code&gt;Officer@123&lt;/code&gt;&lt;br&gt;
+            Support: &lt;code&gt;SUP-001&lt;/code&gt; / &lt;code&gt;Support@123&lt;/code&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">JSP syntax explained</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;</div>
+          <div class="breakdown-explain">Page directive. Tells the server this JSP generates HTML content with UTF-8 encoding and uses Java.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;</div>
+          <div class="breakdown-explain">Imports JSTL (JavaServer Pages Standard Tag Library). The "c" prefix lets you use &lt;c:if&gt;, &lt;c:forEach&gt;, etc. These are like if/for in HTML.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">&lt;c:if test="${not empty error}"&gt;</div>
+          <div class="breakdown-explain">Only shows the error div if the "error" attribute was set by the Servlet. When login fails, LoginServlet sets request.setAttribute("error", "Invalid..."), and this tag displays it.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">${pageContext.request.contextPath}</div>
+          <div class="breakdown-explain">Gets the app's base URL path. If your app runs at the root, this is empty. If it runs at /nimbus, this returns "/nimbus". Ensures links work regardless of deployment location.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== REGISTER JSP ==================== -->
+  <section class="content-section" id="register-jsp">
+    <span class="section-tag">JSP Page</span>
+    <h2>register.jsp</h2>
+    <p class="section-desc">The registration form with personal info, address, and password sections.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/webapp/WEB-INF/jsp/register.jsp</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Nimbus &mdash; Register&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #F0F4F8; display: flex; justify-content: center; padding: 40px; }
+        .card { background: white; border-radius: 12px; padding: 40px; width: 500px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1B2A4A; text-align: center; margin-bottom: 30px; }
+        label { display: block; color: #2C3E50; font-weight: 600; margin-bottom: 4px; margin-top: 14px; font-size: 14px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #DDE4EB; border-radius: 8px; font-size: 14px; }
+        .row { display: flex; gap: 12px; }
+        .row &gt; div { flex: 1; }
+        .btn { width: 100%; padding: 14px; background: #1B2A4A; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 24px; }
+        .btn:hover { background: #2E86DE; }
+        .error { background: #fee; color: #c00; padding: 10px; border-radius: 6px; margin-bottom: 16px; }
+        .section { margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee; }
+        .section h2 { font-size: 16px; color: #2E86DE; margin-bottom: 8px; }
+        a { color: #2E86DE; text-decoration: none; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="card"&gt;
+        &lt;h1&gt;Nimbus &mdash; Register&lt;/h1&gt;
+
+        &lt;c:if test="${not empty error}"&gt;
+            &lt;div class="error"&gt;${error}&lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/register"&gt;
+            &lt;div class="section"&gt;
+                &lt;h2&gt;Personal Information&lt;/h2&gt;
+                &lt;div class="row"&gt;
+                    &lt;div&gt;&lt;label&gt;First Name *&lt;/label&gt;&lt;input name="firstName" required&gt;&lt;/div&gt;
+                    &lt;div&gt;&lt;label&gt;Middle Name&lt;/label&gt;&lt;input name="middleName"&gt;&lt;/div&gt;
+                    &lt;div&gt;&lt;label&gt;Last Name *&lt;/label&gt;&lt;input name="lastName" required&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;label&gt;Email *&lt;/label&gt;&lt;input type="email" name="email" required&gt;
+                &lt;div class="row"&gt;
+                    &lt;div&gt;&lt;label&gt;Country Code&lt;/label&gt;&lt;input name="countryCode" value="+91"&gt;&lt;/div&gt;
+                    &lt;div&gt;&lt;label&gt;Mobile (10 digits) *&lt;/label&gt;&lt;input name="mobile" required maxlength="10"&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="section"&gt;
+                &lt;h2&gt;Address&lt;/h2&gt;
+                &lt;label&gt;Street Address *&lt;/label&gt;&lt;input name="street" required&gt;
+                &lt;div class="row"&gt;
+                    &lt;div&gt;&lt;label&gt;ZIP Code *&lt;/label&gt;&lt;input name="zipCode" required&gt;&lt;/div&gt;
+                    &lt;div&gt;&lt;label&gt;City *&lt;/label&gt;&lt;input name="city" required&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="row"&gt;
+                    &lt;div&gt;&lt;label&gt;State *&lt;/label&gt;&lt;input name="state" required&gt;&lt;/div&gt;
+                    &lt;div&gt;&lt;label&gt;Country&lt;/label&gt;&lt;input name="country" value="India"&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="section"&gt;
+                &lt;h2&gt;Security&lt;/h2&gt;
+                &lt;label&gt;Password *&lt;/label&gt;&lt;input type="password" name="password" required&gt;
+                &lt;label&gt;Confirm Password *&lt;/label&gt;&lt;input type="password" name="confirmPassword" required&gt;
+                &lt;p style="font-size:12px;color:#7F8C9B;margin-top:4px"&gt;8-30 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special char&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;input type="hidden" name="preferences" value="Email notifications"&gt;
+
+            &lt;button type="submit" class="btn"&gt;Register&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;p style="text-align:center;margin-top:16px"&gt;Already registered? &lt;a href="${pageContext.request.contextPath}/servlet/login"&gt;Login&lt;/a&gt;&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== DASHBOARD JSP ==================== -->
+  <section class="content-section" id="dashboard-jsp">
+    <span class="section-tag">JSP Page</span>
+    <h2>dashboard.jsp</h2>
+    <p class="section-desc">Role-based dashboard. Shows different cards depending on whether the user is a Customer, Officer, or Support agent. Uses <code>&lt;c:if&gt;</code> for role-based content.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/webapp/WEB-INF/jsp/dashboard.jsp</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Nimbus &mdash; Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #F0F4F8; }
+        .nav { background: #1B2A4A; color: white; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+        .nav h1 { font-size: 20px; }
+        .nav a { color: #54A0FF; text-decoration: none; }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .welcome { background: white; border-radius: 12px; padding: 30px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .welcome h2 { color: #1B2A4A; margin-bottom: 8px; }
+        .welcome p { color: #7F8C9B; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .card { background: white; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+        .card a { text-decoration: none; color: #1B2A4A; font-weight: 600; font-size: 15px; }
+        .card .icon { font-size: 36px; margin-bottom: 12px; }
+        .role-badge { display: inline-block; background: #2E86DE; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; text-transform: uppercase; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="nav"&gt;
+        &lt;h1&gt;Nimbus&lt;/h1&gt;
+        &lt;div&gt;
+            &lt;span&gt;${sessionScope.fullName}&lt;/span&gt; |
+            &lt;span class="role-badge"&gt;${sessionScope.role}&lt;/span&gt; |
+            &lt;a href="${pageContext.request.contextPath}/servlet/login"&gt;Logout&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="container"&gt;
+        &lt;div class="welcome"&gt;
+            &lt;h2&gt;Welcome, ${sessionScope.fullName}!&lt;/h2&gt;
+            &lt;p&gt;User ID: ${sessionScope.userId} | Role: ${sessionScope.role}&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;c:if test="${sessionScope.role == 'customer'}"&gt;
+            &lt;div class="grid"&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F4E6;&lt;/div&gt;&lt;a href="${pageContext.request.contextPath}/servlet/booking"&gt;Book Parcel&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F50D;&lt;/div&gt;&lt;a href="${pageContext.request.contextPath}/servlet/tracking"&gt;Track Parcel&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F4CB;&lt;/div&gt;&lt;a href="#"&gt;Booking History&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F3A7;&lt;/div&gt;&lt;a href="#"&gt;Contact Support&lt;/a&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;c:if test="${sessionScope.role == 'officer'}"&gt;
+            &lt;div class="grid"&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F4E6;&lt;/div&gt;&lt;a href="${pageContext.request.contextPath}/servlet/booking"&gt;Book (Walk-in)&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F50D;&lt;/div&gt;&lt;a href="${pageContext.request.contextPath}/servlet/tracking"&gt;Track Parcel&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F69A;&lt;/div&gt;&lt;a href="#"&gt;Update Delivery&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F4CB;&lt;/div&gt;&lt;a href="#"&gt;All History&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x26A0;&#xFE0F;&lt;/div&gt;&lt;a href="#"&gt;Manage Issues&lt;/a&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;c:if test="${sessionScope.role == 'support'}"&gt;
+            &lt;div class="grid"&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x1F4DD;&lt;/div&gt;&lt;a href="#"&gt;Assigned Issues&lt;/a&gt;&lt;/div&gt;
+                &lt;div class="card"&gt;&lt;div class="icon"&gt;&#x2705;&lt;/div&gt;&lt;a href="#"&gt;Update Issues&lt;/a&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Role-Based Access Control (RBAC) in JSP</div>
+      <p>Look at the three <code>&lt;c:if&gt;</code> blocks. Each one checks <code>${sessionScope.role}</code> &mdash; the role stored in the HTTP session when the user logged in. Customers see "Book Parcel" and "Track Parcel". Officers see those PLUS "Update Delivery" and "Manage Issues". Support agents see only issue-related cards. Same JSP file, different content per role.</p>
+    </div>
+  </section>
+
+  <!-- ==================== BOOKING JSP ==================== -->
+  <section class="content-section" id="booking-jsp">
+    <span class="section-tag">JSP Page</span>
+    <h2>booking.jsp</h2>
+    <p class="section-desc">The parcel booking form with sender info, receiver details, parcel options, and confirmation display.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/webapp/WEB-INF/jsp/booking.jsp</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Nimbus &mdash; Book Parcel&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #F0F4F8; padding: 40px; }
+        .card { background: white; border-radius: 12px; padding: 40px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1B2A4A; margin-bottom: 24px; }
+        label { display: block; color: #2C3E50; font-weight: 600; margin: 12px 0 4px; font-size: 14px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #DDE4EB; border-radius: 8px; font-size: 14px; }
+        .btn { padding: 14px 32px; background: #1B2A4A; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+        .btn:hover { background: #2E86DE; }
+        .error { background: #fee; color: #c00; padding: 10px; border-radius: 6px; margin-bottom: 16px; }
+        .success { background: #efe; color: #060; padding: 14px; border-radius: 6px; margin-bottom: 16px; font-weight: 600; }
+        .section { margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee; }
+        .section h2 { font-size: 16px; color: #2E86DE; margin-bottom: 8px; }
+        .sender-info { background: #f8f9fa; padding: 12px; border-radius: 8px; font-size: 14px; color: #555; }
+        a { color: #2E86DE; text-decoration: none; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="card"&gt;
+        &lt;h1&gt;Book a Parcel&lt;/h1&gt;
+        &lt;p&gt;&lt;a href="${pageContext.request.contextPath}/servlet/dashboard"&gt;&amp;larr; Back to Dashboard&lt;/a&gt;&lt;/p&gt;
+
+        &lt;c:if test="${not empty error}"&gt;
+            &lt;div class="error"&gt;${error}&lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;c:if test="${not empty success}"&gt;
+            &lt;div class="success"&gt;
+                ${success}&lt;br&gt;
+                Cost: Rs. ${booking.parServiceCost}&lt;br&gt;
+                Status: ${booking.parStatus}
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/booking"&gt;
+            &lt;div class="section"&gt;
+                &lt;h2&gt;Sender (You)&lt;/h2&gt;
+                &lt;div class="sender-info"&gt;
+                    ${sender.fullName} | ${sender.email} | ${sender.mobile}
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="section"&gt;
+                &lt;h2&gt;Receiver Details&lt;/h2&gt;
+                &lt;label&gt;Receiver Name *&lt;/label&gt;&lt;input name="recName" required&gt;
+                &lt;label&gt;Address *&lt;/label&gt;&lt;input name="recAddress" required&gt;
+                &lt;label&gt;PIN Code&lt;/label&gt;&lt;input name="recPin"&gt;
+                &lt;label&gt;Mobile&lt;/label&gt;&lt;input name="recMobile"&gt;
+            &lt;/div&gt;
+
+            &lt;div class="section"&gt;
+                &lt;h2&gt;Parcel Details&lt;/h2&gt;
+                &lt;label&gt;Weight (grams) *&lt;/label&gt;&lt;input type="number" name="weight" min="1" required&gt;
+                &lt;label&gt;Contents Description&lt;/label&gt;&lt;input name="contents"&gt;
+
+                &lt;label&gt;Delivery Type&lt;/label&gt;
+                &lt;select name="deliveryType"&gt;
+                    &lt;option value="Standard"&gt;Standard (5-7 days)&lt;/option&gt;
+                    &lt;option value="Express"&gt;Express (2-3 days)&lt;/option&gt;
+                    &lt;option value="Overnight"&gt;Overnight (next day)&lt;/option&gt;
+                &lt;/select&gt;
+
+                &lt;label&gt;Packaging&lt;/label&gt;
+                &lt;select name="packagingType"&gt;
+                    &lt;option value="Standard Packaging"&gt;Standard Packaging&lt;/option&gt;
+                    &lt;option value="Custom Packaging"&gt;Custom Packaging (+Rs.50)&lt;/option&gt;
+                    &lt;option value="Eco-friendly Packaging"&gt;Eco-friendly (+Rs.30)&lt;/option&gt;
+                    &lt;option value="Fragile Item Handling"&gt;Fragile Handling (+Rs.80)&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+
+            &lt;input type="hidden" name="paymentMethod" value="card"&gt;
+
+            &lt;button type="submit" class="btn"&gt;Book &amp;amp; Pay&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== TRACKING JSP ==================== -->
+  <section class="content-section" id="tracking-jsp">
+    <span class="section-tag">JSP Page</span>
+    <h2>tracking.jsp</h2>
+    <p class="section-desc">Parcel tracking page. Search by booking ID and see full booking details with color-coded status.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/webapp/WEB-INF/jsp/tracking.jsp</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Nimbus &mdash; Track Parcel&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #F0F4F8; padding: 40px; }
+        .card { background: white; border-radius: 12px; padding: 40px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1B2A4A; margin-bottom: 24px; }
+        label { display: block; color: #2C3E50; font-weight: 600; margin-bottom: 6px; }
+        input { width: 100%; padding: 12px; border: 1px solid #DDE4EB; border-radius: 8px; font-size: 14px; }
+        .btn { padding: 12px 24px; background: #1B2A4A; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; margin-top: 12px; }
+        .btn:hover { background: #2E86DE; }
+        .error { background: #fee; color: #c00; padding: 10px; border-radius: 6px; margin: 16px 0; }
+        .result { margin-top: 24px; border-top: 2px solid #1B2A4A; padding-top: 20px; }
+        .result h2 { color: #1B2A4A; margin-bottom: 16px; }
+        .field { display: flex; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+        .field-label { width: 140px; font-weight: 600; color: #555; }
+        .field-value { flex: 1; color: #2C3E50; }
+        .status { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+        .status-booked { background: #FFF3CD; color: #856404; }
+        .status-transit { background: #CCE5FF; color: #004085; }
+        .status-delivered { background: #D4EDDA; color: #155724; }
+        .status-returned { background: #F8D7DA; color: #721C24; }
+        a { color: #2E86DE; text-decoration: none; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="card"&gt;
+        &lt;h1&gt;Track Parcel&lt;/h1&gt;
+        &lt;p&gt;&lt;a href="${pageContext.request.contextPath}/servlet/dashboard"&gt;&amp;larr; Back to Dashboard&lt;/a&gt;&lt;/p&gt;
+
+        &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/tracking" style="margin-top:20px"&gt;
+            &lt;label for="bookingId"&gt;Booking ID&lt;/label&gt;
+            &lt;input type="text" id="bookingId" name="bookingId" placeholder="e.g., NMB-260401-0001" required&gt;
+            &lt;button type="submit" class="btn"&gt;Track&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;c:if test="${not empty error}"&gt;
+            &lt;div class="error"&gt;${error}&lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;c:if test="${not empty booking}"&gt;
+            &lt;div class="result"&gt;
+                &lt;h2&gt;Booking Details&lt;/h2&gt;
+
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Booking ID&lt;/span&gt;&lt;span class="field-value"&gt;${booking.bookingId}&lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Status&lt;/span&gt;&lt;span class="field-value"&gt;
+                    &lt;span class="status
+                        &lt;c:choose&gt;
+                            &lt;c:when test="${booking.parStatus == 'Booked'}"&gt;status-booked&lt;/c:when&gt;
+                            &lt;c:when test="${booking.parStatus == 'In Transit' || booking.parStatus == 'Picked Up'}"&gt;status-transit&lt;/c:when&gt;
+                            &lt;c:when test="${booking.parStatus == 'Delivered'}"&gt;status-delivered&lt;/c:when&gt;
+                            &lt;c:when test="${booking.parStatus == 'Returned'}"&gt;status-returned&lt;/c:when&gt;
+                        &lt;/c:choose&gt;
+                    "&gt;${booking.parStatus}&lt;/span&gt;
+                &lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Receiver&lt;/span&gt;&lt;span class="field-value"&gt;${booking.recName}&lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Address&lt;/span&gt;&lt;span class="field-value"&gt;${booking.recAddress}, ${booking.recPin}&lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Weight&lt;/span&gt;&lt;span class="field-value"&gt;${booking.parWeightGram}g&lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Contents&lt;/span&gt;&lt;span class="field-value"&gt;${booking.parContentsDescription}&lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Delivery Type&lt;/span&gt;&lt;span class="field-value"&gt;${booking.parDeliveryType}&lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Packaging&lt;/span&gt;&lt;span class="field-value"&gt;${booking.parPackingPreference}&lt;/span&gt;&lt;/div&gt;
+                &lt;div class="field"&gt;&lt;span class="field-label"&gt;Cost&lt;/span&gt;&lt;span class="field-value"&gt;Rs. ${booking.parServiceCost}&lt;/span&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== HOW TO RUN ==================== -->
+  <section class="content-section" id="how-to-run">
+    <span class="section-tag">Run &amp; Test</span>
+    <h2>How to Run</h2>
+    <p class="section-desc">Get the web app running in your browser.</p>
+
+    <ol class="steps">
+      <li>Open the project in Eclipse. Navigate to <code>src/main/java/com/nimbus/NimbusApplication.java</code></li>
+      <li>Right-click <code>NimbusApplication.java</code> &rarr; <strong>Run As</strong> &rarr; <strong>Java Application</strong> (or Spring Boot App if available)</li>
+      <li>Wait for the console to show:<br><code style="color: var(--green);">NIMBUS is running!</code><br>This means Tomcat started on port 8080.</li>
+      <li>Open your browser (Chrome) and go to: <code>http://localhost:8080/servlet/login</code></li>
+      <li>Login with: <code>260401-AK01</code> / <code>Amit@123</code></li>
+      <li>You should see the <strong>Customer Dashboard</strong> with "Book Parcel", "Track Parcel", etc.</li>
+    </ol>
+
+    <div class="callout warning">
+      <div class="callout-title">Common Issues</div>
+      <p><strong>Port already in use:</strong> If you see "Address already in use: bind", another app is using port 8080. Stop the previous run first (red square in Eclipse console).</p>
+      <p><strong>Can't find NimbusApplication:</strong> Make sure you're running the file in <code>com.nimbus</code> package, not in a test folder.</p>
+      <p><strong>Dependencies not found:</strong> Right-click project &rarr; Maven &rarr; Update Project (Alt+F5).</p>
+    </div>
+  </section>
+
+  <!-- ==================== TEST SERVLETS ==================== -->
+  <section class="content-section" id="test-servlets">
+    <span class="section-tag">Run &amp; Test</span>
+    <h2>Test Servlets</h2>
+    <p class="section-desc">Manual testing checklist for your Servlet pages.</p>
+
+    <h3>Login Test</h3>
+    <ol class="steps">
+      <li>Open <code>http://localhost:8080/servlet/login</code> &mdash; you should see the login form</li>
+      <li>Enter wrong credentials &mdash; you should see "Invalid User ID or Password"</li>
+      <li>Enter <code>260401-AK01</code> / <code>Amit@123</code> &mdash; you should be redirected to the dashboard</li>
+    </ol>
+
+    <h3>Registration Test</h3>
+    <ol class="steps">
+      <li>From the login page, click "Register here"</li>
+      <li>Fill in all required fields and submit</li>
+      <li>You should be redirected to login with a success message showing your new User ID</li>
+      <li>Login with the new User ID and password to verify</li>
+    </ol>
+
+    <h3>Booking Test</h3>
+    <ol class="steps">
+      <li>Login as customer (260401-AK01 / Amit@123)</li>
+      <li>Click "Book Parcel" on the dashboard</li>
+      <li>Fill in receiver details and parcel info</li>
+      <li>Submit &mdash; you should see a confirmation with Booking ID and cost</li>
+    </ol>
+
+    <h3>Tracking Test</h3>
+    <ol class="steps">
+      <li>Click "Track Parcel" on the dashboard</li>
+      <li>Enter the booking ID from the previous test</li>
+      <li>You should see full booking details with status</li>
+    </ol>
+
+    <h3>Officer Dashboard Test</h3>
+    <ol class="steps">
+      <li>Logout and login as officer: <code>OFF-001</code> / <code>Officer@123</code></li>
+      <li>You should see officer-specific cards (Update Delivery, All History, Manage Issues)</li>
+    </ol>
+  </section>
+
+  <!-- ==================== TEST H2 CONSOLE ==================== -->
+  <section class="content-section" id="test-h2">
+    <span class="section-tag">Run &amp; Test</span>
+    <h2>Test H2 Console</h2>
+    <p class="section-desc">H2 is the in-memory database. You can browse its tables and run SQL queries directly in the browser.</p>
+
+    <ol class="steps">
+      <li>Make sure the app is running (NimbusApplication)</li>
+      <li>Open browser &rarr; <code>http://localhost:8080/h2-console</code></li>
+      <li>Set the JDBC URL to: <code>jdbc:h2:file:./nimbusdb;MODE=MySQL</code></li>
+      <li>Username: <code>sa</code>, Password: (leave empty)</li>
+      <li>Click <strong>Connect</strong></li>
+      <li>On the left panel, you'll see all tables: USERS, BOOKINGS, ISSUES</li>
+      <li>Try running: <code>SELECT * FROM USERS;</code> &mdash; you should see the seeded demo users</li>
+    </ol>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Why This Matters</div>
+      <p>The H2 Console is your window into the database. Every time you register a user through the JSP form, you can immediately verify it was saved by running <code>SELECT * FROM USERS</code> in the H2 Console. Every booking, every issue &mdash; you can see all the data your Servlets are creating.</p>
+    </div>
+  </section>
+
+  <!-- ==================== WHAT'S NEXT ==================== -->
+  <section class="content-section" id="whats-next">
+    <span class="section-tag">What's Next</span>
+    <h2>Moving to Sprint 4: REST APIs</h2>
+    <p class="section-desc">Your web app works in the browser! Users can login, book parcels, and track them through JSP pages. But there's a problem...</p>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p>Right now, your server generates the HTML (JSP pages). But what if you want a mobile app? Or a React frontend? They can't use JSP pages. They need RAW DATA (JSON), not HTML. That's what REST APIs do &mdash; they return data, and the frontend decides how to display it.</p>
+    </div>
+
+    <p>In <strong>Sprint 4</strong>, you'll build REST APIs &mdash; the modern way to connect frontend and backend. Your existing HTML/CSS/JS frontend from Phase 1 will call these APIs instead of using LocalStorage. The same APIs can serve a web app, mobile app, or any client.</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Sprint 3 (Servlets + JSP)</div>
+        <div class="comparison-body">
+          <p>Server generates HTML</p>
+          <p>Tightly coupled (Java + HTML together)</p>
+          <p>Only works in browsers</p>
+          <p>Traditional approach</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Sprint 4 (REST APIs)</div>
+        <div class="comparison-body">
+          <p>Server returns JSON data</p>
+          <p>Decoupled (backend = API, frontend = separate)</p>
+          <p>Works with any client (web, mobile, CLI)</p>
+          <p>Modern approach (industry standard)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PREV/NEXT NAV ==================== -->
+  <div class="topic-nav">
+    <a href="#">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">&larr; Sprint 2: Console + JDBC</span>
+    </a>
+    <a href="#" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">Sprint 4: REST APIs &rarr;</span>
+    </a>
+  </div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="../topics/shared.js"></script>
+
+</body>
+</html>
