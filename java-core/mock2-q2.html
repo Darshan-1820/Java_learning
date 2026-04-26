@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sum of Digits | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link active"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 2 &mdash; Question 2</div>
+    <h2>Sum of Digits</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge minor">Minor</span>
+      <span class="time-estimate">10&ndash;15 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Write a Java program to find the sum of digits of each element in an array of integers. The solution class should be implemented with the main method.</p>
+      <ul>
+        <li>The program should read the <strong>size</strong> of the integer array.</li>
+        <li>It should then calculate the <strong>sum of digits</strong> of each element in the array.</li>
+        <li>Assume there are valid values in the array.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is a MINOR question &mdash; simple, no OOP needed. Just arrays and math.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Key Concepts</div>
+      <ul>
+        <li><strong>Arrays</strong> (not Collections) &mdash; plain <code>int[]</code></li>
+        <li><strong>Loop + digit extraction</strong> &mdash; peel off digits one by one</li>
+        <li><strong>Math:</strong> <code>num % 10</code> gets the last digit, <code>num / 10</code> removes the last digit</li>
+      </ul>
+    </div>
+
+    <p>No classes, no getters/setters, no ArrayList. Just read numbers, crunch digits, print results. This is the kind of question you should finish in under 15 minutes and move on to the major question.</p>
+  </div>
+
+  <!-- ===== SECTION 3: HOW DIGIT SUM WORKS ===== -->
+  <div class="content-section" id="digit-sum-logic">
+    <div class="section-tag">Core Logic</div>
+    <h2>How Digit Sum Works</h2>
+    <p class="section-desc">The trick is simple: keep dividing by 10 and collecting remainders. Let's walk through the number <strong>101</strong>.</p>
+
+    <div class="diagram">
+      <pre>
+Step 1:  101 % 10 = <strong style="color: #3B82F6;">1</strong>    (last digit)
+         101 / 10 = 10   (remove last digit)
+
+Step 2:   10 % 10 = <strong style="color: #3B82F6;">0</strong>    (last digit)
+          10 / 10 = 1    (remove last digit)
+
+Step 3:    1 % 10 = <strong style="color: #3B82F6;">1</strong>    (last digit)
+           1 / 10 = 0    (STOP &mdash; number is 0)
+
+Sum = 1 + 0 + 1 = <strong style="color: #22C55E;">2</strong>
+      </pre>
+      <div class="diagram-label">% 10 extracts the last digit, / 10 chops it off. Repeat until nothing left.</div>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">Think of it like this</div>
+      <p>Imagine you have a stack of coins labeled 1, 0, 1 (from bottom to top). <code>% 10</code> picks up the top coin. <code>/ 10</code> removes it from the stack. Keep picking until the stack is empty.</p>
+    </div>
+
+    <h3>The Two Operators</h3>
+    <table class="info-table">
+      <tr>
+        <th>Operator</th>
+        <th>What It Does</th>
+        <th>Example (num = 253)</th>
+      </tr>
+      <tr>
+        <td><code>num % 10</code></td>
+        <td>Gets the <strong>last digit</strong> (remainder when divided by 10)</td>
+        <td><code>253 % 10 = 3</code></td>
+      </tr>
+      <tr>
+        <td><code>num / 10</code></td>
+        <td><strong>Removes</strong> the last digit (integer division drops the remainder)</td>
+        <td><code>253 / 10 = 25</code></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 4: THE DIGITSUM METHOD ===== -->
+  <div class="content-section" id="digit-sum-method">
+    <div class="section-tag">Method</div>
+    <h2>The digitSum Method</h2>
+    <p class="section-desc">If you want to write it as a separate method (cleaner code, but not required for this question):</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">digitSum helper method</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static int digitSum(int num) {
+    num = Math.abs(num); // handle negative numbers
+    int sum = 0;
+    while (num > 0) {
+        sum += num % 10;  // add last digit to sum
+        num /= 10;        // remove last digit
+    }
+    return sum;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">num = Math.abs(num);</div>
+          <div class="breakdown-explain">If the number is negative (like -42), make it positive first. We only care about the digits, not the sign.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int sum = 0;</div>
+          <div class="breakdown-explain">Our running total. Start at zero, then keep adding digits to it.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">while (num > 0)</div>
+          <div class="breakdown-explain">Keep looping as long as there are digits left. When num becomes 0, we've processed every digit.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">sum += num % 10;</div>
+          <div class="breakdown-explain">Get the last digit using modulo 10, add it to our running sum.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">num /= 10;</div>
+          <div class="breakdown-explain">Chop off the last digit. Integer division by 10 drops the remainder. 253 becomes 25.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Copy-paste ready. This handles all cases including zero and negative numbers.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        for (int i = 0; i < n; i++) {
+            int num = Math.abs(arr[i]);
+            int sum = 0;
+            if (num == 0) {
+                System.out.println(0);
+                continue;
+            }
+            while (num > 0) {
+                sum += num % 10;
+                num /= 10;
+            }
+            System.out.println(sum);
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int n = sc.nextInt();</div>
+          <div class="breakdown-explain">Read the array size from input. How many numbers will follow.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int[] arr = new int[n];</div>
+          <div class="breakdown-explain">Create an integer array of size n. Plain array, not ArrayList &mdash; no need for Collections here.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (int i = 0; i &lt; n; i++) arr[i] = sc.nextInt();</div>
+          <div class="breakdown-explain">Read all n numbers into the array, one by one.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (num == 0) { System.out.println(0); continue; }</div>
+          <div class="breakdown-explain">Special case: if the number is 0, the while loop won't execute (0 is not > 0). So we handle it explicitly and skip to the next number.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">while (num > 0) { sum += num % 10; num /= 10; }</div>
+          <div class="breakdown-explain">The core digit-sum loop. Extract last digit, add to sum, remove last digit. Repeat until all digits are processed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">5
+101 202 303 404 505</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">2
+4
+6
+8
+10</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">3
+111 0 000</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">3
+0
+0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: EDGE CASES ===== -->
+  <div class="content-section" id="edge-cases">
+    <div class="section-tag">Watch Out</div>
+    <h2>Edge Cases</h2>
+
+    <div class="callout warning">
+      <div class="callout-title">The Zero Trap</div>
+      <p>If <code>num</code> is <strong>0</strong>, the <code>while (num > 0)</code> loop <strong>never executes</strong>. The sum stays at 0, which is correct &mdash; but you need to print it! Without the <code>if (num == 0)</code> check, the program would print nothing for that element.</p>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Edge Case</th>
+        <th>What Happens</th>
+        <th>How We Handle It</th>
+      </tr>
+      <tr>
+        <td><code>0</code></td>
+        <td>While loop skips (0 is not &gt; 0)</td>
+        <td><code>if (num == 0)</code> check prints 0 and <code>continue</code>s</td>
+      </tr>
+      <tr>
+        <td><code>000</code></td>
+        <td>Java reads this as just <code>0</code></td>
+        <td>Same as above &mdash; no special handling needed</td>
+      </tr>
+      <tr>
+        <td>Negative numbers</td>
+        <td><code>-42 % 10 = -2</code> in Java (negative remainder)</td>
+        <td><code>Math.abs(num)</code> makes it positive first</td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>The question says "assume valid values" so negatives probably won't appear. But adding <code>Math.abs()</code> costs you 5 seconds and protects against hidden test cases. Always add it.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock2-q1.html"><span class="nav-label">Previous</span><span class="nav-title">CountryLeague</span></a>
+    <a href="mock3-q1.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Author-Book</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

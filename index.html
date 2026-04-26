@@ -1,714 +1,875 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nimbus — Learning Portal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    /* ========== RESET & BASE ========== */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nimbus — Learning Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ========== RESET & BASE ========== */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    :root {
-      --bg-primary: #0B1120;
-      --bg-secondary: #131B2E;
-      --bg-card: #1A2340;
-      --bg-card-hover: #1F2B4D;
-      --bg-surface: #0F172A;
-      --text-primary: #F1F5F9;
-      --text-secondary: #94A3B8;
-      --text-muted: #64748B;
-      --accent: #3B82F6;
-      --accent-hover: #2563EB;
-      --accent-glow: rgba(59, 130, 246, 0.15);
-      --green: #22C55E;
-      --orange: #F59E0B;
-      --purple: #A855F7;
-      --red: #EF4444;
-      --border: rgba(148, 163, 184, 0.1);
-      --radius: 12px;
-      --radius-lg: 16px;
-      --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-    }
+      :root {
+        --bg-primary: #0b1120;
+        --bg-secondary: #131b2e;
+        --bg-card: #1a2340;
+        --bg-card-hover: #1f2b4d;
+        --bg-surface: #0f172a;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --accent-glow: rgba(59, 130, 246, 0.15);
+        --green: #22c55e;
+        --orange: #f59e0b;
+        --purple: #a855f7;
+        --red: #ef4444;
+        --cyan: #06b6d4;
+        --border: rgba(148, 163, 184, 0.1);
+        --radius: 12px;
+        --radius-lg: 16px;
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+      }
 
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
 
-    /* ========== HEADER ========== */
-    .header {
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
-      padding: 0 40px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
-    }
+      /* ========== HEADER ========== */
+      .header {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+        padding: 0 40px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+      }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
 
-    .logo svg { width: 32px; height: 32px; }
+      .logo svg {
+        width: 32px;
+        height: 32px;
+      }
 
-    .logo-text {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 800;
-      font-size: 1.25rem;
-      color: var(--text-primary);
-    }
+      .logo-text {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 800;
+        font-size: 1.25rem;
+        color: var(--text-primary);
+      }
 
-    .logo-badge {
-      background: var(--accent);
-      color: white;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
+      .logo-badge {
+        background: var(--accent);
+        color: white;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
-    .header-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-    .header-link:hover { color: var(--text-primary); background: var(--bg-card); }
-    .header-link.active { color: var(--accent); background: var(--accent-glow); }
+      .header-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 6px 12px;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      .header-link:hover {
+        color: var(--text-primary);
+        background: var(--bg-card);
+      }
+      .header-link.active {
+        color: var(--accent);
+        background: var(--accent-glow);
+      }
 
-    /* ========== HERO ========== */
-    .hero {
-      padding: 80px 40px 60px;
-      text-align: center;
-      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-      position: relative;
-      overflow: hidden;
-    }
+      /* ========== HERO ========== */
+      .hero {
+        padding: 80px 40px 60px;
+        text-align: center;
+        background: linear-gradient(
+          180deg,
+          var(--bg-secondary) 0%,
+          var(--bg-primary) 100%
+        );
+        position: relative;
+        overflow: hidden;
+      }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      pointer-events: none;
-    }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(
+          circle,
+          var(--accent-glow) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
 
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent-glow);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      color: var(--accent);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 6px 16px;
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--accent-glow);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: var(--accent);
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 20px;
+        margin-bottom: 24px;
+      }
 
-    .hero h1 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 16px;
-      position: relative;
-    }
+      .hero h1 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 16px;
+        position: relative;
+      }
 
-    .hero h1 span { color: var(--accent); }
+      .hero h1 span {
+        color: var(--accent);
+      }
 
-    .hero p {
-      color: var(--text-secondary);
-      font-size: 1.125rem;
-      max-width: 600px;
-      margin: 0 auto 40px;
-    }
+      .hero p {
+        color: var(--text-secondary);
+        font-size: 1.125rem;
+        max-width: 600px;
+        margin: 0 auto 32px;
+      }
 
-    /* ========== SPRINT CARDS ========== */
-    .phases-section {
-      padding: 0 40px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--accent);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 12px 28px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.2s;
+        margin-bottom: 32px;
+      }
+      .hero-cta:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+      }
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 32px;
-    }
+      .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+      .hero-stats .stat {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+      .hero-stats .stat strong {
+        color: var(--text-secondary);
+      }
 
-    .section-header h2 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
+      /* ========== SECTION COMMON ========== */
+      .section {
+        padding: 0 40px 80px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-    .section-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
 
-    .phase-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
+      .section-header h2 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
 
-    .phase-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 28px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
+      .section-line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
 
-    .phase-card:hover {
-      background: var(--bg-card-hover);
-      border-color: rgba(148, 163, 184, 0.2);
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-    }
+      /* ========== LEARNING PATH TIMELINE ========== */
+      .timeline-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        gap: 0;
+        align-items: stretch;
+      }
 
-    .phase-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-    }
+      .timeline-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        font-weight: 300;
+      }
 
-    .phase-card.s1::before { background: var(--green); }
-    .phase-card.s2::before { background: var(--accent); }
-    .phase-card.s3::before { background: var(--orange); }
-    .phase-card.s4::before { background: var(--purple); }
+      .phase-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .phase-number {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .phase-card.s1 .phase-number { color: var(--green); }
-    .phase-card.s2 .phase-number { color: var(--accent); }
-    .phase-card.s3 .phase-number { color: var(--orange); }
-    .phase-card.s4 .phase-number { color: var(--purple); }
+      .phase-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(148, 163, 184, 0.2);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+      }
 
-    .phase-card h3 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+      .phase-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+      }
 
-    .phase-card p {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
+      .phase-card.blue::before { background: var(--accent); }
+      .phase-card.orange::before { background: var(--orange); }
+      .phase-card.purple::before { background: var(--purple); }
 
-    .phase-topics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 20px;
-    }
+      .phase-number {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .phase-card.blue .phase-number { color: var(--accent); }
+      .phase-card.orange .phase-number { color: var(--orange); }
+      .phase-card.purple .phase-number { color: var(--purple); }
 
-    .topic-tag {
-      background: var(--bg-surface);
-      color: var(--text-secondary);
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-    }
+      .phase-card h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
 
-    .phase-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
+      .phase-card .phase-desc {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+      }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
+      .phase-topics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
 
-    .status-dot.done { background: var(--green); }
-    .status-dot.active { background: var(--accent); animation: pulse 2s infinite; }
-    .status-dot.upcoming { background: var(--text-muted); }
+      .topic-tag {
+        background: var(--bg-surface);
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+      .phase-meta {
+        margin-top: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
 
-    .phase-card .arrow {
-      position: absolute;
-      bottom: 24px;
-      right: 24px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      opacity: 0;
-      transform: translateX(-8px);
-    }
-    .phase-card.s1 .arrow { background: rgba(34, 197, 94, 0.15); color: var(--green); }
-    .phase-card.s2 .arrow { background: var(--accent-glow); color: var(--accent); }
-    .phase-card.s3 .arrow { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
-    .phase-card.s4 .arrow { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+      /* ========== BUILD IT — WIDE CARD ========== */
+      .wide-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 36px;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
 
-    .phase-card:hover .arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
+      .wide-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--cyan);
+      }
 
-    /* ========== QUICK REFERENCE ========== */
-    .reference-section {
-      padding: 0 40px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+      .wide-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(148, 163, 184, 0.2);
+        transform: translateY(-4px);
+        box-shadow: 0 4px 24px rgba(6, 182, 212, 0.12);
+      }
 
-    .ref-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-    }
+      .wide-card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: rgba(6, 182, 212, 0.12);
+        color: var(--cyan);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
 
-    .ref-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.2s;
-    }
+      .wide-card-content {
+        flex: 1;
+      }
 
-    .ref-card:hover {
-      background: var(--bg-card-hover);
-      border-color: rgba(148, 163, 184, 0.2);
-    }
+      .wide-card-content h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
 
-    .ref-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      font-size: 1.25rem;
-    }
+      .wide-card-content p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        line-height: 1.6;
+      }
 
-    .ref-card h4 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
+      .wide-card-content .subtitle {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
 
-    .ref-card p {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
+      .wide-card-arrow {
+        color: var(--cyan);
+        flex-shrink: 0;
+        opacity: 0;
+        transform: translateX(-8px);
+        transition: all 0.3s;
+      }
 
-    /* ========== NIMBUS INFO ========== */
-    .nimbus-section {
-      padding: 0 40px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+      .wide-card:hover .wide-card-arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
 
-    .nimbus-overview {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 36px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-    }
+      /* ========== PRACTICE & REFERENCE — 2 COL ========== */
+      .two-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
 
-    .nimbus-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+      .accent-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
 
-    .n-stat {
-      background: var(--bg-surface);
-      border-radius: var(--radius);
-      padding: 16px;
-      border: 1px solid var(--border);
-    }
+      .accent-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(148, 163, 184, 0.2);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+      }
 
-    .n-stat-value {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--accent);
-    }
+      .accent-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+      }
 
-    .n-stat-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
+      .accent-card.red::before { background: var(--red); }
+      .accent-card.green::before { background: var(--green); }
 
-    .nimbus-roles h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
+      .accent-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
 
-    .role-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+      .accent-card h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
 
-    .role-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: var(--bg-surface);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-size: 0.875rem;
-    }
+      .accent-card p {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 16px;
+        line-height: 1.6;
+      }
 
-    .role-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
+      /* ========== QUICK REFERENCE — 4 COL ========== */
+      .ref-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
 
-    /* ========== FOOTER ========== */
-    .footer {
-      padding: 24px 40px;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
+      .ref-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+      }
 
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 768px) {
-      .header { padding: 0 20px; }
-      .hero { padding: 50px 20px 40px; }
-      .phases-section, .reference-section, .nimbus-section { padding: 0 20px 60px; }
-      .nimbus-overview { grid-template-columns: 1fr; gap: 24px; }
-      .phase-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
+      .ref-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(148, 163, 184, 0.2);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+      }
 
-  <!-- ===== HEADER ===== -->
-  <header class="header">
-    <div class="header-left">
-      <a href="index.html" class="logo">
-        <svg viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="8" fill="#3B82F6"/>
-          <path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      .ref-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        font-size: 1.25rem;
+      }
+
+      .ref-card h4 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .ref-card p {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+      }
+
+      /* ========== FOOTER ========== */
+      .footer {
+        padding: 24px 40px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+      }
+
+      /* ========== RESPONSIVE ========== */
+      @media (max-width: 768px) {
+        .header {
+          padding: 0 20px;
+        }
+        .header-right {
+          gap: 4px;
+        }
+        .header-link {
+          font-size: 0.75rem;
+          padding: 4px 8px;
+        }
+        .hero {
+          padding: 50px 20px 40px;
+        }
+        .section {
+          padding: 0 20px 60px;
+        }
+        .timeline-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .timeline-arrow {
+          display: none;
+        }
+        .two-grid {
+          grid-template-columns: 1fr;
+        }
+        .ref-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .wide-card {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+        .wide-card-arrow {
+          display: none;
+        }
+        .hero-stats {
+          gap: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .ref-grid {
+          grid-template-columns: 1fr;
+        }
+        .header-right {
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+      <div class="header-left">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#3B82F6" />
+            <path
+              d="M10 20h12M10 16h8M10 12h12"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span class="logo-text">nimbus</span>
+          <span class="logo-badge">Portal</span>
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="index.html" class="header-link active">Home</a>
+        <a href="sprint-2.html" class="header-link">Phase 2</a>
+        <a href="sprint-3.html" class="header-link">Phase 3</a>
+        <a href="sprint-4.html" class="header-link">Phase 4</a>
+        <a href="backend-overview.html" class="header-link">Backend</a>
+        <a href="java-core.html" class="header-link">Java Core</a>
+      </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <div class="hero-tag">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
         </svg>
-        <span class="logo-text">nimbus</span>
-        <span class="logo-badge">Portal</span>
+        Nimbus Learning Portal
+      </div>
+      <h1>Learn. Build. <span>Ship.</span></h1>
+      <p>
+        Your complete Java backend guide — from zero to microservices.
+        Every concept explained, every line of code ready to use.
+      </p>
+      <a href="sprint-2.html" class="hero-cta">Start Learning
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
       </a>
-    </div>
-    <div class="header-right">
-      <a href="index.html" class="header-link active">Home</a>
-      <a href="sprint-2.html" class="header-link">Phase 2</a>
-      <a href="sprint-3.html" class="header-link">Phase 3</a>
-      <a href="sprint-4.html" class="header-link">Phase 4</a>
-      <a href="nimbus-code.html" class="header-link">Code</a>
-      <a href="nimbus-backend.html" class="header-link">Backend</a>
-    </div>
-  </header>
+      <div class="hero-stats">
+        <span class="stat"><strong>69</strong> Pages</span>
+        <span class="stat"><strong>4</strong> Phases</span>
+        <span class="stat"><strong>54</strong> Topics</span>
+        <span class="stat"><strong>16</strong> Mocks</span>
+      </div>
+    </section>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <div class="hero-tag">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      Nimbus Learning Portal
-    </div>
-    <h1>Learn. Build. <span>Ship.</span></h1>
-    <p>Your complete Java backend guide for Nimbus — from zero to microservices. Every concept explained, every line of code ready to use.</p>
-  </section>
-
-  <!-- ===== SPRINT CARDS ===== -->
-  <section class="phases-section">
-    <div class="section-header">
-      <h2>Phases</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="phase-grid">
-      <!-- Phase 1 -->
-      <a href="../nimbus/login.html" class="phase-card s1">
-        <div class="phase-number">Phase 01</div>
-        <h3>Frontend UI</h3>
-        <p>Static HTML/CSS/JS with LocalStorage. Login, registration, 3-role RBAC, booking wizard, payment, tracking — all built.</p>
-        <div class="phase-topics">
-          <span class="topic-tag">HTML</span>
-          <span class="topic-tag">CSS</span>
-          <span class="topic-tag">JavaScript</span>
-          <span class="topic-tag">LocalStorage</span>
-        </div>
-        <div class="phase-status">
-          <span class="status-dot done"></span>
-          <span style="color: var(--green);">Completed</span>
-        </div>
-        <div class="arrow">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </a>
-
-      <!-- Phase 2 -->
-      <a href="sprint-2.html" class="phase-card s2">
-        <div class="phase-number">Phase 02</div>
-        <h3>Java + JDBC + Database</h3>
-        <p>Connect Java to a real database. Build the Nimbus console app backed by MySQL, learn Collections, Maven, and advanced OOP.</p>
-        <div class="phase-topics">
-          <span class="topic-tag">Java</span>
-          <span class="topic-tag">JDBC</span>
-          <span class="topic-tag">MySQL</span>
-          <span class="topic-tag">Maven</span>
-          <span class="topic-tag">Collections</span>
-          <span class="topic-tag">OOP</span>
-        </div>
-        <div class="phase-status">
-          <span class="status-dot active"></span>
-          <span style="color: var(--accent);">Current</span>
-        </div>
-        <div class="arrow">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </a>
-
-      <!-- Phase 3 -->
-      <a href="sprint-3.html" class="phase-card s3">
-        <div class="phase-number">Phase 03</div>
-        <h3>Web App — JSP + Servlets</h3>
-        <p>Turn the console app into a real web application. HTML forms connect to Java Servlets, JSP renders pages, Spring manages it all.</p>
-        <div class="phase-topics">
-          <span class="topic-tag">JSP</span>
-          <span class="topic-tag">Servlets</span>
-          <span class="topic-tag">Spring</span>
-          <span class="topic-tag">Annotations</span>
-          <span class="topic-tag">Sessions</span>
-        </div>
-        <div class="phase-status">
-          <span class="status-dot upcoming"></span>
-          <span style="color: var(--text-muted);">Upcoming</span>
-        </div>
-        <div class="arrow">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </a>
-
-      <!-- Phase 4 -->
-      <a href="sprint-4.html" class="phase-card s4">
-        <div class="phase-number">Phase 04</div>
-        <h3>REST APIs + Microservices</h3>
-        <p>Build REST endpoints, split into microservices, connect an Angular frontend. The final form of Nimbus.</p>
-        <div class="phase-topics">
-          <span class="topic-tag">REST API</span>
-          <span class="topic-tag">Microservices</span>
-          <span class="topic-tag">Angular</span>
-          <span class="topic-tag">JSON</span>
-          <span class="topic-tag">Spring Boot</span>
-        </div>
-        <div class="phase-status">
-          <span class="status-dot upcoming"></span>
-          <span style="color: var(--text-muted);">Upcoming</span>
-        </div>
-        <div class="arrow">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- ===== QUICK REFERENCE ===== -->
-  <section class="reference-section">
-    <div class="section-header">
-      <h2>Quick Reference</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="ref-grid">
-      <a href="topics/project-structure.html" class="ref-card">
-        <div class="ref-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <h4>Eclipse Setup Guide</h4>
-        <p>Project creation, Maven config, MySQL connector</p>
-      </a>
-
-      <a href="topics/sql.html" class="ref-card">
-        <div class="ref-icon" style="background: rgba(34, 197, 94, 0.15); color: var(--green);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        </div>
-        <h4>SQL Queries</h4>
-        <p>All 14 Nimbus queries — CREATE, INSERT, SELECT, UPDATE</p>
-      </a>
-
-      <a href="nimbus-code.html" class="ref-card">
-        <div class="ref-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--orange);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        </div>
-        <h4>Nimbus Code</h4>
-        <p>All project files across all phases — copy-paste ready</p>
-      </a>
-
-      <a href="topics/java-basics.html" class="ref-card">
-        <div class="ref-icon" style="background: rgba(168, 85, 247, 0.15); color: var(--purple);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        </div>
-        <h4>Java Basics</h4>
-        <p>Variables, types, casting, operators — the foundations</p>
-      </a>
-
-      <a href="topics/collections.html" class="ref-card">
-        <div class="ref-icon" style="background: rgba(239, 68, 68, 0.15); color: var(--red);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        </div>
-        <h4>Collections Guide</h4>
-        <p>ArrayList, HashMap, sorting, iteration patterns</p>
-      </a>
-
-      <a href="topics/jdbc.html" class="ref-card">
-        <div class="ref-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        </div>
-        <h4>JDBC Deep Dive</h4>
-        <p>Connection, PreparedStatement, ResultSet, transactions</p>
-      </a>
-    </div>
-  </section>
-
-  <!-- ===== NIMBUS OVERVIEW ===== -->
-  <section class="nimbus-section">
-    <div class="section-header">
-      <h2>Nimbus at a Glance</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="nimbus-overview">
-      <div>
-        <h3 style="font-family: 'Plus Jakarta Sans'; font-weight: 700; margin-bottom: 20px;">Project Stats</h3>
-        <div class="nimbus-stats">
-          <div class="n-stat">
-            <div class="n-stat-value">31</div>
-            <div class="n-stat-label">HTML Pages</div>
-          </div>
-          <div class="n-stat">
-            <div class="n-stat-value">7</div>
-            <div class="n-stat-label">JS Modules</div>
-          </div>
-          <div class="n-stat">
-            <div class="n-stat-value">3</div>
-            <div class="n-stat-label">User Roles</div>
-          </div>
-          <div class="n-stat">
-            <div class="n-stat-value">14</div>
-            <div class="n-stat-label">SQL Queries</div>
-          </div>
-        </div>
+    <!-- ===== LEARNING PATH ===== -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Learning Path</h2>
+        <div class="section-line"></div>
       </div>
 
-      <div>
-        <div class="nimbus-roles">
-          <h4>User Roles</h4>
-          <ul class="role-list">
-            <li class="role-item">
-              <span class="role-dot" style="background: var(--accent);"></span>
-              <div>
-                <strong>Customer</strong>
-                <span style="color: var(--text-muted); font-size: 0.8rem;"> — Book, Track, Pay, History, Support</span>
-              </div>
-            </li>
-            <li class="role-item">
-              <span class="role-dot" style="background: var(--orange);"></span>
-              <div>
-                <strong>Officer</strong>
-                <span style="color: var(--text-muted); font-size: 0.8rem;"> — Book, Track, Delivery, Pickup, Issues</span>
-              </div>
-            </li>
-            <li class="role-item">
-              <span class="role-dot" style="background: var(--green);"></span>
-              <div>
-                <strong>Support</strong>
-                <span style="color: var(--text-muted); font-size: 0.8rem;"> — Assigned Issues, Resolve, In Progress</span>
-              </div>
-            </li>
-          </ul>
+      <div class="timeline-grid">
+        <!-- Phase 2 -->
+        <a href="sprint-2.html" class="phase-card blue">
+          <div class="phase-number">Phase 02</div>
+          <h3>Java + JDBC + Database</h3>
+          <p class="phase-desc">Connect Java to a real database. Build the console app with MySQL, Collections, and Maven.</p>
+          <div class="phase-topics">
+            <span class="topic-tag">Java</span>
+            <span class="topic-tag">JDBC</span>
+            <span class="topic-tag">H2</span>
+            <span class="topic-tag">Maven</span>
+            <span class="topic-tag">OOP</span>
+          </div>
+          <div class="phase-meta">25 topics</div>
+        </a>
+
+        <!-- Arrow -->
+        <div class="timeline-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
         </div>
+
+        <!-- Phase 3 -->
+        <a href="sprint-3.html" class="phase-card orange">
+          <div class="phase-number">Phase 03</div>
+          <h3>Web App + Spring</h3>
+          <p class="phase-desc">Turn the console app into a real web application with Servlets, JSP, and Spring.</p>
+          <div class="phase-topics">
+            <span class="topic-tag">Servlets</span>
+            <span class="topic-tag">JSP</span>
+            <span class="topic-tag">Spring</span>
+            <span class="topic-tag">JPA</span>
+          </div>
+          <div class="phase-meta">15 topics</div>
+        </a>
+
+        <!-- Arrow -->
+        <div class="timeline-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </div>
+
+        <!-- Phase 4 -->
+        <a href="sprint-4.html" class="phase-card purple">
+          <div class="phase-number">Phase 04</div>
+          <h3>REST APIs + Frontend</h3>
+          <p class="phase-desc">Build REST endpoints, split into microservices, connect an Angular frontend.</p>
+          <div class="phase-topics">
+            <span class="topic-tag">REST</span>
+            <span class="topic-tag">JSON</span>
+            <span class="topic-tag">Spring Boot</span>
+            <span class="topic-tag">Angular</span>
+          </div>
+          <div class="phase-meta">14 topics</div>
+        </a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    Nimbus Learning Portal &mdash; Team Nimbus, 2026
-  </footer>
+    <!-- ===== BUILD IT ===== -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Build It</h2>
+        <div class="section-line"></div>
+      </div>
 
-</body>
+      <a href="backend-overview.html" class="wide-card">
+        <div class="wide-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+          </svg>
+        </div>
+        <div class="wide-card-content">
+          <h3>Backend Implementation Guide</h3>
+          <p>Set up Eclipse, create the project, and build the complete Nimbus backend — Sprint by Sprint. Every file is copy-paste ready with beginner-friendly explanations.</p>
+          <div class="subtitle">4 Sprint Guides &middot; 45+ Java Files &middot; Eclipse &rarr; JDBC &rarr; Spring &rarr; REST</div>
+        </div>
+        <div class="wide-card-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </div>
+      </a>
+    </section>
+
+    <!-- ===== PRACTICE & REFERENCE ===== -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Practice & Reference</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="two-grid">
+        <!-- Java Core -->
+        <a href="java-core.html" class="accent-card red">
+          <div class="accent-card-icon" style="background: rgba(239, 68, 68, 0.12); color: var(--red)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="6" />
+              <circle cx="12" cy="12" r="2" />
+            </svg>
+          </div>
+          <h3>Java Core</h3>
+          <p>16 concept pages, 4 mock exams (8 questions), practice IDE, cheat sheet — master Java fundamentals.</p>
+          <div class="phase-topics">
+            <span class="topic-tag">Mocks</span>
+            <span class="topic-tag">IDE</span>
+            <span class="topic-tag">Templates</span>
+          </div>
+        </a>
+
+        <!-- Code Reference -->
+        <a href="nimbus-code.html" class="accent-card green">
+          <div class="accent-card-icon" style="background: rgba(34, 197, 94, 0.12); color: var(--green)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+          </div>
+          <h3>Code Reference</h3>
+          <p>Every project file across all phases. Copy into Eclipse and run — organized by phase.</p>
+          <div class="phase-topics">
+            <span class="topic-tag">Copy-paste</span>
+            <span class="topic-tag">All Phases</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== QUICK REFERENCE ===== -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Quick Reference</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="ref-grid">
+        <a href="backend-overview.html#setup" class="ref-card">
+          <div class="ref-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+          </div>
+          <h4>Eclipse Setup</h4>
+          <p>Project creation, Maven config, first run</p>
+        </a>
+
+        <a href="topics/sql.html" class="ref-card">
+          <div class="ref-icon" style="background: rgba(34, 197, 94, 0.15); color: var(--green)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+            </svg>
+          </div>
+          <h4>SQL Queries</h4>
+          <p>All Nimbus queries — CREATE, INSERT, SELECT, UPDATE</p>
+        </a>
+
+        <a href="topics/cheat-sheets.html" class="ref-card">
+          <div class="ref-icon" style="background: rgba(168, 85, 247, 0.15); color: var(--purple)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+          </div>
+          <h4>Java Cheat Sheet</h4>
+          <p>Variables, types, loops, OOP — quick reference</p>
+        </a>
+
+        <a href="topics/jdbc.html" class="ref-card">
+          <div class="ref-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg>
+          </div>
+          <h4>JDBC Deep Dive</h4>
+          <p>Connection, PreparedStatement, ResultSet, transactions</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      Nimbus Learning Portal &mdash; Team Nimbus, 2026
+    </footer>
+  </body>
 </html>

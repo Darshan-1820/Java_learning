@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock 2 Q1: CountryLeagueSponsors | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link active"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECTION 1: QUESTION STATEMENT ==================== -->
+  <section class="content-section" id="question">
+    <div class="section-tag">Section 01</div>
+    <h2>Question Statement</h2>
+    <p class="section-desc">Mock Test 2, Question 1. This is the HARDEST PRA pattern &mdash; composition with nested lists and two search methods across nested data.</p>
+
+    <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+      <span class="difficulty-badge major">PRA Major</span>
+      <span class="time-estimate">50-65 min</span>
+    </div>
+
+    <div class="question-box">
+      <h4>CountryLeagueSponsors</h4>
+
+      <p><strong>Cricketer:</strong></p>
+      <ul>
+        <li><code>CricketerId</code> (int)</li>
+        <li><code>CricketerName</code> (String)</li>
+        <li><code>CricketerAge</code> (int)</li>
+        <li><code>CricketerGender</code> (String)</li>
+        <li><code>List&lt;Statistics&gt;</code></li>
+      </ul>
+
+      <p><strong>Statistics:</strong></p>
+      <ul>
+        <li><code>Rank</code> (int)</li>
+        <li><code>LeagueName</code> (String)</li>
+        <li><code>PerformanceAverage</code> (double)</li>
+        <li><code>CountryName</code> (String)</li>
+      </ul>
+
+      <p>Create a business class (Solution.java) and implement:</p>
+
+      <p><strong>findCricketerByLeagueName method:</strong><br>
+      Takes a collection of Cricketer (Array or List), and a LeagueName as input. Searches the Cricketer by Statistics and print Cricketer name if the LeagueName is available, else print <code>"No Cricketer Found"</code>.</p>
+
+      <p><strong>findTotalOfPerformanceAverageByCountryName method:</strong><br>
+      Takes a list of Cricketer and Country name as input. Should return the TotalPerformance of all the Statistics with same CountryName else return null if not found and print <code>"No Statistics are available With the Country : "</code> and Country name.</p>
+
+      <p><strong>Note:</strong> All String comparison needs to be case in-sensitive.</p>
+
+      <p><strong>Input format:</strong></p>
+      <ol>
+        <li>Read number of Cricketer objects</li>
+        <li>Read attributes for each Cricketer</li>
+        <li>Read number of Statistics for each Cricketer</li>
+        <li>Read Statistics attributes</li>
+        <li>Repeat for all cricketers</li>
+        <li>Read parameters for methods (league name, country name)</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: ANALYSIS ==================== -->
+  <section class="content-section" id="analysis">
+    <div class="section-tag">Section 02</div>
+    <h2>Analysis</h2>
+    <p class="section-desc">This is the most complex PRA pattern. Two POJO classes, composition (one contains a list of the other), and nested loop searching.</p>
+
+    <div class="callout think">
+      <div class="callout-title">What Makes This Hard?</div>
+      <ul>
+        <li><strong>Two POJO classes:</strong> <code>Cricketer</code> and <code>Statistics</code> &mdash; both need private fields, constructors, getters, setters</li>
+        <li><strong>Composition:</strong> Cricketer has a <code>List&lt;Statistics&gt;</code> inside it &mdash; one class contains a list of another class</li>
+        <li><strong>Nested loops:</strong> To search by league or country, you must loop through cricketers, then for each cricketer, loop through their statistics list</li>
+        <li><strong>Case-insensitive:</strong> All string comparisons use <code>equalsIgnoreCase()</code></li>
+        <li><strong>Complex Scanner reading:</strong> Reading cricketers with nested statistics inside a loop is tricky</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <pre>
+┌─────────────────────────────────────────────────────┐
+│                     COMPOSITION                       │
+│                                                       │
+│   Cricketer                                           │
+│   ├── cricketerId: int                                │
+│   ├── cricketerName: String                           │
+│   ├── cricketerAge: int                               │
+│   ├── cricketerGender: String                         │
+│   └── statistics: List&lt;Statistics&gt;                   │
+│        ├── Statistics { rank, league, perfAvg, country } │
+│        ├── Statistics { rank, league, perfAvg, country } │
+│        └── Statistics { ... }                         │
+│                                                       │
+│   Each Cricketer can have MULTIPLE Statistics.        │
+│   To search, you must check EACH statistic of        │
+│   EACH cricketer (nested loop).                      │
+└─────────────────────────────────────────────────────┘
+      </pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: THE STATISTICS CLASS ==================== -->
+  <section class="content-section" id="statistics-class">
+    <div class="section-tag">Section 03</div>
+    <h2>The Statistics Class</h2>
+    <p class="section-desc">The inner class. Four fields: rank, leagueName, performanceAverage, countryName.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Statistics.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Statistics {
+    private int rank;
+    private String leagueName;
+    private double performanceAverage;
+    private String countryName;
+
+    public Statistics(int rank, String leagueName, double performanceAverage, String countryName) {
+        this.rank = rank;
+        this.leagueName = leagueName;
+        this.performanceAverage = performanceAverage;
+        this.countryName = countryName;
+    }
+
+    public int getRank() { return rank; }
+    public void setRank(int rank) { this.rank = rank; }
+    public String getLeagueName() { return leagueName; }
+    public void setLeagueName(String leagueName) { this.leagueName = leagueName; }
+    public double getPerformanceAverage() { return performanceAverage; }
+    public void setPerformanceAverage(double performanceAverage) { this.performanceAverage = performanceAverage; }
+    public String getCountryName() { return countryName; }
+    public void setCountryName(String countryName) { this.countryName = countryName; }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: THE CRICKETER CLASS ==================== -->
+  <section class="content-section" id="cricketer-class">
+    <div class="section-tag">Section 04</div>
+    <h2>The Cricketer Class</h2>
+    <p class="section-desc">The outer class. Five fields including a <code>List&lt;Statistics&gt;</code> &mdash; this is the composition.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Cricketer.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Cricketer {
+    private int cricketerId;
+    private String cricketerName;
+    private int cricketerAge;
+    private String cricketerGender;
+    private List&lt;Statistics&gt; statistics;
+
+    public Cricketer(int cricketerId, String cricketerName, int cricketerAge,
+                     String cricketerGender, List&lt;Statistics&gt; statistics) {
+        this.cricketerId = cricketerId;
+        this.cricketerName = cricketerName;
+        this.cricketerAge = cricketerAge;
+        this.cricketerGender = cricketerGender;
+        this.statistics = statistics;
+    }
+
+    public int getCricketerId() { return cricketerId; }
+    public void setCricketerId(int cricketerId) { this.cricketerId = cricketerId; }
+    public String getCricketerName() { return cricketerName; }
+    public void setCricketerName(String cricketerName) { this.cricketerName = cricketerName; }
+    public int getCricketerAge() { return cricketerAge; }
+    public void setCricketerAge(int cricketerAge) { this.cricketerAge = cricketerAge; }
+    public String getCricketerGender() { return cricketerGender; }
+    public void setCricketerGender(String cricketerGender) { this.cricketerGender = cricketerGender; }
+    public List&lt;Statistics&gt; getStatistics() { return statistics; }
+    public void setStatistics(List&lt;Statistics&gt; statistics) { this.statistics = statistics; }
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>The composition field <code>List&lt;Statistics&gt; statistics</code> is just another field. The constructor takes it as a parameter, and the getter returns it. Nothing special &mdash; treat it like any other field. The "magic" happens when you call <code>cricketer.getStatistics()</code> and get a list you can loop through.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: METHOD 1 ==================== -->
+  <section class="content-section" id="method1">
+    <div class="section-tag">Section 05</div>
+    <h2>Method 1 &mdash; findCricketerByLeagueName</h2>
+    <p class="section-desc">Search through each cricketer's statistics list for a matching league name. If found, print the cricketer's name.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">findCricketerByLeagueName</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void findCricketerByLeagueName(List&lt;Cricketer&gt; cricketers, String leagueName) {
+    boolean found = false;
+    for (Cricketer c : cricketers) {
+        for (Statistics stat : c.getStatistics()) {
+            if (stat.getLeagueName().equalsIgnoreCase(leagueName)) {
+                System.out.println(c.getCricketerName());
+                found = true;
+                break;  // found in this cricketer's stats, move to next cricketer
+            }
+        }
+    }
+    if (!found) {
+        System.out.println("No Cricketer Found");
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public static void findCricketerByLeagueName(...)</div>
+          <div class="breakdown-explain">Returns <code>void</code> &mdash; this method prints directly instead of returning a value. Takes the list and a search string.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">boolean found = false;</div>
+          <div class="breakdown-explain">Flag to track if ANY cricketer matched. If still false at the end, we print the "not found" message.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3-4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Cricketer c : cricketers) { for (Statistics stat : c.getStatistics()) {</div>
+          <div class="breakdown-explain">NESTED LOOP: outer loop goes through each cricketer. Inner loop goes through that cricketer's statistics list. This is the key pattern for composition questions.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (stat.getLeagueName().equalsIgnoreCase(leagueName))</div>
+          <div class="breakdown-explain"><code>equalsIgnoreCase</code> is critical &mdash; the question says "case in-sensitive." If input is "bigbashleague" and data has "BigBashLeague", this still matches.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6-8</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">print name, set found = true, break</div>
+          <div class="breakdown-explain">Print the cricketer's name (not the stat's data). <code>break</code> exits the inner loop only &mdash; so if a cricketer has multiple stats with the same league, their name prints only once.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Why the break Matters</div>
+      <p>Without <code>break</code>, if a cricketer has 3 statistics all in "BigBashLeague", the cricketer's name would print 3 times. The break ensures each cricketer's name prints at most once.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6: METHOD 2 ==================== -->
+  <section class="content-section" id="method2">
+    <div class="section-tag">Section 06</div>
+    <h2>Method 2 &mdash; findTotalOfPerformanceAverageByCountryName</h2>
+    <p class="section-desc">Sum up all performanceAverage values from statistics that match the given country name.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">findTotalOfPerformanceAverageByCountryName</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static Double findTotalOfPerformanceAverageByCountryName(List&lt;Cricketer&gt; cricketers, String countryName) {
+    double total = 0;
+    boolean found = false;
+    for (Cricketer c : cricketers) {
+        for (Statistics stat : c.getStatistics()) {
+            if (stat.getCountryName().equalsIgnoreCase(countryName)) {
+                total += stat.getPerformanceAverage();
+                found = true;
+            }
+        }
+    }
+    if (!found) {
+        System.out.println("No Statistics are available With the Country : " + countryName);
+        return null;
+    }
+    return total;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public static Double findTotalOf...</div>
+          <div class="breakdown-explain">Returns <code>Double</code> (capital D = wrapper class), not <code>double</code> (lowercase = primitive). This is because the method needs to return <code>null</code> when not found, and primitive <code>double</code> cannot be null.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2-3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double total = 0; boolean found = false;</div>
+          <div class="breakdown-explain"><code>total</code> accumulates the sum. <code>found</code> tracks whether any stat matched the country.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4-11</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">nested loop: check each stat's country, add to total</div>
+          <div class="breakdown-explain">Same nested loop pattern as method 1. No <code>break</code> here because we want to sum ALL matching statistics, not stop at the first one.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">12-15</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (!found) { print message, return null; }</div>
+          <div class="breakdown-explain">If no statistics matched the country, print the error message AND return null. The main method checks for null to know whether to print the total.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Double vs double</div>
+      <p><code>double</code> (lowercase) is a primitive &mdash; it holds a number and cannot be null. <code>Double</code> (uppercase) is a wrapper class &mdash; it can hold a number OR null. Since the question says "return null if not found," we must use the wrapper class <code>Double</code> as the return type.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 7: THE MAIN METHOD ==================== -->
+  <section class="content-section" id="main-method">
+    <div class="section-tag">Section 07</div>
+    <h2>The Main Method &mdash; Complex Scanner Reading</h2>
+    <p class="section-desc">The hardest part of this question is reading the nested input correctly. Each cricketer has their own statistics, and you must read the statistics INSIDE the cricketer reading loop.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">main method</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt();
+    List&lt;Cricketer&gt; cricketers = new ArrayList&lt;&gt;();
+
+    for (int i = 0; i &lt; n; i++) {
+        int id = sc.nextInt();
+        sc.nextLine();
+        String name = sc.nextLine();
+        int age = sc.nextInt();
+        sc.nextLine();
+        String gender = sc.nextLine();
+
+        int numStats = sc.nextInt();
+        List&lt;Statistics&gt; statsList = new ArrayList&lt;&gt;();
+        for (int j = 0; j &lt; numStats; j++) {
+            int rank = sc.nextInt();
+            sc.nextLine();
+            String league = sc.nextLine();
+            double perfAvg = sc.nextDouble();
+            sc.nextLine();
+            String country = sc.nextLine();
+            statsList.add(new Statistics(rank, league, perfAvg, country));
+        }
+
+        cricketers.add(new Cricketer(id, name, age, gender, statsList));
+    }
+
+    sc.nextLine();
+    String searchLeague = sc.nextLine();
+    String searchCountry = sc.nextLine();
+
+    findCricketerByLeagueName(cricketers, searchLeague);
+
+    Double total = findTotalOfPerformanceAverageByCountryName(cricketers, searchCountry);
+    if (total != null) {
+        System.out.println("Total PerformanceAverage " + searchCountry + " : " + total);
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1-4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Scanner, read n, create list</div>
+          <div class="breakdown-explain">Standard setup. Read the number of cricketers to create.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6-12</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Read cricketer fields: id, name, age, gender</div>
+          <div class="breakdown-explain">The <code>sc.nextLine()</code> after <code>sc.nextInt()</code> appears TWICE here (after id and after age) because both are followed by a String read. This is the newline trap doubled.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">14-24</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Read numStats, then inner loop for statistics</div>
+          <div class="breakdown-explain">NESTED READING: inside the cricketer loop, we read how many statistics this cricketer has, then loop AGAIN to read each statistic's fields. The same nextLine() pattern applies inside too.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">26</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">cricketers.add(new Cricketer(id, name, age, gender, statsList));</div>
+          <div class="breakdown-explain">Create the Cricketer with its completed statistics list and add to the main list. The statsList is built fresh for each cricketer.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">29-31</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Read search parameters</div>
+          <div class="breakdown-explain">After all cricketers are read, read the league name and country name to search for. The <code>sc.nextLine()</code> on line 29 consumes the leftover newline from the last <code>nextDouble()</code> or <code>nextInt()</code>.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">33-37</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Call both methods, handle output</div>
+          <div class="breakdown-explain">Method 1 prints directly (void). Method 2 returns a Double &mdash; if not null, print the total with the exact format string. If null, the method already printed the error message.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">The Nested Scanner Trap</div>
+      <p>This question has <code>sc.nextLine()</code> after <code>sc.nextInt()</code> in MULTIPLE places &mdash; after reading cricketer id, cricketer age, stat rank, and stat performanceAverage. Missing any single one will corrupt all subsequent reads. Count your nextInt/nextDouble calls and make sure each one that is followed by nextLine has a buffer-clearing nextLine in between.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 8: COMPLETE SOLUTION ==================== -->
+  <section class="content-section" id="complete">
+    <div class="section-tag">Section 08</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">The full program. Copy, paste into HackerRank, done.</p>
+
+    <div class="callout template">
+      <div class="callout-title">Copy-Paste Ready</div>
+      <p>This is the entire program: import, Statistics class, Cricketer class, Solution class with both methods and main. Paste as-is.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java (Complete)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+class Statistics {
+    private int rank;
+    private String leagueName;
+    private double performanceAverage;
+    private String countryName;
+
+    public Statistics(int rank, String leagueName, double performanceAverage, String countryName) {
+        this.rank = rank;
+        this.leagueName = leagueName;
+        this.performanceAverage = performanceAverage;
+        this.countryName = countryName;
+    }
+
+    public int getRank() { return rank; }
+    public void setRank(int rank) { this.rank = rank; }
+    public String getLeagueName() { return leagueName; }
+    public void setLeagueName(String leagueName) { this.leagueName = leagueName; }
+    public double getPerformanceAverage() { return performanceAverage; }
+    public void setPerformanceAverage(double performanceAverage) { this.performanceAverage = performanceAverage; }
+    public String getCountryName() { return countryName; }
+    public void setCountryName(String countryName) { this.countryName = countryName; }
+}
+
+class Cricketer {
+    private int cricketerId;
+    private String cricketerName;
+    private int cricketerAge;
+    private String cricketerGender;
+    private List&lt;Statistics&gt; statistics;
+
+    public Cricketer(int cricketerId, String cricketerName, int cricketerAge,
+                     String cricketerGender, List&lt;Statistics&gt; statistics) {
+        this.cricketerId = cricketerId;
+        this.cricketerName = cricketerName;
+        this.cricketerAge = cricketerAge;
+        this.cricketerGender = cricketerGender;
+        this.statistics = statistics;
+    }
+
+    public int getCricketerId() { return cricketerId; }
+    public void setCricketerId(int cricketerId) { this.cricketerId = cricketerId; }
+    public String getCricketerName() { return cricketerName; }
+    public void setCricketerName(String cricketerName) { this.cricketerName = cricketerName; }
+    public int getCricketerAge() { return cricketerAge; }
+    public void setCricketerAge(int cricketerAge) { this.cricketerAge = cricketerAge; }
+    public String getCricketerGender() { return cricketerGender; }
+    public void setCricketerGender(String cricketerGender) { this.cricketerGender = cricketerGender; }
+    public List&lt;Statistics&gt; getStatistics() { return statistics; }
+    public void setStatistics(List&lt;Statistics&gt; statistics) { this.statistics = statistics; }
+}
+
+public class Solution {
+
+    public static void findCricketerByLeagueName(List&lt;Cricketer&gt; cricketers, String leagueName) {
+        boolean found = false;
+        for (Cricketer c : cricketers) {
+            for (Statistics stat : c.getStatistics()) {
+                if (stat.getLeagueName().equalsIgnoreCase(leagueName)) {
+                    System.out.println(c.getCricketerName());
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if (!found) {
+            System.out.println("No Cricketer Found");
+        }
+    }
+
+    public static Double findTotalOfPerformanceAverageByCountryName(List&lt;Cricketer&gt; cricketers, String countryName) {
+        double total = 0;
+        boolean found = false;
+        for (Cricketer c : cricketers) {
+            for (Statistics stat : c.getStatistics()) {
+                if (stat.getCountryName().equalsIgnoreCase(countryName)) {
+                    total += stat.getPerformanceAverage();
+                    found = true;
+                }
+            }
+        }
+        if (!found) {
+            System.out.println("No Statistics are available With the Country : " + countryName);
+            return null;
+        }
+        return total;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        List&lt;Cricketer&gt; cricketers = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            int id = sc.nextInt();
+            sc.nextLine();
+            String name = sc.nextLine();
+            int age = sc.nextInt();
+            sc.nextLine();
+            String gender = sc.nextLine();
+
+            int numStats = sc.nextInt();
+            List&lt;Statistics&gt; statsList = new ArrayList&lt;&gt;();
+            for (int j = 0; j &lt; numStats; j++) {
+                int rank = sc.nextInt();
+                sc.nextLine();
+                String league = sc.nextLine();
+                double perfAvg = sc.nextDouble();
+                sc.nextLine();
+                String country = sc.nextLine();
+                statsList.add(new Statistics(rank, league, perfAvg, country));
+            }
+
+            cricketers.add(new Cricketer(id, name, age, gender, statsList));
+        }
+
+        sc.nextLine();
+        String searchLeague = sc.nextLine();
+        String searchCountry = sc.nextLine();
+
+        findCricketerByLeagueName(cricketers, searchLeague);
+
+        Double total = findTotalOfPerformanceAverageByCountryName(cricketers, searchCountry);
+        if (total != null) {
+            System.out.println("Total PerformanceAverage " + searchCountry + " : " + total);
+        }
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 9: TEST CASE ==================== -->
+  <section class="content-section" id="test-cases">
+    <div class="section-tag">Section 09</div>
+    <h2>Test Case</h2>
+    <p class="section-desc">Sample input/output from the mock test. This has 5 cricketers with multiple statistics each.</p>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Multiple Matches</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">5
+101
+TravisHead
+30
+Male
+2
+1
+BigBashLeague
+60.5
+Australia
+2
+IPL
+45.0
+India
+102
+RohitSharma
+35
+Male
+2
+1
+IPL
+55.0
+India
+3
+BigBashLeague
+48.5
+Australia
+103
+ViratKohli
+34
+Male
+2
+2
+IPL
+62.0
+India
+1
+BigBashLeague
+55.0
+Australia
+104
+SteveSmith
+33
+Male
+1
+1
+TheBigBash
+70.0
+Australia
+105
+KaneWilliamson
+32
+Male
+1
+2
+SuperSmashT20
+50.0
+NewZealand
+BigBashLeague
+Australia</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">TravisHead
+RohitSharma
+ViratKohli
+Total PerformanceAverage Australia : 214.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Trace</div>
+      <p><strong>findCricketerByLeagueName("BigBashLeague"):</strong></p>
+      <ul>
+        <li>TravisHead has "BigBashLeague" in stats &rarr; print "TravisHead"</li>
+        <li>RohitSharma has "BigBashLeague" in stats &rarr; print "RohitSharma"</li>
+        <li>ViratKohli has "BigBashLeague" in stats &rarr; print "ViratKohli"</li>
+        <li>SteveSmith has "TheBigBash" (not "BigBashLeague") &rarr; skip</li>
+        <li>KaneWilliamson has "SuperSmashT20" &rarr; skip</li>
+      </ul>
+      <p><strong>findTotalOfPerformanceAverageByCountryName("Australia"):</strong></p>
+      <ul>
+        <li>TravisHead: stat with Australia, perfAvg = 60.5</li>
+        <li>RohitSharma: stat with Australia, perfAvg = 48.5</li>
+        <li>ViratKohli: stat with Australia, perfAvg = 55.0</li>
+        <li>SteveSmith: stat with Australia, perfAvg = 50.0</li>
+        <li>Total = 60.5 + 48.5 + 55.0 + 50.0 = <strong>214.0</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 10: COMMON MISTAKES ==================== -->
+  <section class="content-section" id="mistakes">
+    <div class="section-tag">Section 10</div>
+    <h2>Common Mistakes</h2>
+    <p class="section-desc">This is the hardest question type. Here are the traps.</p>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 1: Forgetting the Nested Loop</div>
+      <p>The most common mistake is looping only through cricketers but not through their statistics. You write <code>for (Cricketer c : cricketers)</code> but forget to add the inner <code>for (Statistics stat : c.getStatistics())</code>. Without the inner loop, you cannot access league names or country names at all.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 2: Not Breaking After First Match in Method 1</div>
+      <p>If a cricketer has 3 statistics all with the same league name, without the <code>break</code> statement, the cricketer's name prints 3 times. The break exits the inner loop after the first match, so each cricketer's name appears at most once.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 3: Wrong Output Format for Total</div>
+      <p>The exact output format is: <code>Total PerformanceAverage Australia : 214.0</code>. Notice the spacing around the colon and the fact that the country name appears in the output. If you print <code>"Total: 214.0"</code> or <code>"Total PerformanceAverage: 214.0"</code>, it will not match.</p>
+      <p><strong>Fix:</strong> Copy the format string exactly: <code>"Total PerformanceAverage " + countryName + " : " + total</code></p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 4: Forgetting Case-Insensitive Comparison</div>
+      <p>The question explicitly says "All String comparison needs to be case in-sensitive." If you use <code>.equals()</code> instead of <code>.equalsIgnoreCase()</code>, hidden test cases with mixed-case input will fail.</p>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <div class="topic-nav">
+    <a href="mock1-q2.html">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">OddEven Exception</span>
+    </a>
+    <a href="mock2-q2.html" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">Sum of Digits</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collections for PRA | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link active"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECTION 1: WHICH COLLECTIONS APPEAR ==================== -->
+  <section class="content-section" id="which-collections">
+    <div class="section-tag">Section 01</div>
+    <h2>Which Collections Appear in PRA</h2>
+    <p class="section-desc">Java has many collection types, but PRA only uses a small handful. Here is everything you need to know about which one to pick and when.</p>
+
+    <table class="info-table">
+      <tr>
+        <th>Collection</th>
+        <th>PRA Frequency</th>
+        <th>Maintains Order?</th>
+        <th>Allows Duplicates?</th>
+        <th>When to Use</th>
+      </tr>
+      <tr>
+        <td><code>ArrayList</code></td>
+        <td><span class="difficulty-badge major">90% of PRA</span></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Default choice. Always safe.</td>
+      </tr>
+      <tr>
+        <td><code>LinkedList</code></td>
+        <td><span class="difficulty-badge minor">Rare</span></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Sometimes used as parameter type. Works identically to ArrayList for PRA.</td>
+      </tr>
+      <tr>
+        <td><code>HashMap</code></td>
+        <td><span class="difficulty-badge minor">Occasional</span></td>
+        <td>No</td>
+        <td>Keys: No, Values: Yes</td>
+        <td>When you need key-value pairs (e.g., name → score mapping).</td>
+      </tr>
+      <tr>
+        <td><code>HashSet</code></td>
+        <td><span class="difficulty-badge minor">Rare</span></td>
+        <td>No</td>
+        <td>No</td>
+        <td>When you need unique values only (remove duplicates).</td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Decision Rule</div>
+      <p><strong>Use ArrayList unless the question specifically asks for something else.</strong> If you are unsure, ArrayList is always a safe choice. It maintains insertion order, allows duplicates, and works with <code>Collection&lt;T&gt;</code> parameters.</p>
+    </div>
+
+    <h3>The Collection Hierarchy — What You Need</h3>
+    <p>Java collections form a hierarchy. You do not need to memorize the entire thing, just this subset:</p>
+
+    <div class="diagram">
+      <pre>
+        Collection (interface)
+        ├── List (interface)
+        │   ├── ArrayList  (class) ← USE THIS
+        │   └── LinkedList (class)
+        ├── Set (interface)
+        │   ├── HashSet    (class)
+        │   └── LinkedHashSet (class) ← if you need unique + ordered
+        └── Queue (interface)
+            └── (not used in PRA)
+
+        Map (separate interface — NOT a Collection)
+        ├── HashMap       (class)
+        └── LinkedHashMap (class) ← if you need key-value + ordered
+      </pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Why This Matters</div>
+      <p>When a PRA method parameter says <code>Collection&lt;Investor&gt;</code>, it can accept ANY of these types — ArrayList, LinkedList, HashSet, etc. This is because they all implement the <code>Collection</code> interface. But when you CREATE a collection inside your method, you always create an <code>ArrayList</code> because it is the most straightforward.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: ARRAYLIST DEEP DIVE ==================== -->
+  <section class="content-section" id="arraylist">
+    <div class="section-tag">Section 02</div>
+    <h2>ArrayList — Your Best Friend</h2>
+    <p class="section-desc">ArrayList is the collection you will use in almost every PRA question. Here is every operation you need to know.</p>
+
+    <h3>Creating an ArrayList</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">CreateArrayList.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+// Create an empty ArrayList of Investors
+ArrayList&lt;Investor&gt; investors = new ArrayList&lt;&gt;();
+
+// Create an empty ArrayList of Strings
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+
+// The &lt;&gt; (diamond operator) tells Java what TYPE of objects this list holds
+// You CANNOT put an Investor in a list of Strings, or vice versa</code></pre>
+    </div>
+
+    <h3>Essential Operations</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ArrayListOperations.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">ArrayList&lt;Investor&gt; investors = new ArrayList&lt;&gt;();
+
+// ===== ADDING ELEMENTS =====
+// Add one item to the END of the list
+investors.add(new Investor(1001, "Simon", -50000));
+investors.add(new Investor(1002, "Raj", 30000));
+investors.add(new Investor(1003, "Priya", 75000));
+// List is now: [Simon, Raj, Priya]
+
+// ===== SIZE =====
+int count = investors.size(); // 3
+
+// ===== GETTING BY INDEX =====
+Investor first = investors.get(0);  // Simon (index starts at 0)
+Investor last = investors.get(investors.size() - 1); // Priya
+
+// ===== ITERATING (enhanced for loop — USE THIS IN PRA) =====
+for (Investor inv : investors) {
+    System.out.println(inv.getInvestorName() + ": " + inv.getGains());
+}
+// Output:
+// Simon: -50000.0
+// Raj: 30000.0
+// Priya: 75000.0
+
+// ===== CHECK EMPTY =====
+if (investors.isEmpty()) {
+    System.out.println("No investors");
+}
+
+// ===== REMOVE =====
+investors.remove(0); // removes first element (Simon)
+// List is now: [Raj, Priya]</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Operations you will actually use in PRA</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">list.add(item)</div>
+          <div class="breakdown-explain"><strong>Used in:</strong> Creating the input list in main(), and building result lists in filter methods. You will use this in EVERY PRA solution.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Type item : list) { }</div>
+          <div class="breakdown-explain"><strong>Used in:</strong> Every method body. The enhanced for loop is the standard way to iterate in PRA. Never use a traditional for(i=0;...) loop unless you need the index.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">list.size()</div>
+          <div class="breakdown-explain"><strong>Used in:</strong> Checking if the list has items, calculating averages (dividing by size).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">list.isEmpty()</div>
+          <div class="breakdown-explain"><strong>Used in:</strong> Edge case handling — check if the result list is empty before printing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy — ArrayList is a Train</div>
+      <p>Think of ArrayList as a train with numbered compartments. Each compartment (index) holds one passenger (object). Passengers board in order (insertion order is maintained). You can walk through every compartment from front to back (for-each loop). You can check how many compartments are occupied (<code>size()</code>). You can look at a specific compartment number (<code>get(index)</code>).</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: COLLECTION AS PARAMETER TYPE ==================== -->
+  <section class="content-section" id="collection-parameter">
+    <div class="section-tag">Section 03</div>
+    <h2>Collection as Parameter Type</h2>
+    <p class="section-desc">PRA method signatures say <code>Collection&lt;Investor&gt;</code> — not <code>ArrayList&lt;Investor&gt;</code>. This confuses many students. Here is why and what it means for you.</p>
+
+    <h3>Why <code>Collection</code> Instead of <code>ArrayList</code>?</h3>
+    <p><code>Collection</code> is an <strong>interface</strong> — a contract that says "I can add items, remove items, iterate, check size." <code>ArrayList</code> is a <strong>class</strong> that fulfills (implements) this contract.</p>
+
+    <p>When a method parameter says <code>Collection&lt;Investor&gt;</code>, it means: "I accept ANY type that is a Collection — ArrayList, LinkedList, HashSet, whatever." This is called <strong>polymorphism</strong>.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">CollectionParameter.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// Method accepts Collection (interface)
+public static double averageGains(Collection&lt;Investor&gt; investors) {
+    // Inside, you use it exactly like an ArrayList
+    // The for-each loop works on ANY Collection
+    double sum = 0;
+    for (Investor inv : investors) {
+        sum += inv.getGains();
+    }
+    return sum / investors.size();
+}
+
+// In main, you pass an ArrayList (which IS a Collection)
+ArrayList&lt;Investor&gt; list = new ArrayList&lt;&gt;();
+list.add(new Investor(1, "Simon", 5000));
+double avg = averageGains(list); // ArrayList works as Collection parameter</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">The Practical Takeaway</div>
+      <p>For PRA, the important thing is: <strong>it does not change how you write the method body.</strong> Whether the parameter is <code>Collection&lt;Investor&gt;</code> or <code>ArrayList&lt;Investor&gt;</code>, you use the for-each loop the same way. You just cannot call <code>.get(index)</code> on a generic <code>Collection</code> — but you never need to in PRA because for-each is always sufficient.</p>
+    </div>
+
+    <h3>The Hierarchy — Visual</h3>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">
+          Collection<br>
+          <span class="flow-sub">Interface (contract)</span>
+        </div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box green">
+          List<br>
+          <span class="flow-sub">Interface (ordered collection)</span>
+        </div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box orange">
+          ArrayList<br>
+          <span class="flow-sub">Class (actual implementation)</span>
+        </div>
+      </div>
+      <div class="flow-label">An ArrayList IS a List, and a List IS a Collection.<br>So an ArrayList IS a Collection.</div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: INSERTION ORDER ==================== -->
+  <section class="content-section" id="insertion-order">
+    <div class="section-tag">Section 04</div>
+    <h2>Insertion Order</h2>
+    <p class="section-desc">Some PRA questions say "The collection should maintain insertion order." This determines which collection type you must use.</p>
+
+    <h3>What is Insertion Order?</h3>
+    <p>Insertion order means: the order in which you add items is the order they stay in. If you add Simon first, then Raj, then Priya — when you iterate, you get Simon, Raj, Priya (not some random order).</p>
+
+    <table class="info-table">
+      <tr>
+        <th>Collection</th>
+        <th>Maintains Insertion Order?</th>
+        <th>Safe for PRA?</th>
+      </tr>
+      <tr>
+        <td><code>ArrayList</code></td>
+        <td>Yes</td>
+        <td><span style="color: var(--green);">Always safe</span></td>
+      </tr>
+      <tr>
+        <td><code>LinkedList</code></td>
+        <td>Yes</td>
+        <td><span style="color: var(--green);">Safe</span></td>
+      </tr>
+      <tr>
+        <td><code>LinkedHashSet</code></td>
+        <td>Yes</td>
+        <td><span style="color: var(--green);">Safe (unique values only)</span></td>
+      </tr>
+      <tr>
+        <td><code>LinkedHashMap</code></td>
+        <td>Yes</td>
+        <td><span style="color: var(--green);">Safe (key-value pairs)</span></td>
+      </tr>
+      <tr>
+        <td><code>HashMap</code></td>
+        <td><strong>NO</strong></td>
+        <td><span style="color: var(--red);">Dangerous — order is random</span></td>
+      </tr>
+      <tr>
+        <td><code>HashSet</code></td>
+        <td><strong>NO</strong></td>
+        <td><span style="color: var(--red);">Dangerous — order is random</span></td>
+      </tr>
+      <tr>
+        <td><code>TreeMap</code></td>
+        <td><strong>NO</strong> (sorted, not insertion)</td>
+        <td><span style="color: var(--orange);">Sorts by key, not insertion order</span></td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>When the question says "insertion order," just use <strong>ArrayList</strong>. It always works. Do not overthink it with LinkedHashSet or LinkedHashMap unless the question explicitly requires unique values or key-value pairs.</p>
+    </div>
+
+    <h3>What Happens If You Use HashMap When Order Matters?</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">OrderProblem.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// You add items in this order: Simon, Raj, Priya
+HashMap&lt;String, Double&gt; gains = new HashMap&lt;&gt;();
+gains.put("Simon", -50000.0);
+gains.put("Raj", 30000.0);
+gains.put("Priya", 75000.0);
+
+// When you iterate, you might get: Priya, Simon, Raj
+// The order is UNPREDICTABLE — HashMap does not care about insertion order
+// This will fail hidden test cases that expect a specific order</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: CREATING COLLECTIONS FROM SCANNER ==================== -->
+  <section class="content-section" id="scanner-collections">
+    <div class="section-tag">Section 05</div>
+    <h2>Creating Collections from Scanner Input</h2>
+    <p class="section-desc">This is the pattern you will use in the main method of every PRA solution. It reads N objects from Scanner input and builds an ArrayList.</p>
+
+    <h3>The Universal Input Pattern</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">InputPattern.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+
+// Step 1: Read how many objects to create
+int n = sc.nextInt();
+
+// Step 2: Create empty list
+ArrayList&lt;Investor&gt; investors = new ArrayList&lt;&gt;();
+
+// Step 3: Loop n times, reading each object's fields
+for (int i = 0; i &lt; n; i++) {
+    int id = sc.nextInt();
+    sc.nextLine();              // CONSUME NEWLINE after nextInt()!
+    String name = sc.nextLine();
+    double gains = sc.nextDouble();
+
+    // Step 4: Create object and add to list
+    investors.add(new Investor(id, name, gains));
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int n = sc.nextInt();</div>
+          <div class="breakdown-explain">The first line of input is ALWAYS the count of objects. Read it as an int.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">ArrayList&lt;Investor&gt; investors = new ArrayList&lt;&gt;();</div>
+          <div class="breakdown-explain">Create an empty list to hold the objects. It starts with size 0.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (int i = 0; i &lt; n; i++) {</div>
+          <div class="breakdown-explain">Loop exactly n times — once for each object in the input.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">sc.nextLine(); // after nextInt()</div>
+          <div class="breakdown-explain">CRITICAL: consume the leftover newline. Without this, the next sc.nextLine() reads an empty string instead of the name.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">investors.add(new Investor(id, name, gains));</div>
+          <div class="breakdown-explain">Create a new Investor object with the values we just read, and immediately add it to the list. We do not need a separate variable for the object.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Input Order Matters</h3>
+    <p>The order in which you read fields must <strong>exactly match</strong> the input format described in the question. If the question says:</p>
+    <div class="callout template">
+      <div class="callout-title">Typical Input Format</div>
+      <p>Line 1: Number of investors (N)<br>
+      For each investor:<br>
+      &nbsp;&nbsp;Line 1: investorId (int)<br>
+      &nbsp;&nbsp;Line 2: investorName (String)<br>
+      &nbsp;&nbsp;Line 3: gains (double)</p>
+    </div>
+    <p>Then your Scanner reads MUST be in this order: <code>nextInt()</code> → <code>nextLine()</code> → <code>nextLine()</code> → <code>nextDouble()</code>.</p>
+
+    <div class="callout warning">
+      <div class="callout-title">Warning — The #1 Input Bug</div>
+      <p>If you read fields in the wrong order, every subsequent read gets the wrong data. Your objects will have names in the ID field and numbers in the name field. The code compiles fine but produces completely wrong output.</p>
+      <p><strong>Always read the input format section of the question FIRST.</strong></p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6: COMMON COLLECTION MISTAKES ==================== -->
+  <section class="content-section" id="collection-mistakes">
+    <div class="section-tag">Section 06</div>
+    <h2>Common Collection Mistakes</h2>
+    <p class="section-desc">These are the collection-specific bugs that trip up PRA candidates. Each one includes the mistake, why it happens, and the fix.</p>
+
+    <h3>Mistake 1: Forgetting the Import</h3>
+    <div class="callout warning">
+      <div class="callout-title">Warning — Compilation Error</div>
+      <p>Without <code>import java.util.*;</code>, Java does not know what <code>ArrayList</code>, <code>Collection</code>, or <code>Scanner</code> are. Your code will not compile.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">AlwaysImport.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// FIRST LINE of every PRA solution — no exceptions
+import java.util.*;</code></pre>
+    </div>
+
+    <h3>Mistake 2: Using Raw Types</h3>
+    <div class="callout warning">
+      <div class="callout-title">Warning — Type Safety Issue</div>
+      <p>A raw type means using <code>ArrayList</code> without the <code>&lt;Type&gt;</code> specification. While it compiles, it removes type safety and can cause ClassCastException at runtime.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">RawTypes.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// WRONG — raw type, no type safety
+ArrayList list = new ArrayList();
+list.add(new Investor(1, "Simon", 5000));
+list.add("This is a string"); // No error! But it will crash later
+
+// CORRECT — generic type specified
+ArrayList&lt;Investor&gt; list = new ArrayList&lt;&gt;();
+list.add(new Investor(1, "Simon", 5000));
+// list.add("This is a string"); // Compiler ERROR — caught early</code></pre>
+    </div>
+
+    <h3>Mistake 3: Modifying a Collection While Iterating</h3>
+    <div class="callout warning">
+      <div class="callout-title">Warning — ConcurrentModificationException</div>
+      <p>If you try to add or remove elements from a list WHILE looping through it with a for-each loop, Java throws a <code>ConcurrentModificationException</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ConcurrentMod.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// WRONG — removing from list while iterating
+for (Investor inv : investors) {
+    if (inv.getGains() &lt; 0) {
+        investors.remove(inv); // CRASH! ConcurrentModificationException
+    }
+}
+
+// CORRECT — build a SEPARATE list of results
+ArrayList&lt;Investor&gt; result = new ArrayList&lt;&gt;();
+for (Investor inv : investors) {
+    if (inv.getGains() &lt; 0) {
+        result.add(inv); // Add to a DIFFERENT list
+    }
+}
+// Now "result" has the filtered items, original list is untouched</code></pre>
+    </div>
+
+    <h3>Mistake 4: Not Checking If Collection is Empty</h3>
+    <div class="callout warning">
+      <div class="callout-title">Warning — Logic Errors</div>
+      <p>If your filter method returns an empty list, and your main method tries to print "No results found" but the question does not ask for that message, you will fail test cases. Conversely, if it DOES expect a message and you do not check, you fail too.</p>
+      <p><strong>Fix:</strong> Always read what the question says about empty results. Some say "print nothing", some say "print a message", some say "the test cases guarantee at least one match."</p>
+    </div>
+
+    <div class="callout practice">
+      <div class="callout-title">Practice Exercise</div>
+      <p>Write the main method input-reading code for a <strong>Book</strong> class that has these fields: <code>bookId</code> (int), <code>title</code> (String), <code>genre</code> (String), <code>price</code> (double), and an <code>Author</code> object inside it (where Author has <code>authorId</code> (int) and <code>authorName</code> (String)).</p>
+      <p>Hint: This is composition — you need to read Author fields first, create the Author object, then read Book fields and create the Book with the Author inside. See <a href="05-composition.html" style="color: var(--accent);">Page 05</a> for the full pattern.</p>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <div class="topic-nav">
+    <a href="03-static-vs-nonstatic.html">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">Static vs Non-Static</span>
+    </a>
+    <a href="05-composition.html" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">Composition</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

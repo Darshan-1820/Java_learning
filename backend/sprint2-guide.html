@@ -1,0 +1,3541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint 2: Console App + JDBC &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <a href="../backend-overview.html" class="sidebar-link" style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;">&larr; Back to Backend Overview</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="#what-is-database" class="sidebar-link"><span class="num">01</span> What is a Database?</a>
+    <a href="#what-is-sql" class="sidebar-link"><span class="num">02</span> What is SQL?</a>
+    <a href="#what-is-jdbc" class="sidebar-link"><span class="num">03</span> What is JDBC?</a>
+    <a href="#what-is-h2" class="sidebar-link"><span class="num">04</span> What is H2?</a>
+    <a href="#what-is-dao" class="sidebar-link"><span class="num">05</span> What is the DAO Pattern?</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Setup</div>
+    <a href="#pom-xml" class="sidebar-link"><span class="num">06</span> pom.xml</a>
+    <a href="#application-properties" class="sidebar-link"><span class="num">07</span> application.properties</a>
+    <a href="#schema-sql" class="sidebar-link"><span class="num">08</span> schema.sql</a>
+    <a href="#data-sql" class="sidebar-link"><span class="num">09</span> data.sql</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Models</div>
+    <a href="#user-model" class="sidebar-link"><span class="num">10</span> User.java</a>
+    <a href="#booking-model" class="sidebar-link"><span class="num">11</span> Booking.java</a>
+    <a href="#issue-model" class="sidebar-link"><span class="num">12</span> Issue.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Utilities</div>
+    <a href="#id-generator" class="sidebar-link"><span class="num">13</span> IdGenerator</a>
+    <a href="#pricing-calculator" class="sidebar-link"><span class="num">14</span> PricingCalculator</a>
+    <a href="#input-validator" class="sidebar-link"><span class="num">15</span> InputValidator</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">DAOs (Database Access)</div>
+    <a href="#user-dao" class="sidebar-link"><span class="num">16</span> UserDAO</a>
+    <a href="#booking-dao" class="sidebar-link"><span class="num">17</span> BookingDAO</a>
+    <a href="#issue-dao" class="sidebar-link"><span class="num">18</span> IssueDAO</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Console App</div>
+    <a href="#console-menu" class="sidebar-link"><span class="num">19</span> ConsoleMenu</a>
+    <a href="#console-app" class="sidebar-link"><span class="num">20</span> ConsoleApp</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Run &amp; Test</div>
+    <a href="#how-to-run" class="sidebar-link"><span class="num">21</span> How to Run</a>
+    <a href="#expected-output" class="sidebar-link"><span class="num">22</span> Expected Output</a>
+    <a href="#test-it" class="sidebar-link"><span class="num">23</span> Test It</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- CONCEPTS -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="what-is-database">
+  <div class="section-tag">01 &mdash; Concept</div>
+  <h2>What is a Database?</h2>
+  <p class="section-desc">Moving from temporary browser storage to permanent server-side storage.</p>
+
+  <p>In Sprint 1, you used <strong>LocalStorage</strong> &mdash; data lived inside the browser and disappeared the moment someone cleared their cache. A database is <strong>permanent storage on a server</strong>. Think of it as an Excel spreadsheet that Java can read and write to.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Real-World Analogy</div>
+    <p>LocalStorage is like writing notes on a whiteboard. Anyone can erase it. A database is like writing in a register book &mdash; it stays until you deliberately tear out the page.</p>
+  </div>
+
+  <p>Your <code>nimbus/</code> frontend stores data like this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Frontend (storage.js) &mdash; LocalStorage</span>
+    </div>
+    <pre><code class="language-javascript">localStorage.setItem('nimbus_users', JSON.stringify(users));</code></pre>
+  </div>
+
+  <p>In Sprint 2, you replace this with a real database:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Backend (Java + JDBC) &mdash; Database</span>
+    </div>
+    <pre><code class="language-java">PreparedStatement ps = conn.prepareStatement("INSERT INTO users VALUES (?, ?, ?)");
+ps.setString(1, userId);
+ps.setString(2, firstName);
+ps.setString(3, email);
+ps.executeUpdate();</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Same user data, same booking data, same issue data. The only difference: it now lives in a real database file (<code>nimbusdb.mv.db</code>) instead of the browser. It survives restarts, works across multiple machines, and cannot be accidentally wiped by clearing browser history.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="what-is-sql">
+  <div class="section-tag">02 &mdash; Concept</div>
+  <h2>What is SQL?</h2>
+  <p class="section-desc">The language you use to talk to any database.</p>
+
+  <p>SQL (Structured Query Language) is the universal language for databases. You already know it from Online GDB. There are only 5 core operations:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>SQL Command</th><th>What It Does</th><th>English Equivalent</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>CREATE TABLE</code></td><td>Make a new table</td><td>"Create a new spreadsheet"</td></tr>
+      <tr><td><code>INSERT INTO</code></td><td>Add a row of data</td><td>"Add a new row to the spreadsheet"</td></tr>
+      <tr><td><code>SELECT</code></td><td>Read / search data</td><td>"Find and show me these rows"</td></tr>
+      <tr><td><code>UPDATE</code></td><td>Change existing data</td><td>"Edit this cell in the spreadsheet"</td></tr>
+      <tr><td><code>DELETE</code></td><td>Remove data</td><td>"Delete this row"</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Why SQL?</div>
+    <p>Every database in the world understands SQL &mdash; MySQL, PostgreSQL, Oracle, H2, SQLite. Learn it once, use it everywhere. It has been the standard since the 1970s and is not going anywhere.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="what-is-jdbc">
+  <div class="section-tag">03 &mdash; Concept</div>
+  <h2>What is JDBC?</h2>
+  <p class="section-desc">Java's bridge to any database.</p>
+
+  <p>JDBC (Java Database Connectivity) is Java's way of running SQL queries. It acts as a translator between your Java code and the database:</p>
+
+  <div class="diagram">
+    <pre>
+Your Java Code  ──→  JDBC  ──→  Database
+                      ↑
+                (translates Java
+                 method calls to SQL)
+    </pre>
+    <div class="diagram-label">JDBC is the middleman between Java and any database</div>
+  </div>
+
+  <p>The pattern is always the same, every single time:</p>
+
+  <ol class="steps">
+    <li><strong>Get a connection</strong> to the database</li>
+    <li><strong>Write your SQL query</strong> as a String</li>
+    <li><strong>Execute it</strong> (send it to the database)</li>
+    <li><strong>Read the results</strong> (if it was a SELECT query)</li>
+    <li><strong>Close the connection</strong> (free up resources)</li>
+  </ol>
+
+  <div class="callout analogy">
+    <div class="callout-title">Real-World Analogy</div>
+    <p>JDBC is like a phone call. You <strong>dial</strong> (connect), <strong>speak</strong> (send SQL), <strong>listen</strong> (read results), and <strong>hang up</strong> (close). If you forget to hang up, the line stays busy and nobody else can call.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="what-is-h2">
+  <div class="section-tag">04 &mdash; Concept</div>
+  <h2>What is H2?</h2>
+  <p class="section-desc">A database that runs inside your Java app &mdash; zero installation required.</p>
+
+  <p>H2 is an <strong>embedded database</strong>. It runs INSIDE your Java application. No separate installation, no MySQL Workbench, no server to start or stop. When your Java app starts, H2 starts. When your app stops, H2 stops.</p>
+
+  <p>Data is saved in a file called <code>nimbusdb.mv.db</code> so it survives restarts.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Why H2 instead of MySQL?</div>
+    <p>MySQL requires a separate installation, a running server process, username/password configuration, and admin access. H2 needs <strong>nothing</strong> &mdash; just add it to your pom.xml and it works. The SQL is the same. When you move to production later, you swap the connection URL and everything else stays identical.</p>
+  </div>
+
+  <p>H2 also gives you a <strong>web console</strong> at <code>http://localhost:8080/h2-console</code> where you can see your tables visually, run SQL queries, and inspect data &mdash; just like MySQL Workbench but built right into your app.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our <code>application.properties</code> file sets H2 to use a file-based database (<code>jdbc:h2:file:./nimbusdb</code>). This means your data persists between restarts. If we used <code>jdbc:h2:mem:nimbusdb</code> instead, all data would vanish every time you stop the app.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="what-is-dao">
+  <div class="section-tag">05 &mdash; Concept</div>
+  <h2>What is the DAO Pattern?</h2>
+  <p class="section-desc">Organizing all database code in one place instead of scattering it everywhere.</p>
+
+  <p>DAO stands for <strong>Data Access Object</strong>. It is a design pattern &mdash; a proven way of organizing code. Instead of writing SQL queries scattered across 20 different files, you put ALL database code for one table into one dedicated class:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Bad: SQL Everywhere</div>
+      <div class="comparison-body">
+        <p>SQL queries in ConsoleApp.java</p>
+        <p>SQL queries in ProfileHandler.java</p>
+        <p>SQL queries in BookingService.java</p>
+        <p>SQL queries in ReportGenerator.java</p>
+        <p>If the table changes, you fix 20 files.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Good: DAO Pattern</div>
+      <div class="comparison-body">
+        <p>All user SQL in <code>UserDAO.java</code></p>
+        <p>All booking SQL in <code>BookingDAO.java</code></p>
+        <p>All issue SQL in <code>IssueDAO.java</code></p>
+        <p>If the table changes, you fix 1 file.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Real-World Analogy</div>
+    <p>Think of it like your frontend: all LocalStorage operations are in <code>storage.js</code>, not spread across every HTML file. The DAO pattern is the same idea for backend database operations.</p>
+  </div>
+
+  <h3>How Data Flows in Sprint 2</h3>
+
+  <div class="diagram">
+    <pre>
+Console Menu (user types input)
+    |
+    v
+ConsoleApp (handles the input, calls DAO)
+    |
+    v
+DAO (writes/runs SQL query)
+    |
+    v
+H2 Database (stores or retrieves the data)
+    |
+    v
+DAO returns result (User / Booking / Issue object)
+    |
+    v
+ConsoleApp displays the result
+    |
+    v
+Console shows output to the user
+    </pre>
+    <div class="diagram-label">Complete data flow: Console input to database and back</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SETUP / CONFIG FILES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="pom-xml">
+  <div class="section-tag">06 &mdash; Setup</div>
+  <h2>pom.xml</h2>
+  <p class="section-desc">The project configuration file &mdash; lists all dependencies (libraries) your project needs.</p>
+
+  <p>Maven reads this file and automatically downloads everything listed in the <code>&lt;dependencies&gt;</code> section. Think of it as a shopping list &mdash; you write what you need, Maven goes and gets it.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>We need Spring Boot Web (for the server in later sprints), Spring Data JPA (for database mapping), H2 (the database itself), JSP/JSTL (for web pages in Sprint 3), and Validation (for input checking). Maven downloads all of these automatically.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.5&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-backend&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;Nimbus Parcel Management System&lt;/name&gt;
+    &lt;description&gt;Full-stack Parcel Management System &mdash; TCS ILP Project&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot Web (includes embedded Tomcat) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring Data JPA (Hibernate + Repository pattern) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- H2 Database (embedded, zero setup) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- JSP Support --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- JSTL (JSP Standard Tag Library) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Servlet API --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Validation --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring Boot Test --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="application-properties">
+  <div class="section-tag">07 &mdash; Setup</div>
+  <h2>application.properties</h2>
+  <p class="section-desc">Spring Boot's configuration file &mdash; tells the app which database to use, which port to run on, and how to behave.</p>
+
+  <p>This file lives inside <code>src/main/resources/</code>. Spring Boot reads it automatically when the app starts. Every line is a <code>key=value</code> pair that controls some behavior.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>We configure the H2 database connection, enable the web console for visual database browsing, tell Hibernate not to auto-create tables (we use our own schema.sql), and set up JSP view resolution for Sprint 3.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-properties"># ========================================
+# NIMBUS — Application Configuration
+# ========================================
+
+# --- Server ---
+server.port=8080
+
+# --- H2 Database (embedded, file-based, data persists across restarts) ---
+spring.datasource.url=jdbc:h2:file:./nimbusdb;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# --- H2 Web Console (visual DB browser at /h2-console) ---
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.h2.console.settings.web-allow-others=true
+
+# --- JPA / Hibernate ---
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# --- SQL Init (runs schema.sql + data.sql on startup) ---
+spring.sql.init.mode=always
+spring.sql.init.continue-on-error=true
+
+# --- JSP View Resolver ---
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="schema-sql">
+  <div class="section-tag">08 &mdash; Setup</div>
+  <h2>schema.sql</h2>
+  <p class="section-desc">Creates the database tables &mdash; the structure that holds all your data.</p>
+
+  <p>This file runs automatically when the application starts. It defines three tables:</p>
+
+  <ul>
+    <li><strong>users</strong> &mdash; Stores all registered users (customers, officers, support staff)</li>
+    <li><strong>bookings</strong> &mdash; Stores every parcel booking with sender, receiver, delivery details, and payment info</li>
+    <li><strong>issues</strong> &mdash; Stores support tickets raised by customers</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Why DROP TABLE IF EXISTS?</div>
+    <p>Since <code>spring.sql.init.mode=always</code>, this script runs every time the app starts. The DROP statements ensure old tables are removed before creating fresh ones. This is fine for development. In production, you would use migrations instead.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Each table has a <code>PRIMARY KEY</code> (the unique identifier for each row), <code>NOT NULL</code> constraints (fields that must have a value), <code>CHECK</code> constraints (allowed values like role must be 'customer', 'officer', or 'support'), and <code>FOREIGN KEY</code> references (bookings must belong to an existing user). Indexes at the bottom make searches faster.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/schema.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-sql">-- ========================================
+-- NIMBUS — Database Schema
+-- H2 with MySQL compatibility mode
+-- ========================================
+
+-- Drop tables if they exist (for clean re-init)
+DROP TABLE IF EXISTS issues;
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS users;
+
+-- ========================================
+-- USERS TABLE
+-- ========================================
+CREATE TABLE users (
+    user_id         VARCHAR(20)     PRIMARY KEY,
+    first_name      VARCHAR(25)     NOT NULL,
+    middle_name     VARCHAR(25),
+    last_name       VARCHAR(25)     NOT NULL,
+    full_name       VARCHAR(50)     NOT NULL,
+    email           VARCHAR(100)    NOT NULL UNIQUE,
+    country_code    VARCHAR(5)      DEFAULT '+91',
+    mobile          VARCHAR(10)     NOT NULL,
+    street          VARCHAR(200),
+    zip_code        VARCHAR(10),
+    city            VARCHAR(50),
+    state           VARCHAR(50),
+    country         VARCHAR(50)     DEFAULT 'India',
+    password        VARCHAR(30)     NOT NULL,
+    role            VARCHAR(10)     NOT NULL CHECK (role IN ('customer', 'officer', 'support')),
+    preferences     VARCHAR(50),
+    created_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ========================================
+-- BOOKINGS TABLE
+-- ========================================
+CREATE TABLE bookings (
+    booking_id              VARCHAR(20)     PRIMARY KEY,
+    user_id                 VARCHAR(20)     NOT NULL,
+    rec_name                VARCHAR(50)     NOT NULL,
+    rec_address             VARCHAR(200)    NOT NULL,
+    rec_pin                 VARCHAR(10)     NOT NULL,
+    rec_mobile              VARCHAR(20)     NOT NULL,
+    par_weight_gram         INT             NOT NULL,
+    par_contents_description VARCHAR(200),
+    par_delivery_type       VARCHAR(20)     NOT NULL CHECK (par_delivery_type IN ('Standard', 'Express', 'Overnight')),
+    par_packing_preference  VARCHAR(30),
+    par_pickup_time         TIMESTAMP,
+    par_dropoff_time        TIMESTAMP,
+    par_service_cost        DOUBLE          DEFAULT 0,
+    par_payment_time        TIMESTAMP,
+    payment_method          VARCHAR(10)     CHECK (payment_method IN ('card', 'upi')),
+    par_status              VARCHAR(20)     NOT NULL CHECK (par_status IN ('Booked', 'Picked Up', 'In Transit', 'Delivered', 'Returned')),
+    created_at              TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- ========================================
+-- ISSUES TABLE
+-- ========================================
+CREATE TABLE issues (
+    issue_id        VARCHAR(10)     PRIMARY KEY,
+    user_id         VARCHAR(20)     NOT NULL,
+    booking_id      VARCHAR(20),
+    subject         VARCHAR(100)    NOT NULL,
+    description     VARCHAR(500),
+    severity        VARCHAR(10)     NOT NULL CHECK (severity IN ('Low', 'Medium', 'High', 'Critical')),
+    status          VARCHAR(15)     NOT NULL CHECK (status IN ('Open', 'In Progress', 'Resolved')),
+    assigned_to     VARCHAR(20),
+    notes           VARCHAR(500),
+    created_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
+);
+
+-- ========================================
+-- INDEXES (for faster lookups)
+-- ========================================
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
+CREATE INDEX idx_bookings_user_id ON bookings(user_id);
+CREATE INDEX idx_bookings_status ON bookings(par_status);
+CREATE INDEX idx_bookings_created ON bookings(created_at);
+CREATE INDEX idx_issues_user_id ON issues(user_id);
+CREATE INDEX idx_issues_assigned ON issues(assigned_to);
+CREATE INDEX idx_issues_status ON issues(status);</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="data-sql">
+  <div class="section-tag">09 &mdash; Setup</div>
+  <h2>data.sql</h2>
+  <p class="section-desc">Pre-loads sample data so the app has something to work with from day one.</p>
+
+  <p>This file also runs automatically on startup (after schema.sql). It inserts <strong>8 users</strong> (5 customers, 2 officers, 1 support) and <strong>3 sample bookings</strong> so you can immediately test login, tracking, and history features without having to register first.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The seed data matches exactly what <code>storage.js</code> had in Sprint 1. Same user IDs, same names, same passwords. So if you were testing with <code>260401-AK01 / Amit@123</code> in the frontend, that same login works here in Sprint 2.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/data.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-sql">-- ========================================
+-- NIMBUS — Seed Data
+-- Matches exactly with storage.js seed data
+-- ========================================
+
+-- ========================================
+-- USERS: 5 customers + 2 officers + 1 support
+-- ========================================
+
+INSERT INTO users (user_id, first_name, middle_name, last_name, full_name, email, country_code, mobile, street, zip_code, city, state, country, password, role, preferences, created_at) VALUES
+('260401-AK01', 'Amit',   '', 'Kumar',  'Amit Kumar',   'amit.kumar@email.com',   '+91', '9876543210', '45 MG Road',              '560001', 'Bangalore',  'Karnataka',     'India', 'Amit@123',    'customer', 'Email notifications',    '2026-04-01 10:00:00'),
+('260401-PS02', 'Priya',  '', 'Sharma', 'Priya Sharma',  'priya.sharma@email.com', '+91', '9876543211', '12 Nehru Place',          '110019', 'New Delhi',  'Delhi',         'India', 'Priya@123',   'customer', 'SMS notifications',      '2026-04-01 10:15:00'),
+('260401-RV03', 'Rahul',  '', 'Verma',  'Rahul Verma',   'rahul.verma@email.com',  '+91', '9876543212', '78 Park Street',          '700016', 'Kolkata',    'West Bengal',   'India', 'Rahul@123',   'customer', 'Email notifications',    '2026-04-01 10:30:00'),
+('260401-SM04', 'Sneha',  '', 'Menon',  'Sneha Menon',   'sneha.menon@email.com',  '+91', '9876543213', '23 Anna Salai',           '600002', 'Chennai',    'Tamil Nadu',    'India', 'Sneha@123',   'customer', 'Both Email and SMS',     '2026-04-01 11:00:00'),
+('260401-DP05', 'Deepak', '', 'Patel',  'Deepak Patel',  'deepak.patel@email.com', '+91', '9876543214', '56 SG Highway',           '380015', 'Ahmedabad',  'Gujarat',       'India', 'Deepak@123',  'customer', 'Email notifications',    '2026-04-01 11:15:00'),
+('OFF-001',     'Rajesh', '', 'Nair',   'Rajesh Nair',   'rajesh.nair@nimbus.com', '+91', '9000000001', 'TCS MIHAN SEZ',           '441108', 'Nagpur',     'Maharashtra',   'India', 'Officer@123', 'officer',  '',                       '2026-03-15 09:00:00'),
+('OFF-002',     'Meera',  '', 'Joshi',  'Meera Joshi',   'meera.joshi@nimbus.com', '+91', '9000000002', 'Nimbus Branch, Koramangala','560034', 'Bangalore', 'Karnataka',     'India', 'Officer@123', 'officer',  '',                       '2026-03-15 09:00:00'),
+('SUP-001',     'Karan',  '', 'Singh',  'Karan Singh',   'karan.singh@nimbus.com', '+91', '9000000003', 'Nimbus Support Center',   '201301', 'Noida',      'Uttar Pradesh', 'India', 'Support@123', 'support',  '',                       '2026-03-15 09:00:00');
+
+-- ========================================
+-- BOOKINGS: 3 sample bookings
+-- ========================================
+
+INSERT INTO bookings (booking_id, user_id, rec_name, rec_address, rec_pin, rec_mobile, par_weight_gram, par_contents_description, par_delivery_type, par_packing_preference, par_pickup_time, par_dropoff_time, par_service_cost, par_payment_time, payment_method, par_status, created_at) VALUES
+('NMB-260401-0001', '260401-AK01', 'Vikram Reddy', '90 Jubilee Hills, Hyderabad', '500033', '+91-8765432100', 500,  'Books and documents',          'Standard',  'Standard Packaging',     '2026-04-02 10:00:00', '2026-04-05 18:00:00', 150.0, '2026-04-01 12:00:00', 'card', 'In Transit', '2026-04-01 12:00:00'),
+('NMB-260401-0002', '260401-PS02', 'Anita Desai',  '34 FC Road, Pune',           '411005', '+91-8765432101', 1200, 'Electronics - Laptop charger',  'Express',   'Fragile Item Handling',  '2026-04-02 09:00:00', '2026-04-03 18:00:00', 350.0, '2026-04-01 14:30:00', 'card', 'Booked',     '2026-04-01 14:30:00'),
+('NMB-260401-0003', '260401-RV03', 'Suman Das',    '15 Salt Lake, Kolkata',      '700091', '+91-8765432102', 2500, 'Clothing and accessories',      'Standard',  'Eco-friendly Packaging', '2026-04-03 11:00:00', '2026-04-07 18:00:00', 200.0, '2026-04-01 16:00:00', 'card', 'Delivered',  '2026-04-01 16:00:00');</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- MODEL CLASSES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="user-model">
+  <div class="section-tag">10 &mdash; Model</div>
+  <h2>User.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.model</code></p>
+
+  <p>A <strong>model class</strong> represents one row in a database table. <code>User.java</code> has the same fields as the <code>users</code> table &mdash; userId, firstName, email, etc. Each field has a getter and setter method, which are Java's way of reading and writing private data.</p>
+
+  <p>The <code>@Entity</code> and <code>@Column</code> annotations tell Spring "this class maps to this table." For now (Sprint 2), we just use these as regular Java classes. The annotations become important in Sprint 3 when Spring Data JPA takes over.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This User model holds all the same fields that the frontend registration form collects &mdash; name, email, mobile, address, password, and role. The <code>buildFullName()</code> helper combines first + middle + last name automatically, just like the frontend did.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @Column(name = "user_id", length = 20)
+    private String userId;
+
+    @Column(name = "first_name", length = 25, nullable = false)
+    private String firstName;
+
+    @Column(name = "middle_name", length = 25)
+    private String middleName;
+
+    @Column(name = "last_name", length = 25, nullable = false)
+    private String lastName;
+
+    @Column(name = "full_name", length = 50, nullable = false)
+    private String fullName;
+
+    @Column(name = "email", length = 100, nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "country_code", length = 5)
+    private String countryCode;
+
+    @Column(name = "mobile", length = 10, nullable = false)
+    private String mobile;
+
+    @Column(name = "street", length = 200)
+    private String street;
+
+    @Column(name = "zip_code", length = 10)
+    private String zipCode;
+
+    @Column(name = "city", length = 50)
+    private String city;
+
+    @Column(name = "state", length = 50)
+    private String state;
+
+    @Column(name = "country", length = 50)
+    private String country;
+
+    @Column(name = "password", length = 30, nullable = false)
+    private String password;
+
+    @Column(name = "role", length = 10, nullable = false)
+    private String role;
+
+    @Column(name = "preferences", length = 50)
+    private String preferences;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // --- Constructors ---
+
+    public User() {}
+
+    public User(String userId, String firstName, String middleName, String lastName,
+                String email, String countryCode, String mobile,
+                String street, String zipCode, String city, String state, String country,
+                String password, String role, String preferences) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.fullName = buildFullName(firstName, middleName, lastName);
+        this.email = email;
+        this.countryCode = countryCode;
+        this.mobile = mobile;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.password = password;
+        this.role = role;
+        this.preferences = preferences;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // --- Helper ---
+    private String buildFullName(String first, String middle, String last) {
+        StringBuilder sb = new StringBuilder(first);
+        if (middle != null &amp;&amp; !middle.isEmpty()) {
+            sb.append(" ").append(middle);
+        }
+        sb.append(" ").append(last);
+        return sb.toString().trim();
+    }
+
+    // --- Getters and Setters ---
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getMiddleName() { return middleName; }
+    public void setMiddleName(String middleName) { this.middleName = middleName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getCountryCode() { return countryCode; }
+    public void setCountryCode(String countryCode) { this.countryCode = countryCode; }
+
+    public String getMobile() { return mobile; }
+    public void setMobile(String mobile) { this.mobile = mobile; }
+
+    public String getStreet() { return street; }
+    public void setStreet(String street) { this.street = street; }
+
+    public String getZipCode() { return zipCode; }
+    public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+
+    public String getCountry() { return country; }
+    public void setCountry(String country) { this.country = country; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public String getPreferences() { return preferences; }
+    public void setPreferences(String preferences) { this.preferences = preferences; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    @Override
+    public String toString() {
+        return String.format("User[%s | %s | %s | %s]", userId, fullName, email, role);
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="booking-model">
+  <div class="section-tag">11 &mdash; Model</div>
+  <h2>Booking.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.model</code></p>
+
+  <p>Represents one row in the <code>bookings</code> table. Contains all details about a parcel shipment: who is sending it, who is receiving it, the parcel weight and contents, delivery type, pricing, payment info, and current status.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every field here maps directly to a column in the bookings table. When a customer books a parcel through the console, this object gets filled with their input and then saved to the database via BookingDAO.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "bookings")
+public class Booking {
+
+    @Id
+    @Column(name = "booking_id", length = 20)
+    private String bookingId;
+
+    @Column(name = "user_id", length = 20, nullable = false)
+    private String userId;
+
+    // --- Receiver Details ---
+    @Column(name = "rec_name", length = 50, nullable = false)
+    private String recName;
+
+    @Column(name = "rec_address", length = 200, nullable = false)
+    private String recAddress;
+
+    @Column(name = "rec_pin", length = 10, nullable = false)
+    private String recPin;
+
+    @Column(name = "rec_mobile", length = 20, nullable = false)
+    private String recMobile;
+
+    // --- Parcel Details ---
+    @Column(name = "par_weight_gram", nullable = false)
+    private int parWeightGram;
+
+    @Column(name = "par_contents_description", length = 200)
+    private String parContentsDescription;
+
+    @Column(name = "par_delivery_type", length = 20, nullable = false)
+    private String parDeliveryType;
+
+    @Column(name = "par_packing_preference", length = 30)
+    private String parPackingPreference;
+
+    @Column(name = "par_pickup_time")
+    private LocalDateTime parPickupTime;
+
+    @Column(name = "par_dropoff_time")
+    private LocalDateTime parDropoffTime;
+
+    // --- Payment ---
+    @Column(name = "par_service_cost")
+    private double parServiceCost;
+
+    @Column(name = "par_payment_time")
+    private LocalDateTime parPaymentTime;
+
+    @Column(name = "payment_method", length = 10)
+    private String paymentMethod;
+
+    // --- Status ---
+    @Column(name = "par_status", length = 20, nullable = false)
+    private String parStatus;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // --- Constructors ---
+
+    public Booking() {}
+
+    public Booking(String bookingId, String userId, String recName, String recAddress,
+                   String recPin, String recMobile, int parWeightGram,
+                   String parContentsDescription, String parDeliveryType,
+                   String parPackingPreference, LocalDateTime parPickupTime,
+                   LocalDateTime parDropoffTime, double parServiceCost,
+                   String paymentMethod, String parStatus) {
+        this.bookingId = bookingId;
+        this.userId = userId;
+        this.recName = recName;
+        this.recAddress = recAddress;
+        this.recPin = recPin;
+        this.recMobile = recMobile;
+        this.parWeightGram = parWeightGram;
+        this.parContentsDescription = parContentsDescription;
+        this.parDeliveryType = parDeliveryType;
+        this.parPackingPreference = parPackingPreference;
+        this.parPickupTime = parPickupTime;
+        this.parDropoffTime = parDropoffTime;
+        this.parServiceCost = parServiceCost;
+        this.parPaymentTime = LocalDateTime.now();
+        this.paymentMethod = paymentMethod;
+        this.parStatus = parStatus;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // --- Getters and Setters ---
+
+    public String getBookingId() { return bookingId; }
+    public void setBookingId(String bookingId) { this.bookingId = bookingId; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getRecName() { return recName; }
+    public void setRecName(String recName) { this.recName = recName; }
+
+    public String getRecAddress() { return recAddress; }
+    public void setRecAddress(String recAddress) { this.recAddress = recAddress; }
+
+    public String getRecPin() { return recPin; }
+    public void setRecPin(String recPin) { this.recPin = recPin; }
+
+    public String getRecMobile() { return recMobile; }
+    public void setRecMobile(String recMobile) { this.recMobile = recMobile; }
+
+    public int getParWeightGram() { return parWeightGram; }
+    public void setParWeightGram(int parWeightGram) { this.parWeightGram = parWeightGram; }
+
+    public String getParContentsDescription() { return parContentsDescription; }
+    public void setParContentsDescription(String parContentsDescription) { this.parContentsDescription = parContentsDescription; }
+
+    public String getParDeliveryType() { return parDeliveryType; }
+    public void setParDeliveryType(String parDeliveryType) { this.parDeliveryType = parDeliveryType; }
+
+    public String getParPackingPreference() { return parPackingPreference; }
+    public void setParPackingPreference(String parPackingPreference) { this.parPackingPreference = parPackingPreference; }
+
+    public LocalDateTime getParPickupTime() { return parPickupTime; }
+    public void setParPickupTime(LocalDateTime parPickupTime) { this.parPickupTime = parPickupTime; }
+
+    public LocalDateTime getParDropoffTime() { return parDropoffTime; }
+    public void setParDropoffTime(LocalDateTime parDropoffTime) { this.parDropoffTime = parDropoffTime; }
+
+    public double getParServiceCost() { return parServiceCost; }
+    public void setParServiceCost(double parServiceCost) { this.parServiceCost = parServiceCost; }
+
+    public LocalDateTime getParPaymentTime() { return parPaymentTime; }
+    public void setParPaymentTime(LocalDateTime parPaymentTime) { this.parPaymentTime = parPaymentTime; }
+
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+
+    public String getParStatus() { return parStatus; }
+    public void setParStatus(String parStatus) { this.parStatus = parStatus; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    @Override
+    public String toString() {
+        return String.format("Booking[%s | User: %s | To: %s | Status: %s | Cost: %.0f]",
+                bookingId, userId, recName, parStatus, parServiceCost);
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="issue-model">
+  <div class="section-tag">12 &mdash; Model</div>
+  <h2>Issue.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.model</code></p>
+
+  <p>Represents a support ticket raised by a customer. Contains the issue subject, description, severity level, current status, which support agent it is assigned to, and resolution notes.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a customer contacts support, a new Issue object is created with status "Open" and automatically assigned to SUP-001 (the default support agent). The support dashboard then shows these issues and lets the agent update their status and add notes.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/Issue.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "issues")
+public class Issue {
+
+    @Id
+    @Column(name = "issue_id", length = 10)
+    private String issueId;
+
+    @Column(name = "user_id", length = 20, nullable = false)
+    private String userId;
+
+    @Column(name = "booking_id", length = 20)
+    private String bookingId;
+
+    @Column(name = "subject", length = 100, nullable = false)
+    private String subject;
+
+    @Column(name = "description", length = 500)
+    private String description;
+
+    @Column(name = "severity", length = 10, nullable = false)
+    private String severity;
+
+    @Column(name = "status", length = 15, nullable = false)
+    private String status;
+
+    @Column(name = "assigned_to", length = 20)
+    private String assignedTo;
+
+    @Column(name = "notes", length = 500)
+    private String notes;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    // --- Constructors ---
+
+    public Issue() {}
+
+    public Issue(String issueId, String userId, String bookingId, String subject,
+                 String description, String severity) {
+        this.issueId = issueId;
+        this.userId = userId;
+        this.bookingId = bookingId;
+        this.subject = subject;
+        this.description = description;
+        this.severity = severity;
+        this.status = "Open";
+        this.assignedTo = "SUP-001";
+        this.notes = "";
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // --- Getters and Setters ---
+
+    public String getIssueId() { return issueId; }
+    public void setIssueId(String issueId) { this.issueId = issueId; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getBookingId() { return bookingId; }
+    public void setBookingId(String bookingId) { this.bookingId = bookingId; }
+
+    public String getSubject() { return subject; }
+    public void setSubject(String subject) { this.subject = subject; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public String getAssignedTo() { return assignedTo; }
+    public void setAssignedTo(String assignedTo) { this.assignedTo = assignedTo; }
+
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    @Override
+    public String toString() {
+        return String.format("Issue[%s | User: %s | %s | %s | %s]",
+                issueId, userId, subject, severity, status);
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- UTILITY CLASSES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="id-generator">
+  <div class="section-tag">13 &mdash; Utility</div>
+  <h2>IdGenerator.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.util</code> &mdash; Generates User IDs (260401-AK01) and Booking IDs (NMB-260401-0001) &mdash; same format as storage.js.</p>
+
+  <p>This utility creates unique, human-readable IDs using today's date and the user's initials. The exact same format used in the frontend so IDs stay consistent across Sprint 1 and Sprint 2.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>User ID format: <code>YYMMDD-XX##</code> (e.g., 260401-AK01 = April 1, 2026 + Amit Kumar + first user). Booking ID format: <code>NMB-YYMMDD-####</code> (e.g., NMB-260401-0001). Issue ID format: <code>ISS-###</code> (e.g., ISS-001).</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/util/IdGenerator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+/**
+ * Generates unique IDs for Users and Bookings.
+ * Matches the exact format used by the frontend (storage.js).
+ *
+ * User ID format:  YYMMDD-XX## (e.g., 260401-AK01)
+ *   YY = last 2 digits of year
+ *   MM = month (01-12)
+ *   DD = day (01-31)
+ *   XX = first letter of firstName + first letter of lastName (uppercase)
+ *   ## = sequential number, zero-padded (01, 02, 03...)
+ *
+ * Booking ID format: NMB-YYMMDD-#### (e.g., NMB-260401-0001)
+ *   NMB = Nimbus prefix
+ *   #### = sequential booking number, zero-padded
+ */
+public class IdGenerator {
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyMMdd");
+
+    /**
+     * Generate a User ID based on today's date, name initials, and existing user count.
+     */
+    public static String generateUserId(String firstName, String lastName, List&lt;String&gt; existingUserIds) {
+        String datePart = LocalDate.now().format(DATE_FORMAT);
+        String initials = ("" + firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        String prefix = datePart + "-" + initials;
+
+        long count = existingUserIds.stream()
+                .filter(id -&gt; id.startsWith(prefix))
+                .count();
+
+        String seq = String.format("%02d", count + 1);
+        return prefix + seq;
+    }
+
+    /**
+     * Generate a Booking ID based on today's date and total booking count.
+     */
+    public static String generateBookingId(int totalBookings) {
+        String datePart = LocalDate.now().format(DATE_FORMAT);
+        String seq = String.format("%04d", totalBookings + 1);
+        return "NMB-" + datePart + "-" + seq;
+    }
+
+    /**
+     * Generate an Issue ID based on total issue count.
+     */
+    public static String generateIssueId(int totalIssues) {
+        return "ISS-" + String.format("%03d", totalIssues + 1);
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="pricing-calculator">
+  <div class="section-tag">14 &mdash; Utility</div>
+  <h2>PricingCalculator.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.util</code> &mdash; Exact replica of pricing.js &mdash; same formula, same rates, same result.</p>
+
+  <p>Calculates the shipping cost based on parcel weight, delivery speed, packaging type, and optional insurance. The formula and rates match the frontend exactly, so a 500g Standard parcel costs the same Rs. 75 in both Sprint 1 and Sprint 2.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Formula: <code>total = max((weight x BASE_RATE x delivery_multiplier) + packaging_fee + insurance, MIN_CHARGE)</code>. Base rate is Rs. 0.15 per gram. Express costs 1.8x, Overnight costs 3x. Minimum charge is Rs. 50. The <code>PricingResult</code> inner class returns a full cost breakdown.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/util/PricingCalculator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Calculates parcel service cost.
+ * Exact replica of the frontend pricing.js logic.
+ *
+ * Formula:
+ *   total = max((weight x BASE_RATE x delivery_multiplier) + packaging_fee + (declaredValue x insurance_rate), MIN_CHARGE)
+ */
+public class PricingCalculator {
+
+    // Base rate per gram (in Rupees)
+    public static final double BASE_RATE_PER_GRAM = 0.15;
+
+    // Minimum charge
+    public static final double MIN_CHARGE = 50.0;
+
+    // Delivery type multipliers
+    private static final Map&lt;String, Double&gt; DELIVERY_MULTIPLIERS = new HashMap&lt;&gt;();
+    static {
+        DELIVERY_MULTIPLIERS.put("Standard", 1.0);
+        DELIVERY_MULTIPLIERS.put("Express", 1.8);
+        DELIVERY_MULTIPLIERS.put("Overnight", 3.0);
+    }
+
+    // Packaging flat fees
+    private static final Map&lt;String, Double&gt; PACKAGING_FEES = new HashMap&lt;&gt;();
+    static {
+        PACKAGING_FEES.put("Standard Packaging", 0.0);
+        PACKAGING_FEES.put("Custom Packaging", 50.0);
+        PACKAGING_FEES.put("Eco-friendly Packaging", 30.0);
+        PACKAGING_FEES.put("Fragile Item Handling", 80.0);
+    }
+
+    // Insurance rates
+    private static final Map&lt;String, Double&gt; INSURANCE_RATES = new HashMap&lt;&gt;();
+    static {
+        INSURANCE_RATES.put("None", 0.0);
+        INSURANCE_RATES.put("Basic", 0.02);
+        INSURANCE_RATES.put("Premium", 0.05);
+    }
+
+    /**
+     * Calculate the total service cost for a parcel.
+     *
+     * @param weightGram       Parcel weight in grams
+     * @param deliveryType     "Standard", "Express", or "Overnight"
+     * @param packagingType    "Standard Packaging", "Custom Packaging", etc.
+     * @param insuranceType    "None", "Basic", or "Premium"
+     * @param declaredValue    Declared value of contents (for insurance calculation)
+     * @return PricingResult with breakdown
+     */
+    public static PricingResult calculate(int weightGram, String deliveryType,
+                                           String packagingType, String insuranceType,
+                                           double declaredValue) {
+
+        double multiplier = DELIVERY_MULTIPLIERS.getOrDefault(deliveryType, 1.0);
+        double packagingFee = PACKAGING_FEES.getOrDefault(packagingType, 0.0);
+        double insuranceRate = INSURANCE_RATES.getOrDefault(insuranceType, 0.0);
+
+        double baseCost = weightGram * BASE_RATE_PER_GRAM * multiplier;
+        double insuranceCost = declaredValue * insuranceRate;
+        double total = Math.max(baseCost + packagingFee + insuranceCost, MIN_CHARGE);
+
+        return new PricingResult(
+                Math.round(baseCost),
+                packagingFee,
+                Math.round(insuranceCost),
+                Math.round(total),
+                getDeliveryDays(deliveryType)
+        );
+    }
+
+    /** Simplified overload — no insurance */
+    public static double calculateSimple(int weightGram, String deliveryType, String packagingType) {
+        return calculate(weightGram, deliveryType, packagingType, "None", 0).total;
+    }
+
+    private static String getDeliveryDays(String deliveryType) {
+        switch (deliveryType) {
+            case "Express": return "2-3";
+            case "Overnight": return "1";
+            default: return "5-7";
+        }
+    }
+
+    // --- Result object ---
+    public static class PricingResult {
+        public final double baseCost;
+        public final double packagingFee;
+        public final double insuranceCost;
+        public final double total;
+        public final String deliveryDays;
+
+        public PricingResult(double baseCost, double packagingFee, double insuranceCost,
+                             double total, String deliveryDays) {
+            this.baseCost = baseCost;
+            this.packagingFee = packagingFee;
+            this.insuranceCost = insuranceCost;
+            this.total = total;
+            this.deliveryDays = deliveryDays;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Base: %.0f + Packaging: %.0f + Insurance: %.0f = Total: %.0f (Delivery: %s days)",
+                    baseCost, packagingFee, insuranceCost, total, deliveryDays);
+        }
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="input-validator">
+  <div class="section-tag">15 &mdash; Utility</div>
+  <h2>InputValidator.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.util</code> &mdash; Same validation rules as auth.js &mdash; password rules, email check, sequential character detection.</p>
+
+  <p>Validates user input during registration. Checks first name, last name, email format, mobile number (10 digits), address fields, and password strength. The password rules are identical to the frontend: 8-30 chars, uppercase, lowercase, digit, special character, and no 3 sequential characters (like "abc" or "123").</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>validateRegistration()</code> method returns a list of error messages. If the list is empty, the input is valid. If not, each error is displayed to the user. This mirrors how the frontend showed validation errors under each form field.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/util/InputValidator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+/**
+ * Validates user input — replicates the frontend auth.js validation rules.
+ */
+public class InputValidator {
+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
+    private static final Pattern MOBILE_PATTERN = Pattern.compile("^\\d{10}$");
+    private static final Pattern UPPERCASE_PATTERN = Pattern.compile("[A-Z]");
+    private static final Pattern LOWERCASE_PATTERN = Pattern.compile("[a-z]");
+    private static final Pattern DIGIT_PATTERN = Pattern.compile("\\d");
+    private static final Pattern SPECIAL_PATTERN = Pattern.compile("[!@#$%^&amp;*(),.?\":{}|&lt;&gt;]");
+
+    /**
+     * Validate registration form data. Returns list of error messages (empty = valid).
+     */
+    public static List&lt;String&gt; validateRegistration(String firstName, String lastName,
+                                                      String email, String mobile,
+                                                      String street, String zipCode,
+                                                      String city, String state,
+                                                      String password, String confirmPassword) {
+        List&lt;String&gt; errors = new ArrayList&lt;&gt;();
+
+        // First Name
+        if (firstName == null || firstName.trim().isEmpty()) {
+            errors.add("First name is required.");
+        } else if (firstName.trim().length() &gt; 25) {
+            errors.add("First name must be under 25 characters.");
+        }
+
+        // Last Name
+        if (lastName == null || lastName.trim().isEmpty()) {
+            errors.add("Last name is required.");
+        } else if (lastName.trim().length() &gt; 25) {
+            errors.add("Last name must be under 25 characters.");
+        }
+
+        // Email
+        if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
+            errors.add("Please enter a valid email address.");
+        }
+
+        // Mobile
+        if (mobile == null || !MOBILE_PATTERN.matcher(mobile).matches()) {
+            errors.add("Please enter a valid 10-digit mobile number.");
+        }
+
+        // Street
+        if (street == null || street.trim().length() &lt; 5) {
+            errors.add("Please enter your street address (min 5 chars).");
+        }
+
+        // ZIP
+        if (zipCode == null || zipCode.trim().length() &lt; 4) {
+            errors.add("Please enter a valid ZIP / postal code.");
+        }
+
+        // City
+        if (city == null || city.trim().isEmpty()) {
+            errors.add("City is required.");
+        }
+
+        // State
+        if (state == null || state.trim().isEmpty()) {
+            errors.add("State is required.");
+        }
+
+        // Password
+        errors.addAll(validatePassword(password));
+
+        // Confirm Password
+        if (password != null &amp;&amp; !password.equals(confirmPassword)) {
+            errors.add("Passwords do not match.");
+        }
+
+        return errors;
+    }
+
+    /**
+     * Validate password rules (matches auth.js exactly).
+     */
+    public static List&lt;String&gt; validatePassword(String password) {
+        List&lt;String&gt; errors = new ArrayList&lt;&gt;();
+
+        if (password == null || password.length() &lt; 8 || password.length() &gt; 30) {
+            errors.add("Password must be 8-30 characters.");
+            return errors;
+        }
+
+        if (!UPPERCASE_PATTERN.matcher(password).find()) {
+            errors.add("Password must contain at least one uppercase letter.");
+        }
+        if (!LOWERCASE_PATTERN.matcher(password).find()) {
+            errors.add("Password must contain at least one lowercase letter.");
+        }
+        if (!DIGIT_PATTERN.matcher(password).find()) {
+            errors.add("Password must contain at least one digit.");
+        }
+        if (!SPECIAL_PATTERN.matcher(password).find()) {
+            errors.add("Password must contain at least one special character.");
+        }
+        if (hasSequentialChars(password)) {
+            errors.add("Password must not contain 3 sequential characters (abc, 123).");
+        }
+
+        return errors;
+    }
+
+    /**
+     * Check for 3+ sequential characters (abc, 123, cba, 321).
+     * Matches the frontend auth.js hasSequentialChars() method.
+     */
+    public static boolean hasSequentialChars(String pwd) {
+        String s = pwd.toLowerCase();
+        for (int i = 0; i &lt; s.length() - 2; i++) {
+            int a = s.charAt(i);
+            int b = s.charAt(i + 1);
+            int c = s.charAt(i + 2);
+            // Ascending (abc, 123) or descending (cba, 321)
+            if ((b == a + 1 &amp;&amp; c == b + 1) || (b == a - 1 &amp;&amp; c == b - 1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Check if a string is null or blank */
+    public static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- DAO CLASSES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jdbc-pattern">
+  <div class="section-tag">16 &mdash; Database Access</div>
+  <h2>The JDBC Pattern</h2>
+  <p class="section-desc">Before diving into the DAOs, understand the core pattern they all follow.</p>
+
+  <p>Every single database operation in Sprint 2 follows this exact 5-step pattern:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">JDBC Pattern &mdash; Every DAO method follows this</span>
+    </div>
+    <pre><code class="language-java">// 1. Connect
+Connection conn = DriverManager.getConnection("jdbc:h2:file:./nimbusdb", "sa", "");
+
+// 2. Write SQL
+PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
+ps.setString(1, "260401-AK01");  // Replace ? with actual value
+
+// 3. Execute
+ResultSet rs = ps.executeQuery();
+
+// 4. Read result
+if (rs.next()) {
+    String name = rs.getString("full_name");  // "Amit Kumar"
+}
+
+// 5. Close (try-with-resources does this automatically)</code></pre>
+  </div>
+
+  <h3>PreparedStatement vs Statement</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Statement (DANGEROUS)</div>
+      <div class="comparison-body">
+        <pre style="color: var(--text-secondary); font-size: 0.82rem; font-family: 'JetBrains Mono', monospace;">String sql = "SELECT * FROM users
+  WHERE user_id = '" + input + "'";
+// If input = "' OR '1'='1"
+// SQL becomes: SELECT * FROM users
+//   WHERE user_id = '' OR '1'='1'
+// Returns ALL users! (SQL Injection)</pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">PreparedStatement (SAFE)</div>
+      <div class="comparison-body">
+        <pre style="color: var(--text-secondary); font-size: 0.82rem; font-family: 'JetBrains Mono', monospace;">String sql = "SELECT * FROM users
+  WHERE user_id = ?";
+ps.setString(1, input);
+// The ? is treated as data, not SQL
+// No matter what input contains,
+// it cannot change the query structure</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Never concatenate user input into SQL strings. Always use <code>PreparedStatement</code> with <code>?</code> placeholders. This is the number one security rule in database programming.</p>
+  </div>
+
+  <h3>try-with-resources</h3>
+
+  <p>Database connections use system resources (like open files). If you forget to close them, your app eventually runs out of connections and crashes. Java's <code>try-with-resources</code> automatically closes everything when the block ends:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">try-with-resources &mdash; Auto-closes Connection + PreparedStatement</span>
+    </div>
+    <pre><code class="language-java">// The (Connection conn = ...; PreparedStatement ps = ...) part
+// automatically closes both conn and ps when the block ends
+try (Connection conn = getConnection();
+     PreparedStatement ps = conn.prepareStatement(sql)) {
+
+    // Use conn and ps here...
+
+} catch (SQLException e) {
+    // Handle error
+}
+// conn and ps are automatically closed here, even if an error occurred</code></pre>
+  </div>
+
+  <h3>ResultSet</h3>
+
+  <p>A <code>ResultSet</code> is like a cursor pointing at query results. It starts <strong>before</strong> the first row. You call <code>rs.next()</code> to move to the next row. When there are no more rows, <code>rs.next()</code> returns <code>false</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ResultSet &mdash; Reading query results</span>
+    </div>
+    <pre><code class="language-java">// For a single result (findById):
+if (rs.next()) {
+    String name = rs.getString("full_name");
+}
+
+// For multiple results (findAll):
+while (rs.next()) {
+    users.add(mapRow(rs));  // Process each row
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="user-dao">
+  <div class="section-tag">16 &mdash; DAO</div>
+  <h2>UserDAO.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.dao</code> &mdash; All database operations for the users table.</p>
+
+  <p>Contains methods to find users by ID, find by email, validate login credentials, get all users, get users by role, save new users, and get all user IDs (for generating new IDs). Every method follows the JDBC pattern explained above.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>mapRow()</code> method at the bottom converts a database row (ResultSet) into a User object. This is called every time a query returns data. In Sprint 3, Spring Data JPA does this mapping automatically &mdash; but understanding the manual approach first makes you appreciate what Spring does for you.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dao/UserDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.User;
+
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * UserDAO — Raw JDBC operations for the users table.
+ * This is the Phase 2 approach: direct JDBC with PreparedStatement.
+ *
+ * In Phase 3/4, we use Spring Data JPA (UserRepository) instead.
+ * Both exist in the project so you can see the evolution from
+ * manual JDBC -> Spring Data JPA.
+ */
+public class UserDAO {
+
+    // H2 embedded database URL — file-based so data survives restarts
+    private static final String DB_URL = "jdbc:h2:file:./nimbusdb;MODE=MySQL;AUTO_RECONNECT=TRUE";
+    private static final String DB_USER = "sa";
+    private static final String DB_PASS = "";
+
+    /**
+     * Get a database connection.
+     * Uses DriverManager (simple approach for Phase 2).
+     * In Phase 3+, Spring manages the connection pool automatically.
+     */
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+    }
+
+    /**
+     * Find a user by their User ID (primary key).
+     */
+    public User findById(String userId) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return mapRow(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error finding user by ID: " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Find a user by their email address.
+     * Used for duplicate email check during registration.
+     */
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return mapRow(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error finding user by email: " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Validate login credentials.
+     * Returns the User if credentials match, null otherwise.
+     */
+    public User validateLogin(String userId, String password) {
+        String sql = "SELECT * FROM users WHERE user_id = ? AND password = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return mapRow(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error validating login: " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Get all users from the database.
+     */
+    public List&lt;User&gt; findAll() {
+        String sql = "SELECT * FROM users ORDER BY created_at DESC";
+        List&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                users.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching all users: " + e.getMessage());
+        }
+        return users;
+    }
+
+    /**
+     * Get all users with a specific role (customer, officer, support).
+     */
+    public List&lt;User&gt; findByRole(String role) {
+        String sql = "SELECT * FROM users WHERE role = ? ORDER BY created_at DESC";
+        List&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, role);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                users.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching users by role: " + e.getMessage());
+        }
+        return users;
+    }
+
+    /**
+     * Get all existing user IDs (used for generating new user IDs).
+     */
+    public List&lt;String&gt; getAllUserIds() {
+        String sql = "SELECT user_id FROM users";
+        List&lt;String&gt; ids = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                ids.add(rs.getString("user_id"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching user IDs: " + e.getMessage());
+        }
+        return ids;
+    }
+
+    /**
+     * Save a new user to the database.
+     */
+    public User save(User user) {
+        String sql = "INSERT INTO users (user_id, first_name, middle_name, last_name, full_name, " +
+                     "email, country_code, mobile, street, zip_code, city, state, country, " +
+                     "password, role, preferences, created_at) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getMiddleName());
+            ps.setString(4, user.getLastName());
+            ps.setString(5, user.getFullName());
+            ps.setString(6, user.getEmail());
+            ps.setString(7, user.getCountryCode());
+            ps.setString(8, user.getMobile());
+            ps.setString(9, user.getStreet());
+            ps.setString(10, user.getZipCode());
+            ps.setString(11, user.getCity());
+            ps.setString(12, user.getState());
+            ps.setString(13, user.getCountry());
+            ps.setString(14, user.getPassword());
+            ps.setString(15, user.getRole());
+            ps.setString(16, user.getPreferences());
+            ps.setTimestamp(17, Timestamp.valueOf(user.getCreatedAt() != null ? user.getCreatedAt() : LocalDateTime.now()));
+
+            ps.executeUpdate();
+            return user;
+
+        } catch (SQLException e) {
+            System.err.println("Error saving user: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Map a ResultSet row to a User object.
+     * Called for every row returned from a query.
+     */
+    private User mapRow(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getString("user_id"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setMiddleName(rs.getString("middle_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setFullName(rs.getString("full_name"));
+        user.setEmail(rs.getString("email"));
+        user.setCountryCode(rs.getString("country_code"));
+        user.setMobile(rs.getString("mobile"));
+        user.setStreet(rs.getString("street"));
+        user.setZipCode(rs.getString("zip_code"));
+        user.setCity(rs.getString("city"));
+        user.setState(rs.getString("state"));
+        user.setCountry(rs.getString("country"));
+        user.setPassword(rs.getString("password"));
+        user.setRole(rs.getString("role"));
+        user.setPreferences(rs.getString("preferences"));
+        Timestamp ts = rs.getTimestamp("created_at");
+        if (ts != null) user.setCreatedAt(ts.toLocalDateTime());
+        return user;
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="booking-dao">
+  <div class="section-tag">17 &mdash; DAO</div>
+  <h2>BookingDAO.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.dao</code> &mdash; All database operations for the bookings table.</p>
+
+  <p>Handles finding bookings by ID, by user, by date range, counting total bookings, saving new bookings, updating delivery status, and scheduling pickup/dropoff times. The date range filtering uses dynamic SQL building.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Officers can see all bookings (<code>findAll()</code>) while customers only see their own (<code>findByUserId()</code>). The <code>updateStatus()</code> method handles the delivery workflow: Booked -> Picked Up -> In Transit -> Delivered/Returned.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dao/BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Booking;
+
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * BookingDAO — Raw JDBC operations for the bookings table.
+ * Phase 2 approach: direct JDBC with PreparedStatement.
+ */
+public class BookingDAO {
+
+    private static final String DB_URL = "jdbc:h2:file:./nimbusdb;MODE=MySQL;AUTO_RECONNECT=TRUE";
+    private static final String DB_USER = "sa";
+    private static final String DB_PASS = "";
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+    }
+
+    /**
+     * Find a booking by its Booking ID (primary key).
+     */
+    public Booking findById(String bookingId) {
+        String sql = "SELECT * FROM bookings WHERE booking_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return mapRow(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error finding booking by ID: " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Get all bookings for a specific user, sorted by creation date (newest first).
+     */
+    public List&lt;Booking&gt; findByUserId(String userId) {
+        String sql = "SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC";
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                bookings.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching bookings by user: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    /**
+     * Get all bookings (for officers — they can see everything).
+     */
+    public List&lt;Booking&gt; findAll() {
+        String sql = "SELECT * FROM bookings ORDER BY created_at DESC";
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                bookings.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching all bookings: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    /**
+     * Get bookings within a date range (for history filtering).
+     */
+    public List&lt;Booking&gt; findByDateRange(String userId, String startDate, String endDate) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM bookings WHERE 1=1 ");
+        List&lt;Object&gt; params = new ArrayList&lt;&gt;();
+
+        if (userId != null &amp;&amp; !userId.isEmpty()) {
+            sql.append("AND user_id = ? ");
+            params.add(userId);
+        }
+        if (startDate != null &amp;&amp; !startDate.isEmpty()) {
+            sql.append("AND created_at &gt;= ? ");
+            params.add(Timestamp.valueOf(startDate + " 00:00:00"));
+        }
+        if (endDate != null &amp;&amp; !endDate.isEmpty()) {
+            sql.append("AND created_at &lt;= ? ");
+            params.add(Timestamp.valueOf(endDate + " 23:59:59"));
+        }
+        sql.append("ORDER BY created_at DESC");
+
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i &lt; params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                bookings.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching bookings by date range: " + e.getMessage());
+        }
+        return bookings;
+    }
+
+    /**
+     * Get total number of bookings (used for ID generation).
+     */
+    public int getCount() {
+        String sql = "SELECT COUNT(*) FROM bookings";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            System.err.println("Error counting bookings: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    /**
+     * Save a new booking to the database.
+     */
+    public Booking save(Booking booking) {
+        String sql = "INSERT INTO bookings (booking_id, user_id, rec_name, rec_address, rec_pin, " +
+                     "rec_mobile, par_weight_gram, par_contents_description, par_delivery_type, " +
+                     "par_packing_preference, par_pickup_time, par_dropoff_time, par_service_cost, " +
+                     "par_payment_time, payment_method, par_status, created_at) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, booking.getBookingId());
+            ps.setString(2, booking.getUserId());
+            ps.setString(3, booking.getRecName());
+            ps.setString(4, booking.getRecAddress());
+            ps.setString(5, booking.getRecPin());
+            ps.setString(6, booking.getRecMobile());
+            ps.setInt(7, booking.getParWeightGram());
+            ps.setString(8, booking.getParContentsDescription());
+            ps.setString(9, booking.getParDeliveryType());
+            ps.setString(10, booking.getParPackingPreference());
+            ps.setTimestamp(11, booking.getParPickupTime() != null ? Timestamp.valueOf(booking.getParPickupTime()) : null);
+            ps.setTimestamp(12, booking.getParDropoffTime() != null ? Timestamp.valueOf(booking.getParDropoffTime()) : null);
+            ps.setDouble(13, booking.getParServiceCost());
+            ps.setTimestamp(14, Timestamp.valueOf(booking.getParPaymentTime() != null ? booking.getParPaymentTime() : LocalDateTime.now()));
+            ps.setString(15, booking.getPaymentMethod());
+            ps.setString(16, booking.getParStatus());
+            ps.setTimestamp(17, Timestamp.valueOf(booking.getCreatedAt() != null ? booking.getCreatedAt() : LocalDateTime.now()));
+
+            ps.executeUpdate();
+            return booking;
+
+        } catch (SQLException e) {
+            System.err.println("Error saving booking: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Update the delivery status of a booking.
+     * Valid statuses: Booked -> Picked Up -> In Transit -> Delivered / Returned
+     */
+    public boolean updateStatus(String bookingId, String newStatus) {
+        String sql = "UPDATE bookings SET par_status = ? WHERE booking_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, newStatus);
+            ps.setString(2, bookingId);
+            return ps.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error updating booking status: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Update pickup and dropoff times (officer scheduling).
+     */
+    public boolean updatePickupDropoff(String bookingId, LocalDateTime pickupTime, LocalDateTime dropoffTime) {
+        String sql = "UPDATE bookings SET par_pickup_time = ?, par_dropoff_time = ? WHERE booking_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setTimestamp(1, Timestamp.valueOf(pickupTime));
+            ps.setTimestamp(2, Timestamp.valueOf(dropoffTime));
+            ps.setString(3, bookingId);
+            return ps.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error updating pickup/dropoff: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Map a ResultSet row to a Booking object.
+     */
+    private Booking mapRow(ResultSet rs) throws SQLException {
+        Booking b = new Booking();
+        b.setBookingId(rs.getString("booking_id"));
+        b.setUserId(rs.getString("user_id"));
+        b.setRecName(rs.getString("rec_name"));
+        b.setRecAddress(rs.getString("rec_address"));
+        b.setRecPin(rs.getString("rec_pin"));
+        b.setRecMobile(rs.getString("rec_mobile"));
+        b.setParWeightGram(rs.getInt("par_weight_gram"));
+        b.setParContentsDescription(rs.getString("par_contents_description"));
+        b.setParDeliveryType(rs.getString("par_delivery_type"));
+        b.setParPackingPreference(rs.getString("par_packing_preference"));
+        Timestamp pickup = rs.getTimestamp("par_pickup_time");
+        if (pickup != null) b.setParPickupTime(pickup.toLocalDateTime());
+        Timestamp dropoff = rs.getTimestamp("par_dropoff_time");
+        if (dropoff != null) b.setParDropoffTime(dropoff.toLocalDateTime());
+        b.setParServiceCost(rs.getDouble("par_service_cost"));
+        Timestamp payment = rs.getTimestamp("par_payment_time");
+        if (payment != null) b.setParPaymentTime(payment.toLocalDateTime());
+        b.setPaymentMethod(rs.getString("payment_method"));
+        b.setParStatus(rs.getString("par_status"));
+        Timestamp created = rs.getTimestamp("created_at");
+        if (created != null) b.setCreatedAt(created.toLocalDateTime());
+        return b;
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="issue-dao">
+  <div class="section-tag">18 &mdash; DAO</div>
+  <h2>IssueDAO.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.dao</code> &mdash; All database operations for the issues table.</p>
+
+  <p>Handles finding issues by ID, by user, by assigned support agent, counting total issues, saving new issues, and updating issue status/notes. Follows the same JDBC pattern as UserDAO and BookingDAO.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Support agents see only their assigned issues via <code>findByAssignedTo()</code>. Officers see all issues via <code>findAll()</code>. The <code>update()</code> method lets agents change status (Open -> In Progress -> Resolved), reassign, and add resolution notes.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dao/IssueDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Issue;
+
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * IssueDAO — Raw JDBC operations for the issues table.
+ * Phase 2 approach: direct JDBC with PreparedStatement.
+ */
+public class IssueDAO {
+
+    private static final String DB_URL = "jdbc:h2:file:./nimbusdb;MODE=MySQL;AUTO_RECONNECT=TRUE";
+    private static final String DB_USER = "sa";
+    private static final String DB_PASS = "";
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+    }
+
+    /** Find an issue by its Issue ID. */
+    public Issue findById(String issueId) {
+        String sql = "SELECT * FROM issues WHERE issue_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, issueId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapRow(rs);
+
+        } catch (SQLException e) {
+            System.err.println("Error finding issue: " + e.getMessage());
+        }
+        return null;
+    }
+
+    /** Get all issues. */
+    public List&lt;Issue&gt; findAll() {
+        String sql = "SELECT * FROM issues ORDER BY created_at DESC";
+        List&lt;Issue&gt; issues = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) issues.add(mapRow(rs));
+
+        } catch (SQLException e) {
+            System.err.println("Error fetching issues: " + e.getMessage());
+        }
+        return issues;
+    }
+
+    /** Get issues by user ID. */
+    public List&lt;Issue&gt; findByUserId(String userId) {
+        String sql = "SELECT * FROM issues WHERE user_id = ? ORDER BY created_at DESC";
+        List&lt;Issue&gt; issues = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) issues.add(mapRow(rs));
+
+        } catch (SQLException e) {
+            System.err.println("Error fetching issues by user: " + e.getMessage());
+        }
+        return issues;
+    }
+
+    /** Get issues assigned to a specific support agent. */
+    public List&lt;Issue&gt; findByAssignedTo(String supportUserId) {
+        String sql = "SELECT * FROM issues WHERE assigned_to = ? ORDER BY created_at DESC";
+        List&lt;Issue&gt; issues = new ArrayList&lt;&gt;();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, supportUserId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) issues.add(mapRow(rs));
+
+        } catch (SQLException e) {
+            System.err.println("Error fetching assigned issues: " + e.getMessage());
+        }
+        return issues;
+    }
+
+    /** Get total number of issues. */
+    public int getCount() {
+        String sql = "SELECT COUNT(*) FROM issues";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            System.err.println("Error counting issues: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    /** Save a new issue. */
+    public Issue save(Issue issue) {
+        String sql = "INSERT INTO issues (issue_id, user_id, booking_id, subject, description, " +
+                     "severity, status, assigned_to, notes, created_at, updated_at) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, issue.getIssueId());
+            ps.setString(2, issue.getUserId());
+            ps.setString(3, issue.getBookingId());
+            ps.setString(4, issue.getSubject());
+            ps.setString(5, issue.getDescription());
+            ps.setString(6, issue.getSeverity());
+            ps.setString(7, issue.getStatus());
+            ps.setString(8, issue.getAssignedTo());
+            ps.setString(9, issue.getNotes());
+            ps.setTimestamp(10, Timestamp.valueOf(issue.getCreatedAt() != null ? issue.getCreatedAt() : LocalDateTime.now()));
+            ps.setTimestamp(11, Timestamp.valueOf(issue.getUpdatedAt() != null ? issue.getUpdatedAt() : LocalDateTime.now()));
+
+            ps.executeUpdate();
+            return issue;
+
+        } catch (SQLException e) {
+            System.err.println("Error saving issue: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /** Update issue status and notes. */
+    public boolean update(String issueId, String status, String assignedTo, String notes) {
+        String sql = "UPDATE issues SET status = ?, assigned_to = ?, notes = ?, updated_at = ? WHERE issue_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            ps.setString(2, assignedTo);
+            ps.setString(3, notes);
+            ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setString(5, issueId);
+            return ps.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error updating issue: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private Issue mapRow(ResultSet rs) throws SQLException {
+        Issue issue = new Issue();
+        issue.setIssueId(rs.getString("issue_id"));
+        issue.setUserId(rs.getString("user_id"));
+        issue.setBookingId(rs.getString("booking_id"));
+        issue.setSubject(rs.getString("subject"));
+        issue.setDescription(rs.getString("description"));
+        issue.setSeverity(rs.getString("severity"));
+        issue.setStatus(rs.getString("status"));
+        issue.setAssignedTo(rs.getString("assigned_to"));
+        issue.setNotes(rs.getString("notes"));
+        Timestamp created = rs.getTimestamp("created_at");
+        if (created != null) issue.setCreatedAt(created.toLocalDateTime());
+        Timestamp updated = rs.getTimestamp("updated_at");
+        if (updated != null) issue.setUpdatedAt(updated.toLocalDateTime());
+        return issue;
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- CONSOLE APP -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="console-menu">
+  <div class="section-tag">19 &mdash; Console App</div>
+  <h2>ConsoleMenu.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.console</code> &mdash; Handles all menu display and user input. Separates UI from logic.</p>
+
+  <p>This class is responsible for two things: <strong>displaying menus</strong> (what the user sees) and <strong>reading input</strong> (what the user types). It does NOT contain any business logic or database code &mdash; that is the job of ConsoleApp.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Why separate ConsoleMenu from ConsoleApp?</div>
+    <p>This follows the <strong>Single Responsibility Principle</strong> (SRP) &mdash; each class has one job. ConsoleMenu handles display and input. ConsoleApp handles business logic. If you want to change how menus look, you only edit ConsoleMenu. If you want to change how bookings work, you only edit ConsoleApp.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>ConsoleMenu shows different dashboards based on role: customers get 6 options (book, track, history, invoice, support, profile), officers get 7 options (book for walk-ins, track any parcel, update status, schedule pickup, all history, manage issues, profile), and support gets 3 options (view assigned issues, update issue, profile).</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/console/ConsoleMenu.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.console;
+
+import java.util.Scanner;
+
+/**
+ * ConsoleMenu — Displays menus and reads user input.
+ * Separates UI display from business logic (Single Responsibility Principle).
+ */
+public class ConsoleMenu {
+
+    private final Scanner scanner;
+
+    public ConsoleMenu(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    // =============================================
+    // MENU DISPLAYS
+    // =============================================
+
+    public void showBanner() {
+        System.out.println("\n========================================");
+        System.out.println("  NIMBUS — Parcel Management System");
+        System.out.println("  Console Application (Phase 2)");
+        System.out.println("========================================\n");
+    }
+
+    public int showMainMenu() {
+        System.out.println("\n--- Main Menu ---");
+        System.out.println("1. Register (New Customer)");
+        System.out.println("2. Login");
+        System.out.println("0. Exit");
+        return readInt("Choose an option: ");
+    }
+
+    public int showCustomerMenu(String name) {
+        System.out.println("\n--- Customer Dashboard [" + name + "] ---");
+        System.out.println("1. Book a Parcel");
+        System.out.println("2. Track Parcel");
+        System.out.println("3. Booking History");
+        System.out.println("4. View Invoice");
+        System.out.println("5. Contact Support");
+        System.out.println("6. My Profile");
+        System.out.println("0. Logout");
+        return readInt("Choose an option: ");
+    }
+
+    public int showOfficerMenu(String name) {
+        System.out.println("\n--- Officer Dashboard [" + name + "] ---");
+        System.out.println("1. Book Parcel (Walk-in Customer)");
+        System.out.println("2. Track Any Parcel");
+        System.out.println("3. Update Delivery Status");
+        System.out.println("4. Schedule Pickup");
+        System.out.println("5. All Booking History");
+        System.out.println("6. Manage Issues");
+        System.out.println("7. My Profile");
+        System.out.println("0. Logout");
+        return readInt("Choose an option: ");
+    }
+
+    public int showSupportMenu(String name) {
+        System.out.println("\n--- Support Dashboard [" + name + "] ---");
+        System.out.println("1. View Assigned Issues");
+        System.out.println("2. Update Issue Status");
+        System.out.println("3. My Profile");
+        System.out.println("0. Logout");
+        return readInt("Choose an option: ");
+    }
+
+    // =============================================
+    // INPUT HELPERS
+    // =============================================
+
+    public String readLine(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+
+    public int readInt(String prompt) {
+        System.out.print(prompt);
+        try {
+            int val = Integer.parseInt(scanner.nextLine().trim());
+            return val;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    public double readDouble(String prompt) {
+        System.out.print(prompt);
+        try {
+            return Double.parseDouble(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    public int readDeliveryType() {
+        System.out.println("\nDelivery Type:");
+        System.out.println("1. Standard (5-7 days)");
+        System.out.println("2. Express (2-3 days)");
+        System.out.println("3. Overnight (next day)");
+        return readInt("Choose: ");
+    }
+
+    public int readPackagingType() {
+        System.out.println("\nPackaging Preference:");
+        System.out.println("1. Standard Packaging");
+        System.out.println("2. Custom Packaging (+Rs.50)");
+        System.out.println("3. Eco-friendly Packaging (+Rs.30)");
+        System.out.println("4. Fragile Item Handling (+Rs.80)");
+        return readInt("Choose: ");
+    }
+
+    public int readSeverity() {
+        System.out.println("\nSeverity:");
+        System.out.println("1. Low");
+        System.out.println("2. Medium");
+        System.out.println("3. High");
+        System.out.println("4. Critical");
+        return readInt("Choose: ");
+    }
+
+    public int readStatus() {
+        System.out.println("\nNew Status:");
+        System.out.println("1. Booked");
+        System.out.println("2. Picked Up");
+        System.out.println("3. In Transit");
+        System.out.println("4. Delivered");
+        System.out.println("5. Returned");
+        return readInt("Choose: ");
+    }
+
+    public int readIssueStatus() {
+        System.out.println("\nIssue Status:");
+        System.out.println("1. Open");
+        System.out.println("2. In Progress");
+        System.out.println("3. Resolved");
+        return readInt("Choose: ");
+    }
+
+    // =============================================
+    // OUTPUT HELPERS
+    // =============================================
+
+    public void showSuccess(String message) {
+        System.out.println("\n[SUCCESS] " + message);
+    }
+
+    public void showError(String message) {
+        System.out.println("\n[ERROR] " + message);
+    }
+
+    public void showInfo(String message) {
+        System.out.println("\n[INFO] " + message);
+    }
+
+    public void showDivider() {
+        System.out.println("----------------------------------------");
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="console-app">
+  <div class="section-tag">20 &mdash; Console App</div>
+  <h2>ConsoleApp.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.console</code> &mdash; The main app. 16 features across 3 roles (customer, officer, support).</p>
+
+  <p>This is the heart of Sprint 2. It wires together the DAOs, utilities, and menus into a complete working application. The <code>main()</code> method starts the app, shows a banner, and enters a loop that keeps running until the user chooses Exit.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>After login, the app checks the user's role and routes to the correct dashboard. Each dashboard option calls a method that uses the DAOs to interact with the database. For example, "Book a Parcel" collects input via ConsoleMenu, calculates price via PricingCalculator, generates an ID via IdGenerator, and saves via BookingDAO.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Important</div>
+    <p>Run <code>NimbusApplication.java</code> FIRST (to create the database tables via schema.sql), then stop it, then run <code>ConsoleApp.java</code>. The console app connects to the same database file that NimbusApplication creates.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/console/ConsoleApp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.console;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.dao.IssueDAO;
+import com.nimbus.dao.UserDAO;
+import com.nimbus.model.Booking;
+import com.nimbus.model.Issue;
+import com.nimbus.model.User;
+import com.nimbus.util.IdGenerator;
+import com.nimbus.util.InputValidator;
+import com.nimbus.util.PricingCalculator;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * ConsoleApp — Phase 2 main entry point.
+ * A console-based menu-driven application that connects to H2 database via JDBC.
+ *
+ * Implements all 13 TCS Sprint 2 features:
+ *   1. Register Customer
+ *   2. Login (Customer / Officer / Support)
+ *   3. Customer: Book Parcel
+ *   4. Customer: Track Parcel
+ *   5. Customer: View Booking History
+ *   6. Customer: View Invoice
+ *   7. Customer: Contact Support
+ *   8. Customer: View Profile
+ *   9. Officer: Book Parcel (Walk-in)
+ *  10. Officer: Track Any Parcel
+ *  11. Officer: Update Delivery Status
+ *  12. Officer: Schedule Pickup
+ *  13. Officer: View All History
+ *  14. Officer: Manage Issues
+ *  15. Support: View Assigned Issues
+ *  16. Support: Update Issue
+ *
+ * HOW TO RUN IN ECLIPSE:
+ *   Right-click this file &gt; Run As &gt; Java Application
+ */
+public class ConsoleApp {
+
+    private static final DateTimeFormatter DT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private final UserDAO userDAO = new UserDAO();
+    private final BookingDAO bookingDAO = new BookingDAO();
+    private final IssueDAO issueDAO = new IssueDAO();
+    private final Scanner scanner = new Scanner(System.in);
+    private final ConsoleMenu menu = new ConsoleMenu(scanner);
+
+    // Currently logged-in user
+    private User currentUser = null;
+
+    public static void main(String[] args) {
+        ConsoleApp app = new ConsoleApp();
+        app.run();
+    }
+
+    /**
+     * Main application loop.
+     */
+    public void run() {
+        menu.showBanner();
+
+        boolean running = true;
+        while (running) {
+            int choice = menu.showMainMenu();
+
+            switch (choice) {
+                case 1 -&gt; registerCustomer();
+                case 2 -&gt; login();
+                case 0 -&gt; {
+                    System.out.println("\nThank you for using Nimbus. Goodbye!");
+                    running = false;
+                }
+                default -&gt; menu.showError("Invalid option. Please try again.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    // =============================================
+    // AUTHENTICATION
+    // =============================================
+
+    /**
+     * US1: Register a new customer.
+     */
+    private void registerCustomer() {
+        System.out.println("\n--- New Customer Registration ---");
+
+        String firstName = menu.readLine("First Name: ");
+        String middleName = menu.readLine("Middle Name (optional, press Enter to skip): ");
+        String lastName = menu.readLine("Last Name: ");
+        String email = menu.readLine("Email: ");
+        String mobile = menu.readLine("Mobile (10 digits): ");
+        String street = menu.readLine("Street Address: ");
+        String zipCode = menu.readLine("ZIP Code: ");
+        String city = menu.readLine("City: ");
+        String state = menu.readLine("State: ");
+        String country = menu.readLine("Country (default: India): ");
+        if (country.isEmpty()) country = "India";
+        String password = menu.readLine("Password: ");
+        String confirmPassword = menu.readLine("Confirm Password: ");
+
+        // Validate
+        List&lt;String&gt; errors = InputValidator.validateRegistration(
+                firstName, lastName, email, mobile, street, zipCode, city, state, password, confirmPassword);
+
+        if (!errors.isEmpty()) {
+            menu.showError("Registration failed:");
+            errors.forEach(e -&gt; System.out.println("  - " + e));
+            return;
+        }
+
+        // Check duplicate email
+        if (userDAO.findByEmail(email.trim().toLowerCase()) != null) {
+            menu.showError("This email is already registered.");
+            return;
+        }
+
+        // Generate User ID
+        List&lt;String&gt; existingIds = userDAO.getAllUserIds();
+        String userId = IdGenerator.generateUserId(firstName.trim(), lastName.trim(), existingIds);
+
+        // Create and save user
+        User user = new User(userId, firstName.trim(), middleName.trim(), lastName.trim(),
+                email.trim().toLowerCase(), "+91", mobile.trim(),
+                street.trim(), zipCode.trim(), city.trim(), state.trim(), country.trim(),
+                password, "customer", "Email notifications");
+
+        User saved = userDAO.save(user);
+        if (saved != null) {
+            menu.showSuccess("Registration successful!");
+            System.out.println("  Your User ID: " + userId);
+            System.out.println("  Full Name:    " + saved.getFullName());
+            System.out.println("\n  Please save your User ID — you'll need it to login.");
+        } else {
+            menu.showError("Registration failed. Please try again.");
+        }
+    }
+
+    /**
+     * US2: Login with User ID and Password.
+     */
+    private void login() {
+        System.out.println("\n--- Login ---");
+
+        String userId = menu.readLine("User ID: ");
+        String password = menu.readLine("Password: ");
+
+        if (userId.isEmpty() || password.isEmpty()) {
+            menu.showError("User ID and password are required.");
+            return;
+        }
+
+        User user = userDAO.validateLogin(userId.trim(), password);
+
+        if (user == null) {
+            menu.showError("Invalid credentials. Check your User ID and password.");
+            return;
+        }
+
+        currentUser = user;
+        menu.showSuccess("Welcome, " + user.getFullName() + "! (Role: " + user.getRole() + ")");
+
+        // Route to role-specific dashboard
+        switch (user.getRole()) {
+            case "customer" -&gt; customerDashboard();
+            case "officer" -&gt; officerDashboard();
+            case "support" -&gt; supportDashboard();
+        }
+
+        currentUser = null;
+    }
+
+    // =============================================
+    // CUSTOMER DASHBOARD
+    // =============================================
+
+    private void customerDashboard() {
+        boolean active = true;
+        while (active) {
+            int choice = menu.showCustomerMenu(currentUser.getFullName());
+
+            switch (choice) {
+                case 1 -&gt; bookParcel(false);
+                case 2 -&gt; trackParcel(false);
+                case 3 -&gt; viewBookingHistory(false);
+                case 4 -&gt; viewInvoice();
+                case 5 -&gt; contactSupport();
+                case 6 -&gt; viewProfile();
+                case 0 -&gt; {
+                    menu.showInfo("Logged out.");
+                    active = false;
+                }
+                default -&gt; menu.showError("Invalid option.");
+            }
+        }
+    }
+
+    // =============================================
+    // OFFICER DASHBOARD
+    // =============================================
+
+    private void officerDashboard() {
+        boolean active = true;
+        while (active) {
+            int choice = menu.showOfficerMenu(currentUser.getFullName());
+
+            switch (choice) {
+                case 1 -&gt; bookParcel(true);
+                case 2 -&gt; trackParcel(true);
+                case 3 -&gt; updateDeliveryStatus();
+                case 4 -&gt; schedulePickup();
+                case 5 -&gt; viewBookingHistory(true);
+                case 6 -&gt; manageIssues();
+                case 7 -&gt; viewProfile();
+                case 0 -&gt; {
+                    menu.showInfo("Logged out.");
+                    active = false;
+                }
+                default -&gt; menu.showError("Invalid option.");
+            }
+        }
+    }
+
+    // =============================================
+    // SUPPORT DASHBOARD
+    // =============================================
+
+    private void supportDashboard() {
+        boolean active = true;
+        while (active) {
+            int choice = menu.showSupportMenu(currentUser.getFullName());
+
+            switch (choice) {
+                case 1 -&gt; viewAssignedIssues();
+                case 2 -&gt; updateIssueStatus();
+                case 3 -&gt; viewProfile();
+                case 0 -&gt; {
+                    menu.showInfo("Logged out.");
+                    active = false;
+                }
+                default -&gt; menu.showError("Invalid option.");
+            }
+        }
+    }
+
+    // =============================================
+    // BOOKING (Customer &amp; Officer)
+    // =============================================
+
+    /**
+     * US3/US9: Book a parcel.
+     * @param isOfficer true = officer booking for walk-in customer (sender info is entered manually)
+     */
+    private void bookParcel(boolean isOfficer) {
+        System.out.println("\n--- Book a Parcel ---");
+
+        // Step 1: Sender info
+        String senderUserId;
+        if (isOfficer) {
+            System.out.println("\n[Step 1] Walk-in Customer Details:");
+            senderUserId = menu.readLine("Customer User ID (or press Enter for new): ");
+            if (senderUserId.isEmpty()) {
+                menu.showInfo("Register the customer first, then use their User ID.");
+                return;
+            }
+            User sender = userDAO.findById(senderUserId);
+            if (sender == null) {
+                menu.showError("User ID not found. Please register them first.");
+                return;
+            }
+            System.out.println("  Sender: " + sender.getFullName() + " (" + sender.getEmail() + ")");
+        } else {
+            senderUserId = currentUser.getUserId();
+            System.out.println("\n[Step 1] Sender: " + currentUser.getFullName());
+        }
+
+        // Step 2: Receiver info
+        System.out.println("\n[Step 2] Receiver Details:");
+        String recName = menu.readLine("Receiver Name: ");
+        String recAddress = menu.readLine("Receiver Address: ");
+        String recPin = menu.readLine("Receiver PIN Code: ");
+        String recMobile = menu.readLine("Receiver Mobile: ");
+
+        if (recName.isEmpty() || recAddress.isEmpty()) {
+            menu.showError("Receiver name and address are required.");
+            return;
+        }
+
+        // Step 3: Parcel details
+        System.out.println("\n[Step 3] Parcel Details:");
+        int weight = menu.readInt("Parcel Weight (grams): ");
+        if (weight &lt;= 0) {
+            menu.showError("Weight must be greater than 0.");
+            return;
+        }
+        String contents = menu.readLine("Contents Description: ");
+
+        // Step 4: Shipping options
+        System.out.println("\n[Step 4] Shipping Options:");
+        int dtChoice = menu.readDeliveryType();
+        String deliveryType = switch (dtChoice) {
+            case 2 -&gt; "Express";
+            case 3 -&gt; "Overnight";
+            default -&gt; "Standard";
+        };
+
+        int pkgChoice = menu.readPackagingType();
+        String packaging = switch (pkgChoice) {
+            case 2 -&gt; "Custom Packaging";
+            case 3 -&gt; "Eco-friendly Packaging";
+            case 4 -&gt; "Fragile Item Handling";
+            default -&gt; "Standard Packaging";
+        };
+
+        // Calculate cost
+        double cost = PricingCalculator.calculateSimple(weight, deliveryType, packaging);
+        PricingCalculator.PricingResult pricing = PricingCalculator.calculate(weight, deliveryType, packaging, "None", 0);
+
+        // Step 5: Review &amp; Confirm
+        System.out.println("\n[Step 5] Review &amp; Pay:");
+        menu.showDivider();
+        System.out.println("  Receiver:   " + recName);
+        System.out.println("  Address:    " + recAddress + ", " + recPin);
+        System.out.println("  Weight:     " + weight + "g");
+        System.out.println("  Delivery:   " + deliveryType + " (" + pricing.deliveryDays + " days)");
+        System.out.println("  Packaging:  " + packaging);
+        System.out.println("  Cost:       Rs. " + String.format("%.0f", cost));
+        menu.showDivider();
+
+        String confirm = menu.readLine("Confirm booking? (yes/no): ");
+        if (!confirm.equalsIgnoreCase("yes") &amp;&amp; !confirm.equalsIgnoreCase("y")) {
+            menu.showInfo("Booking cancelled.");
+            return;
+        }
+
+        // Generate Booking ID and save
+        String bookingId = IdGenerator.generateBookingId(bookingDAO.getCount());
+
+        Booking booking = new Booking();
+        booking.setBookingId(bookingId);
+        booking.setUserId(senderUserId);
+        booking.setRecName(recName.trim());
+        booking.setRecAddress(recAddress.trim());
+        booking.setRecPin(recPin.trim());
+        booking.setRecMobile(recMobile.trim());
+        booking.setParWeightGram(weight);
+        booking.setParContentsDescription(contents.trim());
+        booking.setParDeliveryType(deliveryType);
+        booking.setParPackingPreference(packaging);
+        booking.setParPickupTime(LocalDateTime.now().plusDays(1));
+        booking.setParDropoffTime(LocalDateTime.now().plusDays(deliveryType.equals("Overnight") ? 2 :
+                deliveryType.equals("Express") ? 4 : 8));
+        booking.setParServiceCost(cost);
+        booking.setParPaymentTime(LocalDateTime.now());
+        booking.setPaymentMethod("card");
+        booking.setParStatus("Booked");
+        booking.setCreatedAt(LocalDateTime.now());
+
+        Booking saved = bookingDAO.save(booking);
+        if (saved != null) {
+            menu.showSuccess("Booking confirmed!");
+            System.out.println("  Booking ID: " + bookingId);
+            System.out.println("  Amount:     Rs. " + String.format("%.0f", cost));
+            System.out.println("  Status:     Booked");
+        } else {
+            menu.showError("Booking failed. Please try again.");
+        }
+    }
+
+    // =============================================
+    // TRACKING
+    // =============================================
+
+    /**
+     * US4/US10: Track a parcel by Booking ID.
+     */
+    private void trackParcel(boolean isOfficer) {
+        System.out.println("\n--- Track Parcel ---");
+        String bookingId = menu.readLine("Enter Booking ID: ");
+
+        if (bookingId.isEmpty()) {
+            menu.showError("Booking ID is required.");
+            return;
+        }
+
+        Booking booking = bookingDAO.findById(bookingId.trim());
+        if (booking == null) {
+            menu.showError("Booking not found: " + bookingId);
+            return;
+        }
+
+        // Security check: customers can only see their own bookings
+        if (!isOfficer &amp;&amp; !booking.getUserId().equals(currentUser.getUserId())) {
+            menu.showError("Access denied. This booking belongs to another user.");
+            return;
+        }
+
+        displayBookingDetails(booking);
+    }
+
+    // =============================================
+    // HISTORY
+    // =============================================
+
+    /**
+     * US5/US13: View booking history.
+     */
+    private void viewBookingHistory(boolean isOfficer) {
+        System.out.println("\n--- Booking History ---");
+
+        List&lt;Booking&gt; bookings;
+        if (isOfficer) {
+            // Officers see all bookings
+            String filterUser = menu.readLine("Filter by User ID (press Enter for all): ");
+            String startDate = menu.readLine("Start Date (yyyy-MM-dd, Enter to skip): ");
+            String endDate = menu.readLine("End Date (yyyy-MM-dd, Enter to skip): ");
+
+            if (!filterUser.isEmpty() || !startDate.isEmpty() || !endDate.isEmpty()) {
+                bookings = bookingDAO.findByDateRange(
+                        filterUser.isEmpty() ? null : filterUser,
+                        startDate.isEmpty() ? null : startDate,
+                        endDate.isEmpty() ? null : endDate);
+            } else {
+                bookings = bookingDAO.findAll();
+            }
+        } else {
+            bookings = bookingDAO.findByUserId(currentUser.getUserId());
+        }
+
+        if (bookings.isEmpty()) {
+            menu.showInfo("No bookings found.");
+            return;
+        }
+
+        System.out.println("\nFound " + bookings.size() + " booking(s):\n");
+        System.out.printf("%-18s %-12s %-20s %-12s %10s  %-12s%n",
+                "Booking ID", "User ID", "Receiver", "Status", "Cost", "Date");
+        menu.showDivider();
+
+        for (Booking b : bookings) {
+            System.out.printf("%-18s %-12s %-20s %-12s Rs.%7.0f  %s%n",
+                    b.getBookingId(),
+                    b.getUserId(),
+                    truncate(b.getRecName(), 18),
+                    b.getParStatus(),
+                    b.getParServiceCost(),
+                    b.getCreatedAt() != null ? b.getCreatedAt().format(DT_FORMAT) : "N/A");
+        }
+    }
+
+    // =============================================
+    // INVOICE
+    // =============================================
+
+    /**
+     * US6: View invoice for a booking.
+     */
+    private void viewInvoice() {
+        System.out.println("\n--- View Invoice ---");
+        String bookingId = menu.readLine("Enter Booking ID: ");
+
+        Booking booking = bookingDAO.findById(bookingId.trim());
+        if (booking == null) {
+            menu.showError("Booking not found.");
+            return;
+        }
+
+        if (!booking.getUserId().equals(currentUser.getUserId())) {
+            menu.showError("Access denied.");
+            return;
+        }
+
+        User sender = userDAO.findById(booking.getUserId());
+
+        System.out.println("\n========================================");
+        System.out.println("         NIMBUS — INVOICE");
+        System.out.println("========================================");
+        System.out.println("Booking ID:     " + booking.getBookingId());
+        System.out.println("Date:           " + (booking.getCreatedAt() != null ? booking.getCreatedAt().format(DT_FORMAT) : "N/A"));
+        System.out.println("Status:         " + booking.getParStatus());
+        menu.showDivider();
+        System.out.println("SENDER");
+        System.out.println("  Name:         " + (sender != null ? sender.getFullName() : booking.getUserId()));
+        if (sender != null) {
+            System.out.println("  Address:      " + sender.getStreet() + ", " + sender.getCity());
+        }
+        menu.showDivider();
+        System.out.println("RECEIVER");
+        System.out.println("  Name:         " + booking.getRecName());
+        System.out.println("  Address:      " + booking.getRecAddress());
+        System.out.println("  PIN:          " + booking.getRecPin());
+        System.out.println("  Mobile:       " + booking.getRecMobile());
+        menu.showDivider();
+        System.out.println("PARCEL");
+        System.out.println("  Weight:       " + booking.getParWeightGram() + "g");
+        System.out.println("  Contents:     " + booking.getParContentsDescription());
+        System.out.println("  Delivery:     " + booking.getParDeliveryType());
+        System.out.println("  Packaging:    " + booking.getParPackingPreference());
+        menu.showDivider();
+        System.out.println("PAYMENT");
+        System.out.println("  Method:       " + booking.getPaymentMethod());
+        System.out.println("  Amount:       Rs. " + String.format("%.0f", booking.getParServiceCost()));
+        System.out.println("  Paid At:      " + (booking.getParPaymentTime() != null ? booking.getParPaymentTime().format(DT_FORMAT) : "N/A"));
+        System.out.println("========================================\n");
+    }
+
+    // =============================================
+    // SUPPORT (Customer side)
+    // =============================================
+
+    /**
+     * US7: Customer raises a support issue.
+     */
+    private void contactSupport() {
+        System.out.println("\n--- Contact Support ---");
+
+        String bookingId = menu.readLine("Related Booking ID (optional, Enter to skip): ");
+        String subject = menu.readLine("Issue Subject: ");
+        String description = menu.readLine("Describe the issue: ");
+
+        if (subject.isEmpty()) {
+            menu.showError("Subject is required.");
+            return;
+        }
+
+        int sevChoice = menu.readSeverity();
+        String severity = switch (sevChoice) {
+            case 2 -&gt; "Medium";
+            case 3 -&gt; "High";
+            case 4 -&gt; "Critical";
+            default -&gt; "Low";
+        };
+
+        String issueId = IdGenerator.generateIssueId(issueDAO.getCount());
+
+        Issue issue = new Issue(issueId, currentUser.getUserId(),
+                bookingId.isEmpty() ? null : bookingId.trim(),
+                subject.trim(), description.trim(), severity);
+
+        Issue saved = issueDAO.save(issue);
+        if (saved != null) {
+            menu.showSuccess("Issue submitted!");
+            System.out.println("  Issue ID:  " + issueId);
+            System.out.println("  Severity:  " + severity);
+            System.out.println("  Status:    Open");
+            System.out.println("  Assigned:  Support Team (SUP-001)");
+        } else {
+            menu.showError("Failed to submit issue.");
+        }
+    }
+
+    // =============================================
+    // PROFILE
+    // =============================================
+
+    /**
+     * US8: View current user's profile.
+     */
+    private void viewProfile() {
+        System.out.println("\n--- My Profile ---");
+        menu.showDivider();
+        System.out.println("User ID:     " + currentUser.getUserId());
+        System.out.println("Name:        " + currentUser.getFullName());
+        System.out.println("Email:       " + currentUser.getEmail());
+        System.out.println("Mobile:      " + currentUser.getCountryCode() + " " + currentUser.getMobile());
+        System.out.println("Address:     " + currentUser.getStreet() + ", " + currentUser.getCity()
+                + ", " + currentUser.getState() + " " + currentUser.getZipCode());
+        System.out.println("Country:     " + currentUser.getCountry());
+        System.out.println("Role:        " + currentUser.getRole());
+        System.out.println("Preferences: " + currentUser.getPreferences());
+        System.out.println("Member Since:" + (currentUser.getCreatedAt() != null ? currentUser.getCreatedAt().format(DT_FORMAT) : "N/A"));
+        menu.showDivider();
+    }
+
+    // =============================================
+    // OFFICER — Delivery Status Update
+    // =============================================
+
+    /**
+     * US11: Update the delivery status of a booking.
+     */
+    private void updateDeliveryStatus() {
+        System.out.println("\n--- Update Delivery Status ---");
+        String bookingId = menu.readLine("Booking ID: ");
+
+        Booking booking = bookingDAO.findById(bookingId.trim());
+        if (booking == null) {
+            menu.showError("Booking not found.");
+            return;
+        }
+
+        System.out.println("Current Status: " + booking.getParStatus());
+
+        int statusChoice = menu.readStatus();
+        String newStatus = switch (statusChoice) {
+            case 1 -&gt; "Booked";
+            case 2 -&gt; "Picked Up";
+            case 3 -&gt; "In Transit";
+            case 4 -&gt; "Delivered";
+            case 5 -&gt; "Returned";
+            default -&gt; null;
+        };
+
+        if (newStatus == null) {
+            menu.showError("Invalid status.");
+            return;
+        }
+
+        if (bookingDAO.updateStatus(bookingId.trim(), newStatus)) {
+            menu.showSuccess("Status updated: " + booking.getParStatus() + " -&gt; " + newStatus);
+        } else {
+            menu.showError("Failed to update status.");
+        }
+    }
+
+    // =============================================
+    // OFFICER — Schedule Pickup
+    // =============================================
+
+    /**
+     * US12: Schedule pickup and dropoff times.
+     */
+    private void schedulePickup() {
+        System.out.println("\n--- Schedule Pickup ---");
+        String bookingId = menu.readLine("Booking ID: ");
+
+        Booking booking = bookingDAO.findById(bookingId.trim());
+        if (booking == null) {
+            menu.showError("Booking not found.");
+            return;
+        }
+
+        displayBookingDetails(booking);
+
+        String pickupStr = menu.readLine("Pickup Date-Time (yyyy-MM-dd HH:mm): ");
+        String dropoffStr = menu.readLine("Dropoff Date-Time (yyyy-MM-dd HH:mm): ");
+
+        try {
+            LocalDateTime pickup = LocalDateTime.parse(pickupStr, DT_FORMAT);
+            LocalDateTime dropoff = LocalDateTime.parse(dropoffStr, DT_FORMAT);
+
+            if (bookingDAO.updatePickupDropoff(bookingId.trim(), pickup, dropoff)) {
+                menu.showSuccess("Pickup scheduled!");
+                System.out.println("  Pickup:  " + pickup.format(DT_FORMAT));
+                System.out.println("  Dropoff: " + dropoff.format(DT_FORMAT));
+            } else {
+                menu.showError("Failed to schedule.");
+            }
+        } catch (Exception e) {
+            menu.showError("Invalid date format. Use: yyyy-MM-dd HH:mm");
+        }
+    }
+
+    // =============================================
+    // OFFICER — Issue Management
+    // =============================================
+
+    /**
+     * US14: Officer views and manages all issues.
+     */
+    private void manageIssues() {
+        System.out.println("\n--- Issue Management ---");
+
+        List&lt;Issue&gt; issues = issueDAO.findAll();
+        if (issues.isEmpty()) {
+            menu.showInfo("No issues found.");
+            return;
+        }
+
+        System.out.printf("%-8s %-12s %-25s %-10s %-12s %-10s%n",
+                "ID", "User", "Subject", "Severity", "Status", "Assigned");
+        menu.showDivider();
+
+        for (Issue issue : issues) {
+            System.out.printf("%-8s %-12s %-25s %-10s %-12s %-10s%n",
+                    issue.getIssueId(),
+                    issue.getUserId(),
+                    truncate(issue.getSubject(), 23),
+                    issue.getSeverity(),
+                    issue.getStatus(),
+                    issue.getAssignedTo());
+        }
+
+        System.out.println();
+        String issueId = menu.readLine("Enter Issue ID to manage (or Enter to skip): ");
+        if (issueId.isEmpty()) return;
+
+        Issue issue = issueDAO.findById(issueId.trim());
+        if (issue == null) {
+            menu.showError("Issue not found.");
+            return;
+        }
+
+        String assignTo = menu.readLine("Assign to (Support User ID, Enter to keep " + issue.getAssignedTo() + "): ");
+        if (assignTo.isEmpty()) assignTo = issue.getAssignedTo();
+
+        int statusChoice = menu.readIssueStatus();
+        String newStatus = switch (statusChoice) {
+            case 2 -&gt; "In Progress";
+            case 3 -&gt; "Resolved";
+            default -&gt; "Open";
+        };
+
+        String notes = menu.readLine("Notes: ");
+
+        if (issueDAO.update(issueId.trim(), newStatus, assignTo, notes)) {
+            menu.showSuccess("Issue updated.");
+        } else {
+            menu.showError("Failed to update issue.");
+        }
+    }
+
+    // =============================================
+    // SUPPORT — View &amp; Update Issues
+    // =============================================
+
+    private void viewAssignedIssues() {
+        System.out.println("\n--- My Assigned Issues ---");
+
+        List&lt;Issue&gt; issues = issueDAO.findByAssignedTo(currentUser.getUserId());
+        if (issues.isEmpty()) {
+            menu.showInfo("No issues assigned to you.");
+            return;
+        }
+
+        System.out.printf("%-8s %-12s %-25s %-10s %-12s%n", "ID", "Customer", "Subject", "Severity", "Status");
+        menu.showDivider();
+
+        for (Issue issue : issues) {
+            System.out.printf("%-8s %-12s %-25s %-10s %-12s%n",
+                    issue.getIssueId(),
+                    issue.getUserId(),
+                    truncate(issue.getSubject(), 23),
+                    issue.getSeverity(),
+                    issue.getStatus());
+        }
+    }
+
+    private void updateIssueStatus() {
+        System.out.println("\n--- Update Issue ---");
+        String issueId = menu.readLine("Issue ID: ");
+
+        Issue issue = issueDAO.findById(issueId.trim());
+        if (issue == null) {
+            menu.showError("Issue not found.");
+            return;
+        }
+
+        if (!issue.getAssignedTo().equals(currentUser.getUserId())) {
+            menu.showError("This issue is not assigned to you.");
+            return;
+        }
+
+        System.out.println("Current Status: " + issue.getStatus());
+
+        int statusChoice = menu.readIssueStatus();
+        String newStatus = switch (statusChoice) {
+            case 2 -&gt; "In Progress";
+            case 3 -&gt; "Resolved";
+            default -&gt; "Open";
+        };
+
+        String notes = menu.readLine("Add Notes: ");
+
+        if (issueDAO.update(issueId.trim(), newStatus, currentUser.getUserId(), notes)) {
+            menu.showSuccess("Issue updated: " + issue.getStatus() + " -&gt; " + newStatus);
+        } else {
+            menu.showError("Failed to update issue.");
+        }
+    }
+
+    // =============================================
+    // HELPERS
+    // =============================================
+
+    private void displayBookingDetails(Booking b) {
+        menu.showDivider();
+        System.out.println("Booking ID:  " + b.getBookingId());
+        System.out.println("Sender:      " + b.getUserId());
+        System.out.println("Receiver:    " + b.getRecName());
+        System.out.println("Address:     " + b.getRecAddress() + ", " + b.getRecPin());
+        System.out.println("Weight:      " + b.getParWeightGram() + "g");
+        System.out.println("Contents:    " + b.getParContentsDescription());
+        System.out.println("Delivery:    " + b.getParDeliveryType());
+        System.out.println("Packaging:   " + b.getParPackingPreference());
+        System.out.println("Cost:        Rs. " + String.format("%.0f", b.getParServiceCost()));
+        System.out.println("Status:      " + b.getParStatus());
+        System.out.println("Pickup:      " + (b.getParPickupTime() != null ? b.getParPickupTime().format(DT_FORMAT) : "Not scheduled"));
+        System.out.println("Dropoff:     " + (b.getParDropoffTime() != null ? b.getParDropoffTime().format(DT_FORMAT) : "Not scheduled"));
+        System.out.println("Created:     " + (b.getCreatedAt() != null ? b.getCreatedAt().format(DT_FORMAT) : "N/A"));
+        menu.showDivider();
+    }
+
+    private String truncate(String s, int maxLen) {
+        if (s == null) return "";
+        return s.length() &gt; maxLen ? s.substring(0, maxLen - 2) + ".." : s;
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- RUN & TEST -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="how-to-run">
+  <div class="section-tag">21 &mdash; Run &amp; Test</div>
+  <h2>How to Run</h2>
+  <p class="section-desc">Step-by-step instructions to get the console app running in Eclipse.</p>
+
+  <ol class="steps">
+    <li><strong>Run NimbusApplication.java first.</strong> Right-click <code>NimbusApplication.java</code> in the Project Explorer, choose <strong>Run As &rarr; Java Application</strong>. This starts Spring Boot, which creates the database tables (via schema.sql) and loads the seed data (via data.sql). Wait until you see "Started NimbusApplication" in the console. Then <strong>STOP it</strong> by clicking the red square in the Console panel.</li>
+    <li><strong>Run ConsoleApp.java.</strong> Right-click <code>ConsoleApp.java</code>, choose <strong>Run As &rarr; Java Application</strong>. The console menu appears in the bottom panel of Eclipse.</li>
+    <li><strong>Try logging in.</strong> Choose option <code>2</code> (Login). Enter User ID: <code>260401-AK01</code> and Password: <code>Amit@123</code>. You should see the Customer Dashboard menu.</li>
+    <li><strong>Explore the features.</strong> Book a parcel, track it, view your history, check the invoice, contact support &mdash; everything is connected to the real H2 database now.</li>
+    <li><strong>Try other roles.</strong> Logout (option 0), then login as Officer (<code>OFF-001</code> / <code>Officer@123</code>) or Support (<code>SUP-001</code> / <code>Support@123</code>) to see different dashboards.</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>If you skip Step 1 and run ConsoleApp directly, it will try to connect to a database that has no tables yet. You will get SQL errors like "Table 'USERS' not found." Always run NimbusApplication once first to create the schema.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="expected-output">
+  <div class="section-tag">22 &mdash; Run &amp; Test</div>
+  <h2>Expected Output</h2>
+  <p class="section-desc">What you should see in the Eclipse console when the app runs correctly.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Console Output &mdash; App Start</span>
+    </div>
+    <pre><code class="language-text">========================================
+  NIMBUS — Parcel Management System
+  Console Application (Phase 2)
+========================================
+
+
+--- Main Menu ---
+1. Register (New Customer)
+2. Login
+0. Exit
+Choose an option: </code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Console Output &mdash; Customer Login</span>
+    </div>
+    <pre><code class="language-text">--- Login ---
+User ID: 260401-AK01
+Password: Amit@123
+
+[SUCCESS] Welcome, Amit Kumar! (Role: customer)
+
+--- Customer Dashboard [Amit Kumar] ---
+1. Book a Parcel
+2. Track Parcel
+3. Booking History
+4. View Invoice
+5. Contact Support
+6. My Profile
+0. Logout
+Choose an option: </code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Console Output &mdash; Booking a Parcel</span>
+    </div>
+    <pre><code class="language-text">--- Book a Parcel ---
+
+[Step 1] Sender: Amit Kumar
+
+[Step 2] Receiver Details:
+Receiver Name: Vikram Reddy
+Receiver Address: 90 Jubilee Hills, Hyderabad
+Receiver PIN Code: 500033
+Receiver Mobile: 8765432100
+
+[Step 3] Parcel Details:
+Parcel Weight (grams): 500
+Contents Description: Books and documents
+
+[Step 4] Shipping Options:
+
+Delivery Type:
+1. Standard (5-7 days)
+2. Express (2-3 days)
+3. Overnight (next day)
+Choose: 1
+
+Packaging Preference:
+1. Standard Packaging
+2. Custom Packaging (+Rs.50)
+3. Eco-friendly Packaging (+Rs.30)
+4. Fragile Item Handling (+Rs.80)
+Choose: 1
+
+[Step 5] Review &amp; Pay:
+----------------------------------------
+  Receiver:   Vikram Reddy
+  Address:    90 Jubilee Hills, Hyderabad, 500033
+  Weight:     500g
+  Delivery:   Standard (5-7 days)
+  Packaging:  Standard Packaging
+  Cost:       Rs. 75
+----------------------------------------
+Confirm booking? (yes/no): yes
+
+[SUCCESS] Booking confirmed!
+  Booking ID: NMB-260426-0004
+  Amount:     Rs. 75
+  Status:     Booked</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="test-it">
+  <div class="section-tag">23 &mdash; Run &amp; Test</div>
+  <h2>Test It</h2>
+  <p class="section-desc">Try these test scenarios to verify everything works correctly.</p>
+
+  <h3>Test 1: Customer Flow</h3>
+  <ol class="steps">
+    <li>Login as customer: <code>260401-AK01</code> / <code>Amit@123</code></li>
+    <li>Book a parcel &mdash; fill in receiver details, choose Standard delivery</li>
+    <li>Track the parcel using the Booking ID you just got</li>
+    <li>View booking history &mdash; you should see all of Amit's bookings</li>
+    <li>View the invoice for any booking</li>
+  </ol>
+
+  <h3>Test 2: Officer Flow</h3>
+  <ol class="steps">
+    <li>Login as officer: <code>OFF-001</code> / <code>Officer@123</code></li>
+    <li>View all bookings &mdash; you should see every booking in the system</li>
+    <li>Update the delivery status of a booking (e.g., change "Booked" to "Picked Up")</li>
+    <li>Track any parcel by Booking ID &mdash; officers can see all bookings, not just their own</li>
+  </ol>
+
+  <h3>Test 3: New Registration</h3>
+  <ol class="steps">
+    <li>Choose option 1 (Register) from the main menu</li>
+    <li>Fill in all details &mdash; the system generates a User ID automatically</li>
+    <li>Login with the newly generated User ID</li>
+    <li>Book a parcel as the new user</li>
+  </ol>
+
+  <div class="callout practice">
+    <div class="callout-title">Try These Edge Cases</div>
+    <ul>
+      <li>Try logging in with a wrong password &mdash; should show "Invalid credentials"</li>
+      <li>Try registering with an email that already exists &mdash; should show "already registered"</li>
+      <li>Try a password with less than 8 characters &mdash; should show validation errors</li>
+      <li>As a customer, try tracking another user's booking &mdash; should show "Access denied"</li>
+    </ul>
+  </div>
+
+  <h3>What's Next</h3>
+
+  <p>Your console app works. Data is stored in a real database. You can register users, book parcels, track shipments, manage issues, and generate invoices &mdash; all persisted permanently in H2.</p>
+
+  <p>In <strong>Sprint 3</strong>, you will take this same logic and make it accessible through a web browser &mdash; using <strong>Servlets</strong> to handle HTTP requests and <strong>JSP</strong> to render HTML pages. The DAOs stay exactly the same. You just replace the console menus with web pages.</p>
+
+  <div class="callout think">
+    <div class="callout-title">The Big Picture</div>
+    <p>Sprint 1 = Frontend (HTML/CSS/JS + LocalStorage). Sprint 2 = Backend (Java + JDBC + H2). Sprint 3 = Connect them (Servlets + JSP serve the frontend with real database data). Sprint 4 = Modern approach (REST APIs + Angular frontend). Each sprint builds on the previous one.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="sprint1-guide.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Sprint 1: Eclipse Setup</span>
+  </a>
+  <a href="sprint3-guide.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Sprint 3: Servlets + Spring</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="../topics/shared.js"></script>
+
+</body>
+</html>

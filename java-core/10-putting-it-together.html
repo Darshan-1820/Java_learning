@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Putting It Together | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link active"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: THE UNIVERSAL TEMPLATE ===== -->
+  <div class="content-section" id="universal-template">
+    <div class="section-tag">Master Template</div>
+    <h2>The Universal PRA Template</h2>
+    <p class="section-desc">This is the master template that fits 90% of PRA questions. It has all the pieces you've learned in previous chapters: POJO class, filter method, aggregate method, Scanner input, and output formatting. Copy this, modify the names and conditions, and you have a working solution.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Universal PRA Template</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+// ============================================
+// STEP 1: POJO CLASS
+// ============================================
+class ClassName {
+    private int id;
+    private String name;
+    private double value;
+
+    // Parameterized Constructor
+    public ClassName(int id, String name, double value) {
+        this.id = id;
+        this.name = name;
+        this.value = value;
+    }
+
+    // Getters
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public double getValue() { return value; }
+
+    // Setters
+    public void setId(int id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setValue(double value) { this.value = value; }
+}
+
+public class Solution {
+
+    // ============================================
+    // STEP 2: METHOD 1 — Filter or Search
+    // ============================================
+    public static ArrayList&lt;ClassName&gt; filterByCondition(
+            Collection&lt;ClassName&gt; list, String filterParam) {
+        ArrayList&lt;ClassName&gt; result = new ArrayList&lt;&gt;();
+        for (ClassName item : list) {
+            if (item.getName().equalsIgnoreCase(filterParam)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    // ============================================
+    // STEP 3: METHOD 2 — Aggregate or Calculate
+    // ============================================
+    public static double calculateAverage(Collection&lt;ClassName&gt; list) {
+        double sum = 0;
+        int count = 0;
+        for (ClassName item : list) {
+            if (item.getValue() &gt; 0) {   // condition (optional)
+                sum += item.getValue();
+                count++;
+            }
+        }
+        return count &gt; 0 ? sum / count : 0;  // SAFE division
+    }
+
+    // ============================================
+    // STEP 4: MAIN METHOD
+    // ============================================
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Read number of objects
+        int n = sc.nextInt();
+        ArrayList&lt;ClassName&gt; list = new ArrayList&lt;&gt;();
+
+        // Read each object
+        for (int i = 0; i &lt; n; i++) {
+            int id = sc.nextInt();
+            sc.nextLine();               // consume \n after int
+            String name = sc.nextLine(); // read name
+            double value = sc.nextDouble();
+            list.add(new ClassName(id, name, value));
+        }
+
+        // Read method parameters
+        sc.nextLine();                         // consume \n from loop
+        String searchParam = sc.nextLine();    // for method 1
+
+        // Call Method 1 and handle output
+        ArrayList&lt;ClassName&gt; result1 = filterByCondition(list, searchParam);
+        if (result1 != null &amp;&amp; !result1.isEmpty()) {
+            for (ClassName item : result1) {
+                System.out.println(item.getId());
+                System.out.println(item.getName());
+                System.out.println(item.getValue());
+            }
+        } else {
+            System.out.println("No results found");
+        }
+
+        // Call Method 2 and handle output
+        double result2 = calculateAverage(list);
+        if (result2 &gt; 0) {
+            System.out.println(result2);
+        } else {
+            System.out.println("No results found");
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">&#x1F4A1; How to Use This Template</div>
+      <p>When you open a PRA question on HackerRank:</p>
+      <ol>
+        <li>Copy this entire template into the editor</li>
+        <li>Replace <code>ClassName</code> with the class name from the question</li>
+        <li>Replace the fields (<code>id</code>, <code>name</code>, <code>value</code>) with the actual fields</li>
+        <li>Modify the method conditions to match what the question asks</li>
+        <li>Adjust the output format to match the expected output exactly</li>
+      </ol>
+      <p>You now have a working skeleton. Just fill in the blanks.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: STEP-BY-STEP APPROACH ===== -->
+  <div class="content-section" id="step-by-step">
+    <div class="section-tag">Strategy</div>
+    <h2>Step-by-Step Approach</h2>
+    <p class="section-desc">You have 50 minutes for the major question. Here's how to spend them wisely. Don't jump into coding &mdash; spending 5 minutes reading saves 15 minutes debugging.</p>
+
+    <ol class="steps">
+      <li>
+        <strong>Read the Question (5 min)</strong><br>
+        Identify these 5 things before writing any code:
+        <ul style="margin-top: 8px;">
+          <li><strong>Class name</strong> &mdash; what POJO to create</li>
+          <li><strong>Fields</strong> &mdash; what private variables with their types</li>
+          <li><strong>Method signatures</strong> &mdash; method names, parameters, return types</li>
+          <li><strong>Input format</strong> &mdash; exact order of inputs</li>
+          <li><strong>Output format</strong> &mdash; exact expected output (copy it!)</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Write the POJO (5 min)</strong><br>
+        Private fields, parameterized constructor, all getters and setters. This is mechanical &mdash; no thinking needed. Just map fields from the question.
+      </li>
+      <li>
+        <strong>Write Method 1 (10 min)</strong><br>
+        Usually a filter: loop through collection, check condition, add matches to result list. Use the filter template from Chapter 6.
+      </li>
+      <li>
+        <strong>Write Method 2 (10 min)</strong><br>
+        Usually an aggregate: loop, accumulate sum/count, return calculated value. Or a search with nested loops. Use the appropriate template.
+      </li>
+      <li>
+        <strong>Write Main (15 min)</strong><br>
+        Scanner input reading (watch the newline trap!), create objects in loop, call methods, format output exactly as specified.
+      </li>
+      <li>
+        <strong>Test (5 min)</strong><br>
+        Run with the sample input from the question. Compare output character-by-character. Check edge cases mentally.
+      </li>
+    </ol>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; Time Management</div>
+      <p><strong>Don't spend more than 5 minutes stuck on any one part.</strong> If Method 2 is confusing, write a placeholder and move to Main. A solution with Method 1 working + correct input reading + correct output format can still score partial marks. A perfect Method 2 with broken input reading scores zero.</p>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">Read Question<span class="flow-sub">5 min</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box green">POJO<span class="flow-sub">5 min</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">Method 1<span class="flow-sub">10 min</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box purple">Method 2<span class="flow-sub">10 min</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box cyan">Main<span class="flow-sub">15 min</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box red">Test<span class="flow-sub">5 min</span></div>
+      </div>
+      <div class="flow-label">Total: 50 minutes. This is your game plan for the major question.</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: PRE-SUBMIT CHECKLIST ===== -->
+  <div class="content-section" id="checklist">
+    <div class="section-tag">Checklist</div>
+    <h2>Pre-Submit Checklist</h2>
+    <p class="section-desc">Before clicking "Submit" on HackerRank, go through every item on this list. Each unchecked item is a potential zero on a test case. Takes 2 minutes, saves your marks.</p>
+
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th style="width: 40px;">#</th>
+          <th>Check</th>
+          <th>Common Mistake</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>All fields are <code>private</code></td>
+          <td>Writing fields without access modifier (default package access)</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>Parameterized constructor exists</td>
+          <td>Forgetting the constructor &mdash; objects can't be created</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>ALL getters and setters present</td>
+          <td>Missing a getter/setter for one field</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>Methods are <code>static</code></td>
+          <td>Writing non-static methods called from static main</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>Using <code>equalsIgnoreCase</code> for strings</td>
+          <td>Using <code>equals()</code> or <code>==</code></td>
+        </tr>
+        <tr>
+          <td><strong>6</strong></td>
+          <td>Handling empty results (no division by zero)</td>
+          <td>Dividing <code>sum / count</code> when count is 0</td>
+        </tr>
+        <tr>
+          <td><strong>7</strong></td>
+          <td><code>sc.nextLine()</code> after <code>sc.nextInt()</code></td>
+          <td>The newline trap &mdash; reading empty strings</td>
+        </tr>
+        <tr>
+          <td><strong>8</strong></td>
+          <td>Output format matches EXACTLY</td>
+          <td>Missing comma, extra space, wrong capitalization</td>
+        </tr>
+        <tr>
+          <td><strong>9</strong></td>
+          <td><code>import java.util.*</code> at the top</td>
+          <td>Scanner, ArrayList, Collection not found</td>
+        </tr>
+        <tr>
+          <td><strong>10</strong></td>
+          <td>Class name matches what question asks</td>
+          <td>Naming your class "Main" when question says "Investor"</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; The Quick Scan</div>
+      <p>Do this in 30 seconds before submitting:</p>
+      <ol>
+        <li>Scroll to the top &mdash; is <code>import java.util.*;</code> there?</li>
+        <li>Look at fields &mdash; are they all <code>private</code>?</li>
+        <li>Look at methods &mdash; are they <code>public static</code>?</li>
+        <li>Search for <code>.equals(</code> &mdash; change ALL to <code>.equalsIgnoreCase(</code></li>
+        <li>Search for <code>/ count</code> or <code>/ n</code> &mdash; is there a zero check?</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: EDGE CASES ===== -->
+  <div class="content-section" id="edge-cases">
+    <div class="section-tag">Watch Out</div>
+    <h2>Edge Cases to Watch</h2>
+    <p class="section-desc">HackerRank always includes edge case test inputs. These are the sneaky inputs designed to break your code if you didn't think about them. Here are the most common ones in PRA.</p>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Edge Case 1: All Values Negative</div>
+      <p><strong>Scenario:</strong> "Calculate average of positive gains" but ALL investors have negative gains.</p>
+      <p><strong>What happens:</strong> <code>count</code> stays at 0. If you do <code>sum / count</code>, you get ArithmeticException (crash).</p>
+      <p><strong>Fix:</strong> <code>return count > 0 ? sum / count : 0;</code></p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Edge Case 2: Empty Collection (n = 0)</div>
+      <p><strong>Scenario:</strong> The input starts with <code>0</code> &mdash; zero objects to read.</p>
+      <p><strong>What happens:</strong> Your loop runs 0 times. If you then try to search or aggregate, the list is empty.</p>
+      <p><strong>Fix:</strong> Your filter returns empty list, your aggregate returns 0 or "not found". Both should work naturally if you coded the patterns correctly.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Edge Case 3: No Matches Found</div>
+      <p><strong>Scenario:</strong> "Find all books with genre 'Horror'" but no books have that genre.</p>
+      <p><strong>What happens:</strong> Result list is empty. You need to print the error message, not iterate over an empty list.</p>
+      <p><strong>Fix:</strong> Always check <code>if (result.isEmpty())</code> before printing results.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Edge Case 4: Case Sensitivity</div>
+      <p><strong>Scenario:</strong> Input has "crime" but your code checks for "Crime".</p>
+      <p><strong>What happens:</strong> <code>.equals("Crime")</code> returns false for "crime". Filter finds nothing.</p>
+      <p><strong>Fix:</strong> Always <code>.equalsIgnoreCase()</code>. This should be automatic by now.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Edge Case 5: double vs int Output</div>
+      <p><strong>Scenario:</strong> Expected output is <code>50 sq.m</code> but you used <code>double</code>, printing <code>50.0 sq.m</code>.</p>
+      <p><strong>What happens:</strong> HackerRank marks it wrong. "50 sq.m" is not equal to "50.0 sq.m".</p>
+      <p><strong>Fix:</strong> Check expected output carefully. Use <code>int</code> when output shows no decimal.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: PATTERN RECOGNITION ===== -->
+  <div class="content-section" id="pattern-recognition">
+    <div class="section-tag">Decode</div>
+    <h2>Pattern Recognition</h2>
+    <p class="section-desc">When you read the PRA question, specific keywords tell you exactly which code pattern to use. Learn to spot these keywords and you'll know the solution structure before you write a single line.</p>
+
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Question Says</th>
+          <th>Pattern</th>
+          <th>Template to Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>"find all...matching"</td>
+          <td><strong>Filter</strong></td>
+          <td>Loop + Condition + Add to result list</td>
+        </tr>
+        <tr>
+          <td>"return collection of..."</td>
+          <td><strong>Filter</strong></td>
+          <td>Return <code>ArrayList&lt;T&gt;</code></td>
+        </tr>
+        <tr>
+          <td>"average of..."</td>
+          <td><strong>Aggregate</strong></td>
+          <td>Sum + Count + Divide (with zero check)</td>
+        </tr>
+        <tr>
+          <td>"sum of..." / "total of..."</td>
+          <td><strong>Aggregate</strong></td>
+          <td>Sum accumulator + return</td>
+        </tr>
+        <tr>
+          <td>"if no...found, print"</td>
+          <td><strong>Error handling</strong></td>
+          <td>Check empty result, print exact message</td>
+        </tr>
+        <tr>
+          <td>"case insensitive"</td>
+          <td><strong>String compare</strong></td>
+          <td><code>equalsIgnoreCase()</code></td>
+        </tr>
+        <tr>
+          <td>"insertion order"</td>
+          <td><strong>Collection choice</strong></td>
+          <td>Use <code>ArrayList</code> (preserves order)</td>
+        </tr>
+        <tr>
+          <td>"calculate discount"</td>
+          <td><strong>Filter + Modify</strong></td>
+          <td>Filter + <code>setPrice(newPrice)</code> + add to result</td>
+        </tr>
+        <tr>
+          <td>"create custom exception"</td>
+          <td><strong>Exception</strong></td>
+          <td>extends Exception + super(msg) + try-catch</td>
+        </tr>
+        <tr>
+          <td>"throw...if condition"</td>
+          <td><strong>Exception</strong></td>
+          <td><code>if (cond) throw new XException(msg)</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Reading the Method Signature</h3>
+    <p>The question always gives you the method signature. It tells you everything:</p>
+
+    <div class="diagram">
+      <pre>
+  public static ArrayList&lt;Book&gt; findBooksByGenre(Collection&lt;Book&gt; books, String genre)
+  ~~~~~~ ~~~~~~ ~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~
+    |      |          |                |                   |                   |
+  access static   return type     method name        input collection     filter param
+    |      |          |                |                   |                   |
+  always always  ArrayList = filter  descriptive name  what to loop over  what to match
+  public static  double = aggregate
+                 void = prints directly
+      </pre>
+      <div class="diagram-label">The return type tells you which pattern: ArrayList = Filter, double/int = Aggregate, void = Print directly</div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; Quick Decision Tree</div>
+      <p><strong>Return type is <code>ArrayList&lt;T&gt;</code> or <code>List&lt;T&gt;</code>?</strong> &rarr; Use Filter Pattern</p>
+      <p><strong>Return type is <code>double</code>, <code>int</code>, or <code>Double</code>?</strong> &rarr; Use Aggregate Pattern</p>
+      <p><strong>Return type is <code>void</code>?</strong> &rarr; Prints results directly (search pattern)</p>
+      <p><strong>Has <code>String</code> parameter?</strong> &rarr; Will use <code>equalsIgnoreCase()</code></p>
+      <p><strong>Has <code>int discountPercent</code> parameter?</strong> &rarr; Calculate <code>price - (price * discount / 100.0)</code></p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: YOU'RE READY ===== -->
+  <div class="content-section" id="youre-ready">
+    <div class="section-tag">Final</div>
+    <h2>You're Ready</h2>
+    <p class="section-desc">You've now learned every concept and pattern that appears in PRA. Let's recap what you know and what comes next.</p>
+
+    <h3>What You've Learned</h3>
+
+    <div class="layer-stack">
+      <div class="layer">
+        <div class="layer-name blue">Ch. 1-3</div>
+        <div class="layer-detail"><strong>Foundation:</strong> PRA structure, POJO classes (private fields, constructor, getters/setters), static vs non-static methods</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name green">Ch. 4-5</div>
+        <div class="layer-detail"><strong>Data Structures:</strong> ArrayList, Collection interface, composition (one class inside another)</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name orange">Ch. 6</div>
+        <div class="layer-detail"><strong>Method Patterns:</strong> Filter, aggregate, nested search, sum by category, discount calculation</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name purple">Ch. 7</div>
+        <div class="layer-detail"><strong>Exceptions:</strong> Custom exception class (4 lines), throw, try-catch, throws declaration</div>
+      </div>
+      <div class="layer">
+        <div class="layer-name cyan">Ch. 8-9</div>
+        <div class="layer-detail"><strong>I/O:</strong> Scanner input, newline trap fix, string operations, output format matching</div>
+      </div>
+    </div>
+
+    <h3>The Mock Solutions</h3>
+    <p>The pages that follow are complete, working solutions to 6 mock PRA questions. Each one uses the patterns you've learned here. Study them to see how the concepts work in real exam questions:</p>
+
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Mock</th>
+          <th>Question</th>
+          <th>Patterns Used</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>M1</strong></td>
+          <td>Investors</td>
+          <td>POJO + Filter + Aggregate + Scanner</td>
+        </tr>
+        <tr>
+          <td><strong>M2</strong></td>
+          <td>OddEven Exception</td>
+          <td>Custom Exception + try-catch + Math logic</td>
+        </tr>
+        <tr>
+          <td><strong>M3</strong></td>
+          <td>CountryLeague (Cricketer)</td>
+          <td>Composition + Nested Search + Sum by Category</td>
+        </tr>
+        <tr>
+          <td><strong>M4</strong></td>
+          <td>Sum of Digits</td>
+          <td>Exception + String/Number operations</td>
+        </tr>
+        <tr>
+          <td><strong>M5</strong></td>
+          <td>Author-Book</td>
+          <td>Composition + Filter + Discount + Composed Input</td>
+        </tr>
+        <tr>
+          <td><strong>M6</strong></td>
+          <td>Area-Perimeter</td>
+          <td>Simple class + Calculation methods + int/double output</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout nimbus">
+      <div class="callout-title">&#x1F680; You've Got This</div>
+      <p>You now know every pattern that appears in PRA. The concepts aren't hard &mdash; it's the same 5-6 patterns repeated with different class names and field names. The mock solutions that follow show you these exact patterns applied to real questions. Read through them, trace the code line by line, and you'll walk into the exam confident.</p>
+      <p style="margin-top: 12px;"><strong>Remember the fundamentals:</strong></p>
+      <ul>
+        <li>Private fields + constructor + getters/setters (the POJO)</li>
+        <li>Filter pattern for "find all matching" questions</li>
+        <li>Aggregate pattern for "calculate average/sum" questions</li>
+        <li><code>equalsIgnoreCase()</code> for EVERY string comparison</li>
+        <li><code>sc.nextLine()</code> after every <code>sc.nextInt()</code> / <code>sc.nextDouble()</code></li>
+        <li>Exact output format &mdash; copy it character by character</li>
+        <li><code>count > 0</code> before dividing &mdash; ALWAYS</li>
+      </ul>
+      <p style="margin-top: 12px;">That's it. That's the entire PRA. Go ace it.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="09-string-operations.html"><span class="nav-label">Previous</span><span class="nav-title">String Operations</span></a>
+    <a href="mock1-q1.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Mock 1: Investors</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

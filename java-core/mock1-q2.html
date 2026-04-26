@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock 1 Q2: OddEven Exception | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link active"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECTION 1: QUESTION STATEMENT ==================== -->
+  <section class="content-section" id="question">
+    <div class="section-tag">Section 01</div>
+    <h2>Question Statement</h2>
+    <p class="section-desc">Mock Test 1, Question 2. This one tests custom exceptions combined with odd/even arithmetic logic.</p>
+
+    <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+      <span class="difficulty-badge major">PRA Major</span>
+      <span class="time-estimate">30-40 min</span>
+    </div>
+
+    <div class="question-box">
+      <h4>OddEven Exception</h4>
+      <p>Create a <code>OddEvenException</code> class.</p>
+      <p>Create <code>Solution</code> class with main method. In the main read a number of integers to be stored into collection.</p>
+      <p>The main method will add up odd integers and multiplies the even numbers. And if in case sum of odd integers is greater than multiplied even integers, raise exception with message as <code>"Sum is greater"</code>, else print multiplied value.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: ANALYSIS ==================== -->
+  <section class="content-section" id="analysis">
+    <div class="section-tag">Section 02</div>
+    <h2>Analysis</h2>
+    <p class="section-desc">This question looks short but has several moving parts. Let us break down what is being tested.</p>
+
+    <div class="callout think">
+      <div class="callout-title">What Concepts Are Being Tested?</div>
+      <ul>
+        <li><strong>Custom Exception:</strong> Create a class that extends <code>Exception</code> with a constructor that takes a message</li>
+        <li><strong>Collections:</strong> Storing integers in an ArrayList</li>
+        <li><strong>Odd/Even logic:</strong> Using the modulo operator <code>%</code> to detect odd vs even numbers</li>
+        <li><strong>Exception handling:</strong> <code>throw</code> + <code>try-catch</code> block</li>
+        <li><strong>Arithmetic:</strong> Sum for odd numbers, product for even numbers</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: STEP-BY-STEP ==================== -->
+  <section class="content-section" id="approach">
+    <div class="section-tag">Section 03</div>
+    <h2>Step-by-Step Approach</h2>
+    <p class="section-desc">Four simple steps to solve this.</p>
+
+    <ol class="steps">
+      <li><strong>Create <code>OddEvenException</code> class</strong> that extends <code>Exception</code>. It needs one constructor that takes a <code>String message</code> and passes it to the parent using <code>super(message)</code>.</li>
+      <li><strong>Read <code>n</code> integers</strong> from Scanner and store them in an ArrayList.</li>
+      <li><strong>Separate the math:</strong> loop through the list. For odd numbers, add to <code>sumOdd</code>. For even numbers, multiply into <code>productEven</code>.</li>
+      <li><strong>Compare and decide:</strong> if <code>sumOdd &gt; productEven</code>, throw the exception. Otherwise, print the product.</li>
+    </ol>
+  </section>
+
+  <!-- ==================== SECTION 4: THE EXCEPTION CLASS ==================== -->
+  <section class="content-section" id="exception-class">
+    <div class="section-tag">Section 04</div>
+    <h2>The Exception Class</h2>
+    <p class="section-desc">Custom exceptions in Java are just classes that extend Exception. That is it &mdash; 4 lines of code.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">OddEvenException.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class OddEvenException extends Exception {
+    public OddEvenException(String message) {
+        super(message);
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class OddEvenException extends Exception</div>
+          <div class="breakdown-explain"><code>extends Exception</code> makes this a checked exception. Java now treats it like any built-in exception (can be thrown and caught).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2-4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public OddEvenException(String message) { super(message); }</div>
+          <div class="breakdown-explain"><code>super(message)</code> passes the error message to the parent <code>Exception</code> class. When you later call <code>e.getMessage()</code>, it returns this message.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>Every custom exception in PRA follows this exact same pattern: <code>extends Exception</code>, one constructor, call <code>super(message)</code>. Memorize these 4 lines &mdash; you will use them in almost every PRA question that involves exceptions.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: THE LOGIC ==================== -->
+  <section class="content-section" id="logic">
+    <div class="section-tag">Section 05</div>
+    <h2>The Logic &mdash; Odd vs Even</h2>
+    <p class="section-desc">Understanding how to detect odd/even and the critical initialization trap.</p>
+
+    <h3>Odd/Even Detection</h3>
+    <p>The modulo operator <code>%</code> gives the remainder after division:</p>
+    <ul>
+      <li><code>num % 2 != 0</code> &rarr; the number is <strong>odd</strong> (dividing by 2 leaves a remainder)</li>
+      <li><code>num % 2 == 0</code> &rarr; the number is <strong>even</strong> (dividing by 2 leaves no remainder)</li>
+    </ul>
+
+    <div class="callout warning">
+      <div class="callout-title">Critical: Initialize Product to 1, Not 0</div>
+      <p>When multiplying numbers, you must start with <code>productEven = 1</code>. If you start with <code>productEven = 0</code>, any number multiplied by 0 is still 0, and your product will always be 0 no matter what the inputs are.</p>
+      <p>For sum, starting at 0 is fine because <code>0 + anything = anything</code>. But for product, <code>0 * anything = 0</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Odd/Even Logic</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">int sumOdd = 0;       // sum starts at 0 (adding)
+int productEven = 1;  // product starts at 1 (multiplying)
+
+for (int num : numbers) {
+    if (num % 2 != 0) {
+        sumOdd += num;        // odd: add to sum
+    } else {
+        productEven *= num;   // even: multiply into product
+    }
+}</code></pre>
+    </div>
+
+    <h3>Worked Example</h3>
+    <p>Given numbers: <code>[5, 4, 2, 13, 8]</code></p>
+
+    <table class="info-table">
+      <tr>
+        <th>Number</th>
+        <th>Odd or Even?</th>
+        <th>sumOdd</th>
+        <th>productEven</th>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>5 % 2 = 1 &rarr; Odd</td>
+        <td>0 + 5 = <strong>5</strong></td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>4 % 2 = 0 &rarr; Even</td>
+        <td>5</td>
+        <td>1 * 4 = <strong>4</strong></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>2 % 2 = 0 &rarr; Even</td>
+        <td>5</td>
+        <td>4 * 2 = <strong>8</strong></td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>13 % 2 = 1 &rarr; Odd</td>
+        <td>5 + 13 = <strong>18</strong></td>
+        <td>8</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>8 % 2 = 0 &rarr; Even</td>
+        <td>18</td>
+        <td>8 * 8 = <strong>64</strong></td>
+      </tr>
+    </table>
+
+    <p>Result: sumOdd = 18, productEven = 64. Since 18 &lt; 64, we print <code>64</code>.</p>
+  </section>
+
+  <!-- ==================== SECTION 6: COMPLETE SOLUTION ==================== -->
+  <section class="content-section" id="complete">
+    <div class="section-tag">Section 06</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Copy-paste ready. Paste into HackerRank and it compiles.</p>
+
+    <div class="callout template">
+      <div class="callout-title">Copy-Paste Ready</div>
+      <p>Full program with import, exception class, and Solution class with main method.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java (Complete)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+class OddEvenException extends Exception {
+    public OddEvenException(String message) {
+        super(message);
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        ArrayList&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            numbers.add(sc.nextInt());
+        }
+
+        int sumOdd = 0;
+        int productEven = 1;
+
+        for (int num : numbers) {
+            if (num % 2 != 0) {
+                sumOdd += num;
+            } else {
+                productEven *= num;
+            }
+        }
+
+        try {
+            if (sumOdd > productEven) {
+                throw new OddEvenException("Sum is greater");
+            } else {
+                System.out.println(productEven);
+            }
+        } catch (OddEvenException e) {
+            System.out.println("OddEvenException: " + e.getMessage());
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">import java.util.*;</div>
+          <div class="breakdown-explain">Imports ArrayList, Scanner, and everything else from java.util.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3-7</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class OddEvenException extends Exception { ... }</div>
+          <div class="breakdown-explain">Custom exception class. Extends Exception, takes a message string, passes it to parent via super().</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">11-13</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Scanner + read n + create ArrayList</div>
+          <div class="breakdown-explain">Standard input setup. Read how many numbers to expect, create an empty list to store them.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">15-17</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for loop: numbers.add(sc.nextInt())</div>
+          <div class="breakdown-explain">Read n integers and add each to the ArrayList. No nextLine() trap here because we are reading int after int (no String reads in between).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">19-20</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int sumOdd = 0; int productEven = 1;</div>
+          <div class="breakdown-explain">Initialize accumulators. Sum starts at 0 (neutral for addition). Product starts at 1 (neutral for multiplication).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">22-28</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for loop: odd/even check and accumulate</div>
+          <div class="breakdown-explain">For each number: if odd (% 2 != 0), add to sumOdd. If even (% 2 == 0), multiply into productEven.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">30-37</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">try { if (sumOdd > productEven) throw ... } catch ...</div>
+          <div class="breakdown-explain">The comparison happens inside a try block. If sum is greater, we throw our custom exception. The catch block immediately catches it and prints the formatted message. If sum is not greater, we just print the product.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 7: TEST CASES ==================== -->
+  <section class="content-section" id="test-cases">
+    <div class="section-tag">Section 07</div>
+    <h2>Test Cases</h2>
+    <p class="section-desc">Two scenarios: one where the product wins, and one where the sum wins (triggering the exception).</p>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Product Wins (No Exception)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">5
+5
+4
+2
+13
+8</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">64</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Trace</div>
+      <p>Odd numbers: 5, 13 &rarr; sumOdd = 5 + 13 = <strong>18</strong></p>
+      <p>Even numbers: 4, 2, 8 &rarr; productEven = 4 * 2 * 8 = <strong>64</strong></p>
+      <p>18 &lt; 64, so we print <code>64</code>. No exception thrown.</p>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; Sum Wins (Exception Thrown)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">3
+2
+5
+3</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">OddEvenException: Sum is greater</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Trace</div>
+      <p>Odd numbers: 5, 3 &rarr; sumOdd = 5 + 3 = <strong>8</strong></p>
+      <p>Even numbers: 2 &rarr; productEven = 1 * 2 = <strong>2</strong></p>
+      <p>8 &gt; 2, so we throw OddEvenException("Sum is greater"). The catch block prints <code>OddEvenException: Sum is greater</code>.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 8: COMMON MISTAKES ==================== -->
+  <section class="content-section" id="mistakes">
+    <div class="section-tag">Section 08</div>
+    <h2>Common Mistakes</h2>
+    <p class="section-desc">Watch out for these traps specific to this question.</p>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 1: Initializing productEven to 0</div>
+      <p>If you write <code>int productEven = 0;</code>, every multiplication will give 0. The product will always be 0, and the sum will almost always be greater, causing false exceptions.</p>
+      <p><strong>Fix:</strong> Initialize to <code>1</code>. The identity element for multiplication is 1, not 0.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 2: Wrong Output Format for Exception</div>
+      <p>The expected output is <code>OddEvenException: Sum is greater</code> (with the class name, colon, space, then message). If you just print <code>e.getMessage()</code>, you get <code>Sum is greater</code> without the class name prefix.</p>
+      <p><strong>Fix:</strong> Use <code>"OddEvenException: " + e.getMessage()</code> in the catch block.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 3: Forgetting try-catch</div>
+      <p>Since <code>OddEvenException</code> extends <code>Exception</code> (a checked exception), Java requires you to either catch it or declare it with <code>throws</code>. If you throw it outside a try block without a catch, the code will not compile.</p>
+      <p><strong>Fix:</strong> Always wrap the throw statement in a try-catch block.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 4: Using == 1 for Odd Check</div>
+      <p>Some students write <code>num % 2 == 1</code> to check for odd. This fails for negative numbers because <code>-5 % 2</code> gives <code>-1</code>, not <code>1</code>. Using <code>!= 0</code> handles both positive and negative numbers.</p>
+      <p><strong>Fix:</strong> Use <code>num % 2 != 0</code> instead of <code>num % 2 == 1</code>.</p>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <div class="topic-nav">
+    <a href="mock1-q1.html">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">Investors</span>
+    </a>
+    <a href="mock2-q1.html" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">CountryLeague</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

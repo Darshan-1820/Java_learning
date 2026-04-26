@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection Filtering & Aggregation | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link active"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: THE FILTER PATTERN ===== -->
+  <div class="content-section" id="filter-pattern">
+    <div class="section-tag">Pattern 01</div>
+    <h2>The Filter Pattern</h2>
+    <p class="section-desc">The most common method type you'll see in PRA. The question gives you a collection and a condition — you return only the items that match. This pattern shows up in almost every PRA question as one of the two required methods.</p>
+
+    <p>The structure is always the same, no matter what class or condition:</p>
+    <ol>
+      <li><strong>Create an empty result list</strong> &mdash; this will hold the matches</li>
+      <li><strong>Loop through every item</strong> in the input collection</li>
+      <li><strong>Check the condition</strong> &mdash; does this item match what we're looking for?</li>
+      <li><strong>If yes, add it</strong> to the result list</li>
+      <li><strong>Return the result list</strong> &mdash; even if it's empty</li>
+    </ol>
+
+    <h3>Real PRA Example: Find Investors with Negative Gains</h3>
+    <p>From Mock 1 Q1 &mdash; the question asks: "return all investors whose gains are less than 0."</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Filter Method</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static ArrayList&lt;Investor&gt; negativeGainsInvestorNames(Collection&lt;Investor&gt; investors) {
+    ArrayList&lt;Investor&gt; result = new ArrayList&lt;&gt;();  // 1. Empty result list
+    for (Investor inv : investors) {                    // 2. Loop through all
+        if (inv.getGains() &lt; 0) {                      // 3. Check condition
+            result.add(inv);                            // 4. Add match
+        }
+    }
+    return result;                                      // 5. Return results
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">ArrayList&lt;Investor&gt; result = new ArrayList&lt;&gt;();</div>
+          <div class="breakdown-explain">Create a fresh empty list. This is where we'll put all investors that match our condition. We always start with an empty list.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Investor inv : investors)</div>
+          <div class="breakdown-explain">Enhanced for loop &mdash; go through every Investor object in the collection one by one. The variable <code>inv</code> holds the current investor.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (inv.getGains() &lt; 0)</div>
+          <div class="breakdown-explain">The filter condition. We call the getter method to get the gains value and check if it's negative. Only investors with negative gains pass this check.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">result.add(inv);</div>
+          <div class="breakdown-explain">If the condition was true, add this investor to our result list. If the condition was false, we skip this investor and move to the next one.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">return result;</div>
+          <div class="breakdown-explain">Return the result list. It might have 0 items, 1 item, or all items &mdash; depends on how many matched the condition.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">Create Empty List<span class="flow-sub">ArrayList&lt;T&gt; result = new ArrayList&lt;&gt;()</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">Loop Each Item<span class="flow-sub">for (T item : collection)</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box purple">Check Condition<span class="flow-sub">if (item.getX() matches)</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box green">Add to Result<span class="flow-sub">result.add(item)</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box cyan">Return Result<span class="flow-sub">return result</span></div>
+      </div>
+      <div class="flow-label">The Universal Filter Flow &mdash; works for every filter question in PRA</div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">&#x1F4A1; Think About It</div>
+      <p>The filter pattern is like a security guard at a gate. Every person (object) in the queue (collection) walks up. The guard checks their ID (condition). If they pass, they go through to the VIP area (result list). If they don't, they stay out. At the end, you have a list of only the people who passed.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: THE AGGREGATE PATTERN ===== -->
+  <div class="content-section" id="aggregate-pattern">
+    <div class="section-tag">Pattern 02</div>
+    <h2>The Aggregate Pattern</h2>
+    <p class="section-desc">The second most common PRA method type. Instead of returning a list of matching items, you calculate a single value: a sum, average, count, or product from the collection.</p>
+
+    <p>The structure follows a slightly different flow:</p>
+    <ol>
+      <li><strong>Initialize accumulators</strong> &mdash; <code>sum = 0</code>, <code>count = 0</code></li>
+      <li><strong>Loop through every item</strong> in the collection</li>
+      <li><strong>Check condition</strong> (if applicable) &mdash; not all aggregates need a filter</li>
+      <li><strong>Accumulate</strong> &mdash; add to sum, increment count</li>
+      <li><strong>Calculate final result</strong> &mdash; divide sum by count for average</li>
+      <li><strong>Return the result</strong></li>
+    </ol>
+
+    <h3>Real PRA Example: Average of Positive Gains</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Aggregate Method</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static double averageOfPositiveGains(Collection&lt;Investor&gt; investors) {
+    double sum = 0;     // accumulator for total
+    int count = 0;      // accumulator for how many
+    for (Investor inv : investors) {
+        if (inv.getGains() &gt; 0) {       // only positive gains
+            sum += inv.getGains();       // add to running total
+            count++;                      // one more positive investor
+        }
+    }
+    return count &gt; 0 ? sum / count : 0;  // safe division
+}</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Critical Warning</div>
+      <p><strong>ALWAYS check <code>count > 0</code> before dividing!</strong> If no items match your condition, count stays at 0. Dividing by zero crashes your program on HackerRank and you get 0 marks. The ternary operator <code>count > 0 ? sum / count : 0</code> is your safety net.</p>
+    </div>
+
+    <h3>Common Aggregate Operations</h3>
+
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Accumulators</th>
+          <th>Inside Loop</th>
+          <th>Final Return</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sum</strong></td>
+          <td><code>double sum = 0</code></td>
+          <td><code>sum += item.getX()</code></td>
+          <td><code>return sum</code></td>
+        </tr>
+        <tr>
+          <td><strong>Average</strong></td>
+          <td><code>double sum = 0; int count = 0</code></td>
+          <td><code>sum += item.getX(); count++</code></td>
+          <td><code>return sum / count</code></td>
+        </tr>
+        <tr>
+          <td><strong>Count</strong></td>
+          <td><code>int count = 0</code></td>
+          <td><code>count++</code></td>
+          <td><code>return count</code></td>
+        </tr>
+        <tr>
+          <td><strong>Max</strong></td>
+          <td><code>double max = Double.MIN_VALUE</code></td>
+          <td><code>if (item.getX() > max) max = item.getX()</code></td>
+          <td><code>return max</code></td>
+        </tr>
+        <tr>
+          <td><strong>Min</strong></td>
+          <td><code>double min = Double.MAX_VALUE</code></td>
+          <td><code>if (item.getX() < min) min = item.getX()</code></td>
+          <td><code>return min</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Filter Pattern</div>
+        <div class="comparison-body">
+          <p><strong>Returns:</strong> <code>ArrayList&lt;T&gt;</code> (a list)</p>
+          <p><strong>Purpose:</strong> "Give me all items that match"</p>
+          <p><strong>Keywords:</strong> "find all", "return collection of", "filter by"</p>
+          <p><strong>Result:</strong> Multiple objects</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Aggregate Pattern</div>
+        <div class="comparison-body">
+          <p><strong>Returns:</strong> <code>double</code>, <code>int</code>, or <code>Double</code></p>
+          <p><strong>Purpose:</strong> "Calculate a single value from all items"</p>
+          <p><strong>Keywords:</strong> "average of", "sum of", "total", "count"</p>
+          <p><strong>Result:</strong> Single number</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: STRING SEARCH (CASE-INSENSITIVE) ===== -->
+  <div class="content-section" id="string-search">
+    <div class="section-tag">Pattern 03</div>
+    <h2>Searching by String (Case-Insensitive)</h2>
+    <p class="section-desc">Many PRA questions ask you to find items by matching a string value. This gets more complex when you have nested objects (like a Cricketer who has a list of Statistics). You need nested loops to search inside inner collections.</p>
+
+    <h3>Nested Loop Search &mdash; Cricketer by League Name</h3>
+    <p>This pattern appears when one class contains a <code>List</code> of another class. You need two loops: the outer loop goes through each parent object, the inner loop searches through the child objects.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Nested Search</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void findCricketerByLeagueName(Collection&lt;Cricketer&gt; cricketers, String leagueName) {
+    boolean found = false;
+    for (Cricketer c : cricketers) {
+        for (Statistics stat : c.getStatistics()) {           // inner loop
+            if (stat.getLeagueName().equalsIgnoreCase(leagueName)) {
+                System.out.println(c.getCricketerName());
+                found = true;
+                break;  // found in this cricketer's stats, move to next cricketer
+            }
+        }
+    }
+    if (!found) {
+        System.out.println("No Cricketer Found");
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">boolean found = false;</div>
+          <div class="breakdown-explain">A flag to track whether we found ANY match at all. We need this to print "No Cricketer Found" if nothing matches.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Cricketer c : cricketers)</div>
+          <div class="breakdown-explain">Outer loop &mdash; go through each cricketer one by one.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Statistics stat : c.getStatistics())</div>
+          <div class="breakdown-explain">Inner loop &mdash; for the current cricketer, go through all their statistics entries. <code>getStatistics()</code> returns a List&lt;Statistics&gt;.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (stat.getLeagueName().equalsIgnoreCase(leagueName))</div>
+          <div class="breakdown-explain">Case-insensitive string comparison. "IPL" matches "ipl", "Ipl", etc. Always use <code>equalsIgnoreCase</code> in PRA.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">break;</div>
+          <div class="breakdown-explain">Once we found a match in this cricketer's stats, no need to check the rest of their stats. Break out of the inner loop and move to the next cricketer.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (!found) System.out.println("No Cricketer Found");</div>
+          <div class="breakdown-explain">After checking ALL cricketers, if found is still false, no one matched. Print the error message (exact wording from the question).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; PRA Tip</div>
+      <p><strong>ALWAYS use <code>equalsIgnoreCase()</code></strong> for string comparisons in PRA. The question almost always says "case-insensitive" somewhere in the problem statement. Even if it doesn't explicitly say it, using <code>equalsIgnoreCase()</code> is the safe choice &mdash; you'll never lose marks for being case-insensitive, but you CAN lose marks for being case-sensitive when the test cases use different cases.</p>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">&#x1F4DA; Analogy</div>
+      <p>Think of it like searching a library. The outer loop is walking through each shelf (Cricketer). The inner loop is checking each book (Statistics) on that shelf. Once you find the book you want on a shelf, you note the shelf name and move to the next shelf. If you go through the entire library and find nothing, you tell the user "Book not found."</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: SUM BY CATEGORY ===== -->
+  <div class="content-section" id="sum-by-category">
+    <div class="section-tag">Pattern 04</div>
+    <h2>Sum by Category</h2>
+    <p class="section-desc">A combination of the aggregate pattern with nested searching. You sum a numeric value, but only for items that match a specific category (usually a string parameter).</p>
+
+    <h3>Real PRA Example: Total Performance Average by Country</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Sum by Category</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static Double findTotalOfPerformanceAverageByCountryName(
+        Collection&lt;Cricketer&gt; cricketers, String countryName) {
+    double total = 0;
+    boolean found = false;
+    for (Cricketer c : cricketers) {
+        for (Statistics stat : c.getStatistics()) {
+            if (stat.getCountryName().equalsIgnoreCase(countryName)) {
+                total += stat.getPerformanceAverage();
+                found = true;
+            }
+        }
+    }
+    if (!found) {
+        System.out.println("No Statistics are available With the Country : " + countryName);
+        return null;
+    }
+    return total;
+}</code></pre>
+    </div>
+
+    <h4>Key Differences from Simple Aggregate</h4>
+    <ul>
+      <li><strong>Return type is <code>Double</code></strong> (wrapper class, not primitive <code>double</code>) &mdash; because we need to return <code>null</code> when nothing is found</li>
+      <li><strong>Uses <code>boolean found</code> flag</strong> &mdash; to distinguish between "total is 0 because values add up to 0" vs "total is 0 because nothing matched"</li>
+      <li><strong>No <code>break</code> in inner loop</strong> &mdash; because we want to sum ALL matching statistics, not just the first one</li>
+      <li><strong>Prints error AND returns null</strong> &mdash; two actions when nothing is found</li>
+    </ul>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Watch Out</div>
+      <p>Notice we do NOT use <code>break</code> in the inner loop here. In the search pattern (Section 3), we break because we just need to know IF a cricketer plays in that league. Here, we need to SUM ALL statistics for that country, so we must check every single one.</p>
+    </div>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Search Pattern (Section 3)</div>
+        <div class="comparison-body">
+          <p><strong>Goal:</strong> Find IF something exists</p>
+          <p><strong>Inner loop:</strong> Uses <code>break</code> on first match</p>
+          <p><strong>Action:</strong> Print the parent's name</p>
+          <p><strong>Why break:</strong> One match per parent is enough</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Sum Pattern (Section 4)</div>
+        <div class="comparison-body">
+          <p><strong>Goal:</strong> Calculate a total from matches</p>
+          <p><strong>Inner loop:</strong> No break &mdash; check ALL</p>
+          <p><strong>Action:</strong> Add value to running total</p>
+          <p><strong>Why no break:</strong> Every match contributes to the sum</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: DISCOUNT CALCULATION ===== -->
+  <div class="content-section" id="discount-calc">
+    <div class="section-tag">Pattern 05</div>
+    <h2>Discount Calculation</h2>
+    <p class="section-desc">A common PRA variation: filter items by a condition, modify their values, and return the modified items. This combines filtering with calculation.</p>
+
+    <h3>Real PRA Example: Calculate Discounted Price by Genre</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Discount Calculation</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static List&lt;Book&gt; calculateDiscountedPrice(List&lt;Book&gt; books,
+        String genre, int discountPercent) {
+    List&lt;Book&gt; result = new ArrayList&lt;&gt;();
+    boolean found = false;
+    for (Book book : books) {
+        if (book.getGenre().equalsIgnoreCase(genre)) {
+            double newPrice = book.getPrice() - (book.getPrice() * discountPercent / 100.0);
+            book.setPrice(newPrice);       // modify the original object
+            result.add(book);              // add to result
+            found = true;
+        }
+    }
+    if (!found) {
+        System.out.println("Discounted books are unavailable in the given genre.");
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double newPrice = book.getPrice() - (book.getPrice() * discountPercent / 100.0);</div>
+          <div class="breakdown-explain">The discount formula: Original price minus (original price times discount percentage divided by 100). The <code>100.0</code> (not <code>100</code>) ensures we get decimal division, not integer division.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">book.setPrice(newPrice);</div>
+          <div class="breakdown-explain">We modify the ORIGINAL book object using its setter. This is important &mdash; we're not creating a new Book, we're updating the existing one's price.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">result.add(book);</div>
+          <div class="breakdown-explain">Add the modified book to the result list. Now it has the new discounted price.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; PRA Tip</div>
+      <p><strong>Use <code>100.0</code> not <code>100</code></strong> in discount formulas. In Java, <code>20 / 100</code> gives <code>0</code> (integer division), but <code>20 / 100.0</code> gives <code>0.2</code> (decimal division). This one character difference can fail all your test cases.</p>
+    </div>
+
+    <h4>The Discount Formula Visualized</h4>
+    <div class="diagram">
+      <pre>
+  Original Price: 500.0
+  Discount:       20%
+
+  Step 1: 500.0 * 20 = 10000.0
+  Step 2: 10000.0 / 100.0 = 100.0    (discount amount)
+  Step 3: 500.0 - 100.0 = 400.0      (new price)
+
+  Formula: newPrice = price - (price * discount / 100.0)
+      </pre>
+      <div class="diagram-label">Always use 100.0 to force decimal division</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: REUSABLE TEMPLATES ===== -->
+  <div class="content-section" id="templates">
+    <div class="section-tag">Templates</div>
+    <h2>Reusable Method Templates</h2>
+    <p class="section-desc">These are copy-paste templates you can use in any PRA question. Just replace the class name, field names, and condition. These three templates cover 90% of all PRA methods.</p>
+
+    <h3>Template 1: Filter by Condition</h3>
+
+    <div class="callout template">
+      <div class="callout-title">&#x1F4CB; Copy-Paste Template</div>
+      <p>Use when the question says "find all", "return all", "filter", or "return a collection of items matching..."</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Template &mdash; Filter</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static ArrayList&lt;ClassName&gt; filterByCondition(Collection&lt;ClassName&gt; list) {
+    ArrayList&lt;ClassName&gt; result = new ArrayList&lt;&gt;();
+    for (ClassName item : list) {
+        if (/* your condition here */) {
+            result.add(item);
+        }
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <h3>Template 2: Aggregate (Average)</h3>
+
+    <div class="callout template">
+      <div class="callout-title">&#x1F4CB; Copy-Paste Template</div>
+      <p>Use when the question says "average of", "sum of", "total", "calculate the mean"...</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Template &mdash; Aggregate</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static double calculateAverage(Collection&lt;ClassName&gt; list) {
+    double sum = 0;
+    int count = 0;
+    for (ClassName item : list) {
+        if (/* condition - optional */) {
+            sum += item.getValue();
+            count++;
+        }
+    }
+    return count &gt; 0 ? sum / count : 0;
+    // NEVER forget the count > 0 check!
+}</code></pre>
+    </div>
+
+    <h3>Template 3: Search Nested List</h3>
+
+    <div class="callout template">
+      <div class="callout-title">&#x1F4CB; Copy-Paste Template</div>
+      <p>Use when one class has a <code>List</code> of another class inside it, and you need to search or sum across the inner list.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Template &mdash; Nested Search</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void searchNested(Collection&lt;Parent&gt; parents, String searchValue) {
+    boolean found = false;
+    for (Parent p : parents) {
+        for (Child c : p.getChildren()) {
+            if (c.getField().equalsIgnoreCase(searchValue)) {
+                System.out.println(p.getName());
+                found = true;
+                break;  // move to next parent
+            }
+        }
+    }
+    if (!found) {
+        System.out.println("No results found");
+    }
+}</code></pre>
+    </div>
+
+    <h3>Quick Reference: Which Template to Use?</h3>
+
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Question Says</th>
+          <th>Template</th>
+          <th>Return Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>"Find all investors with gains &lt; 0"</td>
+          <td>Filter</td>
+          <td><code>ArrayList&lt;Investor&gt;</code></td>
+        </tr>
+        <tr>
+          <td>"Average of positive gains"</td>
+          <td>Aggregate</td>
+          <td><code>double</code></td>
+        </tr>
+        <tr>
+          <td>"Find cricketers who play in league X"</td>
+          <td>Nested Search</td>
+          <td><code>void</code> (prints directly)</td>
+        </tr>
+        <tr>
+          <td>"Total performance by country"</td>
+          <td>Nested Search + Sum</td>
+          <td><code>Double</code> (nullable)</td>
+        </tr>
+        <tr>
+          <td>"Calculate discounted price for genre X"</td>
+          <td>Filter + Modify</td>
+          <td><code>List&lt;Book&gt;</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout practice">
+      <div class="callout-title">&#x1F3C3; Practice Exercise</div>
+      <p>Before moving on, try writing a method from scratch: <strong>"Return all Books whose price is greater than 500 and genre is 'Fiction' (case-insensitive)."</strong> Use Template 1 as your starting point. You'll need two conditions combined with <code>&amp;&amp;</code>.</p>
+    </div>
+  </div>
+
+  <!-- ==================== BONUS: RETURN vs PRINT ==================== -->
+  <section class="content-section" id="return-vs-print">
+    <div class="section-tag">Critical Concept</div>
+    <h2>Return vs Print &mdash; The #1 PRA Confusion</h2>
+    <p class="section-desc">This single confusion costs more marks than any other mistake. Here's how to NEVER get it wrong again.</p>
+
+    <h3>How to Read the Question</h3>
+    <p>Every PRA method description uses specific words. Those words tell you EXACTLY what to do:</p>
+
+    <table class="info-table">
+      <tr>
+        <th>Question Says</th>
+        <th>What It Means</th>
+        <th>Your Method Does</th>
+        <th>Main Method Does</th>
+      </tr>
+      <tr>
+        <td>"<strong>returns</strong> a list/map/value <strong>to the main method</strong>"</td>
+        <td>Method gives data BACK to main</td>
+        <td><code>return result;</code></td>
+        <td>Receives result, then prints it</td>
+      </tr>
+      <tr>
+        <td>"<strong>print</strong> the details" or "<strong>display</strong>"</td>
+        <td>Method prints directly</td>
+        <td><code>System.out.println(...)</code></td>
+        <td>Just calls the method, nothing else</td>
+      </tr>
+      <tr>
+        <td>"<strong>throw</strong> exception with message"</td>
+        <td>Method creates and throws an exception</td>
+        <td><code>throw new MyException("msg")</code></td>
+        <td><code>try-catch</code>, prints <code>"MyException: msg"</code></td>
+      </tr>
+    </table>
+
+    <h3>Example &mdash; "returns a Map"</h3>
+    <p>When the question says: <em>"This method will calculate the average price of mobiles for each brand and <strong>return a map</strong> of brand names with their corresponding average mobile price."</em></p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">WRONG &mdash; void method</div>
+        <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin: 0;">
+// Method prints directly
+public static void calculateAvg(List&lt;Brand&gt; brands) {
+    for (Brand b : brands) {
+        double avg = ...;
+        System.out.println(b.getName() + ": " + avg);
+    }
+}
+
+// Main just calls it
+calculateAvg(brands);
+</pre>
+        <p style="color: var(--red); margin-top: 8px; font-size: 0.8rem;"><strong>Problem:</strong> Question said "return a map". void returns nothing. Test cases fail because the expected behavior is to return data.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">CORRECT &mdash; returns Map</div>
+        <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin: 0;">
+// Method RETURNS the map
+public static Map&lt;String, Double&gt; calculateAvg(List&lt;Brand&gt; brands) {
+    Map&lt;String, Double&gt; result = new LinkedHashMap&lt;&gt;();
+    for (Brand b : brands) {
+        double avg = ...;
+        result.put(b.getName(), avg);
+    }
+    return result;  // &lt;-- gives data back
+}
+
+// Main RECEIVES and prints
+Map&lt;String, Double&gt; avgMap = calculateAvg(brands);
+for (Map.Entry&lt;String, Double&gt; e : avgMap.entrySet()) {
+    System.out.println(e.getKey() + ": " + e.getValue());
+}
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <h3>Example &mdash; "throw exception"</h3>
+    <p>When the question says: <em>"If average cannot be determined, then throw custom exception AverageCannotBeCalculatedException with message 'Average cannot be calculated'"</em></p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">WRONG &mdash; Exception crashes the program</div>
+        <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin: 0;">
+// Method throws
+throw new AverageCannotBeCalculatedException("Average cannot be calculated");
+
+// Main does NOT catch it
+calculateAvg(brands);  // CRASHES HERE!
+// Code below never runs
+findMobiles(brands, min, max);  // NEVER REACHED
+</pre>
+        <p style="color: var(--red); margin-top: 8px; font-size: 0.8rem;"><strong>Problem:</strong> Program crashes with "Exception in thread main". The second method never gets called. You lose marks for BOTH methods.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">CORRECT &mdash; Catch and print</div>
+        <div class="comparison-body">
+<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin: 0;">
+// In main &mdash; WRAP each method call in try-catch
+try {
+    Map&lt;String, Double&gt; avgMap = calculateAvg(brands);
+    // print the map...
+} catch (AverageCannotBeCalculatedException e) {
+    System.out.println("AverageCannotBeCalculatedException: " + e.getMessage());
+}
+
+// This STILL runs even if above threw exception!
+try {
+    List&lt;Mobile&gt; mobiles = findMobiles(brands, min, max);
+    // print mobiles...
+} catch (NoMobileFoundException e) {
+    System.out.println("NoMobileFoundException: " + e.getMessage());
+}
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">The Golden Rule</div>
+      <p><strong>Each method call in main gets its OWN try-catch.</strong> This way, if method 1 throws an exception, method 2 still runs. If you put both in ONE try block, the first exception skips the second method entirely.</p>
+    </div>
+
+    <h3>How to Decide &mdash; Flowchart</h3>
+    <div class="diagram">
+      <pre>
+  Read the method description carefully
+              │
+              ▼
+  Does it say "return" or "returns"?
+         ┌────┴────┐
+        YES         NO
+         │          │
+         ▼          ▼
+  Return type =    Does it say "print" or "display"?
+  what it returns  ┌────┴────┐
+  (Map, List,     YES         NO
+   double, etc.)   │          │
+         │         ▼          ▼
+         │    void method    Does it say "throw exception"?
+         │    prints inside  ┌────┴────┐
+         │         │        YES         NO
+         ▼         ▼         │          │
+  Main receives    Main     Method     Re-read the
+  and prints     just calls throws,   question again
+                 the method main catches
+      </pre>
+    </div>
+
+    <h3>Integer vs int &mdash; Quick Rule</h3>
+    <p>This is simpler than it seems:</p>
+    <ul>
+      <li><strong>Match the question.</strong> If it says <code>Integer brandId</code>, use <code>Integer</code>. If it says <code>int count</code>, use <code>int</code>.</li>
+      <li><strong>Collections NEED wrappers:</strong> <code>List&lt;Integer&gt;</code> works. <code>List&lt;int&gt;</code> does NOT compile.</li>
+      <li><strong>They auto-convert</strong> (autoboxing), so <code>Integer x = 5;</code> and <code>int y = x;</code> both work fine.</li>
+      <li><strong>When in doubt, use what the question says.</strong> PRA is not testing whether you know the difference &mdash; it's testing if you can follow instructions.</li>
+    </ul>
+
+    <table class="info-table">
+      <tr><th>Primitive</th><th>Wrapper</th><th>When to Use Wrapper</th></tr>
+      <tr><td><code>int</code></td><td><code>Integer</code></td><td>In Collections, when question says Integer</td></tr>
+      <tr><td><code>double</code></td><td><code>Double</code></td><td>In Collections, when question says Double</td></tr>
+      <tr><td><code>boolean</code></td><td><code>Boolean</code></td><td>Rarely in PRA</td></tr>
+    </table>
+
+    <h3>Reading Inputs &mdash; Follow the Sample Input Explanation</h3>
+    <p>Every PRA question has a section called <strong>"Sample Input Explanation"</strong> that tells you the EXACT reading order. Follow it step by step:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">InputReadingPattern.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+
+// Step 1: "First read the number of Brand objects"
+int numBrands = Integer.parseInt(sc.nextLine().trim());
+List&lt;Brand&gt; brands = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; numBrands; i++) {
+    // Step 2: "Read brand details (brandId, brandName, number of mobiles)"
+    int brandId = Integer.parseInt(sc.nextLine().trim());
+    String brandName = sc.nextLine().trim();
+    int mobileCount = Integer.parseInt(sc.nextLine().trim());
+
+    // Step 3: "For each mobile: read model number, model name, price, storage"
+    List&lt;Mobile&gt; mList = new ArrayList&lt;&gt;();
+    for (int j = 0; j &lt; mobileCount; j++) {
+        int modelNumber = Integer.parseInt(sc.nextLine().trim());
+        String modelName = sc.nextLine().trim();
+        double price = Double.parseDouble(sc.nextLine().trim());
+        int storage = Integer.parseInt(sc.nextLine().trim());
+        mList.add(new Mobile(modelNumber, modelName, price, storage));
+    }
+
+    brands.add(new Brand(brandId, brandName, mList));
+}
+
+// Step 4: "Next, read the parameters for the methods"
+int minStorage = Integer.parseInt(sc.nextLine().trim());
+int maxStorage = Integer.parseInt(sc.nextLine().trim());</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Pro tip: Use Integer.parseInt(sc.nextLine().trim())</div>
+      <p>Instead of <code>sc.nextInt()</code>, use <code>Integer.parseInt(sc.nextLine().trim())</code>. This avoids the newline trap completely. You NEVER need <code>sc.nextInt()</code> or <code>sc.nextDouble()</code> if you use this approach. Every input becomes <code>sc.nextLine().trim()</code> and you parse it yourself.</p>
+    </div>
+  </section>
+
+  <div class="topic-nav">
+    <a href="05-composition.html"><span class="nav-label">Previous</span><span class="nav-title">Composition</span></a>
+    <a href="07-custom-exceptions.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Custom Exceptions</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

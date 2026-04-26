@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock 1 Q1: Investors | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link active"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECTION 1: QUESTION STATEMENT ==================== -->
+  <section class="content-section" id="question">
+    <div class="section-tag">Section 01</div>
+    <h2>Question Statement</h2>
+    <p class="section-desc">This is the actual HackerRank question from Mock Test 1, Question 1. Read it carefully before looking at the solution.</p>
+
+    <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+      <span class="difficulty-badge major">PRA Major</span>
+      <span class="time-estimate">45-55 min</span>
+    </div>
+
+    <div class="question-box">
+      <h4>Investors</h4>
+      <p>Create a class named <code>Investor</code> with the following attributes:</p>
+      <ul>
+        <li><code>id</code> - int: to capture investor ID</li>
+        <li><code>name</code> - String: to capture investor name</li>
+        <li><code>gains</code> - double: to capture gains accumulated</li>
+      </ul>
+      <p>Define required getters, setters and parameterized constructor.</p>
+
+      <p>Create a class named <code>Solution</code>, and define the following two static methods:</p>
+
+      <p><strong>1. averageOfPositiveGains</strong><br>
+      This method takes Collection of Investors and returns the average of positive gains to the main method.</p>
+
+      <p><strong>2. negativeGainsInvestorNames</strong><br>
+      This method takes collection of Investor objects and returns Collection of Investor objects with negative gains to the main method.</p>
+
+      <p>The above two static methods should be called from main method.</p>
+
+      <p><strong>For averageOfPositiveGains:</strong><br>
+      The main method will print returned value as it is, if the returned value is greater than zero; else, the main method should print <code>"No such Investors found"</code>.</p>
+
+      <p><strong>For negativeGainsInvestorNames:</strong><br>
+      The main method should print the id, name, and gains of the Investor object with negative gains. If no investor found with negative gains then the main method should print <code>"No Investors found"</code>.</p>
+
+      <p><strong>Note:</strong></p>
+      <ol>
+        <li>Collection should be in insertion order.</li>
+        <li>Refer sample testcases for Input and Output.</li>
+      </ol>
+
+      <p><strong>Read Note:</strong></p>
+      <ol>
+        <li>Read number of Investor objects to be created.</li>
+        <li>Read id, name and gains for each Investor object.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: ANALYSIS ==================== -->
+  <section class="content-section" id="analysis">
+    <div class="section-tag">Section 02</div>
+    <h2>Analysis</h2>
+    <p class="section-desc">Before writing any code, let us understand what concepts this question is testing and what approach to take.</p>
+
+    <div class="callout think">
+      <div class="callout-title">What Concepts Are Being Tested?</div>
+      <ul>
+        <li><strong>OOP:</strong> Class with private fields, parameterized constructor, getters and setters</li>
+        <li><strong>Collections:</strong> ArrayList (insertion order required), <code>Collection&lt;T&gt;</code> as method parameter type</li>
+        <li><strong>Static methods:</strong> Two methods in Solution class that process a collection of objects</li>
+        <li><strong>Conditional output:</strong> Different messages printed depending on whether results are found or not</li>
+      </ul>
+    </div>
+
+    <p>This is a classic PRA pattern: one POJO class, two static methods (one filter, one aggregate), and a main method that reads input, calls both methods, and prints results with fallback messages.</p>
+  </section>
+
+  <!-- ==================== SECTION 3: STEP-BY-STEP APPROACH ==================== -->
+  <section class="content-section" id="approach">
+    <div class="section-tag">Section 03</div>
+    <h2>Step-by-Step Approach</h2>
+    <p class="section-desc">Here is the plan of attack before writing a single line of code.</p>
+
+    <ol class="steps">
+      <li><strong>Create the <code>Investor</code> class</strong> with 3 private fields (<code>id</code>, <code>name</code>, <code>gains</code>), a parameterized constructor that takes all 3, and getters/setters for each field.</li>
+      <li><strong>Write <code>averageOfPositiveGains()</code></strong> &mdash; loop through all investors, check if <code>gains &gt; 0</code>, sum those gains, count how many, return <code>sum / count</code>. Return 0 if none found.</li>
+      <li><strong>Write <code>negativeGainsInvestorNames()</code></strong> &mdash; loop through all investors, check if <code>gains &lt; 0</code>, add matching investors to a new ArrayList, return the list.</li>
+      <li><strong>Write main method</strong> &mdash; read <code>n</code>, loop to create <code>n</code> Investor objects from Scanner input, call both methods, handle the output with the correct messages.</li>
+    </ol>
+  </section>
+
+  <!-- ==================== SECTION 4: THE INVESTOR CLASS ==================== -->
+  <section class="content-section" id="investor-class">
+    <div class="section-tag">Section 04</div>
+    <h2>The Investor Class</h2>
+    <p class="section-desc">This is the POJO (Plain Old Java Object). Three private fields, one constructor, six getter/setter methods. Pure boilerplate.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Investor.java</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Investor {
+    private int id;
+    private String name;
+    private double gains;
+
+    public Investor(int id, String name, double gains) {
+        this.id = id;
+        this.name = name;
+        this.gains = gains;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getGains() { return gains; }
+    public void setGains(double gains) { this.gains = gains; }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class Investor {</div>
+          <div class="breakdown-explain">Declares the Investor class. No <code>public</code> keyword because only the Solution class should be public in HackerRank.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2-4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">private int id; / private String name; / private double gains;</div>
+          <div class="breakdown-explain">Three private fields exactly as described in the question. <code>private</code> means only this class can access them directly.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6-10</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public Investor(int id, String name, double gains) { ... }</div>
+          <div class="breakdown-explain">Parameterized constructor. Takes all 3 fields and assigns them using <code>this.fieldName = paramName</code>.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">12-17</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">getters and setters</div>
+          <div class="breakdown-explain">Standard getter returns the field value. Standard setter assigns a new value. One pair per field = 6 methods total.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: METHOD 1 ==================== -->
+  <section class="content-section" id="method1">
+    <div class="section-tag">Section 05</div>
+    <h2>Method 1 &mdash; averageOfPositiveGains</h2>
+    <p class="section-desc">This method loops through all investors, picks the ones with positive gains, and returns the average of those gains.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">averageOfPositiveGains</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static double averageOfPositiveGains(Collection&lt;Investor&gt; investors) {
+    double sum = 0;
+    int count = 0;
+    for (Investor inv : investors) {
+        if (inv.getGains() > 0) {
+            sum += inv.getGains();
+            count++;
+        }
+    }
+    if (count > 0) {
+        return sum / count;
+    }
+    return 0;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public static double averageOfPositiveGains(Collection&lt;Investor&gt; investors)</div>
+          <div class="breakdown-explain"><code>static</code> = belongs to the class, not an object. Takes a <code>Collection&lt;Investor&gt;</code> (not ArrayList &mdash; the question says Collection). Returns <code>double</code>.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2-3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double sum = 0; int count = 0;</div>
+          <div class="breakdown-explain">Two tracking variables. <code>sum</code> accumulates the total of positive gains. <code>count</code> tracks how many investors had positive gains.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4-9</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Investor inv : investors) { if (inv.getGains() > 0) ... }</div>
+          <div class="breakdown-explain">Enhanced for-loop. For each investor, check if gains are positive (&gt; 0). If yes, add gains to sum and increment count.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">10-13</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (count > 0) return sum / count; return 0;</div>
+          <div class="breakdown-explain">Safety check: only divide if we found at least one positive-gains investor. Otherwise return 0 (main method checks for this).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Watch Out</div>
+      <p>The parameter type is <code>Collection&lt;Investor&gt;</code>, not <code>ArrayList&lt;Investor&gt;</code>. The question specifically says "Collection." Using ArrayList here will still work because ArrayList implements Collection, but match the question exactly.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6: METHOD 2 ==================== -->
+  <section class="content-section" id="method2">
+    <div class="section-tag">Section 06</div>
+    <h2>Method 2 &mdash; negativeGainsInvestorNames</h2>
+    <p class="section-desc">This method filters investors who have negative gains and returns them as a Collection.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">negativeGainsInvestorNames</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static Collection&lt;Investor&gt; negativeGainsInvestorNames(Collection&lt;Investor&gt; investors) {
+    ArrayList&lt;Investor&gt; result = new ArrayList&lt;&gt;();
+    for (Investor inv : investors) {
+        if (inv.getGains() < 0) {
+            result.add(inv);
+        }
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public static Collection&lt;Investor&gt; negativeGainsInvestorNames(...)</div>
+          <div class="breakdown-explain">Returns <code>Collection&lt;Investor&gt;</code> &mdash; a list of Investor objects (not just names, despite the method name).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">ArrayList&lt;Investor&gt; result = new ArrayList&lt;&gt;();</div>
+          <div class="breakdown-explain">Create a new empty ArrayList to hold the filtered results. ArrayList maintains insertion order (as the question requires).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3-6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Investor inv : investors) { if (inv.getGains() < 0) result.add(inv); }</div>
+          <div class="breakdown-explain">Loop through all investors. If gains are negative (&lt; 0), add that investor to the result list.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">8</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">return result;</div>
+          <div class="breakdown-explain">Return the filtered list. If no investor had negative gains, this returns an empty list (main checks with <code>.isEmpty()</code>).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 7: THE MAIN METHOD ==================== -->
+  <section class="content-section" id="main-method">
+    <div class="section-tag">Section 07</div>
+    <h2>The Main Method</h2>
+    <p class="section-desc">The main method reads input, creates Investor objects, calls both methods, and prints results with the correct messages.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">main method</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt();
+    ArrayList&lt;Investor&gt; investors = new ArrayList&lt;&gt;();
+
+    for (int i = 0; i &lt; n; i++) {
+        int id = sc.nextInt();
+        sc.nextLine();           // consume leftover newline after nextInt
+        String name = sc.nextLine();
+        double gains = sc.nextDouble();
+        investors.add(new Investor(id, name, gains));
+    }
+
+    // Call method 1
+    double avg = averageOfPositiveGains(investors);
+    if (avg > 0) {
+        System.out.println(avg);
+    } else {
+        System.out.println("No such Investors found");
+    }
+
+    // Call method 2
+    Collection&lt;Investor&gt; negativeInvestors = negativeGainsInvestorNames(investors);
+    if (!negativeInvestors.isEmpty()) {
+        for (Investor inv : negativeInvestors) {
+            System.out.println(inv.getId());
+            System.out.println(inv.getName());
+            System.out.println(inv.getGains());
+        }
+    } else {
+        System.out.println("No Investors found");
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1-3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Scanner sc = new Scanner(System.in); int n = sc.nextInt();</div>
+          <div class="breakdown-explain">Create Scanner for reading input. Read the first integer &mdash; the number of investors to create.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">ArrayList&lt;Investor&gt; investors = new ArrayList&lt;&gt;();</div>
+          <div class="breakdown-explain">Create an empty ArrayList to hold all investor objects. We use ArrayList because the question says "insertion order."</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6-12</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for loop: read id, name, gains for each investor</div>
+          <div class="breakdown-explain">Critical: after <code>sc.nextInt()</code> on line 7, we call <code>sc.nextLine()</code> on line 8 to consume the leftover newline. Without this, <code>name</code> would read an empty string.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">15-20</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Call averageOfPositiveGains, check result</div>
+          <div class="breakdown-explain">If the returned average is greater than 0, print it. Otherwise print the "not found" message. The message must match EXACTLY.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">23-32</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Call negativeGainsInvestorNames, check result</div>
+          <div class="breakdown-explain">If the returned collection is not empty, loop and print each investor's id, name, gains (each on its own line). Otherwise print the "not found" message.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>The <code>sc.nextLine()</code> after <code>sc.nextInt()</code> on line 8 is the #1 bug in PRA. If you forget it, the name will be empty and your entire output will be wrong. Memorize this pattern: <strong>every <code>nextInt()</code> or <code>nextDouble()</code> followed by <code>nextLine()</code> needs a buffer-clearing <code>nextLine()</code> in between.</strong></p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 8: COMPLETE SOLUTION ==================== -->
+  <section class="content-section" id="complete">
+    <div class="section-tag">Section 08</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Copy this entire code, paste into HackerRank, and it compiles and runs. Nothing else needed.</p>
+
+    <div class="callout template">
+      <div class="callout-title">Copy-Paste Ready</div>
+      <p>This is the full program &mdash; import statement, Investor class, and Solution class with both methods and main. Paste it as-is into HackerRank.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java (Complete)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+class Investor {
+    private int id;
+    private String name;
+    private double gains;
+
+    public Investor(int id, String name, double gains) {
+        this.id = id;
+        this.name = name;
+        this.gains = gains;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getGains() { return gains; }
+    public void setGains(double gains) { this.gains = gains; }
+}
+
+public class Solution {
+
+    public static double averageOfPositiveGains(Collection&lt;Investor&gt; investors) {
+        double sum = 0;
+        int count = 0;
+        for (Investor inv : investors) {
+            if (inv.getGains() > 0) {
+                sum += inv.getGains();
+                count++;
+            }
+        }
+        if (count > 0) {
+            return sum / count;
+        }
+        return 0;
+    }
+
+    public static Collection&lt;Investor&gt; negativeGainsInvestorNames(Collection&lt;Investor&gt; investors) {
+        ArrayList&lt;Investor&gt; result = new ArrayList&lt;&gt;();
+        for (Investor inv : investors) {
+            if (inv.getGains() &lt; 0) {
+                result.add(inv);
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        ArrayList&lt;Investor&gt; investors = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            int id = sc.nextInt();
+            sc.nextLine();
+            String name = sc.nextLine();
+            double gains = sc.nextDouble();
+            investors.add(new Investor(id, name, gains));
+        }
+
+        double avg = averageOfPositiveGains(investors);
+        if (avg > 0) {
+            System.out.println(avg);
+        } else {
+            System.out.println("No such Investors found");
+        }
+
+        Collection&lt;Investor&gt; negativeInvestors = negativeGainsInvestorNames(investors);
+        if (!negativeInvestors.isEmpty()) {
+            for (Investor inv : negativeInvestors) {
+                System.out.println(inv.getId());
+                System.out.println(inv.getName());
+                System.out.println(inv.getGains());
+            }
+        } else {
+            System.out.println("No Investors found");
+        }
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 9: TEST CASES ==================== -->
+  <section class="content-section" id="test-cases">
+    <div class="section-tag">Section 09</div>
+    <h2>Test Cases</h2>
+    <p class="section-desc">Walk through these two test cases to verify you understand the input/output flow.</p>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; All Negative Gains</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">4
+101
+Simon
+-50000
+102
+Danny
+-30000
+103
+Kiran
+-40000
+104
+Danny
+-50000</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">No such Investors found
+101
+Simon
+-50000.0
+102
+Danny
+-30000.0
+103
+Kiran
+-40000.0
+104
+Danny
+-50000.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Why This Output?</div>
+      <p>All 4 investors have negative gains. So <code>averageOfPositiveGains</code> finds zero positive-gains investors, returns 0, and main prints "No such Investors found." Then <code>negativeGainsInvestorNames</code> returns all 4, and main prints each one's id, name, and gains (note: gains printed as <code>-50000.0</code> with the decimal because it is a <code>double</code>).</p>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; All Positive Gains</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">3
+101
+Kiran
+40000
+102
+Samuel
+40000
+103
+Joe
+40000</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">40000.0
+No Investors found</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Why This Output?</div>
+      <p>All 3 investors have positive gains of 40000. Average = (40000 + 40000 + 40000) / 3 = 40000.0. No investors have negative gains, so the second method returns an empty list and main prints "No Investors found."</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 10: COMMON MISTAKES ==================== -->
+  <section class="content-section" id="mistakes">
+    <div class="section-tag">Section 10</div>
+    <h2>Common Mistakes</h2>
+    <p class="section-desc">These are the mistakes that will cost you marks on this specific question. Memorize them.</p>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 1: Forgetting sc.nextLine() After sc.nextInt()</div>
+      <p>After reading <code>id</code> with <code>sc.nextInt()</code>, the newline character stays in the buffer. The next <code>sc.nextLine()</code> for reading <code>name</code> will read that empty newline instead of the actual name. Every investor's name will be blank.</p>
+      <p><strong>Fix:</strong> Add <code>sc.nextLine();</code> immediately after <code>sc.nextInt();</code> to consume the leftover newline.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 2: Using > Instead of > 0 for Positive Check</div>
+      <p>Some students write <code>if (inv.getGains() > 0)</code> correctly but then forget to check <code>avg > 0</code> in main. If you just check <code>avg > 0</code> without the method also handling it, edge cases break.</p>
+      <p><strong>Fix:</strong> The method returns 0 when no positive gains exist. Main checks <code>if (avg > 0)</code> &mdash; both checks must be present.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 3: Printing Gains as int Instead of double</div>
+      <p>The <code>gains</code> field is a <code>double</code>. When you print <code>-50000</code>, Java will output <code>-50000.0</code> (with the decimal point). If you somehow cast it to int and print <code>-50000</code>, the output will not match.</p>
+      <p><strong>Fix:</strong> Just use <code>System.out.println(inv.getGains())</code> &mdash; Java handles the formatting automatically for doubles.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Mistake 4: Wrong Error Message Text</div>
+      <p>The two error messages are different:</p>
+      <ul>
+        <li>For no positive gains: <code>"No such Investors found"</code></li>
+        <li>For no negative gains: <code>"No Investors found"</code></li>
+      </ul>
+      <p>They look similar but are NOT the same. HackerRank matches output exactly &mdash; character by character. If you swap them or add/remove a word, the test case fails.</p>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <div class="topic-nav">
+    <a href="10-putting-it-together.html">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">Putting It Together</span>
+    </a>
+    <a href="mock1-q2.html" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">OddEven Exception</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

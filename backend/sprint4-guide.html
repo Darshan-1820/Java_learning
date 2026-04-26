@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint 4: REST APIs &amp; Frontend Integration &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+  <style>
+    .method-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .method-badge.get { background: rgba(59,130,246,0.15); color: var(--accent); }
+    .method-badge.post { background: rgba(34,197,94,0.15); color: var(--green); }
+    .method-badge.put { background: rgba(245,158,11,0.15); color: var(--orange); }
+    .method-badge.delete { background: rgba(239,68,68,0.15); color: var(--red); }
+    .api-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.82rem; }
+    .api-table th { background: var(--bg-card); color: var(--text-primary); font-weight: 600; text-align: left; padding: 10px 12px; border: 1px solid var(--border); font-size: 0.78rem; }
+    .api-table td { padding: 8px 12px; border: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+    .api-table tr:hover td { background: rgba(59,130,246,0.05); }
+    .api-table code { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; background: var(--bg-card); padding: 1px 5px; border-radius: 3px; color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="#rest-api" class="sidebar-link"><span class="num">01</span> What is a REST API?</a>
+    <a href="#json" class="sidebar-link"><span class="num">02</span> What is JSON?</a>
+    <a href="#dtos" class="sidebar-link"><span class="num">03</span> What are DTOs?</a>
+    <a href="#cors" class="sidebar-link"><span class="num">04</span> What is CORS?</a>
+    <a href="#servlets-vs-rest" class="sidebar-link"><span class="num">05</span> Servlets vs REST</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">DTOs</div>
+    <a href="#dto-login-request" class="sidebar-link"><span class="num">06</span> LoginRequest</a>
+    <a href="#dto-login-response" class="sidebar-link"><span class="num">07</span> LoginResponse</a>
+    <a href="#dto-register-request" class="sidebar-link"><span class="num">08</span> RegisterRequest</a>
+    <a href="#dto-booking-request" class="sidebar-link"><span class="num">09</span> BookingRequest</a>
+    <a href="#dto-api-response" class="sidebar-link"><span class="num">10</span> ApiResponse</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Controllers</div>
+    <a href="#auth-controller" class="sidebar-link"><span class="num">11</span> AuthController</a>
+    <a href="#booking-controller" class="sidebar-link"><span class="num">12</span> BookingController</a>
+    <a href="#tracking-controller" class="sidebar-link"><span class="num">13</span> TrackingController</a>
+    <a href="#issue-controller" class="sidebar-link"><span class="num">14</span> IssueController</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Config</div>
+    <a href="#cors-config" class="sidebar-link"><span class="num">15</span> CorsConfig</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Frontend Integration</div>
+    <a href="#frontend-changes" class="sidebar-link"><span class="num">16</span> What Changes?</a>
+    <a href="#storage-api" class="sidebar-link"><span class="num">17</span> storage-api.js</a>
+    <a href="#how-to-switch" class="sidebar-link"><span class="num">18</span> How to Switch</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">API Reference</div>
+    <a href="#api-reference" class="sidebar-link"><span class="num">19</span> All Endpoints Table</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Run &amp; Test</div>
+    <a href="#how-to-run" class="sidebar-link"><span class="num">20</span> How to Run</a>
+    <a href="#test-browser" class="sidebar-link"><span class="num">21</span> Test with Browser</a>
+    <a href="#test-curl" class="sidebar-link"><span class="num">22</span> Test with curl</a>
+    <a href="#troubleshooting" class="sidebar-link"><span class="num">23</span> Troubleshooting</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- Back link -->
+<a href="../backend-overview.html" style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.85rem; text-decoration: none; margin-bottom: 24px; transition: color 0.2s;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+  Back to Backend Overview
+</a>
+
+<!-- ========================================== -->
+<!-- SECTION: THE BIG IDEA                      -->
+<!-- ========================================== -->
+<section class="content-section" id="big-idea">
+  <div class="section-tag">SPRINT 4</div>
+  <h2>REST APIs &amp; Frontend Integration</h2>
+  <p class="section-desc">The modern way to connect your frontend to your backend. Your existing HTML pages stay the same &mdash; they just get their data from Java instead of LocalStorage.</p>
+
+  <div class="callout think">
+    <div class="callout-title">THE BIG IDEA</div>
+    <p>In Sprint 3, your Java code generated HTML pages (JSP). That's the old way. Modern web apps work differently: the backend sends <strong>DATA</strong> (JSON), and the frontend renders it. This is what REST APIs do.</p>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Sprint 3 (Old Way)</div>
+      <div class="comparison-body">
+        <p>Browser &rarr; Servlet &rarr; JSP &rarr; HTML</p>
+        <p>Server generates the HTML page. Every time you need new data, the server builds an entire new page.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Sprint 4 (Modern Way)</div>
+      <div class="comparison-body">
+        <p>Browser &rarr; JavaScript &rarr; REST API &rarr; JSON</p>
+        <p>Server sends raw data. The frontend JavaScript decides how to display it. Much faster, much cleaner.</p>
+      </div>
+    </div>
+  </div>
+
+  <p>Your <code>nimbus/</code> frontend already has all the HTML. It just needs <strong>DATA</strong>. Right now it gets data from LocalStorage. In Sprint 4, it will get data from REST APIs instead.</p>
+
+  <h3>How Data Flows in Sprint 4</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">User clicks "Login"<span class="flow-sub">on login.html</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">JavaScript calls<span class="flow-sub">fetch('/api/auth/login')</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Spring Boot routes<span class="flow-sub">to AuthController.login()</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box cyan">AuthController<span class="flow-sub">calls UserService</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">UserService<span class="flow-sub">calls UserRepository</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">H2 Database<span class="flow-sub">returns User object</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">Controller wraps in DTO<span class="flow-sub">strips password</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Returns JSON<span class="flow-sub">{ success, user }</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">JavaScript renders<span class="flow-sub">stores session, redirects</span></div>
+    </div>
+    <div class="flow-label">The complete login flow in Sprint 4</div>
+  </div>
+
+  <ol class="steps">
+    <li>User clicks "Login" on <code>login.html</code></li>
+    <li>JavaScript calls: <code>fetch('http://localhost:8080/api/auth/login', { method: 'POST', body: JSON.stringify({userId, password}) })</code></li>
+    <li>Spring Boot routes the request to <code>AuthController.login()</code></li>
+    <li>AuthController calls <code>UserService.validateLogin()</code></li>
+    <li>UserService calls <code>UserRepository.findByUserIdAndPassword()</code></li>
+    <li>Repository returns the <code>User</code> object from H2 database</li>
+    <li>AuthController wraps User in a <code>LoginResponse</code> DTO (strips the password)</li>
+    <li>Returns JSON: <code>{ "success": true, "user": {...} }</code></li>
+    <li>JavaScript gets the JSON, stores the session, redirects to dashboard</li>
+  </ol>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: WHAT IS A REST API?               -->
+<!-- ========================================== -->
+<section class="content-section" id="rest-api">
+  <div class="section-tag">CONCEPT 1</div>
+  <h2>What is a REST API?</h2>
+  <p class="section-desc">REST = Representational State Transfer. Sounds scary, means simple.</p>
+
+  <p>A REST API is just a <strong>URL that returns data instead of a web page</strong>.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Normal URL</div>
+      <div class="comparison-body">
+        <code>http://localhost:8080/servlet/login</code>
+        <p style="margin-top:8px;">Returns an HTML page that the browser displays.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">REST API URL</div>
+      <div class="comparison-body">
+        <code>http://localhost:8080/api/auth/login</code>
+        <p style="margin-top:8px;">Returns JSON data that JavaScript reads and uses.</p>
+      </div>
+    </div>
+  </div>
+
+  <p>Here is what a REST API response looks like:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">REST API Response (JSON)</span>
+    </div>
+    <pre><code class="language-json">{
+  "success": true,
+  "message": "Login successful.",
+  "user": {
+    "userId": "260401-AK01",
+    "fullName": "Amit Kumar",
+    "role": "customer"
+  }
+}</code></pre>
+  </div>
+
+  <p>Your frontend JavaScript calls these URLs using <code>fetch()</code>, gets JSON back, and updates the page. No page reload needed.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">REAL-WORLD ANALOGY</div>
+    <p>Think of it like ordering food. The <strong>old way</strong> (Servlets + JSP): you go to a restaurant that cooks your meal AND plates it for you. The <strong>REST API way</strong>: you order from a kitchen that sends you the raw ingredients, and you plate it yourself however you want. The kitchen (backend) focuses on the food (data), and you (frontend) decide the presentation.</p>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: WHAT IS JSON?                     -->
+<!-- ========================================== -->
+<section class="content-section" id="json">
+  <div class="section-tag">CONCEPT 2</div>
+  <h2>What is JSON?</h2>
+  <p class="section-desc">The format REST APIs use to send data back and forth. You already know it.</p>
+
+  <p>JSON (JavaScript Object Notation) is the <strong>universal language</strong> between backend and frontend. It is the same format as JavaScript objects:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">JSON Example &mdash; A Booking</span>
+    </div>
+    <pre><code class="language-json">{
+  "bookingId": "NMB-260401-0001",
+  "userId": "260401-AK01",
+  "recName": "Vikram Reddy",
+  "parStatus": "In Transit",
+  "parServiceCost": 150
+}</code></pre>
+  </div>
+
+  <p>Java sends this, JavaScript reads this. Simple key-value pairs. Curly braces for objects, square brackets for arrays. That is all JSON is.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">IN NIMBUS</div>
+    <p>Every single API endpoint in Nimbus returns JSON. When you create a booking, the backend calculates the cost and sends back the full booking object as JSON. When you login, it sends back the user object as JSON. The format never changes.</p>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: WHAT ARE DTOs?                    -->
+<!-- ========================================== -->
+<section class="content-section" id="dtos">
+  <div class="section-tag">CONCEPT 3</div>
+  <h2>What are DTOs?</h2>
+  <p class="section-desc">DTOs define the SHAPE of data going in and out of your API.</p>
+
+  <p>DTO = Data Transfer Object. It is a simple Java class that defines exactly what fields the API accepts or returns.</p>
+
+  <div class="diagram">
+    <pre>
+LoginRequest DTO:   { "userId": "...", "password": "..." }        &rarr; goes INTO the API
+LoginResponse DTO:  { "success": true, "user": {...} }            &rarr; comes OUT of the API
+    </pre>
+    <div class="diagram-label">DTOs control the shape of API input and output</div>
+  </div>
+
+  <h3>Why not just use the User model directly?</h3>
+
+  <p>Because the <code>User</code> model has the <strong>password field</strong>. You do not want to send passwords back to the frontend. DTOs let you control exactly what data gets sent.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without DTOs (Dangerous)</div>
+      <div class="comparison-body">
+        <p>API returns the full <code>User</code> object including <code>password: "Amit@123"</code>. Anyone can see it in the browser Network tab.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With DTOs (Safe)</div>
+      <div class="comparison-body">
+        <p>API returns a <code>UserDTO</code> with only safe fields: <code>userId</code>, <code>fullName</code>, <code>role</code>, etc. Password is never sent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: WHAT IS CORS?                     -->
+<!-- ========================================== -->
+<section class="content-section" id="cors">
+  <div class="section-tag">CONCEPT 4</div>
+  <h2>What is CORS?</h2>
+  <p class="section-desc">A browser security feature that blocks cross-origin requests by default.</p>
+
+  <p>CORS = Cross-Origin Resource Sharing. When your frontend (<code>localhost:5500</code>) tries to call your backend (<code>localhost:8080</code>), the browser blocks it by default because they are <strong>different origins</strong> (different ports = different origins).</p>
+
+  <div class="callout warning">
+    <div class="callout-title">WITHOUT CORS CONFIG</div>
+    <p>You open <code>login.html</code> in the browser. You type your credentials and click Login. JavaScript calls <code>fetch('http://localhost:8080/api/auth/login')</code>. The browser says: <strong>"Blocked by CORS policy."</strong> Nothing works.</p>
+  </div>
+
+  <p><code>CorsConfig.java</code> tells Spring Boot: "Allow requests from any origin." One small config class, problem solved. You will see the code for it later in the <a href="#cors-config" style="color: var(--accent);">Config section</a>.</p>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: SERVLETS VS REST                  -->
+<!-- ========================================== -->
+<section class="content-section" id="servlets-vs-rest">
+  <div class="section-tag">CONCEPT 5</div>
+  <h2>Servlets vs REST Controllers</h2>
+  <p class="section-desc">Both handle HTTP requests. REST is the modern standard.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Servlets (Sprint 3)</th>
+        <th>REST Controllers (Sprint 4)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Returns</strong></td>
+        <td>HTML pages (JSP)</td>
+        <td>JSON data</td>
+      </tr>
+      <tr>
+        <td><strong>Annotation</strong></td>
+        <td><code>@WebServlet</code></td>
+        <td><code>@RestController</code></td>
+      </tr>
+      <tr>
+        <td><strong>Frontend</strong></td>
+        <td>Server generates HTML</td>
+        <td>Frontend generates HTML</td>
+      </tr>
+      <tr>
+        <td><strong>Used by</strong></td>
+        <td>Browser directly</td>
+        <td>JavaScript <code>fetch()</code></td>
+      </tr>
+      <tr>
+        <td><strong>Data format</strong></td>
+        <td>HTML embedded in JSP</td>
+        <td>Pure JSON</td>
+      </tr>
+      <tr>
+        <td><strong>Page reload?</strong></td>
+        <td>Yes, every action</td>
+        <td>No, updates in-place</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Both work. REST is the modern standard used by almost every real-world application today. When you hear "API" in the industry, they almost always mean REST APIs.</p>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: DTO CODE                          -->
+<!-- ========================================== -->
+<section class="content-section" id="dto-login-request">
+  <div class="section-tag">DTO 1</div>
+  <h2>LoginRequest.java</h2>
+  <p class="section-desc">Defines the shape of login request data: what the frontend sends when a user tries to log in.</p>
+
+  <p>When the frontend sends <code>{ "userId": "260401-AK01", "password": "Amit@123" }</code>, Spring Boot automatically converts that JSON into this Java object. That is what <code>@RequestBody</code> does in the controller.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dto/LoginRequest.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+/**
+ * LoginRequest — Data Transfer Object for login API.
+ * Receives: { "userId": "260401-AK01", "password": "Amit@123" }
+ */
+public class LoginRequest {
+    private String userId;
+    private String password;
+
+    public LoginRequest() {}
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private String userId;</div>
+        <div class="breakdown-explain">Matches the "userId" key in the JSON. Spring maps JSON keys to field names automatically.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public LoginRequest() {}</div>
+        <div class="breakdown-explain">Empty constructor. Spring needs this to create an instance and then fill in the fields from JSON.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Getters and Setters</div>
+        <div class="breakdown-explain">Spring uses setUserId() and setPassword() to fill in the values from the JSON request body.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LoginResponse DTO -->
+<section class="content-section" id="dto-login-response">
+  <div class="section-tag">DTO 2</div>
+  <h2>LoginResponse.java</h2>
+  <p class="section-desc">Defines the shape of login response data. Contains a nested UserDTO that strips the password.</p>
+
+  <p>This is the most important DTO. It has a <strong>nested class</strong> called <code>UserDTO</code>. The outer <code>LoginResponse</code> wraps the result with <code>success</code> and <code>message</code>. The inner <code>UserDTO</code> contains the user's details <strong>without the password</strong>.</p>
+
+  <div class="callout think">
+    <div class="callout-title">WHY A NESTED CLASS?</div>
+    <p>The <code>UserDTO</code> is only used inside <code>LoginResponse</code>. Putting it inside keeps things organized. You do not need a separate file for something that only one class uses. The keyword <code>static</code> means you can create a <code>UserDTO</code> without creating a <code>LoginResponse</code> first.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dto/LoginResponse.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+/**
+ * LoginResponse — Returned after successful login.
+ * Matches the structure expected by the frontend (storage.js validateLogin format).
+ */
+public class LoginResponse {
+    private boolean success;
+    private String message;
+    private UserDTO user;
+
+    public LoginResponse() {}
+
+    public LoginResponse(boolean success, String message, UserDTO user) {
+        this.success = success;
+        this.message = message;
+        this.user = user;
+    }
+
+    public boolean isSuccess() { return success; }
+    public void setSuccess(boolean success) { this.success = success; }
+
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
+
+    public UserDTO getUser() { return user; }
+    public void setUser(UserDTO user) { this.user = user; }
+
+    // --- Nested UserDTO (safe — no password) ---
+    public static class UserDTO {
+        private String userId;
+        private String firstName;
+        private String middleName;
+        private String lastName;
+        private String fullName;
+        private String email;
+        private String countryCode;
+        private String mobile;
+        private String street;
+        private String zipCode;
+        private String city;
+        private String state;
+        private String country;
+        private String role;
+        private String preferences;
+        private String createdAt;
+
+        public UserDTO() {}
+
+        public String getUserId() { return userId; }
+        public void setUserId(String userId) { this.userId = userId; }
+
+        public String getFirstName() { return firstName; }
+        public void setFirstName(String firstName) { this.firstName = firstName; }
+
+        public String getMiddleName() { return middleName; }
+        public void setMiddleName(String middleName) { this.middleName = middleName; }
+
+        public String getLastName() { return lastName; }
+        public void setLastName(String lastName) { this.lastName = lastName; }
+
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+
+        public String getCountryCode() { return countryCode; }
+        public void setCountryCode(String countryCode) { this.countryCode = countryCode; }
+
+        public String getMobile() { return mobile; }
+        public void setMobile(String mobile) { this.mobile = mobile; }
+
+        public String getStreet() { return street; }
+        public void setStreet(String street) { this.street = street; }
+
+        public String getZipCode() { return zipCode; }
+        public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+
+        public String getCity() { return city; }
+        public void setCity(String city) { this.city = city; }
+
+        public String getState() { return state; }
+        public void setState(String state) { this.state = state; }
+
+        public String getCountry() { return country; }
+        public void setCountry(String country) { this.country = country; }
+
+        public String getRole() { return role; }
+        public void setRole(String role) { this.role = role; }
+
+        public String getPreferences() { return preferences; }
+        public void setPreferences(String preferences) { this.preferences = preferences; }
+
+        public String getCreatedAt() { return createdAt; }
+        public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- RegisterRequest DTO -->
+<section class="content-section" id="dto-register-request">
+  <div class="section-tag">DTO 3</div>
+  <h2>RegisterRequest.java</h2>
+  <p class="section-desc">Captures all the fields from the registration form.</p>
+
+  <p>When a new customer fills out the registration page and clicks "Register," all those form fields get sent as JSON. This DTO matches every field in that form.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dto/RegisterRequest.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+/**
+ * RegisterRequest — Data Transfer Object for registration API.
+ * Matches the frontend register form fields.
+ */
+public class RegisterRequest {
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String email;
+    private String countryCode;
+    private String mobile;
+    private String street;
+    private String zipCode;
+    private String city;
+    private String state;
+    private String country;
+    private String password;
+    private String confirmPassword;
+    private String preferences;
+    private String role;  // For registerAdmin endpoint
+
+    public RegisterRequest() {}
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getMiddleName() { return middleName; }
+    public void setMiddleName(String middleName) { this.middleName = middleName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getCountryCode() { return countryCode; }
+    public void setCountryCode(String countryCode) { this.countryCode = countryCode; }
+
+    public String getMobile() { return mobile; }
+    public void setMobile(String mobile) { this.mobile = mobile; }
+
+    public String getStreet() { return street; }
+    public void setStreet(String street) { this.street = street; }
+
+    public String getZipCode() { return zipCode; }
+    public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+
+    public String getCountry() { return country; }
+    public void setCountry(String country) { this.country = country; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getConfirmPassword() { return confirmPassword; }
+    public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
+
+    public String getPreferences() { return preferences; }
+    public void setPreferences(String preferences) { this.preferences = preferences; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+}</code></pre>
+  </div>
+</section>
+
+<!-- BookingRequest DTO -->
+<section class="content-section" id="dto-booking-request">
+  <div class="section-tag">DTO 4</div>
+  <h2>BookingRequest.java</h2>
+  <p class="section-desc">Captures the booking form data when a customer books a parcel.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dto/BookingRequest.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+/**
+ * BookingRequest — Data Transfer Object for booking API.
+ */
+public class BookingRequest {
+    private String userId;
+    private String recName;
+    private String recAddress;
+    private String recPin;
+    private String recMobile;
+    private int parWeightGram;
+    private String parContentsDescription;
+    private String parDeliveryType;
+    private String parPackingPreference;
+    private String paymentMethod;
+
+    public BookingRequest() {}
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getRecName() { return recName; }
+    public void setRecName(String recName) { this.recName = recName; }
+
+    public String getRecAddress() { return recAddress; }
+    public void setRecAddress(String recAddress) { this.recAddress = recAddress; }
+
+    public String getRecPin() { return recPin; }
+    public void setRecPin(String recPin) { this.recPin = recPin; }
+
+    public String getRecMobile() { return recMobile; }
+    public void setRecMobile(String recMobile) { this.recMobile = recMobile; }
+
+    public int getParWeightGram() { return parWeightGram; }
+    public void setParWeightGram(int parWeightGram) { this.parWeightGram = parWeightGram; }
+
+    public String getParContentsDescription() { return parContentsDescription; }
+    public void setParContentsDescription(String parContentsDescription) { this.parContentsDescription = parContentsDescription; }
+
+    public String getParDeliveryType() { return parDeliveryType; }
+    public void setParDeliveryType(String parDeliveryType) { this.parDeliveryType = parDeliveryType; }
+
+    public String getParPackingPreference() { return parPackingPreference; }
+    public void setParPackingPreference(String parPackingPreference) { this.parPackingPreference = parPackingPreference; }
+
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ApiResponse DTO -->
+<section class="content-section" id="dto-api-response">
+  <div class="section-tag">DTO 5</div>
+  <h2>ApiResponse.java</h2>
+  <p class="section-desc">Generic wrapper for ALL API responses. Every endpoint returns this same structure.</p>
+
+  <p>Instead of every controller returning different shapes of data, they all return <code>ApiResponse</code>. This means the frontend always knows what to expect: <code>success</code>, <code>message</code>, and <code>data</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dto/ApiResponse.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+/**
+ * ApiResponse — Generic API response wrapper.
+ * Every REST endpoint returns this format:
+ * { "success": true/false, "message": "...", "data": {...} }
+ */
+public class ApiResponse {
+    private boolean success;
+    private String message;
+    private Object data;
+
+    public ApiResponse() {}
+
+    public ApiResponse(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
+
+    public ApiResponse(boolean success, String message, Object data) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+    }
+
+    // Static factory methods for convenience
+    public static ApiResponse ok(String message, Object data) {
+        return new ApiResponse(true, message, data);
+    }
+
+    public static ApiResponse ok(Object data) {
+        return new ApiResponse(true, "Success", data);
+    }
+
+    public static ApiResponse error(String message) {
+        return new ApiResponse(false, message);
+    }
+
+    public boolean isSuccess() { return success; }
+    public void setSuccess(boolean success) { this.success = success; }
+
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
+
+    public Object getData() { return data; }
+    public void setData(Object data) { this.data = data; }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private Object data;</div>
+        <div class="breakdown-explain">The type is <code>Object</code> — it can hold ANY Java object. A User, a List of Bookings, a single Booking, anything. Spring converts it to JSON automatically.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public static ApiResponse ok(Object data)</div>
+        <div class="breakdown-explain">A static factory method. Instead of writing <code>new ApiResponse(true, "Success", data)</code> every time, you just write <code>ApiResponse.ok(data)</code>. Shorter and cleaner.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public static ApiResponse error(String message)</div>
+        <div class="breakdown-explain">For error responses. Creates <code>{ "success": false, "message": "..." }</code> with no data field. Used in catch blocks when something goes wrong.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">CONSISTENT API DESIGN</div>
+    <p>Every endpoint in Nimbus returns either <code>ApiResponse.ok(data)</code> or <code>ApiResponse.error(message)</code>. The frontend always checks <code>data.success</code> first. If true, the actual payload is in <code>data.data</code>. If false, the error message is in <code>data.message</code>. Consistent patterns make code easier to write and debug.</p>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: CONTROLLERS                       -->
+<!-- ========================================== -->
+
+<!-- Annotation Explainer (before controllers) -->
+<section class="content-section" id="annotations-explainer">
+  <div class="section-tag">BEFORE WE BEGIN</div>
+  <h2>REST Controller Annotations</h2>
+  <p class="section-desc">Every controller uses these annotations. Understand these six and you understand all the controllers.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Annotation</th>
+        <th>What it does</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@RestController</code></td>
+        <td>"This class handles REST API requests." It tells Spring: methods in this class return <strong>data</strong> (not HTML views). Spring automatically converts the return value to JSON.</td>
+      </tr>
+      <tr>
+        <td><code>@RequestMapping("/api/auth")</code></td>
+        <td>"All URLs in this class start with <code>/api/auth</code>." So if a method has <code>@PostMapping("/login")</code>, the full URL becomes <code>/api/auth/login</code>.</td>
+      </tr>
+      <tr>
+        <td><code>@PostMapping("/login")</code></td>
+        <td>"Handle POST requests to <code>/api/auth/login</code>." POST is used when the client is <strong>sending data</strong> (like login credentials or a new booking).</td>
+      </tr>
+      <tr>
+        <td><code>@GetMapping("/users")</code></td>
+        <td>"Handle GET requests to <code>/api/auth/users</code>." GET is used when the client is <strong>fetching data</strong> (like getting a list of users).</td>
+      </tr>
+      <tr>
+        <td><code>@RequestBody</code></td>
+        <td>"Parse the JSON request body into this Java object." When you write <code>@RequestBody LoginRequest request</code>, Spring reads the JSON from the request, creates a <code>LoginRequest</code> object, and fills in the fields.</td>
+      </tr>
+      <tr>
+        <td><code>@PathVariable</code></td>
+        <td>"Extract a value from the URL path." In <code>/api/auth/user/{userId}</code>, if the request is <code>/api/auth/user/260401-AK01</code>, then <code>userId</code> = <code>"260401-AK01"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>@RequestParam</code></td>
+        <td>"Extract a query parameter from the URL." In <code>/api/bookings/history?userId=X&amp;startDate=Y</code>, <code>userId</code> and <code>startDate</code> are request params.</td>
+      </tr>
+      <tr>
+        <td><code>ResponseEntity&lt;T&gt;</code></td>
+        <td>"Lets you set HTTP status codes." <code>ResponseEntity.ok()</code> = 200 OK. <code>ResponseEntity.status(401)</code> = 401 Unauthorized. <code>ResponseEntity.status(404)</code> = 404 Not Found.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- AuthController -->
+<section class="content-section" id="auth-controller">
+  <div class="section-tag">CONTROLLER 1</div>
+  <h2>AuthController.java</h2>
+  <p class="section-desc">Handles login, registration, and user lookup. The authentication hub of the app.</p>
+
+  <h3>Endpoints in this Controller</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>URL</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="method-badge post">POST</span></td><td><code>/api/auth/login</code></td><td>Validate credentials, return user data</td></tr>
+      <tr><td><span class="method-badge post">POST</span></td><td><code>/api/auth/register</code></td><td>Register a new customer</td></tr>
+      <tr><td><span class="method-badge post">POST</span></td><td><code>/api/auth/register-admin</code></td><td>Register an officer or support user</td></tr>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/auth/users</code></td><td>Get all users</td></tr>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/auth/user/{userId}</code></td><td>Get a specific user by ID</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/controller/AuthController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.ApiResponse;
+import com.nimbus.dto.LoginRequest;
+import com.nimbus.dto.LoginResponse;
+import com.nimbus.dto.RegisterRequest;
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * AuthController — Phase 4 REST API for authentication.
+ *
+ * Endpoints (matching TCS Sprint 3 requirements):
+ *   POST /api/auth/login            → validateLogin
+ *   POST /api/auth/register         → registerCustomer
+ *   POST /api/auth/register-admin   → registerAdmin
+ *   GET  /api/auth/user/{userId}    → getUserDetails
+ */
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    /**
+     * POST /api/auth/login
+     * TCS Sprint 3: validateLogin
+     *
+     * Request:  { "userId": "260401-AK01", "password": "Amit@123" }
+     * Response: { "success": true, "message": "...", "user": {...} }
+     */
+    @PostMapping("/login")
+    public ResponseEntity&lt;LoginResponse&gt; login(@RequestBody LoginRequest request) {
+        try {
+            User user = userService.validateLogin(request.getUserId(), request.getPassword());
+
+            LoginResponse.UserDTO dto = mapToDTO(user);
+            LoginResponse response = new LoginResponse(true, "Login successful.", dto);
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            LoginResponse response = new LoginResponse(false, e.getMessage(), null);
+            return ResponseEntity.status(401).body(response);
+        }
+    }
+
+    /**
+     * POST /api/auth/register
+     * TCS Sprint 3: registerCustomer
+     */
+    @PostMapping("/register")
+    public ResponseEntity&lt;ApiResponse&gt; register(@RequestBody RegisterRequest request) {
+        try {
+            User user = userService.register(
+                    request.getFirstName(), request.getMiddleName(), request.getLastName(),
+                    request.getEmail(), request.getCountryCode(), request.getMobile(),
+                    request.getStreet(), request.getZipCode(), request.getCity(),
+                    request.getState(), request.getCountry(),
+                    request.getPassword(), request.getConfirmPassword(),
+                    request.getPreferences());
+
+            LoginResponse.UserDTO dto = mapToDTO(user);
+            return ResponseEntity.ok(ApiResponse.ok("Registration successful. User ID: " + user.getUserId(), dto));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * POST /api/auth/register-admin
+     * TCS Sprint 3: registerAdmin
+     */
+    @PostMapping("/register-admin")
+    public ResponseEntity&lt;ApiResponse&gt; registerAdmin(@RequestBody RegisterRequest request) {
+        try {
+            String role = request.getRole() != null ? request.getRole() : "officer";
+            User user = userService.registerAdmin(
+                    request.getFirstName(), request.getLastName(),
+                    request.getEmail(), request.getMobile(),
+                    request.getPassword(), role);
+
+            return ResponseEntity.ok(ApiResponse.ok("Admin registered. User ID: " + user.getUserId(), mapToDTO(user)));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * GET /api/auth/users — Get all users.
+     */
+    @GetMapping("/users")
+    public ResponseEntity&lt;ApiResponse&gt; getAllUsers() {
+        return ResponseEntity.ok(ApiResponse.ok(userService.getAllUsers()));
+    }
+
+    /**
+     * GET /api/auth/user/{userId}
+     */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity&lt;ApiResponse&gt; getUser(@PathVariable String userId) {
+        try {
+            User user = userService.getUserById(userId);
+            return ResponseEntity.ok(ApiResponse.ok(mapToDTO(user)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    // --- Map User entity to DTO (strips password) ---
+    private LoginResponse.UserDTO mapToDTO(User user) {
+        LoginResponse.UserDTO dto = new LoginResponse.UserDTO();
+        dto.setUserId(user.getUserId());
+        dto.setFirstName(user.getFirstName());
+        dto.setMiddleName(user.getMiddleName());
+        dto.setLastName(user.getLastName());
+        dto.setFullName(user.getFullName());
+        dto.setEmail(user.getEmail());
+        dto.setCountryCode(user.getCountryCode());
+        dto.setMobile(user.getMobile());
+        dto.setStreet(user.getStreet());
+        dto.setZipCode(user.getZipCode());
+        dto.setCity(user.getCity());
+        dto.setState(user.getState());
+        dto.setCountry(user.getCountry());
+        dto.setRole(user.getRole());
+        dto.setPreferences(user.getPreferences());
+        dto.setCreatedAt(user.getCreatedAt() != null ? user.getCreatedAt().toString() : null);
+        return dto;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key parts explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RestController + @RequestMapping("/api/auth")</div>
+        <div class="breakdown-explain">This class handles REST requests. All endpoints start with /api/auth.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private final UserService userService;</div>
+        <div class="breakdown-explain">Dependency injection. Spring creates the UserService and passes it to this controller's constructor. The controller never creates it with <code>new</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PostMapping("/login") ... @RequestBody LoginRequest request</div>
+        <div class="breakdown-explain">When a POST request hits /api/auth/login, Spring parses the JSON body into a LoginRequest object and passes it to this method.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ResponseEntity.ok(response) vs ResponseEntity.status(401).body(response)</div>
+        <div class="breakdown-explain">On success: return HTTP 200 with the login data. On failure: return HTTP 401 (Unauthorized) with the error message.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">mapToDTO(user)</div>
+        <div class="breakdown-explain">Converts the User entity (which has a password) into a UserDTO (which does NOT have a password). This is the security layer that prevents password leaks.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BookingController -->
+<section class="content-section" id="booking-controller">
+  <div class="section-tag">CONTROLLER 2</div>
+  <h2>BookingController.java</h2>
+  <p class="section-desc">Handles creating bookings, viewing history, and updating delivery status.</p>
+
+  <h3>Endpoints in this Controller</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>URL</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="method-badge post">POST</span></td><td><code>/api/bookings</code></td><td>Create a new parcel booking</td></tr>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/bookings/history</code></td><td>Get booking history (with filters)</td></tr>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/bookings/{id}</code></td><td>Get a single booking by ID</td></tr>
+      <tr><td><span class="method-badge put">PUT</span></td><td><code>/api/bookings/{id}/delivery-status</code></td><td>Update delivery status</td></tr>
+      <tr><td><span class="method-badge put">PUT</span></td><td><code>/api/bookings/{id}/pickup-drop</code></td><td>Update pickup and dropoff times</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/controller/BookingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.ApiResponse;
+import com.nimbus.dto.BookingRequest;
+import com.nimbus.model.Booking;
+import com.nimbus.service.BookingService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * BookingController — Phase 4 REST API for booking operations.
+ *
+ * Endpoints (matching TCS Sprint 3 requirements):
+ *   POST /api/bookings                          → bookService
+ *   GET  /api/bookings/history                   → viewBookingHistory
+ *   PUT  /api/bookings/{id}/delivery-status      → updateDeliveryStatus
+ *   PUT  /api/bookings/{id}/pickup-drop          → updatePickupAndDrop
+ */
+@RestController
+@RequestMapping("/api/bookings")
+public class BookingController {
+
+    private final BookingService bookingService;
+
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+
+    /**
+     * POST /api/bookings
+     * TCS Sprint 3: bookService (viewBookService)
+     *
+     * Creates a new booking. Automatically calculates cost.
+     */
+    @PostMapping
+    public ResponseEntity&lt;ApiResponse&gt; createBooking(@RequestBody BookingRequest request) {
+        try {
+            Booking booking = bookingService.createBooking(
+                    request.getUserId(),
+                    request.getRecName(),
+                    request.getRecAddress(),
+                    request.getRecPin(),
+                    request.getRecMobile(),
+                    request.getParWeightGram(),
+                    request.getParContentsDescription(),
+                    request.getParDeliveryType(),
+                    request.getParPackingPreference(),
+                    request.getPaymentMethod()
+            );
+
+            return ResponseEntity.ok(ApiResponse.ok("Booking confirmed. ID: " + booking.getBookingId(), booking));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * GET /api/bookings/history
+     * TCS Sprint 3: viewBookingHistory
+     *
+     * Query params:
+     *   userId    — filter by user (required for customers, optional for officers)
+     *   role      — "customer" or "officer" (determines access level)
+     *   startDate — filter start date (yyyy-MM-dd)
+     *   endDate   — filter end date (yyyy-MM-dd)
+     */
+    @GetMapping("/history")
+    public ResponseEntity&lt;ApiResponse&gt; getHistory(
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false, defaultValue = "officer") String role,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+
+        List&lt;Booking&gt; bookings = bookingService.getHistory(userId, role, startDate, endDate);
+        return ResponseEntity.ok(ApiResponse.ok("Found " + bookings.size() + " booking(s).", bookings));
+    }
+
+    /**
+     * GET /api/bookings/{id}
+     * Get a single booking by ID.
+     */
+    @GetMapping("/{bookingId}")
+    public ResponseEntity&lt;ApiResponse&gt; getBooking(@PathVariable String bookingId) {
+        try {
+            Booking booking = bookingService.getBookingById(bookingId);
+            return ResponseEntity.ok(ApiResponse.ok(booking));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * PUT /api/bookings/{id}/delivery-status
+     * TCS Sprint 3: updateDeliveryStatus
+     *
+     * Request body: { "status": "In Transit" }
+     */
+    @PutMapping("/{bookingId}/delivery-status")
+    public ResponseEntity&lt;ApiResponse&gt; updateDeliveryStatus(
+            @PathVariable String bookingId,
+            @RequestBody Map&lt;String, String&gt; request) {
+        try {
+            String newStatus = request.get("status");
+            Booking updated = bookingService.updateDeliveryStatus(bookingId, newStatus);
+            return ResponseEntity.ok(ApiResponse.ok("Status updated to: " + newStatus, updated));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * PUT /api/bookings/{id}/pickup-drop
+     * TCS Sprint 3: updatePickupAndDrop
+     *
+     * Request body: { "pickupTime": "2026-04-02T10:00:00", "dropoffTime": "2026-04-05T18:00:00" }
+     */
+    @PutMapping("/{bookingId}/pickup-drop")
+    public ResponseEntity&lt;ApiResponse&gt; updatePickupDropoff(
+            @PathVariable String bookingId,
+            @RequestBody Map&lt;String, String&gt; request) {
+        try {
+            LocalDateTime pickup = LocalDateTime.parse(request.get("pickupTime"));
+            LocalDateTime dropoff = LocalDateTime.parse(request.get("dropoffTime"));
+            Booking updated = bookingService.updatePickupDropoff(bookingId, pickup, dropoff);
+            return ResponseEntity.ok(ApiResponse.ok("Pickup/dropoff updated.", updated));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key parts explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@PostMapping (no path)</div>
+        <div class="breakdown-explain">No path means it handles POST to the base URL: /api/bookings. Combined with @RequestMapping("/api/bookings") on the class.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RequestParam(required = false) String userId</div>
+        <div class="breakdown-explain">Reads from the URL query string: /api/bookings/history?userId=260401-AK01. <code>required = false</code> means it is optional.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RequestBody Map&lt;String, String&gt; request</div>
+        <div class="breakdown-explain">Instead of creating a DTO for simple requests, we use a Map. <code>request.get("status")</code> reads the "status" field from the JSON body. Good for small, simple payloads.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">LocalDateTime.parse(request.get("pickupTime"))</div>
+        <div class="breakdown-explain">Converts the string "2026-04-02T10:00:00" into a Java LocalDateTime object. The "T" in the middle separates date from time. This is the ISO-8601 format.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TrackingController -->
+<section class="content-section" id="tracking-controller">
+  <div class="section-tag">CONTROLLER 3</div>
+  <h2>TrackingController.java</h2>
+  <p class="section-desc">Handles parcel tracking. A simple, focused controller with just one endpoint.</p>
+
+  <h3>Endpoint</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>URL</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/bookings/{id}/track</code></td><td>Track a parcel with access control</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/controller/TrackingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.ApiResponse;
+import com.nimbus.model.Booking;
+import com.nimbus.service.BookingService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * TrackingController — Phase 4 REST API for parcel tracking.
+ *
+ * Endpoint (matching TCS Sprint 3 requirement):
+ *   GET /api/bookings/{id}/track → trackParcelStatus
+ */
+@RestController
+@RequestMapping("/api/bookings")
+public class TrackingController {
+
+    private final BookingService bookingService;
+
+    public TrackingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+
+    /**
+     * GET /api/bookings/{bookingId}/track
+     * TCS Sprint 3: trackParcelStatus
+     *
+     * Query params:
+     *   userId — the requesting user's ID (for access control)
+     *   role   — "customer" or "officer"
+     */
+    @GetMapping("/{bookingId}/track")
+    public ResponseEntity&lt;ApiResponse&gt; trackParcel(
+            @PathVariable String bookingId,
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false, defaultValue = "officer") String role) {
+        try {
+            Booking booking = bookingService.trackBooking(bookingId, userId, role);
+            return ResponseEntity.ok(ApiResponse.ok("Booking found.", booking));
+
+        } catch (SecurityException e) {
+            return ResponseEntity.status(403).body(ApiResponse.error(e.getMessage()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(ApiResponse.error(e.getMessage()));
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">TWO DIFFERENT EXCEPTIONS</div>
+    <p>Notice this controller catches <strong>two</strong> different exceptions. <code>SecurityException</code> returns HTTP 403 (Forbidden) &mdash; meaning "you are not allowed to track this parcel." <code>IllegalArgumentException</code> returns HTTP 404 (Not Found) &mdash; meaning "this booking does not exist." Different errors get different HTTP status codes. This is good API design.</p>
+  </div>
+</section>
+
+<!-- IssueController -->
+<section class="content-section" id="issue-controller">
+  <div class="section-tag">CONTROLLER 4</div>
+  <h2>IssueController.java</h2>
+  <p class="section-desc">Handles the support ticket system. Customers create issues, support staff resolves them.</p>
+
+  <h3>Endpoints in this Controller</h3>
+  <table class="info-table">
+    <thead><tr><th>Method</th><th>URL</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="method-badge post">POST</span></td><td><code>/api/issues</code></td><td>Create a new support issue</td></tr>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/issues</code></td><td>Get all issues (officer view)</td></tr>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/issues/user/{userId}</code></td><td>Get issues by a specific user</td></tr>
+      <tr><td><span class="method-badge get">GET</span></td><td><code>/api/issues/assigned/{id}</code></td><td>Get issues assigned to a support user</td></tr>
+      <tr><td><span class="method-badge put">PUT</span></td><td><code>/api/issues/{issueId}</code></td><td>Update issue (status, assignee, notes)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/controller/IssueController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.ApiResponse;
+import com.nimbus.model.Issue;
+import com.nimbus.service.IssueService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * IssueController — Phase 4 REST API for support issues.
+ *
+ * Endpoints:
+ *   POST /api/issues                → Create issue (customer)
+ *   GET  /api/issues                → Get all issues (officer)
+ *   GET  /api/issues/user/{userId}  → Get issues by user
+ *   GET  /api/issues/assigned/{id}  → Get assigned issues (support)
+ *   PUT  /api/issues/{issueId}      → Update issue status
+ */
+@RestController
+@RequestMapping("/api/issues")
+public class IssueController {
+
+    private final IssueService issueService;
+
+    public IssueController(IssueService issueService) {
+        this.issueService = issueService;
+    }
+
+    /** POST /api/issues — Create a new support issue. */
+    @PostMapping
+    public ResponseEntity&lt;ApiResponse&gt; createIssue(@RequestBody Map&lt;String, String&gt; request) {
+        try {
+            Issue issue = issueService.createIssue(
+                    request.get("userId"),
+                    request.get("bookingId"),
+                    request.get("subject"),
+                    request.get("description"),
+                    request.get("severity")
+            );
+            return ResponseEntity.ok(ApiResponse.ok("Issue created. ID: " + issue.getIssueId(), issue));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    /** GET /api/issues — Get all issues. */
+    @GetMapping
+    public ResponseEntity&lt;ApiResponse&gt; getAllIssues() {
+        List&lt;Issue&gt; issues = issueService.getAllIssues();
+        return ResponseEntity.ok(ApiResponse.ok(issues));
+    }
+
+    /** GET /api/issues/user/{userId} — Get issues by user. */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity&lt;ApiResponse&gt; getIssuesByUser(@PathVariable String userId) {
+        List&lt;Issue&gt; issues = issueService.getIssuesByUser(userId);
+        return ResponseEntity.ok(ApiResponse.ok(issues));
+    }
+
+    /** GET /api/issues/assigned/{supportUserId} — Get assigned issues. */
+    @GetMapping("/assigned/{supportUserId}")
+    public ResponseEntity&lt;ApiResponse&gt; getAssignedIssues(@PathVariable String supportUserId) {
+        List&lt;Issue&gt; issues = issueService.getAssignedIssues(supportUserId);
+        return ResponseEntity.ok(ApiResponse.ok(issues));
+    }
+
+    /** PUT /api/issues/{issueId} — Update issue. */
+    @PutMapping("/{issueId}")
+    public ResponseEntity&lt;ApiResponse&gt; updateIssue(
+            @PathVariable String issueId,
+            @RequestBody Map&lt;String, String&gt; request) {
+        try {
+            Issue issue = issueService.updateIssue(
+                    issueId,
+                    request.get("status"),
+                    request.get("assignedTo"),
+                    request.get("notes")
+            );
+            return ResponseEntity.ok(ApiResponse.ok("Issue updated.", issue));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">PATTERN RECOGNITION</div>
+    <p>Notice how every controller follows the same pattern: <code>@RestController</code> + <code>@RequestMapping</code>, inject the service in the constructor, try-catch in each method, return <code>ApiResponse.ok()</code> or <code>ApiResponse.error()</code>. Once you understand one controller, you understand all of them. That is the power of consistent design.</p>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: CORS CONFIG                       -->
+<!-- ========================================== -->
+<section class="content-section" id="cors-config">
+  <div class="section-tag">CONFIG</div>
+  <h2>CorsConfig.java</h2>
+  <p class="section-desc">One small class that tells Spring Boot to allow cross-origin requests.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/config/CorsConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * CorsConfig — Cross-Origin Resource Sharing configuration.
+ *
+ * This allows the frontend (running on a different port or file://) to
+ * make API calls to the Spring Boot backend at http://localhost:8080.
+ *
+ * Without CORS, the browser blocks requests from different origins.
+ * Example: nimbus/login.html (file://) calling http://localhost:8080/api/auth/login
+ */
+@Configuration
+public class CorsConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@Configuration</div>
+        <div class="breakdown-explain">Tells Spring: "This class contains configuration settings. Read it at startup."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">implements WebMvcConfigurer</div>
+        <div class="breakdown-explain">An interface from Spring MVC. By implementing it, we can override methods to customize Spring's web behavior.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">registry.addMapping("/api/**")</div>
+        <div class="breakdown-explain">Apply CORS rules to all URLs that start with /api/. The ** means "any path underneath."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.allowedOrigins("*")</div>
+        <div class="breakdown-explain">Allow requests from ANY origin. In production, you would list specific domains instead of "*".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")</div>
+        <div class="breakdown-explain">Allow these HTTP methods. OPTIONS is used by browsers as a "preflight check" before the actual request.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: FRONTEND INTEGRATION              -->
+<!-- ========================================== -->
+<section class="content-section" id="frontend-changes">
+  <div class="section-tag">FRONTEND INTEGRATION</div>
+  <h2>What Changes?</h2>
+  <p class="section-desc">Almost nothing. That is the beauty of good architecture.</p>
+
+  <p>Your <code>nimbus/</code> frontend already works with LocalStorage via <code>storage.js</code>. Every page calls methods like <code>NimbusDB.validateLogin()</code>, <code>NimbusDB.addBooking()</code>, <code>NimbusDB.getBookings()</code>, etc.</p>
+
+  <p><code>storage-api.js</code> is a <strong>drop-in replacement</strong> for <code>storage.js</code>. It has the <strong>exact same NimbusDB interface</strong> &mdash; same method names, same return format. But instead of reading/writing LocalStorage, it calls REST APIs using <code>fetch()</code>.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">storage.js (LocalStorage)</div>
+      <div class="comparison-body">
+        <p><code>NimbusDB.validateLogin()</code></p>
+        <p>&rarr; reads from LocalStorage</p>
+        <p>&rarr; compares password in JavaScript</p>
+        <p>&rarr; returns <code>{ success, user }</code></p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">storage-api.js (REST API)</div>
+      <div class="comparison-body">
+        <p><code>NimbusDB.validateLogin()</code></p>
+        <p>&rarr; calls POST /api/auth/login</p>
+        <p>&rarr; Java validates on the server</p>
+        <p>&rarr; returns <code>{ success, user }</code></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">KEY INSIGHT</div>
+    <p>The rest of your HTML, CSS, and JavaScript code does not change at all. The dashboard pages, the booking form, the tracking page &mdash; they all keep calling <code>NimbusDB.addBooking()</code>, <code>NimbusDB.getBookings()</code>, etc. They do not know (or care) whether the data comes from LocalStorage or a REST API. This is called <strong>abstraction</strong> &mdash; hiding the implementation details behind a consistent interface.</p>
+  </div>
+</section>
+
+<!-- storage-api.js -->
+<section class="content-section" id="storage-api">
+  <div class="section-tag">THE KEY FILE</div>
+  <h2>storage-api.js</h2>
+  <p class="section-desc">Drop-in replacement for storage.js. Same interface, different data source.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus/js/storage-api.js</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-javascript">/* ========================================
+   NIMBUS — API Storage Layer
+   Drop-in replacement for storage.js
+
+   Instead of LocalStorage, this calls the REST API
+   at http://localhost:8080/api/*
+
+   HOW TO USE:
+   In your HTML files, replace:
+     &lt;script src="js/storage.js"&gt;&lt;/script&gt;
+   with:
+     &lt;script src="js/storage-api.js"&gt;&lt;/script&gt;
+
+   The NimbusDB interface is identical — all existing code works.
+   ======================================== */
+
+const API_BASE = 'http://localhost:8080/api';
+
+const NimbusDB = {
+
+  // --- Keys (kept for compatibility) ---
+  KEYS: {
+    USERS: 'nimbus_users',
+    BOOKINGS: 'nimbus_bookings',
+    ISSUES: 'nimbus_issues',
+    SESSION: 'nimbus_session',
+    INITIALIZED: 'nimbus_initialized',
+    VERSION: 'nimbus_version'
+  },
+
+  CURRENT_VERSION: 5,
+
+  // --- Initialize (no-op — backend handles seeding) ---
+  init() {
+    console.log('[NimbusDB] API mode active. Backend: ' + API_BASE);
+  },
+
+  // ====== USER OPERATIONS ======
+
+  async getUsers() {
+    try {
+      const res = await fetch(API_BASE + '/auth/users');
+      const data = await res.json();
+      return data.data || [];
+    } catch (e) {
+      console.error('API error:', e);
+      return [];
+    }
+  },
+
+  async getUserById(userId) {
+    try {
+      const res = await fetch(API_BASE + '/auth/user/' + userId);
+      const data = await res.json();
+      return data.success ? data.data : null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  getUserByEmail(email) {
+    // This is used for duplicate check — handled server-side during registration
+    return null;
+  },
+
+  async addUser(user) {
+    // Registration is handled by NimbusAuth.register() which calls the API
+    return user;
+  },
+
+  async validateLogin(userId, password) {
+    try {
+      const res = await fetch(API_BASE + '/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, password })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        return { success: true, user: data.user };
+      } else {
+        return { success: false, message: data.message || 'Invalid credentials.' };
+      }
+    } catch (e) {
+      return { success: false, message: 'Server connection failed.' };
+    }
+  },
+
+  generateUserId(firstName, lastName) {
+    // Server generates this during registration
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(-2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const initials = (firstName[0] + lastName[0]).toUpperCase();
+    return `${yy}${mm}${dd}-${initials}00`;
+  },
+
+  // ====== SESSION (still uses sessionStorage — browser-side) ======
+
+  setSession(user) {
+    const session = {
+      userId: user.userId,
+      fullName: user.fullName,
+      role: user.role,
+      loginTime: new Date().toISOString()
+    };
+    sessionStorage.setItem(this.KEYS.SESSION, JSON.stringify(session));
+  },
+
+  getSession() {
+    return JSON.parse(sessionStorage.getItem(this.KEYS.SESSION) || 'null');
+  },
+
+  clearSession() {
+    sessionStorage.removeItem(this.KEYS.SESSION);
+  },
+
+  isLoggedIn() {
+    return this.getSession() !== null;
+  },
+
+  // ====== BOOKING OPERATIONS ======
+
+  async getBookings() {
+    try {
+      const res = await fetch(API_BASE + '/bookings/history?role=officer');
+      const data = await res.json();
+      return data.data || [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  async getBookingById(bookingId) {
+    try {
+      const res = await fetch(API_BASE + '/bookings/' + bookingId);
+      const data = await res.json();
+      return data.success ? data.data : null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  async getBookingsByUser(userId) {
+    try {
+      const res = await fetch(API_BASE + '/bookings/history?userId=' + userId + '&amp;role=customer');
+      const data = await res.json();
+      return data.data || [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  async getBookingsByDateRange(userId, startDate, endDate) {
+    let url = API_BASE + '/bookings/history?role=officer';
+    if (userId) url += '&amp;userId=' + userId;
+    if (startDate) url += '&amp;startDate=' + startDate;
+    if (endDate) url += '&amp;endDate=' + endDate;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.data || [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  async addBooking(booking) {
+    try {
+      const res = await fetch(API_BASE + '/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: booking.userId,
+          recName: booking.recName,
+          recAddress: booking.recAddress,
+          recPin: booking.recPin,
+          recMobile: booking.recMobile,
+          parWeightGram: booking.parWeightGram,
+          parContentsDescription: booking.parContentsDescription,
+          parDeliveryType: booking.parDeliveryType,
+          parPackingPreference: booking.parPackingPreference,
+          paymentMethod: booking.paymentMethod || 'card'
+        })
+      });
+      const data = await res.json();
+      return data.data || booking;
+    } catch (e) {
+      console.error('Booking API error:', e);
+      return null;
+    }
+  },
+
+  async updateBooking(bookingId, updates) {
+    try {
+      if (updates.parStatus) {
+        const res = await fetch(API_BASE + '/bookings/' + bookingId + '/delivery-status', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: updates.parStatus })
+        });
+        const data = await res.json();
+        return data.data || null;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  generateBookingId() {
+    // Server generates this — return placeholder
+    return 'NMB-000000-0000';
+  },
+
+  // ====== ISSUE OPERATIONS ======
+
+  async getIssues() {
+    try {
+      const res = await fetch(API_BASE + '/issues');
+      const data = await res.json();
+      return data.data || [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  async addIssue(issue) {
+    try {
+      const res = await fetch(API_BASE + '/issues', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(issue)
+      });
+      const data = await res.json();
+      return data.data || issue;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  async updateIssue(issueId, updates) {
+    try {
+      const res = await fetch(API_BASE + '/issues/' + issueId, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+      const data = await res.json();
+      return data.data || null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  // ====== UTILITY ======
+
+  resetAll() {
+    sessionStorage.removeItem(this.KEYS.SESSION);
+    console.log('[NimbusDB] Session cleared. Database managed by server.');
+  }
+};
+
+// Initialize on load
+NimbusDB.init();</code></pre>
+  </div>
+</section>
+
+<!-- How to Switch -->
+<section class="content-section" id="how-to-switch">
+  <div class="section-tag">THE SWITCH</div>
+  <h2>How to Switch</h2>
+  <p class="section-desc">One line change per HTML file. That is it.</p>
+
+  <p>To switch your frontend from LocalStorage to REST APIs, you literally just change <strong>ONE line</strong> in each HTML file:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Before (LocalStorage)</div>
+      <div class="comparison-body">
+        <code>&lt;script src="js/storage.js"&gt;&lt;/script&gt;</code>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">After (REST API)</div>
+      <div class="comparison-body">
+        <code>&lt;script src="js/storage-api.js"&gt;&lt;/script&gt;</code>
+      </div>
+    </div>
+  </div>
+
+  <p>That is it. Every HTML page continues to call <code>NimbusDB.validateLogin()</code>, <code>NimbusDB.addBooking()</code>, etc. &mdash; but now those calls go to your Java backend instead of LocalStorage.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">ANALOGY</div>
+    <p>Imagine your car's steering wheel is connected to the front wheels (LocalStorage). You swap the steering mechanism to power steering (REST API). You still turn the steering wheel the same way. Your driving does not change. Only the mechanism underneath changed. That is what <code>storage-api.js</code> does &mdash; it swaps the engine without changing the controls.</p>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: API REFERENCE TABLE               -->
+<!-- ========================================== -->
+<section class="content-section" id="api-reference">
+  <div class="section-tag">REFERENCE</div>
+  <h2>All Endpoints</h2>
+  <p class="section-desc">Complete API reference for every endpoint in the Nimbus backend.</p>
+
+  <table class="api-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>URL</th>
+        <th>Description</th>
+        <th>Request Body</th>
+        <th>Response</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="method-badge post">POST</span></td>
+        <td><code>/api/auth/login</code></td>
+        <td>Login</td>
+        <td><code>{ userId, password }</code></td>
+        <td><code>{ success, user }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge post">POST</span></td>
+        <td><code>/api/auth/register</code></td>
+        <td>Register customer</td>
+        <td><code>{ firstName, lastName, email, ... }</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge post">POST</span></td>
+        <td><code>/api/auth/register-admin</code></td>
+        <td>Register officer/support</td>
+        <td><code>{ firstName, lastName, role, ... }</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge get">GET</span></td>
+        <td><code>/api/auth/user/{userId}</code></td>
+        <td>Get user details</td>
+        <td>&mdash;</td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge get">GET</span></td>
+        <td><code>/api/auth/users</code></td>
+        <td>Get all users</td>
+        <td>&mdash;</td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr style="border-top: 2px solid var(--border);">
+        <td><span class="method-badge post">POST</span></td>
+        <td><code>/api/bookings</code></td>
+        <td>Create booking</td>
+        <td><code>{ userId, recName, recAddress, ... }</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge get">GET</span></td>
+        <td><code>/api/bookings/history</code></td>
+        <td>Get booking history</td>
+        <td><code>?userId=X&amp;startDate=Y&amp;endDate=Z</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge get">GET</span></td>
+        <td><code>/api/bookings/{id}</code></td>
+        <td>Get single booking</td>
+        <td>&mdash;</td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge put">PUT</span></td>
+        <td><code>/api/bookings/{id}/delivery-status</code></td>
+        <td>Update status</td>
+        <td><code>{ status: "In Transit" }</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge put">PUT</span></td>
+        <td><code>/api/bookings/{id}/pickup-drop</code></td>
+        <td>Update pickup/dropoff</td>
+        <td><code>{ pickupTime, dropoffTime }</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge get">GET</span></td>
+        <td><code>/api/bookings/{id}/track</code></td>
+        <td>Track a parcel</td>
+        <td><code>?userId=X&amp;role=Y</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr style="border-top: 2px solid var(--border);">
+        <td><span class="method-badge post">POST</span></td>
+        <td><code>/api/issues</code></td>
+        <td>Create issue</td>
+        <td><code>{ userId, subject, severity, ... }</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge get">GET</span></td>
+        <td><code>/api/issues</code></td>
+        <td>Get all issues</td>
+        <td>&mdash;</td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge get">GET</span></td>
+        <td><code>/api/issues/user/{userId}</code></td>
+        <td>Get user's issues</td>
+        <td>&mdash;</td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+      <tr>
+        <td><span class="method-badge put">PUT</span></td>
+        <td><code>/api/issues/{id}</code></td>
+        <td>Update issue</td>
+        <td><code>{ status, assignedTo, notes }</code></td>
+        <td><code>{ success, data }</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: RUN & TEST                        -->
+<!-- ========================================== -->
+<section class="content-section" id="how-to-run">
+  <div class="section-tag">RUN &amp; TEST</div>
+  <h2>How to Run Sprint 4</h2>
+  <p class="section-desc">Get the REST APIs up and running, then connect your frontend.</p>
+
+  <ol class="steps">
+    <li>Spring Boot app should already be running (right-click <code>NimbusApplication.java</code> &rarr; Run As &rarr; Java Application)</li>
+    <li>Open <code>http://localhost:8080/login.html</code> in your browser &mdash; this is your Phase 1 frontend served by Spring Boot</li>
+    <li>Right now it uses <code>storage.js</code> (LocalStorage). To switch to API mode:
+      <ul>
+        <li>Open each HTML file in <code>src/main/resources/static/</code></li>
+        <li>Change <code>&lt;script src="js/storage.js"&gt;</code> to <code>&lt;script src="js/storage-api.js"&gt;</code></li>
+        <li>Refresh the browser</li>
+      </ul>
+    </li>
+    <li>Test: Login &rarr; Book a parcel &rarr; Track it &rarr; View history &mdash; all data now comes from the Java backend</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">IMPORTANT</div>
+    <p>Make sure only <strong>one</strong> instance of the Spring Boot app is running. If you have both the console app and the web app running, they might conflict on the H2 database.</p>
+  </div>
+</section>
+
+<section class="content-section" id="test-browser">
+  <h2>Test with Browser DevTools</h2>
+  <p class="section-desc">See the API calls happening in real-time.</p>
+
+  <ol class="steps">
+    <li>Open Chrome and go to your login page</li>
+    <li>Press <strong>F12</strong> to open Developer Tools</li>
+    <li>Click the <strong>Network</strong> tab</li>
+    <li>Type your credentials and click Login</li>
+    <li>You should see a POST request to <code>/api/auth/login</code> appear in the Network tab</li>
+    <li>Click on that request &rarr; click the <strong>Response</strong> tab &rarr; you will see the JSON response with user data</li>
+  </ol>
+
+  <div class="callout practice">
+    <div class="callout-title">TRY IT</div>
+    <p>This is how professional developers debug API calls. The Network tab shows you every request your frontend makes, the data it sends, and the response it receives. If something is not working, this is the first place to look.</p>
+  </div>
+</section>
+
+<section class="content-section" id="test-curl">
+  <h2>Test with curl</h2>
+  <p class="section-desc">Test your API endpoints directly from the command line, without a browser.</p>
+
+  <h3>Login</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal / Command Prompt</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-bash">curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"260401-AK01","password":"Amit@123"}'</code></pre>
+  </div>
+
+  <h3>Get All Bookings</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal / Command Prompt</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-bash">curl http://localhost:8080/api/bookings/history?role=officer</code></pre>
+  </div>
+
+  <h3>Create a Booking</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal / Command Prompt</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-bash">curl -X POST http://localhost:8080/api/bookings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": "260401-AK01",
+    "recName": "Vikram Reddy",
+    "recAddress": "MG Road, Bangalore",
+    "recPin": "560001",
+    "recMobile": "9876543210",
+    "parWeightGram": 500,
+    "parContentsDescription": "Documents",
+    "parDeliveryType": "express",
+    "parPackingPreference": "bubble_wrap",
+    "paymentMethod": "card"
+  }'</code></pre>
+  </div>
+
+  <h3>Track a Parcel</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal / Command Prompt</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-bash">curl "http://localhost:8080/api/bookings/NMB-260401-0001/track?userId=260401-AK01&role=customer"</code></pre>
+  </div>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: TROUBLESHOOTING                   -->
+<!-- ========================================== -->
+<section class="content-section" id="troubleshooting">
+  <div class="section-tag">HELP</div>
+  <h2>Troubleshooting</h2>
+  <p class="section-desc">Common issues and how to fix them.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Problem</th><th>Solution</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>"CORS error"</strong> in browser console</td>
+        <td>Make sure <code>CorsConfig.java</code> exists in the <code>com.nimbus.config</code> package and the app is restarted</td>
+      </tr>
+      <tr>
+        <td><strong>"404 Not Found"</strong> on <code>/api/...</code></td>
+        <td>Make sure the controller class has <code>@RestController</code> and <code>@RequestMapping</code> annotations. Check the package is under <code>com.nimbus.controller</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Login works in Servlet but not REST</strong></td>
+        <td>Check that <code>storage-api.js</code> is loaded in the HTML file (not <code>storage.js</code>). View page source in browser to confirm.</td>
+      </tr>
+      <tr>
+        <td><strong>Data shows in console app but not in REST</strong></td>
+        <td>Both use the same H2 database. Make sure only one app is running at a time.</td>
+      </tr>
+      <tr>
+        <td><strong>"Connection refused"</strong></td>
+        <td>The Spring Boot app is not running. Start <code>NimbusApplication.java</code> first.</td>
+      </tr>
+      <tr>
+        <td><strong>JSON parse error</strong></td>
+        <td>Check that your <code>fetch()</code> call includes <code>headers: { 'Content-Type': 'application/json' }</code> and the body is valid JSON.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================== -->
+<!-- SECTION: WHAT YOU'VE BUILT                 -->
+<!-- ========================================== -->
+<section class="content-section" id="summary">
+  <div class="section-tag">THE JOURNEY</div>
+  <h2>What You Have Built</h2>
+  <p class="section-desc">Four sprints. From zero to a full-stack application.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot green"></div>
+      <div class="timeline-title">Sprint 1: Static Frontend</div>
+      <div class="timeline-desc">HTML + CSS + JavaScript with LocalStorage. Three dashboards (Customer, Officer, Support). All the UI, no backend.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green"></div>
+      <div class="timeline-title">Sprint 2: Java Console App</div>
+      <div class="timeline-desc">Java models, services, repositories. JDBC connection to H2 database. Collections, exceptions, generics. The brain of the app, running in a terminal.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green"></div>
+      <div class="timeline-title">Sprint 3: Servlets + Spring</div>
+      <div class="timeline-desc">HTTP basics, Servlets, JSP pages, Spring MVC. The console app becomes a web app. Server-rendered HTML pages.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot active"></div>
+      <div class="timeline-title">Sprint 4: REST APIs + Frontend Integration</div>
+      <div class="timeline-desc">REST controllers, DTOs, CORS, JSON. The same frontend, now powered by a real Java backend. Modern architecture. Full-stack.</div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">THE FULL PICTURE</div>
+    <p>You started with HTML pages that stored data in the browser. You built a Java backend that stores data in a real database. You connected the two with REST APIs. Your frontend calls <code>NimbusDB.addBooking()</code> and a Java method runs on the server, saves to a database, calculates the cost, and sends back JSON. That is a <strong>full-stack application</strong>. That is how real companies build software.</p>
+  </div>
+</section>
+
+<!-- ========== TOPIC NAV ========== -->
+<div class="topic-nav">
+  <a href="#">
+    <span class="nav-label">Previous</span>
+    <span class="nav-title">&larr; Sprint 3: Servlets + Spring</span>
+  </a>
+  <div></div>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../topics/shared.js"></script>
+
+</body>
+</html>

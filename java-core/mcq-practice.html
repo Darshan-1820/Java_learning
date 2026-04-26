@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCQ Blitz | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .layout { display: block; }
+    .main { max-width: 800px; margin: 0 auto; padding: 40px 30px 80px; }
+
+    .quiz-stats {
+      display: flex; gap: 24px; justify-content: center; margin-bottom: 32px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    }
+    .quiz-stat { text-align: center; }
+    .quiz-stat-num { font-size: 1.5rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .quiz-stat-num.green { color: var(--green); }
+    .quiz-stat-num.red { color: var(--red); }
+    .quiz-stat-num.blue { color: var(--accent); }
+    .quiz-stat-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+    .quiz-card.revealed { cursor: default; }
+    .quiz-card.correct { border-left: 4px solid var(--green); }
+    .quiz-card.wrong { border-left: 4px solid var(--red); }
+
+    .quiz-q {
+      font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;
+    }
+    .quiz-code {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: 8px;
+      margin: 8px 0 12px; color: var(--text-secondary); white-space: pre;
+      overflow-x: auto;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 6px; }
+    .quiz-opt {
+      padding: 8px 14px; border-radius: 8px; font-size: 0.85rem;
+      color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+    .quiz-opt:hover:not(.disabled) { background: var(--bg-card-hover); color: var(--text-primary); }
+    .quiz-opt.selected { border-color: var(--accent); background: var(--accent-glow); color: var(--text-primary); }
+    .quiz-opt.correct-answer { border-color: var(--green); background: rgba(34,197,94,0.1); color: var(--green); }
+    .quiz-opt.wrong-answer { border-color: var(--red); background: rgba(239,68,68,0.1); color: var(--red); }
+    .quiz-opt.disabled { cursor: default; }
+
+    .quiz-explanation {
+      display: none; margin-top: 12px; padding: 12px 16px;
+      background: rgba(59,130,246,0.06); border-radius: 8px;
+      font-size: 0.82rem; color: var(--text-secondary); border-left: 3px solid var(--accent);
+      line-height: 1.6;
+    }
+    .quiz-card.revealed .quiz-explanation { display: block; }
+
+    .quiz-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; font-weight: 600; color: var(--text-muted);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      margin: 32px 0 16px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .quiz-filter {
+      display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { background: var(--bg-card); }
+    .filter-btn.active { background: var(--accent-glow); color: var(--accent); border-color: var(--accent); }
+
+    .reset-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: auto;
+    }
+    .reset-btn:hover { background: rgba(239,68,68,0.1); color: var(--red); border-color: var(--red); }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+<div class="layout">
+<main class="main">
+
+  <div class="section-tag">INTERACTIVE QUIZ</div>
+  <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px;">MCQ Blitz</h2>
+  <p class="section-desc">50 questions. Click to answer. Track your score. Master every concept.</p>
+
+  <div class="quiz-stats">
+    <div class="quiz-stat">
+      <div class="quiz-stat-num green" id="stat-correct">0</div>
+      <div class="quiz-stat-label">Correct</div>
+    </div>
+    <div class="quiz-stat">
+      <div class="quiz-stat-num red" id="stat-wrong">0</div>
+      <div class="quiz-stat-label">Wrong</div>
+    </div>
+    <div class="quiz-stat">
+      <div class="quiz-stat-num blue" id="stat-remaining">50</div>
+      <div class="quiz-stat-label">Remaining</div>
+    </div>
+  </div>
+
+  <div class="quiz-filter">
+    <button class="filter-btn active" data-cat="all">All</button>
+    <button class="filter-btn" data-cat="oop">OOP</button>
+    <button class="filter-btn" data-cat="strings">Strings</button>
+    <button class="filter-btn" data-cat="collections">Collections</button>
+    <button class="filter-btn" data-cat="exceptions">Exceptions</button>
+    <button class="filter-btn" data-cat="output">Output</button>
+    <button class="filter-btn" data-cat="inheritance">Inheritance</button>
+    <button class="filter-btn" data-cat="basics">Basics</button>
+    <button class="reset-btn" id="reset-btn">Reset All</button>
+  </div>
+
+  <div id="quiz-container"></div>
+
+</main>
+</div>
+
+<script>
+const quizData = [
+  // OOP BASICS
+  { id:1, cat:"oop", q:"What is encapsulation?", code:null, opts:["Hiding data using private fields and public methods","Creating multiple objects from a class","Inheriting properties from parent class","Using interfaces"], ans:0, explain:"Encapsulation = wrapping data (fields) and methods together, hiding internal details with `private` and exposing through `public` getters/setters." },
+  { id:2, cat:"oop", q:"What does the `this` keyword refer to?", code:null, opts:["The parent class","The current object","A static variable","The main method"], ans:1, explain:"`this` refers to the current instance of the class. In `this.name = name`, `this.name` is the field, `name` is the constructor parameter." },
+  { id:3, cat:"oop", q:"What happens if you don't write a constructor?", code:null, opts:["Compilation error","Java provides a default no-arg constructor","All fields become null","The class becomes abstract"], ans:1, explain:"Java auto-creates a no-argument constructor if you don't write any constructor. But if you write ANY constructor (even parameterized), the default disappears." },
+  { id:4, cat:"oop", q:"Which access modifier makes a field visible only within the same class?", code:null, opts:["public","protected","private","default (no modifier)"], ans:2, explain:"`private` restricts access to the same class only. `protected` allows same package + subclasses. `public` allows everyone. Default (no modifier) allows same package." },
+  { id:5, cat:"oop", q:"What is the difference between overloading and overriding?", code:null, opts:["Overloading = different return types, Overriding = same return type","Overloading = same class different params, Overriding = child class same signature","They are the same thing","Overloading requires inheritance"], ans:1, explain:"Overloading: same method name, different parameters, same class. Overriding: child class redefines parent method with same name + same params." },
+
+  // STRING OPERATIONS
+  { id:6, cat:"strings", q:"What does this print?", code:'String a = "hello";\nString b = new String("hello");\nSystem.out.println(a == b);\nSystem.out.println(a.equals(b));', opts:["true, true","false, false","false, true","true, false"], ans:2, explain:"`==` compares references (memory addresses). `a` is from string pool, `b` is a new object \u2014 different references. `.equals()` compares content \u2014 both are \"hello\"." },
+  { id:7, cat:"strings", q:'What does "hello".equalsIgnoreCase("HELLO") return?', code:null, opts:["true","false","Compilation error","Runtime error"], ans:0, explain:"`equalsIgnoreCase` compares content ignoring case. \"hello\" and \"HELLO\" have the same letters." },
+  { id:8, cat:"strings", q:"What does this print?", code:'System.out.println("Score: " + 5 + 3);', opts:["Score: 8","Score: 53","Score: 5 + 3","Compilation error"], ans:1, explain:'String concatenation is left-to-right. "Score: " + 5 = "Score: 5" (String). "Score: 5" + 3 = "Score: 53" (String).' },
+  { id:9, cat:"strings", q:"What does this print?", code:'System.out.println(5 + 3 + " is the score");', opts:["53 is the score","8 is the score","5 + 3 is the score","Compilation error"], ans:1, explain:'5 + 3 = 8 (both ints, math happens first). 8 + " is the score" = "8 is the score" (String concat).' },
+  { id:10, cat:"strings", q:'What does "hello".charAt(1) return?', code:null, opts:["'h'","'e'","'l'","IndexOutOfBoundsException"], ans:1, explain:"String index starts at 0. charAt(0)='h', charAt(1)='e'." },
+  { id:11, cat:"strings", q:'What does "Hello World".substring(6) return?', code:null, opts:['"Hello"','"World"','" World"','"orld"'], ans:1, explain:'substring(6) returns everything from index 6 onwards. Index 6 is \'W\', so result is "World".' },
+  { id:12, cat:"strings", q:'What does "hello".indexOf(\'l\') return?', code:null, opts:["0","2","3","-1"], ans:1, explain:'indexOf returns the FIRST occurrence index. \'l\' first appears at index 2.' },
+  { id:13, cat:"strings", q:'What does "  hello  ".trim() return?', code:null, opts:['"  hello  "','"hello  "','"  hello"','"hello"'], ans:3, explain:'trim() removes whitespace from BOTH ends of the string.' },
+
+  // COLLECTIONS
+  { id:14, cat:"collections", q:"Which collection maintains insertion order?", code:null, opts:["HashSet","HashMap","ArrayList","TreeSet"], ans:2, explain:"ArrayList maintains insertion order. HashSet and HashMap do NOT guarantee order. TreeSet sorts elements." },
+  { id:15, cat:"collections", q:"What does list.remove(1) do when list = [10, 20, 30]?", code:null, opts:["Removes the element with value 1","Removes the element at index 1 (value 20)","Removes the first element","Compilation error"], ans:1, explain:"For ArrayList<Integer>, `remove(1)` removes by INDEX, not value. To remove by value, use `remove(Integer.valueOf(1))`." },
+  { id:16, cat:"collections", q:"What's the difference between ArrayList and LinkedList?", code:null, opts:["ArrayList uses array internally, LinkedList uses nodes","ArrayList is slower for everything","LinkedList doesn't maintain order","They are exactly the same"], ans:0, explain:"ArrayList: backed by array, fast random access (get by index). LinkedList: backed by doubly-linked nodes, fast insert/delete in middle." },
+  { id:17, cat:"collections", q:"Which of these CAN be a HashMap key?", code:null, opts:["null","Only Strings","Only integers","None, keys must be primitive"], ans:0, explain:"HashMap allows ONE null key. Both String and Integer can be keys. Primitives (int, double) cannot be keys \u2014 must use wrappers (Integer, Double)." },
+  { id:18, cat:"collections", q:"What does this print?", code:'Map<String, Integer> map = new HashMap<>();\nmap.put("a", 1);\nmap.put("b", 2);\nmap.put("a", 3);\nSystem.out.println(map.get("a"));', opts:["1","3","Compilation error","[1, 3]"], ans:1, explain:'HashMap replaces the value if key already exists. put("a", 3) overwrites put("a", 1). map.get("a") = 3.' },
+  { id:19, cat:"collections", q:"Which is the correct way to loop through a HashMap and get both key and value?", code:null, opts:['for (String key : map)','for (Map.Entry<String, Integer> e : map.entrySet())','for (int i = 0; i < map.length; i++)','while (map.hasNext())'], ans:1, explain:'`map.entrySet()` returns a Set of key-value pairs. Each entry has `e.getKey()` and `e.getValue()`.' },
+  { id:20, cat:"collections", q:"What does LinkedHashMap do that HashMap doesn't?", code:null, opts:["Sorts by key","Maintains insertion order","Allows duplicate keys","Is thread-safe"], ans:1, explain:"LinkedHashMap keeps entries in the order they were inserted. HashMap gives no order guarantee. TreeMap sorts by key." },
+  { id:21, cat:"collections", q:"What is the output?", code:'Set<Integer> set = new HashSet<>();\nset.add(1);\nset.add(2);\nset.add(1);\nSystem.out.println(set.size());', opts:["3","2","1","Compilation error"], ans:1, explain:"HashSet does not allow duplicates. Adding 1 twice \u2014 the second add is ignored. Size = 2." },
+  { id:22, cat:"collections", q:"Can you use `int` as a type parameter in generics?", code:'List<int> numbers = new ArrayList<>();', opts:["Yes, it works fine","No, must use Integer (wrapper class)","Only in Java 15+","Only for ArrayList"], ans:1, explain:"Generics only work with object types (Integer, Double, String), not primitives (int, double). Use `List<Integer>`." },
+  { id:23, cat:"collections", q:"What's the difference between Collection and Collections?", code:null, opts:["Collection is an interface, Collections is a utility class","They are the same","Collection is for Lists, Collections is for Maps","Collections is deprecated"], ans:0, explain:"Collection = interface (parent of List, Set, Queue). Collections = utility class with static methods like sort(), reverse(), max()." },
+
+  // EXCEPTION HANDLING
+  { id:24, cat:"exceptions", q:"What is the difference between checked and unchecked exceptions?", code:null, opts:["Checked must be caught or declared with throws, unchecked don't","Checked are runtime, unchecked are compile-time","There is no difference","Unchecked are more serious"], ans:0, explain:"Checked exceptions (IOException, SQLException) MUST be handled. Unchecked (NullPointerException, ArrayIndexOutOfBounds) extend RuntimeException and don't require handling." },
+  { id:25, cat:"exceptions", q:"Which is a checked exception?", code:null, opts:["NullPointerException","ArrayIndexOutOfBoundsException","IOException","ArithmeticException"], ans:2, explain:"IOException extends Exception (checked). The others extend RuntimeException (unchecked)." },
+  { id:26, cat:"exceptions", q:"What does `throw` do?", code:null, opts:["Declares that a method might throw an exception","Actually creates and throws an exception object","Catches an exception","Ignores an exception"], ans:1, explain:"`throw new Exception(\"msg\")` creates and throws. `throws Exception` in method signature just declares." },
+  { id:27, cat:"exceptions", q:"What's wrong with this code?", code:'try {\n    method1(list); // might throw ExceptionA\n    method2(list); // might throw ExceptionB\n} catch (ExceptionA e) {\n    System.out.println(e.getMessage());\n} catch (ExceptionB e) {\n    System.out.println(e.getMessage());\n}', opts:["Nothing, it's correct","If method1 throws, method2 never runs","Can't have two catch blocks","Compilation error"], ans:1, explain:"If method1 throws ExceptionA, execution jumps to catch \u2014 method2 is SKIPPED. Fix: use separate try-catch blocks for each method." },
+  { id:28, cat:"exceptions", q:"How do you create a custom exception?", code:null, opts:['class MyEx extends Exception { MyEx(String m) { super(m); } }','class MyEx implements Exception { }','class MyEx throws Exception { }','Exception MyEx = new Exception();'], ans:0, explain:"Custom exceptions extend Exception (checked) or RuntimeException (unchecked). Constructor calls super(message) to pass the error message." },
+  { id:29, cat:"exceptions", q:"What does this print?", code:'try {\n    System.out.println("A");\n    throw new Exception("error");\n} catch (Exception e) {\n    System.out.println("C");\n} finally {\n    System.out.println("D");\n}', opts:["A, C, D","A, B, C, D","A, C","A, error, D"], ans:0, explain:'Prints "A", then throw jumps to catch which prints "C", then finally ALWAYS runs and prints "D". The line after throw is unreachable.' },
+  { id:30, cat:"exceptions", q:"What's the output?", code:'try {\n    int result = 10 / 0;\n    System.out.println(result);\n} catch (ArithmeticException e) {\n    System.out.println("Cannot divide by zero");\n}\nSystem.out.println("Done");', opts:["Cannot divide by zero, Done","Cannot divide by zero","Runtime crash","0, Done"], ans:0, explain:'Division by zero throws ArithmeticException, caught by catch. "Done" prints because execution continues after try-catch.' },
+  { id:31, cat:"exceptions", q:"What happens if you throw a checked exception but don't catch it or add throws?", code:null, opts:["Runtime error","Compilation error","Nothing, Java handles it","Warning but compiles"], ans:1, explain:"Checked exceptions MUST be either caught (try-catch) or declared (throws in method signature). Otherwise the compiler refuses to compile." },
+
+  // OUTPUT PREDICTION
+  { id:32, cat:"output", q:"What does this print?", code:'int x = 10 / 3;\nSystem.out.println(x);', opts:["3.33","3","4","3.0"], ans:1, explain:"Integer division truncates. 10/3 = 3 (not 3.33). To get decimal: use `10.0 / 3` or `(double)10 / 3`." },
+  { id:33, cat:"output", q:"What does this print?", code:'double x = 10 / 3;\nSystem.out.println(x);', opts:["3.333...","3.0","3","3.33"], ans:1, explain:"`10/3` is still integer division = 3. Then 3 is cast to double = 3.0. To get 3.333: use `10.0/3`." },
+  { id:34, cat:"output", q:"What's the output?", code:'int a = 5;\nSystem.out.println(a++);\nSystem.out.println(a);', opts:["5, 6","6, 6","5, 5","6, 7"], ans:0, explain:"`a++` (post-increment) returns current value THEN increments. So prints 5, then a becomes 6." },
+  { id:35, cat:"output", q:"What's the output?", code:'for (int i = 0; i < 5; i++) {\n    if (i == 3) continue;\n    System.out.print(i + " ");\n}', opts:["0 1 2 4","0 1 2 3 4","0 1 2","3"], ans:0, explain:"`continue` skips the rest of the current iteration. When i=3, it skips the print and goes to i=4." },
+  { id:36, cat:"output", q:"What's the output?", code:'int[] arr = {10, 20, 30, 40, 50};\nSystem.out.println(arr.length);', opts:["4","5","50","Compilation error (should be arr.size())"], ans:1, explain:"Arrays use `.length` (no parentheses). ArrayList uses `.size()`. Array length = number of elements = 5." },
+  { id:37, cat:"output", q:"What's the output?", code:'String s = null;\nSystem.out.println(s.length());', opts:["0","null","NullPointerException","Compilation error"], ans:2, explain:"Calling any method on null throws NullPointerException. Always check `if (s != null)` before using." },
+  { id:38, cat:"output", q:"What's the output?", code:'ArrayList<Integer> list = new ArrayList<>();\nlist.add(10);\nlist.add(20);\nSystem.out.println(list.get(2));', opts:["null","0","IndexOutOfBoundsException","20"], ans:2, explain:"List has indices 0 and 1. Index 2 doesn't exist. Throws IndexOutOfBoundsException." },
+  { id:39, cat:"output", q:"What does this print?", code:'System.out.println(10 % 3);', opts:["3","1","3.33","0"], ans:1, explain:"`%` is modulo \u2014 remainder after division. 10 / 3 = 3 remainder 1." },
+
+  // INHERITANCE & POLYMORPHISM
+  { id:40, cat:"inheritance", q:"What does `extends` mean?", code:null, opts:["Creates a new class","Child class inherits from parent class","Implements an interface","Makes a class abstract"], ans:1, explain:"`class Dog extends Animal` means Dog inherits all fields and methods from Animal. Dog IS-A Animal." },
+  { id:41, cat:"inheritance", q:"Can a class extend multiple classes in Java?", code:null, opts:["Yes","No, Java supports single inheritance only","Only with interfaces","Only abstract classes"], ans:1, explain:"Java does NOT support multiple class inheritance (diamond problem). But a class CAN implement multiple interfaces." },
+  { id:42, cat:"inheritance", q:"What does super() do in a constructor?", code:null, opts:["Calls the parent class constructor","Calls the current class constructor","Creates a new parent object","Nothing, it's optional"], ans:0, explain:"`super()` calls the parent's constructor. Must be the FIRST line in the child constructor. Java adds it automatically if you don't." },
+  { id:43, cat:"inheritance", q:"What's the output?", code:'class Animal { void sound() { System.out.println("..."); } }\nclass Dog extends Animal { void sound() { System.out.println("Bark"); } }\n\nAnimal a = new Dog();\na.sound();', opts:["...","Bark","Compilation error","Both"], ans:1, explain:"Runtime polymorphism: the actual object is Dog, so Dog's sound() runs. The reference type (Animal) doesn't matter \u2014 the object type (Dog) does." },
+  { id:44, cat:"inheritance", q:"Can you create an object of an abstract class?", code:null, opts:["Yes","No","Only with a constructor","Only if it has no abstract methods"], ans:1, explain:"Abstract classes CANNOT be instantiated directly. You must create a concrete subclass that implements all abstract methods." },
+  { id:45, cat:"inheritance", q:"What's the difference between abstract class and interface?", code:null, opts:["Abstract class can have constructors and concrete methods, interface cannot (pre-Java 8)","They are identical","Interface can have constructors","Abstract class cannot have fields"], ans:0, explain:"Abstract class: can have constructors, fields, concrete methods. Interface (pre-Java 8): only abstract methods, no constructors. Java 8+ interfaces can have default methods." },
+
+  // JAVA BASICS & MISC
+  { id:46, cat:"basics", q:"What is autoboxing?", code:null, opts:["Automatic conversion from primitive to wrapper (int \u2192 Integer)","Creating a box around a variable","Converting String to int","Packaging code into a JAR"], ans:0, explain:"Autoboxing: int \u2192 Integer (automatic). Unboxing: Integer \u2192 int (automatic). Java does this behind the scenes with collections." },
+  { id:47, cat:"basics", q:"What does `final` mean for a variable?", code:null, opts:["It cannot be changed after initialization","It must be initialized later","It becomes static","It becomes private"], ans:0, explain:"`final` = constant. Once assigned, the value cannot be changed. For objects, the reference can't change but the object's fields can." },
+  { id:48, cat:"basics", q:"Can a static method access a non-static field?", code:null, opts:["Yes","No","Only with `this`","Only if the field is final"], ans:1, explain:"Static methods belong to the class, not any object. Non-static fields belong to objects. Static can't access non-static directly \u2014 need an object reference." },
+  { id:49, cat:"basics", q:"What's the output?", code:'int[] a = {1, 2, 3};\nint[] b = a;\nb[0] = 99;\nSystem.out.println(a[0]);', opts:["1","99","Compilation error","Runtime error"], ans:1, explain:"`b = a` makes b point to the SAME array. Changing b[0] also changes a[0]. Arrays are reference types." },
+  { id:50, cat:"basics", q:"Which import covers ALL java.util classes?", code:null, opts:['import java.util.ArrayList;','import java.util.*;','import java.*;','import util.*;'], ans:1, explain:"`java.util.*` imports all classes in java.util (Scanner, ArrayList, HashMap, etc.). Use this in PRA to save time." },
+  { id:51, cat:"basics", q:"What does sc.nextLine().trim() do?", code:null, opts:["Reads a line and removes leading/trailing whitespace","Reads just one word","Reads a number","Reads until a comma"], ans:0, explain:"`nextLine()` reads the entire line. `trim()` removes spaces/tabs/newlines from both ends. Use this in PRA to avoid input issues." },
+  { id:52, cat:"basics", q:"What is the default value of an int field in a class?", code:null, opts:["null","0","-1","undefined"], ans:1, explain:"Primitive fields have defaults: int=0, double=0.0, boolean=false. Object fields default to null." },
+  { id:53, cat:"basics", q:"What's the output?", code:'switch(2) {\n    case 1: System.out.println("One");\n    case 2: System.out.println("Two");\n    case 3: System.out.println("Three");\n}', opts:["Two","Two, Three","One, Two, Three","Compilation error"], ans:1, explain:'No `break` statements! Execution "falls through" after matching case 2. Prints "Two" then "Three". Always add `break;` after each case.' },
+];
+
+// State
+let state = JSON.parse(localStorage.getItem('pra-mcq-state') || '{}');
+if (!state.answers) state.answers = {};
+
+function saveState() {
+  localStorage.setItem('pra-mcq-state', JSON.stringify(state));
+}
+
+function updateStats() {
+  let correct = 0, wrong = 0;
+  for (const key in state.answers) {
+    if (state.answers[key] === 'correct') correct++;
+    else wrong++;
+  }
+  document.getElementById('stat-correct').textContent = correct;
+  document.getElementById('stat-wrong').textContent = wrong;
+  document.getElementById('stat-remaining').textContent = quizData.length - correct - wrong;
+}
+
+function renderQuiz(filter) {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+
+  let currentCat = '';
+  const catNames = { oop:'OOP Basics', strings:'String Operations', collections:'Collections', exceptions:'Exception Handling', output:'Output Prediction', inheritance:'Inheritance & Polymorphism', basics:'Java Basics & Misc' };
+
+  quizData.forEach((q, idx) => {
+    if (filter !== 'all' && q.cat !== filter) return;
+
+    if (q.cat !== currentCat) {
+      currentCat = q.cat;
+      const catDiv = document.createElement('div');
+      catDiv.className = 'quiz-category';
+      catDiv.textContent = catNames[q.cat] || q.cat;
+      container.appendChild(catDiv);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.id = 'q-' + q.id;
+
+    const answered = state.answers[q.id];
+    if (answered) {
+      card.classList.add('revealed');
+      card.classList.add(answered === 'correct' ? 'correct' : 'wrong');
+    }
+
+    let html = `<div class="quiz-q">Q${q.id}. ${escHtml(q.q)}</div>`;
+    if (q.code) {
+      html += `<div class="quiz-code">${escHtml(q.code)}</div>`;
+    }
+    html += '<div class="quiz-options">';
+    q.opts.forEach((opt, oi) => {
+      let cls = 'quiz-opt';
+      if (answered) {
+        cls += ' disabled';
+        if (oi === q.ans) cls += ' correct-answer';
+        if (answered === 'wrong' && state.answers[q.id + '_sel'] === oi) cls += ' wrong-answer';
+      }
+      html += `<div class="${cls}" data-qid="${q.id}" data-oi="${oi}">${String.fromCharCode(65 + oi)}) ${escHtml(opt)}</div>`;
+    });
+    html += '</div>';
+    html += `<div class="quiz-explanation">${escHtml(q.explain)}</div>`;
+
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+
+  // Attach click handlers
+  container.querySelectorAll('.quiz-opt:not(.disabled)').forEach(opt => {
+    opt.addEventListener('click', function() {
+      const qid = parseInt(this.dataset.qid);
+      const oi = parseInt(this.dataset.oi);
+      const q = quizData.find(x => x.id === qid);
+      if (!q || state.answers[qid]) return;
+
+      const card = document.getElementById('q-' + qid);
+      const isCorrect = oi === q.ans;
+      state.answers[qid] = isCorrect ? 'correct' : 'wrong';
+      state.answers[qid + '_sel'] = oi;
+      saveState();
+
+      card.classList.add('revealed');
+      card.classList.add(isCorrect ? 'correct' : 'wrong');
+
+      // Update option styles
+      card.querySelectorAll('.quiz-opt').forEach((o, i) => {
+        o.classList.add('disabled');
+        if (i === q.ans) o.classList.add('correct-answer');
+        if (!isCorrect && i === oi) o.classList.add('wrong-answer');
+      });
+
+      updateStats();
+    });
+  });
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    renderQuiz(this.dataset.cat);
+  });
+});
+
+// Reset button
+document.getElementById('reset-btn').addEventListener('click', function() {
+  if (confirm('Reset all answers? This cannot be undone.')) {
+    state = { answers: {} };
+    saveState();
+    updateStats();
+    renderQuiz('all');
+  }
+});
+
+// Init
+updateStats();
+renderQuiz('all');
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

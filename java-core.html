@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Core — Learn + Practice | Nimbus Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0B1120;
+      --bg-secondary: #131B2E;
+      --bg-card: #1A2340;
+      --bg-card-hover: #1F2B4D;
+      --bg-surface: #0F172A;
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --accent: #3B82F6;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --green: #22C55E;
+      --orange: #F59E0B;
+      --purple: #A855F7;
+      --red: #EF4444;
+      --cyan: #06B6D4;
+      --border: rgba(148, 163, 184, 0.1);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo svg { width: 32px; height: 32px; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-primary); }
+    .logo-badge { background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .header-right { display: flex; gap: 12px; }
+    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+    .header-link:hover { color: var(--text-primary); background: var(--bg-card); }
+    .header-link.active { color: var(--accent); background: var(--accent-glow); }
+
+    /* Hero */
+    .hero { padding: 60px 40px 40px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; }
+    .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; line-height: 1.2; margin-bottom: 12px; position: relative; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--text-secondary); font-size: 1rem; max-width: 600px; margin: 0 auto 12px; position: relative; }
+    .hero-stat { display: inline-flex; gap: 32px; margin-top: 20px; position: relative; }
+    .hero-stat-item { text-align: center; }
+    .hero-stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--accent); }
+    .hero-stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Content */
+    .content { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px; }
+
+    /* Section headers */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 48px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Topic cards */
+    .topic-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+
+    .topic-card {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+    .topic-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(148, 163, 184, 0.2);
+      transform: translateX(4px);
+    }
+
+    .topic-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .topic-num.blue { background: rgba(59, 130, 246, 0.15); color: var(--accent); }
+    .topic-num.green { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+    .topic-num.orange { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+    .topic-num.purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+    .topic-num.cyan { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
+    .topic-num.red { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+
+    .topic-info h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
+    .topic-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+    .topic-arrow {
+      color: var(--text-muted);
+      transition: all 0.2s;
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+    .topic-card:hover .topic-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .topic-card.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .topic-card.disabled::after {
+      content: 'Coming soon';
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Start button */
+    .start-section { text-align: center; margin: 48px 0; }
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+    .start-btn:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3); }
+
+    /* Footer */
+    .footer { padding: 24px 40px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+
+    @media (max-width: 768px) {
+      .header { padding: 0 20px; }
+      .hero { padding: 40px 20px 30px; }
+      .content { padding: 0 20px 60px; }
+      .topic-card { grid-template-columns: 40px 1fr; }
+      .topic-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="logo-text">nimbus</span>
+        <span class="logo-badge">Portal</span>
+      </a>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="sprint-2.html" class="header-link">Phase 2</a>
+      <a href="sprint-3.html" class="header-link">Phase 3</a>
+      <a href="sprint-4.html" class="header-link">Phase 4</a>
+      <a href="backend-overview.html" class="header-link">Backend</a>
+      <a href="java-core.html" class="header-link active">Java Core</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Java Core — <span>Learn + Practice</span></h1>
+    <p>Master the exact patterns that appear in every PRA exam. From class blueprints to collection methods — learn the template, practice with real mocks, and walk in confident.</p>
+    <div class="hero-stat">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">17</div>
+        <div class="hero-stat-label">Pages</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">Mock Solutions</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">9</div>
+        <div class="hero-stat-label">Concepts</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">75</div>
+        <div class="hero-stat-label">min Exam</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <!-- PRACTICE IDE CARD -->
+    <div style="margin: 32px 0 40px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%); border: 1.5px solid rgba(34, 197, 94, 0.25); border-radius: 16px; padding: 32px 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; color: #22C55E; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Practice IDE
+        </div>
+        <div style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.35rem; font-weight: 800; color: #F1F5F9; margin-bottom: 6px;">Write, Run & Test Java Code in Browser</div>
+        <div style="font-size: 0.88rem; color: #94A3B8;">Monaco Editor + real Java execution. All 8 mock questions with hidden test cases and auto-scoring.</div>
+      </div>
+      <a href="java-core/practice-ide.html" style="display: inline-flex; align-items: center; gap: 8px; background: #22C55E; color: #0B1120; font-size: 0.95rem; font-weight: 700; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: all 0.2s; white-space: nowrap; flex-shrink: 0;" onmouseover="this.style.background='#16A34A';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(34,197,94,0.3)'" onmouseout="this.style.background='#22C55E';this.style.transform='';this.style.boxShadow=''">
+        Open IDE
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="start-section">
+      <a href="java-core/02-class-blueprint.html" class="start-btn">
+        Start Learning
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- LEARN THE PATTERNS -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--green);"></span>
+      Learn the Patterns
+    </div>
+    <div class="topic-grid">
+      <a href="java-core/02-class-blueprint.html" class="topic-card">
+        <div class="topic-num blue">01</div>
+        <div class="topic-info">
+          <h3>Class Blueprint</h3>
+          <p>Fields, constructors, getters/setters — the POJO pattern every question needs</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/03-static-vs-nonstatic.html" class="topic-card">
+        <div class="topic-num blue">02</div>
+        <div class="topic-info">
+          <h3>Static vs Non-Static</h3>
+          <p>Method signatures, return types, when PRA uses which</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/04-collections-pra.html" class="topic-card">
+        <div class="topic-num green">03</div>
+        <div class="topic-info">
+          <h3>Collections for PRA</h3>
+          <p>ArrayList, HashMap, LinkedList, Sets — which to use when</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/05-composition.html" class="topic-card">
+        <div class="topic-num green">04</div>
+        <div class="topic-info">
+          <h3>Composition</h3>
+          <p>Object inside object, List&lt;T&gt; as field, nested data access</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/06-collection-methods.html" class="topic-card">
+        <div class="topic-num green">05</div>
+        <div class="topic-info">
+          <h3>Collection Methods</h3>
+          <p>Filtering, aggregating, iterating — the core of every SBQ</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/07-custom-exceptions.html" class="topic-card">
+        <div class="topic-num orange">06</div>
+        <div class="topic-info">
+          <h3>Custom Exceptions</h3>
+          <p>Create, throw, catch — the exception question pattern</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/08-scanner-input.html" class="topic-card">
+        <div class="topic-num orange">07</div>
+        <div class="topic-info">
+          <h3>Scanner Input Patterns</h3>
+          <p>HackerRank input reading, the newline trap, nested reads</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/09-string-operations.html" class="topic-card">
+        <div class="topic-num purple">08</div>
+        <div class="topic-info">
+          <h3>String Operations</h3>
+          <p>equalsIgnoreCase, output formatting, parsing</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/10-putting-it-together.html" class="topic-card">
+        <div class="topic-num purple">09</div>
+        <div class="topic-info">
+          <h3>Putting It Together</h3>
+          <p>The master template, pre-submit checklist, edge cases</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- MOCK TEST SOLUTIONS -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--red);"></span>
+      Mock Test Solutions
+    </div>
+    <div class="topic-grid">
+      <a href="java-core/mock1-q1.html" class="topic-card">
+        <div class="topic-num red">M1</div>
+        <div class="topic-info">
+          <h3>Investors</h3>
+          <p>OOP + Collections: averageOfPositiveGains, negativeGainsInvestorNames</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/mock1-q2.html" class="topic-card">
+        <div class="topic-num red">M2</div>
+        <div class="topic-info">
+          <h3>OddEven Exception</h3>
+          <p>Custom exceptions + Collections: sum odds, multiply evens</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/mock2-q1.html" class="topic-card">
+        <div class="topic-num cyan">M3</div>
+        <div class="topic-info">
+          <h3>CountryLeague Sponsors</h3>
+          <p>Composition + Collections: Cricketer &rarr; Statistics, search by league/country</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/mock2-q2.html" class="topic-card">
+        <div class="topic-num cyan">M4</div>
+        <div class="topic-info">
+          <h3>Sum of Digits</h3>
+          <p>Arrays + Loops: digit extraction from each array element</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/mock3-q1.html" class="topic-card">
+        <div class="topic-num purple">M5</div>
+        <div class="topic-info">
+          <h3>Author-Book BookStore</h3>
+          <p>Composition + Discount: Author &rarr; Book, filter by genre, apply discount</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/mock3-q2.html" class="topic-card">
+        <div class="topic-num purple">M6</div>
+        <div class="topic-info">
+          <h3>Area-Perimeter Rectangle</h3>
+          <p>Basic Math: area and perimeter with formatted output</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/mock4-q1.html" class="topic-card">
+        <div class="topic-num red">M7</div>
+        <div class="topic-info">
+          <h3>Mobile Brand Service</h3>
+          <p>Composition + Map + Custom Exceptions: Brand &rarr; Mobile, average price, storage range filter</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="java-core/mock4-q2.html" class="topic-card">
+        <div class="topic-num red">M8</div>
+        <div class="topic-info">
+          <h3>Consecutive Vowels</h3>
+          <p>String traversal: count groups of 2+ vowels appearing consecutively</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    Nimbus Learning Portal &mdash; Team Nimbus, 2026
+  </footer>
+
+</body>
+</html>

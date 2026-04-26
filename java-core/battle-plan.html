@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3-Day Battle Plan | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* Override layout to be full-width, no sidebar */
+    .layout { display: block; }
+    .main { max-width: 800px; margin: 0 auto; padding: 40px 30px 80px; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Overall progress */
+    .overall-progress {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .overall-progress h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .progress-bar-bg {
+      height: 12px;
+      background: rgba(148,163,184,0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 6px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+    .progress-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Day cards */
+    .day-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+    .day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .day-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+    .day-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .day-progress {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .task-list { list-style: none; padding: 0; }
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(148,163,184,0.06);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+    .task-item:last-child { border-bottom: none; }
+    .task-item.done { text-decoration: line-through; opacity: 0.5; }
+    .task-checkbox {
+      width: 20px; height: 20px;
+      border: 2px solid var(--text-muted);
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .task-item.done .task-checkbox {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .task-item.done .task-checkbox::after {
+      content: '\2713';
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .task-text { flex: 1; line-height: 1.5; }
+    .task-text strong { color: var(--text-primary); }
+    .task-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: var(--accent-glow);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* Day number badges */
+    .day-card[data-day="1"] .day-title { color: var(--accent); }
+    .day-card[data-day="2"] .day-title { color: var(--orange); }
+    .day-card[data-day="3"] .day-title { color: var(--green); }
+
+    /* Reset button */
+    .reset-btn {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--red);
+      color: var(--red);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .reset-btn:hover {
+      background: var(--red);
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .main { padding: 24px 16px 60px; }
+      .day-card { padding: 20px; }
+      .day-title { font-size: 1.15rem; }
+      .hero h1 { font-size: 1.6rem; }
+      .day-header { flex-direction: column; align-items: flex-start; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+<div class="layout">
+<main class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>3-Day PRA Battle Plan</h1>
+    <p>A focused plan to go from confused to confident. Check off each task as you complete it.</p>
+  </div>
+
+  <!-- Overall Progress -->
+  <div class="overall-progress">
+    <h3>Overall Progress</h3>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="overallBar"></div>
+    </div>
+    <div class="progress-text" id="overallText">0 / 0 tasks completed</div>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-card" data-day="1">
+    <div class="day-header">
+      <div>
+        <div class="day-title">Day 1: Pattern Muscle Memory</div>
+        <div class="day-subtitle">Stop thinking, start typing</div>
+      </div>
+      <div class="day-progress" id="day1-progress">0/13</div>
+    </div>
+    <ul class="task-list" id="day1-tasks">
+      <li class="task-item" data-task="d1-1">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Write Investor class</strong> from memory (no looking)</div>
+        <span class="task-time">5 min</span>
+      </li>
+      <li class="task-item" data-task="d1-2">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Write Book + Author classes</strong> from memory</div>
+        <span class="task-time">8 min</span>
+      </li>
+      <li class="task-item" data-task="d1-3">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Write Mobile + Brand classes</strong> from memory</div>
+        <span class="task-time">8 min</span>
+      </li>
+      <li class="task-item" data-task="d1-4">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Write Employee class</strong> from memory</div>
+        <span class="task-time">5 min</span>
+      </li>
+      <li class="task-item" data-task="d1-5">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Practice Scanner input</strong> using parseInt(nextLine().trim()) pattern 3 times</div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d1-6">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Memorize the Filter method</strong> template &mdash; write it 3 times</div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d1-7">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Memorize the Aggregate method</strong> template &mdash; write it 3 times</div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d1-8">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Memorize the Main with try-catch</strong> template &mdash; write it 2 times</div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d1-9">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q1 (Investors)</strong> in IDE &mdash; pass all test cases</div>
+        <span class="task-time">50 min</span>
+      </li>
+      <li class="task-item" data-task="d1-10">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q7 (Mobile Brand)</strong> in IDE &mdash; pass all test cases</div>
+        <span class="task-time">60 min</span>
+      </li>
+      <li class="task-item" data-task="d1-11">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q5 (Author-Book)</strong> in IDE &mdash; pass all test cases</div>
+        <span class="task-time">50 min</span>
+      </li>
+      <li class="task-item" data-task="d1-12">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Read the Question Decoder</strong> page</div>
+        <span class="task-time">15 min</span>
+      </li>
+      <li class="task-item" data-task="d1-13">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Read MCQ Blitz</strong> &mdash; do 20 questions</div>
+        <span class="task-time">20 min</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-card" data-day="2">
+    <div class="day-header">
+      <div>
+        <div class="day-title">Day 2: Speed + Weak Spots</div>
+        <div class="day-subtitle">Get faster, fix what breaks</div>
+      </div>
+      <div class="day-progress" id="day2-progress">0/10</div>
+    </div>
+    <ul class="task-list" id="day2-tasks">
+      <li class="task-item" data-task="d2-1">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q4 (Sum of Digits)</strong> under 8 min</div>
+        <span class="task-time">8 min</span>
+      </li>
+      <li class="task-item" data-task="d2-2">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q6 (Area-Perimeter)</strong> under 5 min</div>
+        <span class="task-time">5 min</span>
+      </li>
+      <li class="task-item" data-task="d2-3">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q8 (Consecutive Vowels)</strong> under 10 min</div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d2-4">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q10 (Remove Duplicates)</strong> under 10 min</div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d2-5">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q2 (OddEven Exception)</strong> under 15 min</div>
+        <span class="task-time">15 min</span>
+      </li>
+      <li class="task-item" data-task="d2-6">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Solve Q9 (Student Grade Map)</strong> under 15 min</div>
+        <span class="task-time">15 min</span>
+      </li>
+      <li class="task-item" data-task="d2-7">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Re-solve Q3 (CountryLeague)</strong> &mdash; hardest nested pattern</div>
+        <span class="task-time">50 min</span>
+      </li>
+      <li class="task-item" data-task="d2-8">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Re-solve Q11 (Employee Dept)</strong> &mdash; HashMap + grouping</div>
+        <span class="task-time">50 min</span>
+      </li>
+      <li class="task-item" data-task="d2-9">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>MCQ Blitz</strong> &mdash; do remaining 30 questions</div>
+        <span class="task-time">30 min</span>
+      </li>
+      <li class="task-item" data-task="d2-10">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Write your own 1-page handwritten cheat sheet</strong></div>
+        <span class="task-time">20 min</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-card" data-day="3">
+    <div class="day-header">
+      <div>
+        <div class="day-title">Day 3: Exam Simulation</div>
+        <div class="day-subtitle">Prove to yourself you can do it</div>
+      </div>
+      <div class="day-progress" id="day3-progress">0/6</div>
+    </div>
+    <ul class="task-list" id="day3-tasks">
+      <li class="task-item" data-task="d3-1">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Full mock:</strong> Pick 1 major + 1 minor you haven't done in 2 days. Timer ON. No help.</div>
+        <span class="task-time">75 min</span>
+      </li>
+      <li class="task-item" data-task="d3-2">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Review any failed test cases</strong> &mdash; trace errors on paper</div>
+        <span class="task-time">15 min</span>
+      </li>
+      <li class="task-item" data-task="d3-3">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Quick review:</strong> 5 templates (write each once from memory)</div>
+        <span class="task-time">15 min</span>
+      </li>
+      <li class="task-item" data-task="d3-4">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Quick review:</strong> MCQ traps (string concat, integer division, list.remove)</div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d3-5">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>Review your handwritten cheat sheet</strong></div>
+        <span class="task-time">10 min</span>
+      </li>
+      <li class="task-item" data-task="d3-6">
+        <div class="task-checkbox"></div>
+        <div class="task-text"><strong>REST. Sleep well.</strong> You're ready.</div>
+        <span class="task-time">&infin;</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Reset -->
+  <div style="text-align: center;">
+    <button class="reset-btn" onclick="resetProgress()">Reset All Progress</button>
+  </div>
+
+</main>
+</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'nimbus-battle-plan';
+
+  function loadState() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function updateProgress() {
+    const state = loadState();
+    const allTasks = document.querySelectorAll('.task-item');
+    let totalDone = 0;
+
+    // Apply saved state
+    allTasks.forEach(item => {
+      const key = item.dataset.task;
+      if (state[key]) {
+        item.classList.add('done');
+      } else {
+        item.classList.remove('done');
+      }
+    });
+
+    // Per-day progress
+    ['1', '2', '3'].forEach(day => {
+      const dayTasks = document.querySelectorAll(`.day-card[data-day="${day}"] .task-item`);
+      let dayDone = 0;
+      dayTasks.forEach(t => { if (t.classList.contains('done')) dayDone++; });
+      totalDone += dayDone;
+      const el = document.getElementById(`day${day}-progress`);
+      if (el) el.textContent = `${dayDone}/${dayTasks.length}`;
+    });
+
+    // Overall
+    const total = allTasks.length;
+    const pct = total > 0 ? Math.round((totalDone / total) * 100) : 0;
+    const bar = document.getElementById('overallBar');
+    const text = document.getElementById('overallText');
+    if (bar) bar.style.width = pct + '%';
+    if (text) text.textContent = `${totalDone} / ${total} tasks completed (${pct}%)`;
+  }
+
+  // Click handler
+  document.addEventListener('click', function(e) {
+    const item = e.target.closest('.task-item');
+    if (!item) return;
+    const key = item.dataset.task;
+    const state = loadState();
+    state[key] = !state[key];
+    saveState(state);
+    updateProgress();
+  });
+
+  // Reset
+  window.resetProgress = function() {
+    if (confirm('Reset all progress? This cannot be undone.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      updateProgress();
+    }
+  };
+
+  // Init
+  updateProgress();
+})();
+</script>
+</body>
+</html>

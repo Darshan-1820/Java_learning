@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area-Perimeter Rectangle | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link active"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 3 &mdash; Question 2</div>
+    <h2>Area-Perimeter of a Rectangle</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge minor">Minor</span>
+      <span class="time-estimate">10&ndash;15 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Create a class Solution with the name <code>AreaCalculation</code>. This method will return area and perimeter based on the input given as Length and Breadth [the values are in meters] of a rectangle.</p>
+      <p><strong>Formulas:</strong></p>
+      <ul>
+        <li>Area = Length * Breadth</li>
+        <li>Perimeter = 2 * (Length + Breadth)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is the <strong>simplest</strong> PRA question you will ever see. Pure math, no OOP, no collections. Just read two numbers and print two results.</p>
+
+    <div class="callout think">
+      <div class="callout-title">What You Need</div>
+      <ul>
+        <li><strong>Scanner</strong> &mdash; read two integers</li>
+        <li><strong>Basic math</strong> &mdash; multiplication and addition</li>
+        <li><strong>Output format</strong> &mdash; exact format with "sq.m" and "m" units</li>
+      </ul>
+    </div>
+
+    <p>No classes to create. No getters/setters. No ArrayList. No filtering. Just math and formatting. This should take under 5 minutes.</p>
+  </div>
+
+  <!-- ===== SECTION 3: THE LOGIC ===== -->
+  <div class="content-section" id="logic">
+    <div class="section-tag">Logic</div>
+    <h2>The Two Formulas</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Area</div>
+        <div class="comparison-body">
+          <p style="text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--accent); margin: 16px 0;">Length &times; Breadth</p>
+          <p style="text-align: center;">Example: 5 &times; 10 = <strong>50 sq.m</strong></p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Perimeter</div>
+        <div class="comparison-body">
+          <p style="text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--purple); margin: 16px 0;">2 &times; (Length + Breadth)</p>
+          <p style="text-align: center;">Example: 2 &times; (5 + 10) = <strong>30 m</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Just two lines of logic</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">int area = length * breadth;
+int perimeter = 2 * (length + breadth);</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Copy-paste ready. The entire program is under 15 lines.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.Scanner;
+
+public class Solution {
+    public static void AreaCalculation(int length, int breadth) {
+        int area = length * breadth;
+        int perimeter = 2 * (length + breadth);
+        System.out.println(area + " sq.m");
+        System.out.println(perimeter + " m");
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int length = sc.nextInt();
+        int breadth = sc.nextInt();
+        AreaCalculation(length, breadth);
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public static void AreaCalculation(int length, int breadth)</div>
+          <div class="breakdown-explain">A static method named exactly as the question asks. Takes two int parameters. Returns void because it prints directly.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int area = length * breadth;</div>
+          <div class="breakdown-explain">Area formula. Both values are int, so the result is int. No decimals needed.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int perimeter = 2 * (length + breadth);</div>
+          <div class="breakdown-explain">Perimeter formula. Parentheses ensure addition happens before multiplication.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">System.out.println(area + " sq.m");</div>
+          <div class="breakdown-explain">Print area followed by " sq.m". Note the space before "sq.m" &mdash; this must match exactly.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">System.out.println(perimeter + " m");</div>
+          <div class="breakdown-explain">Print perimeter followed by " m". Again, space before "m" is required.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">5
+10</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">50 sq.m
+30 m</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">6
+5</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">30 sq.m
+22 m</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: WHY THIS QUESTION MATTERS ===== -->
+  <div class="content-section" id="strategy">
+    <div class="section-tag">Exam Strategy</div>
+    <h2>Why This Question Matters</h2>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Strategy</div>
+      <p>This is your <strong>free marks question</strong>. It takes 5 minutes. Do this <strong>FIRST</strong> in the exam to build confidence, then tackle the major question. Getting this wrong because you spent all time on the hard question is the worst outcome.</p>
+    </div>
+
+    <h3>Exam Time Strategy</h3>
+    <ul class="steps">
+      <li><strong>Minutes 0&ndash;5:</strong> Read both questions. Identify which is minor (this one) and which is major.</li>
+      <li><strong>Minutes 5&ndash;15:</strong> Solve the minor question completely. Test it. Submit it. That's guaranteed marks in the bank.</li>
+      <li><strong>Minutes 15&ndash;55:</strong> Now tackle the major question with a calm mind. You already have marks secured.</li>
+      <li><strong>Minutes 55&ndash;60:</strong> Final review. Check output format. Check edge cases.</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 7: COMMON MISTAKES ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong</div>
+        <div class="comparison-body">
+          <p><code>double area = length * breadth;</code></p>
+          <p>Output: <strong>50.0 sq.m</strong></p>
+          <p style="color: var(--red);">Expected output is "50 sq.m" (no decimal). Using double adds ".0" and fails the test case.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct</div>
+        <div class="comparison-body">
+          <p><code>int area = length * breadth;</code></p>
+          <p>Output: <strong>50 sq.m</strong></p>
+          <p style="color: var(--green);">int gives clean integer output without decimal points.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Using <code>double</code> for area/perimeter</td>
+        <td>Output shows "50.0 sq.m" instead of "50 sq.m"</td>
+        <td>Use <code>int</code> &mdash; input values are integers, results will be integers</td>
+      </tr>
+      <tr>
+        <td>Missing space before unit</td>
+        <td>Output shows "50sq.m" instead of "50 sq.m"</td>
+        <td>Make sure string is <code>" sq.m"</code> with leading space</td>
+      </tr>
+      <tr>
+        <td>Wrong perimeter formula</td>
+        <td>Forgetting the <code>2 *</code> &mdash; output shows 15 instead of 30</td>
+        <td>Perimeter = <code>2 * (length + breadth)</code>, not just <code>length + breadth</code></td>
+      </tr>
+    </table>
+
+    <div class="callout warning">
+      <div class="callout-title">Output Format Is Everything</div>
+      <p>HackerRank compares your output <strong>character by character</strong>. One extra space, one missing unit, one ".0" where it shouldn't be &mdash; and the test case fails. Always match the expected output exactly.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock3-q1.html"><span class="nav-label">Previous</span><span class="nav-title">Author-Book</span></a>
+    <a href="mock4-q1.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Mobile Brand Service</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>
