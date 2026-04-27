@@ -679,6 +679,26 @@
     .score-pill.zero { background: rgba(231,76,60,0.15); color: var(--red); }
     .no-history { font-size: 0.76rem; color: var(--text-muted); font-style: italic; }
 
+    /* Submission entries */
+    .submission-entry { border-bottom: 1px solid var(--border); cursor: pointer; }
+    .submission-entry:last-child { border-bottom: none; }
+    .submission-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; transition: background 0.15s; }
+    .submission-header:hover { background: rgba(255,255,255,0.03); }
+    .submission-detail { display: none; padding: 0 14px 12px; }
+    .submission-entry.open .submission-detail { display: block; }
+    .submission-section { margin-bottom: 10px; }
+    .submission-section-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .submission-restore-btn { font-size: 0.68rem; padding: 2px 8px; background: rgba(27,169,76,0.15); color: var(--green); border: 1px solid rgba(27,169,76,0.3); border-radius: 3px; cursor: pointer; font-weight: 600; transition: all 0.15s; }
+    .submission-restore-btn:hover { background: var(--green); color: #fff; }
+    .submission-code { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 4px; padding: 8px 10px; overflow-x: auto; max-height: 250px; overflow-y: auto; white-space: pre; color: var(--text-secondary); line-height: 1.5; }
+    .submission-code.error { color: var(--red); border-color: rgba(231,76,60,0.2); }
+    .submission-error-item { margin-bottom: 8px; }
+    .submission-error-name { font-size: 0.74rem; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .submission-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .submission-diff-label { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; display: inline-block; }
+    .submission-diff-label.expected { color: var(--green); }
+    .submission-diff-label.actual { color: var(--red); }
+
 
     /* ===== SPINNER ===== */
     .spinner {
@@ -726,9 +746,9 @@
       <span class="header-title">Java Core Practice IDE</span>
     </div>
     <div class="header-right">
-      <div class="api-status" id="apiStatus" onclick="showApiModal()">
+      <div class="api-status" id="apiStatus" onclick="toggleEngine()" title="Click to switch execution engine">
         <span class="dot unknown" id="apiDot"></span>
-        <span id="apiLabel">Setup API</span>
+        <span id="apiLabel">Piston API (Free)</span>
       </div>
       <a href="../java-core.html" class="header-link">Back to Java Core</a>
       <a href="../index.html" class="header-link">Home</a>
@@ -1378,16 +1398,22 @@ let elapsedSeconds = 0;
 let elapsedStarted = false;
 
 // ============================================================
-//  API STATUS — no credentials needed in frontend anymore
+//  API ENGINE — Piston (free, no key) primary, JDoodle fallback
 // ============================================================
-function showApiModal() { /* no-op — credentials are server-side now */ }
+let apiEngine = 'piston'; // 'piston' or 'jdoodle'
+function showApiModal() { }
 function closeApiModal() { }
 
 function updateApiStatus() {
   const dot = document.getElementById('apiDot');
   const label = document.getElementById('apiLabel');
   dot.className = 'dot connected';
-  label.textContent = 'JDoodle Ready';
+  label.textContent = apiEngine === 'piston' ? 'Piston API (Free)' : 'JDoodle';
+}
+
+function toggleEngine() {
+  apiEngine = apiEngine === 'piston' ? 'jdoodle' : 'piston';
+  updateApiStatus();
 }
 
 // ============================================================
@@ -1536,20 +1562,69 @@ function renderSubmissions() {
     document.getElementById('submissionsPane').innerHTML = '<div class="no-history" style="padding:20px;">No submissions yet. Write your code and click Submit.</div>';
     return;
   }
-  let html = `<div style="padding:10px 0;"><table class="history-table">
-    <tr><th>#</th><th>Score</th><th>Time</th><th>Date</th></tr>`;
+  let html = '';
   history.slice().reverse().forEach((h, i) => {
+    const num = history.length - i;
     const pillClass = h.score === 100 ? 'full' : h.score > 0 ? 'partial' : 'zero';
     const dateStr = new Date(h.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-    html += `<tr>
-      <td>${history.length - i}</td>
-      <td><span class="score-pill ${pillClass}">${h.passed}/${h.total}</span></td>
-      <td>${formatElapsed(h.timeTaken)}</td>
-      <td>${dateStr}</td>
-    </tr>`;
+    const hasCode = h.code && h.code.trim();
+    const hasErrors = h.errors && h.errors.length > 0;
+
+    html += `<div class="submission-entry" onclick="this.classList.toggle('open')">
+      <div class="submission-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-weight:600;color:var(--text-secondary);font-size:0.78rem;">#${num}</span>
+          <span class="score-pill ${pillClass}">${h.passed}/${h.total}</span>
+          <span style="font-size:0.75rem;color:var(--text-muted);">${formatElapsed(h.timeTaken)}</span>
+        </div>
+        <span style="font-size:0.72rem;color:var(--text-muted);">${dateStr}</span>
+      </div>
+      <div class="submission-detail">`;
+
+    if (hasCode) {
+      html += `<div class="submission-section">
+        <div class="submission-section-label">Code <button class="submission-restore-btn" onclick="event.stopPropagation(); restoreCode(${currentQuestion}, ${history.length - 1 - i})">Restore</button></div>
+        <pre class="submission-code">${escapeHtml(h.code)}</pre>
+      </div>`;
+    }
+
+    if (hasErrors) {
+      html += `<div class="submission-section">
+        <div class="submission-section-label" style="color:var(--red);">Failed Test Cases</div>`;
+      h.errors.forEach(e => {
+        html += `<div class="submission-error-item">
+          <div class="submission-error-name">${escapeHtml(e.name)}${e.hidden ? ' <span style="color:var(--text-muted);font-size:0.7rem;">(Hidden)</span>' : ''}</div>`;
+        if (e.error) {
+          html += `<pre class="submission-code error">${escapeHtml(e.error)}</pre>`;
+        } else if (!e.hidden && e.expected) {
+          html += `<div class="submission-diff">
+            <div><span class="submission-diff-label expected">Expected</span><pre class="submission-code">${escapeHtml(e.expected)}</pre></div>
+            <div><span class="submission-diff-label actual">Got</span><pre class="submission-code">${escapeHtml(e.actual || '(no output)')}</pre></div>
+          </div>`;
+        }
+        html += `</div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (!hasCode && !hasErrors) {
+      html += `<div style="padding:8px 0;color:var(--green);font-size:0.8rem;">All test cases passed.</div>`;
+    }
+
+    html += `</div></div>`;
   });
-  html += '</table></div>';
   document.getElementById('submissionsPane').innerHTML = html;
+}
+
+function restoreCode(qi, historyIndex) {
+  const history = getHistory(qi);
+  if (history[historyIndex] && history[historyIndex].code && editor) {
+    if (confirm('Restore this submission\\'s code? Current code will be replaced.')) {
+      editor.setValue(history[historyIndex].code);
+      saveCode(qi, history[historyIndex].code);
+      switchProblemTab('problem', document.querySelector('[data-ptab="problem"]'));
+    }
+  }
 }
 
 // ============================================================
@@ -1564,9 +1639,39 @@ function loadSampleInput() {
 }
 
 // ============================================================
-//  CODE EXECUTION (via Netlify Function → JDoodle)
+//  CODE EXECUTION — Piston (free, no key) + JDoodle fallback
 // ============================================================
-async function executeCode(code, input) {
+async function executePiston(code, input) {
+  const res = await fetch('https://emkc.org/api/v2/piston/execute', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      language: 'java',
+      version: '15.0.2',
+      files: [{ name: 'Solution.java', content: code }],
+      stdin: input,
+      compile_timeout: 15000,
+      run_timeout: 10000
+    })
+  });
+
+  if (!res.ok) throw new Error(`Piston error (${res.status})`);
+  const data = await res.json();
+
+  const compileErr = data.compile && data.compile.stderr ? data.compile.stderr : '';
+  const runOut = data.run ? (data.run.stdout || '') : '';
+  const runErr = data.run ? (data.run.stderr || '') : '';
+
+  return {
+    stdout: compileErr ? '' : runOut,
+    stderr: compileErr ? '' : runErr,
+    compile_output: compileErr,
+    time: null,
+    memory: null
+  };
+}
+
+async function executeJDoodle(code, input) {
   const res = await fetch('/.netlify/functions/execute', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1575,7 +1680,7 @@ async function executeCode(code, input) {
 
   if (!res.ok) {
     const errText = await res.text();
-    throw new Error(`Server error (${res.status}): ${errText.substring(0, 200)}`);
+    throw new Error(`JDoodle error (${res.status}): ${errText.substring(0, 200)}`);
   }
 
   const data = await res.json();
@@ -1592,6 +1697,24 @@ async function executeCode(code, input) {
     time: data.cpuTime,
     memory: data.memory
   };
+}
+
+async function executeCode(code, input) {
+  try {
+    if (apiEngine === 'piston') return await executePiston(code, input);
+    else return await executeJDoodle(code, input);
+  } catch (err) {
+    // Auto-fallback: if primary fails, try the other
+    const fallback = apiEngine === 'piston' ? 'jdoodle' : 'piston';
+    try {
+      const result = fallback === 'piston' ? await executePiston(code, input) : await executeJDoodle(code, input);
+      apiEngine = fallback;
+      updateApiStatus();
+      return result;
+    } catch {
+      throw err; // both failed, throw original
+    }
+  }
 }
 
 async function runCode() {
@@ -1699,7 +1822,15 @@ function renderTestResults(results) {
 
   stopElapsed();
   const timeTaken = elapsedSeconds;
-  saveAttempt(currentQuestion, passCount, total, timeTaken);
+  const codeSnapshot = editor ? editor.getValue() : '';
+  const errorSnapshot = results.filter(r => !r.passed).map(r => ({
+    name: r.testCase.name,
+    hidden: r.testCase.hidden,
+    error: r.error || '',
+    expected: r.testCase.hidden ? null : r.testCase.expected.replace(/\\n/g, '\n'),
+    actual: r.output.trim()
+  }));
+  saveAttempt(currentQuestion, passCount, total, timeTaken, codeSnapshot, errorSnapshot);
 
   let html = `
     <div class="score-section">
@@ -1879,10 +2010,10 @@ function formatElapsed(t) {
 //  ATTEMPT HISTORY
 // ============================================================
 function getHistory(qi) { try { const d = localStorage.getItem(`nimbus-ide-history-q${qi}`); return d ? JSON.parse(d) : []; } catch { return []; } }
-function saveAttempt(qi, passed, total, timeTaken) {
+function saveAttempt(qi, passed, total, timeTaken, code, errors) {
   const history = getHistory(qi);
-  history.push({ date: new Date().toISOString(), passed, total, timeTaken, score: Math.round((passed / total) * 100) });
-  if (history.length > 20) history.splice(0, history.length - 20);
+  history.push({ date: new Date().toISOString(), passed, total, timeTaken, score: Math.round((passed / total) * 100), code: code || '', errors: errors || [] });
+  if (history.length > 10) history.splice(0, history.length - 10);
   try { localStorage.setItem(`nimbus-ide-history-q${qi}`, JSON.stringify(history)); } catch {}
 }
 
