@@ -9,25 +9,28 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg-primary: #0B1120;
-      --bg-secondary: #131B2E;
-      --bg-card: #1A2340;
-      --bg-card-hover: #1F2B4D;
-      --bg-surface: #0F172A;
-      --text-primary: #F1F5F9;
-      --text-secondary: #94A3B8;
-      --text-muted: #64748B;
-      --accent: #3B82F6;
-      --accent-hover: #2563EB;
-      --accent-glow: rgba(59, 130, 246, 0.15);
-      --green: #22C55E;
-      --orange: #F59E0B;
-      --purple: #A855F7;
-      --red: #EF4444;
-      --cyan: #06B6D4;
-      --border: rgba(148, 163, 184, 0.1);
-      --radius: 12px;
-      --radius-lg: 16px;
+      --bg-primary: #1e1e1e;
+      --bg-secondary: #252526;
+      --bg-card: #2d2d2d;
+      --bg-card-hover: #333333;
+      --bg-surface: #1b1b1b;
+      --text-primary: #e8e8e8;
+      --text-secondary: #a0a0a0;
+      --text-muted: #6b6b6b;
+      --accent: #1ba94c;
+      --accent-hover: #149140;
+      --accent-glow: rgba(27, 169, 76, 0.12);
+      --green: #1ba94c;
+      --green-light: #2ec866;
+      --orange: #f5a623;
+      --purple: #a855f7;
+      --red: #e74c3c;
+      --cyan: #06b6d4;
+      --blue: #4a90d9;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --radius: 4px;
+      --radius-lg: 6px;
     }
     body {
       font-family: 'Inter', -apple-system, sans-serif;
@@ -40,52 +43,76 @@
       flex-direction: column;
     }
 
-    /* ===== HEADER ===== */
+    /* ===== HEADER (HackerRank style) ===== */
     .header {
-      background: var(--bg-secondary);
+      background: #0b141e;
       border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 52px;
+      padding: 0 20px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
       z-index: 100;
     }
-    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-left { display: flex; align-items: center; gap: 20px; }
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo svg { width: 28px; height: 28px; }
-    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text-primary); }
-    .logo-badge { background: var(--accent); color: white; font-size: 0.6rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
-    .header-right { display: flex; gap: 8px; }
-    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.8rem; font-weight: 500; padding: 5px 10px; border-radius: 6px; transition: all 0.2s; }
-    .header-link:hover { color: var(--text-primary); background: var(--bg-card); }
-    .header-link.active { color: var(--accent); background: var(--accent-glow); }
+    .logo svg { width: 26px; height: 26px; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1rem; color: var(--text-primary); }
+    .logo-divider { width: 1px; height: 24px; background: var(--border-strong); }
+    .header-title { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+    .header-right { display: flex; gap: 8px; align-items: center; }
+    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 5px 10px; border-radius: 4px; transition: all 0.2s; }
+    .header-link:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+    .header-link.active { color: var(--green); }
+    .api-status { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--text-muted); padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); cursor: pointer; }
+    .api-status .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .api-status .dot.connected { background: var(--green); }
+    .api-status .dot.disconnected { background: var(--red); }
+    .api-status .dot.unknown { background: var(--orange); }
 
     /* ===== IDE LAYOUT ===== */
     .ide-container {
       flex: 1;
       display: grid;
-      grid-template-columns: minmax(320px, 2fr) minmax(400px, 3fr);
-      grid-template-rows: 1fr auto;
+      grid-template-columns: minmax(340px, 2fr) minmax(420px, 3fr);
       overflow: hidden;
     }
 
-    /* ===== LEFT PANEL: QUESTION ===== */
-    .question-panel {
-      grid-row: 1 / 3;
+    /* ===== LEFT PANEL: PROBLEM ===== */
+    .problem-panel {
       background: var(--bg-secondary);
-      border-right: 2px solid var(--border);
+      border-right: 1px solid var(--border-strong);
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
-    .question-toolbar {
-      padding: 12px 16px;
+    .problem-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+    }
+    .problem-tab {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      background: none;
+      border-top: none; border-left: none; border-right: none;
+    }
+    .problem-tab:hover { color: var(--text-secondary); }
+    .problem-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+    .problem-toolbar {
+      padding: 10px 16px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-shrink: 0;
       background: var(--bg-surface);
     }
@@ -95,73 +122,80 @@
       border: 1px solid var(--border);
       color: var(--text-primary);
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 500;
-      padding: 8px 12px;
-      border-radius: 8px;
+      padding: 7px 12px;
+      border-radius: 4px;
       cursor: pointer;
       outline: none;
       appearance: none;
       -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 32px;
+      background-position: right 10px center;
+      padding-right: 28px;
     }
     .question-select option { background: var(--bg-card); color: var(--text-primary); }
     .difficulty-badge {
       font-size: 0.65rem;
       font-weight: 700;
       padding: 3px 10px;
-      border-radius: 20px;
+      border-radius: 3px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       flex-shrink: 0;
     }
-    .difficulty-badge.major { background: rgba(239, 68, 68, 0.15); color: var(--red); }
-    .difficulty-badge.minor { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+    .difficulty-badge.major { background: rgba(231, 76, 60, 0.12); color: var(--red); border: 1px solid rgba(231,76,60,0.2); }
+    .difficulty-badge.minor { background: rgba(27, 169, 76, 0.12); color: var(--green); border: 1px solid rgba(27,169,76,0.2); }
 
-    .question-body {
+    .problem-body {
       flex: 1;
       overflow-y: auto;
       padding: 20px;
     }
-    .question-body::-webkit-scrollbar { width: 6px; }
-    .question-body::-webkit-scrollbar-track { background: transparent; }
-    .question-body::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+    .problem-body::-webkit-scrollbar { width: 6px; }
+    .problem-body::-webkit-scrollbar-track { background: transparent; }
+    .problem-body::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
 
-    .question-title {
+    .problem-title {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 800;
+      font-size: 1.2rem;
+      font-weight: 700;
       margin-bottom: 16px;
       color: var(--text-primary);
     }
-    .question-desc {
-      font-size: 0.88rem;
+    .problem-desc {
+      font-size: 0.85rem;
       color: var(--text-secondary);
       line-height: 1.8;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
-    .question-desc p { margin-bottom: 12px; }
-    .question-desc strong { color: var(--text-primary); }
-    .question-desc code {
+    .problem-desc p { margin-bottom: 10px; }
+    .problem-desc strong { color: var(--text-primary); }
+    .problem-desc code {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82em;
-      background: rgba(0,0,0,0.3);
-      padding: 1px 5px;
-      border-radius: 4px;
-      color: var(--accent);
+      font-size: 0.8em;
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--green-light);
     }
-    .question-desc ul, .question-desc ol {
-      padding-left: 20px;
+    .problem-desc ul, .problem-desc ol { padding-left: 20px; margin: 8px 0; }
+    .problem-desc li { margin-bottom: 4px; }
+    .problem-desc pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: rgba(0,0,0,0.3);
+      padding: 10px 14px;
+      border-radius: 4px;
+      color: var(--text-secondary);
+      overflow-x: auto;
       margin: 8px 0;
     }
-    .question-desc li { margin-bottom: 4px; }
 
     .sample-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 600;
       color: var(--text-muted);
       letter-spacing: 1.5px;
@@ -171,82 +205,88 @@
     .sample-case {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 12px;
+      border-radius: 4px;
+      margin-bottom: 10px;
       overflow: hidden;
     }
     .sample-case-header {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 600;
       color: var(--text-muted);
-      padding: 8px 14px;
-      background: rgba(0,0,0,0.2);
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.25);
       border-bottom: 1px solid var(--border);
-      letter-spacing: 0.5px;
     }
     .sample-case-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
-    .sample-col {
-      padding: 12px 14px;
-    }
+    .sample-col { padding: 10px 12px; }
     .sample-col:first-child { border-right: 1px solid var(--border); }
     .sample-col-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--accent);
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--blue);
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 6px;
     }
     .sample-col pre {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-secondary);
       white-space: pre;
       line-height: 1.5;
       margin: 0;
     }
 
-    /* ===== RIGHT TOP: EDITOR ===== */
-    .editor-panel {
+    /* ===== RIGHT PANEL ===== */
+    .right-panel {
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      position: relative;
     }
+
+    /* ===== EDITOR TOOLBAR ===== */
     .editor-toolbar {
-      padding: 8px 16px;
-      background: var(--bg-surface);
+      padding: 6px 16px;
+      background: #0b141e;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
     }
+    .editor-toolbar-left { display: flex; align-items: center; gap: 12px; }
+    .lang-selector {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 4px;
+      outline: none;
+      cursor: default;
+    }
     .editor-file-tab {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .editor-file-tab .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
-    .editor-actions { display: flex; gap: 8px; align-items: center; }
-    .timer-section {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .editor-file-tab .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .editor-toolbar-right { display: flex; gap: 8px; align-items: center; }
     .timer-display {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--text-muted);
-      min-width: 60px;
+      min-width: 55px;
       text-align: center;
     }
     .timer-display.running { color: var(--orange); }
@@ -254,10 +294,10 @@
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     .timer-btn {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 4px 8px;
+      border-radius: 3px;
       border: 1px solid var(--border);
       background: var(--bg-card);
       color: var(--text-secondary);
@@ -265,55 +305,66 @@
       transition: all 0.2s;
     }
     .timer-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
-    #editor-container {
+
+    /* ===== EDITOR ===== */
+    .editor-area {
       flex: 1;
       min-height: 0;
+      position: relative;
     }
+    #editor-container { width: 100%; height: 100%; }
 
-    /* ===== RIGHT BOTTOM: OUTPUT ===== */
+    /* ===== OUTPUT PANEL ===== */
     .output-panel {
       background: var(--bg-secondary);
-      border-top: 2px solid var(--border);
+      border-top: 1px solid var(--border-strong);
       display: flex;
       flex-direction: column;
-      height: 240px;
+      height: 260px;
       min-height: 120px;
       flex-shrink: 0;
     }
-    .output-tabs {
+    .output-tabs-row {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
       border-bottom: 1px solid var(--border);
       background: var(--bg-surface);
       flex-shrink: 0;
+      padding-right: 12px;
     }
+    .output-tabs { display: flex; }
     .output-tab {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
       color: var(--text-muted);
-      padding: 10px 18px;
+      padding: 10px 16px;
       cursor: pointer;
       border-bottom: 2px solid transparent;
       transition: all 0.2s;
       background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
+      border-top: none; border-left: none; border-right: none;
     }
     .output-tab:hover { color: var(--text-secondary); }
-    .output-tab.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
+    .output-tab.active { color: var(--green); border-bottom-color: var(--green); }
     .output-tab .count {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       padding: 1px 6px;
       border-radius: 10px;
       margin-left: 6px;
       font-weight: 700;
     }
-    .output-tab .count.pass { background: rgba(34, 197, 94, 0.15); color: var(--green); }
-    .output-tab .count.fail { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+    .output-tab .count.pass { background: rgba(27, 169, 76, 0.15); color: var(--green); }
+    .output-tab .count.fail { background: rgba(231, 76, 60, 0.15); color: var(--red); }
+    .output-expand-btn {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .output-expand-btn:hover { color: var(--text-primary); }
 
     .output-content {
       flex: 1;
@@ -327,10 +378,10 @@
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
-    /* Console output */
+    /* Console */
     .console-output {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-secondary);
       white-space: pre-wrap;
       word-break: break-all;
@@ -339,15 +390,49 @@
     .console-output.error { color: var(--red); }
     .console-placeholder {
       color: var(--text-muted);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-style: italic;
+    }
+
+    /* Custom Input */
+    .custom-input-area {
+      width: 100%;
+      min-height: 80px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      padding: 10px 12px;
+      resize: vertical;
+      outline: none;
+      line-height: 1.5;
+    }
+    .custom-input-area:focus { border-color: var(--green); }
+    .custom-input-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .custom-input-toggle {
+      font-size: 0.68rem;
+      color: var(--blue);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
     }
 
     /* Test results */
     .test-result {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 4px;
       margin-bottom: 8px;
       overflow: hidden;
     }
@@ -355,106 +440,67 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
+      padding: 9px 12px;
       cursor: pointer;
       transition: background 0.15s;
     }
     .test-result-header:hover { background: var(--bg-card-hover); }
-    .test-result-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .test-result-left { display: flex; align-items: center; gap: 8px; }
     .test-status-icon {
-      width: 22px;
-      height: 22px;
+      width: 20px; height: 20px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .test-status-icon.pass { background: rgba(34, 197, 94, 0.15); color: var(--green); }
-    .test-status-icon.fail { background: rgba(239, 68, 68, 0.15); color: var(--red); }
-    .test-status-icon svg { width: 12px; height: 12px; }
-    .test-result-name {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
+    .test-status-icon.pass { background: rgba(27, 169, 76, 0.15); color: var(--green); }
+    .test-status-icon.fail { background: rgba(231, 76, 60, 0.15); color: var(--red); }
+    .test-status-icon svg { width: 11px; height: 11px; }
+    .test-result-name { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
     .test-result-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 600;
+      font-size: 0.62rem; font-weight: 600;
       color: var(--text-muted);
-      padding: 2px 8px;
-      background: rgba(0,0,0,0.2);
-      border-radius: 4px;
+      padding: 2px 7px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 3px;
     }
     .test-result-detail {
       display: none;
-      padding: 0 14px 12px;
+      padding: 0 12px 10px;
       border-top: 1px solid var(--border);
     }
     .test-result.open .test-result-detail { display: block; }
     .test-diff {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
       margin-top: 10px;
     }
     .test-diff-col {
       background: var(--bg-surface);
-      border-radius: 6px;
-      padding: 10px 12px;
+      border-radius: 4px;
+      padding: 8px 10px;
       overflow-x: auto;
     }
-    .test-diff-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
+    .test-diff-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .test-diff-label.expected { color: var(--green); }
     .test-diff-label.actual { color: var(--red); }
     .test-diff-code {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-secondary);
       white-space: pre;
       line-height: 1.5;
     }
 
     /* Score bar */
-    .score-section {
-      margin-bottom: 16px;
-    }
-    .score-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-    .score-text {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-    }
-    .score-fraction {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .score-bar-track {
-      height: 8px;
-      background: var(--bg-card);
-      border-radius: 4px;
-      overflow: hidden;
-    }
+    .score-section { margin-bottom: 14px; }
+    .score-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+    .score-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; }
+    .score-fraction { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); }
+    .score-bar-track { height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
     .score-bar-fill {
-      height: 100%;
-      border-radius: 4px;
+      height: 100%; border-radius: 3px;
       transition: width 0.5s ease, background 0.3s;
       width: 0%;
     }
@@ -462,177 +508,151 @@
     .score-bar-fill.partial { background: var(--orange); }
     .score-bar-fill.none { background: var(--red); }
 
-    /* ===== BOTTOM BAR ===== */
-    .bottom-bar {
-      background: var(--bg-surface);
+    /* ===== BOTTOM ACTION BAR (HackerRank style) ===== */
+    .action-bar {
+      background: #0b141e;
       border-top: 1px solid var(--border);
       padding: 8px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
-      gap: 16px;
     }
-    .bottom-left { display: flex; align-items: center; gap: 10px; }
-    .bottom-center { display: flex; align-items: center; gap: 10px; }
-    .bottom-right { display: flex; align-items: center; gap: 12px; }
+    .action-left { display: flex; align-items: center; gap: 12px; }
+    .action-center { display: flex; align-items: center; gap: 10px; }
+    .action-right { display: flex; align-items: center; gap: 12px; }
 
-    .run-btn {
+    .btn-run {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: var(--green);
-      color: #0B1120;
+      gap: 7px;
+      background: transparent;
+      color: var(--text-primary);
       font-family: 'Inter', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 4px;
+      border: 1px solid var(--border-strong);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-run:hover { background: rgba(255,255,255,0.05); border-color: var(--text-secondary); }
+    .btn-run:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-run svg { width: 12px; height: 12px; }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--green);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
       font-weight: 700;
-      padding: 8px 20px;
-      border-radius: 8px;
+      padding: 8px 22px;
+      border-radius: 4px;
       border: none;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .run-btn:hover { background: #16A34A; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3); }
-    .run-btn:active { transform: translateY(0); }
-    .run-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-    .run-btn svg { width: 14px; height: 14px; }
+    .btn-submit:hover { background: var(--accent-hover); }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-submit svg { width: 13px; height: 13px; }
 
-    .reset-btn {
+    .btn-reset {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: transparent;
       color: var(--text-muted);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: none;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .reset-btn:hover { color: var(--text-primary); background: var(--bg-card); border-color: var(--text-muted); }
-    .reset-btn svg { width: 13px; height: 13px; }
+    .btn-reset:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+    .btn-reset svg { width: 12px; height: 12px; }
 
     .status-indicator {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--text-muted);
-    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); }
     .status-dot.ready { background: var(--green); }
     .status-dot.running { background: var(--orange); animation: pulse 0.8s infinite; }
-    .status-dot.done { background: var(--accent); }
+    .status-dot.done { background: var(--blue); }
     .status-dot.error { background: var(--red); }
 
     .question-counter {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
     }
     .shortcut-hint {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: var(--text-muted);
-      background: var(--bg-card);
-      padding: 3px 8px;
-      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      padding: 3px 7px;
+      border-radius: 3px;
       border: 1px solid var(--border);
     }
-
-    /* ===== ELAPSED TIMER ===== */
     .elapsed-display {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .elapsed-display svg { width: 13px; height: 13px; opacity: 0.6; }
-
-    /* ===== ATTEMPT HISTORY ===== */
-    .history-section {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-    .history-title {
-      font-family: 'JetBrains Mono', monospace;
       font-size: 0.7rem;
-      font-weight: 600;
       color: var(--text-muted);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .history-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.78rem;
-    }
-    .history-table th {
-      text-align: left;
-      padding: 6px 10px;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid var(--border);
-    }
-    .history-table td {
-      padding: 6px 10px;
-      color: var(--text-secondary);
-      border-bottom: 1px solid rgba(148,163,184,0.05);
-    }
-    .history-table tr:last-child td { border-bottom: none; }
-    .history-table tr.best td { color: var(--green); font-weight: 600; }
-    .history-table .score-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 10px;
-      display: inline-block;
-    }
-    .score-pill.full { background: rgba(34,197,94,0.15); color: var(--green); }
-    .score-pill.partial { background: rgba(245,158,11,0.15); color: var(--orange); }
-    .score-pill.zero { background: rgba(239,68,68,0.15); color: var(--red); }
-    .history-improvement {
-      font-size: 0.75rem;
-      color: var(--green);
-      margin-top: 8px;
       display: flex;
       align-items: center;
       gap: 4px;
     }
-    .history-improvement.worse { color: var(--red); }
-    .no-history {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-style: italic;
-    }
+    .elapsed-display svg { width: 12px; height: 12px; opacity: 0.6; }
 
-    /* ===== LOADING SPINNER ===== */
-    .spinner {
+    /* ===== ATTEMPT HISTORY ===== */
+    .history-section { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .history-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .history-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+    .history-table th {
+      text-align: left; padding: 5px 8px;
+      color: var(--text-muted); font-weight: 600;
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
+    }
+    .history-table td { padding: 5px 8px; color: var(--text-secondary); border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .history-table tr:last-child td { border-bottom: none; }
+    .history-table tr.best td { color: var(--green); font-weight: 600; }
+    .score-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight: 700;
+      padding: 2px 7px; border-radius: 3px;
       display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(11, 17, 32, 0.3);
-      border-top-color: #0B1120;
+    }
+    .score-pill.full { background: rgba(27,169,76,0.15); color: var(--green); }
+    .score-pill.partial { background: rgba(245,166,35,0.15); color: var(--orange); }
+    .score-pill.zero { background: rgba(231,76,60,0.15); color: var(--red); }
+    .no-history { font-size: 0.76rem; color: var(--text-muted); font-style: italic; }
+
+
+    /* ===== SPINNER ===== */
+    .spinner {
+      display: inline-block; width: 12px; height: 12px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
     }
@@ -640,32 +660,25 @@
 
     /* ===== RESIZE HANDLE ===== */
     .resize-handle {
-      height: 4px;
-      background: transparent;
-      cursor: ns-resize;
-      position: relative;
-      flex-shrink: 0;
+      height: 4px; background: transparent;
+      cursor: ns-resize; position: relative; flex-shrink: 0;
     }
     .resize-handle::after {
       content: '';
-      position: absolute;
-      left: 50%;
-      top: 50%;
+      position: absolute; left: 50%; top: 50%;
       transform: translate(-50%, -50%);
-      width: 40px;
-      height: 3px;
+      width: 36px; height: 3px;
       background: var(--text-muted);
-      border-radius: 2px;
-      opacity: 0;
+      border-radius: 2px; opacity: 0;
       transition: opacity 0.2s;
     }
-    .resize-handle:hover::after { opacity: 0.5; }
+    .resize-handle:hover::after { opacity: 0.4; }
 
-    /* ===== SCROLLBAR GLOBAL ===== */
-    ::-webkit-scrollbar { width: 8px; }
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 7px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.2); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.3); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
@@ -674,98 +687,129 @@
   <header class="header">
     <div class="header-left">
       <a href="../index.html" class="logo">
-        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#1ba94c"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
         <span class="logo-text">nimbus</span>
-        <span class="logo-badge">Portal</span>
       </a>
+      <span class="logo-divider"></span>
+      <span class="header-title">Java Core Practice IDE</span>
     </div>
     <div class="header-right">
+      <div class="api-status" id="apiStatus" onclick="showApiModal()">
+        <span class="dot unknown" id="apiDot"></span>
+        <span id="apiLabel">Setup API</span>
+      </div>
+      <a href="../java-core.html" class="header-link">Back to Java Core</a>
       <a href="../index.html" class="header-link">Home</a>
-      <a href="../sprint-2.html" class="header-link">Phase 2</a>
-      <a href="../sprint-3.html" class="header-link">Phase 3</a>
-      <a href="../sprint-4.html" class="header-link">Phase 4</a>
-      <a href="../java-core.html" class="header-link active">Java Core</a>
     </div>
   </header>
 
   <!-- IDE CONTAINER -->
   <div class="ide-container">
 
-    <!-- LEFT: QUESTION PANEL -->
-    <div class="question-panel">
-      <div class="question-toolbar">
+    <!-- LEFT: PROBLEM PANEL -->
+    <div class="problem-panel">
+      <div class="problem-tabs">
+        <button class="problem-tab active" data-ptab="problem" onclick="switchProblemTab('problem', this)">Problem</button>
+        <button class="problem-tab" data-ptab="submissions" onclick="switchProblemTab('submissions', this)">Submissions</button>
+      </div>
+      <div class="problem-toolbar">
         <select class="question-select" id="questionSelect"></select>
         <span class="difficulty-badge" id="diffBadge">Major</span>
       </div>
-      <div class="question-body" id="questionBody">
-        <!-- Populated by JS -->
+      <div class="problem-body" id="problemBody">
+        <div id="problemPane"></div>
+        <div id="submissionsPane" style="display:none;"></div>
       </div>
     </div>
 
-    <!-- RIGHT TOP: EDITOR -->
-    <div class="editor-panel">
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <!-- Editor Toolbar -->
       <div class="editor-toolbar">
-        <div class="editor-file-tab">
-          <span class="dot"></span>
-          Solution.java
-        </div>
-        <div class="editor-actions">
-          <div class="timer-section">
-            <span class="timer-display" id="timerDisplay">--:--</span>
-            <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">Start Timer</button>
+        <div class="editor-toolbar-left">
+          <select class="lang-selector" disabled>
+            <option>Java 17</option>
+          </select>
+          <div class="editor-file-tab">
+            <span class="dot"></span>
+            Solution.java
           </div>
         </div>
-      </div>
-      <div id="editor-container"></div>
-    </div>
-
-    <!-- RIGHT BOTTOM: OUTPUT -->
-    <div class="output-panel" id="outputPanel">
-      <div class="resize-handle" id="resizeHandle"></div>
-      <div class="output-tabs">
-        <button class="output-tab active" data-tab="console" onclick="switchTab('console', this)">Console</button>
-        <button class="output-tab" data-tab="tests" onclick="switchTab('tests', this)">
-          Test Results <span class="count" id="testCount" style="display:none;"></span>
-        </button>
-      </div>
-      <div class="output-content">
-        <div class="tab-pane active" id="consolePane">
-          <div class="console-placeholder">Run your code to see output here...</div>
+        <div class="editor-toolbar-right">
+          <span class="timer-display" id="timerDisplay">--:--</span>
+          <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">Timer</button>
         </div>
-        <div class="tab-pane" id="testsPane">
-          <div class="console-placeholder">Run your code to see test results...</div>
+      </div>
+
+      <!-- Editor -->
+      <div class="editor-area">
+        <div id="editor-container"></div>
+      </div>
+
+      <!-- Output Panel -->
+      <div class="output-panel" id="outputPanel">
+        <div class="resize-handle" id="resizeHandle"></div>
+        <div class="output-tabs-row">
+          <div class="output-tabs">
+            <button class="output-tab active" data-tab="testcases" onclick="switchTab('testcases', this)">Test Cases</button>
+            <button class="output-tab" data-tab="output" onclick="switchTab('output', this)">Output</button>
+            <button class="output-tab" data-tab="results" onclick="switchTab('results', this)">
+              Results <span class="count" id="testCount" style="display:none;"></span>
+            </button>
+          </div>
+        </div>
+        <div class="output-content">
+          <div class="tab-pane active" id="testcasesPane">
+            <div class="custom-input-label">
+              Custom Input
+              <button class="custom-input-toggle" onclick="loadSampleInput()">Load Sample</button>
+            </div>
+            <textarea class="custom-input-area" id="customInput" placeholder="Enter your test input here..."></textarea>
+          </div>
+          <div class="tab-pane" id="outputPane">
+            <div class="console-placeholder">Run your code to see output here...</div>
+          </div>
+          <div class="tab-pane" id="resultsPane">
+            <div class="console-placeholder">Submit your code to see test results...</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BOTTOM BAR -->
-  <div class="bottom-bar">
-    <div class="bottom-left">
-      <button class="run-btn" id="runBtn" onclick="runCode()">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        Run
-      </button>
-      <button class="reset-btn" onclick="resetCode()">
+  <!-- BOTTOM ACTION BAR -->
+  <div class="action-bar">
+    <div class="action-left">
+      <button class="btn-reset" onclick="resetCode()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
         Reset
       </button>
-    </div>
-    <div class="bottom-center">
       <div class="status-indicator">
         <span class="status-dot ready" id="statusDot"></span>
         <span id="statusText">Ready</span>
       </div>
     </div>
-    <div class="bottom-right">
+    <div class="action-center">
       <div class="elapsed-display" id="elapsedDisplay">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <span id="elapsedTime">00:00</span>
       </div>
-      <span class="question-counter" id="questionCounter">Question 1 of 8</span>
-      <span class="shortcut-hint">Ctrl+Enter</span>
+      <span class="question-counter" id="questionCounter">Q1 / 11</span>
+      <span class="shortcut-hint">Ctrl+Enter = Run</span>
+    </div>
+    <div class="action-right">
+      <button class="btn-run" id="runBtn" onclick="runCode()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Run Code
+      </button>
+      <button class="btn-submit" id="submitBtn" onclick="submitCode()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        Submit
+      </button>
     </div>
   </div>
+
+  <!-- Code execution handled by Netlify Function (server-side) -->
 
   <!-- MONACO EDITOR CDN -->
   <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.min.js"></script>
@@ -815,76 +859,9 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `4
-1001
-Simon
--50000
-1002
-Danny
--30000
-1003
-Kiran
--40000
-1004
-Danny
--50000`,
-        expected: `No such Investors found
-1001
-Simon
--50000.0
-1002
-Danny
--30000.0
-1003
-Kiran
--40000.0
-1004
-Danny
--50000.0`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `3
-101
-Kiran
-40000
-102
-Samuel
-40000
-103
-Joe
-40000`,
-        expected: `40000.0
-No Investors found`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `4
-1
-Alice
-50000
-2
-Bob
--20000
-3
-Charlie
-30000
-4
-Dave
--10000`,
-        expected: `40000.0
-2
-Bob
--20000.0
-4
-Dave
--10000.0`
-      }
+      { name: "Test Case 1", hidden: false, input: `4\n1001\nSimon\n-50000\n1002\nDanny\n-30000\n1003\nKiran\n-40000\n1004\nDanny\n-50000`, expected: `No such Investors found\n1001\nSimon\n-50000.0\n1002\nDanny\n-30000.0\n1003\nKiran\n-40000.0\n1004\nDanny\n-50000.0` },
+      { name: "Test Case 2", hidden: false, input: `3\n101\nKiran\n40000\n102\nSamuel\n40000\n103\nJoe\n40000`, expected: `40000.0\nNo Investors found` },
+      { name: "Hidden Test Case 1", hidden: true, input: `4\n1\nAlice\n50000\n2\nBob\n-20000\n3\nCharlie\n30000\n4\nDave\n-10000`, expected: `40000.0\n2\nBob\n-20000.0\n4\nDave\n-10000.0` }
     ]
   },
   {
@@ -918,36 +895,9 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `5
-5
-4
-2
-13
-8`,
-        expected: `64`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `3
-2
-5
-3`,
-        expected: `OddEvenException: Sum is greater`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `4
-1
-2
-3
-4`,
-        expected: `8`
-      }
+      { name: "Test Case 1", hidden: false, input: `5\n5\n4\n2\n13\n8`, expected: `64` },
+      { name: "Test Case 2", hidden: false, input: `3\n2\n5\n3`, expected: `OddEvenException: Sum is greater` },
+      { name: "Hidden Test Case 1", hidden: true, input: `4\n1\n2\n3\n4`, expected: `8` }
     ]
   },
   {
@@ -990,93 +940,8 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `5
-100
-TravisHead
-35
-male
-1
-1
-BigBashLeague
-67.0
-Australia
-101
-RohitSharma
-37
-Male
-1
-8
-BigBashLeague
-52.0
-Australia
-102
-RickyPonting
-41
-Male
-0
-103
-ViratKohli
-32
-Male
-2
-5
-BigBashLeague
-59.0
-Australia
-1
-IndianPremierLeague
-87.0
-India
-104
-SmritiMandana
-27
-Female
-2
-17
-IndianPremierLeague
-44.0
-India
-6
-Aus-IndiaCollabLeague
-36.0
-Australia
-BigBashLeague
-Australia`,
-        expected: `TravisHead
-RohitSharma
-ViratKohli
-Total PerformanceAverage Australia : 214.0`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `2
-100
-PlayerA
-25
-Male
-1
-1
-IPL
-50.0
-India
-101
-PlayerB
-30
-Male
-1
-2
-BBL
-60.0
-Australia
-T20WorldCup
-England`,
-        expected: `No Cricketer Found
-No Statistics are available With the Country : England`
-      }
+      { name: "Test Case 1", hidden: false, input: `5\n100\nTravisHead\n35\nmale\n1\n1\nBigBashLeague\n67.0\nAustralia\n101\nRohitSharma\n37\nMale\n1\n8\nBigBashLeague\n52.0\nAustralia\n102\nRickyPonting\n41\nMale\n0\n103\nViratKohli\n32\nMale\n2\n5\nBigBashLeague\n59.0\nAustralia\n1\nIndianPremierLeague\n87.0\nIndia\n104\nSmritiMandana\n27\nFemale\n2\n17\nIndianPremierLeague\n44.0\nIndia\n6\nAus-IndiaCollabLeague\n36.0\nAustralia\nBigBashLeague\nAustralia`, expected: `TravisHead\nRohitSharma\nViratKohli\nTotal PerformanceAverage Australia : 214.0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\n100\nPlayerA\n25\nMale\n1\n1\nIPL\n50.0\nIndia\n101\nPlayerB\n30\nMale\n1\n2\nBBL\n60.0\nAustralia\nT20WorldCup\nEngland`, expected: `No Cricketer Found\nNo Statistics are available With the Country : England` }
     ]
   },
   {
@@ -1097,45 +962,9 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `5
-101
-202
-303
-404
-505`,
-        expected: `2
-4
-6
-8
-10`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `3
-111
-0
-000`,
-        expected: `3
-0
-0`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `4
-999
-1
-10
-100`,
-        expected: `27
-1
-1
-1`
-      }
+      { name: "Test Case 1", hidden: false, input: `5\n101\n202\n303\n404\n505`, expected: `2\n4\n6\n8\n10` },
+      { name: "Test Case 2", hidden: false, input: `3\n111\n0\n000`, expected: `3\n0\n0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `4\n999\n1\n10\n100`, expected: `27\n1\n1\n1` }
     ]
   },
   {
@@ -1179,71 +1008,8 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `5
-101
-Agatha Christie
-11
-Murder on the Orient Express
-Crime
-20.00
-102
-Arthur Conan Doyle
-12
-The Hound of the Baskervilles
-Crime
-25.00
-103
-Stephen Edwin King
-13
-A Memoir of the Craft
-Horror
-40.00
-104
-Clayton Emery
-14
-The Burning Goddess
-Fantasy
-30.00
-105
-Trisha Ashley
-15
-Wedding Tiers
-Fantasy
-35.00
-Crime
-Fantasy
-20`,
-        expected: `AuthorName: Agatha Christie, Title: Murder on the Orient Express
-AuthorName: Arthur Conan Doyle, Title: The Hound of the Baskervilles
-Discounted Fantasy Books:
-AuthorName: Clayton Emery, Title: The Burning Goddess, Updated Price: 24.0
-AuthorName: Trisha Ashley, Title: Wedding Tiers, Updated Price: 28.0`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `2
-101
-Author1
-11
-Book1
-Crime
-20.00
-102
-Author2
-12
-Book2
-Horror
-30.00
-Romance
-SciFi
-10`,
-        expected: `Genre is not available in the list
-Discounted books are unavailable in the given genre.`
-      }
+      { name: "Test Case 1", hidden: false, input: `5\n101\nAgatha Christie\n11\nMurder on the Orient Express\nCrime\n20.00\n102\nArthur Conan Doyle\n12\nThe Hound of the Baskervilles\nCrime\n25.00\n103\nStephen Edwin King\n13\nA Memoir of the Craft\nHorror\n40.00\n104\nClayton Emery\n14\nThe Burning Goddess\nFantasy\n30.00\n105\nTrisha Ashley\n15\nWedding Tiers\nFantasy\n35.00\nCrime\nFantasy\n20`, expected: `AuthorName: Agatha Christie, Title: Murder on the Orient Express\nAuthorName: Arthur Conan Doyle, Title: The Hound of the Baskervilles\nDiscounted Fantasy Books:\nAuthorName: Clayton Emery, Title: The Burning Goddess, Updated Price: 24.0\nAuthorName: Trisha Ashley, Title: Wedding Tiers, Updated Price: 28.0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\n101\nAuthor1\n11\nBook1\nCrime\n20.00\n102\nAuthor2\n12\nBook2\nHorror\n30.00\nRomance\nSciFi\n10`, expected: `Genre is not available in the list\nDiscounted books are unavailable in the given genre.` }
     ]
   },
   {
@@ -1276,30 +1042,9 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `5
-10`,
-        expected: `50 sq.m
-30 m`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `6
-5`,
-        expected: `30 sq.m
-22 m`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `1
-1`,
-        expected: `1 sq.m
-4 m`
-      }
+      { name: "Test Case 1", hidden: false, input: `5\n10`, expected: `50 sq.m\n30 m` },
+      { name: "Test Case 2", hidden: false, input: `6\n5`, expected: `30 sq.m\n22 m` },
+      { name: "Hidden Test Case 1", hidden: true, input: `1\n1`, expected: `1 sq.m\n4 m` }
     ]
   },
   {
@@ -1314,13 +1059,6 @@ public class Solution {
       <p>Implement two methods in a MobileService class:</p>
       <p><strong>Method 1:</strong> <code>calculateAveragePrice(List&lt;Brand&gt; brands)</code> — Calculate the average price of mobiles for each brand and return a <strong>Map</strong> of brand names to their average mobile price. If average cannot be determined (brand has no mobiles), throw custom exception <code>AverageCannotBeCalculatedException</code> with message <code>"Average cannot be calculated"</code>.</p>
       <p><strong>Method 2:</strong> <code>findMobilesInStorageRange(List&lt;Brand&gt; brands, int minStorage, int maxStorage)</code> — Returns a list of mobile details for mobiles whose storage capacity falls within the given range (inclusive). If no mobile found, throw custom exception <code>NoMobileDetailsFoundException</code> with message <code>"No mobile found"</code>.</p>
-      <p><strong>Output format for Method 1:</strong></p>
-      <pre>Average Price of each brand:
-&lt;BrandName&gt;: &lt;Average&gt;</pre>
-      <p><strong>Output format for Method 2:</strong></p>
-      <pre>Mobiles in the storage range (&lt;min&gt;GB - &lt;max&gt;GB):
-Brand: &lt;BrandName&gt;, Model Number: &lt;ModelNumber&gt;, Model Name: &lt;ModelName&gt;, Price: &lt;Price&gt;, Storage: &lt;Storage&gt;GB</pre>
-      <p><strong>Notes:</strong> Insertion order. Case insensitive comparisons. Catch exceptions in main and print: <code>AverageCannotBeCalculatedException: Average cannot be calculated</code> or <code>NoMobileDetailsFoundException: No mobile found</code></p>
     `,
     starterCode: `import java.util.*;
 
@@ -1344,121 +1082,23 @@ public class Solution {
 
     public static Map<String, Double> calculateAveragePrice(List<Brand> brands) throws AverageCannotBeCalculatedException {
         // TODO: Calculate average price per brand, return Map
-        // If any brand has empty mobile list, throw AverageCannotBeCalculatedException
         return null;
     }
 
     public static List<Mobile> findMobilesInStorageRange(List<Brand> brands, int minStorage, int maxStorage) throws NoMobileDetailsFoundException {
         // TODO: Find mobiles in storage range, return list
-        // If none found, throw NoMobileDetailsFoundException
         return null;
     }
 
     public static void main(String[] args) {
         // TODO: Read brands with mobiles, read range, call methods
-        // Catch exceptions and print: ExceptionName: message
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `2
-101
-Samsung
-2
-1001
-Galaxy S21
-20300
-128
-1002
-Galaxy Note 20
-34000
-256
-102
-Apple
-2
-2001
-Iphone 13
-60000
-256
-2002
-Iphone 14
-70400
-64
-128
-256`,
-        expected: `Average Price of each brand:
-Samsung: 27150.0
-Apple: 65200.0
-Mobiles in the storage range (128GB - 256GB):
-Brand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB
-Brand: Samsung, Model Number: 1002, Model Name: Galaxy Note 20, Price: 34000.0, Storage: 256GB
-Brand: Apple, Model Number: 2001, Model Name: Iphone 13, Price: 60000.0, Storage: 256GB`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `2
-101
-Samsung
-2
-1001
-Galaxy S21
-20300
-128
-1002
-Galaxy Note 20
-34000
-256
-102
-Apple
-2
-2001
-Iphone 13
-60000
-256
-2002
-Iphone 14
-70400
-64
-128
-23`,
-        expected: `Average Price of each brand:
-Samsung: 27150.0
-Apple: 65200.0
-NoMobileDetailsFoundException: No mobile found`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `1
-101
-OnePlus
-0
-64
-256`,
-        expected: `AverageCannotBeCalculatedException: Average cannot be calculated
-NoMobileDetailsFoundException: No mobile found`
-      },
-      {
-        name: "Hidden Test Case 2",
-        hidden: true,
-        input: `1
-101
-Samsung
-1
-1001
-Galaxy S21
-20300
-128
-100
-200`,
-        expected: `Average Price of each brand:
-Samsung: 20300.0
-Mobiles in the storage range (100GB - 200GB):
-Brand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB`
-      }
+      { name: "Test Case 1", hidden: false, input: `2\n101\nSamsung\n2\n1001\nGalaxy S21\n20300\n128\n1002\nGalaxy Note 20\n34000\n256\n102\nApple\n2\n2001\nIphone 13\n60000\n256\n2002\nIphone 14\n70400\n64\n128\n256`, expected: `Average Price of each brand:\nSamsung: 27150.0\nApple: 65200.0\nMobiles in the storage range (128GB - 256GB):\nBrand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB\nBrand: Samsung, Model Number: 1002, Model Name: Galaxy Note 20, Price: 34000.0, Storage: 256GB\nBrand: Apple, Model Number: 2001, Model Name: Iphone 13, Price: 60000.0, Storage: 256GB` },
+      { name: "Test Case 2", hidden: false, input: `2\n101\nSamsung\n2\n1001\nGalaxy S21\n20300\n128\n1002\nGalaxy Note 20\n34000\n256\n102\nApple\n2\n2001\nIphone 13\n60000\n256\n2002\nIphone 14\n70400\n64\n128\n23`, expected: `Average Price of each brand:\nSamsung: 27150.0\nApple: 65200.0\nNoMobileDetailsFoundException: No mobile found` },
+      { name: "Hidden Test Case 1", hidden: true, input: `1\n101\nOnePlus\n0\n64\n256`, expected: `AverageCannotBeCalculatedException: Average cannot be calculated\nNoMobileDetailsFoundException: No mobile found` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\n101\nSamsung\n1\n1001\nGalaxy S21\n20300\n128\n100\n200`, expected: `Average Price of each brand:\nSamsung: 20300.0\nMobiles in the storage range (100GB - 200GB):\nBrand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB` }
     ]
   },
   {
@@ -1471,7 +1111,7 @@ Brand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Stor
       <p>A "consecutive vowel" group is where 2 or more vowels appear next to each other (e.g., "au", "ea", "oui").</p>
       <p>Assume the program accepts only lowercase values as input.</p>
       <p>If no consecutive vowels are present in the string, print <code>"No consecutive vowels present"</code></p>
-      <p><strong>Example:</strong> "The augmented reality is the near future." &rarr; The consecutive groups are: "au", "ea" (in near), "ea" (in reality) = <strong>3</strong></p>
+      <p><strong>Example:</strong> "The augmented reality is the near future." → The consecutive groups are: "au", "ea" (in reality... wait no), "ea" (in near) = <strong>3</strong></p>
     `,
     starterCode: `import java.util.Scanner;
 
@@ -1482,36 +1122,11 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `The augmented reality is the near future.`,
-        expected: `3`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `How r u?`,
-        expected: `No consecutive vowels present`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `beautiful ocean view`,
-        expected: `3`
-      },
-      {
-        name: "Hidden Test Case 2",
-        hidden: true,
-        input: `xyz pqr`,
-        expected: `No consecutive vowels present`
-      },
-      {
-        name: "Hidden Test Case 3",
-        hidden: true,
-        input: `queue outside`,
-        expected: `2`
-      }
+      { name: "Test Case 1", hidden: false, input: `The augmented reality is the near future.`, expected: `3` },
+      { name: "Test Case 2", hidden: false, input: `How r u?`, expected: `No consecutive vowels present` },
+      { name: "Hidden Test Case 1", hidden: true, input: `beautiful ocean view`, expected: `3` },
+      { name: "Hidden Test Case 2", hidden: true, input: `xyz pqr`, expected: `No consecutive vowels present` },
+      { name: "Hidden Test Case 3", hidden: true, input: `queue outside`, expected: `2` }
     ]
   },
   {
@@ -1537,59 +1152,10 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `4
-Alice
-85
-Bob
-72
-Charlie
-90
-Dave
-60
-Charlie`,
-        expected: `90
-Alice: 85
-Charlie: 90`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `3
-Alice
-50
-Bob
-50
-Charlie
-50
-Dave`,
-        expected: `Student not found
-No students above average`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `2
-Kiran
-100
-Ravi
-40
-kiran`,
-        expected: `100
-Kiran: 100`
-      },
-      {
-        name: "Hidden Test Case 2",
-        hidden: true,
-        input: `1
-Solo
-75
-Solo`,
-        expected: `75
-No students above average`
-      }
+      { name: "Test Case 1", hidden: false, input: `4\nAlice\n85\nBob\n72\nCharlie\n90\nDave\n60\nCharlie`, expected: `90\nAlice: 85\nCharlie: 90` },
+      { name: "Test Case 2", hidden: false, input: `3\nAlice\n50\nBob\n50\nCharlie\n50\nDave`, expected: `Student not found\nNo students above average` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\nKiran\n100\nRavi\n40\nkiran`, expected: `100\nKiran: 100` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\nSolo\n75\nSolo`, expected: `75\nNo students above average` }
     ]
   },
   {
@@ -1615,59 +1181,10 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `8
-10
-20
-10
-30
-20
-40
-10
-50`,
-        expected: `10
-20
-30
-40
-50
-3 duplicates removed`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `4
-1
-2
-3
-4`,
-        expected: `1
-2
-3
-4
-No duplicates found`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `5
-5
-5
-5
-5
-5`,
-        expected: `5
-4 duplicates removed`
-      },
-      {
-        name: "Hidden Test Case 2",
-        hidden: true,
-        input: `1
-42`,
-        expected: `42
-No duplicates found`
-      }
+      { name: "Test Case 1", hidden: false, input: `8\n10\n20\n10\n30\n20\n40\n10\n50`, expected: `10\n20\n30\n40\n50\n3 duplicates removed` },
+      { name: "Test Case 2", hidden: false, input: `4\n1\n2\n3\n4`, expected: `1\n2\n3\n4\nNo duplicates found` },
+      { name: "Hidden Test Case 1", hidden: true, input: `5\n5\n5\n5\n5\n5`, expected: `5\n4 duplicates removed` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\n42`, expected: `42\nNo duplicates found` }
     ]
   },
   {
@@ -1712,84 +1229,9 @@ public class Solution {
     }
 }`,
     testCases: [
-      {
-        name: "Test Case 1",
-        hidden: false,
-        input: `5
-1
-Alice
-Engineering
-85000
-2
-Bob
-Engineering
-92000
-3
-Charlie
-Marketing
-70000
-4
-Dave
-Marketing
-75000
-5
-Eve
-Engineering
-88000`,
-        expected: `Department: Engineering
-Alice - 85000.0
-Bob - 92000.0
-Eve - 88000.0
-Department: Marketing
-Charlie - 70000.0
-Dave - 75000.0
-Highest paid per department:
-Engineering: Bob (92000.0)
-Marketing: Dave (75000.0)`
-      },
-      {
-        name: "Test Case 2",
-        hidden: false,
-        input: `2
-1
-Solo
-HR
-50000
-2
-Duo
-HR
-50000`,
-        expected: `Department: HR
-Solo - 50000.0
-Duo - 50000.0
-Highest paid per department:
-HR: Solo (50000.0)`
-      },
-      {
-        name: "Hidden Test Case 1",
-        hidden: true,
-        input: `3
-1
-Raj
-Sales
-60000
-2
-Priya
-Tech
-90000
-3
-Amit
-Sales
-65000`,
-        expected: `Department: Sales
-Raj - 60000.0
-Amit - 65000.0
-Department: Tech
-Priya - 90000.0
-Highest paid per department:
-Sales: Amit (65000.0)
-Tech: Priya (90000.0)`
-      }
+      { name: "Test Case 1", hidden: false, input: `5\n1\nAlice\nEngineering\n85000\n2\nBob\nEngineering\n92000\n3\nCharlie\nMarketing\n70000\n4\nDave\nMarketing\n75000\n5\nEve\nEngineering\n88000`, expected: `Department: Engineering\nAlice - 85000.0\nBob - 92000.0\nEve - 88000.0\nDepartment: Marketing\nCharlie - 70000.0\nDave - 75000.0\nHighest paid per department:\nEngineering: Bob (92000.0)\nMarketing: Dave (75000.0)` },
+      { name: "Test Case 2", hidden: false, input: `2\n1\nSolo\nHR\n50000\n2\nDuo\nHR\n50000`, expected: `Department: HR\nSolo - 50000.0\nDuo - 50000.0\nHighest paid per department:\nHR: Solo (50000.0)` },
+      { name: "Hidden Test Case 1", hidden: true, input: `3\n1\nRaj\nSales\n60000\n2\nPriya\nTech\n90000\n3\nAmit\nSales\n65000`, expected: `Department: Sales\nRaj - 60000.0\nAmit - 65000.0\nDepartment: Tech\nPriya - 90000.0\nHighest paid per department:\nSales: Amit (65000.0)\nTech: Priya (90000.0)` }
     ]
   }
 ];
@@ -1807,15 +1249,30 @@ let elapsedSeconds = 0;
 let elapsedStarted = false;
 
 // ============================================================
+//  API STATUS — no credentials needed in frontend anymore
+// ============================================================
+function showApiModal() { /* no-op — credentials are server-side now */ }
+function closeApiModal() { }
+
+function updateApiStatus() {
+  const dot = document.getElementById('apiDot');
+  const label = document.getElementById('apiLabel');
+  dot.className = 'dot connected';
+  label.textContent = 'JDoodle Ready';
+}
+
+// ============================================================
 //  INIT
 // ============================================================
 window.addEventListener('DOMContentLoaded', () => {
+  updateApiStatus();
+
   // Populate dropdown
   const select = document.getElementById('questionSelect');
   QUESTIONS.forEach((q, i) => {
     const opt = document.createElement('option');
     opt.value = i;
-    opt.textContent = `Q${i + 1}. ${q.title} (${q.difficulty === 'major' ? 'Major' : 'Minor'})`;
+    opt.textContent = `${i + 1}. ${q.title} (${q.difficulty === 'major' ? 'Major' : 'Minor'} - ${q.timeMinutes}min)`;
     select.appendChild(opt);
   });
   select.addEventListener('change', (e) => {
@@ -1836,7 +1293,7 @@ window.addEventListener('DOMContentLoaded', () => {
       scrollBeyondLastLine: false,
       automaticLayout: true,
       tabSize: 4,
-      padding: { top: 16 },
+      padding: { top: 14 },
       renderLineHighlight: 'gutter',
       smoothScrolling: true,
       cursorBlinking: 'smooth',
@@ -1846,30 +1303,25 @@ window.addEventListener('DOMContentLoaded', () => {
       lineNumbersMinChars: 3,
     });
 
-    // Ctrl+Enter shortcut
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-      runCode();
-    });
+    // Ctrl+Enter = Run, Ctrl+Shift+Enter = Submit
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => runCode());
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => submitCode());
 
-    // Auto-save on change + start elapsed timer on first edit
     editor.onDidChangeModelContent(() => {
       saveCode(currentQuestion, editor.getValue());
-      if (!elapsedStarted) {
-        startElapsed();
-      }
+      if (!elapsedStarted) startElapsed();
     });
 
     loadQuestion();
   });
 
-  // Resize handle
   initResize();
 
-  // Keyboard shortcut (fallback)
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
-      runCode();
+      if (e.shiftKey) submitCode();
+      else runCode();
     }
   });
 });
@@ -1882,43 +1334,41 @@ function loadQuestion() {
 
   // Difficulty badge
   const badge = document.getElementById('diffBadge');
-  badge.textContent = q.difficulty === 'major' ? 'Major' : 'Minor';
+  badge.textContent = q.difficulty === 'major' ? `Major · ${q.timeMinutes}min` : `Minor · ${q.timeMinutes}min`;
   badge.className = `difficulty-badge ${q.difficulty}`;
 
-  // Question body
-  const body = document.getElementById('questionBody');
-  let html = `<div class="question-title">${q.title}</div>`;
-  html += `<div class="question-desc">${q.description}</div>`;
+  // Problem body
+  let html = `<div class="problem-title">${q.title}</div>`;
+  html += `<div class="problem-desc">${q.description}</div>`;
 
   // Sample test cases
   const visibleTests = q.testCases.filter(tc => !tc.hidden);
   if (visibleTests.length > 0) {
     html += `<div class="sample-label">Sample Test Cases</div>`;
-    visibleTests.forEach((tc, i) => {
+    visibleTests.forEach((tc) => {
       html += `
         <div class="sample-case">
           <div class="sample-case-header">${tc.name}</div>
           <div class="sample-case-grid">
             <div class="sample-col">
               <div class="sample-col-label">Input</div>
-              <pre>${escapeHtml(tc.input)}</pre>
+              <pre>${escapeHtml(tc.input.replace(/\\n/g, '\n'))}</pre>
             </div>
             <div class="sample-col">
               <div class="sample-col-label">Expected Output</div>
-              <pre>${escapeHtml(tc.expected)}</pre>
+              <pre>${escapeHtml(tc.expected.replace(/\\n/g, '\n'))}</pre>
             </div>
           </div>
         </div>`;
     });
   }
 
-  // Hidden test count
   const hiddenCount = q.testCases.filter(tc => tc.hidden).length;
   if (hiddenCount > 0) {
-    html += `<div style="margin-top:12px; font-size:0.78rem; color:var(--text-muted); font-style:italic;">+ ${hiddenCount} hidden test case${hiddenCount > 1 ? 's' : ''}</div>`;
+    html += `<div style="margin-top:10px; font-size:0.76rem; color:var(--text-muted); font-style:italic;">+ ${hiddenCount} hidden test case${hiddenCount > 1 ? 's' : ''}</div>`;
   }
 
-  body.innerHTML = html;
+  document.getElementById('problemPane').innerHTML = html;
 
   // Editor code
   if (editor) {
@@ -1927,186 +1377,219 @@ function loadQuestion() {
   }
 
   // Counter
-  document.getElementById('questionCounter').textContent = `Question ${currentQuestion + 1} of ${QUESTIONS.length}`;
+  document.getElementById('questionCounter').textContent = `Q${currentQuestion + 1} / ${QUESTIONS.length}`;
+
+  // Load first sample input into custom input
+  if (visibleTests.length > 0) {
+    document.getElementById('customInput').value = visibleTests[0].input.replace(/\\n/g, '\n');
+  }
 
   // Reset output
   resetOutput();
-
-  // Reset timers
   resetTimer();
   resetElapsed();
 }
 
 // ============================================================
-//  CODE EXECUTION (Piston API)
+//  PROBLEM TAB SWITCHING
 // ============================================================
+function switchProblemTab(tab, btn) {
+  document.querySelectorAll('.problem-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('problemPane').style.display = tab === 'problem' ? 'block' : 'none';
+  document.getElementById('submissionsPane').style.display = tab === 'submissions' ? 'block' : 'none';
+  if (tab === 'submissions') renderSubmissions();
+}
+
+function renderSubmissions() {
+  const history = getHistory(currentQuestion);
+  if (history.length === 0) {
+    document.getElementById('submissionsPane').innerHTML = '<div class="no-history" style="padding:20px;">No submissions yet. Write your code and click Submit.</div>';
+    return;
+  }
+  let html = `<div style="padding:10px 0;"><table class="history-table">
+    <tr><th>#</th><th>Score</th><th>Time</th><th>Date</th></tr>`;
+  history.slice().reverse().forEach((h, i) => {
+    const pillClass = h.score === 100 ? 'full' : h.score > 0 ? 'partial' : 'zero';
+    const dateStr = new Date(h.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    html += `<tr>
+      <td>${history.length - i}</td>
+      <td><span class="score-pill ${pillClass}">${h.passed}/${h.total}</span></td>
+      <td>${formatElapsed(h.timeTaken)}</td>
+      <td>${dateStr}</td>
+    </tr>`;
+  });
+  html += '</table></div>';
+  document.getElementById('submissionsPane').innerHTML = html;
+}
+
+// ============================================================
+//  LOAD SAMPLE INPUT
+// ============================================================
+function loadSampleInput() {
+  const q = QUESTIONS[currentQuestion];
+  const visibleTests = q.testCases.filter(tc => !tc.hidden);
+  if (visibleTests.length > 0) {
+    document.getElementById('customInput').value = visibleTests[0].input.replace(/\\n/g, '\n');
+  }
+}
+
+// ============================================================
+//  CODE EXECUTION (via Netlify Function → JDoodle)
+// ============================================================
+async function executeCode(code, input) {
+  const res = await fetch('/.netlify/functions/execute', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ script: code, stdin: input })
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Server error (${res.status}): ${errText.substring(0, 200)}`);
+  }
+
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+
+  const output = data.output || '';
+  const isCompileError = output.includes('error:') && (data.statusCode === 200 || !data.statusCode);
+  const isRuntimeError = data.statusCode && data.statusCode !== 200 && !isCompileError;
+
+  return {
+    stdout: isCompileError || isRuntimeError ? '' : output,
+    stderr: isRuntimeError ? output : '',
+    compile_output: isCompileError ? output : '',
+    time: data.cpuTime,
+    memory: data.memory
+  };
+}
+
 async function runCode() {
   if (!editor) return;
 
   const code = editor.getValue();
-  const q = QUESTIONS[currentQuestion];
+  const input = document.getElementById('customInput').value;
   const runBtn = document.getElementById('runBtn');
 
-  // Update UI state
   runBtn.disabled = true;
   runBtn.innerHTML = '<span class="spinner"></span> Running...';
-  setStatus('running', 'Running...');
+  setStatus('running', 'Compiling...');
+
+  try {
+    const result = await executeCode(code, input);
+    switchTab('output', document.querySelector('[data-tab="output"]'));
+    const outputPane = document.getElementById('outputPane');
+
+    if (result.compile_output) {
+      outputPane.innerHTML = `<pre class="console-output error">${escapeHtml(result.compile_output)}</pre>`;
+      setStatus('error', 'Compilation Error');
+    } else if (result.stderr) {
+      outputPane.innerHTML = `<pre class="console-output error">${escapeHtml(result.stderr)}</pre>`;
+      setStatus('error', 'Runtime Error');
+    } else {
+      const out = result.stdout || '(no output)';
+      outputPane.innerHTML = `<pre class="console-output">${escapeHtml(out)}</pre>`;
+      setStatus('done', `Executed (${result.time || '?'}s CPU)`);
+    }
+  } catch (err) {
+    document.getElementById('outputPane').innerHTML = `<pre class="console-output error">Error: ${escapeHtml(err.message)}</pre>`;
+    setStatus('error', 'API Error');
+    switchTab('output', document.querySelector('[data-tab="output"]'));
+  }
+
+  runBtn.disabled = false;
+  runBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Run Code';
+}
+
+async function submitCode() {
+  if (!editor) return;
+
+  const code = editor.getValue();
+  const q = QUESTIONS[currentQuestion];
+  const submitBtn = document.getElementById('submitBtn');
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span> Testing...';
+  setStatus('running', 'Running test cases...');
 
   const startTime = performance.now();
   const results = [];
-  let consoleOutput = '';
-  let hadError = false;
 
-  // Run against all test cases
   for (let i = 0; i < q.testCases.length; i++) {
     const tc = q.testCases[i];
+    const input = tc.input.replace(/\\n/g, '\n');
     try {
-      const result = await executePiston(code, tc.input);
-      const passed = compareOutput(result.output, tc.expected);
+      const result = await executeCode(code, input);
+      const actualOutput = result.stdout || '';
+      const expected = tc.expected.replace(/\\n/g, '\n');
+      const passed = compareOutput(actualOutput, expected);
 
       results.push({
-        testCase: tc,
-        index: i,
-        passed,
-        output: result.output,
-        error: result.error,
-        exitCode: result.exitCode
+        testCase: tc, index: i, passed,
+        output: actualOutput,
+        error: result.compile_output || result.stderr || '',
+        time: result.time
       });
-
-      if (i === 0) {
-        consoleOutput = result.output;
-        if (result.error) {
-          consoleOutput += (consoleOutput ? '\n' : '') + result.error;
-          hadError = true;
-        }
-      }
     } catch (err) {
       results.push({
-        testCase: tc,
-        index: i,
-        passed: false,
-        output: '',
-        error: 'API Error: ' + err.message,
-        exitCode: -1
+        testCase: tc, index: i, passed: false,
+        output: '', error: 'API Error: ' + err.message, time: null
       });
-      if (i === 0) {
-        consoleOutput = 'API Error: ' + err.message;
-        hadError = true;
-      }
     }
   }
 
   const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
-
-  // Render console output
-  renderConsole(consoleOutput, hadError);
-
-  // Render test results
   renderTestResults(results);
 
-  // Update status
   const passCount = results.filter(r => r.passed).length;
   if (passCount === results.length) {
-    setStatus('done', `All passed in ${elapsed}s`);
-  } else if (hadError && passCount === 0) {
-    setStatus('error', `Error in ${elapsed}s`);
+    setStatus('done', `All ${results.length} passed in ${elapsed}s`);
   } else {
-    setStatus('done', `${passCount}/${results.length} passed in ${elapsed}s`);
+    setStatus('error', `${passCount}/${results.length} passed in ${elapsed}s`);
   }
 
-  // Reset button and restart elapsed for next attempt
-  runBtn.disabled = false;
-  runBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Run';
-  resetElapsed();
-}
-
-async function executePiston(code, input) {
-  const response = await fetch('https://emkc.org/api/v2/piston/execute', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      language: 'java',
-      version: '15.0.2',
-      files: [{ name: 'Solution.java', content: code }],
-      stdin: input,
-      run_timeout: 10000
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error(`API returned ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  // Check for compile errors
-  if (data.compile && data.compile.stderr) {
-    return {
-      output: '',
-      error: data.compile.stderr,
-      exitCode: data.compile.code ?? -1
-    };
-  }
-
-  return {
-    output: data.run?.stdout || '',
-    error: data.run?.stderr || '',
-    exitCode: data.run?.code ?? -1
-  };
+  submitBtn.disabled = false;
+  submitBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg> Submit';
 }
 
 function compareOutput(actual, expected) {
-  const actualLines = actual.trim().split('\n').map(l => l.trim());
-  const expectedLines = expected.trim().split('\n').map(l => l.trim());
-
-  if (actualLines.length !== expectedLines.length) return false;
-  return actualLines.every((line, i) => line === expectedLines[i]);
+  const a = actual.trim().split('\n').map(l => l.trim());
+  const e = expected.trim().split('\n').map(l => l.trim());
+  if (a.length !== e.length) return false;
+  return a.every((line, i) => line === e[i]);
 }
 
 // ============================================================
-//  RENDER FUNCTIONS
+//  RENDER TEST RESULTS
 // ============================================================
-function renderConsole(output, isError) {
-  const pane = document.getElementById('consolePane');
-  if (!output || output.trim() === '') {
-    pane.innerHTML = '<div class="console-placeholder">No output produced</div>';
-  } else {
-    pane.innerHTML = `<pre class="console-output${isError ? ' error' : ''}">${escapeHtml(output)}</pre>`;
-  }
-}
-
 function renderTestResults(results) {
-  const pane = document.getElementById('testsPane');
+  const pane = document.getElementById('resultsPane');
   const passCount = results.filter(r => r.passed).length;
   const total = results.length;
 
-  // Stop elapsed timer and record time
   stopElapsed();
   const timeTaken = elapsedSeconds;
-
-  // Save this attempt to history
   saveAttempt(currentQuestion, passCount, total, timeTaken);
 
-  // Score section with time taken
   let html = `
     <div class="score-section">
       <div class="score-header">
         <span class="score-text" style="color: ${passCount === total ? 'var(--green)' : passCount > 0 ? 'var(--orange)' : 'var(--red)'}">
           ${passCount === total ? 'All Passed!' : `${passCount}/${total} Passed`}
         </span>
-        <span class="score-fraction">${passCount} of ${total} test cases — completed in ${formatElapsed(timeTaken)}</span>
+        <span class="score-fraction">${passCount} of ${total} — ${formatElapsed(timeTaken)}</span>
       </div>
       <div class="score-bar-track">
         <div class="score-bar-fill ${passCount === total ? 'full' : passCount > 0 ? 'partial' : 'none'}" style="width: ${(passCount / total) * 100}%"></div>
       </div>
     </div>`;
 
-  // Individual results
-  results.forEach((r, i) => {
-    const isHidden = r.testCase.hidden;
+  results.forEach((r) => {
     const statusClass = r.passed ? 'pass' : 'fail';
     const checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
     const xSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    const expected = r.testCase.expected.replace(/\\n/g, '\n');
 
     html += `
       <div class="test-result${!r.passed ? ' open' : ''}" onclick="this.classList.toggle('open')">
@@ -2115,36 +1598,24 @@ function renderTestResults(results) {
             <div class="test-status-icon ${statusClass}">${r.passed ? checkSvg : xSvg}</div>
             <span class="test-result-name">${r.testCase.name}</span>
           </div>
-          ${isHidden ? '<span class="test-result-tag">Hidden</span>' : ''}
+          ${r.testCase.hidden ? '<span class="test-result-tag">Hidden</span>' : ''}
         </div>
         <div class="test-result-detail">
           ${!r.passed ? `
             <div class="test-diff">
               <div class="test-diff-col">
                 <div class="test-diff-label expected">Expected</div>
-                <pre class="test-diff-code">${escapeHtml(r.testCase.expected)}</pre>
+                <pre class="test-diff-code">${escapeHtml(expected)}</pre>
               </div>
               <div class="test-diff-col">
                 <div class="test-diff-label actual">Your Output</div>
                 <pre class="test-diff-code">${escapeHtml(r.output.trim() || r.error || '(no output)')}</pre>
               </div>
             </div>` : `
-            <div style="padding:8px 0; color:var(--green); font-size:0.82rem;">
-              Output matches expected result.
-            </div>`}
+            <div style="padding:6px 0; color:var(--green); font-size:0.8rem;">Output matches expected.</div>`}
         </div>
       </div>`;
   });
-
-  // Attempt history section
-  html += `
-    <div class="history-section">
-      <div class="history-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-        Attempt History
-      </div>
-      ${renderHistory(currentQuestion)}
-    </div>`;
 
   pane.innerHTML = html;
 
@@ -2154,16 +1625,17 @@ function renderTestResults(results) {
   countEl.textContent = `${passCount}/${total}`;
   countEl.className = `count ${passCount === total ? 'pass' : 'fail'}`;
 
-  // Switch to tests tab
-  switchTab('tests', document.querySelector('[data-tab="tests"]'));
+  // Switch to results tab
+  switchTab('results', document.querySelector('[data-tab="results"]'));
+  resetElapsed();
 }
 
 function resetOutput() {
-  document.getElementById('consolePane').innerHTML = '<div class="console-placeholder">Run your code to see output here...</div>';
-  document.getElementById('testsPane').innerHTML = '<div class="console-placeholder">Run your code to see test results...</div>';
+  document.getElementById('outputPane').innerHTML = '<div class="console-placeholder">Run your code to see output here...</div>';
+  document.getElementById('resultsPane').innerHTML = '<div class="console-placeholder">Submit your code to see test results...</div>';
   const countEl = document.getElementById('testCount');
   countEl.style.display = 'none';
-  switchTab('console', document.querySelector('[data-tab="console"]'));
+  switchTab('testcases', document.querySelector('[data-tab="testcases"]'));
   setStatus('ready', 'Ready');
 }
 
@@ -2178,13 +1650,11 @@ function switchTab(tabName, btnEl) {
 }
 
 // ============================================================
-//  STATUS INDICATOR
+//  STATUS
 // ============================================================
 function setStatus(state, text) {
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('statusText');
-  dot.className = 'status-dot ' + state;
-  txt.textContent = text;
+  document.getElementById('statusDot').className = 'status-dot ' + state;
+  document.getElementById('statusText').textContent = text;
 }
 
 // ============================================================
@@ -2192,10 +1662,9 @@ function setStatus(state, text) {
 // ============================================================
 function resetCode() {
   if (!editor) return;
-  const q = QUESTIONS[currentQuestion];
-  if (confirm('Reset code to starter template? Your changes will be lost.')) {
-    editor.setValue(q.starterCode);
-    saveCode(currentQuestion, q.starterCode);
+  if (confirm('Reset to starter template? Your changes will be lost.')) {
+    editor.setValue(QUESTIONS[currentQuestion].starterCode);
+    saveCode(currentQuestion, QUESTIONS[currentQuestion].starterCode);
     resetOutput();
   }
 }
@@ -2203,34 +1672,19 @@ function resetCode() {
 // ============================================================
 //  LOCAL STORAGE
 // ============================================================
-function getSavedCode(questionIndex) {
-  try {
-    return localStorage.getItem(`nimbus-ide-q${questionIndex}`);
-  } catch { return null; }
-}
-
-function saveCode(questionIndex, code) {
-  try {
-    localStorage.setItem(`nimbus-ide-q${questionIndex}`, code);
-  } catch {}
-}
+function getSavedCode(qi) { try { return localStorage.getItem(`nimbus-ide-q${qi}`); } catch { return null; } }
+function saveCode(qi, code) { try { localStorage.setItem(`nimbus-ide-q${qi}`, code); } catch {} }
 
 // ============================================================
 //  TIMER
 // ============================================================
 function toggleTimer() {
-  if (timerRunning) {
-    pauseTimer();
-  } else {
-    startTimer();
-  }
+  if (timerRunning) pauseTimer();
+  else startTimer();
 }
-
 function startTimer() {
   const q = QUESTIONS[currentQuestion];
-  if (timerSeconds === 0) {
-    timerSeconds = q.timeMinutes * 60;
-  }
+  if (timerSeconds === 0) timerSeconds = q.timeMinutes * 60;
   timerRunning = true;
   document.getElementById('timerBtn').textContent = 'Pause';
   timerInterval = setInterval(() => {
@@ -2240,198 +1694,91 @@ function startTimer() {
       clearInterval(timerInterval);
       timerRunning = false;
       document.getElementById('timerBtn').textContent = 'Reset';
-      document.getElementById('timerDisplay').classList.remove('running');
       document.getElementById('timerDisplay').classList.add('danger');
     }
   }, 1000);
 }
-
 function pauseTimer() {
   clearInterval(timerInterval);
   timerRunning = false;
   document.getElementById('timerBtn').textContent = 'Resume';
 }
-
 function resetTimer() {
   clearInterval(timerInterval);
   timerRunning = false;
   timerSeconds = 0;
-  const display = document.getElementById('timerDisplay');
-  display.textContent = '--:--';
-  display.className = 'timer-display';
-  document.getElementById('timerBtn').textContent = 'Start Timer';
+  const d = document.getElementById('timerDisplay');
+  d.textContent = '--:--';
+  d.className = 'timer-display';
+  document.getElementById('timerBtn').textContent = 'Timer';
 }
-
 function updateTimerDisplay() {
-  const mins = Math.floor(timerSeconds / 60);
-  const secs = timerSeconds % 60;
-  const display = document.getElementById('timerDisplay');
-  display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-  if (timerSeconds <= 300) { // 5 min warning
-    display.className = 'timer-display danger';
-  } else {
-    display.className = 'timer-display running';
-  }
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  const d = document.getElementById('timerDisplay');
+  d.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  d.className = timerSeconds <= 300 ? 'timer-display danger' : 'timer-display running';
 }
 
 // ============================================================
-//  RESIZE PANEL
-// ============================================================
-function initResize() {
-  const handle = document.getElementById('resizeHandle');
-  const panel = document.getElementById('outputPanel');
-  let startY, startHeight;
-
-  handle.addEventListener('mousedown', (e) => {
-    startY = e.clientY;
-    startHeight = panel.offsetHeight;
-    document.addEventListener('mousemove', onResize);
-    document.addEventListener('mouseup', stopResize);
-    document.body.style.cursor = 'ns-resize';
-    document.body.style.userSelect = 'none';
-  });
-
-  function onResize(e) {
-    const delta = startY - e.clientY;
-    const newHeight = Math.max(120, Math.min(600, startHeight + delta));
-    panel.style.height = newHeight + 'px';
-  }
-
-  function stopResize() {
-    document.removeEventListener('mousemove', onResize);
-    document.removeEventListener('mouseup', stopResize);
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
-  }
-}
-
-// ============================================================
-//  UTILITY
-// ============================================================
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// ============================================================
-//  ELAPSED TIME TRACKER
+//  ELAPSED TIME
 // ============================================================
 function startElapsed() {
   if (elapsedStarted) return;
   elapsedStarted = true;
   elapsedSeconds = 0;
-  elapsedInterval = setInterval(() => {
-    elapsedSeconds++;
-    updateElapsedDisplay();
-  }, 1000);
+  elapsedInterval = setInterval(() => { elapsedSeconds++; updateElapsedDisplay(); }, 1000);
 }
-
-function stopElapsed() {
-  clearInterval(elapsedInterval);
-}
-
+function stopElapsed() { clearInterval(elapsedInterval); }
 function resetElapsed() {
   clearInterval(elapsedInterval);
   elapsedStarted = false;
   elapsedSeconds = 0;
   updateElapsedDisplay();
 }
-
 function updateElapsedDisplay() {
-  const mins = Math.floor(elapsedSeconds / 60);
-  const secs = elapsedSeconds % 60;
-  document.getElementById('elapsedTime').textContent =
-    `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  const m = Math.floor(elapsedSeconds / 60);
+  const s = elapsedSeconds % 60;
+  document.getElementById('elapsedTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
-
-function formatElapsed(totalSeconds) {
-  const mins = Math.floor(totalSeconds / 60);
-  const secs = totalSeconds % 60;
-  if (mins === 0) return `${secs}s`;
-  return `${mins}m ${secs}s`;
+function formatElapsed(t) {
+  const m = Math.floor(t / 60), s = t % 60;
+  return m === 0 ? `${s}s` : `${m}m ${s}s`;
 }
 
 // ============================================================
-//  ATTEMPT HISTORY (LocalStorage)
+//  ATTEMPT HISTORY
 // ============================================================
-function getHistory(questionIndex) {
-  try {
-    const data = localStorage.getItem(`nimbus-ide-history-q${questionIndex}`);
-    return data ? JSON.parse(data) : [];
-  } catch { return []; }
-}
-
-function saveAttempt(questionIndex, passed, total, timeTaken) {
-  const history = getHistory(questionIndex);
-  history.push({
-    date: new Date().toISOString(),
-    passed,
-    total,
-    timeTaken, // in seconds
-    score: Math.round((passed / total) * 100)
-  });
-  // Keep last 20 attempts max
+function getHistory(qi) { try { const d = localStorage.getItem(`nimbus-ide-history-q${qi}`); return d ? JSON.parse(d) : []; } catch { return []; } }
+function saveAttempt(qi, passed, total, timeTaken) {
+  const history = getHistory(qi);
+  history.push({ date: new Date().toISOString(), passed, total, timeTaken, score: Math.round((passed / total) * 100) });
   if (history.length > 20) history.splice(0, history.length - 20);
-  try {
-    localStorage.setItem(`nimbus-ide-history-q${questionIndex}`, JSON.stringify(history));
-  } catch {}
+  try { localStorage.setItem(`nimbus-ide-history-q${qi}`, JSON.stringify(history)); } catch {}
 }
 
-function renderHistory(questionIndex) {
-  const history = getHistory(questionIndex);
-  if (history.length === 0) {
-    return '<div class="no-history">No previous attempts. Run your code to start tracking.</div>';
-  }
-
-  // Find best attempt
-  let bestIdx = 0;
-  history.forEach((h, i) => {
-    if (h.score > history[bestIdx].score || (h.score === history[bestIdx].score && h.timeTaken < history[bestIdx].timeTaken)) {
-      bestIdx = i;
-    }
+// ============================================================
+//  RESIZE
+// ============================================================
+function initResize() {
+  const handle = document.getElementById('resizeHandle');
+  const panel = document.getElementById('outputPanel');
+  let startY, startH;
+  handle.addEventListener('mousedown', (e) => {
+    startY = e.clientY; startH = panel.offsetHeight;
+    document.addEventListener('mousemove', onR);
+    document.addEventListener('mouseup', stopR);
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
   });
-
-  // Show last 5 attempts (most recent first)
-  const recent = history.slice(-5).reverse();
-  let html = `<table class="history-table">
-    <tr><th>#</th><th>Score</th><th>Time Taken</th><th>Date</th></tr>`;
-
-  recent.forEach((h, i) => {
-    const attemptNum = history.length - i;
-    const isBest = (history.length - 1 - i) === bestIdx;
-    const pillClass = h.score === 100 ? 'full' : h.score > 0 ? 'partial' : 'zero';
-    const dateStr = new Date(h.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-    html += `<tr${isBest ? ' class="best"' : ''}>
-      <td>${attemptNum}${isBest ? ' ★' : ''}</td>
-      <td><span class="score-pill ${pillClass}">${h.passed}/${h.total}</span></td>
-      <td>${formatElapsed(h.timeTaken)}</td>
-      <td>${dateStr}</td>
-    </tr>`;
-  });
-  html += '</table>';
-
-  // Improvement indicator (compare last two)
-  if (history.length >= 2) {
-    const latest = history[history.length - 1];
-    const prev = history[history.length - 2];
-    const scoreDiff = latest.score - prev.score;
-    const timeDiff = prev.timeTaken - latest.timeTaken;
-
-    if (scoreDiff > 0) {
-      html += `<div class="history-improvement">↑ Score improved by ${scoreDiff}% from previous attempt</div>`;
-    } else if (scoreDiff < 0) {
-      html += `<div class="history-improvement worse">↓ Score dropped by ${Math.abs(scoreDiff)}% from previous attempt</div>`;
-    } else if (timeDiff > 0) {
-      html += `<div class="history-improvement">⚡ ${formatElapsed(timeDiff)} faster than previous attempt (same score)</div>`;
-    } else if (timeDiff < 0) {
-      html += `<div class="history-improvement worse">⏱ ${formatElapsed(Math.abs(timeDiff))} slower than previous attempt</div>`;
-    }
-  }
-
-  return html;
+  function onR(e) { panel.style.height = Math.max(120, Math.min(600, startH + (startY - e.clientY))) + 'px'; }
+  function stopR() { document.removeEventListener('mousemove', onR); document.removeEventListener('mouseup', stopR); document.body.style.cursor = ''; document.body.style.userSelect = ''; }
 }
+
+// ============================================================
+//  UTILITY
+// ============================================================
+function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
   </script>
 </body>
 </html>
