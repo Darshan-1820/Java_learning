@@ -748,7 +748,7 @@
     <div class="header-right">
       <div class="api-status" id="apiStatus" onclick="toggleEngine()" title="Click to switch execution engine">
         <span class="dot unknown" id="apiDot"></span>
-        <span id="apiLabel">Piston API (Free)</span>
+        <span id="apiLabel">Wandbox (Free)</span>
       </div>
       <a href="../java-core.html" class="header-link">Back to Java Core</a>
       <a href="../index.html" class="header-link">Home</a>
@@ -1398,9 +1398,9 @@ let elapsedSeconds = 0;
 let elapsedStarted = false;
 
 // ============================================================
-//  API ENGINE — Piston (free, no key) primary, JDoodle fallback
+//  API ENGINE — Wandbox (free, no key) primary, JDoodle fallback
 // ============================================================
-let apiEngine = 'piston'; // 'piston' or 'jdoodle'
+let apiEngine = 'wandbox'; // 'wandbox' or 'jdoodle'
 function showApiModal() { }
 function closeApiModal() { }
 
@@ -1408,11 +1408,11 @@ function updateApiStatus() {
   const dot = document.getElementById('apiDot');
   const label = document.getElementById('apiLabel');
   dot.className = 'dot connected';
-  label.textContent = apiEngine === 'piston' ? 'Piston API (Free)' : 'JDoodle';
+  label.textContent = apiEngine === 'wandbox' ? 'Wandbox (Free)' : 'JDoodle';
 }
 
 function toggleEngine() {
-  apiEngine = apiEngine === 'piston' ? 'jdoodle' : 'piston';
+  apiEngine = apiEngine === 'wandbox' ? 'jdoodle' : 'wandbox';
   updateApiStatus();
 }
 
@@ -1641,26 +1641,27 @@ function loadSampleInput() {
 // ============================================================
 //  CODE EXECUTION — Piston (free, no key) + JDoodle fallback
 // ============================================================
-async function executePiston(code, input) {
-  const res = await fetch('https://emkc.org/api/v2/piston/execute', {
+async function executeWandbox(code, input) {
+  // Wandbox names file prog.java, so strip 'public' from 'public class Solution'
+  const fixedCode = code.replace(/public\s+class\s+Solution/g, 'class Solution');
+
+  const res = await fetch('https://wandbox.org/api/compile.json', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      language: 'java',
-      version: '15.0.2',
-      files: [{ name: 'Solution.java', content: code }],
+      code: fixedCode,
+      compiler: 'openjdk-jdk-22+36',
       stdin: input,
-      compile_timeout: 15000,
-      run_timeout: 10000
+      save: false
     })
   });
 
-  if (!res.ok) throw new Error(`Piston error (${res.status})`);
+  if (!res.ok) throw new Error(`Wandbox error (${res.status})`);
   const data = await res.json();
 
-  const compileErr = data.compile && data.compile.stderr ? data.compile.stderr : '';
-  const runOut = data.run ? (data.run.stdout || '') : '';
-  const runErr = data.run ? (data.run.stderr || '') : '';
+  const compileErr = data.compiler_error || '';
+  const runOut = data.program_output || '';
+  const runErr = data.program_error || '';
 
   return {
     stdout: compileErr ? '' : runOut,
@@ -1701,18 +1702,18 @@ async function executeJDoodle(code, input) {
 
 async function executeCode(code, input) {
   try {
-    if (apiEngine === 'piston') return await executePiston(code, input);
+    if (apiEngine === 'wandbox') return await executeWandbox(code, input);
     else return await executeJDoodle(code, input);
   } catch (err) {
     // Auto-fallback: if primary fails, try the other
-    const fallback = apiEngine === 'piston' ? 'jdoodle' : 'piston';
+    const fallback = apiEngine === 'wandbox' ? 'jdoodle' : 'wandbox';
     try {
-      const result = fallback === 'piston' ? await executePiston(code, input) : await executeJDoodle(code, input);
+      const result = fallback === 'wandbox' ? await executeWandbox(code, input) : await executeJDoodle(code, input);
       apiEngine = fallback;
       updateApiStatus();
       return result;
     } catch {
-      throw err; // both failed, throw original
+      throw err;
     }
   }
 }
