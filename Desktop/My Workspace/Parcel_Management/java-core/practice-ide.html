@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice IDE | Nimbus Java Core</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #1e1e1e;
+      --bg-secondary: #252526;
+      --bg-card: #2d2d2d;
+      --bg-card-hover: #333333;
+      --bg-surface: #1b1b1b;
+      --text-primary: #e8e8e8;
+      --text-secondary: #a0a0a0;
+      --text-muted: #6b6b6b;
+      --accent: #1ba94c;
+      --accent-hover: #149140;
+      --accent-glow: rgba(27, 169, 76, 0.12);
+      --green: #1ba94c;
+      --green-light: #2ec866;
+      --orange: #f5a623;
+      --purple: #a855f7;
+      --red: #e74c3c;
+      --cyan: #06b6d4;
+      --blue: #4a90d9;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --radius: 4px;
+      --radius-lg: 6px;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== HEADER (HackerRank style) ===== */
+    .header {
+      background: #0b141e;
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 20px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo svg { width: 26px; height: 26px; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1rem; color: var(--text-primary); }
+    .logo-divider { width: 1px; height: 24px; background: var(--border-strong); }
+    .header-title { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+    .header-right { display: flex; gap: 8px; align-items: center; }
+    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 5px 10px; border-radius: 4px; transition: all 0.2s; }
+    .header-link:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+    .header-link.active { color: var(--green); }
+    .api-status { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--text-muted); padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); cursor: pointer; }
+    .api-status .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .api-status .dot.connected { background: var(--green); }
+    .api-status .dot.disconnected { background: var(--red); }
+    .api-status .dot.unknown { background: var(--orange); }
+
+    /* ===== IDE LAYOUT ===== */
+    .ide-container {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    .problem-panel { flex: 0 0 40%; min-width: 280px; }
+    .right-panel { flex: 1; min-width: 360px; }
+
+    /* Horizontal resize handle between panels */
+    .panel-resize-handle {
+      width: 5px;
+      cursor: col-resize;
+      background: var(--border);
+      position: relative;
+      flex-shrink: 0;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    .panel-resize-handle:hover,
+    .panel-resize-handle.active {
+      background: var(--green);
+    }
+    .panel-resize-handle::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 3px;
+      height: 32px;
+      border-left: 1px solid var(--text-muted);
+      border-right: 1px solid var(--text-muted);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .panel-resize-handle:hover::after,
+    .panel-resize-handle.active::after {
+      opacity: 1;
+    }
+
+    /* ===== LEFT PANEL: PROBLEM ===== */
+    .problem-panel {
+      background: var(--bg-secondary);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .problem-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+    }
+    .problem-tab {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      background: none;
+      border-top: none; border-left: none; border-right: none;
+    }
+    .problem-tab:hover { color: var(--text-secondary); }
+    .problem-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+    .problem-toolbar {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      background: var(--bg-surface);
+    }
+    .question-select {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+    .question-select option { background: var(--bg-card); color: var(--text-primary); }
+    .difficulty-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .difficulty-badge.major { background: rgba(231, 76, 60, 0.12); color: var(--red); border: 1px solid rgba(231,76,60,0.2); }
+    .difficulty-badge.minor { background: rgba(27, 169, 76, 0.12); color: var(--green); border: 1px solid rgba(27,169,76,0.2); }
+
+    .problem-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .problem-body::-webkit-scrollbar { width: 6px; }
+    .problem-body::-webkit-scrollbar-track { background: transparent; }
+    .problem-body::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+    .problem-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+    .problem-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .problem-desc p { margin-bottom: 10px; }
+    .problem-desc strong { color: var(--text-primary); }
+    .problem-desc code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em;
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--green-light);
+    }
+    .problem-desc ul, .problem-desc ol { padding-left: 20px; margin: 8px 0; }
+    .problem-desc li { margin-bottom: 4px; }
+    .problem-desc pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: rgba(0,0,0,0.3);
+      padding: 10px 14px;
+      border-radius: 4px;
+      color: var(--text-secondary);
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+
+    .sample-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 20px 0 10px;
+    }
+    .sample-case {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .sample-case-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.25);
+      border-bottom: 1px solid var(--border);
+    }
+    .sample-case-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .sample-col { padding: 10px 12px; }
+    .sample-col:first-child { border-right: 1px solid var(--border); }
+    .sample-col-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .sample-col pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      white-space: pre;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ===== RIGHT PANEL ===== */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ===== EDITOR TOOLBAR ===== */
+    .editor-toolbar {
+      padding: 6px 16px;
+      background: #0b141e;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .editor-toolbar-left { display: flex; align-items: center; gap: 12px; }
+    .lang-selector {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 4px;
+      outline: none;
+      cursor: default;
+    }
+    .editor-file-tab {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .editor-file-tab .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .editor-toolbar-right { display: flex; gap: 8px; align-items: center; }
+    .timer-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 55px;
+      text-align: center;
+    }
+    .timer-display.running { color: var(--orange); }
+    .timer-display.danger { color: var(--red); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .timer-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .timer-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+    /* ===== EDITOR ===== */
+    .editor-area {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+    }
+    #editor-container { width: 100%; height: 100%; }
+
+    /* ===== OUTPUT PANEL ===== */
+    .output-panel {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-strong);
+      display: flex;
+      flex-direction: column;
+      height: 260px;
+      min-height: 120px;
+      flex-shrink: 0;
+    }
+    .output-tabs-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+      padding-right: 12px;
+    }
+    .output-tabs { display: flex; }
+    .output-tab {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 10px 16px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      background: none;
+      border-top: none; border-left: none; border-right: none;
+    }
+    .output-tab:hover { color: var(--text-secondary); }
+    .output-tab.active { color: var(--green); border-bottom-color: var(--green); }
+    .output-tab .count {
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 10px;
+      margin-left: 6px;
+      font-weight: 700;
+    }
+    .output-tab .count.pass { background: rgba(27, 169, 76, 0.15); color: var(--green); }
+    .output-tab .count.fail { background: rgba(231, 76, 60, 0.15); color: var(--red); }
+    .output-expand-btn {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .output-expand-btn:hover { color: var(--text-primary); }
+
+    .output-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+    }
+    .output-content::-webkit-scrollbar { width: 6px; }
+    .output-content::-webkit-scrollbar-track { background: transparent; }
+    .output-content::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Console */
+    .console-output {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.6;
+    }
+    .console-output.error { color: var(--red); }
+    .console-placeholder {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-style: italic;
+    }
+
+    /* Custom Input */
+    .custom-input-area {
+      width: 100%;
+      min-height: 80px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      padding: 10px 12px;
+      resize: vertical;
+      outline: none;
+      line-height: 1.5;
+    }
+    .custom-input-area:focus { border-color: var(--green); }
+    .custom-input-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .custom-input-toggle {
+      font-size: 0.68rem;
+      color: var(--blue);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Test results */
+    .test-result {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .test-result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .test-result-header:hover { background: var(--bg-card-hover); }
+    .test-result-left { display: flex; align-items: center; gap: 8px; }
+    .test-status-icon {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .test-status-icon.pass { background: rgba(27, 169, 76, 0.15); color: var(--green); }
+    .test-status-icon.fail { background: rgba(231, 76, 60, 0.15); color: var(--red); }
+    .test-status-icon svg { width: 11px; height: 11px; }
+    .test-result-name { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+    .test-result-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; font-weight: 600;
+      color: var(--text-muted);
+      padding: 2px 7px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 3px;
+    }
+    .test-result-detail {
+      display: none;
+      padding: 0 12px 10px;
+      border-top: 1px solid var(--border);
+    }
+    .test-result.open .test-result-detail { display: block; }
+    .test-diff {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .test-diff-col {
+      background: var(--bg-surface);
+      border-radius: 4px;
+      padding: 8px 10px;
+      overflow-x: auto;
+    }
+    .test-diff-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .test-diff-label.expected { color: var(--green); }
+    .test-diff-label.actual { color: var(--red); }
+    .test-diff-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    /* Score bar */
+    .score-section { margin-bottom: 14px; }
+    .score-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+    .score-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; }
+    .score-fraction { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); }
+    .score-bar-track { height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
+    .score-bar-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 0.5s ease, background 0.3s;
+      width: 0%;
+    }
+    .score-bar-fill.full { background: var(--green); }
+    .score-bar-fill.partial { background: var(--orange); }
+    .score-bar-fill.none { background: var(--red); }
+
+    /* ===== BOTTOM ACTION BAR (HackerRank style) ===== */
+    .action-bar {
+      background: #0b141e;
+      border-top: 1px solid var(--border);
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .action-left { display: flex; align-items: center; gap: 12px; }
+    .action-center { display: flex; align-items: center; gap: 10px; }
+    .action-right { display: flex; align-items: center; gap: 12px; }
+
+    .btn-run {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 4px;
+      border: 1px solid var(--border-strong);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-run:hover { background: rgba(255,255,255,0.05); border-color: var(--text-secondary); }
+    .btn-run:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-run svg { width: 12px; height: 12px; }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--green);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 8px 22px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-submit:hover { background: var(--accent-hover); }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-submit svg { width: 13px; height: 13px; }
+
+    .btn-reset {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-reset:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+    .btn-reset svg { width: 12px; height: 12px; }
+
+    .status-indicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); }
+    .status-dot.ready { background: var(--green); }
+    .status-dot.running { background: var(--orange); animation: pulse 0.8s infinite; }
+    .status-dot.done { background: var(--blue); }
+    .status-dot.error { background: var(--red); }
+
+    .question-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .shortcut-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      padding: 3px 7px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+    .elapsed-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .elapsed-display svg { width: 12px; height: 12px; opacity: 0.6; }
+
+    /* ===== ATTEMPT HISTORY ===== */
+    .history-section { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .history-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .history-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+    .history-table th {
+      text-align: left; padding: 5px 8px;
+      color: var(--text-muted); font-weight: 600;
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
+    }
+    .history-table td { padding: 5px 8px; color: var(--text-secondary); border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .history-table tr:last-child td { border-bottom: none; }
+    .history-table tr.best td { color: var(--green); font-weight: 600; }
+    .score-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight: 700;
+      padding: 2px 7px; border-radius: 3px;
+      display: inline-block;
+    }
+    .score-pill.full { background: rgba(27,169,76,0.15); color: var(--green); }
+    .score-pill.partial { background: rgba(245,166,35,0.15); color: var(--orange); }
+    .score-pill.zero { background: rgba(231,76,60,0.15); color: var(--red); }
+    .no-history { font-size: 0.76rem; color: var(--text-muted); font-style: italic; }
+
+
+    /* ===== SPINNER ===== */
+    .spinner {
+      display: inline-block; width: 12px; height: 12px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== RESIZE HANDLE ===== */
+    .resize-handle {
+      height: 4px; background: transparent;
+      cursor: ns-resize; position: relative; flex-shrink: 0;
+    }
+    .resize-handle::after {
+      content: '';
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px; height: 3px;
+      background: var(--text-muted);
+      border-radius: 2px; opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .resize-handle:hover::after { opacity: 0.4; }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <a href="../index.html" class="logo">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#1ba94c"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <span class="logo-text">nimbus</span>
+      </a>
+      <span class="logo-divider"></span>
+      <span class="header-title">Java Core Practice IDE</span>
+    </div>
+    <div class="header-right">
+      <div class="api-status" id="apiStatus" onclick="showApiModal()">
+        <span class="dot unknown" id="apiDot"></span>
+        <span id="apiLabel">Setup API</span>
+      </div>
+      <a href="../java-core.html" class="header-link">Back to Java Core</a>
+      <a href="../index.html" class="header-link">Home</a>
+    </div>
+  </header>
+
+  <!-- IDE CONTAINER -->
+  <div class="ide-container">
+
+    <!-- LEFT: PROBLEM PANEL -->
+    <div class="problem-panel">
+      <div class="problem-tabs">
+        <button class="problem-tab active" data-ptab="problem" onclick="switchProblemTab('problem', this)">Problem</button>
+        <button class="problem-tab" data-ptab="submissions" onclick="switchProblemTab('submissions', this)">Submissions</button>
+      </div>
+      <div class="problem-toolbar">
+        <select class="question-select" id="questionSelect"></select>
+        <span class="difficulty-badge" id="diffBadge">Major</span>
+      </div>
+      <div class="problem-body" id="problemBody">
+        <div id="problemPane"></div>
+        <div id="submissionsPane" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- HORIZONTAL RESIZE HANDLE -->
+    <div class="panel-resize-handle" id="panelResizeHandle"></div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <!-- Editor Toolbar -->
+      <div class="editor-toolbar">
+        <div class="editor-toolbar-left">
+          <select class="lang-selector" disabled>
+            <option>Java 17</option>
+          </select>
+          <div class="editor-file-tab">
+            <span class="dot"></span>
+            Solution.java
+          </div>
+        </div>
+        <div class="editor-toolbar-right">
+          <span class="timer-display" id="timerDisplay">--:--</span>
+          <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">Timer</button>
+        </div>
+      </div>
+
+      <!-- Editor -->
+      <div class="editor-area">
+        <div id="editor-container"></div>
+      </div>
+
+      <!-- Output Panel -->
+      <div class="output-panel" id="outputPanel">
+        <div class="resize-handle" id="resizeHandle"></div>
+        <div class="output-tabs-row">
+          <div class="output-tabs">
+            <button class="output-tab active" data-tab="testcases" onclick="switchTab('testcases', this)">Test Cases</button>
+            <button class="output-tab" data-tab="output" onclick="switchTab('output', this)">Output</button>
+            <button class="output-tab" data-tab="results" onclick="switchTab('results', this)">
+              Results <span class="count" id="testCount" style="display:none;"></span>
+            </button>
+          </div>
+        </div>
+        <div class="output-content">
+          <div class="tab-pane active" id="testcasesPane">
+            <div class="custom-input-label">
+              Custom Input
+              <button class="custom-input-toggle" onclick="loadSampleInput()">Load Sample</button>
+            </div>
+            <textarea class="custom-input-area" id="customInput" placeholder="Enter your test input here..."></textarea>
+          </div>
+          <div class="tab-pane" id="outputPane">
+            <div class="console-placeholder">Run your code to see output here...</div>
+          </div>
+          <div class="tab-pane" id="resultsPane">
+            <div class="console-placeholder">Submit your code to see test results...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ACTION BAR -->
+  <div class="action-bar">
+    <div class="action-left">
+      <button class="btn-reset" onclick="resetCode()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Reset
+      </button>
+      <div class="status-indicator">
+        <span class="status-dot ready" id="statusDot"></span>
+        <span id="statusText">Ready</span>
+      </div>
+    </div>
+    <div class="action-center">
+      <div class="elapsed-display" id="elapsedDisplay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span id="elapsedTime">00:00</span>
+      </div>
+      <span class="question-counter" id="questionCounter">Q1 / 11</span>
+      <span class="shortcut-hint">Ctrl+Enter = Run</span>
+    </div>
+    <div class="action-right">
+      <button class="btn-run" id="runBtn" onclick="runCode()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Run Code
+      </button>
+      <button class="btn-submit" id="submitBtn" onclick="submitCode()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        Submit
+      </button>
+    </div>
+  </div>
+
+  <!-- Code execution handled by Netlify Function (server-side) -->
+
+  <!-- MONACO EDITOR CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.min.js"></script>
+  <script>
+// ============================================================
+//  QUESTIONS DATA
+// ============================================================
+const QUESTIONS = [
+  {
+    id: 1,
+    title: "Investors",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p>Create a class named <strong>Investor</strong> with the following attributes:</p>
+<p><strong>id</strong> - int; to capture investor ID.<br>
+<strong>name</strong> - String; to capture investor name.<br>
+<strong>gains</strong> - double; to capture gains accumulated.</p>
+<p>Define required getters, setters and parameterized constructor.</p>
+<p>Create a class named <strong>Solution</strong>, and define the following two static methods:</p>
+<p><strong>1. averageOfPositiveGains</strong><br>
+This method takes Collection of Investors and returns the average of positive gains to the main method.</p>
+<p><strong>2. negativeGainsInvestorNames</strong><br>
+This method takes collection of Investor objects and returns Collection of Investor objects with negative gains to the main method.</p>
+<p>The above two static methods should be called from main method.</p>
+<p><strong>For averageOfPositiveGains:</strong><br>
+The main method will print returned value as it is, if the returned value is greater than zero; else, the main method should print "No such Investors found".</p>
+<p><strong>For negativeGainsInvestorNames:</strong><br>
+The main method should print the id, name, and gains of the Investor object with negative gains. If no investor found with negative gains then the main method should print "No Investors found".</p>
+<p><strong>Note:</strong><br>
+1. Collection should be in insertion order.<br>
+2. Refer sample testcases for input and output.</p>
+<p><strong>Read Note:</strong><br>
+1. Read number of Investor objects to be created.<br>
+2. Read id, name and gains for each Investor object</p>
+    `,
+    starterCode: `import java.util.*;
+
+class Investor {
+    // TODO: Add fields, constructor, getters, setters
+}
+
+public class Solution {
+
+    public static double averageOfPositiveGains(Collection<Investor> investors) {
+        // TODO: Implement
+        return 0;
+    }
+
+    public static Collection<Investor> negativeGainsInvestorNames(Collection<Investor> investors) {
+        // TODO: Implement
+        return new ArrayList<>();
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read input, call methods, print output
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `4\n1001\nSimon\n-50000\n1002\nDanny\n-30000\n1003\nKiran\n-40000\n1004\nDanny\n-50000`, expected: `No such Investors found\n1001\nSimon\n-50000.0\n1002\nDanny\n-30000.0\n1003\nKiran\n-40000.0\n1004\nDanny\n-50000.0` },
+      { name: "Test Case 2", hidden: false, input: `3\n101\nKiran\n40000\n102\nSamuel\n40000\n103\nJoe\n40000`, expected: `40000.0\nNo Investors found` },
+      { name: "Hidden Test Case 1", hidden: true, input: `4\n1\nAlice\n50000\n2\nBob\n-20000\n3\nCharlie\n30000\n4\nDave\n-10000`, expected: `40000.0\n2\nBob\n-20000.0\n4\nDave\n-10000.0` }
+    ]
+  },
+  {
+    id: 2,
+    title: "OddEven Exception",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p>Create a <strong>OddEvenException</strong> class.</p>
+<p>Create Solution class with main method. In the main read a number of integers to be stored into collection. The main method will adds up odd integers and multiplies the even numbers. And if in case sum of odd integers is greater than multiplied even integers, raise exception with message as "Sum is greater", else print multiplied value.</p>
+    `,
+    starterCode: `import java.util.*;
+
+class OddEvenException extends Exception {
+    // TODO: Implement
+}
+
+public class Solution {
+    public static void main(String[] args) {
+        // TODO: Read integers, sum odds, multiply evens
+        // If sum of odds > product of evens, throw OddEvenException
+        // Else print product
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `5\n5\n4\n2\n13\n8`, expected: `64` },
+      { name: "Test Case 2", hidden: false, input: `3\n2\n5\n3`, expected: `OddEvenException: Sum is greater` },
+      { name: "Hidden Test Case 1", hidden: true, input: `4\n1\n2\n3\n4`, expected: `8` }
+    ]
+  },
+  {
+    id: 3,
+    title: "CountryLeague Sponsors",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p><strong>Cricketer:</strong><br>
+CricketerId<br>
+CricketerName<br>
+CricketerAge<br>
+CricketerGender<br>
+List&lt;Statistics&gt;</p>
+<p><strong>Statistics:</strong><br>
+Rank<br>
+LeagueName<br>
+PerformanceAverage<br>
+CountryName</p>
+<p>Now identify the relationship with the above business objects and construct a pool of Cricketer objects for World of Statistics.</p>
+<p>Create a business class (<strong>Solution.java</strong>) and implement the following functionalities.</p>
+<p><strong>findCricketerByLeagueName method:</strong><br>
+This method will take a collection of <em>Cricketer (Array or List)</em>, and a <em>LeagueName</em> as input. The method searches the Cricketer by Statistics and print Cricketer name if the <em>Leaguename</em> is available, else print the message "No Cricketer Found"</p>
+<p><strong>findTotalOfPerfromanceAverageByCountryName method:</strong><br>
+This method will take a list of Cricketer and Country name as input parameters. It should return the TotalPerformance of all the Statistics with same CountryName else return null if not found any and print "No Statistics are available With the Country : " and Country name.</p>
+<p>Create a demo class (LibraryDemo.java), write a main() method to read the values of the available members and their Statistics. Invoke the above with sample data and test the functionalities.</p>
+<p><strong>Note:</strong><br>
+All String comparison needs to be <em>case in-sensitive</em><br>
+You can use/refer the below given sample input and output to verify your solution.</p>
+<p><strong>Sample Input (below) description:</strong><br>
+1. First read the number of Cricketer objects to be added to the array/list.<br>
+2. Next read the attributes for Cricketer object in the mentioned sequence.<br>
+3. Next read the number of Statistics objects to be mapped for each Cricketer<br>
+4. Read the attributes for each Statistics object and this should be repeated for the number of Statistics objects to be created.<br>
+5. The above steps (2 to 4) is repeated for number of Cricketer objects given in the first line of input.<br>
+6. Next, read the parameter to be passed to the respective method.</p>
+    `,
+    starterCode: `import java.util.*;
+
+class Statistics {
+    // TODO: rank, leagueName, performanceAverage, countryName
+}
+
+class Cricketer {
+    // TODO: cricketerId, cricketerName, cricketerAge, cricketerGender, List<Statistics>
+}
+
+public class Solution {
+
+    public static void findCricketerByLeagueName(List<Cricketer> cricketers, String leagueName) {
+        // TODO: Implement
+    }
+
+    public static Double findTotalOfPerformanceAverageByCountryName(List<Cricketer> cricketers, String countryName) {
+        // TODO: Implement
+        return null;
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read input, call methods
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `5\n100\nTravisHead\n35\nmale\n1\n1\nBigBashLeague\n67.0\nAustralia\n101\nRohitSharma\n37\nMale\n1\n8\nBigBashLeague\n52.0\nAustralia\n102\nRickyPonting\n41\nMale\n0\n103\nViratKohli\n32\nMale\n2\n5\nBigBashLeague\n59.0\nAustralia\n1\nIndianPremierLeague\n87.0\nIndia\n104\nSmritiMandana\n27\nFemale\n2\n17\nIndianPremierLeague\n44.0\nIndia\n6\nAus-IndiaCollabLeague\n36.0\nAustralia\nBigBashLeague\nAustralia`, expected: `TravisHead\nRohitSharma\nViratKohli\nTotal PerformanceAverage Australia : 214.0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\n100\nPlayerA\n25\nMale\n1\n1\nIPL\n50.0\nIndia\n101\nPlayerB\n30\nMale\n1\n2\nBBL\n60.0\nAustralia\nT20WorldCup\nEngland`, expected: `No Cricketer Found\nNo Statistics are available With the Country : England` }
+    ]
+  },
+  {
+    id: 4,
+    title: "Sum of Digits",
+    difficulty: "minor",
+    timeMinutes: 15,
+    description: `
+<p>Write a java program to find the sum of digits of each element in an array of integers.<br>
+The solution class should be implemented with the main method.</p>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>The program should read the size of integer array.</li>
+<li>It should then calculate the sum of the digits of each element in the array.</li>
+<li>Assume there are valid values in array.</li>
+</ul>
+    `,
+    starterCode: `import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        // TODO: Read array, print sum of digits of each element
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `5\n101\n202\n303\n404\n505`, expected: `2\n4\n6\n8\n10` },
+      { name: "Test Case 2", hidden: false, input: `3\n111\n0\n000`, expected: `3\n0\n0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `4\n999\n1\n10\n100`, expected: `27\n1\n1\n1` }
+    ]
+  },
+  {
+    id: 5,
+    title: "Author-Book BookStore",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p>Create below Classes and attributes.</p>
+<p><strong>Author</strong></p>
+<p>authorId: Integer<br>
+authorName: String</p>
+<p><strong>Book</strong></p>
+<p>bookId: Integer<br>
+title: String<br>
+genre: String<br>
+price: double<br>
+author: Author</p>
+<p>Create a business class and implement the following functionalities:</p>
+<p><strong>getBooksBelongingToAGenre:</strong><br>
+-This method will take a list of Book and genre as input parameters.<br>
+-It should find all the books belonging to the input genre and should return the list of books matching the genre.<br>
+-If no matching genre is found, print an error message "Genre is not available in the list"</p>
+<p><strong>calculateDiscountedPrice:</strong><br>
+-This method will take a list of Book, genre and discount percentage as input parameters.<br>
+-It should find the books matching the genre and apply the discount to the book.<br>
+-It should return list of books matching the genre after applying the discount. The output should be printed followed by the below text.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"Discounted &lt;genre&gt; Books:"<br>
+-If no matching genre is found, print an error message "Discounted books are unavailable in the given genre."</p>
+<p>Discounted Price= Price-(Price * discount%)</p>
+<p>Refer the sample output for more clarity.</p>
+<p><strong>Notes</strong><br>
+&bull; All string comparisons need to be case-insensitive.<br>
+&bull; Assume an author has written only one book.</p>
+<p><strong>Sample Input and Output</strong><br>
+1. First, read the number of Author objects to be added to the array/list.<br>
+2. Next, read the attributes for each Author object in the mentioned sequence.<br>
+3. Read the attributes for each Book object<br>
+4. Repeat steps 2 to 3 for the number of Author objects given in the first line of input.<br>
+5. Next, read the parameters to be passed to the respective methods.</p>
+    `,
+    starterCode: `import java.util.*;
+
+class Author {
+    // TODO: authorId, authorName
+}
+
+class Book {
+    // TODO: bookId, title, genre, price, author
+}
+
+public class Solution {
+
+    public static List<Book> getBooksBelongingToAGenre(List<Book> books, String genre) {
+        // TODO: Implement
+        return new ArrayList<>();
+    }
+
+    public static List<Book> calculateDiscountedPrice(List<Book> books, String genre, int discount) {
+        // TODO: Implement
+        return new ArrayList<>();
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read input, call methods, print output
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `5\n101\nAgatha Christie\n11\nMurder on the Orient Express\nCrime\n20.00\n102\nArthur Conan Doyle\n12\nThe Hound of the Baskervilles\nCrime\n25.00\n103\nStephen Edwin King\n13\nA Memoir of the Craft\nHorror\n40.00\n104\nClayton Emery\n14\nThe Burning Goddess\nFantasy\n30.00\n105\nTrisha Ashley\n15\nWedding Tiers\nFantasy\n35.00\nCrime\nFantasy\n20`, expected: `AuthorName: Agatha Christie, Title: Murder on the Orient Express\nAuthorName: Arthur Conan Doyle, Title: The Hound of the Baskervilles\nDiscounted Fantasy Books:\nAuthorName: Clayton Emery, Title: The Burning Goddess, Updated Price: 24.0\nAuthorName: Trisha Ashley, Title: Wedding Tiers, Updated Price: 28.0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\n101\nAuthor1\n11\nBook1\nCrime\n20.00\n102\nAuthor2\n12\nBook2\nHorror\n30.00\nRomance\nSciFi\n10`, expected: `Genre is not available in the list\nDiscounted books are unavailable in the given genre.` }
+    ]
+  },
+  {
+    id: 6,
+    title: "Minor Calculation of Area-Perimeter of polygons",
+    difficulty: "minor",
+    timeMinutes: 15,
+    description: `
+<p>Create a class Solution with the name AreaCalculation. This method will return area and perimeter based on the input we given as Length and breadth [the values are in meters] of a rectangle. For calculating the area and perimeter you can refer the formula below.</p>
+<p>Please look at the following example for better understanding:<br>
+Length = 5<br>
+Breadth = 10<br>
+Area = Length*Breadth= 5*10 =50 sq.m.<br>
+Perimeter = 2(Length+Breadth) =2(5+10) =30 m.</p>
+<p><strong>Please look at the sample input and output for better understanding:</strong><br>
+<strong>Note:</strong><br>
+1. First line will be Length of the Rectangle<br>
+2. Second line will be Breadth of the Rectangle.</p>
+    `,
+    starterCode: `import java.util.Scanner;
+
+public class Solution {
+    public static void AreaCalculation(int length, int breadth) {
+        // TODO: Calculate and print area (sq.m) and perimeter (m)
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read length and breadth, call AreaCalculation
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `5\n10`, expected: `50 sq.m\n30 m` },
+      { name: "Test Case 2", hidden: false, input: `6\n5`, expected: `30 sq.m\n22 m` },
+      { name: "Hidden Test Case 1", hidden: true, input: `1\n1`, expected: `1 sq.m\n4 m` }
+    ]
+  },
+  {
+    id: 7,
+    title: "Mobile Brand Service",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p><strong>Scenario:</strong><br>
+You are tasked with creating a Java program that manages the details of multiple mobile brands and their corresponding mobile models. The program will allow users to perform the following tasks:<br>
+1. Calculate the average price of mobiles for each brand and display it. If their average cannot be determined, then appropriate exceptions should be thrown.<br>
+2. Find and display the details of mobiles whose storage capacity lies within a user-defined range (including the provided range). If no mobiles meet the criteria or the range provided is invalid, exceptions should be thrown.</p>
+<p><strong>Class Structure:</strong></p>
+<p><strong>1. Class: Brand</strong><br>
+&nbsp;&nbsp;Attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>brandId (integer):</strong> Unique ID for the brand.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>brandName (string):</strong> Name of the brand.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>mobileList (list of Mobile objects):</strong> List of mobiles under the brand.</p>
+<p><strong>2. Class: Mobile</strong><br>
+&nbsp;&nbsp;Attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>modelNumber (integer):</strong> Unique model number.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>modelName (string):</strong> Name of the mobile model.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>price (double):</strong> Price of the mobile.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>storageCapacity (integer):</strong> Storage capacity of the mobile in GB.</p>
+<p><strong>Mobile Service:</strong></p>
+<p><strong>a. calculateAveragePrice(List&lt;Brand&gt; brands)</strong><br>
+This method will calculate the average price of mobiles for each brand and return a map of brand names with their corresponding average mobile price. If average cannot be determined, then throw custom exception (<strong>AverageCannotBeCalculatedException</strong>) with message "Average cannot be calculated".</p>
+<p><strong>b. findMobilesInStorageRange(List&lt;Brand&gt; brands, int minStorage, int maxStorage)</strong><br>
+Returns a list of mobile details along with the brand name for mobiles that fall within the given storage capacity range. If no mobile found, then throw custom exception (<strong>NoMobileDetailsFoundException</strong>) with message "No mobile found".</p>
+<p><strong>Main Method:</strong></p>
+<p><strong>1. Input from the user:</strong><br>
+&nbsp;&nbsp;1.1 Number of brands.<br>
+&nbsp;&nbsp;1.2 For each brand: Brand details (brand ID, brand name, number of mobiles under the brand).<br>
+&nbsp;&nbsp;1.3 For each mobile: Mobile details (model number, model name, price, storage capacity).<br>
+&nbsp;&nbsp;1.4 Range of inputs which need to be passed as arguments</p>
+<p><strong>2. Methods to implement:</strong><br>
+&nbsp;&nbsp;2.1 call method calculateAveragePrice(List&lt;Brand&gt; brands) and print the appropriate results or exception.<br>
+&nbsp;&nbsp;2.2 call findMobilesInStorageRange(List&lt;Brand&gt; brands, int minStorage, int maxStorage) and print the appropriate results or exception.</p>
+<p><strong>Note:</strong><br>
+1. Insertion order needs to be followed while reading and displaying the data.<br>
+2. All comparison needs to be case insensitive.</p>
+<p><strong>Sample Input Explanation:</strong><br>
+1. First read the number of Brand objects to be added to the array/list.<br>
+2. Next read the attributes for Brand object in the mentioned sequence.<br>
+3. Next read the number of Mobile objects to be mapped to that Brand<br>
+4. Read the attributes for each Mobile object and this should be repeated for the number of Brand objects to be created.<br>
+5. The above steps (2 to 4) is repeated for number of Brand objects given in the first line of input.<br>
+6. Next, read the parameter to be passed to the respective method.</p>
+<p><strong>Sample Output Explanation:</strong></p>
+<p>1. Output of calculateAveragePrice method -<br>
+&nbsp;&nbsp;If average cannot be determined, then throw exception "AverageCannotBeCalculatedException: Average cannot be calculated" else print the result as follows<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Average Price of each brand:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Brand Name&gt;: &lt;Average&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;Brand Name&gt;: &lt;Average&gt;</p>
+<p>2. Output of findMobilesInStorageRange method -<br>
+&nbsp;&nbsp;If mobile not found, then throw exception "NoMobileDetailsFoundException: No mobile found" else print the results as follows<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Mobiles in the storage range (&lt;minimum range&gt;GB - &lt;maximum range&gt;GB):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Brand: &lt;Brand Name&gt;, Model Number: &lt;Model Number&gt;, Model Name: &lt;Model Name&gt;, Price: &lt;Price&gt;, Storage: &lt;Storage&gt;GB</p>
+<p>Replace &lt;...&gt; with their corresponding values.</p>
+    `,
+    starterCode: `import java.util.*;
+
+class AverageCannotBeCalculatedException extends Exception {
+    public AverageCannotBeCalculatedException(String msg) { super(msg); }
+}
+
+class NoMobileDetailsFoundException extends Exception {
+    public NoMobileDetailsFoundException(String msg) { super(msg); }
+}
+
+class Mobile {
+    // TODO: modelNumber (Integer), modelName (String), price (Double), storageCapacity (Integer)
+}
+
+class Brand {
+    // TODO: brandId (Integer), brandName (String), mobileList (List<Mobile>)
+}
+
+public class Solution {
+
+    public static Map<String, Double> calculateAveragePrice(List<Brand> brands) throws AverageCannotBeCalculatedException {
+        // TODO: Calculate average price per brand, return Map
+        return null;
+    }
+
+    public static List<Mobile> findMobilesInStorageRange(List<Brand> brands, int minStorage, int maxStorage) throws NoMobileDetailsFoundException {
+        // TODO: Find mobiles in storage range, return list
+        return null;
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read brands with mobiles, read range, call methods
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `2\n101\nSamsung\n2\n1001\nGalaxy S21\n20300\n128\n1002\nGalaxy Note 20\n34000\n256\n102\nApple\n2\n2001\nIphone 13\n60000\n256\n2002\nIphone 14\n70400\n64\n128\n256`, expected: `Average Price of each brand:\nSamsung: 27150.0\nApple: 65200.0\nMobiles in the storage range (128GB - 256GB):\nBrand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB\nBrand: Samsung, Model Number: 1002, Model Name: Galaxy Note 20, Price: 34000.0, Storage: 256GB\nBrand: Apple, Model Number: 2001, Model Name: Iphone 13, Price: 60000.0, Storage: 256GB` },
+      { name: "Test Case 2", hidden: false, input: `2\n101\nSamsung\n2\n1001\nGalaxy S21\n20300\n128\n1002\nGalaxy Note 20\n34000\n256\n102\nApple\n2\n2001\nIphone 13\n60000\n256\n2002\nIphone 14\n70400\n64\n128\n23`, expected: `Average Price of each brand:\nSamsung: 27150.0\nApple: 65200.0\nNoMobileDetailsFoundException: No mobile found` },
+      { name: "Hidden Test Case 1", hidden: true, input: `1\n101\nOnePlus\n0\n64\n256`, expected: `AverageCannotBeCalculatedException: Average cannot be calculated\nNoMobileDetailsFoundException: No mobile found` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\n101\nSamsung\n1\n1001\nGalaxy S21\n20300\n128\n100\n200`, expected: `Average Price of each brand:\nSamsung: 20300.0\nMobiles in the storage range (100GB - 200GB):\nBrand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB` }
+    ]
+  },
+  {
+    id: 8,
+    title: "Consecutive Vowels",
+    difficulty: "minor",
+    timeMinutes: 15,
+    description: `
+<p>Write a java program to find the count of consecutive vowels in a given string. Assume the program accepts only lowercase values as input. If no vowels are present in the string, then print "No consecutive vowels present"</p>
+<p>For example, consider the sample input and output given below:</p>
+    `,
+    starterCode: `import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        // TODO: Read string, count consecutive vowel groups (2+ vowels in a row)
+        // Print count or "No consecutive vowels present"
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `The augmented reality is the near future.`, expected: `3` },
+      { name: "Test Case 2", hidden: false, input: `How r u?`, expected: `No consecutive vowels present` },
+      { name: "Hidden Test Case 1", hidden: true, input: `beautiful ocean view`, expected: `3` },
+      { name: "Hidden Test Case 2", hidden: true, input: `xyz pqr`, expected: `No consecutive vowels present` },
+      { name: "Hidden Test Case 3", hidden: true, input: `queue outside`, expected: `2` }
+    ]
+  },
+  {
+    id: 9,
+    title: "Student Grade Map",
+    difficulty: "minor",
+    timeMinutes: 15,
+    description: `
+      <p>Read N students with their <strong>name</strong> (String) and <strong>marks</strong> (int).</p>
+      <p>Store them in a <strong>HashMap&lt;String, Integer&gt;</strong> where key = student name, value = marks.</p>
+      <p>Then read a student name to search. If found, print their marks. If not found, print <code>"Student not found"</code>.</p>
+      <p>Finally, print all students who scored <strong>above average</strong> marks in the format: <code>&lt;name&gt;: &lt;marks&gt;</code></p>
+      <p>If no students scored above average, print <code>"No students above average"</code>.</p>
+      <p><strong>Note:</strong> Use <strong>LinkedHashMap</strong> to maintain insertion order. String comparison is case-insensitive.</p>
+    `,
+    starterCode: `import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        // TODO: Read N students (name, marks) into LinkedHashMap
+        // Read search name, print marks or "Student not found"
+        // Print all students above average
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `4\nAlice\n85\nBob\n72\nCharlie\n90\nDave\n60\nCharlie`, expected: `90\nAlice: 85\nCharlie: 90` },
+      { name: "Test Case 2", hidden: false, input: `3\nAlice\n50\nBob\n50\nCharlie\n50\nDave`, expected: `Student not found\nNo students above average` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\nKiran\n100\nRavi\n40\nkiran`, expected: `100\nKiran: 100` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\nSolo\n75\nSolo`, expected: `75\nNo students above average` }
+    ]
+  },
+  {
+    id: 10,
+    title: "Remove Duplicates (LinkedHashSet)",
+    difficulty: "minor",
+    timeMinutes: 15,
+    description: `
+      <p>Read N integers from input and store them in an <strong>ArrayList</strong>.</p>
+      <p>Remove all duplicate values while <strong>maintaining the original insertion order</strong>.</p>
+      <p>Print the unique elements, one per line.</p>
+      <p>Then print the <strong>count of duplicates removed</strong> in the format: <code>&lt;count&gt; duplicates removed</code></p>
+      <p>If no duplicates were found, print <code>"No duplicates found"</code></p>
+      <p><strong>Hint:</strong> Use <strong>LinkedHashSet</strong> to remove duplicates while keeping order.</p>
+    `,
+    starterCode: `import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        // TODO: Read N integers into ArrayList
+        // Remove duplicates using LinkedHashSet (maintains order)
+        // Print unique elements, then count of duplicates removed
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `8\n10\n20\n10\n30\n20\n40\n10\n50`, expected: `10\n20\n30\n40\n50\n3 duplicates removed` },
+      { name: "Test Case 2", hidden: false, input: `4\n1\n2\n3\n4`, expected: `1\n2\n3\n4\nNo duplicates found` },
+      { name: "Hidden Test Case 1", hidden: true, input: `5\n5\n5\n5\n5\n5`, expected: `5\n4 duplicates removed` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\n42`, expected: `42\nNo duplicates found` }
+    ]
+  },
+  {
+    id: 11,
+    title: "Employee Department Tracker",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+      <p>Create a class <strong>Employee</strong> with: <code>int empId</code>, <code>String empName</code>, <code>String department</code>, <code>double salary</code></p>
+      <p>Read N employees from input.</p>
+      <p>Implement two static methods:</p>
+      <p><strong>Method 1:</strong> <code>groupByDepartment(List&lt;Employee&gt; employees)</code> — Returns a <code>Map&lt;String, List&lt;Employee&gt;&gt;</code> grouping employees by department. Use <strong>LinkedHashMap</strong> for insertion order.</p>
+      <p><strong>Method 2:</strong> <code>getHighestPaidPerDepartment(Map&lt;String, List&lt;Employee&gt;&gt; deptMap)</code> — Returns a <code>Map&lt;String, Employee&gt;</code> mapping each department to its highest-paid employee.</p>
+      <p><strong>Output:</strong></p>
+      <p>First print department groups:</p>
+      <pre>Department: &lt;dept&gt;
+&lt;empName&gt; - &lt;salary&gt;</pre>
+      <p>Then print highest paid per department:</p>
+      <pre>Highest paid per department:
+&lt;dept&gt;: &lt;empName&gt; (&lt;salary&gt;)</pre>
+    `,
+    starterCode: `import java.util.*;
+
+class Employee {
+    // TODO: empId (int), empName (String), department (String), salary (double)
+}
+
+public class Solution {
+
+    public static Map<String, List<Employee>> groupByDepartment(List<Employee> employees) {
+        // TODO: Group employees by department using LinkedHashMap
+        return null;
+    }
+
+    public static Map<String, Employee> getHighestPaidPerDepartment(Map<String, List<Employee>> deptMap) {
+        // TODO: Find highest paid employee in each department
+        return null;
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read employees, call methods, print results
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `5\n1\nAlice\nEngineering\n85000\n2\nBob\nEngineering\n92000\n3\nCharlie\nMarketing\n70000\n4\nDave\nMarketing\n75000\n5\nEve\nEngineering\n88000`, expected: `Department: Engineering\nAlice - 85000.0\nBob - 92000.0\nEve - 88000.0\nDepartment: Marketing\nCharlie - 70000.0\nDave - 75000.0\nHighest paid per department:\nEngineering: Bob (92000.0)\nMarketing: Dave (75000.0)` },
+      { name: "Test Case 2", hidden: false, input: `2\n1\nSolo\nHR\n50000\n2\nDuo\nHR\n50000`, expected: `Department: HR\nSolo - 50000.0\nDuo - 50000.0\nHighest paid per department:\nHR: Solo (50000.0)` },
+      { name: "Hidden Test Case 1", hidden: true, input: `3\n1\nRaj\nSales\n60000\n2\nPriya\nTech\n90000\n3\nAmit\nSales\n65000`, expected: `Department: Sales\nRaj - 60000.0\nAmit - 65000.0\nDepartment: Tech\nPriya - 90000.0\nHighest paid per department:\nSales: Amit (65000.0)\nTech: Priya (90000.0)` }
+    ]
+  }
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let editor = null;
+let currentQuestion = 0;
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+let elapsedInterval = null;
+let elapsedSeconds = 0;
+let elapsedStarted = false;
+
+// ============================================================
+//  API STATUS — no credentials needed in frontend anymore
+// ============================================================
+function showApiModal() { /* no-op — credentials are server-side now */ }
+function closeApiModal() { }
+
+function updateApiStatus() {
+  const dot = document.getElementById('apiDot');
+  const label = document.getElementById('apiLabel');
+  dot.className = 'dot connected';
+  label.textContent = 'JDoodle Ready';
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  updateApiStatus();
+
+  // Populate dropdown
+  const select = document.getElementById('questionSelect');
+  QUESTIONS.forEach((q, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${i + 1}. ${q.title} (${q.difficulty === 'major' ? 'Major' : 'Minor'} - ${q.timeMinutes}min)`;
+    select.appendChild(opt);
+  });
+  select.addEventListener('change', (e) => {
+    currentQuestion = parseInt(e.target.value);
+    loadQuestion();
+  });
+
+  // Init Monaco
+  require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' }});
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(document.getElementById('editor-container'), {
+      value: getSavedCode(0) || QUESTIONS[0].starterCode,
+      language: 'java',
+      theme: 'vs-dark',
+      fontSize: 14,
+      fontFamily: "'JetBrains Mono', monospace",
+      minimap: { enabled: false },
+      scrollBeyondLastLine: false,
+      automaticLayout: true,
+      tabSize: 4,
+      padding: { top: 14 },
+      renderLineHighlight: 'gutter',
+      smoothScrolling: true,
+      cursorBlinking: 'smooth',
+      cursorSmoothCaretAnimation: 'on',
+      bracketPairColorization: { enabled: true },
+      wordWrap: 'off',
+      lineNumbersMinChars: 3,
+    });
+
+    // Ctrl+Enter = Run, Ctrl+Shift+Enter = Submit
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => runCode());
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => submitCode());
+
+    editor.onDidChangeModelContent(() => {
+      saveCode(currentQuestion, editor.getValue());
+      if (!elapsedStarted) startElapsed();
+    });
+
+    loadQuestion();
+  });
+
+  initResize();
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      if (e.shiftKey) submitCode();
+      else runCode();
+    }
+  });
+});
+
+// ============================================================
+//  QUESTION LOADING
+// ============================================================
+function loadQuestion() {
+  const q = QUESTIONS[currentQuestion];
+
+  // Difficulty badge
+  const badge = document.getElementById('diffBadge');
+  badge.textContent = q.difficulty === 'major' ? `Major · ${q.timeMinutes}min` : `Minor · ${q.timeMinutes}min`;
+  badge.className = `difficulty-badge ${q.difficulty}`;
+
+  // Problem body
+  let html = `<div class="problem-title">${q.title}</div>`;
+  html += `<div class="problem-desc">${q.description}</div>`;
+
+  // Sample test cases
+  const visibleTests = q.testCases.filter(tc => !tc.hidden);
+  if (visibleTests.length > 0) {
+    html += `<div class="sample-label">Sample Test Cases</div>`;
+    visibleTests.forEach((tc) => {
+      html += `
+        <div class="sample-case">
+          <div class="sample-case-header">${tc.name}</div>
+          <div class="sample-case-grid">
+            <div class="sample-col">
+              <div class="sample-col-label">Input</div>
+              <pre>${escapeHtml(tc.input.replace(/\\n/g, '\n'))}</pre>
+            </div>
+            <div class="sample-col">
+              <div class="sample-col-label">Expected Output</div>
+              <pre>${escapeHtml(tc.expected.replace(/\\n/g, '\n'))}</pre>
+            </div>
+          </div>
+        </div>`;
+    });
+  }
+
+  const hiddenCount = q.testCases.filter(tc => tc.hidden).length;
+  if (hiddenCount > 0) {
+    html += `<div style="margin-top:10px; font-size:0.76rem; color:var(--text-muted); font-style:italic;">+ ${hiddenCount} hidden test case${hiddenCount > 1 ? 's' : ''}</div>`;
+  }
+
+  document.getElementById('problemPane').innerHTML = html;
+
+  // Editor code
+  if (editor) {
+    const saved = getSavedCode(currentQuestion);
+    editor.setValue(saved || q.starterCode);
+  }
+
+  // Counter
+  document.getElementById('questionCounter').textContent = `Q${currentQuestion + 1} / ${QUESTIONS.length}`;
+
+  // Load first sample input into custom input
+  if (visibleTests.length > 0) {
+    document.getElementById('customInput').value = visibleTests[0].input.replace(/\\n/g, '\n');
+  }
+
+  // Reset output
+  resetOutput();
+  resetTimer();
+  resetElapsed();
+}
+
+// ============================================================
+//  PROBLEM TAB SWITCHING
+// ============================================================
+function switchProblemTab(tab, btn) {
+  document.querySelectorAll('.problem-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('problemPane').style.display = tab === 'problem' ? 'block' : 'none';
+  document.getElementById('submissionsPane').style.display = tab === 'submissions' ? 'block' : 'none';
+  if (tab === 'submissions') renderSubmissions();
+}
+
+function renderSubmissions() {
+  const history = getHistory(currentQuestion);
+  if (history.length === 0) {
+    document.getElementById('submissionsPane').innerHTML = '<div class="no-history" style="padding:20px;">No submissions yet. Write your code and click Submit.</div>';
+    return;
+  }
+  let html = `<div style="padding:10px 0;"><table class="history-table">
+    <tr><th>#</th><th>Score</th><th>Time</th><th>Date</th></tr>`;
+  history.slice().reverse().forEach((h, i) => {
+    const pillClass = h.score === 100 ? 'full' : h.score > 0 ? 'partial' : 'zero';
+    const dateStr = new Date(h.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    html += `<tr>
+      <td>${history.length - i}</td>
+      <td><span class="score-pill ${pillClass}">${h.passed}/${h.total}</span></td>
+      <td>${formatElapsed(h.timeTaken)}</td>
+      <td>${dateStr}</td>
+    </tr>`;
+  });
+  html += '</table></div>';
+  document.getElementById('submissionsPane').innerHTML = html;
+}
+
+// ============================================================
+//  LOAD SAMPLE INPUT
+// ============================================================
+function loadSampleInput() {
+  const q = QUESTIONS[currentQuestion];
+  const visibleTests = q.testCases.filter(tc => !tc.hidden);
+  if (visibleTests.length > 0) {
+    document.getElementById('customInput').value = visibleTests[0].input.replace(/\\n/g, '\n');
+  }
+}
+
+// ============================================================
+//  CODE EXECUTION (via Netlify Function → JDoodle)
+// ============================================================
+async function executeCode(code, input) {
+  const res = await fetch('/.netlify/functions/execute', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ script: code, stdin: input })
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Server error (${res.status}): ${errText.substring(0, 200)}`);
+  }
+
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+
+  const output = data.output || '';
+  const isCompileError = output.includes('error:') && (data.statusCode === 200 || !data.statusCode);
+  const isRuntimeError = data.statusCode && data.statusCode !== 200 && !isCompileError;
+
+  return {
+    stdout: isCompileError || isRuntimeError ? '' : output,
+    stderr: isRuntimeError ? output : '',
+    compile_output: isCompileError ? output : '',
+    time: data.cpuTime,
+    memory: data.memory
+  };
+}
+
+async function runCode() {
+  if (!editor) return;
+
+  const code = editor.getValue();
+  const input = document.getElementById('customInput').value;
+  const runBtn = document.getElementById('runBtn');
+
+  runBtn.disabled = true;
+  runBtn.innerHTML = '<span class="spinner"></span> Running...';
+  setStatus('running', 'Compiling...');
+
+  try {
+    const result = await executeCode(code, input);
+    switchTab('output', document.querySelector('[data-tab="output"]'));
+    const outputPane = document.getElementById('outputPane');
+
+    if (result.compile_output) {
+      outputPane.innerHTML = `<pre class="console-output error">${escapeHtml(result.compile_output)}</pre>`;
+      setStatus('error', 'Compilation Error');
+    } else if (result.stderr) {
+      outputPane.innerHTML = `<pre class="console-output error">${escapeHtml(result.stderr)}</pre>`;
+      setStatus('error', 'Runtime Error');
+    } else {
+      const out = result.stdout || '(no output)';
+      outputPane.innerHTML = `<pre class="console-output">${escapeHtml(out)}</pre>`;
+      setStatus('done', `Executed (${result.time || '?'}s CPU)`);
+    }
+  } catch (err) {
+    document.getElementById('outputPane').innerHTML = `<pre class="console-output error">Error: ${escapeHtml(err.message)}</pre>`;
+    setStatus('error', 'API Error');
+    switchTab('output', document.querySelector('[data-tab="output"]'));
+  }
+
+  runBtn.disabled = false;
+  runBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Run Code';
+}
+
+async function submitCode() {
+  if (!editor) return;
+
+  const code = editor.getValue();
+  const q = QUESTIONS[currentQuestion];
+  const submitBtn = document.getElementById('submitBtn');
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span> Testing...';
+  setStatus('running', 'Running test cases...');
+
+  const startTime = performance.now();
+  const results = [];
+
+  for (let i = 0; i < q.testCases.length; i++) {
+    const tc = q.testCases[i];
+    const input = tc.input.replace(/\\n/g, '\n');
+    try {
+      const result = await executeCode(code, input);
+      const actualOutput = result.stdout || '';
+      const expected = tc.expected.replace(/\\n/g, '\n');
+      const passed = compareOutput(actualOutput, expected);
+
+      results.push({
+        testCase: tc, index: i, passed,
+        output: actualOutput,
+        error: result.compile_output || result.stderr || '',
+        time: result.time
+      });
+    } catch (err) {
+      results.push({
+        testCase: tc, index: i, passed: false,
+        output: '', error: 'API Error: ' + err.message, time: null
+      });
+    }
+  }
+
+  const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+  renderTestResults(results);
+
+  const passCount = results.filter(r => r.passed).length;
+  if (passCount === results.length) {
+    setStatus('done', `All ${results.length} passed in ${elapsed}s`);
+  } else {
+    setStatus('error', `${passCount}/${results.length} passed in ${elapsed}s`);
+  }
+
+  submitBtn.disabled = false;
+  submitBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg> Submit';
+}
+
+function compareOutput(actual, expected) {
+  const a = actual.trim().split('\n').map(l => l.trim());
+  const e = expected.trim().split('\n').map(l => l.trim());
+  if (a.length !== e.length) return false;
+  return a.every((line, i) => line === e[i]);
+}
+
+// ============================================================
+//  RENDER TEST RESULTS
+// ============================================================
+function renderTestResults(results) {
+  const pane = document.getElementById('resultsPane');
+  const passCount = results.filter(r => r.passed).length;
+  const total = results.length;
+
+  stopElapsed();
+  const timeTaken = elapsedSeconds;
+  saveAttempt(currentQuestion, passCount, total, timeTaken);
+
+  let html = `
+    <div class="score-section">
+      <div class="score-header">
+        <span class="score-text" style="color: ${passCount === total ? 'var(--green)' : passCount > 0 ? 'var(--orange)' : 'var(--red)'}">
+          ${passCount === total ? 'All Passed!' : `${passCount}/${total} Passed`}
+        </span>
+        <span class="score-fraction">${passCount} of ${total} — ${formatElapsed(timeTaken)}</span>
+      </div>
+      <div class="score-bar-track">
+        <div class="score-bar-fill ${passCount === total ? 'full' : passCount > 0 ? 'partial' : 'none'}" style="width: ${(passCount / total) * 100}%"></div>
+      </div>
+    </div>`;
+
+  results.forEach((r) => {
+    const statusClass = r.passed ? 'pass' : 'fail';
+    const checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
+    const xSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    const expected = r.testCase.expected.replace(/\\n/g, '\n');
+
+    html += `
+      <div class="test-result${!r.passed ? ' open' : ''}" onclick="this.classList.toggle('open')">
+        <div class="test-result-header">
+          <div class="test-result-left">
+            <div class="test-status-icon ${statusClass}">${r.passed ? checkSvg : xSvg}</div>
+            <span class="test-result-name">${r.testCase.name}</span>
+          </div>
+          ${r.testCase.hidden ? '<span class="test-result-tag">Hidden</span>' : ''}
+        </div>
+        <div class="test-result-detail">
+          ${!r.passed ? `
+            <div class="test-diff">
+              <div class="test-diff-col">
+                <div class="test-diff-label expected">Expected</div>
+                <pre class="test-diff-code">${escapeHtml(expected)}</pre>
+              </div>
+              <div class="test-diff-col">
+                <div class="test-diff-label actual">Your Output</div>
+                <pre class="test-diff-code">${escapeHtml(r.output.trim() || r.error || '(no output)')}</pre>
+              </div>
+            </div>` : `
+            <div style="padding:6px 0; color:var(--green); font-size:0.8rem;">Output matches expected.</div>`}
+        </div>
+      </div>`;
+  });
+
+  pane.innerHTML = html;
+
+  // Update tab badge
+  const countEl = document.getElementById('testCount');
+  countEl.style.display = 'inline';
+  countEl.textContent = `${passCount}/${total}`;
+  countEl.className = `count ${passCount === total ? 'pass' : 'fail'}`;
+
+  // Switch to results tab
+  switchTab('results', document.querySelector('[data-tab="results"]'));
+  resetElapsed();
+}
+
+function resetOutput() {
+  document.getElementById('outputPane').innerHTML = '<div class="console-placeholder">Run your code to see output here...</div>';
+  document.getElementById('resultsPane').innerHTML = '<div class="console-placeholder">Submit your code to see test results...</div>';
+  const countEl = document.getElementById('testCount');
+  countEl.style.display = 'none';
+  switchTab('testcases', document.querySelector('[data-tab="testcases"]'));
+  setStatus('ready', 'Ready');
+}
+
+// ============================================================
+//  TAB SWITCHING
+// ============================================================
+function switchTab(tabName, btnEl) {
+  document.querySelectorAll('.output-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btnEl.classList.add('active');
+  document.getElementById(tabName + 'Pane').classList.add('active');
+}
+
+// ============================================================
+//  STATUS
+// ============================================================
+function setStatus(state, text) {
+  document.getElementById('statusDot').className = 'status-dot ' + state;
+  document.getElementById('statusText').textContent = text;
+}
+
+// ============================================================
+//  RESET CODE
+// ============================================================
+function resetCode() {
+  if (!editor) return;
+  if (confirm('Reset to starter template? Your changes will be lost.')) {
+    editor.setValue(QUESTIONS[currentQuestion].starterCode);
+    saveCode(currentQuestion, QUESTIONS[currentQuestion].starterCode);
+    resetOutput();
+  }
+}
+
+// ============================================================
+//  LOCAL STORAGE
+// ============================================================
+function getSavedCode(qi) { try { return localStorage.getItem(`nimbus-ide-q${qi}`); } catch { return null; } }
+function saveCode(qi, code) { try { localStorage.setItem(`nimbus-ide-q${qi}`, code); } catch {} }
+
+// ============================================================
+//  TIMER
+// ============================================================
+function toggleTimer() {
+  if (timerRunning) pauseTimer();
+  else startTimer();
+}
+function startTimer() {
+  const q = QUESTIONS[currentQuestion];
+  if (timerSeconds === 0) timerSeconds = q.timeMinutes * 60;
+  timerRunning = true;
+  document.getElementById('timerBtn').textContent = 'Pause';
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('timerBtn').textContent = 'Reset';
+      document.getElementById('timerDisplay').classList.add('danger');
+    }
+  }, 1000);
+}
+function pauseTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  document.getElementById('timerBtn').textContent = 'Resume';
+}
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 0;
+  const d = document.getElementById('timerDisplay');
+  d.textContent = '--:--';
+  d.className = 'timer-display';
+  document.getElementById('timerBtn').textContent = 'Timer';
+}
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  const d = document.getElementById('timerDisplay');
+  d.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  d.className = timerSeconds <= 300 ? 'timer-display danger' : 'timer-display running';
+}
+
+// ============================================================
+//  ELAPSED TIME
+// ============================================================
+function startElapsed() {
+  if (elapsedStarted) return;
+  elapsedStarted = true;
+  elapsedSeconds = 0;
+  elapsedInterval = setInterval(() => { elapsedSeconds++; updateElapsedDisplay(); }, 1000);
+}
+function stopElapsed() { clearInterval(elapsedInterval); }
+function resetElapsed() {
+  clearInterval(elapsedInterval);
+  elapsedStarted = false;
+  elapsedSeconds = 0;
+  updateElapsedDisplay();
+}
+function updateElapsedDisplay() {
+  const m = Math.floor(elapsedSeconds / 60);
+  const s = elapsedSeconds % 60;
+  document.getElementById('elapsedTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function formatElapsed(t) {
+  const m = Math.floor(t / 60), s = t % 60;
+  return m === 0 ? `${s}s` : `${m}m ${s}s`;
+}
+
+// ============================================================
+//  ATTEMPT HISTORY
+// ============================================================
+function getHistory(qi) { try { const d = localStorage.getItem(`nimbus-ide-history-q${qi}`); return d ? JSON.parse(d) : []; } catch { return []; } }
+function saveAttempt(qi, passed, total, timeTaken) {
+  const history = getHistory(qi);
+  history.push({ date: new Date().toISOString(), passed, total, timeTaken, score: Math.round((passed / total) * 100) });
+  if (history.length > 20) history.splice(0, history.length - 20);
+  try { localStorage.setItem(`nimbus-ide-history-q${qi}`, JSON.stringify(history)); } catch {}
+}
+
+// ============================================================
+//  RESIZE
+// ============================================================
+function initResize() {
+  // Vertical resize — output panel height
+  const handle = document.getElementById('resizeHandle');
+  const panel = document.getElementById('outputPanel');
+  let startY, startH;
+  handle.addEventListener('mousedown', (e) => {
+    startY = e.clientY; startH = panel.offsetHeight;
+    document.addEventListener('mousemove', onR);
+    document.addEventListener('mouseup', stopR);
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+  });
+  function onR(e) { panel.style.height = Math.max(120, Math.min(600, startH + (startY - e.clientY))) + 'px'; }
+  function stopR() { document.removeEventListener('mousemove', onR); document.removeEventListener('mouseup', stopR); document.body.style.cursor = ''; document.body.style.userSelect = ''; }
+
+  // Horizontal resize — left/right panel split
+  const panelHandle = document.getElementById('panelResizeHandle');
+  const problemPanel = document.querySelector('.problem-panel');
+  const container = document.querySelector('.ide-container');
+  let startX, startW;
+  panelHandle.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    startX = e.clientX;
+    startW = problemPanel.offsetWidth;
+    panelHandle.classList.add('active');
+    document.addEventListener('mousemove', onPR);
+    document.addEventListener('mouseup', stopPR);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+  function onPR(e) {
+    const containerW = container.offsetWidth;
+    const newW = Math.max(280, Math.min(containerW - 360, startW + (e.clientX - startX)));
+    problemPanel.style.flex = 'none';
+    problemPanel.style.width = newW + 'px';
+  }
+  function stopPR() {
+    panelHandle.classList.remove('active');
+    document.removeEventListener('mousemove', onPR);
+    document.removeEventListener('mouseup', stopPR);
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    if (editor) editor.layout();
+  }
+}
+
+// ============================================================
+//  UTILITY
+// ============================================================
+function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+  </script>
+</body>
+</html>
