@@ -1619,7 +1619,7 @@ function renderSubmissions() {
 function restoreCode(qi, historyIndex) {
   const history = getHistory(qi);
   if (history[historyIndex] && history[historyIndex].code && editor) {
-    if (confirm('Restore this submission\\'s code? Current code will be replaced.')) {
+    if (confirm('Restore this code? Current code will be replaced.')) {
       editor.setValue(history[historyIndex].code);
       saveCode(qi, history[historyIndex].code);
       switchProblemTab('problem', document.querySelector('[data-ptab="problem"]'));
