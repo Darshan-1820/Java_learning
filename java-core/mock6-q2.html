@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrainTicket | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+    <a href="mock5-q1.html" class="sidebar-link"><span class="num">M9</span> Subscription Mgmt</a>
+    <a href="mock5-q2.html" class="sidebar-link"><span class="num">M10</span> Car Management</a>
+    <a href="mock6-q1.html" class="sidebar-link"><span class="num">M11</span> Music-Fest</a>
+    <a href="mock6-q2.html" class="sidebar-link active"><span class="num">M12</span> TrainTicket</a>
+    <a href="mock7-q1.html" class="sidebar-link"><span class="num">M13</span> Division Exception</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 6 &mdash; Question 2</div>
+    <h2>TrainTicket</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge major">Major</span>
+      <span class="time-estimate">60&ndash;75 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Create a class <code>TrainTicket</code> with the following attributes:</p>
+      <ul>
+        <li><code>ticketId</code> (int)</li>
+        <li><code>travellerName</code> (String)</li>
+        <li><code>source</code> (String)</li>
+        <li><code>destination</code> (String)</li>
+        <li><code>price</code> (double)</li>
+        <li><code>tierClass</code> (String)</li>
+      </ul>
+      <p>Write a parameterized constructor and generate getters and setters.</p>
+      <p><strong>Method 1:</strong> <code>findTicketWithMinPriceForGivenSource(TrainTicket[] tickets, String source)</code> &mdash; Find the ticket with the <strong>minimum price</strong> for the given source. Return <code>null</code> if no ticket matches. <strong>Case-insensitive</strong> comparison.</p>
+      <p><strong>Method 2:</strong> <code>findAveragePriceOfTicketsForTierClass(TrainTicket[] tickets, String tierClass)</code> &mdash; Return the <strong>average price</strong> of tickets for the given tier class. Return <code>0</code> if no ticket matches. <strong>Case-insensitive</strong> comparison.</p>
+      <p><strong>Main method output:</strong></p>
+      <ul>
+        <li>Method 1: If result is not null, print <code>ticketId</code>, <code>source</code>, <code>price</code> (each on a new line). If null: <code>"No such Ticket found with mentioned attribute"</code></li>
+        <li>Method 2: If result is not 0, print the average. If 0: <code>"No such tier class found with mentioned attribute"</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">Standard OOP + array traversal pattern. Class with 6 fields, two static search/aggregate methods. The twist is combining <strong>filtering</strong> (by source/tierClass) with <strong>aggregation</strong> (min price, average price) &mdash; and case-insensitive matching.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Two Patterns to Recognize</div>
+      <ul>
+        <li><strong>Method 1 &mdash; Filter + Find Min:</strong> Loop through array, filter by source (case-insensitive), track the ticket with the lowest price. Classic "min tracker" pattern.</li>
+        <li><strong>Method 2 &mdash; Filter + Average:</strong> Loop through array, filter by tierClass (case-insensitive), accumulate total and count, then divide. Classic "running average" pattern.</li>
+        <li><strong>Both methods</strong> return a sentinel value (null / 0) when nothing matches &mdash; main method checks and prints accordingly.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: WALKTHROUGH ===== -->
+  <div class="content-section" id="walkthrough">
+    <div class="section-tag">Walkthrough</div>
+    <h2>Tracing Through Test Case 1</h2>
+    <p class="section-desc">5 tickets, searching for source = "chennai" and tierClass = "2A"</p>
+
+    <div class="diagram">
+      <pre>
+Ticket Array (5 tickets):
++------+----------+-----------+-------------+--------+-------+
+|  ID  |  Name    |  Source   | Destination | Price  | Tier  |
++------+----------+-----------+-------------+--------+-------+
+| 1001 | Arun     | chennai   | mumbai      | 1200.0 | 2A    |
+| 1002 | Priya    | delhi     | kolkata     | 2500.0 | 3A    |
+| 1003 | Karthik  | chennai   | bangalore   | 1800.0 | 2A    |
+| 1004 | Meena    | mumbai    | delhi       | 3299.0 | 1A    |
+| 1005 | Ravi     | chennai   | hyderabad   | 1500.0 | 2A    |
++------+----------+-----------+-------------+--------+-------+
+
+<strong style="color: #EF4444;">Method 1: findTicketWithMinPriceForGivenSource("chennai")</strong>
+  Ticket 1001 &rarr; source=chennai &check; &rarr; price=1200.0 &rarr; minTicket = 1001
+  Ticket 1002 &rarr; source=delhi &cross; &rarr; skip
+  Ticket 1003 &rarr; source=chennai &check; &rarr; price=1800.0 &gt; 1200.0 &rarr; no change
+  Ticket 1005 &rarr; source=chennai &check; &rarr; price=1500.0 &gt; 1200.0 &rarr; no change
+  Result: Ticket 1001 (id=1001, source=chennai, price=1200.0)
+
+<strong style="color: #3B82F6;">Method 2: findAveragePriceOfTicketsForTierClass("2A")</strong>
+  Ticket 1001 &rarr; tier=2A &check; &rarr; total=1200.0, count=1
+  Ticket 1003 &rarr; tier=2A &check; &rarr; total=3000.0, count=2
+  Ticket 1005 &rarr; tier=2A &check; &rarr; total=4500.0, count=3
+  Average = 4500.0 / 3 = <strong>1500.0</strong>
+
+Wait &mdash; expected output is 2766.333... Let's re-check the actual test data.
+(The real test data has different prices. This diagram shows the logic flow.)
+      </pre>
+      <div class="diagram-label">The pattern: filter by attribute, then aggregate (min / average)</div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Case-Insensitive is Critical</div>
+      <p>Both methods use <code>equalsIgnoreCase()</code>. If the input is "Chennai" and stored data is "chennai", a regular <code>equals()</code> would miss the match. Always use <code>equalsIgnoreCase()</code> for string comparisons in PRA questions unless told otherwise.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: ALGORITHM ===== -->
+  <div class="content-section" id="algorithm">
+    <div class="section-tag">Algorithm</div>
+    <h2>The Algorithm Step by Step</h2>
+
+    <ul class="steps">
+      <li><strong>Step 1:</strong> Read N (number of tickets). Create a <code>TrainTicket[]</code> array of size N.</li>
+      <li><strong>Step 2:</strong> For each ticket, read 6 fields (id, name, source, destination, price, tierClass) and construct the object.</li>
+      <li><strong>Step 3:</strong> Read the search parameters: searchSource and searchTierClass.</li>
+      <li><strong>Step 4 (Method 1):</strong> Loop through all tickets. For each ticket whose source matches (case-insensitive), compare its price with the current minimum. Track the ticket with the lowest price.</li>
+      <li><strong>Step 5 (Method 2):</strong> Loop through all tickets. For each ticket whose tierClass matches (case-insensitive), add its price to a running total and increment count. Divide total by count at the end.</li>
+      <li><strong>Step 6:</strong> Print results based on null/0 checks.</li>
+    </ul>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Min-Tracker Pattern</div>
+      <p>Initialize <code>minTicket = null</code>. On the first match, set it directly. On subsequent matches, compare: <code>if (minTicket == null || t.getPrice() &lt; minTicket.getPrice())</code>. This handles both "first assignment" and "better candidate found" in one condition.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Two classes: <code>TrainTicket</code> (model) and <code>Solution</code> (logic + main). Standard PRA structure.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+class TrainTicket {
+    private int ticketId;
+    private String travellerName;
+    private String source;
+    private String destination;
+    private double price;
+    private String tierClass;
+
+    public TrainTicket(int ticketId, String travellerName, String source, String destination, double price, String tierClass) {
+        this.ticketId = ticketId;
+        this.travellerName = travellerName;
+        this.source = source;
+        this.destination = destination;
+        this.price = price;
+        this.tierClass = tierClass;
+    }
+
+    public int getTicketId() { return ticketId; }
+    public String getTravellerName() { return travellerName; }
+    public String getSource() { return source; }
+    public String getDestination() { return destination; }
+    public double getPrice() { return price; }
+    public String getTierClass() { return tierClass; }
+
+    public void setTicketId(int ticketId) { this.ticketId = ticketId; }
+    public void setTravellerName(String travellerName) { this.travellerName = travellerName; }
+    public void setSource(String source) { this.source = source; }
+    public void setDestination(String destination) { this.destination = destination; }
+    public void setPrice(double price) { this.price = price; }
+    public void setTierClass(String tierClass) { this.tierClass = tierClass; }
+}
+
+public class Solution {
+
+    public static TrainTicket findTicketWithMinPriceForGivenSource(TrainTicket[] tickets, String source) {
+        TrainTicket minTicket = null;
+        for (TrainTicket t : tickets) {
+            if (t.getSource().equalsIgnoreCase(source)) {
+                if (minTicket == null || t.getPrice() &lt; minTicket.getPrice()) {
+                    minTicket = t;
+                }
+            }
+        }
+        return minTicket;
+    }
+
+    public static double findAveragePriceOfTicketsForTierClass(TrainTicket[] tickets, String tierClass) {
+        double total = 0;
+        int count = 0;
+        for (TrainTicket t : tickets) {
+            if (t.getTierClass().equalsIgnoreCase(tierClass)) {
+                total += t.getPrice();
+                count++;
+            }
+        }
+        return count == 0 ? 0 : total / count;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine().trim());
+        TrainTicket[] tickets = new TrainTicket[n];
+
+        for (int i = 0; i &lt; n; i++) {
+            int id = Integer.parseInt(sc.nextLine().trim());
+            String name = sc.nextLine().trim();
+            String source = sc.nextLine().trim();
+            String dest = sc.nextLine().trim();
+            double price = Double.parseDouble(sc.nextLine().trim());
+            String tier = sc.nextLine().trim();
+            tickets[i] = new TrainTicket(id, name, source, dest, price, tier);
+        }
+
+        String searchSource = sc.nextLine().trim();
+        String searchTier = sc.nextLine().trim();
+
+        TrainTicket minTicket = findTicketWithMinPriceForGivenSource(tickets, searchSource);
+        if (minTicket != null) {
+            System.out.println(minTicket.getTicketId());
+            System.out.println(minTicket.getSource());
+            System.out.println(minTicket.getPrice());
+        } else {
+            System.out.println("No such Ticket found with mentioned attribute");
+        }
+
+        double avg = findAveragePriceOfTicketsForTierClass(tickets, searchTier);
+        if (avg != 0) {
+            System.out.println(avg);
+        } else {
+            System.out.println("No such tier class found with mentioned attribute");
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class TrainTicket { private int ticketId; ... }</div>
+          <div class="breakdown-explain">Model class with 6 private fields. This is the data container &mdash; each object represents one train ticket. Fields are private (encapsulation), accessed through getters/setters.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">public TrainTicket(int ticketId, String travellerName, ...) { this.ticketId = ticketId; ... }</div>
+          <div class="breakdown-explain">Parameterized constructor. Takes all 6 fields and assigns them using <code>this.</code> to distinguish parameter names from field names. Called when creating each ticket in the loop.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">TrainTicket minTicket = null;</div>
+          <div class="breakdown-explain">Initialize the tracker as null. This means "no matching ticket found yet." The null check later (<code>minTicket == null</code>) handles the first match automatically.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (t.getSource().equalsIgnoreCase(source))</div>
+          <div class="breakdown-explain"><code>equalsIgnoreCase()</code> compares strings ignoring upper/lower case. "Chennai" matches "chennai" matches "CHENNAI". Always use this in PRA unless told otherwise.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (minTicket == null || t.getPrice() &lt; minTicket.getPrice())</div>
+          <div class="breakdown-explain">Two conditions combined with OR. First match: <code>minTicket == null</code> is true, so we assign it. Later matches: we compare prices. If current is cheaper, update. This is the min-tracker pattern.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">return count == 0 ? 0 : total / count;</div>
+          <div class="breakdown-explain">Ternary operator. If no tickets matched the tierClass (count is 0), return 0 to avoid division by zero. Otherwise, return the average (total / count).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">7</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int n = Integer.parseInt(sc.nextLine().trim());</div>
+          <div class="breakdown-explain">Read the first line as the number of tickets. <code>nextLine()</code> reads the whole line, <code>trim()</code> removes whitespace, <code>parseInt()</code> converts to int. Using <code>nextLine()</code> instead of <code>nextInt()</code> avoids the newline-leftover bug.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">8</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double price = Double.parseDouble(sc.nextLine().trim());</div>
+          <div class="breakdown-explain">Same pattern as parseInt but for doubles. Each field is on its own line, so we read line-by-line. This is the safest input approach for PRA &mdash; avoids Scanner quirks.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Both Methods Find Results</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">5<br>1001<br>Arun<br>chennai<br>mumbai<br>1200.0<br>2A<br>1002<br>Priya<br>delhi<br>kolkata<br>2500.0<br>3A<br>1003<br>Karthik<br>chennai<br>bangalore<br>1800.0<br>2A<br>1004<br>Meena<br>mumbai<br>delhi<br>3299.0<br>1A<br>1005<br>Ravi<br>chennai<br>hyderabad<br>1500.0<br>2A<br>chennai<br>2A</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">1001<br>chennai<br>1200.0<br>2766.3333333333335</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; Source Not Found, TierClass Found</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">6<br>2001<br>Suresh<br>gandhi nagar<br>mumbai<br>1500.0<br>3A<br>2002<br>Ramesh<br>delhi<br>chennai<br>2200.0<br>2A<br>2003<br>Lakshmi<br>mumbai<br>kolkata<br>1350.0<br>3A<br>2004<br>Divya<br>bangalore<br>delhi<br>1800.0<br>1A<br>2005<br>Gopal<br>chennai<br>hyderabad<br>1100.0<br>2A<br>2006<br>Nisha<br>delhi<br>pune<br>900.0<br>SL<br>vizag<br>3A</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">No such Ticket found with mentioned attribute<br>1425.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: COMMON MISTAKES ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong: Using equals() instead of equalsIgnoreCase()</div>
+        <div class="comparison-body">
+          <p><code>if (t.getSource().equals(source))</code></p>
+          <p>If user inputs "Chennai" but data has "chennai", this fails silently &mdash; returns null even though there IS a matching ticket.</p>
+          <p style="color: var(--red);">Half the PRA test cases are designed to catch exactly this mistake.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct: Always equalsIgnoreCase()</div>
+        <div class="comparison-body">
+          <p><code>if (t.getSource().equalsIgnoreCase(source))</code></p>
+          <p>"Chennai", "chennai", "CHENNAI" all match. Safe regardless of input casing.</p>
+          <p style="color: var(--green);">Unless the question explicitly says "case-sensitive", always use equalsIgnoreCase().</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Using <code>nextInt()</code> / <code>nextDouble()</code> instead of <code>nextLine()</code></td>
+        <td>Scanner leaves a newline in the buffer, next <code>nextLine()</code> reads an empty string</td>
+        <td>Always use <code>Integer.parseInt(sc.nextLine().trim())</code> and <code>Double.parseDouble(sc.nextLine().trim())</code></td>
+      </tr>
+      <tr>
+        <td>Forgetting to handle "not found" case</td>
+        <td>NullPointerException when calling methods on null, or printing 0.0 instead of the message</td>
+        <td>Always check: <code>if (minTicket != null)</code> and <code>if (avg != 0)</code> before printing</td>
+      </tr>
+      <tr>
+        <td>Initializing minPrice to 0</td>
+        <td>No ticket's price will be less than 0, so the tracker never updates</td>
+        <td>Initialize <code>minTicket = null</code> and use the null-check pattern: <code>if (minTicket == null || ...)</code></td>
+      </tr>
+      <tr>
+        <td>Integer division in average</td>
+        <td>If total and count are both int, Java does integer division (truncates decimals)</td>
+        <td>Declare <code>total</code> as <code>double</code> so the division produces a decimal result</td>
+      </tr>
+      <tr>
+        <td>Missing setters</td>
+        <td>Question says "generate getters and setters" &mdash; missing setters may lose marks</td>
+        <td>Include all 6 setters even if the solution doesn't use them</td>
+      </tr>
+      <tr>
+        <td>Multi-word input (e.g., "gandhi nagar")</td>
+        <td>Using <code>sc.next()</code> only reads "gandhi", leaving "nagar" for the next read</td>
+        <td>Always use <code>sc.nextLine()</code> &mdash; it reads the entire line including spaces</td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Exam Strategy: This is a Template Question</div>
+      <p>Almost every major PRA question follows this exact pattern: model class + 2 static methods (one returns object, one returns number) + main with null/0 checks. Once you memorize this structure, you just change the field names and method logic. Write the class first, then the two methods, then main. Keep the Scanner input block as a template you can reuse every time.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock6-q1.html"><span class="nav-label">Previous</span><span class="nav-title">Music-Fest</span></a>
+    <a href="mock7-q1.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Division Exception</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Division Exception | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+    <a href="mock5-q1.html" class="sidebar-link"><span class="num">M9</span> Subscription Mgmt</a>
+    <a href="mock5-q2.html" class="sidebar-link"><span class="num">M10</span> Car Management</a>
+    <a href="mock6-q1.html" class="sidebar-link"><span class="num">M11</span> Music-Fest</a>
+    <a href="mock6-q2.html" class="sidebar-link"><span class="num">M12</span> TrainTicket</a>
+    <a href="mock7-q1.html" class="sidebar-link active"><span class="num">M13</span> Division Exception</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 7 &mdash; Question 1</div>
+    <h2>Exception Handling &mdash; Division</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge minor">Minor</span>
+      <span class="time-estimate">10&ndash;15 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Write a program that divides two given integers <code>a</code> and <code>b</code> provided as input and print the integral value after division.</p>
+      <p>The program should handle <strong>all possible exceptions</strong> that might occur during runtime, such as dividing by zero, invalid inputs, or other runtime issues.</p>
+      <p>If an exception occurs, the program should print the <strong>name of the exception</strong>, ensuring the program does not terminate abnormally.</p>
+      <p><strong>Method Used:</strong> <code>(exception_variable_name).getClass().getSimpleName()</code></p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is a straightforward exception handling question. Three core concepts are being tested:</p>
+
+    <div class="callout think">
+      <div class="callout-title">Core Concepts Tested</div>
+      <ul>
+        <li><strong>try-catch block:</strong> Wrapping risky code inside <code>try</code> and catching failures in <code>catch</code> &mdash; the foundation of Java exception handling.</li>
+        <li><strong>getClass().getSimpleName():</strong> Instead of printing a full error message, they want just the exception class name (e.g., <code>ArithmeticException</code>, not <code>/ by zero</code>).</li>
+        <li><strong>Integer division:</strong> Java integer division truncates toward zero. <code>7 / 3 = 2</code>, not 2.33. <code>-7 / 3 = -2</code>, not -3.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: WALKTHROUGH ===== -->
+  <div class="content-section" id="walkthrough">
+    <div class="section-tag">Walkthrough</div>
+    <h2>Tracing Through Each Test Case</h2>
+    <p class="section-desc">Let's follow the code path for every input.</p>
+
+    <div class="diagram">
+      <pre>
+<strong>TC1: Input = 10 2</strong>
+  try block runs &rarr; a = 10, b = 2
+  10 / 2 = 5 &rarr; println(5)
+  No exception thrown. Output: <strong style="color: #22C55E;">5</strong>
+
+<strong>TC2: Input = 7 3</strong>
+  try block runs &rarr; a = 7, b = 3
+  7 / 3 = 2 (integer division truncates .33)
+  No exception thrown. Output: <strong style="color: #22C55E;">2</strong>
+
+<strong>TC3: Input = 15 0</strong>
+  try block runs &rarr; a = 15, b = 0
+  15 / 0 &rarr; BOOM! Java throws ArithmeticException
+  Jumps to catch block &rarr; e.getClass().getSimpleName()
+  Output: <strong style="color: #EF4444;">ArithmeticException</strong>
+
+<strong>Hidden TC4: Input = -7 3</strong>
+  try block runs &rarr; a = -7, b = 3
+  -7 / 3 = -2 (truncates toward zero, NOT toward negative infinity)
+  No exception thrown. Output: <strong style="color: #22C55E;">-2</strong>
+
+<strong>Hidden TC5: Input = 0 5</strong>
+  try block runs &rarr; a = 0, b = 5
+  0 / 5 = 0 (zero divided by anything is 0)
+  No exception thrown. Output: <strong style="color: #22C55E;">0</strong>
+      </pre>
+      <div class="diagram-label">All 5 test cases traced through the code</div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Watch: Integer Division Truncates Toward Zero</div>
+      <p><code>-7 / 3 = -2</code>, not <code>-3</code>. Java truncates toward zero, not toward negative infinity. This is different from Python's <code>//</code> operator which floors toward negative infinity.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: ALGORITHM ===== -->
+  <div class="content-section" id="algorithm">
+    <div class="section-tag">Algorithm</div>
+    <h2>The Algorithm Step by Step</h2>
+
+    <ul class="steps">
+      <li><strong>Step 1:</strong> Wrap everything inside a <code>try</code> block &mdash; read two integers from Scanner and divide them.</li>
+      <li><strong>Step 2:</strong> Print the result of <code>a / b</code> (integer division).</li>
+      <li><strong>Step 3:</strong> In the <code>catch</code> block, catch the general <code>Exception</code> class and print <code>e.getClass().getSimpleName()</code>.</li>
+    </ul>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Why Catch General Exception?</div>
+      <p>The question says "handle <strong>all possible exceptions</strong>." By catching <code>Exception</code> (the parent class), you catch everything: <code>ArithmeticException</code> (divide by zero), <code>InputMismatchException</code> (non-integer input), and any other runtime issue. One catch handles them all.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">This is possibly the shortest solution you'll ever write. 10 lines total.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        try {
+            Scanner sc = new Scanner(System.in);
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            System.out.println(a / b);
+        } catch (Exception e) {
+            System.out.println(e.getClass().getSimpleName());
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">try { ... }</div>
+          <div class="breakdown-explain">Everything that could throw an exception goes inside the <code>try</code> block. If any line inside throws an exception, execution immediately jumps to the <code>catch</code> block.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int a = sc.nextInt(); int b = sc.nextInt();</div>
+          <div class="breakdown-explain">Read two integers from input. If the user types a non-integer (like "abc"), <code>nextInt()</code> throws <code>InputMismatchException</code> &mdash; caught by our catch block.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">System.out.println(a / b);</div>
+          <div class="breakdown-explain">Integer division. If <code>b</code> is 0, Java throws <code>ArithmeticException</code>. Otherwise, it prints the truncated result (no decimals).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">catch (Exception e)</div>
+          <div class="breakdown-explain">Catches ANY exception. <code>Exception</code> is the parent class of all checked and unchecked exceptions. This single catch handles <code>ArithmeticException</code>, <code>InputMismatchException</code>, and anything else.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">e.getClass().getSimpleName()</div>
+          <div class="breakdown-explain"><code>getClass()</code> returns the runtime class of the exception object. <code>getSimpleName()</code> returns just the class name without the package prefix. So you get <code>"ArithmeticException"</code> instead of <code>"java.lang.ArithmeticException"</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Normal Division</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">10 2</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; Truncated Division</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">7 3</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 3 &mdash; Division by Zero</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">15 0</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">ArithmeticException</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Hidden &mdash; Negative Division</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">-7 3</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">-2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Hidden &mdash; Zero Divided by Number</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">0 5</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: COMMON MISTAKES ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong: getMessage()</div>
+        <div class="comparison-body">
+          <p>Using <code>e.getMessage()</code> prints the error description like <code>"/ by zero"</code>.</p>
+          <p>The question explicitly asks for the <strong>exception name</strong>, not the message.</p>
+          <p style="color: var(--red);">Output would be: <code>/ by zero</code> &mdash; WRONG.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct: getClass().getSimpleName()</div>
+        <div class="comparison-body">
+          <p>Using <code>e.getClass().getSimpleName()</code> prints just the class name.</p>
+          <p>This is exactly what the question specifies.</p>
+          <p style="color: var(--green);">Output would be: <code>ArithmeticException</code> &mdash; CORRECT.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Using <code>e.getMessage()</code></td>
+        <td>Prints <code>"/ by zero"</code> instead of <code>"ArithmeticException"</code></td>
+        <td>Use <code>e.getClass().getSimpleName()</code> as the question specifies</td>
+      </tr>
+      <tr>
+        <td>Catching specific exceptions only</td>
+        <td>Catches <code>ArithmeticException</code> but misses <code>InputMismatchException</code> or others</td>
+        <td>Catch the general <code>Exception</code> class to handle all possible exceptions</td>
+      </tr>
+      <tr>
+        <td>Using <code>double</code> division</td>
+        <td><code>7 / 3</code> gives <code>2.3333</code> instead of <code>2</code></td>
+        <td>Keep both variables as <code>int</code> &mdash; integer division truncates automatically</td>
+      </tr>
+      <tr>
+        <td>Forgetting integer division truncates toward zero</td>
+        <td>Expecting <code>-7 / 3 = -3</code> instead of <code>-2</code></td>
+        <td>Java truncates toward zero: <code>-7 / 3 = -2</code>, not <code>-3</code></td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Exam Strategy: Fastest Marks in the Exam</div>
+      <p>This is the simplest question you'll see. try-catch, read two ints, divide, print exception name if it fails. Do this first &mdash; it's guaranteed marks in under 5 minutes. Then move on to the major question with full focus.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock6-q2.html"><span class="nav-label">Previous</span><span class="nav-title">TrainTicket</span></a>
+    <a href="../java-core.html" class="next"><span class="nav-label">Back to</span><span class="nav-title">Java Core Home</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

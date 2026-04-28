@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Strategy Guide | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+    <a href="11-exam-strategy.html" class="sidebar-link active"><span class="num">11</span> Exam Strategy</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+    <a href="mock5-q1.html" class="sidebar-link"><span class="num">M9</span> Subscription Mgmt</a>
+    <a href="mock5-q2.html" class="sidebar-link"><span class="num">M10</span> Car Management</a>
+    <a href="mock6-q1.html" class="sidebar-link"><span class="num">M11</span> Music-Fest</a>
+    <a href="mock6-q2.html" class="sidebar-link"><span class="num">M12</span> TrainTicket</a>
+    <a href="mock7-q1.html" class="sidebar-link"><span class="num">M13</span> Division Exception</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: INTRO ===== -->
+  <div class="content-section" id="intro">
+    <div class="section-tag">Exam Strategy</div>
+    <h2>How to Approach PRA Questions (Beginner's Guide)</h2>
+    <p class="section-desc">You're new to Java. The question looks like 3 pages of text. The timer is running. Your mind goes blank. This guide is for exactly that moment.</p>
+
+    <div class="callout think">
+      <div class="callout-title">The Truth About PRA Questions</div>
+      <p>Every PRA question follows the <strong>same pattern</strong>. Once you see the pattern, the 3-page question becomes a 5-step recipe. Here's the pattern:</p>
+      <ol style="margin-top: 12px; padding-left: 20px;">
+        <li><strong>Create classes</strong> with fields, constructor, getters</li>
+        <li><strong>Read input</strong> using Scanner (build objects)</li>
+        <li><strong>Store objects</strong> in a List or Map</li>
+        <li><strong>Call methods</strong> that filter/calculate on those collections</li>
+        <li><strong>Print results</strong> in the exact format shown</li>
+      </ol>
+      <p style="margin-top: 12px;">That's it. Every single question. The only things that change are the class names, the number of fields, and what the methods calculate.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: READING THE QUESTION ===== -->
+  <div class="content-section" id="reading">
+    <div class="section-tag">Step 1</div>
+    <h2>How to Read &amp; Understand the Question</h2>
+    <p class="section-desc">Don't read top to bottom like a novel. Read it in this order:</p>
+
+    <ul class="steps">
+      <li><strong>Step 1: Skip the warning text.</strong> The plagiarism warning at the top is NOT part of the question. Skip it completely.</li>
+      <li><strong>Step 2: Read the class definitions.</strong> This tells you what objects you'll create. Write down the class name and its fields. Example: <code>Song</code> has <code>songId</code>, <code>songName</code>, <code>duration</code>, <code>genre</code>.</li>
+      <li><strong>Step 3: Read the method signatures.</strong> Look at the method names and parameters. This tells you what you need to compute. Example: <code>findSongsByGenre(List&lt;Musician&gt;, String genre)</code> &mdash; OK, I need to filter songs by genre.</li>
+      <li><strong>Step 4: Jump to Sample Input/Output.</strong> This is GOLD. The sample I/O tells you the exact format. Read it carefully. Count the lines. Match each input line to a field.</li>
+      <li><strong>Step 5: Read the output format.</strong> Copy the exact output text. Spaces, colons, capitalization &mdash; everything matters.</li>
+      <li><strong>Step 6: Now read the details.</strong> Go back and read the full method descriptions. Now they'll make sense because you've seen the sample.</li>
+    </ul>
+
+    <div class="callout warning">
+      <div class="callout-title">The #1 Reason People Fail</div>
+      <p>They read the question once, panic, and start typing random code. <strong>Spend 5-10 minutes understanding the question.</strong> Trace through the sample input with pen and paper. If you understand the sample, you can write the code.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: CLASS CREATION ===== -->
+  <div class="content-section" id="classes">
+    <div class="section-tag">Step 2</div>
+    <h2>Creating Classes (The Template)</h2>
+    <p class="section-desc">Every class follows the exact same structure. Memorize this template:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">The Universal Class Template</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Song {
+    // Step 1: Private fields (from the question)
+    private int songId;
+    private String songName;
+    private int duration;
+    private String genre;
+
+    // Step 2: Constructor (same order as fields)
+    public Song(int songId, String songName, int duration, String genre) {
+        this.songId = songId;
+        this.songName = songName;
+        this.duration = duration;
+        this.genre = genre;
+    }
+
+    // Step 3: Getters (one per field)
+    public int getSongId() { return songId; }
+    public String getSongName() { return songName; }
+    public int getDuration() { return duration; }
+    public String getGenre() { return genre; }
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Speed Trick</div>
+      <p>For EVERY class in the question, just follow this template:</p>
+      <ol style="padding-left: 20px;">
+        <li>Copy the field names from the question</li>
+        <li>Make them <code>private</code></li>
+        <li>Write a constructor that takes ALL fields as parameters</li>
+        <li>Write <code>getXxx()</code> for each field</li>
+      </ol>
+      <p>Don't think. Just apply the template. You'll write 3-4 classes in 5 minutes.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: TRAVERSING LISTS ===== -->
+  <div class="content-section" id="traversal">
+    <div class="section-tag">Core Skill</div>
+    <h2>Traversing From One List to Another</h2>
+    <p class="section-desc">This is the most common thing in PRA. You have a Musician who has a List of Songs. Or a Brand that has a List of Mobiles. How do you get from the outer object to the inner list?</p>
+
+    <div class="diagram">
+      <pre>
+  Musician                    Songs (List)
+  +------------------+       +------------------+
+  | musicianId: 1    |       | songId: 101      |
+  | musicianName:    |       | songName: "Rise" |
+  |   "Alice"        | ----> | duration: 200    |
+  | songs: [Song,    |       | genre: "Pop"     |
+  |         Song]    |       +------------------+
+  +------------------+       | songId: 102      |
+                              | songName: "Fall" |
+                              | duration: 180    |
+                              | genre: "Rock"    |
+                              +------------------+
+      </pre>
+      <div class="diagram-label">One Musician "has" many Songs. This is called Composition.</div>
+    </div>
+
+    <h3 style="margin-top: 32px;">The Pattern: Nested For Loops</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Traversing Outer List &rarr; Inner List</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// I have a List&lt;Musician&gt;. I want to find all Pop songs.
+
+// OUTER LOOP: Go through each Musician
+for (Musician m : musicians) {
+
+    // INNER LOOP: Go through each Song of THIS musician
+    for (Song s : m.getSongs()) {
+
+        // Now I can check each song's properties
+        if (s.getGenre().equalsIgnoreCase("Pop")) {
+            System.out.println(s.getSongName());
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">How to Read This Code</div>
+      <p>Think of it like opening boxes:</p>
+      <ol style="padding-left: 20px;">
+        <li><strong>Big box:</strong> <code>musicians</code> &mdash; a list of Musician objects</li>
+        <li><strong>Open one box:</strong> <code>m</code> &mdash; one Musician. Now I can call <code>m.getSongs()</code></li>
+        <li><strong>Inside that box, smaller boxes:</strong> <code>m.getSongs()</code> &mdash; returns a List of Songs</li>
+        <li><strong>Open each small box:</strong> <code>s</code> &mdash; one Song. Now I can call <code>s.getGenre()</code></li>
+      </ol>
+    </div>
+
+    <h3 style="margin-top: 32px;">More Examples</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Brand &rarr; Mobiles (find mobiles in storage range)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">for (Brand b : brands) {                      // outer: each brand
+    for (Mobile mob : b.getMobileList()) {     // inner: each mobile of this brand
+        if (mob.getStorage() &gt;= min &amp;&amp; mob.getStorage() &lt;= max) {
+            // Found a mobile in range! Print it with brand name
+            System.out.println("Brand: " + b.getBrandName() + ", Model: " + mob.getModelName());
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Subscription &rarr; Customers (build customer-to-subscriptions map)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Build a Map: customerId -&gt; List of their Subscriptions
+Map&lt;Integer, List&lt;Subscription&gt;&gt; map = new LinkedHashMap&lt;&gt;();
+
+for (Subscription sub : allSubscriptions) {           // outer: each subscription
+    for (Customer c : sub.getSubscribedCustomers()) { // inner: each customer of this sub
+        // Add this subscription to this customer's list
+        map.computeIfAbsent(c.getCustomerId(), k -&gt; new ArrayList&lt;&gt;()).add(sub);
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">The Rule</div>
+      <p>Whenever you see <strong>"Class A has a List of Class B"</strong> in the question, you WILL need nested loops. Outer loop = Class A. Inner loop = call <code>a.getListOfB()</code>.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: PRINT IN METHOD VS MAIN ===== -->
+  <div class="content-section" id="print-location">
+    <div class="section-tag">Core Skill</div>
+    <h2>Where to Print: In the Method or in Main?</h2>
+    <p class="section-desc">This confuses everyone. Here's the simple rule.</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Print in the Method (void methods)</div>
+        <div class="comparison-body">
+          <p>When the question says the method should <strong>"print"</strong> or <strong>"display"</strong> the results.</p>
+          <p>The method return type is <code>void</code>. It prints directly.</p>
+<pre><code class="language-java" style="font-size: 0.85rem;">// Question says: "print the averages"
+public static void getAveragesByType(
+    List&lt;Car&gt; cars, String type) {
+    // ... calculate ...
+    System.out.println("avgTankCapacity: " + avg);
+    // prints INSIDE the method
+}
+
+// In main:
+getAveragesByType(cars, searchType);
+// Just call it. No System.out.println() needed.</code></pre>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Return from Method, Print in Main</div>
+        <div class="comparison-body">
+          <p>When the question says the method should <strong>"return"</strong> a value/list/map.</p>
+          <p>The method has a return type (List, Map, double, etc). Main receives it and prints.</p>
+<pre><code class="language-java" style="font-size: 0.85rem;">// Question says: "return the list of songs"
+public static List&lt;String&gt; findSongsByGenre(
+    List&lt;Musician&gt; musicians, String genre) {
+    List&lt;String&gt; result = new ArrayList&lt;&gt;();
+    // ... add matching songs to result ...
+    return result;  // returns, doesn't print
+}
+
+// In main:
+List&lt;String&gt; songs = findSongsByGenre(musicians, genre);
+if (songs.isEmpty()) {
+    System.out.println("Songs in " + genre + " genre are not present.");
+} else {
+    System.out.println("Songs in " + genre + " genre :");
+    for (String s : songs) {
+        System.out.println(s);
+    }
+}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">How to Decide: 3 Clues</div>
+      <table class="info-table">
+        <tr><th>Clue in Question</th><th>Where to Print</th><th>Method Return Type</th></tr>
+        <tr><td>"print the result" / "display"</td><td>Inside the method</td><td><code>void</code></td></tr>
+        <tr><td>"return the list/map/value"</td><td>In main (after calling)</td><td><code>List</code>, <code>Map</code>, <code>double</code>, etc.</td></tr>
+        <tr><td>"return null if not found"</td><td>In main (check null, then print)</td><td>Object type</td></tr>
+        <tr><td>"the main method should print"</td><td>In main</td><td>Return type given in question</td></tr>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Common Trap</div>
+      <p>Some questions have methods that <strong>return</strong> a value, but then say "if the returned value is null/zero, <strong>main should print</strong> an error message." This means:</p>
+      <ul style="padding-left: 20px;">
+        <li>The method RETURNS (doesn't print)</li>
+        <li>Main receives the result</li>
+        <li>Main checks if it's null/zero/empty</li>
+        <li>Main prints the success output OR the error message</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: CUSTOM EXCEPTIONS ===== -->
+  <div class="content-section" id="exceptions">
+    <div class="section-tag">Core Skill</div>
+    <h2>Custom Exceptions &amp; Try-Catch</h2>
+    <p class="section-desc">Some questions ask you to throw custom exceptions. It sounds scary but it's only 3 lines of code.</p>
+
+    <h3>Creating a Custom Exception (2 lines)</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Custom Exception &mdash; It's just a class that extends Exception</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// That's literally it. Two lines.
+class AverageCannotBeCalculatedException extends Exception {
+    public AverageCannotBeCalculatedException(String message) {
+        super(message);  // passes the message to the parent Exception class
+    }
+}</code></pre>
+    </div>
+
+    <h3 style="margin-top: 24px;">Throwing a Custom Exception</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Inside your method &mdash; throw when condition is met</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Method signature MUST say "throws" the exception
+public static Map&lt;String, Double&gt; calculateAveragePrice(List&lt;Brand&gt; brands)
+    throws AverageCannotBeCalculatedException {
+
+    // Check if something is wrong
+    if (brands.isEmpty() || /* no mobiles */ ) {
+        // THROW the exception with the message from the question
+        throw new AverageCannotBeCalculatedException("Average cannot be calculated");
+    }
+
+    // Normal logic here...
+    return result;
+}</code></pre>
+    </div>
+
+    <h3 style="margin-top: 24px;">Catching in Main (try-catch)</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">In main &mdash; wrap method calls in try-catch</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// In main method:
+try {
+    Map&lt;String, Double&gt; result = calculateAveragePrice(brands);
+    // If we reach here, no exception was thrown
+    System.out.println("Average Price of each brand:");
+    for (Map.Entry&lt;String, Double&gt; entry : result.entrySet()) {
+        System.out.println(entry.getKey() + ": " + entry.getValue());
+    }
+} catch (AverageCannotBeCalculatedException e) {
+    // If exception was thrown, we land here
+    // Print EXACTLY what the question asks
+    System.out.println("AverageCannotBeCalculatedException: " + e.getMessage());
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">The Output Format for Exceptions</div>
+      <p>Read the question carefully. The output usually follows one of these patterns:</p>
+      <table class="info-table">
+        <tr><th>Question Says</th><th>Print This</th></tr>
+        <tr><td>"throw exception with message 'Average cannot be calculated'"</td><td><code>AverageCannotBeCalculatedException: Average cannot be calculated</code></td></tr>
+        <tr><td>"print the name of the exception"</td><td><code>e.getClass().getSimpleName()</code> &rarr; prints just <code>ArithmeticException</code></td></tr>
+        <tr><td>"print the exception message"</td><td><code>e.getMessage()</code> &rarr; prints just the message text</td></tr>
+      </table>
+    </div>
+
+    <h3 style="margin-top: 24px;">Simple Exception Handling (Division-type questions)</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">When the question says "handle all exceptions"</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">try {
+    Scanner sc = new Scanner(System.in);
+    int a = sc.nextInt();
+    int b = sc.nextInt();
+    System.out.println(a / b);
+} catch (Exception e) {
+    // Catches ANY exception (ArithmeticException, InputMismatchException, etc.)
+    System.out.println(e.getClass().getSimpleName());
+    // For 15/0: prints "ArithmeticException"
+    // For "abc"/5: prints "InputMismatchException"
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: WHAT TO DO WHEN STUCK ===== -->
+  <div class="content-section" id="stuck">
+    <div class="section-tag">Survival Guide</div>
+    <h2>What to Do When You're Stuck</h2>
+    <p class="section-desc">Your mind is blank. You've read the question 3 times. Nothing is clicking. Here's your emergency protocol:</p>
+
+    <ul class="steps">
+      <li><strong>Step 1: Write the classes first.</strong> Don't think about logic. Just look at the class definitions in the question and write them using the template (private fields, constructor, getters). This is free marks and gets your fingers moving.</li>
+      <li><strong>Step 2: Write the Scanner input code.</strong> Look at the sample input. Count the lines. Write code to read each line in order. Create objects as you go. This is mechanical &mdash; no thinking required.</li>
+      <li><strong>Step 3: Write an empty method with the correct signature.</strong> Copy the method name and parameters from the question. Set the return type. Return null/0/empty list for now. At least the code compiles.</li>
+      <li><strong>Step 4: Focus on ONE method at a time.</strong> Pick the simpler method. Look at the sample output for that method. Think: "What data goes in? What comes out?" Write a for loop. Filter. Calculate. Return.</li>
+      <li><strong>Step 5: Match the output EXACTLY.</strong> Run the sample input mentally. Does your output match? Check every space, colon, and capital letter.</li>
+    </ul>
+
+    <div class="callout warning">
+      <div class="callout-title">The "I Have No Idea" Emergency Plan</div>
+      <p>If you truly cannot figure out the method logic, at least do this:</p>
+      <ol style="padding-left: 20px;">
+        <li>Write all classes correctly (20-30% marks)</li>
+        <li>Write the input reading in main (10-20% marks)</li>
+        <li>Write the method signature with correct return type</li>
+        <li>In the method, write a for loop that iterates through the input list</li>
+        <li>Inside the loop, write an if-statement comparing with equalsIgnoreCase</li>
+      </ol>
+      <p>Even if the logic isn't perfect, you'll get partial marks for structure. <strong>Never submit a blank method.</strong></p>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Time Management: The 15-60 Rule</div>
+      <p><strong>Do the minor question first</strong> (15 min). It's usually simple &mdash; String manipulation, basic math, simple loops. Bank those marks.</p>
+      <p>Then spend the remaining 60 minutes on the major question. Even if you don't finish the major, you've secured the minor marks.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 8: COMMON PATTERNS ===== -->
+  <div class="content-section" id="patterns">
+    <div class="section-tag">Cheat Sheet</div>
+    <h2>PRA Question Patterns</h2>
+    <p class="section-desc">Every major question falls into one of these patterns. Recognize the pattern = know the solution structure.</p>
+
+    <table class="info-table">
+      <tr>
+        <th>Pattern</th>
+        <th>What to Look For</th>
+        <th>Key Code</th>
+      </tr>
+      <tr>
+        <td><strong>Filter &amp; Return List</strong></td>
+        <td>"find all X where Y" / "return list of"</td>
+        <td><code>if (item.getField().equalsIgnoreCase(param)) result.add(item);</code></td>
+      </tr>
+      <tr>
+        <td><strong>Calculate Average</strong></td>
+        <td>"average of" / "calculate average"</td>
+        <td><code>total += value; count++;</code> then <code>total / count</code></td>
+      </tr>
+      <tr>
+        <td><strong>Find Min/Max</strong></td>
+        <td>"minimum" / "maximum" / "highest" / "lowest"</td>
+        <td><code>if (current &lt; min) { min = current; minObj = obj; }</code></td>
+      </tr>
+      <tr>
+        <td><strong>Group By</strong></td>
+        <td>"for each brand" / "group by department"</td>
+        <td><code>map.computeIfAbsent(key, k -&gt; new ArrayList&lt;&gt;()).add(obj);</code></td>
+      </tr>
+      <tr>
+        <td><strong>Sum with Condition</strong></td>
+        <td>"total of X where Y" / "sum"</td>
+        <td><code>if (matches) total += value;</code> then check <code>total == 0</code></td>
+      </tr>
+      <tr>
+        <td><strong>Custom Exception</strong></td>
+        <td>"throw exception" / "custom exception"</td>
+        <td><code>if (bad) throw new CustomException("msg");</code> + <code>try-catch</code> in main</td>
+      </tr>
+      <tr>
+        <td><strong>Discount/Formula</strong></td>
+        <td>"apply discount" / "calculate using formula"</td>
+        <td>Copy the formula from the question. It's given to you.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 9: SCANNER READING PATTERNS ===== -->
+  <div class="content-section" id="scanner">
+    <div class="section-tag">Cheat Sheet</div>
+    <h2>Scanner Input: The Reading Pattern</h2>
+    <p class="section-desc">Most PRA questions use <code>nextLine()</code> for everything and then parse. Here's the safe pattern:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Safe Scanner Pattern (works for ALL PRA questions)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+
+// Read a number (how many objects to create)
+int n = Integer.parseInt(sc.nextLine().trim());
+
+for (int i = 0; i &lt; n; i++) {
+    // Read each field on its own line
+    String name = sc.nextLine().trim();
+    double price = Double.parseDouble(sc.nextLine().trim());
+    int count = Integer.parseInt(sc.nextLine().trim());
+
+    // Read nested objects
+    int numInner = Integer.parseInt(sc.nextLine().trim());
+    List&lt;InnerClass&gt; innerList = new ArrayList&lt;&gt;();
+    for (int j = 0; j &lt; numInner; j++) {
+        // read inner object fields...
+        innerList.add(new InnerClass(...));
+    }
+
+    // Create the outer object with its inner list
+    outerList.add(new OuterClass(name, price, count, innerList));
+}</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">The nextInt() + nextLine() Bug</div>
+      <p>If you mix <code>sc.nextInt()</code> with <code>sc.nextLine()</code>, the nextLine() will read the leftover newline from nextInt() and give you an empty string. <strong>Solution: Use <code>Integer.parseInt(sc.nextLine().trim())</code> for everything.</strong> It's longer but it never bugs out.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 10: EQUALSIGNORECASE ===== -->
+  <div class="content-section" id="string-compare">
+    <div class="section-tag">Critical Rule</div>
+    <h2>String Comparison: equalsIgnoreCase</h2>
+    <p class="section-desc">Every single PRA question says "All string comparisons must be case-insensitive." This means:</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">NEVER do this</div>
+        <div class="comparison-body">
+<pre><code class="language-java">// Using == compares references, not values
+if (genre == "Pop")         // WRONG
+
+// Using .equals() is case-sensitive
+if (genre.equals("Pop"))    // WRONG (won't match "pop" or "POP")</code></pre>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">ALWAYS do this</div>
+        <div class="comparison-body">
+<pre><code class="language-java">// Case-insensitive comparison
+if (genre.equalsIgnoreCase("Pop"))  // CORRECT
+
+// When comparing two variables
+if (s.getGenre().equalsIgnoreCase(searchGenre))  // CORRECT</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 11: LINKEDHASHMAP ===== -->
+  <div class="content-section" id="insertion-order">
+    <div class="section-tag">Critical Rule</div>
+    <h2>Insertion Order: LinkedHashMap &amp; LinkedHashSet</h2>
+    <p class="section-desc">Almost every PRA question says "Preserve insertion order." This means:</p>
+
+    <table class="info-table">
+      <tr><th>Need</th><th>Use</th><th>NOT</th></tr>
+      <tr><td>Map with insertion order</td><td><code>new LinkedHashMap&lt;&gt;()</code></td><td><code>new HashMap&lt;&gt;()</code></td></tr>
+      <tr><td>Set with insertion order</td><td><code>new LinkedHashSet&lt;&gt;()</code></td><td><code>new HashSet&lt;&gt;()</code></td></tr>
+      <tr><td>List (already ordered)</td><td><code>new ArrayList&lt;&gt;()</code></td><td>&mdash;</td></tr>
+    </table>
+
+    <p style="margin-top: 16px;">If you use <code>HashMap</code> instead of <code>LinkedHashMap</code>, the output order will be random and your test cases will fail even though the values are correct.</p>
+  </div>
+
+  <!-- ===== SECTION 12: EXAM DAY CHECKLIST ===== -->
+  <div class="content-section" id="checklist">
+    <div class="section-tag">Final</div>
+    <h2>Exam Day Checklist</h2>
+    <p class="section-desc">Before you hit Submit, check these:</p>
+
+    <ul class="steps">
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>Class name is <code>Solution</code></strong> (not Main, not your custom name)</li>
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>All string comparisons use <code>equalsIgnoreCase()</code></strong></li>
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>Maps use <code>LinkedHashMap</code></strong> (not HashMap)</li>
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>Output format matches EXACTLY</strong> (spaces, colons, capitalization)</li>
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>Scanner reads in the correct order</strong> (match sample input line by line)</li>
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>No extra prints</strong> (debug System.out.println lines removed)</li>
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>"not found" messages match exactly</strong> (copy from question, don't paraphrase)</li>
+      <li><input type="checkbox" style="margin-right: 8px;"> <strong>Minor question is done</strong> (don't leave free marks on the table)</li>
+    </ul>
+  </div>
+
+  <div class="topic-nav">
+    <a href="10-putting-it-together.html"><span class="nav-label">Previous</span><span class="nav-title">Putting It Together</span></a>
+    <a href="practice-ide.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Practice IDE</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

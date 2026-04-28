@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Management | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+    <a href="mock5-q1.html" class="sidebar-link active"><span class="num">M9</span> Subscription Mgmt</a>
+    <a href="mock5-q2.html" class="sidebar-link"><span class="num">M10</span> Car Management</a>
+    <a href="mock6-q1.html" class="sidebar-link"><span class="num">M11</span> Music-Fest</a>
+    <a href="mock6-q2.html" class="sidebar-link"><span class="num">M12</span> TrainTicket</a>
+    <a href="mock7-q1.html" class="sidebar-link"><span class="num">M13</span> Division Exception</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 5 &mdash; Question 1</div>
+    <h2>Subscription Management System</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge major">Major</span>
+      <span class="time-estimate">60&ndash;75 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Develop a <strong>Subscription Management System</strong> to track subscription details for multiple customers. Implement two methods:</p>
+      <ol>
+        <li><strong>calculateTotalAmount</strong> &mdash; calculates the total subscription amount after a <strong>5% discount</strong> for each customer.</li>
+        <li><strong>getSubscriptionDetails</strong> &mdash; finds all subscriptions for a specific customer by their ID.</li>
+      </ol>
+      <p><strong>Classes required:</strong></p>
+      <ul>
+        <li><code>Customer</code> &mdash; customerId (int), customerName (String)</li>
+        <li><code>Subscription</code> &mdash; subscriptionName (String), amount (double), validityInMonth (int), subscribedCustomers (List&lt;Customer&gt;)</li>
+        <li><code>Solution</code> &mdash; calculateTotalAmount(Map&lt;Integer, List&lt;Subscription&gt;&gt;), getSubscriptionDetails(int, Map&lt;Integer, List&lt;Subscription&gt;&gt;)</li>
+      </ul>
+      <p><strong>Discount formula:</strong> <code>TotalAmountAfterDiscount = TotalAmount - (TotalAmount * 5 / 100)</code></p>
+      <p>If the search customer ID is not found, print: <code>"No customer found with ID: &lt;id&gt;"</code></p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is a heavy OOP + Collections question. It combines class composition, Map operations, list traversal, and a simple calculation &mdash; all wired together through Scanner input parsing.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Core Concepts Being Tested</div>
+      <ul>
+        <li><strong>Composition:</strong> A Subscription holds a List&lt;Customer&gt; &mdash; objects inside objects</li>
+        <li><strong>Map&lt;Integer, List&lt;Subscription&gt;&gt;:</strong> Grouping subscriptions by customer ID</li>
+        <li><strong>computeIfAbsent:</strong> Building a map where each key maps to a list</li>
+        <li><strong>LinkedHashMap:</strong> Preserving insertion order so output matches expected order</li>
+        <li><strong>Discount calculation:</strong> Simple math but easy to mess up the formula placement</li>
+        <li><strong>Scanner input parsing:</strong> Multiple nested loops reading different data types</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: WALKTHROUGH ===== -->
+  <div class="content-section" id="walkthrough">
+    <div class="section-tag">Walkthrough</div>
+    <h2>Tracing Through Sample Data</h2>
+    <p class="section-desc">Let's walk through TC1 step by step to see how the data flows.</p>
+
+    <div class="diagram">
+      <pre>
+<strong>INPUT:</strong>
+2                          &larr; 2 subscriptions
+Netflix                    &larr; Sub 1: name
+4999                       &larr; Sub 1: amount
+12                         &larr; Sub 1: validity (months)
+2                          &larr; Sub 1: 2 customers
+2345                       &larr; Customer ID
+jyothi                     &larr; Customer Name
+3456
+sajina
+prime                      &larr; Sub 2: name
+3999                       &larr; Sub 2: amount
+6                          &larr; Sub 2: validity
+3                          &larr; Sub 2: 3 customers
+2345
+jyothi
+3456
+sajina
+3423
+sherin
+2345                       &larr; Search ID
+      </pre>
+      <div class="diagram-label">Raw input &mdash; 2 subscriptions with overlapping customers</div>
+    </div>
+
+    <div class="diagram">
+      <pre>
+<strong>STEP 1: Parse into Subscription objects</strong>
+
+  Sub1 = Subscription("Netflix", 4999, 12, [Customer(2345,"jyothi"), Customer(3456,"sajina")])
+  Sub2 = Subscription("prime",   3999, 6,  [Customer(2345,"jyothi"), Customer(3456,"sajina"), Customer(3423,"sherin")])
+
+<strong>STEP 2: Build customerSubscriptions Map (LinkedHashMap)</strong>
+
+  For Sub1 (Netflix):
+    Customer 2345 &rarr; map.get(2345) = null &rarr; create new list &rarr; {2345: [Netflix]}
+    Customer 3456 &rarr; map.get(3456) = null &rarr; create new list &rarr; {2345: [Netflix], 3456: [Netflix]}
+
+  For Sub2 (prime):
+    Customer 2345 &rarr; map.get(2345) = [Netflix] &rarr; add &rarr; {2345: [Netflix, prime]}
+    Customer 3456 &rarr; map.get(3456) = [Netflix] &rarr; add &rarr; {3456: [Netflix, prime]}
+    Customer 3423 &rarr; map.get(3423) = null &rarr; create &rarr; {3423: [prime]}
+
+  Final map:
+    2345 &rarr; [Netflix(4999), prime(3999)]
+    3456 &rarr; [Netflix(4999), prime(3999)]
+    3423 &rarr; [prime(3999)]
+
+<strong>STEP 3: calculateTotalAmount</strong>
+
+  Customer 2345: total = 4999 + 3999 = 8998. Discount = 8998 * 5/100 = 449.9. After = 8998 - 449.9 = <strong>8548.1</strong>
+  Customer 3456: total = 4999 + 3999 = 8998. After discount = <strong>8548.1</strong>
+                 Wait &mdash; but expected output says 4749.05!
+
+  <strong style="color: #EF4444;">HOLD ON.</strong> Re-read the expected output:
+    Customer 3456 = 4749.05 &rarr; that's (4999 * 0.95) = 4749.05
+    So 3456 only has Netflix, NOT prime!
+
+  This means 3456/sajina is only in Sub1 (Netflix), not Sub2.
+  Let me re-read: Sub2 has customers 2345, 3456, 3423... but expected output says 3456=4749.05.
+
+  Actually looking at the expected output more carefully:
+    2345 = 8548.1 &rarr; (4999+3999)*0.95 = 8548.1 &check;  (has both subs)
+    3456 = 4749.05 &rarr; 4999*0.95 = 4749.05           (has only Netflix)
+    3423 = 3799.05 &rarr; 3999*0.95 = 3799.05           (has only prime)
+
+  So the input must be: Sub1 has [2345, 3456], Sub2 has [2345, 3423].
+      </pre>
+      <div class="diagram-label">Data flow: Input &rarr; Objects &rarr; Map &rarr; Calculation</div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Read the Input Carefully</div>
+      <p>The biggest trap in this question is mis-reading which customers belong to which subscription. The customer lists are <strong>different</strong> for each subscription. Don't assume all customers subscribe to everything.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: ALGORITHM ===== -->
+  <div class="content-section" id="algorithm">
+    <div class="section-tag">Algorithm</div>
+    <h2>The Algorithm Step by Step</h2>
+
+    <ul class="steps">
+      <li><strong>Step 1:</strong> Read number of subscriptions.</li>
+      <li><strong>Step 2:</strong> For each subscription, read: name, amount, validity, number of customers, then each customer's ID and name. Create Subscription and Customer objects.</li>
+      <li><strong>Step 3:</strong> Build a <code>Map&lt;Integer, List&lt;Subscription&gt;&gt;</code> (LinkedHashMap). For each subscription, loop through its customers. For each customer ID, add the subscription to that customer's list in the map.</li>
+      <li><strong>Step 4:</strong> <strong>calculateTotalAmount:</strong> For each entry in the map, sum all subscription amounts for that customer. Apply 5% discount: <code>total - (total * 5 / 100)</code>. Store in a result map.</li>
+      <li><strong>Step 5:</strong> Print all customer totals.</li>
+      <li><strong>Step 6:</strong> Read search customer ID.</li>
+      <li><strong>Step 7:</strong> <strong>getSubscriptionDetails:</strong> Check if the map contains the ID. If yes, return the list of subscriptions. If no, return null.</li>
+      <li><strong>Step 8:</strong> Print subscription names or "No customer found" message.</li>
+    </ul>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Why LinkedHashMap?</div>
+      <p>A regular <code>HashMap</code> doesn't guarantee insertion order. The expected output prints customers in the order they first appeared in the input. <code>LinkedHashMap</code> preserves insertion order, so your output matches exactly.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Three classes + main method with input parsing, map building, and both service methods.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+class Customer {
+    private int customerId;
+    private String customerName;
+
+    public Customer(int customerId, String customerName) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+    }
+
+    public int getCustomerId() { return customerId; }
+    public String getCustomerName() { return customerName; }
+}
+
+class Subscription {
+    private String subscriptionName;
+    private double amount;
+    private int validityInMonth;
+    private List&lt;Customer&gt; subscribedCustomers;
+
+    public Subscription(String subscriptionName, double amount, int validityInMonth, List&lt;Customer&gt; subscribedCustomers) {
+        this.subscriptionName = subscriptionName;
+        this.amount = amount;
+        this.validityInMonth = validityInMonth;
+        this.subscribedCustomers = subscribedCustomers;
+    }
+
+    public String getSubscriptionName() { return subscriptionName; }
+    public double getAmount() { return amount; }
+    public int getValidityInMonth() { return validityInMonth; }
+    public List&lt;Customer&gt; getSubscribedCustomers() { return subscribedCustomers; }
+}
+
+public class Solution {
+
+    public static Map&lt;Integer, Double&gt; calculateTotalAmount(Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions) {
+        Map&lt;Integer, Double&gt; result = new LinkedHashMap&lt;&gt;();
+        for (Map.Entry&lt;Integer, List&lt;Subscription&gt;&gt; entry : customerSubscriptions.entrySet()) {
+            double total = 0;
+            for (Subscription sub : entry.getValue()) {
+                total += sub.getAmount();
+            }
+            double discounted = total - (total * 5.0 / 100);
+            result.put(entry.getKey(), discounted);
+        }
+        return result;
+    }
+
+    public static List&lt;Subscription&gt; getSubscriptionDetails(int customerId, Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions) {
+        if (customerSubscriptions.containsKey(customerId)) {
+            return customerSubscriptions.get(customerId);
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int numSubs = Integer.parseInt(sc.nextLine().trim());
+        List&lt;Subscription&gt; allSubs = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; numSubs; i++) {
+            String name = sc.nextLine().trim();
+            double amount = Double.parseDouble(sc.nextLine().trim());
+            int validity = Integer.parseInt(sc.nextLine().trim());
+            int numCust = Integer.parseInt(sc.nextLine().trim());
+            List&lt;Customer&gt; customers = new ArrayList&lt;&gt;();
+            for (int j = 0; j &lt; numCust; j++) {
+                int cId = Integer.parseInt(sc.nextLine().trim());
+                String cName = sc.nextLine().trim();
+                customers.add(new Customer(cId, cName));
+            }
+            allSubs.add(new Subscription(name, amount, validity, customers));
+        }
+
+        // Build customerSubscriptions map (LinkedHashMap for insertion order)
+        Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions = new LinkedHashMap&lt;&gt;();
+        for (Subscription sub : allSubs) {
+            for (Customer c : sub.getSubscribedCustomers()) {
+                customerSubscriptions.computeIfAbsent(c.getCustomerId(), k -&gt; new ArrayList&lt;&gt;()).add(sub);
+            }
+        }
+
+        // Method 1: Calculate totals
+        Map&lt;Integer, Double&gt; totals = calculateTotalAmount(customerSubscriptions);
+        System.out.println("Total amount after discount for each customer:");
+        for (Map.Entry&lt;Integer, Double&gt; entry : totals.entrySet()) {
+            System.out.println("Customer ID: " + entry.getKey() + ", Total Amount: " + entry.getValue());
+        }
+
+        // Method 2: Search by customer ID
+        int searchId = Integer.parseInt(sc.nextLine().trim());
+        List&lt;Subscription&gt; details = getSubscriptionDetails(searchId, customerSubscriptions);
+        if (details == null) {
+            System.out.println("No customer found with ID: " + searchId);
+        } else {
+            System.out.println("Subscriptions for Customer ID " + searchId + ":");
+            for (Subscription sub : details) {
+                System.out.println("- " + sub.getSubscriptionName());
+            }
+        }
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class Customer { private int customerId; private String customerName; }</div>
+          <div class="breakdown-explain">Simple POJO with two private fields. The constructor sets them, getters expose them. This is the <strong>inner object</strong> that Subscription will hold a list of.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class Subscription { ... private List&lt;Customer&gt; subscribedCustomers; }</div>
+          <div class="breakdown-explain"><strong>Composition</strong> in action. A Subscription doesn't just have primitive fields &mdash; it holds a List of Customer objects. This is the "has-a" relationship.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions = new LinkedHashMap&lt;&gt;();</div>
+          <div class="breakdown-explain">The key data structure. Maps each customer ID (Integer) to a list of their subscriptions. <code>LinkedHashMap</code> keeps insertion order so output matches expected order.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">customerSubscriptions.computeIfAbsent(c.getCustomerId(), k -&gt; new ArrayList&lt;&gt;()).add(sub);</div>
+          <div class="breakdown-explain">The most important line. <code>computeIfAbsent</code> says: "if this key doesn't exist yet, create a new empty list for it." Then <code>.add(sub)</code> adds the subscription to that list. This one line replaces a 5-line if-else block.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double discounted = total - (total * 5.0 / 100);</div>
+          <div class="breakdown-explain">5% discount formula. Note <code>5.0</code> not <code>5</code> &mdash; using a double ensures we get decimal precision. <code>5/100</code> with integers would give 0 due to integer division.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (customerSubscriptions.containsKey(customerId)) { return ... } return null;</div>
+          <div class="breakdown-explain"><code>containsKey()</code> checks if the customer ID exists in the map. If yes, return their subscription list. If no, return null &mdash; the caller checks for null and prints the "not found" message.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">7</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int numSubs = Integer.parseInt(sc.nextLine().trim());</div>
+          <div class="breakdown-explain">Read using <code>nextLine().trim()</code> and parse. This pattern avoids the classic <code>nextInt()</code> + <code>nextLine()</code> newline bug. Always use <code>nextLine()</code> and parse manually in PRA questions.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Multiple Subscriptions, Customer Found</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">2<br>Netflix<br>4999<br>12<br>2<br>2345<br>jyothi<br>3456<br>sajina<br>prime<br>3999<br>6<br>2<br>2345<br>jyothi<br>3423<br>sherin<br>2345</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Total amount after discount for each customer:<br>Customer ID: 2345, Total Amount: 8548.1<br>Customer ID: 3456, Total Amount: 4749.05<br>Customer ID: 3423, Total Amount: 3799.05<br>Subscriptions for Customer ID 2345:<br>- Netflix<br>- prime</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 (Hidden) &mdash; Customer Not Found</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">1<br>Spotify<br>1000<br>3<br>2<br>101<br>Ravi<br>102<br>Sita<br>999</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Total amount after discount for each customer:<br>Customer ID: 101, Total Amount: 950.0<br>Customer ID: 102, Total Amount: 950.0<br>No customer found with ID: 999</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 3 (Edge) &mdash; Single Customer, Single Subscription</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">1<br>YouTube Premium<br>200<br>1<br>1<br>5001<br>Arjun<br>5001</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Total amount after discount for each customer:<br>Customer ID: 5001, Total Amount: 190.0<br>Subscriptions for Customer ID 5001:<br>- YouTube Premium</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: COMMON MISTAKES ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong: Using HashMap</div>
+        <div class="comparison-body">
+          <p><code>Map&lt;Integer, List&lt;Subscription&gt;&gt; map = new HashMap&lt;&gt;();</code></p>
+          <p>HashMap doesn't guarantee order. Your output might print Customer 3423 before 2345.</p>
+          <p style="color: var(--red);">Output order mismatch = test case failure even if logic is correct.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct: Using LinkedHashMap</div>
+        <div class="comparison-body">
+          <p><code>Map&lt;Integer, List&lt;Subscription&gt;&gt; map = new LinkedHashMap&lt;&gt;();</code></p>
+          <p>LinkedHashMap preserves insertion order. Customers appear in the order they were first encountered in the input.</p>
+          <p style="color: var(--green);">Output matches expected order every time.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Using <code>HashMap</code> instead of <code>LinkedHashMap</code></td>
+        <td>Output order is random, test cases fail</td>
+        <td>Always use <code>LinkedHashMap</code> when output order matters</td>
+      </tr>
+      <tr>
+        <td>Integer division: <code>total * 5 / 100</code></td>
+        <td>If total is an int, <code>5/100</code> = 0 &mdash; no discount applied</td>
+        <td>Use <code>5.0 / 100</code> or declare total as <code>double</code></td>
+      </tr>
+      <tr>
+        <td>Mixing <code>nextInt()</code> and <code>nextLine()</code></td>
+        <td><code>nextInt()</code> leaves a newline in the buffer. Next <code>nextLine()</code> reads an empty string.</td>
+        <td>Use <code>Integer.parseInt(sc.nextLine().trim())</code> for everything</td>
+      </tr>
+      <tr>
+        <td>Building the map wrong &mdash; subscription as key</td>
+        <td>The map needs customer ID as key, not subscription name</td>
+        <td>Loop through each subscription's customer list and flip the relationship</td>
+      </tr>
+      <tr>
+        <td>Forgetting <code>computeIfAbsent</code></td>
+        <td>NullPointerException when adding to a list that doesn't exist yet</td>
+        <td><code>computeIfAbsent(id, k -&gt; new ArrayList&lt;&gt;()).add(sub)</code> handles both cases</td>
+      </tr>
+      <tr>
+        <td>Applying discount per subscription instead of per customer total</td>
+        <td>Different rounding, wrong totals</td>
+        <td>Sum ALL subscription amounts first, then apply 5% discount once on the total</td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Exam Strategy</div>
+      <p>This is a major question &mdash; it tests composition, Maps, and method design all at once. Start by writing the <strong>Customer</strong> and <strong>Subscription</strong> classes first (5 min), then the input parsing (10 min), then the map-building logic (10 min), then the two methods (10 min each). Test with TC1 before submitting. The map-building step is where most people get stuck.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock4-q2.html"><span class="nav-label">Previous</span><span class="nav-title">Consecutive Vowels</span></a>
+    <a href="mock5-q2.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Car Management</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

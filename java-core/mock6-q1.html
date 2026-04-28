@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music-Fest | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+    <a href="mock5-q1.html" class="sidebar-link"><span class="num">M9</span> Subscription Mgmt</a>
+    <a href="mock5-q2.html" class="sidebar-link"><span class="num">M10</span> Car Management</a>
+    <a href="mock6-q1.html" class="sidebar-link active"><span class="num">M11</span> Music-Fest</a>
+    <a href="mock6-q2.html" class="sidebar-link"><span class="num">M12</span> TrainTicket</a>
+    <a href="mock7-q1.html" class="sidebar-link"><span class="num">M13</span> Division Exception</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 6 &mdash; Question 1</div>
+    <h2>Music-Fest</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge major">Major</span>
+      <span class="time-estimate">60&ndash;75 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>In the ABC Music Festival, musicians perform songs. You need to model this with two classes and a service class.</p>
+      <p><strong>Song</strong> has: <code>songId</code> (int), <code>songName</code> (String), <code>duration</code> (int), <code>genre</code> (String).</p>
+      <p><strong>Musician</strong> has: <code>musicianId</code> (int), <code>musicianName</code> (String), <code>songs</code> (List&lt;Song&gt;).</p>
+      <p><strong>MusicService methods:</strong></p>
+      <ul>
+        <li><code>findSongsByGenre(List&lt;Musician&gt;, String genre)</code> &mdash; returns a <code>List&lt;String&gt;</code> of song names matching the genre across all musicians. If none found, print: <code>"Songs in &lt;genre&gt; genre are not present."</code></li>
+        <li><code>findAverageDurationByMusician(List&lt;Musician&gt;, String musicianName)</code> &mdash; returns the average duration (double) of all songs by that musician.</li>
+      </ul>
+      <p><strong>Input:</strong> Read numMusicians. For each musician: musicianId, musicianName, numSongs. For each song: songId, songName, duration, genre. Then read searchGenre and searchMusicianName.</p>
+      <p><strong>Output format:</strong></p>
+      <pre style="background: var(--bg-code); padding: 12px; border-radius: 8px; font-size: 13px;">Songs in Pop genre :
+Twinkling Stars
+Living
+Average duration of songs composed by Alice Green : 190.0 seconds</pre>
+      <p style="margin-top: 8px;"><em>Note the space before the colon in both output lines.</em></p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is a classic <strong>composition + list traversal</strong> problem. A Musician HAS-A list of Songs. You iterate through nested structures, filter by a field, and compute an aggregate (average).</p>
+
+    <div class="callout think">
+      <div class="callout-title">Core Concepts Tested</div>
+      <ul>
+        <li><strong>Composition:</strong> Musician contains a List&lt;Song&gt; &mdash; nested object structure</li>
+        <li><strong>Nested iteration:</strong> Loop through musicians, then loop through each musician's songs</li>
+        <li><strong>Filtering:</strong> Match songs by genre using <code>equalsIgnoreCase()</code></li>
+        <li><strong>Aggregation:</strong> Sum durations and divide by count for average</li>
+        <li><strong>Scanner input:</strong> Multi-level nested input parsing (musicians &rarr; songs)</li>
+      </ul>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Watch the Output Format</div>
+      <p>The output has a <strong>space before the colon</strong>: <code>"Songs in Pop genre :"</code> not <code>"Songs in Pop genre:"</code>. Same for the average line. Missing this space will fail hidden test cases.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: WALKTHROUGH ===== -->
+  <div class="content-section" id="walkthrough">
+    <div class="section-tag">Walkthrough</div>
+    <h2>Tracing Test Case 1</h2>
+    <p class="section-desc">Let's trace the entire execution step by step with TC1 input.</p>
+
+    <div class="diagram">
+      <pre>
+<strong>Input:</strong>
+2                          &larr; 2 musicians
+1                          &larr; musicianId = 1
+Alice Green                &larr; musicianName
+2                          &larr; 2 songs for Alice
+101                        &larr; songId
+Twinkling Stars            &larr; songName
+200                        &larr; duration
+Pop                        &larr; genre
+102
+Yellow Coldplay
+180
+Rock
+2                          &larr; musicianId = 2
+Bob Roy
+3                          &larr; 3 songs for Bob
+201
+So What
+210
+Jazz
+202
+Living
+220
+Pop
+203
+Light Shines
+190
+Classical
+Pop                        &larr; searchGenre
+Alice Green                &larr; searchMusicianName
+      </pre>
+      <div class="diagram-label">Full input breakdown for TC1</div>
+    </div>
+
+    <div class="diagram">
+      <pre>
+<strong>After parsing, our data structure looks like:</strong>
+
+musicians = [
+  Musician(1, "Alice Green", [
+    Song(101, "Twinkling Stars", 200, "Pop"),
+    Song(102, "Yellow Coldplay", 180, "Rock")
+  ]),
+  Musician(2, "Bob Roy", [
+    Song(201, "So What", 210, "Jazz"),
+    Song(202, "Living", 220, "Pop"),
+    Song(203, "Light Shines", 190, "Classical")
+  ])
+]
+      </pre>
+      <div class="diagram-label">In-memory object structure</div>
+    </div>
+
+    <div class="diagram">
+      <pre>
+<strong>findSongsByGenre(musicians, "Pop"):</strong>
+
+Musician: Alice Green
+  Song: Twinkling Stars, genre=Pop  &rarr; <strong style="color: #22C55E;">MATCH</strong> &rarr; add "Twinkling Stars"
+  Song: Yellow Coldplay, genre=Rock &rarr; skip
+
+Musician: Bob Roy
+  Song: So What, genre=Jazz         &rarr; skip
+  Song: Living, genre=Pop           &rarr; <strong style="color: #22C55E;">MATCH</strong> &rarr; add "Living"
+  Song: Light Shines, genre=Classical &rarr; skip
+
+result = ["Twinkling Stars", "Living"]  &rarr; not empty, so print header + each name
+      </pre>
+      <div class="diagram-label">Genre search trace</div>
+    </div>
+
+    <div class="diagram">
+      <pre>
+<strong>findAverageDurationByMusician(musicians, "Alice Green"):</strong>
+
+Musician: Alice Green &rarr; <strong style="color: #22C55E;">NAME MATCH</strong>
+  total = 0
+  Song: Twinkling Stars, duration=200 &rarr; total = 200
+  Song: Yellow Coldplay, duration=180 &rarr; total = 380
+  average = 380 / 2 = <strong>190.0</strong>
+
+Output: "Average duration of songs composed by Alice Green : 190.0 seconds"
+      </pre>
+      <div class="diagram-label">Average duration trace</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: ALGORITHM ===== -->
+  <div class="content-section" id="algorithm">
+    <div class="section-tag">Algorithm</div>
+    <h2>The Algorithm Step by Step</h2>
+
+    <ul class="steps">
+      <li><strong>Step 1:</strong> Create Song class with 4 fields (songId, songName, duration, genre) + constructor + getters.</li>
+      <li><strong>Step 2:</strong> Create Musician class with 3 fields (musicianId, musicianName, songs list) + constructor + getters.</li>
+      <li><strong>Step 3:</strong> In main, read numMusicians. For each musician, read their details and their songs in a nested loop.</li>
+      <li><strong>Step 4:</strong> Read searchGenre and searchMusicianName.</li>
+      <li><strong>Step 5:</strong> <code>findSongsByGenre</code> &mdash; Iterate all musicians &rarr; all songs. If song's genre matches (case-insensitive), add songName to result list. Return the list.</li>
+      <li><strong>Step 6:</strong> If result list is empty, print the "not present" message. Otherwise print the header line + each song name on its own line.</li>
+      <li><strong>Step 7:</strong> <code>findAverageDurationByMusician</code> &mdash; Find the musician by name (case-insensitive). Sum all song durations. Divide by song count. Return as double.</li>
+      <li><strong>Step 8:</strong> Print the average line with the exact format.</li>
+    </ul>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Why double, not int?</div>
+      <p>The average must be a <code>double</code>. If you use <code>int total</code>, the division <code>total / size</code> does integer division (truncates decimals). Use <code>double total = 0</code> so the division automatically returns a double. E.g., 380 / 2 = 190 (int), but 380.0 / 2 = 190.0 (double).</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Three classes (Song, Musician, Solution) + two service methods + main with nested input parsing.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Complete</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+class Song {
+    private int songId;
+    private String songName;
+    private int duration;
+    private String genre;
+
+    public Song(int songId, String songName, int duration, String genre) {
+        this.songId = songId;
+        this.songName = songName;
+        this.duration = duration;
+        this.genre = genre;
+    }
+
+    public int getSongId() { return songId; }
+    public String getSongName() { return songName; }
+    public int getDuration() { return duration; }
+    public String getGenre() { return genre; }
+}
+
+class Musician {
+    private int musicianId;
+    private String musicianName;
+    private List&lt;Song&gt; songs;
+
+    public Musician(int musicianId, String musicianName, List&lt;Song&gt; songs) {
+        this.musicianId = musicianId;
+        this.musicianName = musicianName;
+        this.songs = songs;
+    }
+
+    public int getMusicianId() { return musicianId; }
+    public String getMusicianName() { return musicianName; }
+    public List&lt;Song&gt; getSongs() { return songs; }
+}
+
+public class Solution {
+
+    public static List&lt;String&gt; findSongsByGenre(List&lt;Musician&gt; musicians, String genre) {
+        List&lt;String&gt; result = new ArrayList&lt;&gt;();
+        for (Musician m : musicians) {
+            for (Song s : m.getSongs()) {
+                if (s.getGenre().equalsIgnoreCase(genre)) {
+                    result.add(s.getSongName());
+                }
+            }
+        }
+        return result;
+    }
+
+    public static double findAverageDurationByMusician(List&lt;Musician&gt; musicians, String musicianName) {
+        for (Musician m : musicians) {
+            if (m.getMusicianName().equalsIgnoreCase(musicianName)) {
+                double total = 0;
+                for (Song s : m.getSongs()) {
+                    total += s.getDuration();
+                }
+                return total / m.getSongs().size();
+            }
+        }
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int numMusicians = Integer.parseInt(sc.nextLine().trim());
+        List&lt;Musician&gt; musicians = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; numMusicians; i++) {
+            int mId = Integer.parseInt(sc.nextLine().trim());
+            String mName = sc.nextLine().trim();
+            int numSongs = Integer.parseInt(sc.nextLine().trim());
+            List&lt;Song&gt; songs = new ArrayList&lt;&gt;();
+            for (int j = 0; j &lt; numSongs; j++) {
+                int sId = Integer.parseInt(sc.nextLine().trim());
+                String sName = sc.nextLine().trim();
+                int duration = Integer.parseInt(sc.nextLine().trim());
+                String genre = sc.nextLine().trim();
+                songs.add(new Song(sId, sName, duration, genre));
+            }
+            musicians.add(new Musician(mId, mName, songs));
+        }
+
+        String searchGenre = sc.nextLine().trim();
+        String searchMusician = sc.nextLine().trim();
+
+        List&lt;String&gt; songsByGenre = findSongsByGenre(musicians, searchGenre);
+        if (songsByGenre.isEmpty()) {
+            System.out.println("Songs in " + searchGenre + " genre are not present.");
+        } else {
+            System.out.println("Songs in " + searchGenre + " genre :");
+            for (String name : songsByGenre) {
+                System.out.println(name);
+            }
+        }
+
+        double avg = findAverageDurationByMusician(musicians, searchMusician);
+        System.out.println("Average duration of songs composed by " + searchMusician + " : " + avg + " seconds");
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Line-by-line explanation</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class Song { private int songId; ... }</div>
+          <div class="breakdown-explain">The Song class encapsulates 4 fields: songId, songName, duration, genre. All fields are <code>private</code> with public getters &mdash; standard encapsulation pattern. The constructor takes all 4 values.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class Musician { ... private List&lt;Song&gt; songs; }</div>
+          <div class="breakdown-explain">The Musician class uses <strong>composition</strong>: it HAS-A <code>List&lt;Song&gt;</code>. This is the core OOP concept being tested. A musician doesn't inherit from Song &mdash; they <em>contain</em> songs.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">for (Musician m : musicians) { for (Song s : m.getSongs()) { ... } }</div>
+          <div class="breakdown-explain">Nested for-each loop. The outer loop goes through each musician. The inner loop goes through that musician's song list. This is how you traverse a composed/nested data structure.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">s.getGenre().equalsIgnoreCase(genre)</div>
+          <div class="breakdown-explain">Case-insensitive comparison. <code>equalsIgnoreCase()</code> ensures "Pop" matches "pop", "POP", etc. Always use this instead of <code>equals()</code> when the problem doesn't specify exact case matching.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double total = 0; ... return total / m.getSongs().size();</div>
+          <div class="breakdown-explain">Using <code>double total</code> instead of <code>int total</code> ensures the division produces a decimal result. <code>380.0 / 2 = 190.0</code>. If total were int: <code>380 / 2 = 190</code> (no decimal).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int numSongs = Integer.parseInt(sc.nextLine().trim());</div>
+          <div class="breakdown-explain">Each musician has a variable number of songs. We read this count first, then loop that many times to read each song's details. This is the nested input pattern &mdash; an outer loop (musicians) with an inner loop (songs per musician).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">7</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">"Songs in " + searchGenre + " genre :"</div>
+          <div class="breakdown-explain">The output format has a space before the colon. This is an exact format match requirement. Missing the space = failed test case. Always copy the output format exactly from the question.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Songs Found + Average</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">2<br>1<br>Alice Green<br>2<br>101<br>Twinkling Stars<br>200<br>Pop<br>102<br>Yellow Coldplay<br>180<br>Rock<br>2<br>Bob Roy<br>3<br>201<br>So What<br>210<br>Jazz<br>202<br>Living<br>220<br>Pop<br>203<br>Light Shines<br>190<br>Classical<br>Pop<br>Alice Green</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Songs in Pop genre :<br>Twinkling Stars<br>Living<br>Average duration of songs composed by Alice Green : 190.0 seconds</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; Genre Not Found</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">2<br>1<br>Jennifer J<br>2<br>101<br>My Stars<br>200<br>Jazz<br>102<br>Yellow Coldplay<br>180<br>Rock<br>2<br>Bob Roy<br>3<br>201<br>So What<br>210<br>Jazz<br>202<br>Living<br>221<br>Pop<br>203<br>Light Shines<br>190<br>Classical<br>Rap<br>Bob Roy</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Songs in Rap genre are not present.<br>Average duration of songs composed by Bob Roy : 207.0 seconds</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 3 (Hidden) &mdash; Single Musician, All Same Genre</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">1<br>1<br>Clara D<br>3<br>101<br>Song A<br>100<br>Rock<br>102<br>Song B<br>200<br>Rock<br>103<br>Song C<br>300<br>Rock<br>Rock<br>Clara D</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Songs in Rock genre :<br>Song A<br>Song B<br>Song C<br>Average duration of songs composed by Clara D : 200.0 seconds</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 4 (Hidden) &mdash; Average with Decimal</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">1<br>1<br>Dave M<br>3<br>101<br>Track X<br>100<br>Pop<br>102<br>Track Y<br>150<br>Jazz<br>103<br>Track Z<br>200<br>Pop<br>Pop<br>Dave M</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Songs in Pop genre :<br>Track X<br>Track Z<br>Average duration of songs composed by Dave M : 150.0 seconds</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: COMMON MISTAKES ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong: Integer division for average</div>
+        <div class="comparison-body">
+          <p>Using <code>int total</code> and dividing by <code>int size</code>:</p>
+          <p><code>int total = 380; return total / 2;</code> &rarr; returns <strong>190</strong> (not 190.0)</p>
+          <p>For values like 621 / 3, you'd get 207 instead of 207.0.</p>
+          <p style="color: var(--red);">Even when the result is a whole number, the output expects a double (190.0, not 190).</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct: Use double for total</div>
+        <div class="comparison-body">
+          <p>Declare <code>double total = 0;</code></p>
+          <p><code>double total = 380.0; return total / 2;</code> &rarr; returns <strong>190.0</strong></p>
+          <p>This ensures the division always produces a double result, matching the expected output format.</p>
+          <p style="color: var(--green);">Always use double for any calculation that involves averages or division.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Missing space before colon in output</td>
+        <td>Output doesn't match expected format exactly &mdash; hidden test cases fail</td>
+        <td>Use <code>" genre :"</code> and <code>musicianName + " : "</code> with spaces around colon</td>
+      </tr>
+      <tr>
+        <td>Using <code>equals()</code> instead of <code>equalsIgnoreCase()</code></td>
+        <td>"pop" won't match "Pop" &mdash; genre/name comparisons fail</td>
+        <td>Always use <code>equalsIgnoreCase()</code> for string matching in these problems</td>
+      </tr>
+      <tr>
+        <td>Using <code>sc.next()</code> instead of <code>sc.nextLine()</code></td>
+        <td>Names with spaces like "Alice Green" get split &mdash; "Alice" goes to name, "Green" bleeds into next read</td>
+        <td>Use <code>sc.nextLine().trim()</code> for all string inputs</td>
+      </tr>
+      <tr>
+        <td>Using <code>int total</code> for duration sum</td>
+        <td>Average returns int instead of double &mdash; output shows 190 instead of 190.0</td>
+        <td>Declare as <code>double total = 0;</code> so division returns double</td>
+      </tr>
+      <tr>
+        <td>Forgetting the period in "not present" message</td>
+        <td><code>"Songs in Rap genre are not present"</code> without the period at the end</td>
+        <td>Include the period: <code>"Songs in " + genre + " genre are not present."</code></td>
+      </tr>
+      <tr>
+        <td>Printing songs on one line separated by commas</td>
+        <td>Expected output has each song on its own line</td>
+        <td>Loop through the result list and <code>System.out.println()</code> each song name separately</td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Exam Strategy: Tackle This Pattern</div>
+      <p>This is the most common major question pattern: <strong>two model classes (composition) + two service methods (filter + aggregate)</strong>. If you can code this pattern from memory, you can solve 80% of major questions. Practice the input parsing loop &mdash; that's where most people get stuck under time pressure.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock5-q2.html"><span class="nav-label">Previous</span><span class="nav-title">Car Management</span></a>
+    <a href="mock6-q2.html" class="next"><span class="nav-label">Next</span><span class="nav-title">TrainTicket</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>
