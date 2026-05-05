@@ -1394,6 +1394,358 @@ public class Solution {
       { name: "Test Case 2", hidden: false, input: `2\n1\nSolo\nHR\n50000\n2\nDuo\nHR\n50000`, expected: `Department: HR\nSolo - 50000.0\nDuo - 50000.0\nHighest paid per department:\nHR: Solo (50000.0)` },
       { name: "Hidden Test Case 1", hidden: true, input: `3\n1\nRaj\nSales\n60000\n2\nPriya\nTech\n90000\n3\nAmit\nSales\n65000`, expected: `Department: Sales\nRaj - 60000.0\nAmit - 65000.0\nDepartment: Tech\nPriya - 90000.0\nHighest paid per department:\nSales: Amit (65000.0)\nTech: Priya (90000.0)` }
     ]
+  },
+  {
+    id: 12,
+    title: "Subscription Management",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p>Develop a <strong>Subscription Management System</strong> to track subscription details for multiple customers. You need to implement two methods:</p>
+<ol>
+<li>Calculate the total amount to be paid by each customer after applying discounts.</li>
+<li>Find subscription details for a specific customer based on their unique customer ID.</li>
+</ol>
+<p><strong>Class Definitions:</strong></p>
+<p><strong>1. Customer Class:</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>customerId (int):</strong> A unique identifier for the customer.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>customerName (String):</strong> The name of the customer.</p>
+<p><strong>2. Subscription Class:</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>subscriptionName (String):</strong> The name of the subscription (e.g., "Netflix").<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>amount (double):</strong> The cost of the subscription.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>validityInMonth (int):</strong> The validity period of the subscription in Months.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>subscribedCustomers (List of Customer objects):</strong> A list of customers who are subscribed to this service.</p>
+<p><strong>3. SubscriptionService Class:</strong></p>
+<p><strong>3.1 Method 1: calculateTotalAmount(Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions)</strong><br>
+&bull; <strong>Description:</strong> This method calculates the total amount to be paid by each customer after applying discount.<br>
+&bull; <strong>Discount Logic:</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&bull; Discount 5% discount is applicable for all customer.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&bull; Discount can be calculated using formula<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TotalAmountAfterDiscount = TotalAmount - (Total Amount * (&lt;Discount Percentage&gt;/100))<br>
+&bull; Return the values to the main function.</p>
+<p><strong>3.2 Method 2: getSubscriptionDetails(int customerId, Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions)</strong><br>
+&bull; <strong>Description:</strong> This method retrieves the subscription details for a customer based on their unique customerId. If the customer is not found, return null.</p>
+<p><strong>4. main():</strong><br>
+1. Read the data values for Subscription and Customer class.<br>
+2. Invoke the method calculateTotalAmount(Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions) and print the result.<br>
+3. Invoke the method getSubscriptionDetails(int customerId, Map&lt;Integer, List&lt;Subscription&gt;&gt; customerSubscriptions). If customer not found, then print "No customer found with ID: &lt;customerId&gt;" without quotation mark. Replace "&lt;&gt;" with actual value.</p>
+<p><strong>Input Format:</strong><br>
+1. First read the number of Subscription objects to be added to the array/list.<br>
+2. Next read the attributes for Subscription object in the mentioned sequence.<br>
+3. Next read the number of Customer objects to be mapped to that Subscription.<br>
+4. Read the attributes for Customer object and this should be repeated for the number of customers objects to be created.<br>
+5. The above steps (2 to 4) is repeated for number of Subscription objects given in the first line of input.<br>
+6. Next, read the parameter to be passed to the respective method.</p>
+<p><strong>Output Format:</strong><br>
+<strong>1. Total Amount After Discount:</strong><br>
+&nbsp;&nbsp;For each customer, output the total amount after applying the appropriate discount:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Total amount after discount for each customer:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Customer ID: &lt;customerId&gt;, Total Amount: &lt;totalAmount&gt;</p>
+<p><strong>2. Subscription Details:</strong><br>
+&nbsp;&nbsp;For a given customer ID, output the subscriptions they have:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Subscriptions for Customer ID &lt;customerId&gt;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- &lt;subscriptionName&gt;<br>
+&nbsp;&nbsp;If no customer is found with the given ID, output:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;No customer found with ID: &lt;customerId&gt;</p>
+<p><strong>Note:</strong><br>
+1. All case comparisons need to be case insensitive.<br>
+2. Replace "&lt;&gt;" with their actual value while printing.<br>
+3. Insertion order need to be maintained while storing and printing the data.</p>
+    `,
+    starterCode: `import java.util.*;
+
+class Customer {
+    // TODO: customerId (int), customerName (String)
+}
+
+class Subscription {
+    // TODO: subscriptionName (String), amount (double), validityInMonth (int), subscribedCustomers (List<Customer>)
+}
+
+public class Solution {
+
+    public static Map<Integer, Double> calculateTotalAmount(Map<Integer, List<Subscription>> customerSubscriptions) {
+        // TODO: Calculate total amount after 5% discount for each customer
+        return null;
+    }
+
+    public static List<Subscription> getSubscriptionDetails(int customerId, Map<Integer, List<Subscription>> customerSubscriptions) {
+        // TODO: Get subscriptions for given customer ID, return null if not found
+        return null;
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read input, build map, call methods, print results
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `2\nNetflix\n4999\n12\n2\n2345\njyothi\n3456\nsajina\nprime\n3999\n12\n2\n2345\njyothi\n3423\nsherin\n2345`, expected: `Total amount after discount for each customer:\nCustomer ID: 2345, Total Amount: 8548.1\nCustomer ID: 3456, Total Amount: 4749.05\nCustomer ID: 3423, Total Amount: 3799.05\nSubscriptions for Customer ID 2345:\n- Netflix\n- prime` },
+      { name: "Hidden Test Case 1", hidden: true, input: `1\nSpotify\n1000\n6\n2\n101\nRavi\n102\nSita\n999`, expected: `Total amount after discount for each customer:\nCustomer ID: 101, Total Amount: 950.0\nCustomer ID: 102, Total Amount: 950.0\nNo customer found with ID: 999` },
+      { name: "Hidden Test Case 2", hidden: true, input: `2\nNetflix\n500\n12\n1\n1001\nAlice\nHotstar\n300\n12\n1\n1001\nAlice\n1001`, expected: `Total amount after discount for each customer:\nCustomer ID: 1001, Total Amount: 760.0\nSubscriptions for Customer ID 1001:\n- Netflix\n- Hotstar` }
+    ]
+  },
+  {
+    id: 13,
+    title: "Car Management System",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p>Design and implement a <strong>Car Management System</strong> to handle different types of cars and perform analytical operations based on user inputs.</p>
+<p><strong>Class Structure:</strong></p>
+<p><strong>1. Base Class: Car</strong><br>
+&bull; brand (String)<br>
+&bull; model (String)<br>
+&bull; price (double)<br>
+&bull; type (String) &mdash; can be "Petrol", "Diesel", or "Hybrid"</p>
+<p><strong>2. Subclass: PetrolOrDieselCar</strong><br>
+&bull; Inherits from Car<br>
+Additional attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&bull; tankCapacity (double)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&bull; mileage (double)</p>
+<p><strong>3. Subclass: SmartHybridCar</strong><br>
+&bull; Inherits from Car<br>
+Additional attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&bull; batteryCapacity (double)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&bull; tankCapacity (double)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&bull; mileage (double)</p>
+<p><strong>Input Requirements:</strong><br>
+&bull; All inputs must be read from the user using the Scanner class.<br>
+&bull; Inputs should be taken in the exact order as specified in the sample input section.<br>
+&bull; If the type is "Petrol" or "Diesel", read: tankCapacity, mileage<br>
+&bull; If the type is "Hybrid", read: batteryCapacity, tankCapacity, mileage<br>
+&bull; Read the search type for analysis ("Petrol", "Diesel", or "Hybrid")<br>
+&bull; Call getAveragesByType() and print the returned map. If the map is empty, print:<br>
+&nbsp;&nbsp;"No cars available for the given type or the required criteria."<br>
+&bull; Call getMinMileageByBrand() and print the resulting brand-to-mileage mappings.</p>
+<p><strong>Functional Requirements:</strong><br>
+Implement a service class named CarService with the following two methods:</p>
+<p><strong>1. getAveragesByType(List&lt;Car&gt; cars, String type)</strong><br>
+Filter cars by the given type and calculate the averages and print:<br>
+&nbsp;&nbsp;1. If car type is Hybrid, then calculate the average and print<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Averages for type: Hybrid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;avgTankCapacity: &lt;value&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;avgBatteryCapacity: &lt;value&gt;<br>
+&nbsp;&nbsp;2. If car type is Petrol/Diesel, then calculate the average and print<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Averages for type: &lt;type&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;avgTankCapacity: &lt;value&gt;<br>
+&nbsp;&nbsp;3. else print<br>
+&nbsp;&nbsp;&nbsp;&nbsp;No cars available for the given type or the required criteria.</p>
+<p><strong>2. getMinMileageByBrand</strong><br>
+Find the minimum mileage model car of each brand and print<br>
+&nbsp;&nbsp;Minimum Mileage by Brand<br>
+&nbsp;&nbsp;Brand: &lt;value&gt;, Min Mileage: &lt;value&gt;</p>
+<p>Replace &lt;&gt; with their original values.</p>
+<p><strong>Notes:</strong><br>
+&bull; Preserve insertion order when reading and displaying data.<br>
+&bull; All string comparisons must be case-insensitive.</p>
+    `,
+    starterCode: `import java.util.*;
+
+class Car {
+    // TODO: brand (String), model (String), price (double), type (String)
+}
+
+class PetrolOrDieselCar extends Car {
+    // TODO: tankCapacity (double), mileage (double)
+}
+
+class SmartHybridCar extends Car {
+    // TODO: batteryCapacity (double), tankCapacity (double), mileage (double)
+}
+
+public class Solution {
+
+    public static void getAveragesByType(List<Car> cars, String type) {
+        // TODO: Filter by type, calculate and print averages
+    }
+
+    public static void getMinMileageByBrand(List<Car> cars) {
+        // TODO: Find min mileage per brand and print
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read cars based on type, call methods
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `3\nToyota\nHyRyder\n1600000\nHybrid\n5.5\n45\n28\nToyota\nGlanza\n800000\nPetrol\n40\n20\nHonda\nAmaze\n950000\nHybrid\n5.6\n42\n23\nHybrid`, expected: `Averages for type: Hybrid\navgTankCapacity: 43.5\navgBatteryCapacity: 5.55\nMinimum Mileage by Brand\nBrand: Toyota, Min Mileage: 20.0\nBrand: Honda, Min Mileage: 23.0` },
+      { name: "Test Case 2", hidden: false, input: `3\nToyota\nHyRyder\n1600000\nHybrid\n5.5\n45\n28\nToyota\nGlanza\n800000\nPetrol\n40\n29\nHonda\nAmaze\n950000\nHybrid\n5.6\n42\n23\nany`, expected: `No cars available for the given type or the required criteria.\nMinimum Mileage by Brand\nBrand: Toyota, Min Mileage: 28.0\nBrand: Honda, Min Mileage: 23.0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\nMaruti\nSwift\n700000\nPetrol\n37\n22\nMaruti\nDzire\n900000\nDiesel\n50\n26\nPetrol`, expected: `Averages for type: Petrol\navgTankCapacity: 37.0\nMinimum Mileage by Brand\nBrand: Maruti, Min Mileage: 22.0` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\nTata\nNexon\n1400000\nHybrid\n4.0\n44\n25\nDiesel`, expected: `No cars available for the given type or the required criteria.\nMinimum Mileage by Brand\nBrand: Tata, Min Mileage: 25.0` }
+    ]
+  },
+  {
+    id: 14,
+    title: "Music-Fest",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p>In the ABC Music Festival, musicians from various countries showcase their talent by performing multiple songs. Each musician can perform several songs, and each song has attributes such as song id, song name, duration and genre.</p>
+<p><strong>Song</strong><br>
+songId (int)<br>
+songName (String)<br>
+duration (int)<br>
+genre (String)</p>
+<p><strong>Musician</strong><br>
+musicianId (int)<br>
+musicianName (String)<br>
+songs (List of Song objects)</p>
+<p><strong>Task:</strong><br>
+Identify the relationships between the above objects and create a list of Musician objects. Then, create a business class 'MusicService.java' and implement the following functionalities:</p>
+<p><strong>&bull; public List&lt;String&gt; findSongsByGenre (List&lt;Musician&gt; musicians, String genre)</strong><br>
+This method takes a list of Musician objects and a String value (genre) as input and returns a list of songs of that particular genre. If the genre is not present, display 'Songs in &lt;genre&gt; genre are not present.'.</p>
+<p><strong>&bull; public double findAverageDurationByMusician(List&lt;Musician&gt; musicians, String musicianName)</strong><br>
+This method takes a list of Musician objects and a String value (musicianName) as input and returns the average duration (double) taken by the musician to compose all their songs.</p>
+<p>Average duration calculation:<br>
+Average duration = Total Time taken by Musician / Total number of songs composed by that Musician</p>
+<p><strong>Create a Solution class:</strong><br>
+Write a main() method to read the values for Musician and Song.<br>
+Invoke the above methods with sample data and test the functionalities.</p>
+<p><strong>Input Explanation:</strong><br>
+1. First, read the number of Musician objects to be added to the list.<br>
+2. For each Musician, read:<br>
+&nbsp;&nbsp;- The musician's ID.<br>
+&nbsp;&nbsp;- The musician's name.<br>
+&nbsp;&nbsp;- Number of songs composed by the musician.<br>
+3. For each Song, read:<br>
+&nbsp;&nbsp;- The song's ID.<br>
+&nbsp;&nbsp;- The song's name.<br>
+&nbsp;&nbsp;- Duration<br>
+&nbsp;&nbsp;- Genre<br>
+4. Repeat step 3 for the given number of song objects for each musician object.<br>
+5. Read the genre (String).<br>
+6. Read the musician's name (String).</p>
+<p><strong>Output Explanation:</strong><br>
+1. Songs in &lt;genre&gt; genre :<br>
+&nbsp;&nbsp;&lt;songName1&gt;<br>
+&nbsp;&nbsp;&lt;songName2&gt;<br>
+2. Average duration of songs composed by &lt;musicianName&gt; : &lt;duration&gt; seconds</p>
+    `,
+    starterCode: `import java.util.*;
+
+class Song {
+    // TODO: songId (int), songName (String), duration (int), genre (String)
+}
+
+class Musician {
+    // TODO: musicianId (int), musicianName (String), songs (List<Song>)
+}
+
+public class Solution {
+
+    public static List<String> findSongsByGenre(List<Musician> musicians, String genre) {
+        // TODO: Find songs by genre, return list of song names
+        return null;
+    }
+
+    public static double findAverageDurationByMusician(List<Musician> musicians, String musicianName) {
+        // TODO: Calculate average duration for given musician
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read musicians and songs, call methods, print results
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `2\n1\nAlice Green\n2\n101\nTwinkling Stars\n200\nPop\n102\nYellow Coldplay\n180\nRock\n2\nBob Roy\n3\n103\nSo What\n210\nJazz\n104\nLiving\n220\nPop\n105\nLight Shines\n190\nClassical\nPop\nAlice Green`, expected: `Songs in Pop genre :\nTwinkling Stars\nLiving\nAverage duration of songs composed by Alice Green : 190.0 seconds` },
+      { name: "Test Case 2", hidden: false, input: `2\n1\nJennifer J\n2\n101\nMy Stars\n200\nJazz\n102\nYellow Coldplay\n180\nRock\n2\nBob Roy\n3\n103\nSo What\n210\nJazz\n104\nLiving\n221\nPop\n105\nLight Shines\n190\nClassical\nRap\nBob Roy`, expected: `Songs in Rap genre are not present.\nAverage duration of songs composed by Bob Roy : 207.0 seconds` },
+      { name: "Hidden Test Case 1", hidden: true, input: `1\n1\nJohn\n1\n101\nHello\n300\nPop\nPop\nJohn`, expected: `Songs in Pop genre :\nHello\nAverage duration of songs composed by John : 300.0 seconds` },
+      { name: "Hidden Test Case 2", hidden: true, input: `1\n1\nSara\n2\n101\nRise\n180\nRock\n102\nFall\n220\nRock\nJazz\nSara`, expected: `Songs in Jazz genre are not present.\nAverage duration of songs composed by Sara : 200.0 seconds` }
+    ]
+  },
+  {
+    id: 15,
+    title: "TrainTicket",
+    difficulty: "major",
+    timeMinutes: 75,
+    description: `
+<p>Create a Java class named <strong>TrainTicket</strong> with the following private attributes:</p>
+<ul>
+<li><strong>ticketId</strong> (int)</li>
+<li><strong>travellerName</strong> (String)</li>
+<li><strong>source</strong> (String)</li>
+<li><strong>destination</strong> (String)</li>
+<li><strong>price</strong> (double)</li>
+<li><strong>tierClass</strong> (String)</li>
+</ul>
+<p>Include a constructor to initialize above attributes and create appropriate getter and setter methods.</p>
+<p><strong>Solution Class:</strong><br>
+In a separate Solution class with the main method, implement the following static methods:</p>
+<p><strong>1. findTicketWithMinPriceForGivenSource :</strong><br>
+&nbsp;&nbsp;&bull; This method should take two parameters - an array of TrainTicket objects and a String<br>
+&nbsp;&nbsp;&bull; Return a TrainTicket object for the given source (second parameter) having minimum ticket price.<br>
+&nbsp;&nbsp;&bull; Return null, if the passed String parameter is not found in the array of TrainTicket objects.</p>
+<p><strong>2. findAveragePriceOfTicketsForTierClass :</strong><br>
+&nbsp;&nbsp;&bull; This method should take two parameters - an array of TrainTicket objects and a String.<br>
+&nbsp;&nbsp;&bull; Return average price of tickets having the reservation-class/tierClass name as passed parameter.<br>
+&nbsp;&nbsp;&bull; Return 0, if the passed String parameter not found in the array of TrainTicket objects.</p>
+<p><strong>Additional Instructions:</strong><br>
+&bull; No two tickets will have the same ticketId.<br>
+&bull; String comparison should be case-insensitive.<br>
+&bull; The mentioned static methods should be called from the main method.</p>
+<p><strong>For findTicketWithMinPriceForGivenSource method</strong> - The main method should print the details (ticketId, source, and price) of the TrainTicket object returned by the findTicketWithMinPriceForGivenSource method, if the returned TrainTicket object is not null, else, it should print "No such Ticket found with mentioned attribute".</p>
+<p><strong>For findAveragePriceOfTicketsForTierClass method</strong> - The main method should print the average price returned by the findAveragePriceOfTickets method, if the returned value is not zero. The output should be displayed as per the sample output format. If the returned value is zero, it should print "No such tier class found with mentioned attribute".</p>
+<p>Before calling these static methods in the main method, use the Scanner object to read the value of the number of TrainTicket objects. For each TrainTicket object, read the attributes as per the above-mentioned attribute sequence. And finally read two String parameters for capturing source and tierClass which will be used as parameters for two Methods i.e. findTicketWithMinPriceForGivenSource, findAveragePriceOfTicketsForTierClass methods.</p>
+    `,
+    starterCode: `import java.util.*;
+
+class TrainTicket {
+    // TODO: ticketId (int), travellerName (String), source (String),
+    //       destination (String), price (double), tierClass (String)
+    // Add constructor, getters, setters
+}
+
+public class Solution {
+
+    public static TrainTicket findTicketWithMinPriceForGivenSource(TrainTicket[] tickets, String source) {
+        // TODO: Find ticket with minimum price for given source
+        return null;
+    }
+
+    public static double findAveragePriceOfTicketsForTierClass(TrainTicket[] tickets, String tierClass) {
+        // TODO: Calculate average price for given tier class
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        // TODO: Read tickets, read source and tierClass, call methods, print results
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `5\n1001\nrohan\nchennai\nmanglore\n1200\n3A\n1002\nManoj\nagra\nvizag\n3999\n2A\n1003\nyash\nbanglore\nooty\n1800\n2A\n1004\nrupali\nkolkata\nvizag\n1400\n1A\n1005\narun\nchennai\nshiridi\n2500\n2A\nchennai\n2A`, expected: `1001\nchennai\n1200.0\n2766.3333333333335` },
+      { name: "Test Case 2", hidden: false, input: `6\n101\nManoj\nagra\nvizag\n3999\n1A\n102\narun\ngoa\nbanglore\n1500\n3A\n103\nrupali\ngandhi nagar\nindore\n1400\n1A\n104\nrohan\ndelhi\ngandhi nagar\n1200\n3A\n105\nraghu\npune\nhyderabad\n1500\n3A\n106\nrahman\ntrivandram\nvizag\n1500\n3A\nvizag\n3A`, expected: `No such Ticket found with mentioned attribute\n1425.0` },
+      { name: "Hidden Test Case 1", hidden: true, input: `2\n1001\nAlice\nDelhi\nMumbai\n2000\n1A\n1002\nBob\nDelhi\nChennai\n1500\n1A\nDelhi\n1A`, expected: `1002\nDelhi\n1500.0\n1750.0` },
+      { name: "Hidden Test Case 2", hidden: true, input: `3\n101\nRavi\nPune\nGoa\n800\n2A\n102\nSita\nMumbai\nDelhi\n1200\n3A\n103\nAmit\nPune\nChennai\n600\n2A\nPune\n3A`, expected: `103\nPune\n600.0\n1200.0` }
+    ]
+  },
+  {
+    id: 16,
+    title: "Exception Handling - Division",
+    difficulty: "minor",
+    timeMinutes: 15,
+    description: `
+<p>Write a program that divides two given integers <strong>a</strong> and <strong>b</strong> provided as input and print the integral value after division.</p>
+<p>The program should handle all possible exceptions that might occur during runtime, such as dividing by zero, invalid inputs, or other runtime issues. If an exception occurs, the program should print the name of the exception, ensuring the program does not terminate abnormally.</p>
+<p><strong>Method Used:</strong><br>
+&bull; (exception_variable_name).getClass().getSimpleName()</p>
+    `,
+    starterCode: `import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        // TODO: Read two integers, divide a/b, print result
+        // Handle all exceptions, print exception class simple name
+        // Use: e.getClass().getSimpleName()
+    }
+}`,
+    testCases: [
+      { name: "Test Case 1", hidden: false, input: `10 2`, expected: `5` },
+      { name: "Test Case 2", hidden: false, input: `7 3`, expected: `2` },
+      { name: "Test Case 3", hidden: false, input: `15 0`, expected: `ArithmeticException` },
+      { name: "Hidden Test Case 1", hidden: true, input: `-7 3`, expected: `-2` },
+      { name: "Hidden Test Case 2", hidden: true, input: `0 5`, expected: `0` }
+    ]
   }
 ];
 
@@ -1979,13 +2331,13 @@ function toggleTimer() {
 }
 function startTimer() {
   const q = QUESTIONS[currentQuestion];
-  if (timerSeconds === 0) timerSeconds = q.timeMinutes * 60;
   timerRunning = true;
   document.getElementById('timerBtn').textContent = 'Pause';
+  const maxSeconds = q.timeMinutes * 60;
   timerInterval = setInterval(() => {
-    timerSeconds--;
+    timerSeconds++;
     updateTimerDisplay();
-    if (timerSeconds <= 0) {
+    if (timerSeconds >= maxSeconds) {
       clearInterval(timerInterval);
       timerRunning = false;
       document.getElementById('timerBtn').textContent = 'Reset';
@@ -2003,7 +2355,7 @@ function resetTimer() {
   timerRunning = false;
   timerSeconds = 0;
   const d = document.getElementById('timerDisplay');
-  d.textContent = '--:--';
+  d.textContent = '00:00';
   d.className = 'timer-display';
   document.getElementById('timerBtn').textContent = 'Timer';
 }
@@ -2012,7 +2364,9 @@ function updateTimerDisplay() {
   const s = timerSeconds % 60;
   const d = document.getElementById('timerDisplay');
   d.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  d.className = timerSeconds <= 300 ? 'timer-display danger' : 'timer-display running';
+  const q = QUESTIONS[currentQuestion];
+  const maxSeconds = q.timeMinutes * 60;
+  d.className = timerSeconds >= maxSeconds - 300 ? 'timer-display danger' : 'timer-display running';
 }
 
 // ============================================================
