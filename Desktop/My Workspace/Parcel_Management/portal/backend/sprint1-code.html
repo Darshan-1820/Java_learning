@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint 1: Java Code &mdash; Copy-Paste Ready | Nimbus Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Model Layer</div>
+    <a href="#user-java" class="sidebar-link"><span class="num">01</span> User.java</a>
+    <a href="#booking-java" class="sidebar-link"><span class="num">02</span> Booking.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Utility Layer</div>
+    <a href="#id-generator" class="sidebar-link"><span class="num">03</span> IdGenerator.java</a>
+    <a href="#input-validator" class="sidebar-link"><span class="num">04</span> InputValidator.java</a>
+    <a href="#pricing-calculator" class="sidebar-link"><span class="num">05</span> PricingCalculator.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Service Layer</div>
+    <a href="#user-service" class="sidebar-link"><span class="num">06</span> UserService.java</a>
+    <a href="#booking-service" class="sidebar-link"><span class="num">07</span> BookingService.java</a>
+    <a href="#pricing-service" class="sidebar-link"><span class="num">08</span> PricingService.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Entry Point</div>
+    <a href="#main-java" class="sidebar-link"><span class="num">09</span> Main.java</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<a href="../backend-overview.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px;">&larr; Back to Backend Overview</a>
+
+<h1>Sprint 1: Complete Java Code</h1>
+<p style="color: var(--text-muted); margin-bottom: 32px;">All 9 files for the Nimbus Parcel Management System &mdash; plain Java, no Maven, no database. Copy-paste into Eclipse and run.</p>
+
+<div class="callout think">
+  <div class="callout-title">Project Setup</div>
+  <p>Create a plain Java project named <code>nimbus-sprint1</code> in Eclipse. Create these packages under <code>src</code>: <code>com.nimbus</code>, <code>com.nimbus.model</code>, <code>com.nimbus.service</code>, <code>com.nimbus.util</code>. Then paste each file into the correct package.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- FILE 1: User.java                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-java">
+  <div class="section-tag">File 01</div>
+  <h2>User.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.model</code> &mdash; Represents a user in the system (Customer, Officer, or Support).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * User.java - Represents a system user
+ * Roles: "customer", "officer", "support"
+ */
+public class User {
+
+    // ===== Fields =====
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String fullName;
+    private String email;
+    private String mobile;
+    private String address;
+    private String password;
+    private String role;        // "customer", "officer", "support"
+    private String createdAt;
+
+    // ===== Default Constructor =====
+    public User() {
+        this.createdAt = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    // ===== Parameterized Constructor =====
+    public User(String userId, String firstName, String lastName, String email,
+                String mobile, String address, String password, String role) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fullName = firstName + " " + lastName;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.password = password;
+        this.role = role;
+        this.createdAt = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    // ===== Getters and Setters =====
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+        this.fullName = firstName + " " + this.lastName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+        this.fullName = this.firstName + " " + lastName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    // ===== toString =====
+    @Override
+    public String toString() {
+        return "User{" +
+            "userId='" + userId + '\'' +
+            ", fullName='" + fullName + '\'' +
+            ", email='" + email + '\'' +
+            ", mobile='" + mobile + '\'' +
+            ", role='" + role + '\'' +
+            ", createdAt='" + createdAt + '\'' +
+            '}';
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 2: Booking.java                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-java">
+  <div class="section-tag">File 02</div>
+  <h2>Booking.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.model</code> &mdash; Represents a parcel booking with status tracking.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * Booking.java - Represents a parcel booking
+ * Status flow: Booked -> Picked Up -> In Transit -> Delivered (or Returned)
+ */
+public class Booking {
+
+    // ===== Fields =====
+    private String bookingId;
+    private String userId;          // who booked it
+    private String receiverName;
+    private String receiverAddress;
+    private String receiverMobile;
+    private double weightGram;
+    private String contentsDescription;
+    private String deliveryType;    // "Standard", "Express", "Overnight"
+    private String status;          // "Booked", "Picked Up", "In Transit", "Delivered", "Returned"
+    private double serviceCost;
+    private String createdAt;
+
+    // ===== Default Constructor =====
+    public Booking() {
+        this.status = "Booked";
+        this.createdAt = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    // ===== Parameterized Constructor =====
+    public Booking(String bookingId, String userId, String receiverName,
+                   String receiverAddress, String receiverMobile, double weightGram,
+                   String contentsDescription, String deliveryType, double serviceCost) {
+        this.bookingId = bookingId;
+        this.userId = userId;
+        this.receiverName = receiverName;
+        this.receiverAddress = receiverAddress;
+        this.receiverMobile = receiverMobile;
+        this.weightGram = weightGram;
+        this.contentsDescription = contentsDescription;
+        this.deliveryType = deliveryType;
+        this.status = "Booked";
+        this.serviceCost = serviceCost;
+        this.createdAt = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    // ===== Getters and Setters =====
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
+    }
+
+    public String getReceiverMobile() {
+        return receiverMobile;
+    }
+
+    public void setReceiverMobile(String receiverMobile) {
+        this.receiverMobile = receiverMobile;
+    }
+
+    public double getWeightGram() {
+        return weightGram;
+    }
+
+    public void setWeightGram(double weightGram) {
+        this.weightGram = weightGram;
+    }
+
+    public String getContentsDescription() {
+        return contentsDescription;
+    }
+
+    public void setContentsDescription(String contentsDescription) {
+        this.contentsDescription = contentsDescription;
+    }
+
+    public String getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(String deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public double getServiceCost() {
+        return serviceCost;
+    }
+
+    public void setServiceCost(double serviceCost) {
+        this.serviceCost = serviceCost;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    // ===== toString =====
+    @Override
+    public String toString() {
+        return "Booking{" +
+            "bookingId='" + bookingId + '\'' +
+            ", userId='" + userId + '\'' +
+            ", receiver='" + receiverName + '\'' +
+            ", weight=" + weightGram + "g" +
+            ", type='" + deliveryType + '\'' +
+            ", status='" + status + '\'' +
+            ", cost=Rs." + String.format("%.2f", serviceCost) +
+            ", createdAt='" + createdAt + '\'' +
+            '}';
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 3: IdGenerator.java                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="id-generator">
+  <div class="section-tag">File 03</div>
+  <h2>IdGenerator.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.util</code> &mdash; Generates smart User IDs (YYMMDD-initials-seq) and Booking IDs (NMB-YYMMDD-seq).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/util/IdGenerator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * IdGenerator.java - Generates unique IDs for users and bookings
+ * User ID format:  YYMMDD-XX01 (where XX = initials of first + last name)
+ * Booking ID format: NMB-YYMMDD-0001
+ */
+public class IdGenerator {
+
+    /**
+     * Generates a User ID like "260401-AK01"
+     * @param firstName - user's first name
+     * @param lastName  - user's last name
+     * @param sequence  - sequential number (1, 2, 3...)
+     * @return formatted user ID string
+     */
+    public static String generateUserId(String firstName, String lastName, int sequence) {
+        // Get today's date in YYMMDD format
+        String datePart = LocalDate.now()
+            .format(DateTimeFormatter.ofPattern("yyMMdd"));
+
+        // Get initials (first letter of first name + first letter of last name)
+        String initials = ("" + firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+
+        // Format sequence as 2-digit number (01, 02, 03...)
+        String seqPart = String.format("%02d", sequence);
+
+        return datePart + "-" + initials + seqPart;
+    }
+
+    /**
+     * Generates a Booking ID like "NMB-260401-0001"
+     * @param sequence - sequential number (1, 2, 3...)
+     * @return formatted booking ID string
+     */
+    public static String generateBookingId(int sequence) {
+        // Get today's date in YYMMDD format
+        String datePart = LocalDate.now()
+            .format(DateTimeFormatter.ofPattern("yyMMdd"));
+
+        // Format sequence as 4-digit number (0001, 0002...)
+        String seqPart = String.format("%04d", sequence);
+
+        return "NMB-" + datePart + "-" + seqPart;
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 4: InputValidator.java                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="input-validator">
+  <div class="section-tag">File 04</div>
+  <h2>InputValidator.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.util</code> &mdash; Validates user input (email, mobile, password strength).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/util/InputValidator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+/**
+ * InputValidator.java - Validates user inputs
+ * All methods are static - call directly without creating an object
+ */
+public class InputValidator {
+
+    /**
+     * Validates email format using basic regex
+     * Checks for: something@something.something
+     */
+    public static boolean isValidEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        // Basic email pattern: chars@chars.chars
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        return email.matches(emailRegex);
+    }
+
+    /**
+     * Validates mobile number - must be exactly 10 digits
+     */
+    public static boolean isValidMobile(String mobile) {
+        if (mobile == null || mobile.trim().isEmpty()) {
+            return false;
+        }
+        // Must be exactly 10 digits, nothing else
+        return mobile.matches("^[0-9]{10}$");
+    }
+
+    /**
+     * Validates password strength
+     * Rules: min 8 chars, at least 1 uppercase, 1 lowercase, 1 digit, 1 special char
+     */
+    public static boolean isValidPassword(String password) {
+        if (password == null || password.length() < 8) {
+            return false;
+        }
+
+        boolean hasUpper = false;
+        boolean hasLower = false;
+        boolean hasDigit = false;
+        boolean hasSpecial = false;
+
+        for (char ch : password.toCharArray()) {
+            if (Character.isUpperCase(ch)) hasUpper = true;
+            else if (Character.isLowerCase(ch)) hasLower = true;
+            else if (Character.isDigit(ch)) hasDigit = true;
+            else hasSpecial = true;  // anything that's not letter/digit is special
+        }
+
+        return hasUpper && hasLower && hasDigit && hasSpecial;
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 5: PricingCalculator.java                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="pricing-calculator">
+  <div class="section-tag">File 05</div>
+  <h2>PricingCalculator.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.util</code> &mdash; Calculates shipping cost based on weight and delivery type.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/util/PricingCalculator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+/**
+ * PricingCalculator.java - Calculates delivery cost
+ *
+ * Pricing formula:
+ *   Base rate = 0.15 per gram
+ *   Standard  = base x 1.0
+ *   Express   = base x 1.8
+ *   Overnight = base x 3.0
+ *   Minimum charge = Rs. 50.00
+ */
+public class PricingCalculator {
+
+    // Constants for pricing
+    private static final double BASE_RATE_PER_GRAM = 0.15;
+    private static final double STANDARD_MULTIPLIER = 1.0;
+    private static final double EXPRESS_MULTIPLIER = 1.8;
+    private static final double OVERNIGHT_MULTIPLIER = 3.0;
+    private static final double MINIMUM_CHARGE = 50.0;
+
+    /**
+     * Calculates the delivery cost
+     * @param weightGram   - parcel weight in grams
+     * @param deliveryType - "Standard", "Express", or "Overnight"
+     * @return calculated cost (minimum Rs. 50)
+     */
+    public static double calculateCost(double weightGram, String deliveryType) {
+        double multiplier;
+
+        // Determine multiplier based on delivery type
+        switch (deliveryType.toLowerCase()) {
+            case "express":
+                multiplier = EXPRESS_MULTIPLIER;
+                break;
+            case "overnight":
+                multiplier = OVERNIGHT_MULTIPLIER;
+                break;
+            case "standard":
+            default:
+                multiplier = STANDARD_MULTIPLIER;
+                break;
+        }
+
+        // Calculate: weight x base rate x type multiplier
+        double cost = weightGram * BASE_RATE_PER_GRAM * multiplier;
+
+        // Apply minimum charge
+        if (cost < MINIMUM_CHARGE) {
+            cost = MINIMUM_CHARGE;
+        }
+
+        return cost;
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 6: UserService.java                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-service">
+  <div class="section-tag">File 06</div>
+  <h2>UserService.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.service</code> &mdash; Manages user registration, login, and lookup. Stores all users in an ArrayList.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/UserService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import java.util.ArrayList;
+import com.nimbus.model.User;
+
+/**
+ * UserService.java - Handles all user-related operations
+ * In Sprint 1, users are stored in an ArrayList (no database yet)
+ */
+public class UserService {
+
+    // In-memory storage for all users
+    private ArrayList&lt;User&gt; users;
+
+    // Track user count for ID generation
+    private int userSequence;
+
+    // ===== Constructor - Seeds initial test data =====
+    public UserService() {
+        users = new ArrayList&lt;&gt;();
+        userSequence = 1;
+
+        // Seed user 1: A customer
+        User customer = new User(
+            "260401-AK01", "Amit", "Kumar",
+            "amit@email.com", "9876543210",
+            "12 MG Road, Bangalore", "Amit@123", "customer"
+        );
+        users.add(customer);
+
+        // Seed user 2: An officer
+        User officer = new User(
+            "OFF-001", "Rajesh", "Nair",
+            "rajesh@nimbus.com", "9876543211",
+            "Nimbus HQ, Mumbai", "Officer@123", "officer"
+        );
+        users.add(officer);
+
+        // Seed user 3: A support agent
+        User support = new User(
+            "SUP-001", "Karan", "Singh",
+            "karan@nimbus.com", "9876543212",
+            "Nimbus HQ, Mumbai", "Support@123", "support"
+        );
+        users.add(support);
+
+        userSequence = 2; // Next customer will get sequence 2
+    }
+
+    /**
+     * Register a new user
+     * Checks for duplicate email before adding
+     * @return true if registered successfully, false if email already exists
+     */
+    public boolean register(User user) {
+        // Check if email already exists
+        for (User existingUser : users) {
+            if (existingUser.getEmail().equalsIgnoreCase(user.getEmail())) {
+                return false; // Duplicate email
+            }
+        }
+        users.add(user);
+        userSequence++;
+        return true;
+    }
+
+    /**
+     * Login with User ID and Password
+     * @return User object if credentials match, null otherwise
+     */
+    public User login(String userId, String password) {
+        for (User user : users) {
+            if (user.getUserId().equals(userId) && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        return null; // No match found
+    }
+
+    /**
+     * Find a user by their ID
+     * @return User object or null if not found
+     */
+    public User getUserById(String id) {
+        for (User user : users) {
+            if (user.getUserId().equals(id)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get all registered users
+     */
+    public ArrayList&lt;User&gt; getAllUsers() {
+        return users;
+    }
+
+    /**
+     * Get the current sequence number (for ID generation)
+     */
+    public int getUserSequence() {
+        return userSequence;
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 7: BookingService.java                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-service">
+  <div class="section-tag">File 07</div>
+  <h2>BookingService.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.service</code> &mdash; Manages parcel bookings: create, track, update status.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/BookingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import java.util.ArrayList;
+import com.nimbus.model.Booking;
+
+/**
+ * BookingService.java - Handles all booking operations
+ * Stores bookings in an ArrayList (no database in Sprint 1)
+ */
+public class BookingService {
+
+    // In-memory storage for all bookings
+    private ArrayList&lt;Booking&gt; bookings;
+
+    // Track booking count for ID generation
+    private int bookingSequence;
+
+    // ===== Constructor - Seeds one sample booking =====
+    public BookingService() {
+        bookings = new ArrayList&lt;&gt;();
+        bookingSequence = 1;
+
+        // Seed booking: Amit Kumar sent a parcel
+        Booking sample = new Booking(
+            "NMB-260401-0001", "260401-AK01", "Priya Sharma",
+            "45 Park Street, Kolkata", "9988776655", 500.0,
+            "Books and Documents", "Standard", 75.0
+        );
+        bookings.add(sample);
+
+        bookingSequence = 2; // Next booking will be 0002
+    }
+
+    /**
+     * Create a new booking
+     */
+    public void createBooking(Booking booking) {
+        bookings.add(booking);
+        bookingSequence++;
+    }
+
+    /**
+     * Find a booking by its ID
+     * @return Booking object or null if not found
+     */
+    public Booking getBookingById(String id) {
+        for (Booking booking : bookings) {
+            if (booking.getBookingId().equalsIgnoreCase(id)) {
+                return booking;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get all bookings for a specific user
+     * @return ArrayList of bookings belonging to that user
+     */
+    public ArrayList&lt;Booking&gt; getBookingsByUser(String userId) {
+        ArrayList&lt;Booking&gt; userBookings = new ArrayList&lt;&gt;();
+        for (Booking booking : bookings) {
+            if (booking.getUserId().equals(userId)) {
+                userBookings.add(booking);
+            }
+        }
+        return userBookings;
+    }
+
+    /**
+     * Update the status of a booking
+     * @return true if updated, false if booking not found
+     */
+    public boolean updateStatus(String bookingId, String newStatus) {
+        Booking booking = getBookingById(bookingId);
+        if (booking != null) {
+            booking.setStatus(newStatus);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get all bookings in the system
+     */
+    public ArrayList&lt;Booking&gt; getAllBookings() {
+        return bookings;
+    }
+
+    /**
+     * Get current sequence number (for ID generation)
+     */
+    public int getBookingSequence() {
+        return bookingSequence;
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 8: PricingService.java                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="pricing-service">
+  <div class="section-tag">File 08</div>
+  <h2>PricingService.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus.service</code> &mdash; Wraps PricingCalculator with formatted output for the console UI.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/PricingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.util.PricingCalculator;
+
+/**
+ * PricingService.java - Service layer for pricing
+ * Uses PricingCalculator internally, adds formatting for display
+ */
+public class PricingService {
+
+    /**
+     * Get a formatted cost breakdown string for display
+     * @param weightGram   - parcel weight in grams
+     * @param deliveryType - "Standard", "Express", or "Overnight"
+     * @return formatted string showing the breakdown
+     */
+    public String getPrice(double weightGram, String deliveryType) {
+        double cost = PricingCalculator.calculateCost(weightGram, deliveryType);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("  +----------------------------------+\n");
+        sb.append("  |       COST BREAKDOWN             |\n");
+        sb.append("  +----------------------------------+\n");
+        sb.append(String.format("  | Weight:        %.1f grams     \n", weightGram));
+        sb.append(String.format("  | Delivery Type: %-12s    \n", deliveryType));
+        sb.append(String.format("  | Base Rate:     Rs. 0.15/gram  \n"));
+        sb.append("  +----------------------------------+\n");
+        sb.append(String.format("  | TOTAL:         Rs. %.2f     \n", cost));
+        sb.append("  +----------------------------------+\n");
+
+        return sb.toString();
+    }
+
+    /**
+     * Get just the numeric total (for storing in Booking object)
+     * @param weightGram   - parcel weight in grams
+     * @param deliveryType - "Standard", "Express", or "Overnight"
+     * @return the calculated cost as a double
+     */
+    public double calculateTotal(double weightGram, String deliveryType) {
+        return PricingCalculator.calculateCost(weightGram, deliveryType);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 9: Main.java                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="main-java">
+  <div class="section-tag">File 09</div>
+  <h2>Main.java</h2>
+  <p class="section-desc">Package: <code>com.nimbus</code> &mdash; The entry point. Handles login, role-based menus, and all console interactions.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/Main.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.nimbus.model.Booking;
+import com.nimbus.model.User;
+import com.nimbus.service.BookingService;
+import com.nimbus.service.PricingService;
+import com.nimbus.service.UserService;
+import com.nimbus.util.IdGenerator;
+import com.nimbus.util.InputValidator;
+
+/**
+ * Main.java - Entry point for Nimbus Parcel Management System
+ * Sprint 1: Console-based, ArrayList storage, 3 roles
+ *
+ * Test Credentials:
+ *   Customer: 260401-AK01 / Amit@123
+ *   Officer:  OFF-001     / Officer@123
+ *   Support:  SUP-001     / Support@123
+ */
+public class Main {
+
+    // ONE Scanner for the entire application
+    private static Scanner scanner = new Scanner(System.in);
+
+    // Services (shared across all methods)
+    private static UserService userService = new UserService();
+    private static BookingService bookingService = new BookingService();
+    private static PricingService pricingService = new PricingService();
+
+    // ===== MAIN METHOD =====
+    public static void main(String[] args) {
+        showWelcomeBanner();
+
+        boolean running = true;
+        while (running) {
+            User loggedInUser = loginScreen();
+
+            if (loggedInUser == null) {
+                System.out.println("\n  [!] Invalid credentials. Try again.\n");
+                continue;
+            }
+
+            System.out.println("\n  Welcome, " + loggedInUser.getFullName()
+                + " (" + loggedInUser.getRole().toUpperCase() + ")");
+            System.out.println("  ================================================\n");
+
+            // Route to correct menu based on role
+            switch (loggedInUser.getRole().toLowerCase()) {
+                case "customer":
+                    customerMenu(loggedInUser);
+                    break;
+                case "officer":
+                    officerMenu(loggedInUser);
+                    break;
+                case "support":
+                    supportMenu(loggedInUser);
+                    break;
+                default:
+                    System.out.println("  [!] Unknown role. Contact support.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    // ===== WELCOME BANNER =====
+    private static void showWelcomeBanner() {
+        System.out.println();
+        System.out.println("  ================================================");
+        System.out.println("  |                                              |");
+        System.out.println("  |      NIMBUS PARCEL MANAGEMENT SYSTEM         |");
+        System.out.println("  |            Sprint 1 - Console App            |");
+        System.out.println("  |                                              |");
+        System.out.println("  ================================================");
+        System.out.println();
+        System.out.println("  Test Accounts:");
+        System.out.println("  Customer : 260401-AK01 / Amit@123");
+        System.out.println("  Officer  : OFF-001     / Officer@123");
+        System.out.println("  Support  : SUP-001     / Support@123");
+        System.out.println();
+    }
+
+    // ===== LOGIN SCREEN =====
+    private static User loginScreen() {
+        System.out.println("  -------------------- LOGIN --------------------");
+        System.out.print("  Enter User ID : ");
+        String userId = scanner.nextLine().trim();
+        System.out.print("  Enter Password: ");
+        String password = scanner.nextLine().trim();
+        System.out.println("  ------------------------------------------------");
+
+        return userService.login(userId, password);
+    }
+
+    // ===========================================================
+    //                    CUSTOMER MENU
+    // ===========================================================
+    private static void customerMenu(User user) {
+        boolean active = true;
+        while (active) {
+            System.out.println("  ============ CUSTOMER MENU ============");
+            System.out.println("  1. Book a Parcel");
+            System.out.println("  2. Track a Parcel");
+            System.out.println("  3. My Bookings");
+            System.out.println("  4. Logout");
+            System.out.println("  =======================================");
+            System.out.print("  Choose option: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    bookParcel(user);
+                    break;
+                case "2":
+                    trackParcel();
+                    break;
+                case "3":
+                    viewMyBookings(user);
+                    break;
+                case "4":
+                    active = false;
+                    System.out.println("\n  Logged out successfully.\n");
+                    break;
+                default:
+                    System.out.println("  [!] Invalid choice. Try 1-4.\n");
+            }
+        }
+    }
+
+    // ===== Book a Parcel =====
+    private static void bookParcel(User user) {
+        System.out.println("\n  ---------- BOOK NEW PARCEL ----------");
+
+        System.out.print("  Receiver Name    : ");
+        String receiverName = scanner.nextLine().trim();
+
+        System.out.print("  Receiver Address : ");
+        String receiverAddress = scanner.nextLine().trim();
+
+        System.out.print("  Receiver Mobile  : ");
+        String receiverMobile = scanner.nextLine().trim();
+
+        // Validate mobile
+        if (!InputValidator.isValidMobile(receiverMobile)) {
+            System.out.println("  [!] Invalid mobile number. Must be 10 digits.");
+            System.out.println("  Booking cancelled.\n");
+            return;
+        }
+
+        System.out.print("  Parcel Weight (grams): ");
+        String weightInput = scanner.nextLine().trim();
+        double weight;
+        try {
+            weight = Double.parseDouble(weightInput);
+            if (weight <= 0) {
+                System.out.println("  [!] Weight must be greater than 0.");
+                System.out.println("  Booking cancelled.\n");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("  [!] Invalid weight. Enter a number.");
+            System.out.println("  Booking cancelled.\n");
+            return;
+        }
+
+        System.out.print("  Contents Description : ");
+        String contents = scanner.nextLine().trim();
+
+        System.out.println("  Delivery Type:");
+        System.out.println("    1. Standard (1.0x)");
+        System.out.println("    2. Express  (1.8x)");
+        System.out.println("    3. Overnight(3.0x)");
+        System.out.print("  Choose (1/2/3): ");
+        String typeChoice = scanner.nextLine().trim();
+
+        String deliveryType;
+        switch (typeChoice) {
+            case "2":
+                deliveryType = "Express";
+                break;
+            case "3":
+                deliveryType = "Overnight";
+                break;
+            default:
+                deliveryType = "Standard";
+                break;
+        }
+
+        // Calculate and show price
+        double cost = pricingService.calculateTotal(weight, deliveryType);
+        System.out.println();
+        System.out.println(pricingService.getPrice(weight, deliveryType));
+
+        // Confirm booking
+        System.out.print("  Confirm booking? (yes/no): ");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+
+        if (!confirm.equals("yes") && !confirm.equals("y")) {
+            System.out.println("  Booking cancelled.\n");
+            return;
+        }
+
+        // Generate booking ID and create booking
+        String bookingId = IdGenerator.generateBookingId(bookingService.getBookingSequence());
+        Booking booking = new Booking(
+            bookingId, user.getUserId(), receiverName,
+            receiverAddress, receiverMobile, weight,
+            contents, deliveryType, cost
+        );
+        bookingService.createBooking(booking);
+
+        System.out.println("\n  [OK] Booking created successfully!");
+        System.out.println("  Booking ID: " + bookingId);
+        System.out.println("  Status: Booked");
+        System.out.println("  ----------------------------------------\n");
+    }
+
+    // ===== Track a Parcel =====
+    private static void trackParcel() {
+        System.out.println("\n  ---------- TRACK PARCEL ----------");
+        System.out.print("  Enter Booking ID: ");
+        String bookingId = scanner.nextLine().trim();
+
+        Booking booking = bookingService.getBookingById(bookingId);
+        if (booking == null) {
+            System.out.println("  [!] No booking found with ID: " + bookingId);
+            System.out.println("  ------------------------------------\n");
+            return;
+        }
+
+        System.out.println("  +------------------------------------+");
+        System.out.println("  | BOOKING DETAILS                    |");
+        System.out.println("  +------------------------------------+");
+        System.out.println("  | ID:       " + booking.getBookingId());
+        System.out.println("  | Receiver: " + booking.getReceiverName());
+        System.out.println("  | Address:  " + booking.getReceiverAddress());
+        System.out.println("  | Mobile:   " + booking.getReceiverMobile());
+        System.out.println("  | Weight:   " + booking.getWeightGram() + " grams");
+        System.out.println("  | Contents: " + booking.getContentsDescription());
+        System.out.println("  | Type:     " + booking.getDeliveryType());
+        System.out.printf("  | Cost:     Rs. %.2f%n", booking.getServiceCost());
+        System.out.println("  | Status:   " + booking.getStatus());
+        System.out.println("  | Booked:   " + booking.getCreatedAt());
+        System.out.println("  +------------------------------------+\n");
+    }
+
+    // ===== View My Bookings =====
+    private static void viewMyBookings(User user) {
+        System.out.println("\n  ---------- MY BOOKINGS ----------");
+        ArrayList&lt;Booking&gt; myBookings = bookingService.getBookingsByUser(user.getUserId());
+
+        if (myBookings.isEmpty()) {
+            System.out.println("  No bookings found.\n");
+            return;
+        }
+
+        System.out.println("  Found " + myBookings.size() + " booking(s):\n");
+        for (int i = 0; i &lt; myBookings.size(); i++) {
+            Booking b = myBookings.get(i);
+            System.out.println("  " + (i + 1) + ". [" + b.getBookingId() + "] "
+                + b.getReceiverName() + " | " + b.getDeliveryType()
+                + " | " + b.getStatus()
+                + " | Rs." + String.format("%.2f", b.getServiceCost()));
+        }
+        System.out.println("  ------------------------------------\n");
+    }
+
+    // ===========================================================
+    //                    OFFICER MENU
+    // ===========================================================
+    private static void officerMenu(User user) {
+        boolean active = true;
+        while (active) {
+            System.out.println("  ============ OFFICER MENU ============");
+            System.out.println("  1. View All Bookings");
+            System.out.println("  2. Update Delivery Status");
+            System.out.println("  3. Track a Parcel");
+            System.out.println("  4. Logout");
+            System.out.println("  =======================================");
+            System.out.print("  Choose option: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    viewAllBookings();
+                    break;
+                case "2":
+                    updateDeliveryStatus();
+                    break;
+                case "3":
+                    trackParcel();
+                    break;
+                case "4":
+                    active = false;
+                    System.out.println("\n  Logged out successfully.\n");
+                    break;
+                default:
+                    System.out.println("  [!] Invalid choice. Try 1-4.\n");
+            }
+        }
+    }
+
+    // ===== View All Bookings =====
+    private static void viewAllBookings() {
+        System.out.println("\n  ---------- ALL BOOKINGS ----------");
+        ArrayList&lt;Booking&gt; all = bookingService.getAllBookings();
+
+        if (all.isEmpty()) {
+            System.out.println("  No bookings in the system.\n");
+            return;
+        }
+
+        System.out.println("  Total: " + all.size() + " booking(s)\n");
+        System.out.printf("  %-18s %-15s %-12s %-12s %s%n",
+            "BOOKING ID", "RECEIVER", "TYPE", "STATUS", "COST");
+        System.out.println("  " + "-".repeat(70));
+
+        for (Booking b : all) {
+            System.out.printf("  %-18s %-15s %-12s %-12s Rs.%.2f%n",
+                b.getBookingId(),
+                b.getReceiverName().length() > 14
+                    ? b.getReceiverName().substring(0, 14) : b.getReceiverName(),
+                b.getDeliveryType(),
+                b.getStatus(),
+                b.getServiceCost());
+        }
+        System.out.println("  " + "-".repeat(70) + "\n");
+    }
+
+    // ===== Update Delivery Status =====
+    private static void updateDeliveryStatus() {
+        System.out.println("\n  ---------- UPDATE STATUS ----------");
+        System.out.print("  Enter Booking ID: ");
+        String bookingId = scanner.nextLine().trim();
+
+        Booking booking = bookingService.getBookingById(bookingId);
+        if (booking == null) {
+            System.out.println("  [!] No booking found with ID: " + bookingId + "\n");
+            return;
+        }
+
+        System.out.println("  Current Status: " + booking.getStatus());
+        System.out.println();
+        System.out.println("  Available statuses:");
+        System.out.println("    1. Booked");
+        System.out.println("    2. Picked Up");
+        System.out.println("    3. In Transit");
+        System.out.println("    4. Delivered");
+        System.out.println("    5. Returned");
+        System.out.print("  Choose new status (1-5): ");
+        String statusChoice = scanner.nextLine().trim();
+
+        String newStatus;
+        switch (statusChoice) {
+            case "1": newStatus = "Booked"; break;
+            case "2": newStatus = "Picked Up"; break;
+            case "3": newStatus = "In Transit"; break;
+            case "4": newStatus = "Delivered"; break;
+            case "5": newStatus = "Returned"; break;
+            default:
+                System.out.println("  [!] Invalid choice. Status not updated.\n");
+                return;
+        }
+
+        bookingService.updateStatus(bookingId, newStatus);
+        System.out.println("  [OK] Status updated: " + booking.getStatus());
+        System.out.println("  ------------------------------------\n");
+    }
+
+    // ===========================================================
+    //                    SUPPORT MENU
+    // ===========================================================
+    private static void supportMenu(User user) {
+        boolean active = true;
+        while (active) {
+            System.out.println("  ============ SUPPORT MENU ============");
+            System.out.println("  1. View All Bookings");
+            System.out.println("  2. Logout");
+            System.out.println("  ========================================");
+            System.out.print("  Choose option: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    viewAllBookings();
+                    break;
+                case "2":
+                    active = false;
+                    System.out.println("\n  Logged out successfully.\n");
+                    break;
+                default:
+                    System.out.println("  [!] Invalid choice. Try 1-2.\n");
+            }
+        }
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ===== Navigation ===== -->
+<section class="content-section">
+  <div class="nav-links" style="display: flex; justify-content: space-between; margin-top: 40px;">
+    <a href="sprint1-to-eclipse.html" class="prev" style="color: var(--text-muted); text-decoration: none;">
+      <span class="nav-label">&larr; Previous</span>
+      <span class="nav-title">Eclipse Setup</span>
+    </a>
+    <a href="sprint2-guide.html" class="next" style="color: var(--text-muted); text-decoration: none;">
+      <span class="nav-label">Next &rarr;</span>
+      <span class="nav-title">Sprint 2 Guide</span>
+    </a>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="../topics/shared.js"></script>
+</body>
+</html>

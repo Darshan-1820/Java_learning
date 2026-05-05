@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint 2: Java Code &mdash; Copy-Paste Ready | Nimbus Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Config</div>
+    <a href="#pom-xml" class="sidebar-link"><span class="num">01</span> pom.xml</a>
+    <a href="#application-properties" class="sidebar-link"><span class="num">02</span> application.properties</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Resources</div>
+    <a href="#schema-sql" class="sidebar-link"><span class="num">03</span> schema.sql</a>
+    <a href="#data-sql" class="sidebar-link"><span class="num">04</span> data.sql</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Models</div>
+    <a href="#nimbus-application" class="sidebar-link"><span class="num">05</span> NimbusApplication.java</a>
+    <a href="#user-model" class="sidebar-link"><span class="num">06</span> User.java</a>
+    <a href="#booking-model" class="sidebar-link"><span class="num">07</span> Booking.java</a>
+    <a href="#issue-model" class="sidebar-link"><span class="num">08</span> Issue.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Utilities</div>
+    <a href="#id-generator" class="sidebar-link"><span class="num">09</span> IdGenerator.java</a>
+    <a href="#pricing-calculator" class="sidebar-link"><span class="num">10</span> PricingCalculator.java</a>
+    <a href="#input-validator" class="sidebar-link"><span class="num">11</span> InputValidator.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">DAOs</div>
+    <a href="#user-dao" class="sidebar-link"><span class="num">12</span> UserDAO.java</a>
+    <a href="#booking-dao" class="sidebar-link"><span class="num">13</span> BookingDAO.java</a>
+    <a href="#issue-dao" class="sidebar-link"><span class="num">14</span> IssueDAO.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Console</div>
+    <a href="#console-menu" class="sidebar-link"><span class="num">15</span> ConsoleMenu.java</a>
+    <a href="#console-app" class="sidebar-link"><span class="num">16</span> ConsoleApp.java</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<a href="../backend-overview.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px;">&larr; Back to Backend Overview</a>
+
+<h1 style="margin-bottom: 8px;">Sprint 2: Complete Java Code</h1>
+<p style="color: var(--text-muted); margin-bottom: 40px;">Spring Boot + H2 Database + JDBC DAOs + Console App. Copy-paste each file into Eclipse.</p>
+
+<!-- ============================================================ -->
+<!-- FILE 1: pom.xml                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="pom-xml">
+  <div class="section-tag">File 01</div>
+  <h2>pom.xml</h2>
+  <p class="section-desc">Project root &mdash; Maven build configuration with Spring Boot parent and dependencies.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.5&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-parcel&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;name&gt;nimbus-parcel&lt;/name&gt;
+    &lt;description&gt;Nimbus Parcel Management System - Sprint 2&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot Core (DI, auto-config, logging) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring Boot JDBC (JdbcTemplate, DataSource auto-config) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- H2 Database (embedded, file-based, zero setup) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 2: application.properties                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="application-properties">
+  <div class="section-tag">File 02</div>
+  <h2>application.properties</h2>
+  <p class="section-desc"><code>src/main/resources/application.properties</code> &mdash; Database connection, H2 console, and console-only mode.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-properties"># ===== Server =====
+server.port=8080
+
+# ===== H2 Database (file-based, persists across restarts) =====
+spring.datasource.url=jdbc:h2:file:./nimbusdb;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# ===== H2 Web Console (access at http://localhost:8080/h2-console) =====
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# ===== Run schema.sql and data.sql on every startup =====
+spring.sql.init.mode=always
+
+# ===== Console App Mode (no Tomcat, no web server) =====
+spring.main.web-application-type=none</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 3: schema.sql                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="schema-sql">
+  <div class="section-tag">File 03</div>
+  <h2>schema.sql</h2>
+  <p class="section-desc"><code>src/main/resources/schema.sql</code> &mdash; Creates all tables on startup. Uses IF NOT EXISTS so it is safe to run repeatedly.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/schema.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- ===== User Profile Table =====
+CREATE TABLE IF NOT EXISTS tbl_UserProfile (
+    user_id         VARCHAR(20) PRIMARY KEY,
+    first_name      VARCHAR(25),
+    last_name       VARCHAR(25),
+    full_name       VARCHAR(50),
+    email           VARCHAR(100) UNIQUE,
+    mobile          VARCHAR(15),
+    address         VARCHAR(200),
+    password        VARCHAR(30),
+    role            VARCHAR(20),
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ===== Booking Table =====
+CREATE TABLE IF NOT EXISTS tbl_Booking (
+    booking_id          VARCHAR(20) PRIMARY KEY,
+    user_id             VARCHAR(20),
+    receiver_name       VARCHAR(100),
+    receiver_address    VARCHAR(200),
+    receiver_mobile     VARCHAR(15),
+    weight_gram         DOUBLE,
+    contents_description VARCHAR(200),
+    delivery_type       VARCHAR(20),
+    status              VARCHAR(20) DEFAULT 'Booked',
+    service_cost        DOUBLE,
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES tbl_UserProfile(user_id)
+);
+
+-- ===== Issue Table =====
+CREATE TABLE IF NOT EXISTS tbl_Issue (
+    issue_id        VARCHAR(20) PRIMARY KEY,
+    user_id         VARCHAR(20),
+    booking_id      VARCHAR(20),
+    description     VARCHAR(500),
+    status          VARCHAR(20) DEFAULT 'Open',
+    assigned_to     VARCHAR(20),
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES tbl_UserProfile(user_id)
+);</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 4: data.sql                                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="data-sql">
+  <div class="section-tag">File 04</div>
+  <h2>data.sql</h2>
+  <p class="section-desc"><code>src/main/resources/data.sql</code> &mdash; Seed data using MERGE INTO (H2 upsert) so it won't fail on restart.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/data.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- ===== Seed Users (5 Customers, 2 Officers, 1 Support) =====
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260101DA01', 'Darshan', 'Adda', 'Darshan Adda', 'darshan@nimbus.com', '9876543210', '101 MG Road, Bangalore', 'pass123', 'Customer', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260102RK01', 'Rahul', 'Kumar', 'Rahul Kumar', 'rahul@nimbus.com', '9876543211', '202 Nehru St, Mumbai', 'pass123', 'Customer', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260103PS01', 'Priya', 'Sharma', 'Priya Sharma', 'priya@nimbus.com', '9876543212', '303 Gandhi Nagar, Delhi', 'pass123', 'Customer', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260104AM01', 'Amit', 'Mishra', 'Amit Mishra', 'amit@nimbus.com', '9876543213', '404 Park Lane, Pune', 'pass123', 'Customer', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260105SG01', 'Sneha', 'Gupta', 'Sneha Gupta', 'sneha@nimbus.com', '9876543214', '505 Lake View, Hyderabad', 'pass123', 'Customer', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260101VR01', 'Vikram', 'Rao', 'Vikram Rao', 'vikram@nimbus.com', '9876543220', 'Nimbus Hub, Bangalore', 'officer123', 'Officer', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260102NP01', 'Neha', 'Patel', 'Neha Patel', 'neha@nimbus.com', '9876543221', 'Nimbus Hub, Mumbai', 'officer123', 'Officer', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_UserProfile KEY(user_id) VALUES
+('260101SP01', 'Suresh', 'Pillai', 'Suresh Pillai', 'suresh@nimbus.com', '9876543230', 'Nimbus Support Center', 'support123', 'Support', CURRENT_TIMESTAMP);
+
+-- ===== Seed Bookings =====
+
+MERGE INTO tbl_Booking KEY(booking_id) VALUES
+('BK260101001', '260101DA01', 'Anita Desai', '789 Koramangala, Bangalore', '9988776655', 1500.0, 'Books and Documents', 'Express', 'Booked', 120.0, CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_Booking KEY(booking_id) VALUES
+('BK260102002', '260102RK01', 'Meera Shah', '456 Andheri West, Mumbai', '9988776656', 3000.0, 'Electronics - Laptop Charger', 'Standard', 'In Transit', 95.0, CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_Booking KEY(booking_id) VALUES
+('BK260103003', '260103PS01', 'Karan Singh', '123 Connaught Place, Delhi', '9988776657', 500.0, 'Clothing', 'Economy', 'Delivered', 50.0, CURRENT_TIMESTAMP);</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 5: NimbusApplication.java                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-application">
+  <div class="section-tag">File 05</div>
+  <h2>NimbusApplication.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/NimbusApplication.java</code> &mdash; Spring Boot entry point.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/NimbusApplication.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NimbusApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApplication.class, args);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 6: User.java                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-model">
+  <div class="section-tag">File 06</div>
+  <h2>User.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/model/User.java</code> &mdash; User model matching tbl_UserProfile columns.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import java.sql.Timestamp;
+
+public class User {
+
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String fullName;
+    private String email;
+    private String mobile;
+    private String address;
+    private String password;
+    private String role;
+    private Timestamp createdAt;
+
+    // ===== Default Constructor =====
+    public User() {}
+
+    // ===== Parameterized Constructor =====
+    public User(String userId, String firstName, String lastName, String fullName,
+                String email, String mobile, String address, String password, String role) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fullName = fullName;
+        this.email = email;
+        this.mobile = mobile;
+        this.address = address;
+        this.password = password;
+        this.role = role;
+    }
+
+    // ===== Getters and Setters =====
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getMobile() { return mobile; }
+    public void setMobile(String mobile) { this.mobile = mobile; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 7: Booking.java                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-model">
+  <div class="section-tag">File 07</div>
+  <h2>Booking.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/model/Booking.java</code> &mdash; Booking model matching tbl_Booking columns.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import java.sql.Timestamp;
+
+public class Booking {
+
+    private String bookingId;
+    private String userId;
+    private String receiverName;
+    private String receiverAddress;
+    private String receiverMobile;
+    private double weightGram;
+    private String contentsDescription;
+    private String deliveryType;
+    private String status;
+    private double serviceCost;
+    private Timestamp createdAt;
+
+    // ===== Default Constructor =====
+    public Booking() {}
+
+    // ===== Parameterized Constructor =====
+    public Booking(String bookingId, String userId, String receiverName, String receiverAddress,
+                   String receiverMobile, double weightGram, String contentsDescription,
+                   String deliveryType, String status, double serviceCost) {
+        this.bookingId = bookingId;
+        this.userId = userId;
+        this.receiverName = receiverName;
+        this.receiverAddress = receiverAddress;
+        this.receiverMobile = receiverMobile;
+        this.weightGram = weightGram;
+        this.contentsDescription = contentsDescription;
+        this.deliveryType = deliveryType;
+        this.status = status;
+        this.serviceCost = serviceCost;
+    }
+
+    // ===== Getters and Setters =====
+    public String getBookingId() { return bookingId; }
+    public void setBookingId(String bookingId) { this.bookingId = bookingId; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getReceiverName() { return receiverName; }
+    public void setReceiverName(String receiverName) { this.receiverName = receiverName; }
+
+    public String getReceiverAddress() { return receiverAddress; }
+    public void setReceiverAddress(String receiverAddress) { this.receiverAddress = receiverAddress; }
+
+    public String getReceiverMobile() { return receiverMobile; }
+    public void setReceiverMobile(String receiverMobile) { this.receiverMobile = receiverMobile; }
+
+    public double getWeightGram() { return weightGram; }
+    public void setWeightGram(double weightGram) { this.weightGram = weightGram; }
+
+    public String getContentsDescription() { return contentsDescription; }
+    public void setContentsDescription(String contentsDescription) { this.contentsDescription = contentsDescription; }
+
+    public String getDeliveryType() { return deliveryType; }
+    public void setDeliveryType(String deliveryType) { this.deliveryType = deliveryType; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public double getServiceCost() { return serviceCost; }
+    public void setServiceCost(double serviceCost) { this.serviceCost = serviceCost; }
+
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingId='" + bookingId + '\'' +
+                ", receiverName='" + receiverName + '\'' +
+                ", deliveryType='" + deliveryType + '\'' +
+                ", status='" + status + '\'' +
+                ", cost=" + serviceCost +
+                '}';
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 8: Issue.java                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="issue-model">
+  <div class="section-tag">File 08</div>
+  <h2>Issue.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/model/Issue.java</code> &mdash; Issue model matching tbl_Issue columns.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/Issue.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import java.sql.Timestamp;
+
+public class Issue {
+
+    private String issueId;
+    private String userId;
+    private String bookingId;
+    private String description;
+    private String status;
+    private String assignedTo;
+    private Timestamp createdAt;
+
+    // ===== Default Constructor =====
+    public Issue() {}
+
+    // ===== Parameterized Constructor =====
+    public Issue(String issueId, String userId, String bookingId,
+                 String description, String status, String assignedTo) {
+        this.issueId = issueId;
+        this.userId = userId;
+        this.bookingId = bookingId;
+        this.description = description;
+        this.status = status;
+        this.assignedTo = assignedTo;
+    }
+
+    // ===== Getters and Setters =====
+    public String getIssueId() { return issueId; }
+    public void setIssueId(String issueId) { this.issueId = issueId; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getBookingId() { return bookingId; }
+    public void setBookingId(String bookingId) { this.bookingId = bookingId; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public String getAssignedTo() { return assignedTo; }
+    public void setAssignedTo(String assignedTo) { this.assignedTo = assignedTo; }
+
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    @Override
+    public String toString() {
+        return "Issue{" +
+                "issueId='" + issueId + '\'' +
+                ", bookingId='" + bookingId + '\'' +
+                ", status='" + status + '\'' +
+                ", assignedTo='" + assignedTo + '\'' +
+                '}';
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 9: IdGenerator.java                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="id-generator">
+  <div class="section-tag">File 09</div>
+  <h2>IdGenerator.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/util/IdGenerator.java</code> &mdash; Generates smart IDs for users, bookings, and issues.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/util/IdGenerator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class IdGenerator {
+
+    private static final AtomicInteger userSequence = new AtomicInteger(1);
+    private static final AtomicInteger bookingSequence = new AtomicInteger(1);
+    private static final AtomicInteger issueSequence = new AtomicInteger(1);
+
+    /**
+     * Generate User ID: YYMMDD + initials + sequence
+     * Example: 260504DA01
+     */
+    public static String generateUserId(String firstName, String lastName) {
+        String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String initials = ("" + firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        String seq = String.format("%02d", userSequence.getAndIncrement());
+        return datePart + initials + seq;
+    }
+
+    /**
+     * Generate Booking ID: BK + YYMMDD + sequence
+     * Example: BK260504001
+     */
+    public static String generateBookingId() {
+        String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String seq = String.format("%03d", bookingSequence.getAndIncrement());
+        return "BK" + datePart + seq;
+    }
+
+    /**
+     * Generate Issue ID: IS + YYMMDD + sequence
+     * Example: IS260504001
+     */
+    public static String generateIssueId() {
+        String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String seq = String.format("%03d", issueSequence.getAndIncrement());
+        return "IS" + datePart + seq;
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 10: PricingCalculator.java                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="pricing-calculator">
+  <div class="section-tag">File 10</div>
+  <h2>PricingCalculator.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/util/PricingCalculator.java</code> &mdash; Calculates delivery cost based on weight and delivery type.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/util/PricingCalculator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+public class PricingCalculator {
+
+    // Base rates per kg
+    private static final double ECONOMY_RATE = 30.0;   // Rs 30 per kg
+    private static final double STANDARD_RATE = 50.0;  // Rs 50 per kg
+    private static final double EXPRESS_RATE = 80.0;   // Rs 80 per kg
+
+    // Minimum charge
+    private static final double MIN_CHARGE = 40.0;
+
+    /**
+     * Calculate service cost based on weight (grams) and delivery type.
+     * @param weightGram weight in grams
+     * @param deliveryType "Economy", "Standard", or "Express"
+     * @return calculated cost in rupees
+     */
+    public static double calculateCost(double weightGram, String deliveryType) {
+        double weightKg = weightGram / 1000.0;
+
+        double rate;
+        switch (deliveryType.toLowerCase()) {
+            case "express":
+                rate = EXPRESS_RATE;
+                break;
+            case "standard":
+                rate = STANDARD_RATE;
+                break;
+            case "economy":
+            default:
+                rate = ECONOMY_RATE;
+                break;
+        }
+
+        double cost = weightKg * rate;
+        return Math.max(cost, MIN_CHARGE);
+    }
+
+    /**
+     * Get delivery type options as formatted string for display.
+     */
+    public static String getDeliveryOptions() {
+        return "1. Economy  (Rs 30/kg, 5-7 days)\n" +
+               "2. Standard (Rs 50/kg, 3-4 days)\n" +
+               "3. Express  (Rs 80/kg, 1-2 days)";
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 11: InputValidator.java                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="input-validator">
+  <div class="section-tag">File 11</div>
+  <h2>InputValidator.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/util/InputValidator.java</code> &mdash; Validates user inputs (email, mobile, weight, etc.).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/util/InputValidator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.util.regex.Pattern;
+
+public class InputValidator {
+
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+
+    private static final Pattern MOBILE_PATTERN =
+            Pattern.compile("^[6-9]\\d{9}$");
+
+    /**
+     * Validate email format.
+     */
+    public static boolean isValidEmail(String email) {
+        if (email == null || email.isEmpty()) return false;
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    /**
+     * Validate Indian mobile number (10 digits, starts with 6-9).
+     */
+    public static boolean isValidMobile(String mobile) {
+        if (mobile == null || mobile.isEmpty()) return false;
+        return MOBILE_PATTERN.matcher(mobile).matches();
+    }
+
+    /**
+     * Validate that name is not empty and has only letters/spaces.
+     */
+    public static boolean isValidName(String name) {
+        if (name == null || name.trim().isEmpty()) return false;
+        return name.matches("^[A-Za-z ]+$");
+    }
+
+    /**
+     * Validate weight is positive and within limit (50kg max).
+     */
+    public static boolean isValidWeight(double weightGram) {
+        return weightGram > 0 &amp;&amp; weightGram <= 50000;
+    }
+
+    /**
+     * Validate password (minimum 6 characters).
+     */
+    public static boolean isValidPassword(String password) {
+        return password != null &amp;&amp; password.length() >= 6;
+    }
+
+    /**
+     * Validate delivery type is one of the allowed values.
+     */
+    public static boolean isValidDeliveryType(String type) {
+        if (type == null) return false;
+        String lower = type.toLowerCase();
+        return lower.equals("economy") || lower.equals("standard") || lower.equals("express");
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 12: UserDAO.java                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-dao">
+  <div class="section-tag">File 12</div>
+  <h2>UserDAO.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/dao/UserDAO.java</code> &mdash; Data Access Object for tbl_UserProfile using JdbcTemplate.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dao/UserDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+@Component
+public class UserDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    // ===== RowMapper: converts a ResultSet row into a User object =====
+    private RowMapper&lt;User&gt; userRowMapper = new RowMapper&lt;User&gt;() {
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            User user = new User();
+            user.setUserId(rs.getString("user_id"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+            user.setFullName(rs.getString("full_name"));
+            user.setEmail(rs.getString("email"));
+            user.setMobile(rs.getString("mobile"));
+            user.setAddress(rs.getString("address"));
+            user.setPassword(rs.getString("password"));
+            user.setRole(rs.getString("role"));
+            user.setCreatedAt(rs.getTimestamp("created_at"));
+            return user;
+        }
+    };
+
+    /**
+     * Find user by ID.
+     * @return User or null if not found
+     */
+    public User findById(String userId) {
+        try {
+            String sql = "SELECT * FROM tbl_UserProfile WHERE user_id = ?";
+            return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Find user by email.
+     * @return User or null if not found
+     */
+    public User findByEmail(String email) {
+        try {
+            String sql = "SELECT * FROM tbl_UserProfile WHERE email = ?";
+            return jdbcTemplate.queryForObject(sql, userRowMapper, email);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Get all users.
+     */
+    public List&lt;User&gt; findAll() {
+        String sql = "SELECT * FROM tbl_UserProfile ORDER BY created_at DESC";
+        return jdbcTemplate.query(sql, userRowMapper);
+    }
+
+    /**
+     * Save a new user to the database.
+     */
+    public void save(User user) {
+        String sql = "INSERT INTO tbl_UserProfile (user_id, first_name, last_name, full_name, " +
+                     "email, mobile, address, password, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                user.getUserId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getMobile(),
+                user.getAddress(),
+                user.getPassword(),
+                user.getRole());
+    }
+
+    /**
+     * Validate login credentials.
+     * @return User if credentials match, null otherwise
+     */
+    public User validateLogin(String userId, String password) {
+        try {
+            String sql = "SELECT * FROM tbl_UserProfile WHERE user_id = ? AND password = ?";
+            return jdbcTemplate.queryForObject(sql, userRowMapper, userId, password);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 13: BookingDAO.java                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-dao">
+  <div class="section-tag">File 13</div>
+  <h2>BookingDAO.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/dao/BookingDAO.java</code> &mdash; Data Access Object for tbl_Booking using JdbcTemplate.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dao/BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Booking;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+@Component
+public class BookingDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    // ===== RowMapper: converts a ResultSet row into a Booking object =====
+    private RowMapper&lt;Booking&gt; bookingRowMapper = new RowMapper&lt;Booking&gt;() {
+        @Override
+        public Booking mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Booking booking = new Booking();
+            booking.setBookingId(rs.getString("booking_id"));
+            booking.setUserId(rs.getString("user_id"));
+            booking.setReceiverName(rs.getString("receiver_name"));
+            booking.setReceiverAddress(rs.getString("receiver_address"));
+            booking.setReceiverMobile(rs.getString("receiver_mobile"));
+            booking.setWeightGram(rs.getDouble("weight_gram"));
+            booking.setContentsDescription(rs.getString("contents_description"));
+            booking.setDeliveryType(rs.getString("delivery_type"));
+            booking.setStatus(rs.getString("status"));
+            booking.setServiceCost(rs.getDouble("service_cost"));
+            booking.setCreatedAt(rs.getTimestamp("created_at"));
+            return booking;
+        }
+    };
+
+    /**
+     * Find booking by ID.
+     * @return Booking or null if not found
+     */
+    public Booking findById(String bookingId) {
+        try {
+            String sql = "SELECT * FROM tbl_Booking WHERE booking_id = ?";
+            return jdbcTemplate.queryForObject(sql, bookingRowMapper, bookingId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Find all bookings for a specific user.
+     */
+    public List&lt;Booking&gt; findByUserId(String userId) {
+        String sql = "SELECT * FROM tbl_Booking WHERE user_id = ? ORDER BY created_at DESC";
+        return jdbcTemplate.query(sql, bookingRowMapper, userId);
+    }
+
+    /**
+     * Get all bookings (for officers).
+     */
+    public List&lt;Booking&gt; findAll() {
+        String sql = "SELECT * FROM tbl_Booking ORDER BY created_at DESC";
+        return jdbcTemplate.query(sql, bookingRowMapper);
+    }
+
+    /**
+     * Save a new booking to the database.
+     */
+    public void save(Booking booking) {
+        String sql = "INSERT INTO tbl_Booking (booking_id, user_id, receiver_name, receiver_address, " +
+                     "receiver_mobile, weight_gram, contents_description, delivery_type, status, service_cost) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                booking.getBookingId(),
+                booking.getUserId(),
+                booking.getReceiverName(),
+                booking.getReceiverAddress(),
+                booking.getReceiverMobile(),
+                booking.getWeightGram(),
+                booking.getContentsDescription(),
+                booking.getDeliveryType(),
+                booking.getStatus(),
+                booking.getServiceCost());
+    }
+
+    /**
+     * Update booking status (Officer action).
+     */
+    public void updateStatus(String bookingId, String newStatus) {
+        String sql = "UPDATE tbl_Booking SET status = ? WHERE booking_id = ?";
+        jdbcTemplate.update(sql, newStatus, bookingId);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 14: IssueDAO.java                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="issue-dao">
+  <div class="section-tag">File 14</div>
+  <h2>IssueDAO.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/dao/IssueDAO.java</code> &mdash; Data Access Object for tbl_Issue using JdbcTemplate.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dao/IssueDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Issue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+@Component
+public class IssueDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    // ===== RowMapper: converts a ResultSet row into an Issue object =====
+    private RowMapper&lt;Issue&gt; issueRowMapper = new RowMapper&lt;Issue&gt;() {
+        @Override
+        public Issue mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Issue issue = new Issue();
+            issue.setIssueId(rs.getString("issue_id"));
+            issue.setUserId(rs.getString("user_id"));
+            issue.setBookingId(rs.getString("booking_id"));
+            issue.setDescription(rs.getString("description"));
+            issue.setStatus(rs.getString("status"));
+            issue.setAssignedTo(rs.getString("assigned_to"));
+            issue.setCreatedAt(rs.getTimestamp("created_at"));
+            return issue;
+        }
+    };
+
+    /**
+     * Find issue by ID.
+     * @return Issue or null if not found
+     */
+    public Issue findById(String issueId) {
+        try {
+            String sql = "SELECT * FROM tbl_Issue WHERE issue_id = ?";
+            return jdbcTemplate.queryForObject(sql, issueRowMapper, issueId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Find all issues raised by a specific user.
+     */
+    public List&lt;Issue&gt; findByUserId(String userId) {
+        String sql = "SELECT * FROM tbl_Issue WHERE user_id = ? ORDER BY created_at DESC";
+        return jdbcTemplate.query(sql, issueRowMapper, userId);
+    }
+
+    /**
+     * Get all issues.
+     */
+    public List&lt;Issue&gt; findAll() {
+        String sql = "SELECT * FROM tbl_Issue ORDER BY created_at DESC";
+        return jdbcTemplate.query(sql, issueRowMapper);
+    }
+
+    /**
+     * Save a new issue to the database.
+     */
+    public void save(Issue issue) {
+        String sql = "INSERT INTO tbl_Issue (issue_id, user_id, booking_id, description, status, assigned_to) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                issue.getIssueId(),
+                issue.getUserId(),
+                issue.getBookingId(),
+                issue.getDescription(),
+                issue.getStatus(),
+                issue.getAssignedTo());
+    }
+
+    /**
+     * Update issue status (Support action).
+     */
+    public void updateStatus(String issueId, String newStatus) {
+        String sql = "UPDATE tbl_Issue SET status = ? WHERE issue_id = ?";
+        jdbcTemplate.update(sql, newStatus, issueId);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 15: ConsoleMenu.java                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="console-menu">
+  <div class="section-tag">File 15</div>
+  <h2>ConsoleMenu.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/console/ConsoleMenu.java</code> &mdash; Helper class for printing formatted console menus.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/console/ConsoleMenu.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.console;
+
+public class ConsoleMenu {
+
+    public static void showBanner() {
+        System.out.println();
+        System.out.println("╔══════════════════════════════════════════════════╗");
+        System.out.println("║         NIMBUS PARCEL MANAGEMENT SYSTEM         ║");
+        System.out.println("║              Sprint 2 — Console App             ║");
+        System.out.println("╚══════════════════════════════════════════════════╝");
+        System.out.println();
+    }
+
+    public static void showDivider() {
+        System.out.println("──────────────────────────────────────────────────");
+    }
+
+    public static void showMainMenu() {
+        showDivider();
+        System.out.println("  LOGIN");
+        showDivider();
+        System.out.println("  Enter your User ID and Password to continue.");
+        System.out.println();
+    }
+
+    public static void showCustomerMenu(String name) {
+        System.out.println();
+        showDivider();
+        System.out.println("  CUSTOMER MENU — Welcome, " + name);
+        showDivider();
+        System.out.println("  1. Book a Parcel");
+        System.out.println("  2. Track a Parcel");
+        System.out.println("  3. My Bookings");
+        System.out.println("  4. Raise an Issue");
+        System.out.println("  5. Logout");
+        showDivider();
+    }
+
+    public static void showOfficerMenu(String name) {
+        System.out.println();
+        showDivider();
+        System.out.println("  OFFICER MENU — Welcome, " + name);
+        showDivider();
+        System.out.println("  1. View All Bookings");
+        System.out.println("  2. Update Delivery Status");
+        System.out.println("  3. Track a Parcel");
+        System.out.println("  4. View All Issues");
+        System.out.println("  5. Logout");
+        showDivider();
+    }
+
+    public static void showSupportMenu(String name) {
+        System.out.println();
+        showDivider();
+        System.out.println("  SUPPORT MENU — Welcome, " + name);
+        showDivider();
+        System.out.println("  1. View Assigned Issues");
+        System.out.println("  2. Update Issue Status");
+        System.out.println("  3. Logout");
+        showDivider();
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILE 16: ConsoleApp.java                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="console-app">
+  <div class="section-tag">File 16</div>
+  <h2>ConsoleApp.java</h2>
+  <p class="section-desc"><code>src/main/java/com/nimbus/console/ConsoleApp.java</code> &mdash; Main console application with login, role-based menus, and all operations.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/console/ConsoleApp.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.console;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.dao.IssueDAO;
+import com.nimbus.dao.UserDAO;
+import com.nimbus.model.Booking;
+import com.nimbus.model.Issue;
+import com.nimbus.model.User;
+import com.nimbus.util.IdGenerator;
+import com.nimbus.util.InputValidator;
+import com.nimbus.util.PricingCalculator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Scanner;
+
+@Component
+public class ConsoleApp implements CommandLineRunner {
+
+    @Autowired
+    private UserDAO userDAO;
+
+    @Autowired
+    private BookingDAO bookingDAO;
+
+    @Autowired
+    private IssueDAO issueDAO;
+
+    private Scanner scanner = new Scanner(System.in);
+
+    @Override
+    public void run(String... args) throws Exception {
+        ConsoleMenu.showBanner();
+
+        while (true) {
+            ConsoleMenu.showMainMenu();
+            System.out.print("  User ID: ");
+            String userId = scanner.nextLine().trim();
+
+            if (userId.equalsIgnoreCase("exit")) {
+                System.out.println("\n  Goodbye! Thank you for using Nimbus.\n");
+                break;
+            }
+
+            System.out.print("  Password: ");
+            String password = scanner.nextLine().trim();
+
+            User user = userDAO.validateLogin(userId, password);
+
+            if (user == null) {
+                System.out.println("\n  ✗ Invalid credentials. Try again or type 'exit' to quit.\n");
+                continue;
+            }
+
+            System.out.println("\n  ✓ Login successful! Role: " + user.getRole());
+
+            // Route to role-based menu
+            switch (user.getRole().toLowerCase()) {
+                case "customer":
+                    customerLoop(user);
+                    break;
+                case "officer":
+                    officerLoop(user);
+                    break;
+                case "support":
+                    supportLoop(user);
+                    break;
+                default:
+                    System.out.println("  Unknown role: " + user.getRole());
+            }
+        }
+    }
+
+    // ==================== CUSTOMER OPERATIONS ====================
+
+    private void customerLoop(User user) {
+        boolean active = true;
+        while (active) {
+            ConsoleMenu.showCustomerMenu(user.getFirstName());
+            System.out.print("  Choose option: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    bookParcel(user);
+                    break;
+                case "2":
+                    trackParcel();
+                    break;
+                case "3":
+                    myBookings(user);
+                    break;
+                case "4":
+                    raiseIssue(user);
+                    break;
+                case "5":
+                    active = false;
+                    System.out.println("\n  Logged out.\n");
+                    break;
+                default:
+                    System.out.println("  Invalid option. Try again.");
+            }
+        }
+    }
+
+    private void bookParcel(User user) {
+        System.out.println("\n  --- Book a Parcel ---\n");
+
+        System.out.print("  Receiver Name: ");
+        String receiverName = scanner.nextLine().trim();
+        if (!InputValidator.isValidName(receiverName)) {
+            System.out.println("  ✗ Invalid name. Only letters and spaces allowed.");
+            return;
+        }
+
+        System.out.print("  Receiver Address: ");
+        String receiverAddress = scanner.nextLine().trim();
+
+        System.out.print("  Receiver Mobile: ");
+        String receiverMobile = scanner.nextLine().trim();
+        if (!InputValidator.isValidMobile(receiverMobile)) {
+            System.out.println("  ✗ Invalid mobile number. Must be 10 digits starting with 6-9.");
+            return;
+        }
+
+        System.out.print("  Weight (grams): ");
+        double weight;
+        try {
+            weight = Double.parseDouble(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("  ✗ Invalid weight. Enter a number.");
+            return;
+        }
+        if (!InputValidator.isValidWeight(weight)) {
+            System.out.println("  ✗ Weight must be between 1g and 50,000g.");
+            return;
+        }
+
+        System.out.print("  Contents Description: ");
+        String contents = scanner.nextLine().trim();
+
+        System.out.println("\n" + PricingCalculator.getDeliveryOptions());
+        System.out.print("\n  Choose delivery type (1/2/3): ");
+        String typeChoice = scanner.nextLine().trim();
+        String deliveryType;
+        switch (typeChoice) {
+            case "1": deliveryType = "Economy"; break;
+            case "2": deliveryType = "Standard"; break;
+            case "3": deliveryType = "Express"; break;
+            default:
+                System.out.println("  ✗ Invalid delivery type.");
+                return;
+        }
+
+        double cost = PricingCalculator.calculateCost(weight, deliveryType);
+
+        // Create booking
+        Booking booking = new Booking();
+        booking.setBookingId(IdGenerator.generateBookingId());
+        booking.setUserId(user.getUserId());
+        booking.setReceiverName(receiverName);
+        booking.setReceiverAddress(receiverAddress);
+        booking.setReceiverMobile(receiverMobile);
+        booking.setWeightGram(weight);
+        booking.setContentsDescription(contents);
+        booking.setDeliveryType(deliveryType);
+        booking.setStatus("Booked");
+        booking.setServiceCost(cost);
+
+        bookingDAO.save(booking);
+
+        System.out.println("\n  ✓ Parcel booked successfully!");
+        System.out.println("  Booking ID: " + booking.getBookingId());
+        System.out.println("  Cost: Rs " + String.format("%.2f", cost));
+        System.out.println();
+    }
+
+    private void trackParcel() {
+        System.out.print("\n  Enter Booking ID: ");
+        String bookingId = scanner.nextLine().trim();
+
+        Booking booking = bookingDAO.findById(bookingId);
+        if (booking == null) {
+            System.out.println("  ✗ Booking not found.");
+            return;
+        }
+
+        System.out.println("\n  --- Tracking Details ---");
+        System.out.println("  Booking ID : " + booking.getBookingId());
+        System.out.println("  Receiver   : " + booking.getReceiverName());
+        System.out.println("  Address    : " + booking.getReceiverAddress());
+        System.out.println("  Type       : " + booking.getDeliveryType());
+        System.out.println("  Status     : " + booking.getStatus());
+        System.out.println("  Cost       : Rs " + String.format("%.2f", booking.getServiceCost()));
+        System.out.println();
+    }
+
+    private void myBookings(User user) {
+        List&lt;Booking&gt; bookings = bookingDAO.findByUserId(user.getUserId());
+
+        if (bookings.isEmpty()) {
+            System.out.println("\n  No bookings found.\n");
+            return;
+        }
+
+        System.out.println("\n  --- Your Bookings (" + bookings.size() + ") ---\n");
+        System.out.printf("  %-14s %-18s %-12s %-12s %s%n", "Booking ID", "Receiver", "Type", "Status", "Cost");
+        ConsoleMenu.showDivider();
+
+        for (Booking b : bookings) {
+            System.out.printf("  %-14s %-18s %-12s %-12s Rs %.2f%n",
+                    b.getBookingId(), b.getReceiverName(), b.getDeliveryType(),
+                    b.getStatus(), b.getServiceCost());
+        }
+        System.out.println();
+    }
+
+    private void raiseIssue(User user) {
+        System.out.println("\n  --- Raise an Issue ---\n");
+
+        System.out.print("  Booking ID (related to issue): ");
+        String bookingId = scanner.nextLine().trim();
+
+        Booking booking = bookingDAO.findById(bookingId);
+        if (booking == null) {
+            System.out.println("  ✗ Booking not found.");
+            return;
+        }
+
+        System.out.print("  Describe the issue: ");
+        String description = scanner.nextLine().trim();
+
+        Issue issue = new Issue();
+        issue.setIssueId(IdGenerator.generateIssueId());
+        issue.setUserId(user.getUserId());
+        issue.setBookingId(bookingId);
+        issue.setDescription(description);
+        issue.setStatus("Open");
+        issue.setAssignedTo("260101SP01"); // Auto-assign to support
+
+        issueDAO.save(issue);
+
+        System.out.println("\n  ✓ Issue raised successfully!");
+        System.out.println("  Issue ID: " + issue.getIssueId());
+        System.out.println();
+    }
+
+    // ==================== OFFICER OPERATIONS ====================
+
+    private void officerLoop(User user) {
+        boolean active = true;
+        while (active) {
+            ConsoleMenu.showOfficerMenu(user.getFirstName());
+            System.out.print("  Choose option: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    viewAllBookings();
+                    break;
+                case "2":
+                    updateDeliveryStatus();
+                    break;
+                case "3":
+                    trackParcel();
+                    break;
+                case "4":
+                    viewAllIssues();
+                    break;
+                case "5":
+                    active = false;
+                    System.out.println("\n  Logged out.\n");
+                    break;
+                default:
+                    System.out.println("  Invalid option. Try again.");
+            }
+        }
+    }
+
+    private void viewAllBookings() {
+        List&lt;Booking&gt; bookings = bookingDAO.findAll();
+
+        if (bookings.isEmpty()) {
+            System.out.println("\n  No bookings in the system.\n");
+            return;
+        }
+
+        System.out.println("\n  --- All Bookings (" + bookings.size() + ") ---\n");
+        System.out.printf("  %-14s %-12s %-18s %-12s %-12s %s%n",
+                "Booking ID", "User ID", "Receiver", "Type", "Status", "Cost");
+        ConsoleMenu.showDivider();
+
+        for (Booking b : bookings) {
+            System.out.printf("  %-14s %-12s %-18s %-12s %-12s Rs %.2f%n",
+                    b.getBookingId(), b.getUserId(), b.getReceiverName(),
+                    b.getDeliveryType(), b.getStatus(), b.getServiceCost());
+        }
+        System.out.println();
+    }
+
+    private void updateDeliveryStatus() {
+        System.out.print("\n  Enter Booking ID: ");
+        String bookingId = scanner.nextLine().trim();
+
+        Booking booking = bookingDAO.findById(bookingId);
+        if (booking == null) {
+            System.out.println("  ✗ Booking not found.");
+            return;
+        }
+
+        System.out.println("  Current Status: " + booking.getStatus());
+        System.out.println("\n  Available statuses:");
+        System.out.println("  1. Booked");
+        System.out.println("  2. Picked Up");
+        System.out.println("  3. In Transit");
+        System.out.println("  4. Out for Delivery");
+        System.out.println("  5. Delivered");
+        System.out.println("  6. Cancelled");
+        System.out.print("\n  Choose new status (1-6): ");
+        String statusChoice = scanner.nextLine().trim();
+
+        String newStatus;
+        switch (statusChoice) {
+            case "1": newStatus = "Booked"; break;
+            case "2": newStatus = "Picked Up"; break;
+            case "3": newStatus = "In Transit"; break;
+            case "4": newStatus = "Out for Delivery"; break;
+            case "5": newStatus = "Delivered"; break;
+            case "6": newStatus = "Cancelled"; break;
+            default:
+                System.out.println("  ✗ Invalid choice.");
+                return;
+        }
+
+        bookingDAO.updateStatus(bookingId, newStatus);
+        System.out.println("  ✓ Status updated to: " + newStatus + "\n");
+    }
+
+    private void viewAllIssues() {
+        List&lt;Issue&gt; issues = issueDAO.findAll();
+
+        if (issues.isEmpty()) {
+            System.out.println("\n  No issues in the system.\n");
+            return;
+        }
+
+        System.out.println("\n  --- All Issues (" + issues.size() + ") ---\n");
+        System.out.printf("  %-12s %-12s %-14s %-10s %s%n",
+                "Issue ID", "User ID", "Booking ID", "Status", "Assigned To");
+        ConsoleMenu.showDivider();
+
+        for (Issue i : issues) {
+            System.out.printf("  %-12s %-12s %-14s %-10s %s%n",
+                    i.getIssueId(), i.getUserId(), i.getBookingId(),
+                    i.getStatus(), i.getAssignedTo());
+        }
+        System.out.println();
+    }
+
+    // ==================== SUPPORT OPERATIONS ====================
+
+    private void supportLoop(User user) {
+        boolean active = true;
+        while (active) {
+            ConsoleMenu.showSupportMenu(user.getFirstName());
+            System.out.print("  Choose option: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    viewAssignedIssues(user);
+                    break;
+                case "2":
+                    updateIssueStatus();
+                    break;
+                case "3":
+                    active = false;
+                    System.out.println("\n  Logged out.\n");
+                    break;
+                default:
+                    System.out.println("  Invalid option. Try again.");
+            }
+        }
+    }
+
+    private void viewAssignedIssues(User user) {
+        List&lt;Issue&gt; allIssues = issueDAO.findAll();
+
+        // Filter issues assigned to this support agent
+        List&lt;Issue&gt; myIssues = allIssues.stream()
+                .filter(i -&gt; user.getUserId().equals(i.getAssignedTo()))
+                .toList();
+
+        if (myIssues.isEmpty()) {
+            System.out.println("\n  No issues assigned to you.\n");
+            return;
+        }
+
+        System.out.println("\n  --- Your Assigned Issues (" + myIssues.size() + ") ---\n");
+        System.out.printf("  %-12s %-14s %-10s %s%n", "Issue ID", "Booking ID", "Status", "Description");
+        ConsoleMenu.showDivider();
+
+        for (Issue i : myIssues) {
+            String desc = i.getDescription().length() > 40
+                    ? i.getDescription().substring(0, 40) + "..."
+                    : i.getDescription();
+            System.out.printf("  %-12s %-14s %-10s %s%n",
+                    i.getIssueId(), i.getBookingId(), i.getStatus(), desc);
+        }
+        System.out.println();
+    }
+
+    private void updateIssueStatus() {
+        System.out.print("\n  Enter Issue ID: ");
+        String issueId = scanner.nextLine().trim();
+
+        Issue issue = issueDAO.findById(issueId);
+        if (issue == null) {
+            System.out.println("  ✗ Issue not found.");
+            return;
+        }
+
+        System.out.println("  Current Status: " + issue.getStatus());
+        System.out.println("\n  Available statuses:");
+        System.out.println("  1. Open");
+        System.out.println("  2. In Progress");
+        System.out.println("  3. Resolved");
+        System.out.println("  4. Closed");
+        System.out.print("\n  Choose new status (1-4): ");
+        String statusChoice = scanner.nextLine().trim();
+
+        String newStatus;
+        switch (statusChoice) {
+            case "1": newStatus = "Open"; break;
+            case "2": newStatus = "In Progress"; break;
+            case "3": newStatus = "Resolved"; break;
+            case "4": newStatus = "Closed"; break;
+            default:
+                System.out.println("  ✗ Invalid choice.");
+                return;
+        }
+
+        issueDAO.updateStatus(issueId, newStatus);
+        System.out.println("  ✓ Issue status updated to: " + newStatus + "\n");
+    }
+}</code></pre>
+  </div>
+
+  <!-- Topic Navigation -->
+  <div class="topic-nav">
+    <a href="sprint2-guide.html">
+      <span class="nav-label">&larr; Previous</span>
+      <span class="nav-title">Sprint 2 Guide</span>
+    </a>
+    <a href="sprint3-guide.html" class="next">
+      <span class="nav-label">Next &rarr;</span>
+      <span class="nav-title">Sprint 3 Guide</span>
+    </a>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="../topics/shared.js"></script>
+</body>
+</html>

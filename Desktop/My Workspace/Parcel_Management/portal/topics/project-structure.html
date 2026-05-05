@@ -143,6 +143,11 @@
   <h2>Eclipse Setup Step-by-Step</h2>
   <p class="section-desc">Setting up Eclipse for Java development. We'll create a Maven project from scratch and configure it properly.</p>
 
+  <div class="callout nimbus">
+    <div class="callout-title">Full Setup Guide Available</div>
+    <p>For the complete step-by-step setup covering ALL 4 sprints (what to download, packages to create at each phase, how to run), see the <a href="../backend/eclipse-master-setup.html"><strong>Eclipse Master Setup Guide</strong></a>. This section covers the basics.</p>
+  </div>
+
   <h3>Creating a Java Maven Project</h3>
 
   <ol class="steps">
@@ -156,12 +161,10 @@
       <ul>
         <li><strong>Group Id:</strong> <code>com.nimbus</code></li>
         <li><strong>Artifact Id:</strong> <code>nimbus-parcel</code></li>
-        <li><strong>Packaging:</strong> <code>war</code></li>
+        <li><strong>Packaging:</strong> <code>jar</code></li>
       </ul>
       Click Finish. Eclipse creates the Maven directory structure.
     </li>
-
-    <li><strong>Create webapp directory.</strong> In Package Explorer, right-click <code>src/main</code> &rarr; New &rarr; Folder &rarr; name: <code>webapp</code>. Inside it, create another folder: <code>WEB-INF</code>.</li>
 
     <li><strong>Configure the pom.xml.</strong> Double-click <code>pom.xml</code>. Switch to the "pom.xml" tab (not the Overview tab) to see raw XML. Paste in your dependencies, properties, and plugins. Save (<code>Ctrl+S</code>).</li>
 
@@ -170,23 +173,9 @@
     <li><strong>Verify.</strong> Expand "Maven Dependencies" in Package Explorer. You should see all your JARs listed. No red X marks means everything resolved correctly.</li>
   </ol>
 
-  <h3>Adding Tomcat Server</h3>
-
-  <ol class="steps">
-    <li><strong>Open the Servers view.</strong> <code>Window &rarr; Show View &rarr; Servers</code>. If the Servers tab is empty, click "No servers are available. Click this link to create a new server."</li>
-
-    <li><strong>Select Apache Tomcat v9.0.</strong> Under "Apache," choose Tomcat v9.0 Server. Click Next.</li>
-
-    <li><strong>Browse to Tomcat installation.</strong> Click "Browse" and navigate to where you extracted Tomcat (e.g., <code>C:\apache-tomcat-9.0.80</code>). Click Finish.</li>
-
-    <li><strong>Add your project.</strong> Right-click the Tomcat server in the Servers view &rarr; "Add and Remove" &rarr; move <code>nimbus-parcel</code> to the right side (Configured) &rarr; Finish.</li>
-
-    <li><strong>Start the server.</strong> Right-click Tomcat &rarr; Start. The Console should show "Server startup in [xxx] ms." Open a browser and go to <code>http://localhost:8080/nimbus-parcel/</code>.</li>
-  </ol>
-
-  <div class="callout warning">
-    <div class="callout-title">Port 8080 Already In Use?</div>
-    <p>If Tomcat fails to start with "Address already in use," another program is using port 8080. Double-click the Tomcat server in Eclipse &rarr; change the port from 8080 to 8081 or 9090. Or find and kill whatever process is using 8080.</p>
+  <div class="callout think">
+    <div class="callout-title">What about Tomcat?</div>
+    <p>You do NOT need to download or configure Tomcat separately. Spring Boot includes an embedded Tomcat server. When you run <code>NimbusApplication.java</code>, Tomcat starts automatically inside your app. No installation, no configuration, no "Servers" view needed.</p>
   </div>
 </section>
 
@@ -217,12 +206,16 @@ org.apache.commons.lang3
 org.apache.maven.plugins
 
 // Our Nimbus project
-com.nimbus.app         // Servlets (presentation layer)
+com.nimbus.model       // Data classes (POJOs)
+com.nimbus.dao         // Database access (raw JDBC)
+com.nimbus.repository  // Database access (Spring Data JPA)
 com.nimbus.service     // Business logic
-com.nimbus.dao         // Database access
-com.nimbus.model       // Data classes
+com.nimbus.servlet     // Servlets (HTTP → HTML)
+com.nimbus.controller  // REST Controllers (HTTP → JSON)
+com.nimbus.dto         // API request/response shapes
+com.nimbus.config      // Spring Boot configuration
 com.nimbus.util        // Utility/helper classes
-com.nimbus.exception   // Custom exceptions</code></pre>
+com.nimbus.console     // Console app (testing)</code></pre>
   </div>
 
   <h3>Package Rules</h3>
@@ -280,7 +273,7 @@ com.nimbus.exception   // Custom exceptions</code></pre>
     <div class="layer">
       <div class="layer-name blue">Presentation</div>
       <div class="layer-detail">
-        <strong>Package:</strong> <code>com.nimbus.app</code><br>
+        <strong>Package:</strong> <code>com.nimbus.servlet</code><br>
         <strong>What:</strong> Servlets and JSPs. Receives HTTP requests, calls the Service layer, sends responses back to the browser.<br>
         <strong>Talks to:</strong> Service layer only. Never touches the database directly.
       </div>
@@ -304,9 +297,9 @@ com.nimbus.exception   // Custom exceptions</code></pre>
     <div class="layer">
       <div class="layer-name purple">Database</div>
       <div class="layer-detail">
-        <strong>System:</strong> MySQL<br>
+        <strong>System:</strong> H2 (development) / MySQL (production)<br>
         <strong>What:</strong> Stores all persistent data: users, bookings, issues. Tables, rows, columns.<br>
-        <strong>Talks to:</strong> Nobody. It just stores data and answers SQL queries from DAO.
+        <strong>Talks to:</strong> Nobody. It just stores data and answers SQL queries from DAO/Repository.
       </div>
     </div>
   </div>
@@ -319,13 +312,13 @@ com.nimbus.exception   // Custom exceptions</code></pre>
     <div class="flow-row">
       <div class="flow-box dark">Browser<span class="flow-sub">POST /login</span></div>
       <div class="flow-arrow">&rarr;</div>
-      <div class="flow-box blue">LoginServlet<span class="flow-sub">app/ layer</span></div>
+      <div class="flow-box blue">LoginServlet<span class="flow-sub">servlet/ layer</span></div>
       <div class="flow-arrow">&rarr;</div>
       <div class="flow-box orange">UserService<span class="flow-sub">service/ layer</span></div>
       <div class="flow-arrow">&rarr;</div>
       <div class="flow-box green">UserDAO<span class="flow-sub">dao/ layer</span></div>
       <div class="flow-arrow">&rarr;</div>
-      <div class="flow-box purple">MySQL<span class="flow-sub">database</span></div>
+      <div class="flow-box purple">H2 Database<span class="flow-sub">database</span></div>
     </div>
   </div>
 
@@ -367,7 +360,7 @@ public User findByEmail(String email) {
 
   <div class="callout nimbus">
     <div class="callout-title">In Nimbus</div>
-    <p>Every feature in Nimbus follows this exact pattern. User registration: <code>RegisterServlet &rarr; UserService &rarr; UserDAO &rarr; MySQL</code>. Booking a parcel: <code>BookingServlet &rarr; BookingService &rarr; BookingDAO &rarr; MySQL</code>. Once you understand one flow, you understand all of them.</p>
+    <p>Every feature in Nimbus follows this exact pattern. User registration: <code>RegisterServlet &rarr; UserService &rarr; UserRepository &rarr; H2 Database</code>. Booking a parcel: <code>BookingServlet &rarr; BookingService &rarr; BookingRepository &rarr; H2 Database</code>. Once you understand one flow, you understand all of them.</p>
   </div>
 </section>
 
@@ -387,36 +380,62 @@ public User findByEmail(String email) {
     </div>
     <pre><code class="language-java">src/main/java/com/nimbus/
 │
-├── model/                          // Data classes (POJOs)
-│   ├── User.java                   // userId, name, email, password, role
-│   ├── Booking.java                // bookingId, userId, senderAddr, receiverAddr, status, date
-│   └── SupportIssue.java           // issueId, userId, bookingId, description, status
+│  NimbusApplication.java            // Spring Boot entry point (@SpringBootApplication)
 │
-├── dao/                            // Database access — SQL lives here
-│   ├── UserDAO.java                // findByEmail(), save(), findById()
-│   ├── BookingDAO.java             // save(), findByUserId(), updateStatus(), findById()
-│   └── SupportIssueDAO.java        // save(), findByUserId(), updateStatus()
+├── model/                           // Data classes (POJOs) — Sprint 2+
+│   ├── User.java                    // userId, name, email, password, role
+│   ├── Booking.java                 // bookingId, userId, sender/receiver, status, price
+│   └── Issue.java                   // issueId, userId, bookingId, description, status
 │
-├── service/                        // Business logic — rules live here
-│   ├── UserService.java            // validateLogin(), registerUser()
-│   ├── BookingService.java         // createBooking(), getBookingsByUser(), updateDeliveryStatus()
-│   └── SupportService.java         // createIssue(), getIssuesByUser()
+├── util/                            // Helpers — Sprint 2+
+│   ├── IdGenerator.java             // Generate user IDs and booking IDs
+│   ├── PricingCalculator.java       // Calculate delivery price
+│   └── InputValidator.java          // Validate email, phone, etc.
 │
-├── app/                            // Servlets — HTTP handling
-│   ├── LoginServlet.java           // POST /login
-│   ├── RegisterServlet.java        // POST /register
-│   ├── BookingServlet.java         // POST /book, GET /track
-│   ├── DashboardServlet.java       // GET /dashboard
-│   └── SupportServlet.java         // POST /support, GET /support
+├── dao/                             // Raw JDBC access — Sprint 2+
+│   ├── UserDAO.java                 // findByEmail(), save(), findById()
+│   ├── BookingDAO.java              // save(), findByUserId(), updateStatus()
+│   └── IssueDAO.java                // save(), findByUserId(), updateStatus()
 │
-├── util/                           // Helpers
-│   └── DBConnection.java           // getConnection() — reads db.properties, returns Connection
+├── console/                         // Console interface — Sprint 2+
+│   ├── ConsoleApp.java              // Main menu loop (for testing)
+│   └── ConsoleMenu.java             // Menu display helper
 │
-└── exception/                      // Custom exceptions
-    ├── UserNotFoundException.java
-    ├── InvalidCredentialsException.java
-    ├── DuplicateEmailException.java
-    └── BookingNotFoundException.java</code></pre>
+├── config/                          // Spring configuration — Sprint 3+
+│   ├── DataSeeder.java              // Seeds database on startup
+│   ├── ServletConfig.java           // URL-to-servlet mappings
+│   └── CorsConfig.java             // CORS for REST APIs (Sprint 4)
+│
+├── repository/                      // Spring Data JPA — Sprint 3+
+│   ├── UserRepository.java          // extends JpaRepository (auto-SQL)
+│   ├── BookingRepository.java       // extends JpaRepository
+│   └── IssueRepository.java         // extends JpaRepository
+│
+├── service/                         // Business logic — Sprint 3+
+│   ├── UserService.java             // validateLogin(), registerUser()
+│   ├── BookingService.java          // createBooking(), getBookingsByUser()
+│   ├── IssueService.java            // createIssue(), getIssuesByUser()
+│   └── PricingService.java          // calculatePrice()
+│
+├── servlet/                         // HTTP → HTML (Servlets) — Sprint 3+
+│   ├── LoginServlet.java            // POST /servlet/login
+│   ├── RegisterServlet.java         // POST /servlet/register
+│   ├── BookingServlet.java          // POST /servlet/booking
+│   ├── TrackingServlet.java         // GET /servlet/tracking
+│   └── DashboardServlet.java        // GET /servlet/dashboard
+│
+├── controller/                      // HTTP → JSON (REST APIs) — Sprint 4+
+│   ├── AuthController.java          // POST /api/auth/login, /register
+│   ├── BookingController.java       // POST/GET /api/bookings
+│   ├── TrackingController.java      // GET /api/tracking/{id}
+│   └── IssueController.java         // POST/GET /api/issues
+│
+└── dto/                             // API request/response shapes — Sprint 4+
+    ├── LoginRequest.java            // { userId, password }
+    ├── LoginResponse.java           // { success, user }
+    ├── RegisterRequest.java         // { name, email, password, ... }
+    ├── BookingRequest.java          // { senderAddr, receiverAddr, weight, ... }
+    └── ApiResponse.java             // { success, message, data }</code></pre>
   </div>
 
   <h3>Every File Explained</h3>
@@ -516,14 +535,26 @@ public class User {
   <h4>service/ &mdash; Business Logic</h4>
   <p>Service classes contain the <strong>rules</strong> of your application. "Is the password correct?" "Does this user already exist?" "Can this officer update this booking?" The service layer <em>orchestrates</em> DAO calls and applies logic between them.</p>
 
-  <h4>app/ &mdash; Servlets (Presentation)</h4>
+  <h4>console/ &mdash; Console Interface (Sprint 2)</h4>
+  <p>The terminal-based menu system from Sprint 2. Kept in the project even after adding web support &mdash; useful for quick testing without opening a browser.</p>
+
+  <h4>config/ &mdash; Spring Configuration (Sprint 3)</h4>
+  <p>Spring Boot startup configuration. <code>DataSeeder</code> inserts sample data when the app starts. <code>ServletConfig</code> maps URLs to servlets. <code>CorsConfig</code> (Sprint 4) allows the frontend to call REST APIs.</p>
+
+  <h4>repository/ &mdash; Spring Data JPA (Sprint 3)</h4>
+  <p>The modern way to access the database. Instead of writing SQL manually (like DAOs), you declare an interface and Spring generates the SQL for you. Both DAOs and repositories coexist in the project.</p>
+
+  <h4>servlet/ &mdash; Servlets (Sprint 3)</h4>
   <p>Servlets handle HTTP. They read request parameters, call service methods, and forward results to JSP pages for display. A servlet should be thin &mdash; mostly just glue between HTTP and the service layer.</p>
 
-  <h4>util/ &mdash; Utilities</h4>
-  <p><code>DBConnection.java</code> is the most important utility. It reads database connection settings from <code>db.properties</code> and provides a <code>getConnection()</code> method that all DAOs use. One central place to configure the database.</p>
+  <h4>controller/ &mdash; REST Controllers (Sprint 4)</h4>
+  <p>The modern replacement for servlets. Instead of generating HTML pages, controllers return JSON data. The frontend JavaScript calls these endpoints and renders the data itself.</p>
 
-  <h4>exception/ &mdash; Custom Exceptions</h4>
-  <p>Instead of throwing generic <code>Exception</code> everywhere, custom exceptions tell you <em>exactly</em> what went wrong. <code>UserNotFoundException</code> is a lot more helpful than <code>Exception: something happened</code>.</p>
+  <h4>dto/ &mdash; Data Transfer Objects (Sprint 4)</h4>
+  <p>DTOs define the shape of API requests and responses. They control what data goes in and what comes out. For example, <code>LoginResponse</code> includes the user but strips the password before sending it to the frontend.</p>
+
+  <h4>util/ &mdash; Utilities (Sprint 2)</h4>
+  <p>Helper classes like <code>IdGenerator</code> (creates unique IDs), <code>PricingCalculator</code> (calculates delivery cost), and <code>InputValidator</code> (checks email format, phone numbers). Spring Boot handles database connections automatically via <code>application.properties</code> &mdash; no manual <code>DBConnection</code> class needed.</p>
 </section>
 
 
@@ -926,7 +957,7 @@ public class DBConnection {
   <h3>Creating a Servlet (LoginServlet.java)</h3>
 
   <ol class="steps">
-    <li><strong>Right-click</strong> <code>com.nimbus.app</code> &rarr; <code>New &rarr; Class</code>. Name: <code>LoginServlet</code>. In the "Superclass" field, type <code>javax.servlet.http.HttpServlet</code> (or browse for it). Click Finish.</li>
+    <li><strong>Right-click</strong> <code>com.nimbus.servlet</code> &rarr; <code>New &rarr; Class</code>. Name: <code>LoginServlet</code>. In the "Superclass" field, type <code>javax.servlet.http.HttpServlet</code> (or browse for it). Click Finish.</li>
 
     <li><strong>Add the @WebServlet annotation</strong> above the class:
       <code>@WebServlet("/login")</code>. This maps the URL <code>/login</code> to this servlet.

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eclipse Master Setup Guide &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <a href="../backend-overview.html" class="sidebar-link" style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;">&larr; Back to Backend Overview</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Prerequisites</div>
+    <a href="#what-you-need" class="sidebar-link"><span class="num">01</span> What You Need</a>
+    <a href="#install-checklist" class="sidebar-link"><span class="num">02</span> Install Checklist</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Sprint 1: Plain Java</div>
+    <a href="#sprint1-project" class="sidebar-link"><span class="num">03</span> Create Java Project</a>
+    <a href="#sprint1-packages" class="sidebar-link"><span class="num">04</span> Packages &amp; Files</a>
+    <a href="#sprint1-run" class="sidebar-link"><span class="num">05</span> Run Sprint 1</a>
+    <a href="#sprint1-tree" class="sidebar-link"><span class="num">06</span> Folder After Sprint 1</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Sprint 2: Maven + Database</div>
+    <a href="#sprint2-maven" class="sidebar-link"><span class="num">07</span> Create Maven Project</a>
+    <a href="#sprint2-pom" class="sidebar-link"><span class="num">08</span> pom.xml</a>
+    <a href="#sprint2-packages" class="sidebar-link"><span class="num">09</span> Packages to Create</a>
+    <a href="#sprint2-resources" class="sidebar-link"><span class="num">10</span> Resource Files</a>
+    <a href="#sprint2-run" class="sidebar-link"><span class="num">11</span> Run Sprint 2</a>
+    <a href="#sprint2-tree" class="sidebar-link"><span class="num">12</span> Folder After Sprint 2</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Sprint 3: Web App</div>
+    <a href="#sprint3-packages" class="sidebar-link"><span class="num">13</span> New Packages</a>
+    <a href="#sprint3-pom" class="sidebar-link"><span class="num">14</span> pom.xml Additions</a>
+    <a href="#sprint3-jsp" class="sidebar-link"><span class="num">15</span> JSP Folder</a>
+    <a href="#sprint3-static" class="sidebar-link"><span class="num">16</span> Copy Frontend</a>
+    <a href="#sprint3-run" class="sidebar-link"><span class="num">17</span> Run Sprint 3</a>
+    <a href="#sprint3-tree" class="sidebar-link"><span class="num">18</span> Folder After Sprint 3</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Sprint 4: REST APIs</div>
+    <a href="#sprint4-packages" class="sidebar-link"><span class="num">19</span> New Packages</a>
+    <a href="#sprint4-cors" class="sidebar-link"><span class="num">20</span> CORS Config</a>
+    <a href="#sprint4-run" class="sidebar-link"><span class="num">21</span> Run Sprint 4</a>
+    <a href="#sprint4-tree" class="sidebar-link"><span class="num">22</span> Final Folder Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Frontend Integration</div>
+    <a href="#frontend-overview" class="sidebar-link"><span class="num">23</span> How Frontend Connects</a>
+    <a href="#frontend-files" class="sidebar-link"><span class="num">24</span> Files to Copy</a>
+    <a href="#storage-api" class="sidebar-link"><span class="num">25</span> storage-api.js (Sprint 4)</a>
+    <a href="#frontend-test" class="sidebar-link"><span class="num">26</span> Test It End-to-End</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Help</div>
+    <a href="#troubleshooting" class="sidebar-link"><span class="num">27</span> Troubleshooting</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- PREREQUISITES                                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-you-need">
+  <div class="section-tag">Section 01</div>
+  <h2>What You Need to Download</h2>
+  <p class="section-desc">Only <strong>2 things</strong>. That's it. No Tomcat. No MySQL. No extra servers. Everything else is built into the tools or handled by the project itself.</p>
+
+  <h3>1. JDK 17 (Java Development Kit)</h3>
+  <p>This is the Java compiler + runtime. Without it, Eclipse can't compile or run your code.</p>
+  <p><strong>Download from:</strong> <code>https://adoptium.net/temurin/releases/</code></p>
+  <p>Choose: <strong>Windows x64 &rarr; .msi installer</strong>. Run the installer, click Next on everything. Done.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Why JDK 17?</div>
+    <p>Spring Boot 3 (which we use from Sprint 2) <strong>requires Java 17 minimum</strong>. Java 8 won't work. Make sure you download JDK <strong>17</strong>, not 8 or 11.</p>
+  </div>
+
+  <h3>2. Eclipse IDE for Enterprise Java Developers</h3>
+  <p>This is your code editor. It has Maven, Java, server support all built in.</p>
+  <p><strong>Download from:</strong> <code>https://www.eclipse.org/downloads/packages/</code></p>
+  <p>Choose: <strong>"Eclipse IDE for Enterprise Java and Web Developers"</strong> &rarr; Windows x86_64. Download the ZIP file. Extract it anywhere (e.g., <code>C:\eclipse</code>). Run <code>eclipse.exe</code>.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">MUST be Enterprise Edition</div>
+    <p>Do NOT download "Eclipse IDE for Java Developers" (the basic one). It's missing Maven support, servlet tools, and Spring Boot features you need for Sprints 2-4. Always pick the <strong>Enterprise</strong> version.</p>
+  </div>
+
+  <h3>What You Do NOT Need</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Don't Download</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Apache Tomcat</td><td>Spring Boot has Tomcat <strong>built in</strong>. When you run your app, Tomcat starts automatically inside it.</td></tr>
+      <tr><td>MySQL / PostgreSQL</td><td>We use <strong>H2 Database</strong> which runs inside your Java app. No install needed. No server to start.</td></tr>
+      <tr><td>Maven (standalone)</td><td>Eclipse Enterprise has Maven <strong>built in</strong>. No separate download.</td></tr>
+      <tr><td>Node.js / npm</td><td>Not needed. Our frontend is plain HTML/CSS/JS (no React, no Angular build step).</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section class="content-section" id="install-checklist">
+  <div class="section-tag">Section 02</div>
+  <h2>Install Checklist</h2>
+  <p class="section-desc">Verify everything is ready before moving on.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Verify in Command Prompt (Win+R &rarr; cmd)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-bash">java -version</code></pre>
+  </div>
+
+  <p>You should see something like: <code>openjdk version "17.0.x"</code>. If it says "not recognized" or shows version 8/11, your JDK 17 isn't installed correctly or isn't in PATH.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Fix: java not recognized</div>
+    <p>After installing JDK 17, you may need to add it to PATH. Go to: <code>System Properties &rarr; Environment Variables &rarr; System Variables &rarr; Path &rarr; Edit &rarr; New &rarr;</code> add <code>C:\Program Files\Eclipse Adoptium\jdk-17.x.x\bin</code>. Restart Command Prompt.</p>
+  </div>
+
+  <p><strong>Eclipse check:</strong> Just open Eclipse. If it launches without errors and you see "Welcome" tab, you're good. Close the Welcome tab.</p>
+
+  <p><strong>Workspace:</strong> When Eclipse asks for a workspace folder, use <code>C:\eclipse-workspace</code>. This is where all your projects live. Don't use Desktop.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SPRINT 1: PLAIN JAVA                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="sprint1-project">
+  <div class="section-tag">Section 03</div>
+  <h2>Sprint 1: Create a Java Project</h2>
+  <p class="section-desc">Sprint 1 is a plain Java console app. No Maven, no database, no server. Just Java classes using ArrayList to store data in memory.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">What Sprint 1 Does</div>
+    <p>A console app where users type commands in the terminal. Register, login, book parcels, track deliveries &mdash; all stored in ArrayList (data disappears when you close the app). This is to learn <strong>Java basics, OOP, and Collections</strong>.</p>
+  </div>
+
+  <h3>Steps in Eclipse</h3>
+  <ol class="steps">
+    <li><strong>File &rarr; New &rarr; Java Project</strong></li>
+    <li>Project name: <code>nimbus-sprint1</code></li>
+    <li>JRE: Make sure "Use an execution environment JRE" shows <strong>JavaSE-17</strong>. If not, click "Configure JREs" and add your JDK 17 path.</li>
+    <li>Click <strong>Finish</strong>.</li>
+  </ol>
+
+  <p>You now have a project in Package Explorer on the left with a <code>src</code> folder.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Alternative: Online GDB</div>
+    <p>If Eclipse isn't available (e.g., at TCS before setup), you can run Sprint 1 on <code>https://www.onlinegdb.com/online_java_compiler</code>. Select Language: Java. Paste all code into one file or use their multi-file feature.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint1-packages">
+  <div class="section-tag">Section 04</div>
+  <h2>Sprint 1: Packages &amp; Files</h2>
+  <p class="section-desc">Create these 3 packages and 8 files.</p>
+
+  <h3>Create Packages</h3>
+  <ol class="steps">
+    <li>Right-click <code>src</code> &rarr; <strong>New &rarr; Package</strong></li>
+    <li>Name: <code>com.nimbus.model</code> &rarr; Finish</li>
+    <li>Repeat for: <code>com.nimbus.service</code></li>
+    <li>Repeat for: <code>com.nimbus.util</code></li>
+  </ol>
+
+  <h3>Create Classes</h3>
+  <p>Right-click a package &rarr; <strong>New &rarr; Class</strong> &rarr; enter the class name &rarr; Finish.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Package</th><th>Class</th><th>What It Does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>com.nimbus.model</code></td><td>User.java</td><td>User data (id, name, email, password, role)</td></tr>
+      <tr><td><code>com.nimbus.model</code></td><td>Booking.java</td><td>Booking data (id, sender, receiver, status, price)</td></tr>
+      <tr><td><code>com.nimbus.service</code></td><td>UserService.java</td><td>Login, register logic. Stores users in ArrayList.</td></tr>
+      <tr><td><code>com.nimbus.service</code></td><td>BookingService.java</td><td>Create/track bookings. Stores in ArrayList.</td></tr>
+      <tr><td><code>com.nimbus.service</code></td><td>PricingService.java</td><td>Calculate delivery price based on weight/distance.</td></tr>
+      <tr><td><code>com.nimbus.util</code></td><td>IdGenerator.java</td><td>Generate unique user IDs and booking IDs.</td></tr>
+      <tr><td><code>com.nimbus.util</code></td><td>InputValidator.java</td><td>Validate email format, phone numbers, etc.</td></tr>
+      <tr><td><code>com.nimbus.util</code></td><td>MenuDisplay.java</td><td>Print menus and formatted output.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Plus one entry point: Right-click <code>src</code> &rarr; New &rarr; Package &rarr; <code>com.nimbus</code> &rarr; then New &rarr; Class &rarr; <code>Main</code> &rarr; check <strong>"public static void main(String[] args)"</strong> &rarr; Finish.</p>
+</section>
+
+
+<section class="content-section" id="sprint1-run">
+  <div class="section-tag">Section 05</div>
+  <h2>Sprint 1: How to Run</h2>
+
+  <ol class="steps">
+    <li>Right-click <code>Main.java</code></li>
+    <li><strong>Run As &rarr; Java Application</strong></li>
+    <li>The Console view at the bottom shows your app running. Type input there.</li>
+  </ol>
+
+  <div class="callout think">
+    <div class="callout-title">Keyboard Shortcut</div>
+    <p><code>Ctrl+F11</code> runs the last-run file. After running Main.java once, just press Ctrl+F11 from anywhere.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint1-tree">
+  <div class="section-tag">Section 06</div>
+  <h2>Sprint 1: Folder Structure</h2>
+  <p class="section-desc">After Sprint 1, your project looks like this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus-sprint1/ (Java Project &mdash; no Maven)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">nimbus-sprint1/
+  src/
+    com/nimbus/
+      Main.java                    &larr; Entry point (menu loop)
+      model/
+        User.java                  &larr; User POJO
+        Booking.java               &larr; Booking POJO
+      service/
+        UserService.java           &larr; Login/register (ArrayList)
+        BookingService.java        &larr; Bookings (ArrayList)
+        PricingService.java        &larr; Price calculator
+      util/
+        IdGenerator.java           &larr; ID generation
+        InputValidator.java        &larr; Input checks
+        MenuDisplay.java           &larr; Print menus</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Data is temporary!</div>
+    <p>Everything is stored in ArrayList. Close the app = data gone. That's why Sprint 2 adds a real database.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SPRINT 2: MAVEN + DATABASE                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="sprint2-maven">
+  <div class="section-tag">Section 07</div>
+  <h2>Sprint 2: Create a Maven Project</h2>
+  <p class="section-desc">Sprint 2 upgrades to Maven (dependency manager) and H2 database (data persists forever). This is a <strong>new project</strong> &mdash; you don't modify the Sprint 1 project.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">What Changes in Sprint 2</div>
+    <p>Same features as Sprint 1 (register, login, book, track) but now: data saves to a real database file, DAOs replace direct ArrayList access, Maven manages your libraries, and Spring Boot sets up the database automatically.</p>
+  </div>
+
+  <h3>Steps in Eclipse</h3>
+  <ol class="steps">
+    <li><strong>File &rarr; New &rarr; Maven Project</strong></li>
+    <li>Check <strong>"Create a simple project (skip archetype selection)"</strong> &rarr; Next</li>
+    <li>Fill in:
+      <ul>
+        <li><strong>Group Id:</strong> <code>com.nimbus</code></li>
+        <li><strong>Artifact Id:</strong> <code>nimbus-parcel</code></li>
+        <li><strong>Version:</strong> <code>0.0.1-SNAPSHOT</code> (leave default)</li>
+        <li><strong>Packaging:</strong> <code>jar</code></li>
+      </ul>
+    </li>
+    <li>Click <strong>Finish</strong>.</li>
+  </ol>
+
+  <p>Eclipse creates the project with this structure automatically:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">What Eclipse creates for you</span>
+    </div>
+    <pre><code class="language-java">nimbus-parcel/
+  pom.xml                        &larr; Maven config (you'll edit this)
+  src/
+    main/
+      java/                      &larr; Your code goes here
+      resources/                 &larr; Config files go here
+    test/
+      java/                      &larr; Test code (ignore for now)</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">If "resources" folder is missing</div>
+    <p>Sometimes Eclipse doesn't create <code>src/main/resources</code>. If you don't see it: Right-click <code>src/main</code> &rarr; New &rarr; Folder &rarr; name: <code>resources</code> &rarr; Finish. Then right-click the project &rarr; Maven &rarr; Update Project (Alt+F5).</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint2-pom">
+  <div class="section-tag">Section 08</div>
+  <h2>Sprint 2: pom.xml</h2>
+  <p class="section-desc">This file tells Maven what libraries to download. Replace the entire contents of <code>pom.xml</code> with this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;!-- Spring Boot Parent: gives you default configs for everything --&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;3.2.5&lt;/version&gt;
+  &lt;/parent&gt;
+
+  &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+  &lt;artifactId&gt;nimbus-parcel&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+
+  &lt;properties&gt;
+    &lt;java.version&gt;17&lt;/java.version&gt;
+  &lt;/properties&gt;
+
+  &lt;dependencies&gt;
+    &lt;!-- Spring Boot core --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- JDBC support (for writing SQL queries) --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- H2 Database (embedded, no install needed) --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+      &lt;artifactId&gt;h2&lt;/artifactId&gt;
+      &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+  </div>
+
+  <p><strong>After pasting:</strong> Save (<code>Ctrl+S</code>), then right-click the project &rarr; <strong>Maven &rarr; Update Project</strong> (or <code>Alt+F5</code>). Wait for the progress bar at bottom-right to finish downloading.</p>
+
+  <div class="callout think">
+    <div class="callout-title">What did that just do?</div>
+    <p>Maven downloaded Spring Boot, H2, and JDBC libraries into your project. You can see them under "Maven Dependencies" in Package Explorer. These are the same as manually downloading JAR files &mdash; but Maven does it automatically and handles version compatibility.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint2-packages">
+  <div class="section-tag">Section 09</div>
+  <h2>Sprint 2: Packages to Create</h2>
+  <p class="section-desc">Create <strong>4 packages</strong> inside <code>src/main/java</code>:</p>
+
+  <ol class="steps">
+    <li>Right-click <code>src/main/java</code> &rarr; <strong>New &rarr; Package</strong></li>
+    <li>Name: <code>com.nimbus.model</code> &rarr; Finish</li>
+    <li>Repeat for: <code>com.nimbus.util</code></li>
+    <li>Repeat for: <code>com.nimbus.dao</code></li>
+    <li>Repeat for: <code>com.nimbus.console</code></li>
+  </ol>
+
+  <h3>What goes in each package</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Package</th><th>Classes to Create</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>com.nimbus.model</code></td><td>User.java, Booking.java, Issue.java</td><td>Data classes (same as Sprint 1 but with more fields)</td></tr>
+      <tr><td><code>com.nimbus.util</code></td><td>IdGenerator.java, PricingCalculator.java, InputValidator.java</td><td>Helper/utility classes</td></tr>
+      <tr><td><code>com.nimbus.dao</code></td><td>UserDAO.java, BookingDAO.java, IssueDAO.java</td><td>Database access &mdash; all SQL queries live here</td></tr>
+      <tr><td><code>com.nimbus.console</code></td><td>ConsoleApp.java, ConsoleMenu.java</td><td>The console interface (menus, input, output)</td></tr>
+    </tbody>
+  </table>
+
+  <p>Also create one more class in the base package:</p>
+  <ol class="steps">
+    <li>Right-click <code>src/main/java</code> &rarr; New &rarr; Package &rarr; <code>com.nimbus</code></li>
+    <li>Right-click <code>com.nimbus</code> &rarr; New &rarr; Class &rarr; <code>NimbusApplication</code></li>
+  </ol>
+
+  <p>This is the Spring Boot entry point. It starts the database and makes everything ready:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/NimbusApplication.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NimbusApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApplication.class, args);
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint2-resources">
+  <div class="section-tag">Section 10</div>
+  <h2>Sprint 2: Resource Files</h2>
+  <p class="section-desc">Create these 3 files inside <code>src/main/resources/</code>.</p>
+
+  <p>Right-click <code>src/main/resources</code> &rarr; New &rarr; File &rarr; enter filename &rarr; Finish. Then paste the contents.</p>
+
+  <h3>application.properties</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-properties"># Server port
+server.port=8080
+
+# H2 Database — saves to a file (data persists across restarts)
+spring.datasource.url=jdbc:h2:file:./nimbusdb;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# H2 Web Console — visual database browser at /h2-console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# Run schema.sql and data.sql on startup
+spring.sql.init.mode=always</code></pre>
+  </div>
+
+  <h3>schema.sql (creates tables)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/schema.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">CREATE TABLE IF NOT EXISTS tbl_UserProfile (
+    user_id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    phone VARCHAR(15),
+    role VARCHAR(20) NOT NULL,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_Booking (
+    booking_id VARCHAR(20) PRIMARY KEY,
+    user_id VARCHAR(20) NOT NULL,
+    sender_name VARCHAR(100),
+    sender_address VARCHAR(200),
+    receiver_name VARCHAR(100),
+    receiver_address VARCHAR(200),
+    weight DOUBLE,
+    parcel_type VARCHAR(30),
+    status VARCHAR(30) DEFAULT 'Booked',
+    price DOUBLE,
+    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES tbl_UserProfile(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS tbl_Issue (
+    issue_id VARCHAR(20) PRIMARY KEY,
+    user_id VARCHAR(20) NOT NULL,
+    booking_id VARCHAR(20),
+    description VARCHAR(500),
+    status VARCHAR(30) DEFAULT 'Open',
+    assigned_to VARCHAR(20),
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES tbl_UserProfile(user_id)
+);</code></pre>
+  </div>
+
+  <h3>data.sql (seed data)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/data.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Sample users (password = "pass123" for all)
+INSERT INTO tbl_UserProfile (user_id, name, email, password, phone, role) VALUES
+('CUS001', 'Darshan', 'darshan@mail.com', 'pass123', '9876543210', 'customer'),
+('CUS002', 'Priya', 'priya@mail.com', 'pass123', '9876543211', 'customer'),
+('OFF001', 'Ravi', 'ravi@mail.com', 'pass123', '9876543212', 'officer'),
+('SUP001', 'Meena', 'meena@mail.com', 'pass123', '9876543213', 'support');
+
+-- Sample bookings
+INSERT INTO tbl_Booking (booking_id, user_id, sender_name, sender_address, receiver_name, receiver_address, weight, parcel_type, status, price) VALUES
+('BK001', 'CUS001', 'Darshan', 'Mumbai', 'Arun', 'Delhi', 2.5, 'Standard', 'In Transit', 250.0),
+('BK002', 'CUS002', 'Priya', 'Chennai', 'Kiran', 'Bangalore', 1.0, 'Express', 'Delivered', 180.0);</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint2-run">
+  <div class="section-tag">Section 11</div>
+  <h2>Sprint 2: How to Run</h2>
+
+  <h3>Step 1: Start the database</h3>
+  <ol class="steps">
+    <li>Right-click <code>NimbusApplication.java</code> &rarr; <strong>Run As &rarr; Java Application</strong></li>
+    <li>Console shows: <code>Started NimbusApplication in X seconds</code></li>
+    <li>This creates the database file (<code>nimbusdb.mv.db</code>) and runs schema.sql + data.sql</li>
+    <li><strong>Stop it</strong> (red square button in Console) after it starts successfully</li>
+  </ol>
+
+  <h3>Step 2: Run the console app</h3>
+  <ol class="steps">
+    <li>Right-click <code>ConsoleApp.java</code> &rarr; <strong>Run As &rarr; Java Application</strong></li>
+    <li>The console menu appears. Type options to register, login, book, etc.</li>
+    <li>Data is now permanent &mdash; close and reopen, your data is still there!</li>
+  </ol>
+
+  <h3>Bonus: Browse the database visually</h3>
+  <ol class="steps">
+    <li>Run NimbusApplication.java (keep it running)</li>
+    <li>Open browser: <code>http://localhost:8080/h2-console</code></li>
+    <li>JDBC URL: <code>jdbc:h2:file:./nimbusdb</code></li>
+    <li>Username: <code>sa</code>, Password: (leave empty)</li>
+    <li>Click Connect &rarr; you can see all tables and run SQL queries!</li>
+  </ol>
+</section>
+
+
+<section class="content-section" id="sprint2-tree">
+  <div class="section-tag">Section 12</div>
+  <h2>Sprint 2: Folder Structure</h2>
+  <p class="section-desc">After Sprint 2, your project looks like this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus-parcel/ after Sprint 2</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">nimbus-parcel/
+  pom.xml
+  src/main/java/com/nimbus/
+    NimbusApplication.java         &larr; Spring Boot entry point
+    model/
+      User.java                    &larr; User POJO
+      Booking.java                 &larr; Booking POJO
+      Issue.java                   &larr; Issue POJO
+    util/
+      IdGenerator.java             &larr; ID generation
+      PricingCalculator.java       &larr; Price logic
+      InputValidator.java          &larr; Input checks
+    dao/
+      UserDAO.java                 &larr; SQL for users table
+      BookingDAO.java              &larr; SQL for bookings table
+      IssueDAO.java                &larr; SQL for issues table
+    console/
+      ConsoleApp.java              &larr; Main app (menu loop)
+      ConsoleMenu.java             &larr; Menu display helper
+  src/main/resources/
+    application.properties         &larr; Database config
+    schema.sql                     &larr; CREATE TABLE statements
+    data.sql                       &larr; Sample data</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SPRINT 3: WEB APP                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="sprint3-packages">
+  <div class="section-tag">Section 13</div>
+  <h2>Sprint 3: New Packages</h2>
+  <p class="section-desc">Sprint 3 turns the console app into a web app. You add <strong>4 new packages</strong> to the SAME project. Nothing from Sprint 2 is deleted.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">What Changes in Sprint 3</div>
+    <p>Instead of typing in a terminal, users now open a browser and click buttons. Servlets handle the browser requests. JSP pages render HTML. Repositories replace manual SQL (but your DAOs still work and stay for reference).</p>
+  </div>
+
+  <ol class="steps">
+    <li>Right-click <code>src/main/java</code> &rarr; <strong>New &rarr; Package</strong></li>
+    <li>Name: <code>com.nimbus.config</code> &rarr; Finish</li>
+    <li>Repeat for: <code>com.nimbus.repository</code></li>
+    <li>Repeat for: <code>com.nimbus.service</code></li>
+    <li>Repeat for: <code>com.nimbus.servlet</code></li>
+  </ol>
+
+  <h3>What goes in each new package</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Package</th><th>Classes to Create</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>com.nimbus.config</code></td><td>DataSeeder.java, ServletConfig.java</td><td>Spring Boot startup config (seed data, URL mappings)</td></tr>
+      <tr><td><code>com.nimbus.repository</code></td><td>UserRepository.java, BookingRepository.java, IssueRepository.java</td><td>Spring Data JPA &mdash; auto-generates SQL (the modern way)</td></tr>
+      <tr><td><code>com.nimbus.service</code></td><td>UserService.java, BookingService.java, IssueService.java, PricingService.java</td><td>Business logic (rules, validation, orchestration)</td></tr>
+      <tr><td><code>com.nimbus.servlet</code></td><td>LoginServlet.java, RegisterServlet.java, BookingServlet.java, TrackingServlet.java, DashboardServlet.java</td><td>HTTP request handlers (browser &rarr; server)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Don't delete Sprint 2 packages!</div>
+    <p><code>dao/</code> and <code>console/</code> stay. They still work. You can run ConsoleApp.java anytime for quick testing without opening a browser. The new <code>repository/</code> package is the Spring way of doing what DAOs do &mdash; but both coexist in the project.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint3-pom">
+  <div class="section-tag">Section 14</div>
+  <h2>Sprint 3: pom.xml Additions</h2>
+  <p class="section-desc">Add these dependencies inside the <code>&lt;dependencies&gt;</code> section of your pom.xml:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Add to pom.xml &lt;dependencies&gt; section</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;!-- Web support (Tomcat + Servlets) --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Spring Data JPA (auto-generates SQL for repositories) --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;!-- JSP support (server-side HTML rendering) --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+  &lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+  &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+
+&lt;!-- JSTL (JSP tag library for loops, conditions in HTML) --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+  &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+  &lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <p><strong>After adding:</strong> Save &rarr; <code>Alt+F5</code> (Maven Update). Wait for downloads to complete.</p>
+
+  <p>Also add these lines to <code>application.properties</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Add to application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-properties"># JSP configuration — tells Spring where to find .jsp files
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+
+# JPA/Hibernate settings
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint3-jsp">
+  <div class="section-tag">Section 15</div>
+  <h2>Sprint 3: Create JSP Folder</h2>
+  <p class="section-desc">JSP pages are HTML files with Java inside them. They go in a special folder.</p>
+
+  <ol class="steps">
+    <li>Right-click <code>src/main</code> &rarr; <strong>New &rarr; Folder</strong> &rarr; name: <code>webapp</code> &rarr; Finish</li>
+    <li>Right-click <code>webapp</code> &rarr; <strong>New &rarr; Folder</strong> &rarr; name: <code>WEB-INF</code> &rarr; Finish</li>
+    <li>Right-click <code>WEB-INF</code> &rarr; <strong>New &rarr; Folder</strong> &rarr; name: <code>jsp</code> &rarr; Finish</li>
+  </ol>
+
+  <p>Now create your JSP files inside <code>src/main/webapp/WEB-INF/jsp/</code>:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>What It Shows</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>login.jsp</td><td>Login form</td></tr>
+      <tr><td>register.jsp</td><td>Registration form</td></tr>
+      <tr><td>dashboard.jsp</td><td>User dashboard after login</td></tr>
+      <tr><td>booking.jsp</td><td>Book a parcel form</td></tr>
+      <tr><td>tracking.jsp</td><td>Track parcel status</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Why WEB-INF?</div>
+    <p>Files inside <code>WEB-INF/</code> cannot be accessed directly by typing a URL. Users can't type <code>localhost:8080/WEB-INF/jsp/dashboard.jsp</code> &mdash; they get a 404. Only your Servlets can forward requests to these files. This is a security feature.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint3-static">
+  <div class="section-tag">Section 16</div>
+  <h2>Sprint 3: Copy Frontend Files</h2>
+  <p class="section-desc">Your Phase 1 frontend (HTML/CSS/JS) gets served by Spring Boot as static files.</p>
+
+  <ol class="steps">
+    <li>Inside <code>src/main/resources</code>, create a folder called <code>static</code></li>
+    <li>Copy your entire Phase 1 frontend into it:
+      <ul>
+        <li><code>nimbus/login.html</code> &rarr; <code>src/main/resources/static/login.html</code></li>
+        <li><code>nimbus/css/</code> &rarr; <code>src/main/resources/static/css/</code></li>
+        <li><code>nimbus/js/</code> &rarr; <code>src/main/resources/static/js/</code></li>
+        <li><code>nimbus/customer/</code>, <code>nimbus/officer/</code>, <code>nimbus/support/</code> &rarr; same structure</li>
+      </ul>
+    </li>
+  </ol>
+
+  <p>Spring Boot automatically serves anything in <code>src/main/resources/static/</code> as a website. After starting the server, <code>http://localhost:8080/login.html</code> shows your Phase 1 frontend!</p>
+</section>
+
+
+<section class="content-section" id="sprint3-run">
+  <div class="section-tag">Section 17</div>
+  <h2>Sprint 3: How to Run</h2>
+
+  <ol class="steps">
+    <li>Right-click <code>NimbusApplication.java</code> &rarr; <strong>Run As &rarr; Java Application</strong></li>
+    <li>Console shows: <code>Tomcat started on port 8080</code> and <code>Started NimbusApplication</code></li>
+    <li>Open browser: <code>http://localhost:8080/servlet/login</code> (Servlet-rendered login)</li>
+    <li>Or: <code>http://localhost:8080/login.html</code> (Phase 1 static frontend)</li>
+    <li>H2 Console: <code>http://localhost:8080/h2-console</code></li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">Tomcat is INSIDE your app</div>
+    <p>You did NOT download or install Tomcat. Spring Boot includes it automatically via <code>spring-boot-starter-web</code>. When you run NimbusApplication.java, Tomcat starts inside it. When you stop the app, Tomcat stops. No separate server management.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Still want to test via console?</div>
+    <p>Stop NimbusApplication, then run ConsoleApp.java. It connects to the same H2 database file. Console app and web app share the same data.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint3-tree">
+  <div class="section-tag">Section 18</div>
+  <h2>Sprint 3: Folder Structure</h2>
+  <p class="section-desc">After Sprint 3. Everything from Sprint 2 is still here (marked with &bull;). New additions marked with &star;.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus-parcel/ after Sprint 3</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">nimbus-parcel/
+  pom.xml                            (updated with web + JPA deps)
+  src/main/java/com/nimbus/
+    NimbusApplication.java           &bull; Spring Boot entry point
+    model/                           &bull; Same as Sprint 2
+      User.java, Booking.java, Issue.java
+    util/                            &bull; Same as Sprint 2
+      IdGenerator.java, PricingCalculator.java, InputValidator.java
+    dao/                             &bull; Same as Sprint 2 (kept for reference)
+      UserDAO.java, BookingDAO.java, IssueDAO.java
+    console/                         &bull; Same as Sprint 2 (still works!)
+      ConsoleApp.java, ConsoleMenu.java
+    config/                          &star; NEW
+      DataSeeder.java                &star; Seeds database on startup
+      ServletConfig.java             &star; Maps URLs to servlets
+    repository/                      &star; NEW (Spring Data JPA)
+      UserRepository.java            &star; Auto-generates user queries
+      BookingRepository.java         &star; Auto-generates booking queries
+      IssueRepository.java           &star; Auto-generates issue queries
+    service/                         &star; NEW (Business logic)
+      UserService.java               &star; Login/register rules
+      BookingService.java            &star; Booking rules
+      IssueService.java              &star; Support ticket rules
+      PricingService.java            &star; Pricing calculation
+    servlet/                         &star; NEW (HTTP handlers)
+      LoginServlet.java              &star; Handles /servlet/login
+      RegisterServlet.java           &star; Handles /servlet/register
+      BookingServlet.java            &star; Handles /servlet/booking
+      TrackingServlet.java           &star; Handles /servlet/tracking
+      DashboardServlet.java          &star; Handles /servlet/dashboard
+  src/main/resources/
+    application.properties           (updated with JSP + JPA config)
+    schema.sql                       &bull; Same
+    data.sql                         &bull; Same
+    static/                          &star; NEW (Phase 1 frontend)
+      login.html, register.html, css/, js/, customer/, officer/, support/
+  src/main/webapp/WEB-INF/jsp/       &star; NEW (server-rendered pages)
+    login.jsp, register.jsp, dashboard.jsp, booking.jsp, tracking.jsp</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SPRINT 4: REST APIs                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="sprint4-packages">
+  <div class="section-tag">Section 19</div>
+  <h2>Sprint 4: New Packages</h2>
+  <p class="section-desc">Sprint 4 adds REST APIs. The frontend now calls your backend via JavaScript instead of submitting forms to servlets. You add <strong>2 new packages</strong>.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">What Changes in Sprint 4</div>
+    <p>Instead of servlets generating HTML pages, you now have Controllers that return JSON data. The frontend JavaScript uses <code>fetch()</code> to call these APIs and renders the data itself. This is how modern web apps work (React, Angular, etc.).</p>
+  </div>
+
+  <ol class="steps">
+    <li>Right-click <code>src/main/java</code> &rarr; <strong>New &rarr; Package</strong></li>
+    <li>Name: <code>com.nimbus.controller</code> &rarr; Finish</li>
+    <li>Repeat for: <code>com.nimbus.dto</code></li>
+  </ol>
+
+  <h3>What goes in each new package</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Package</th><th>Classes to Create</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>com.nimbus.controller</code></td><td>AuthController.java, BookingController.java, TrackingController.java, IssueController.java</td><td>REST endpoints &mdash; receive JSON, return JSON</td></tr>
+      <tr><td><code>com.nimbus.dto</code></td><td>LoginRequest.java, LoginResponse.java, RegisterRequest.java, BookingRequest.java, ApiResponse.java</td><td>Data Transfer Objects &mdash; define the shape of API requests/responses</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Servlets stay!</div>
+    <p>Your <code>servlet/</code> package from Sprint 3 is NOT deleted. Servlets and Controllers coexist. Servlets handle <code>/servlet/login</code>, Controllers handle <code>/api/auth/login</code>. Both work simultaneously. This lets you compare the old way vs the modern way.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint4-cors">
+  <div class="section-tag">Section 20</div>
+  <h2>Sprint 4: CORS Config</h2>
+  <p class="section-desc">CORS (Cross-Origin Resource Sharing) allows your frontend JavaScript to call your API. Without it, browsers block the request.</p>
+
+  <p>Create this file in <code>com.nimbus.config</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/config/CorsConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE");
+            }
+        };
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">No new pom.xml changes needed</div>
+    <p>Sprint 3 already added <code>spring-boot-starter-web</code> which includes everything for REST APIs. No new dependencies for Sprint 4.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint4-run">
+  <div class="section-tag">Section 21</div>
+  <h2>Sprint 4: How to Run</h2>
+
+  <ol class="steps">
+    <li>Right-click <code>NimbusApplication.java</code> &rarr; <strong>Run As &rarr; Java Application</strong></li>
+    <li>Console shows: <code>Tomcat started on port 8080</code></li>
+    <li>Open browser: <code>http://localhost:8080/login.html</code> (frontend calls APIs via JavaScript)</li>
+  </ol>
+
+  <h3>Test APIs directly</h3>
+  <p>Open a new browser tab and type these URLs to see JSON responses:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>URL</th><th>What It Does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GET</td><td><code>http://localhost:8080/api/auth/user/CUS001</code></td><td>Get user details (JSON)</td></tr>
+      <tr><td>GET</td><td><code>http://localhost:8080/api/bookings/BK001</code></td><td>Get booking details (JSON)</td></tr>
+      <tr><td>GET</td><td><code>http://localhost:8080/api/tracking/BK001</code></td><td>Track a parcel (JSON)</td></tr>
+    </tbody>
+  </table>
+
+  <p>For POST requests (login, register, book), use <strong>Postman</strong> (free tool) or the browser's DevTools console:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Test login API from browser console (F12 &rarr; Console)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-javascript">fetch('http://localhost:8080/api/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ userId: 'CUS001', password: 'pass123' })
+}).then(r => r.json()).then(console.log)</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="sprint4-tree">
+  <div class="section-tag">Section 22</div>
+  <h2>Sprint 4: Final Folder Structure</h2>
+  <p class="section-desc">The complete project after all 4 sprints. This is the full architecture.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus-parcel/ &mdash; FINAL (all sprints combined)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">nimbus-parcel/
+  pom.xml
+  src/main/java/com/nimbus/
+  |
+  |  NimbusApplication.java        &larr; THE entry point (runs Tomcat + database)
+  |
+  |-- model/                       &larr; Sprint 2 (Data classes)
+  |     User.java
+  |     Booking.java
+  |     Issue.java
+  |
+  |-- util/                        &larr; Sprint 2 (Helpers)
+  |     IdGenerator.java
+  |     PricingCalculator.java
+  |     InputValidator.java
+  |
+  |-- dao/                         &larr; Sprint 2 (Raw JDBC &mdash; manual SQL)
+  |     UserDAO.java
+  |     BookingDAO.java
+  |     IssueDAO.java
+  |
+  |-- console/                     &larr; Sprint 2 (Console interface)
+  |     ConsoleApp.java
+  |     ConsoleMenu.java
+  |
+  |-- config/                      &larr; Sprint 3 (Configuration)
+  |     DataSeeder.java
+  |     ServletConfig.java
+  |     CorsConfig.java            &larr; Sprint 4
+  |
+  |-- repository/                  &larr; Sprint 3 (Spring Data JPA)
+  |     UserRepository.java
+  |     BookingRepository.java
+  |     IssueRepository.java
+  |
+  |-- service/                     &larr; Sprint 3 (Business logic)
+  |     UserService.java
+  |     BookingService.java
+  |     IssueService.java
+  |     PricingService.java
+  |
+  |-- servlet/                     &larr; Sprint 3 (HTTP &rarr; HTML)
+  |     LoginServlet.java
+  |     RegisterServlet.java
+  |     BookingServlet.java
+  |     TrackingServlet.java
+  |     DashboardServlet.java
+  |
+  |-- controller/                  &larr; Sprint 4 (HTTP &rarr; JSON)
+  |     AuthController.java
+  |     BookingController.java
+  |     TrackingController.java
+  |     IssueController.java
+  |
+  |-- dto/                         &larr; Sprint 4 (API shapes)
+        LoginRequest.java
+        LoginResponse.java
+        RegisterRequest.java
+        BookingRequest.java
+        ApiResponse.java
+
+  src/main/resources/
+    application.properties
+    schema.sql
+    data.sql
+    static/                        &larr; Sprint 3 (Frontend HTML/CSS/JS)
+
+  src/main/webapp/WEB-INF/jsp/     &larr; Sprint 3 (Server-rendered pages)
+    login.jsp, register.jsp, dashboard.jsp, booking.jsp, tracking.jsp</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">The Pattern</div>
+    <p>Each sprint <strong>adds</strong> packages. Nothing is deleted. Sprint 2 adds database access. Sprint 3 adds web serving. Sprint 4 adds REST APIs. You end up with the full layered architecture that real production Java apps use.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- FRONTEND INTEGRATION                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="frontend-overview">
+  <div class="section-tag">Section 23</div>
+  <h2>How the Frontend Connects to Backend</h2>
+  <p class="section-desc">Your Phase 1 frontend (the <code>nimbus/</code> folder with login.html, dashboards, etc.) is already built. Here's how it connects to the Java backend at each sprint.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Sprint</th><th>Frontend</th><th>Data Source</th><th>How They Talk</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sprint 1</td><td>Not used (console only)</td><td>ArrayList</td><td>N/A</td></tr>
+      <tr><td>Sprint 2</td><td>Not used (console only)</td><td>H2 Database</td><td>N/A</td></tr>
+      <tr><td>Sprint 3</td><td>Phase 1 HTML files served by Spring Boot</td><td>H2 Database</td><td>LocalStorage (same as Phase 1)</td></tr>
+      <tr><td><strong>Sprint 4</strong></td><td>Same HTML files, ONE JS file swapped</td><td>H2 Database</td><td><strong>REST API calls (fetch)</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">The Magic of Sprint 4</div>
+    <p>Your HTML pages don't change. Your CSS doesn't change. You swap ONE JavaScript file: <code>storage.js</code> (which uses LocalStorage) gets replaced by <code>storage-api.js</code> (which calls your REST APIs). Same function names, different implementation. The frontend doesn't know the difference.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="frontend-files">
+  <div class="section-tag">Section 24</div>
+  <h2>Files to Copy (Sprint 3)</h2>
+  <p class="section-desc">Copy your entire Phase 1 <code>nimbus/</code> folder into <code>src/main/resources/static/</code>. Here's the exact file list:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Copy FROM nimbus/ &rarr; TO src/main/resources/static/</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">src/main/resources/static/
+  login.html                    &larr; from nimbus/login.html
+  register.html                 &larr; from nimbus/register.html
+  css/
+    style.css                   &larr; from nimbus/css/style.css
+    dashboard.css               &larr; from nimbus/css/dashboard.css
+    (all other CSS files)
+  js/
+    auth.js                     &larr; Login/register logic
+    storage.js                  &larr; LocalStorage functions (Sprint 3)
+    storage-api.js              &larr; REST API functions (Sprint 4 — add later)
+    pricing.js                  &larr; Price calculations
+    utils.js                    &larr; Utility functions
+  customer/
+    dashboard.html              &larr; Customer dashboard
+    book-parcel.html            &larr; Booking form
+    track-parcel.html           &larr; Tracking page
+    my-bookings.html            &larr; Booking history
+  officer/
+    dashboard.html              &larr; Officer dashboard
+    manage-parcels.html         &larr; Parcel management
+    update-status.html          &larr; Status updates
+  support/
+    dashboard.html              &larr; Support dashboard
+    issues.html                 &larr; Issue management</code></pre>
+  </div>
+
+  <h3>How to Copy in Eclipse</h3>
+  <ol class="steps">
+    <li>Open File Explorer &rarr; navigate to your <code>nimbus/</code> folder</li>
+    <li>Select all files and folders inside <code>nimbus/</code> (Ctrl+A)</li>
+    <li>Copy (Ctrl+C)</li>
+    <li>In Eclipse, right-click <code>src/main/resources/static</code> &rarr; Paste</li>
+    <li>If Eclipse asks about overwriting, click "Yes to All"</li>
+  </ol>
+
+  <div class="callout think">
+    <div class="callout-title">After copying</div>
+    <p>Start your server (run NimbusApplication.java) and open <code>http://localhost:8080/login.html</code>. You should see your Phase 1 login page served by Spring Boot! It still uses LocalStorage for now &mdash; that's fine for Sprint 3.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">Need the actual file contents?</div>
+    <p>All 33 frontend files (HTML, CSS, JS) are available copy-paste ready in the <a href="frontend-code.html"><strong>Frontend Code Browser</strong></a>. Click any file, hit Copy, paste into Eclipse.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="storage-api">
+  <div class="section-tag">Section 25</div>
+  <h2>storage-api.js &mdash; The Sprint 4 Swap</h2>
+  <p class="section-desc">This file has the <strong>exact same function names</strong> as <code>storage.js</code>, but instead of using LocalStorage, it calls your REST APIs. One file swap = frontend is now connected to the real backend.</p>
+
+  <h3>How to Swap</h3>
+  <p>In every HTML file that has this line:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Find this in your HTML files</span>
+    </div>
+    <pre><code class="language-html">&lt;script src="js/storage.js"&gt;&lt;/script&gt;</code></pre>
+  </div>
+
+  <p>Replace with:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Replace with this</span>
+    </div>
+    <pre><code class="language-html">&lt;script src="js/storage-api.js"&gt;&lt;/script&gt;</code></pre>
+  </div>
+
+  <h3>The storage-api.js File</h3>
+  <p>Create this file at <code>src/main/resources/static/js/storage-api.js</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/static/js/storage-api.js</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-javascript">/**
+ * storage-api.js — REST API version of storage.js
+ * Same function names, same return values.
+ * Instead of localStorage, calls the Spring Boot REST API.
+ */
+
+const API_BASE = 'http://localhost:8080/api';
+
+const NimbusDB = {
+
+  // ===== AUTH =====
+
+  async register(userData) {
+    const response = await fetch(`${API_BASE}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    });
+    return await response.json();
+  },
+
+  async login(userId, password) {
+    const response = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, password })
+    });
+    const data = await response.json();
+    if (data.success) {
+      // Store session locally (same as storage.js did)
+      sessionStorage.setItem('currentUser', JSON.stringify(data.user));
+    }
+    return data;
+  },
+
+  getCurrentUser() {
+    const user = sessionStorage.getItem('currentUser');
+    return user ? JSON.parse(user) : null;
+  },
+
+  logout() {
+    sessionStorage.removeItem('currentUser');
+  },
+
+  // ===== BOOKINGS =====
+
+  async createBooking(bookingData) {
+    const response = await fetch(`${API_BASE}/bookings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bookingData)
+    });
+    return await response.json();
+  },
+
+  async getBooking(bookingId) {
+    const response = await fetch(`${API_BASE}/bookings/${bookingId}`);
+    return await response.json();
+  },
+
+  async getBookingsByUser(userId) {
+    const response = await fetch(`${API_BASE}/bookings/user/${userId}`);
+    return await response.json();
+  },
+
+  // ===== TRACKING =====
+
+  async trackParcel(bookingId) {
+    const response = await fetch(`${API_BASE}/tracking/${bookingId}`);
+    return await response.json();
+  },
+
+  // ===== ISSUES =====
+
+  async createIssue(issueData) {
+    const response = await fetch(`${API_BASE}/issues`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(issueData)
+    });
+    return await response.json();
+  },
+
+  async getIssuesByUser(userId) {
+    const response = await fetch(`${API_BASE}/issues/user/${userId}`);
+    return await response.json();
+  }
+};
+
+// Make it globally available (same as storage.js)
+window.NimbusDB = NimbusDB;</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Important: async/await</div>
+    <p>The API version uses <code>async/await</code> because HTTP calls take time (network). If your HTML files call NimbusDB functions without <code>await</code>, you'll need to add it. Example: <code>const user = await NimbusDB.login(id, pass);</code> and the calling function must be <code>async</code>.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why this approach works</div>
+    <p>The frontend doesn't care WHERE data comes from. It just calls <code>NimbusDB.login()</code>. In Sprint 3, that reads from localStorage. In Sprint 4, it calls <code>POST /api/auth/login</code>. Same interface, different backend. This is called the <strong>adapter pattern</strong>.</p>
+  </div>
+</section>
+
+
+<section class="content-section" id="frontend-test">
+  <div class="section-tag">Section 26</div>
+  <h2>Test It End-to-End</h2>
+  <p class="section-desc">Verify frontend + backend are talking to each other.</p>
+
+  <h3>Sprint 3 Test (LocalStorage still)</h3>
+  <ol class="steps">
+    <li>Run NimbusApplication.java</li>
+    <li>Open <code>http://localhost:8080/login.html</code></li>
+    <li>Register a new user &rarr; data saves to localStorage (same as Phase 1)</li>
+    <li>This proves Spring Boot is serving your frontend files correctly</li>
+  </ol>
+
+  <h3>Sprint 4 Test (REST APIs)</h3>
+  <ol class="steps">
+    <li>Make sure you swapped <code>storage.js</code> &rarr; <code>storage-api.js</code> in all HTML files</li>
+    <li>Run NimbusApplication.java</li>
+    <li>Open <code>http://localhost:8080/login.html</code></li>
+    <li>Login with seed data: User ID = <code>CUS001</code>, Password = <code>pass123</code></li>
+    <li>Should redirect to customer dashboard with data from the H2 database!</li>
+    <li>Open DevTools (F12) &rarr; Network tab &rarr; you should see API calls to <code>/api/auth/login</code></li>
+  </ol>
+
+  <h3>If something fails</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Login button does nothing</td><td>Still using storage.js (not swapped)</td><td>Check the &lt;script&gt; tag in login.html</td></tr>
+      <tr><td>Network error in console</td><td>Server not running</td><td>Run NimbusApplication.java first</td></tr>
+      <tr><td>"CORS error" in console</td><td>CorsConfig.java missing or wrong</td><td>Check com.nimbus.config.CorsConfig exists with /api/** mapping</td></tr>
+      <tr><td>404 on /api/auth/login</td><td>AuthController not created yet</td><td>Create AuthController.java in com.nimbus.controller</td></tr>
+      <tr><td>Login fails (wrong password)</td><td>Seed data not loaded</td><td>Check data.sql is in resources/. Delete nimbusdb.mv.db and restart.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- TROUBLESHOOTING                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="troubleshooting">
+  <div class="section-tag">Section 27</div>
+  <h2>Troubleshooting</h2>
+  <p class="section-desc">Common errors and how to fix them.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Problem</th><th>Fix</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Red X on project / "Cannot resolve symbol"</td>
+        <td>Right-click project &rarr; <strong>Maven &rarr; Update Project</strong> (Alt+F5). Check "Force Update". Click OK. Wait for downloads.</td>
+      </tr>
+      <tr>
+        <td>"Port 8080 already in use"</td>
+        <td>Another app is using port 8080. Either: (a) close that app, or (b) change <code>server.port=8081</code> in application.properties.</td>
+      </tr>
+      <tr>
+        <td>"No main class found"</td>
+        <td>Make sure <code>NimbusApplication.java</code> has <code>@SpringBootApplication</code> annotation and a <code>public static void main</code> method.</td>
+      </tr>
+      <tr>
+        <td>"Table not found" / H2 error</td>
+        <td>Check that <code>schema.sql</code> is in <code>src/main/resources/</code> (not somewhere else). Check filename spelling. Delete <code>nimbusdb.mv.db</code> file from project root and restart.</td>
+      </tr>
+      <tr>
+        <td>Maven dependencies not downloading</td>
+        <td>Check internet connection. Try: Right-click project &rarr; Maven &rarr; Update Project &rarr; check "Force Update of Snapshots/Releases".</td>
+      </tr>
+      <tr>
+        <td>"src/main/resources" folder missing</td>
+        <td>Right-click <code>src/main</code> &rarr; New &rarr; Folder &rarr; name: <code>resources</code>. Then Alt+F5 to tell Maven about it.</td>
+      </tr>
+      <tr>
+        <td>JSP pages show 404</td>
+        <td>Check: (a) <code>spring.mvc.view.prefix=/WEB-INF/jsp/</code> in properties, (b) JSP files are in <code>src/main/webapp/WEB-INF/jsp/</code>, (c) <code>tomcat-embed-jasper</code> dependency in pom.xml.</td>
+      </tr>
+      <tr>
+        <td>Console app can't connect to database</td>
+        <td>Run NimbusApplication.java FIRST (creates the database file), stop it, THEN run ConsoleApp.java. Both use the same <code>nimbusdb.mv.db</code> file.</td>
+      </tr>
+      <tr>
+        <td>Eclipse shows wrong Java version</td>
+        <td>Right-click project &rarr; Properties &rarr; Java Build Path &rarr; Libraries &rarr; double-click JRE System Library &rarr; select JavaSE-17.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Universal Fix</div>
+    <p>When in doubt: Right-click project &rarr; Maven &rarr; Update Project &rarr; Force Update &rarr; OK. This resolves 80% of Eclipse/Maven issues.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="sprint1-to-eclipse.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Sprint 1: Eclipse Intro</span>
+  </a>
+  <a href="sprint2-guide.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Sprint 2: Full Code Guide</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="../topics/shared.js"></script>
+</body>
+</html>
