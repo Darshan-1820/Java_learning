@@ -153,7 +153,31 @@ Viva tomorrow. Goal: Complete entire backend in 2-3 hours (Models → DAO → Se
 | 4 | Servlets (5) + JSPs (5) + ServletConfig | DONE |
 | 5 | REST APIs (4 controllers) + DTOs (5) + CorsConfig | DONE |
 | 6 | Angular homepage / Frontend integration | NOT STARTED |
-| 7 | Portal update + Viva cheat sheet | IN PROGRESS |
+| 7 | Portal update + Viva cheat sheet | DONE |
+
+### Layer 7: Portal Update + Viva Guide
+
+**Created:** `portal/backend/viva-guide.html` (1600+ lines)
+- Full walkthrough of all 6 layers with code snippets
+- Architecture diagram + package structure
+- DAO vs Repository comparison
+- Pricing engine code
+- LoginServlet flow
+- All 13 REST API endpoints
+- 7 real errors we hit + exact fixes (JPA not found, table not found, port in use, etc.)
+- 12 previously asked viva questions (from WhatsApp screenshot) with Nimbus-specific answers
+- 30-topic cheat sheet: Core Java, Spring, Servlets, REST, DB, Microservices
+- Full annotations summary table (16 annotations)
+
+**Portal navigation:** Backend Overview → red "VIVA" card → viva-guide.html
+
+**App status at session end:**
+- Spring Boot running on localhost:8080
+- JSP login + dashboard working (tested with 260401-AK01 / Amit@123)
+- REST APIs live at /api/auth/*, /api/bookings/*, /api/issues/*
+- H2 console at /h2-console
+- Phase 1 polished frontend NOT connected to backend yet (Layer 6)
+- Angular NOT started yet (Layer 6)
 
 ---
 
