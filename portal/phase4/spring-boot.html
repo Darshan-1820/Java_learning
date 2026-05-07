@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Boot | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link active"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Arch</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: SPRING vs SPRING BOOT                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="spring-vs-boot">
+  <div class="section-tag">Section 01</div>
+  <h2>Spring vs Spring Boot</h2>
+  <p class="section-desc">Spring is the framework. Spring Boot is the shortcut to using that framework without drowning in configuration. Understanding the difference is the first step.</p>
+
+  <h3>What is Spring?</h3>
+
+  <p><strong>Spring Framework</strong> is a massive Java framework created in 2003 by Rod Johnson. It provides everything you need to build enterprise applications: dependency injection, database access, security, web MVC, transactions, and more. It is incredibly powerful &mdash; but it comes with a cost: <strong>configuration.</strong></p>
+
+  <p>With plain Spring, you have to:</p>
+  <ul>
+    <li>Write XML configuration files (sometimes hundreds of lines)</li>
+    <li>Manually configure a web server (download Tomcat, set it up, deploy your WAR file)</li>
+    <li>Manually set up database connections, transaction managers, view resolvers</li>
+    <li>Manually resolve dependency versions and make sure everything is compatible</li>
+  </ul>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Building a House</div>
+    <p><strong>Spring</strong> = You get all the raw materials (bricks, cement, wood, wiring, pipes). You can build anything. But you have to lay every brick, run every wire, and connect every pipe yourself.</p>
+    <p><strong>Spring Boot</strong> = You get a pre-built house with plumbing and wiring already done. Move in and start living. If you need to change the wall color, you can. But you do not have to build from scratch.</p>
+  </div>
+
+  <h3>What is Spring Boot?</h3>
+
+  <p><strong>Spring Boot</strong> was created in 2014 by Pivotal. It is NOT a different framework &mdash; it is an <strong>opinionated, auto-configured wrapper around Spring</strong>. It makes the same Spring Framework easy to use by:</p>
+
+  <ul>
+    <li><strong>Eliminating XML:</strong> No XML configuration files. Everything done through annotations and properties files.</li>
+    <li><strong>Auto-configuration:</strong> It detects what libraries you have and configures them automatically.</li>
+    <li><strong>Embedded server:</strong> Tomcat is built into your app. No separate install. Just run <code>main()</code>.</li>
+    <li><strong>Starters:</strong> Pre-packaged dependency bundles. Add <code>spring-boot-starter-web</code> and you get Spring MVC + Tomcat + Jackson in one line.</li>
+    <li><strong>Sensible defaults:</strong> Port 8080, JSON as default response format, auto component scanning &mdash; all out of the box.</li>
+  </ul>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Plain Spring</div>
+      <div class="comparison-body">
+        <p>Download Tomcat separately</p>
+        <p>Write <code>web.xml</code> (50+ lines)</p>
+        <p>Write <code>dispatcher-servlet.xml</code></p>
+        <p>Configure DataSource bean in XML</p>
+        <p>Build WAR file, deploy to Tomcat</p>
+        <p>Resolve 20+ dependency versions manually</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Spring Boot</div>
+      <div class="comparison-body">
+        <p>Tomcat is embedded &mdash; just run <code>main()</code></p>
+        <p>No XML files at all</p>
+        <p>One annotation: <code>@SpringBootApplication</code></p>
+        <p>Set 3 lines in <code>application.properties</code></p>
+        <p>Run as JAR file: <code>java -jar app.jar</code></p>
+        <p>Starters handle all dependency versions</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Spring Boot does not replace Spring. It <em>uses</em> Spring under the hood. Every Spring concept (beans, DI, MVC) still applies. Spring Boot just eliminates the boilerplate so you can focus on your business logic.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHY SPRING BOOT                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-spring-boot">
+  <div class="section-tag">Section 02</div>
+  <h2>Why Spring Boot?</h2>
+  <p class="section-desc">There are many Java web frameworks. Here is why Spring Boot dominates the industry.</p>
+
+  <h3>The 5 Killer Features</h3>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">No XML</div>
+      <div class="layer-detail">Zero XML configuration. Everything is done through Java annotations (<code>@RestController</code>, <code>@Autowired</code>, <code>@Service</code>) and <code>application.properties</code>.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Embedded Tomcat</div>
+      <div class="layer-detail">Apache Tomcat (web server) is embedded inside your JAR file. Run your app with <code>java -jar nimbus.jar</code> or click Run in your IDE. No separate server install.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Auto-Config</div>
+      <div class="layer-detail">Spring Boot scans your classpath. See MySQL driver? Auto-configures a DataSource. See Jackson? Auto-configures JSON serialization. You do not configure anything manually unless you want to override defaults.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Starters</div>
+      <div class="layer-detail">Pre-built dependency bundles. <code>spring-boot-starter-web</code> pulls in Spring MVC, Tomcat, Jackson, validation &mdash; all with compatible versions. No dependency hell.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name cyan">Production Ready</div>
+      <div class="layer-detail">Built-in health checks (<code>/actuator/health</code>), metrics, logging, and externalized configuration. Ready for production from day one.</div>
+    </div>
+  </div>
+
+  <h3>Industry Usage</h3>
+
+  <p>Spring Boot is the most used Java framework in the world. Companies using it include Netflix, Amazon, Google, Uber, and almost every bank and enterprise in India. When companies say "Java developer," they mean "Spring Boot developer."</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses Spring Boot because:</p>
+    <ul>
+      <li>We need a REST API backend &mdash; <code>spring-boot-starter-web</code> gives us everything</li>
+      <li>We need MySQL access &mdash; <code>spring-boot-starter-jdbc</code> handles it</li>
+      <li>We need JSON serialization &mdash; Jackson comes bundled with the web starter</li>
+      <li>We need to run the app easily &mdash; embedded Tomcat, just run <code>main()</code></li>
+      <li>Zero XML. Just annotations and properties.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: CREATING A PROJECT                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="spring-initializr">
+  <div class="section-tag">Section 03</div>
+  <h2>Creating a Spring Boot Project</h2>
+  <p class="section-desc">Spring Boot projects are created using Spring Initializr &mdash; a web tool that generates a ready-to-run project skeleton.</p>
+
+  <h3>Spring Initializr (start.spring.io)</h3>
+
+  <p>Go to <a href="https://start.spring.io" target="_blank" style="color: var(--accent);">start.spring.io</a>. This is the official project generator. Here is what to select for Nimbus:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Setting</th><th>Value</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Project</td><td><strong>Maven</strong></td><td>Maven manages dependencies and build. Most common in Indian companies.</td></tr>
+      <tr><td>Language</td><td><strong>Java</strong></td><td>Our language of choice</td></tr>
+      <tr><td>Spring Boot</td><td><strong>3.2.x</strong> (latest stable)</td><td>Latest stable version. Avoid SNAPSHOT versions.</td></tr>
+      <tr><td>Group</td><td><code>com.nimbus</code></td><td>Your organization's reverse domain name</td></tr>
+      <tr><td>Artifact</td><td><code>nimbus-api</code></td><td>Your project name</td></tr>
+      <tr><td>Name</td><td><code>nimbus-api</code></td><td>Same as artifact</td></tr>
+      <tr><td>Packaging</td><td><strong>Jar</strong></td><td>JAR includes embedded Tomcat. WAR is for external Tomcat (older style).</td></tr>
+      <tr><td>Java</td><td><strong>17</strong></td><td>LTS version. Industry standard in 2026.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Dependencies to Add</h3>
+
+  <p>Click "Add Dependencies" and add these three:</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Spring Web</div>
+      <div class="layer-detail"><code>spring-boot-starter-web</code> &mdash; Spring MVC, embedded Tomcat, JSON handling with Jackson. This is the core dependency for building REST APIs.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Spring JDBC</div>
+      <div class="layer-detail"><code>spring-boot-starter-jdbc</code> &mdash; JdbcTemplate, DataSource auto-configuration, connection pooling (HikariCP). For database operations without JPA complexity.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">MySQL Driver</div>
+      <div class="layer-detail"><code>mysql-connector-j</code> &mdash; The JDBC driver that lets Java talk to MySQL. Without this, Spring cannot connect to your database.</div>
+    </div>
+  </div>
+
+  <p>Click <strong>"Generate"</strong>. It downloads a ZIP file. Extract it, and you have a ready-to-run Spring Boot project.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Do not add dependencies you do not need yet. Start with Web + JDBC + MySQL. You can always add more later by editing <code>pom.xml</code>. Adding too many starters at the start leads to confusing auto-configuration errors.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: PROJECT STRUCTURE                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="project-structure">
+  <div class="section-tag">Section 04</div>
+  <h2>Project Structure</h2>
+  <p class="section-desc">A Spring Boot project has a standard directory layout. Every file has a purpose. Let us walk through each one.</p>
+
+  <div class="diagram">
+    <pre>
+nimbus-api/
+  ├── pom.xml                          &lt;-- Maven config + dependencies
+  ├── src/
+  │   ├── main/
+  │   │   ├── java/
+  │   │   │   └── com/nimbus/nimbusapi/
+  │   │   │       ├── NimbusApiApplication.java    &lt;-- Entry point (main class)
+  │   │   │       ├── controller/                  &lt;-- REST controllers
+  │   │   │       │   ├── BookingController.java
+  │   │   │       │   └── UserController.java
+  │   │   │       ├── service/                     &lt;-- Business logic
+  │   │   │       │   ├── BookingService.java
+  │   │   │       │   └── UserService.java
+  │   │   │       ├── dao/                         &lt;-- Database access
+  │   │   │       │   ├── BookingDao.java
+  │   │   │       │   └── UserDao.java
+  │   │   │       ├── model/                       &lt;-- Data classes (POJOs)
+  │   │   │       │   ├── Booking.java
+  │   │   │       │   └── User.java
+  │   │   │       └── exception/                   &lt;-- Custom exceptions
+  │   │   │           └── ResourceNotFoundException.java
+  │   │   └── resources/
+  │   │       ├── application.properties           &lt;-- Configuration
+  │   │       ├── static/                          &lt;-- Static files (CSS, JS)
+  │   │       └── templates/                       &lt;-- HTML templates (Thymeleaf)
+  │   └── test/
+  │       └── java/
+  │           └── com/nimbus/nimbusapi/
+  │               └── NimbusApiApplicationTests.java
+  └── target/                                      &lt;-- Compiled output (auto-generated)</pre>
+    <div class="diagram-label">Standard Spring Boot project layout &mdash; Nimbus</div>
+  </div>
+
+  <h3>Key Files Explained</h3>
+
+  <h4>pom.xml &mdash; Maven Configuration</h4>
+
+  <p>The <code>pom.xml</code> is the heart of any Maven project. It defines your project metadata, dependencies, Java version, and build plugins.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml (Nimbus)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;!-- Spring Boot parent: manages ALL dependency versions for you --&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.5&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;!-- Project metadata --&gt;
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-api&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;nimbus-api&lt;/name&gt;
+    &lt;description&gt;Nimbus Parcel Management REST API&lt;/description&gt;
+
+    &lt;!-- Java version --&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;!-- Dependencies --&gt;
+    &lt;dependencies&gt;
+        &lt;!-- REST API: Spring MVC + Embedded Tomcat + Jackson --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Database: JdbcTemplate + HikariCP connection pool --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- MySQL JDBC driver --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- DevTools: auto-restart on code change --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Testing --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;!-- Build plugin --&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">pom.xml breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;parent&gt; ... spring-boot-starter-parent ... &lt;/parent&gt;</div>
+        <div class="breakdown-explain">Inherits from Spring Boot's parent POM. This manages ALL dependency versions for you &mdash; you never specify version numbers for Spring starters.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;groupId&gt;com.nimbus&lt;/groupId&gt;</div>
+        <div class="breakdown-explain">Your organization's reverse domain name. Used as the base package for your Java code.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;artifactId&gt;nimbus-api&lt;/artifactId&gt;</div>
+        <div class="breakdown-explain">The project name. This becomes the JAR file name: nimbus-api-0.0.1-SNAPSHOT.jar</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring-boot-starter-web (no version)</div>
+        <div class="breakdown-explain">Notice: no &lt;version&gt; tag. The parent POM handles version resolution. This starter pulls in Spring MVC + Tomcat + Jackson.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;scope&gt;runtime&lt;/scope&gt;</div>
+        <div class="breakdown-explain">The MySQL driver is only needed at runtime, not at compile time. Your code uses JDBC interfaces, not MySQL-specific classes.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring-boot-maven-plugin</div>
+        <div class="breakdown-explain">This plugin creates a "fat JAR" &mdash; a single JAR that contains your code + all dependencies + embedded Tomcat. Run with: java -jar nimbus-api.jar</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>application.properties &mdash; Configuration</h4>
+
+  <p>This file lives in <code>src/main/resources/</code>. It is where you configure your app without touching Java code.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java"># ====== SERVER ======
+server.port=8080
+
+# ====== DATABASE ======
+spring.datasource.url=jdbc:mysql://localhost:3306/nimbus_db
+spring.datasource.username=root
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# ====== CONNECTION POOL (HikariCP) ======
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+
+# ====== JSP VIEW (if using JSP) ======
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+# ====== LOGGING ======
+logging.level.root=INFO
+logging.level.com.nimbus=DEBUG</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Properties explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">server.port=8080</div>
+        <div class="breakdown-explain">The port your app runs on. Access at http://localhost:8080. Change to 9090 if 8080 is taken.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring.datasource.url=jdbc:mysql://localhost:3306/nimbus_db</div>
+        <div class="breakdown-explain">JDBC connection URL. Format: jdbc:mysql://host:port/database_name. Spring auto-creates a DataSource bean from this.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring.datasource.username / password</div>
+        <div class="breakdown-explain">MySQL login credentials. In production, these would be in environment variables, not hardcoded.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring.datasource.hikari.maximum-pool-size=10</div>
+        <div class="breakdown-explain">HikariCP (the fastest Java connection pool) maintains up to 10 database connections. Spring Boot uses HikariCP by default.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">spring.mvc.view.prefix / suffix</div>
+        <div class="breakdown-explain">If using JSP views, this tells Spring where to find them. For REST APIs (JSON only), you can skip these.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">logging.level.com.nimbus=DEBUG</div>
+        <div class="breakdown-explain">Sets logging level for your package. DEBUG shows detailed logs for your code while keeping third-party logs at INFO level.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: @SpringBootApplication                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="springboot-annotation">
+  <div class="section-tag">Section 05</div>
+  <h2>@SpringBootApplication</h2>
+  <p class="section-desc">This single annotation is the magic that makes Spring Boot work. It combines three powerful annotations into one.</p>
+
+  <h3>The Main Class</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusApiApplication.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.nimbusapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NimbusApiApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApiApplication.class, args);
+    }
+}</code></pre>
+  </div>
+
+  <p>That is the <strong>entire</strong> main class. 8 lines of code to start a fully configured web application with an embedded server, database connection, and JSON handling. Let us break down what <code>@SpringBootApplication</code> actually does.</p>
+
+  <h3>The Three-in-One</h3>
+
+  <p><code>@SpringBootApplication</code> is a shortcut for three annotations combined:</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">@Configuration</div>
+      <div class="layer-detail">Marks this class as a source of bean definitions. It tells Spring: "This class contains configuration. Read it." Replaces the old XML configuration files.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">@ComponentScan</div>
+      <div class="layer-detail">Tells Spring to scan the current package and all sub-packages for components (<code>@Controller</code>, <code>@Service</code>, <code>@Repository</code>). It automatically finds and registers all your classes. This is why your package structure matters &mdash; everything must be under or inside the main class's package.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">@EnableAutoConfiguration</div>
+      <div class="layer-detail">The magic. Looks at your classpath (what JARs are in your project) and automatically configures things. MySQL driver present? Configure a DataSource. Jackson present? Configure JSON serialization. Tomcat present? Start a web server.</div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <pre>
+  @SpringBootApplication
+  ├── @Configuration          --&gt; "I am a config class"
+  ├── @ComponentScan          --&gt; "Scan com.nimbus.nimbusapi.** for beans"
+  └── @EnableAutoConfiguration --&gt; "Auto-configure based on classpath"
+
+  Package structure matters!
+  ┌─────────────────────────────────────────────────────────┐
+  │  com.nimbus.nimbusapi                  &lt;-- Main class   │
+  │  com.nimbus.nimbusapi.controller       &lt;-- Scanned ✓   │
+  │  com.nimbus.nimbusapi.service          &lt;-- Scanned ✓   │
+  │  com.nimbus.nimbusapi.dao              &lt;-- Scanned ✓   │
+  │  com.other.package                     &lt;-- NOT scanned │
+  └─────────────────────────────────────────────────────────┘</pre>
+    <div class="diagram-label">ComponentScan only scans the main class's package and sub-packages</div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>If you put your main class in <code>com.nimbus</code> but your controllers in <code>com.controllers</code>, Spring Boot will NOT find them. Always keep your main class in the root package, and all other classes in sub-packages.</p>
+  </div>
+
+  <h3>What Happens When main() Runs</h3>
+
+  <p><code>SpringApplication.run()</code> triggers the entire boot sequence:</p>
+
+  <ol class="steps">
+    <li><strong>Creates the application context</strong> &mdash; the container that holds all your beans</li>
+    <li><strong>Component scan</strong> &mdash; finds all <code>@Controller</code>, <code>@Service</code>, <code>@Repository</code> classes</li>
+    <li><strong>Auto-configuration</strong> &mdash; configures DataSource, Tomcat, Jackson, etc. based on classpath</li>
+    <li><strong>Reads application.properties</strong> &mdash; applies your configuration overrides</li>
+    <li><strong>Starts embedded Tomcat</strong> &mdash; web server starts listening on port 8080</li>
+    <li><strong>App is ready</strong> &mdash; you see "Started NimbusApiApplication in X seconds" in the console</li>
+  </ol>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Console output on startup</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.2.5)
+
+2026-04-23 10:00:01 INFO  Starting NimbusApiApplication...
+2026-04-23 10:00:02 INFO  Tomcat initialized with port 8080 (http)
+2026-04-23 10:00:02 INFO  Starting service [Tomcat]
+2026-04-23 10:00:03 INFO  HikariPool-1 - Starting...
+2026-04-23 10:00:03 INFO  HikariPool-1 - Start completed.
+2026-04-23 10:00:04 INFO  Started NimbusApiApplication in 3.2 seconds</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: EMBEDDED TOMCAT                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="embedded-tomcat">
+  <div class="section-tag">Section 06</div>
+  <h2>Embedded Tomcat</h2>
+  <p class="section-desc">One of Spring Boot's best features: the web server is inside your application, not the other way around.</p>
+
+  <h3>Traditional vs Embedded</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Traditional (Plain Spring)</div>
+      <div class="comparison-body">
+        <ol>
+          <li>Download Apache Tomcat</li>
+          <li>Install it on your machine</li>
+          <li>Configure server.xml</li>
+          <li>Build your code as a WAR file</li>
+          <li>Copy the WAR to Tomcat's webapps/ folder</li>
+          <li>Start Tomcat separately</li>
+          <li>Debug by looking at Tomcat logs</li>
+        </ol>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Embedded (Spring Boot)</div>
+      <div class="comparison-body">
+        <ol>
+          <li>Add <code>spring-boot-starter-web</code></li>
+          <li>Write your code</li>
+          <li>Run <code>main()</code></li>
+          <li>Tomcat starts automatically on port 8080</li>
+          <li>Done.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <p>The embedded Tomcat is packaged inside the <code>spring-boot-starter-web</code> dependency. When you call <code>SpringApplication.run()</code>, Spring Boot starts Tomcat as part of your application process. Your app IS the server.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>With embedded Tomcat, your application is a single JAR file that contains everything. Deploy to any server with <code>java -jar nimbus-api.jar</code>. No Tomcat install needed on the production server. This is why Spring Boot is perfect for microservices and Docker containers.</p>
+  </div>
+
+  <h3>Changing the Port</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java"># Default is 8080. Change if something else is using that port.
+server.port=9090
+
+# Use port 0 for random port (useful for testing)
+# server.port=0</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: STARTERS                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="starters">
+  <div class="section-tag">Section 07</div>
+  <h2>Spring Boot Starters</h2>
+  <p class="section-desc">Starters are pre-packaged dependency bundles. Each starter pulls in all the libraries you need for a specific task &mdash; with guaranteed compatible versions.</p>
+
+  <h3>What Problem Do They Solve?</h3>
+
+  <p>Without starters, building a REST API requires you to manually add:</p>
+  <ul>
+    <li><code>spring-webmvc</code> (version 6.1.5)</li>
+    <li><code>spring-web</code> (version 6.1.5)</li>
+    <li><code>tomcat-embed-core</code> (version 10.1.19)</li>
+    <li><code>tomcat-embed-el</code> (version 10.1.19)</li>
+    <li><code>jackson-databind</code> (version 2.16.1)</li>
+    <li><code>jackson-core</code> (version 2.16.1)</li>
+    <li><code>jackson-annotations</code> (version 2.16.1)</li>
+    <li>... and more</li>
+  </ul>
+
+  <p>And you have to make sure ALL versions are compatible with each other. One version mismatch = hours of debugging <code>NoSuchMethodError</code> or <code>ClassNotFoundException</code>.</p>
+
+  <p>With starters, you add ONE dependency and get everything:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Just one line in pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <h3>The Three Starters You Need to Know</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Starter</th><th>What It Includes</th><th>Used For</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>spring-boot-starter-web</code></td>
+        <td>Spring MVC, embedded Tomcat, Jackson (JSON), Bean Validation</td>
+        <td>Building REST APIs and web apps. The most important starter.</td>
+      </tr>
+      <tr>
+        <td><code>spring-boot-starter-jdbc</code></td>
+        <td>JdbcTemplate, HikariCP connection pool, Spring transaction management</td>
+        <td>Database access using SQL queries. Simpler than JPA for straightforward operations.</td>
+      </tr>
+      <tr>
+        <td><code>spring-boot-starter-data-jpa</code></td>
+        <td>Hibernate ORM, Spring Data JPA (repositories), JdbcTemplate</td>
+        <td>Database access using Java objects instead of SQL. More powerful but more complex. We use JDBC in Nimbus.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Other Common Starters</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Starter</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>spring-boot-starter-security</code></td><td>Authentication, authorization, CSRF protection, session management</td></tr>
+      <tr><td><code>spring-boot-starter-validation</code></td><td>Bean Validation (JSR 380) with Hibernate Validator &mdash; <code>@NotNull</code>, <code>@Size</code>, <code>@Email</code></td></tr>
+      <tr><td><code>spring-boot-starter-mail</code></td><td>Sending emails via SMTP (JavaMail)</td></tr>
+      <tr><td><code>spring-boot-starter-test</code></td><td>JUnit 5, Mockito, Spring Test &mdash; everything for testing</td></tr>
+      <tr><td><code>spring-boot-devtools</code></td><td>Automatic restart on code change, live reload, development-time features</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses exactly 3 starters:</p>
+    <ul>
+      <li><code>spring-boot-starter-web</code> &mdash; for REST controllers, JSON, embedded Tomcat</li>
+      <li><code>spring-boot-starter-jdbc</code> &mdash; for JdbcTemplate database access</li>
+      <li><code>spring-boot-devtools</code> &mdash; for auto-restart during development</li>
+    </ul>
+    <p>Plus <code>mysql-connector-j</code> as the JDBC driver (this is not a starter &mdash; it is a third-party library).</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: AUTO-CONFIGURATION                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="auto-configuration">
+  <div class="section-tag">Section 08</div>
+  <h2>Auto-Configuration</h2>
+  <p class="section-desc">Auto-configuration is what makes Spring Boot feel magical. It looks at what is on your classpath and configures everything automatically.</p>
+
+  <h3>How It Works</h3>
+
+  <p>When your app starts, Spring Boot runs through a checklist:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box cyan">Classpath Scan<span class="flow-sub">What JARs are present?</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Condition Check<span class="flow-sub">Is MySQL driver present?</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Auto-Configure<span class="flow-sub">Create DataSource bean</span></div>
+    </div>
+    <div class="flow-label">Spring Boot auto-configures based on what it finds</div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>What Spring Boot Finds</th><th>What It Auto-Configures</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>mysql-connector-j</code> on classpath + <code>spring.datasource.url</code> in properties</td><td>Creates a <code>DataSource</code> bean with HikariCP connection pool</td></tr>
+      <tr><td><code>spring-boot-starter-web</code> on classpath</td><td>Starts embedded Tomcat, configures DispatcherServlet, enables JSON with Jackson</td></tr>
+      <tr><td><code>spring-boot-starter-jdbc</code> + DataSource exists</td><td>Creates a <code>JdbcTemplate</code> bean, auto-injects into your DAOs</td></tr>
+      <tr><td><code>jackson-databind</code> on classpath (comes with web starter)</td><td>Configures <code>ObjectMapper</code> for JSON serialization/deserialization</td></tr>
+    </tbody>
+  </table>
+
+  <h3>The Conditional Magic</h3>
+
+  <p>Auto-configuration uses conditional annotations under the hood:</p>
+
+  <ul>
+    <li><code>@ConditionalOnClass</code> &mdash; "Only configure this IF this class is on the classpath"</li>
+    <li><code>@ConditionalOnProperty</code> &mdash; "Only configure this IF this property is set"</li>
+    <li><code>@ConditionalOnMissingBean</code> &mdash; "Only configure this IF the user has NOT already configured it"</li>
+  </ul>
+
+  <p>That last one is important. If you manually define a <code>DataSource</code> bean, Spring Boot's auto-configured one backs off. <strong>Your explicit configuration always wins over auto-configuration.</strong></p>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Auto-configuration is not magic &mdash; it is a giant checklist of "if this exists, configure that." You can see exactly what was auto-configured by adding <code>debug=true</code> to your <code>application.properties</code>. The startup log will show every auto-configuration that was applied and every one that was skipped.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: DEVTOOLS                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="devtools">
+  <div class="section-tag">Section 09</div>
+  <h2>Spring Boot DevTools</h2>
+  <p class="section-desc">DevTools makes development faster by automatically restarting your app whenever you change code. No more manual stop-and-start.</p>
+
+  <h3>What DevTools Does</h3>
+
+  <ul>
+    <li><strong>Automatic Restart:</strong> Detects file changes in <code>src/main/java</code> and restarts the app in ~2 seconds (much faster than a cold start)</li>
+    <li><strong>LiveReload:</strong> Automatically refreshes your browser when static files change (HTML, CSS, JS)</li>
+    <li><strong>Relaxed Binding:</strong> Disables template caching during development so you see changes immediately</li>
+    <li><strong>Auto-disabled in Production:</strong> DevTools automatically deactivates when running as a packaged JAR. It only works during development.</li>
+  </ul>
+
+  <h3>Adding DevTools</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;optional&gt;true&lt;/optional&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <p><code>&lt;optional&gt;true&lt;/optional&gt;</code> means this dependency is NOT passed to other projects that depend on yours. It is only for local development.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Eclipse/IntelliJ Setup</div>
+    <p><strong>Eclipse:</strong> DevTools works out of the box. Save a file (Ctrl+S) and it auto-restarts.</p>
+    <p><strong>IntelliJ IDEA:</strong> You need to enable "Build project automatically" in Settings &rarr; Build &rarr; Compiler, and also enable "Allow auto-make to start even if developed application is currently running" in Advanced Settings.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: NIMBUS SPRING BOOT SETUP                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-setup">
+  <div class="section-tag">Section 10</div>
+  <h2>Full Nimbus Spring Boot Setup</h2>
+  <p class="section-desc">Everything you need to create the Nimbus Spring Boot project from scratch. Follow these steps and you will have a running application.</p>
+
+  <h3>Step 1: Generate the Project</h3>
+
+  <ol class="steps">
+    <li>Go to <a href="https://start.spring.io" target="_blank" style="color: var(--accent);">start.spring.io</a></li>
+    <li>Set Group = <code>com.nimbus</code>, Artifact = <code>nimbus-api</code>, Java = 17, Packaging = Jar</li>
+    <li>Add dependencies: Spring Web, Spring JDBC, MySQL Driver, Spring Boot DevTools</li>
+    <li>Click Generate. Download and extract the ZIP.</li>
+    <li>Open the project in Eclipse or IntelliJ IDEA</li>
+  </ol>
+
+  <h3>Step 2: Configure the Database</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java"># Server
+server.port=8080
+
+# MySQL
+spring.datasource.url=jdbc:mysql://localhost:3306/nimbus_db
+spring.datasource.username=root
+spring.datasource.password=nimbus2026
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Logging
+logging.level.com.nimbus=DEBUG</code></pre>
+  </div>
+
+  <h3>Step 3: The Main Class</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/nimbusapi/NimbusApiApplication.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.nimbusapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NimbusApiApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApiApplication.class, args);
+        System.out.println("Nimbus API is running on http://localhost:8080");
+    }
+}</code></pre>
+  </div>
+
+  <h3>Step 4: A Quick Health Check Controller</h3>
+
+  <p>Before building the full API, create a simple controller to verify the app is working:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/nimbusapi/controller/HealthController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.nimbusapi.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@RestController
+public class HealthController {
+
+    @GetMapping("/api/health")
+    public Map&lt;String, Object&gt; health() {
+        return Map.of(
+            "status", "UP",
+            "application", "nimbus-api",
+            "timestamp", LocalDateTime.now().toString()
+        );
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@RestController</div>
+        <div class="breakdown-explain">Tells Spring: "This class handles HTTP requests and returns data directly (JSON), not HTML pages."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">@GetMapping("/api/health")</div>
+        <div class="breakdown-explain">When someone sends a GET request to /api/health, run this method.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public Map&lt;String, Object&gt; health()</div>
+        <div class="breakdown-explain">Returns a Map. Spring Boot automatically converts this Map to a JSON object using Jackson.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Map.of("status", "UP", ...)</div>
+        <div class="breakdown-explain">Java's immutable Map factory. Creates {"status": "UP", "application": "nimbus-api", "timestamp": "..."}.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Step 5: Test It</h3>
+
+  <p>Open your browser or Postman and go to: <code>http://localhost:8080/api/health</code></p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Expected Response</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "status": "UP",
+  "application": "nimbus-api",
+  "timestamp": "2026-04-23T10:05:30.123"
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>If you see this JSON response in your browser, your Spring Boot setup is complete. You have:</p>
+    <ul>
+      <li>A running Spring Boot application with embedded Tomcat</li>
+      <li>A REST controller that returns JSON</li>
+      <li>Auto-configured Jackson for JSON serialization</li>
+      <li>Database connection ready (if MySQL is running)</li>
+    </ul>
+    <p>Next topic (REST Controllers) will build the actual 8 Nimbus endpoints on top of this foundation.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: RUNNING THE APP                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="running">
+  <div class="section-tag">Section 11</div>
+  <h2>Running the Application</h2>
+  <p class="section-desc">Three ways to run a Spring Boot application. Use whichever fits your workflow.</p>
+
+  <h3>Method 1: From IDE (Recommended for Development)</h3>
+
+  <p><strong>Eclipse:</strong></p>
+  <ol class="steps">
+    <li>Right-click on <code>NimbusApiApplication.java</code></li>
+    <li>Select <strong>Run As &rarr; Java Application</strong></li>
+    <li>App starts. Console shows the Spring Boot banner and "Started" message.</li>
+  </ol>
+
+  <p><strong>IntelliJ IDEA:</strong></p>
+  <ol class="steps">
+    <li>Open <code>NimbusApiApplication.java</code></li>
+    <li>Click the green play button next to the <code>main()</code> method</li>
+    <li>Or press <strong>Shift + F10</strong></li>
+  </ol>
+
+  <h3>Method 2: Maven Command (Terminal)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java"># Navigate to your project directory
+cd nimbus-api
+
+# Run with Maven
+mvn spring-boot:run
+
+# Or on Windows with the Maven wrapper
+mvnw.cmd spring-boot:run
+
+# On Linux/Mac with the Maven wrapper
+./mvnw spring-boot:run</code></pre>
+  </div>
+
+  <h3>Method 3: JAR File (Production)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java"># Step 1: Build the JAR
+mvn clean package
+
+# Step 2: Run the JAR
+java -jar target/nimbus-api-0.0.1-SNAPSHOT.jar
+
+# Override port at runtime
+java -jar target/nimbus-api-0.0.1-SNAPSHOT.jar --server.port=9090
+
+# Override database at runtime
+java -jar target/nimbus-api-0.0.1-SNAPSHOT.jar --spring.datasource.url=jdbc:mysql://prod-server:3306/nimbus_db</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p><code>mvn clean package</code> creates a "fat JAR" (also called "uber JAR") in the <code>target/</code> folder. This JAR contains your code + all dependencies + embedded Tomcat. You can copy this single file to any server with Java 17 installed and run it. No Maven, no Tomcat install, no IDE needed.</p>
+  </div>
+
+  <h3>Stopping the App</h3>
+
+  <ul>
+    <li><strong>IDE:</strong> Click the red stop button</li>
+    <li><strong>Terminal:</strong> Press <code>Ctrl + C</code></li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 12</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Test your understanding of Spring Boot fundamentals.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Concept Check</div>
+    <p>Answer in your own words:</p>
+    <ol>
+      <li>What is the difference between Spring and Spring Boot?</li>
+      <li>What does "opinionated" mean in the context of Spring Boot?</li>
+      <li>Why is embedded Tomcat better than external Tomcat for microservices?</li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Annotation Breakdown</div>
+    <p><code>@SpringBootApplication</code> is a shortcut for three annotations. Name all three and explain what each one does in one sentence.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Starter Matching</div>
+    <p>Which starter would you add for each requirement?</p>
+    <ol>
+      <li>You need to build REST APIs that return JSON</li>
+      <li>You need to run SQL queries using JdbcTemplate</li>
+      <li>You need to use Hibernate ORM with entity classes</li>
+      <li>You need user authentication with login/password</li>
+      <li>You need to send email notifications</li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Fix the Properties</div>
+    <p>This <code>application.properties</code> has 3 errors. Find and fix them:</p>
+    <pre><code>server.port: 8080
+spring.datasource.url=jdbc:mysql//localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver=com.mysql.cj.jdbc.Driver</code></pre>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Project Structure</div>
+    <p>Your main class is in <code>com.nimbus.nimbusapi</code>. Will Spring Boot find a controller in each of these packages? Answer yes or no and explain why:</p>
+    <ol>
+      <li><code>com.nimbus.nimbusapi.controller</code></li>
+      <li><code>com.nimbus.controller</code></li>
+      <li><code>com.nimbus.nimbusapi.api.v1.controller</code></li>
+      <li><code>com.other.nimbusapi.controller</code></li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; Build It</div>
+    <p>Create a Spring Boot project from scratch:</p>
+    <ol>
+      <li>Go to start.spring.io and generate a project called <code>hello-api</code></li>
+      <li>Add only the Spring Web dependency</li>
+      <li>Create a controller with a <code>GET /api/hello</code> endpoint that returns <code>{"message": "Hello from Spring Boot!", "time": "..."}</code></li>
+      <li>Run the app and test it in your browser</li>
+      <li>Change the port to 9090 in application.properties and verify it works</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="json.html">
+    <span class="nav-label">&larr; Previous Topic</span>
+    <span class="nav-title">JSON</span>
+  </a>
+  <a href="rest-controllers.html" class="next">
+    <span class="nav-label">Next Topic &rarr;</span>
+    <span class="nav-title">REST Controllers</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generics | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link active"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: Why Generics Exist                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-generics">
+  <div class="section-tag">Section 01</div>
+  <h2>Why Generics Exist</h2>
+  <p class="section-desc">Before Java 5, collections stored everything as <code>Object</code>. You had to cast every time you pulled something out, and the compiler could not help you if you put the wrong type in. Generics fix this by letting you declare <em>what type</em> a collection holds &mdash; so the compiler catches mistakes before your code ever runs.</p>
+
+  <h3>The Problem: Life Without Generics</h3>
+
+  <p>Imagine you have an <code>ArrayList</code> that is supposed to hold <code>User</code> objects. Without generics, Java has no way to enforce that. Anyone can add anything &mdash; a <code>String</code>, a <code>Booking</code>, an <code>Integer</code> &mdash; and the compiler will not complain.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WithoutGenerics.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Without generics — raw ArrayList
+ArrayList users = new ArrayList();
+users.add(new User("Darshan", "darshan@email.com"));
+users.add("This is not a User!");  // No error! Compiler allows it.
+
+// Later, when you try to use it...
+User u = (User) users.get(1);  // BOOM! ClassCastException at runtime
+// You put a String in, but tried to cast it to User</code></pre>
+  </div>
+
+  <p>The problem is clear: the compiler let you put a <code>String</code> into a list that was supposed to hold <code>User</code> objects. You only find the bug when the program crashes at runtime &mdash; possibly in production, in front of real users.</p>
+
+  <h3>The Solution: Generics</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WithGenerics.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// With generics — type-safe ArrayList
+ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(new User("Darshan", "darshan@email.com"));
+users.add("This is not a User!");  // COMPILE ERROR! Won't even run.
+
+// No casting needed — Java already knows it's a User
+User u = users.get(0);  // Clean. Safe. No cast.</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();</div>
+        <div class="breakdown-explain"><code>&lt;User&gt;</code> is the type parameter. It tells Java: "this ArrayList will ONLY hold User objects." The <code>&lt;&gt;</code> on the right (diamond operator) lets Java infer the type from the left side.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">users.add(new User("Darshan", "darshan@email.com"));</div>
+        <div class="breakdown-explain">Adding a User &mdash; matches the declared type. Compiler says OK.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">users.add("This is not a User!");</div>
+        <div class="breakdown-explain">Adding a String to an <code>ArrayList&lt;User&gt;</code> &mdash; compiler immediately flags this as an error. The bug is caught BEFORE the program runs.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User u = users.get(0);</div>
+        <div class="breakdown-explain">No cast needed. The compiler knows <code>get()</code> returns a <code>User</code> because the list was declared as <code>ArrayList&lt;User&gt;</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Three Benefits of Generics</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Benefit</th>
+        <th>Without Generics</th>
+        <th>With Generics</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Type Safety</strong></td>
+        <td>Wrong types discovered at runtime (crash)</td>
+        <td>Wrong types caught at compile time (red underline)</td>
+      </tr>
+      <tr>
+        <td><strong>No Casting</strong></td>
+        <td><code>(User) list.get(0)</code> &mdash; manual cast every time</td>
+        <td><code>list.get(0)</code> &mdash; clean, no cast</td>
+      </tr>
+      <tr>
+        <td><strong>Code Reuse</strong></td>
+        <td>Write separate classes for UserList, BookingList, etc.</td>
+        <td>One <code>ArrayList&lt;T&gt;</code> works for any type</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every collection in Nimbus uses generics. <code>ArrayList&lt;User&gt;</code> in <code>UserDAO</code>, <code>ArrayList&lt;Booking&gt;</code> in <code>BookingDAO</code>, <code>HashMap&lt;String, Booking&gt;</code> in <code>BookingService</code>. Without generics, every call to <code>get()</code> would need a manual cast, and one wrong type would crash the parcel management system in production.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Generic Classes                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="generic-classes">
+  <div class="section-tag">Section 02</div>
+  <h2>Generic Classes</h2>
+  <p class="section-desc">A generic class is a class that takes a <strong>type parameter</strong>. Instead of hardcoding a specific type, you use a placeholder like <code>T</code> that gets replaced with a real type when someone creates an instance.</p>
+
+  <h3>Writing Your First Generic Class</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Box.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Box&lt;T&gt; {
+    private T item;
+
+    public void put(T item) {
+        this.item = item;
+    }
+
+    public T get() {
+        return item;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public class Box&lt;T&gt; {</div>
+        <div class="breakdown-explain"><code>T</code> is a type parameter &mdash; a placeholder. It does not exist as a real type. When someone creates <code>Box&lt;String&gt;</code>, every <code>T</code> in this class becomes <code>String</code>. When someone creates <code>Box&lt;User&gt;</code>, every <code>T</code> becomes <code>User</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private T item;</div>
+        <div class="breakdown-explain">The field's type is whatever <code>T</code> is. For <code>Box&lt;String&gt;</code>, this is <code>private String item;</code>. For <code>Box&lt;Booking&gt;</code>, this is <code>private Booking item;</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public void put(T item)</div>
+        <div class="breakdown-explain">The method only accepts an argument of type <code>T</code>. If this is <code>Box&lt;User&gt;</code>, you can only put a <code>User</code> in.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public T get()</div>
+        <div class="breakdown-explain">Returns whatever type <code>T</code> is. No casting needed by the caller.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Using the Generic Class</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BoxUsage.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// A box that holds Strings
+Box&lt;String&gt; nameBox = new Box&lt;&gt;();
+nameBox.put("Darshan");
+String name = nameBox.get();  // Returns String, no cast
+
+// A box that holds Users
+Box&lt;User&gt; userBox = new Box&lt;&gt;();
+userBox.put(new User("Darshan", "darshan@email.com"));
+User u = userBox.get();  // Returns User, no cast
+
+// A box that holds Integers
+Box&lt;Integer&gt; ageBox = new Box&lt;&gt;();
+ageBox.put(24);
+int age = ageBox.get();  // Auto-unboxing from Integer to int</code></pre>
+  </div>
+
+  <p>One class definition. Three completely different uses. The compiler enforces type safety for each one independently.</p>
+
+  <h3>Multiple Type Parameters</h3>
+
+  <p>A class can take more than one type parameter. Java's <code>HashMap&lt;K, V&gt;</code> is the most common example &mdash; <code>K</code> for key type, <code>V</code> for value type.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Pair.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Pair&lt;A, B&gt; {
+    private A first;
+    private B second;
+
+    public Pair(A first, B second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public A getFirst()  { return first; }
+    public B getSecond() { return second; }
+}
+
+// Usage
+Pair&lt;String, Integer&gt; entry = new Pair&lt;&gt;("Darshan", 24);
+String name = entry.getFirst();   // String
+int age = entry.getSecond();      // Integer (auto-unboxed)</code></pre>
+  </div>
+
+  <h3>Common Type Parameter Names</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Letter</th>
+        <th>Convention</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>T</code></td>
+        <td>Type (general purpose)</td>
+        <td><code>Box&lt;T&gt;</code>, <code>ArrayList&lt;T&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>E</code></td>
+        <td>Element (collections)</td>
+        <td><code>List&lt;E&gt;</code>, <code>Set&lt;E&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>K</code></td>
+        <td>Key (maps)</td>
+        <td><code>HashMap&lt;K, V&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>V</code></td>
+        <td>Value (maps)</td>
+        <td><code>HashMap&lt;K, V&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>N</code></td>
+        <td>Number</td>
+        <td><code>Calculator&lt;N&gt;</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>These are just conventions, not rules. You could write <code>class Box&lt;PIZZA&gt;</code> and Java would compile it fine. But following conventions makes your code readable. When other developers see <code>T</code>, they instantly know "this is a type parameter."</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Generic Methods                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="generic-methods">
+  <div class="section-tag">Section 03</div>
+  <h2>Generic Methods</h2>
+  <p class="section-desc">You do not need an entire generic class to use generics. A single method can have its own type parameter, independent of its class. The type parameter is declared <strong>before the return type</strong>.</p>
+
+  <h3>Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GenericMethod.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Util {
+
+    // Generic method — &lt;T&gt; declares the type parameter
+    public static &lt;T&gt; T findFirst(ArrayList&lt;T&gt; list) {
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public static &lt;T&gt; T findFirst(ArrayList&lt;T&gt; list)</div>
+        <div class="breakdown-explain">Three parts: <code>&lt;T&gt;</code> declares the type parameter. The second <code>T</code> is the return type (returns whatever type the list holds). <code>ArrayList&lt;T&gt; list</code> is the parameter (a list of that same type). Java infers <code>T</code> from whatever you pass in.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Calling Generic Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GenericMethodUsage.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(new User("Darshan", "d@email.com"));
+
+// Java infers T = User from the argument
+User first = Util.findFirst(users);  // Returns User
+
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+names.add("Nimbus");
+
+// Java infers T = String
+String firstName = Util.findFirst(names);  // Returns String</code></pre>
+  </div>
+
+  <p>You never had to tell Java what <code>T</code> is. It figured it out from the argument type. This is called <strong>type inference</strong>.</p>
+
+  <h3>A More Practical Example: Print Any Array</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PrintArray.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static &lt;T&gt; void printAll(T[] items) {
+    for (T item : items) {
+        System.out.println(item);
+    }
+}
+
+// Works with any type
+String[] names = {"Darshan", "Nimbus", "Parcel"};
+Integer[] ids = {101, 102, 103};
+
+printAll(names);  // T = String
+printAll(ids);    // T = Integer</code></pre>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: The Template Letter</div>
+    <p>A generic method is like a template letter with blanks: "Dear ___, your order #___ is ready." The blanks (<code>T</code>) get filled in with real values when you actually use the letter. One template, unlimited uses.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Bounded Types                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="bounded-types">
+  <div class="section-tag">Section 04</div>
+  <h2>Bounded Types</h2>
+  <p class="section-desc">Sometimes <code>T</code> being "anything" is too broad. What if you need <code>T</code> to be a number? Or something that can be compared? <strong>Bounded types</strong> let you restrict what <code>T</code> can be.</p>
+
+  <h3>Upper Bounded: <code>&lt;T extends Something&gt;</code></h3>
+
+  <p>The keyword <code>extends</code> means "T must be this type or any subclass of it." It sets an upper limit.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NumberBox.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// T must be Number or a subclass (Integer, Double, Float, etc.)
+public class NumberBox&lt;T extends Number&gt; {
+    private T value;
+
+    public NumberBox(T value) {
+        this.value = value;
+    }
+
+    public double toDouble() {
+        // We can call Number methods because T is guaranteed to be a Number
+        return value.doubleValue();
+    }
+}
+
+// OK — Integer extends Number
+NumberBox&lt;Integer&gt; intBox = new NumberBox&lt;&gt;(42);
+
+// OK — Double extends Number
+NumberBox&lt;Double&gt; doubleBox = new NumberBox&lt;&gt;(3.14);
+
+// COMPILE ERROR — String does NOT extend Number
+NumberBox&lt;String&gt; strBox = new NumberBox&lt;&gt;("hello");</code></pre>
+  </div>
+
+  <h3>Bounded Type in Methods: Comparable</h3>
+
+  <p>The most common bounded type in real Java code is <code>&lt;T extends Comparable&lt;T&gt;&gt;</code>. This means "T must be something that knows how to compare itself to other T's."</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">FindMax.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static &lt;T extends Comparable&lt;T&gt;&gt; T findMax(ArrayList&lt;T&gt; list) {
+    T max = list.get(0);
+    for (T item : list) {
+        if (item.compareTo(max) &gt; 0) {
+            max = item;
+        }
+    }
+    return max;
+}
+
+// Works with String (String implements Comparable&lt;String&gt;)
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;(List.of("Darshan", "Nimbus", "Alpha"));
+String maxName = findMax(names);  // "Nimbus" (alphabetically last)
+
+// Works with Integer (Integer implements Comparable&lt;Integer&gt;)
+ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;(List.of(5, 12, 3, 8));
+int maxNum = findMax(nums);  // 12</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;T extends Comparable&lt;T&gt;&gt;</div>
+        <div class="breakdown-explain">T must implement the <code>Comparable</code> interface for its own type. This guarantees we can call <code>.compareTo()</code> on any two T objects. Without this bound, Java would not let us call <code>compareTo</code> because it does not know T has that method.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">item.compareTo(max) &gt; 0</div>
+        <div class="breakdown-explain"><code>compareTo</code> returns a positive number if <code>item</code> is greater than <code>max</code>. We can call this ONLY because of the <code>extends Comparable&lt;T&gt;</code> bound.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Multiple Bounds</h3>
+
+  <p>A type parameter can have multiple bounds using <code>&amp;</code>. The class must come first, then interfaces.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MultipleBounds.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// T must extend Number AND implement Comparable
+public static &lt;T extends Number &amp; Comparable&lt;T&gt;&gt; T findMax(ArrayList&lt;T&gt; list) {
+    T max = list.get(0);
+    for (T item : list) {
+        if (item.compareTo(max) &gt; 0) {
+            max = item;
+        }
+    }
+    return max;
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Watch Out</div>
+    <p>In generics, <code>extends</code> means both "extends a class" AND "implements an interface." You always write <code>extends</code>, never <code>implements</code>, even when the bound is an interface. <code>&lt;T implements Comparable&gt;</code> is a syntax error.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Wildcards                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="wildcards">
+  <div class="section-tag">Section 05</div>
+  <h2>Wildcards</h2>
+  <p class="section-desc">Wildcards (<code>?</code>) are used when you do not care about the exact type, or when you want to accept a <em>range</em> of types. They appear in method parameters and variable declarations &mdash; never in class definitions.</p>
+
+  <h3>The Problem Wildcards Solve</h3>
+
+  <p>You might expect this to work, but it does not:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WildcardProblem.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static void printList(ArrayList&lt;Object&gt; list) {
+    for (Object item : list) {
+        System.out.println(item);
+    }
+}
+
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+printList(names);  // COMPILE ERROR!
+// ArrayList&lt;String&gt; is NOT a subtype of ArrayList&lt;Object&gt;</code></pre>
+  </div>
+
+  <p>This is counterintuitive. <code>String</code> is a subtype of <code>Object</code>, so why is <code>ArrayList&lt;String&gt;</code> not a subtype of <code>ArrayList&lt;Object&gt;</code>? Because if it were, you could add an <code>Integer</code> to a list of <code>String</code>s through the <code>Object</code> reference, which would break type safety. Java prevents this at compile time.</p>
+
+  <h3>Unbounded Wildcard: <code>?</code></h3>
+
+  <p>The <code>?</code> wildcard means "any type." Use it when you only need to read from a collection and do not care about the specific type.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UnboundedWildcard.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Accepts ArrayList of ANY type
+public static void printList(ArrayList&lt;?&gt; list) {
+    for (Object item : list) {
+        System.out.println(item);
+    }
+}
+
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;();
+ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+printList(names);  // OK
+printList(nums);   // OK
+printList(users);  // OK</code></pre>
+  </div>
+
+  <h3>Upper Bounded Wildcard: <code>? extends T</code></h3>
+
+  <p>"Accept this type or any subtype." Used when you want to <strong>read</strong> from a collection.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UpperBoundedWildcard.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Accepts ArrayList of Number or any subclass (Integer, Double, Float...)
+public static double sumAll(ArrayList&lt;? extends Number&gt; numbers) {
+    double total = 0;
+    for (Number n : numbers) {
+        total += n.doubleValue();
+    }
+    return total;
+}
+
+ArrayList&lt;Integer&gt; ints = new ArrayList&lt;&gt;(List.of(1, 2, 3));
+ArrayList&lt;Double&gt; doubles = new ArrayList&lt;&gt;(List.of(1.5, 2.5));
+
+sumAll(ints);     // OK — Integer extends Number
+sumAll(doubles);  // OK — Double extends Number</code></pre>
+  </div>
+
+  <h3>Lower Bounded Wildcard: <code>? super T</code></h3>
+
+  <p>"Accept this type or any supertype." Used when you want to <strong>write</strong> to a collection.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LowerBoundedWildcard.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Accepts ArrayList of Integer or any supertype (Number, Object)
+public static void addNumbers(ArrayList&lt;? super Integer&gt; list) {
+    list.add(1);
+    list.add(2);
+    list.add(3);
+}
+
+ArrayList&lt;Integer&gt; ints = new ArrayList&lt;&gt;();
+ArrayList&lt;Number&gt; nums = new ArrayList&lt;&gt;();
+ArrayList&lt;Object&gt; objs = new ArrayList&lt;&gt;();
+
+addNumbers(ints);  // OK — Integer is Integer
+addNumbers(nums);  // OK — Number is a supertype of Integer
+addNumbers(objs);  // OK — Object is a supertype of Integer</code></pre>
+  </div>
+
+  <h3>PECS Rule: Producer Extends, Consumer Super</h3>
+
+  <p>This is the golden rule for remembering which wildcard to use:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Wildcard</th>
+        <th>Mnemonic</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>You READ from the collection (it <strong>produces</strong> values)</td>
+        <td><code>? extends T</code></td>
+        <td><strong>P</strong>roducer <strong>E</strong>xtends</td>
+        <td>You know everything is at least <code>T</code>, so reading is safe</td>
+      </tr>
+      <tr>
+        <td>You WRITE to the collection (it <strong>consumes</strong> values)</td>
+        <td><code>? super T</code></td>
+        <td><strong>C</strong>onsumer <strong>S</strong>uper</td>
+        <td>You know the collection can hold <code>T</code> or bigger, so adding <code>T</code> is safe</td>
+      </tr>
+      <tr>
+        <td>You both read AND write</td>
+        <td>No wildcard, use <code>T</code></td>
+        <td>&mdash;</td>
+        <td>You need the exact type for both operations</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>With <code>? extends Number</code> you can GET items out (as Number) but you CANNOT put items in (because Java does not know the exact subtype). With <code>? super Integer</code> you can PUT Integer items in but you cannot safely GET specific types out (you only get Object).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Type Erasure                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="type-erasure">
+  <div class="section-tag">Section 06</div>
+  <h2>Type Erasure</h2>
+  <p class="section-desc">Here is a fact that surprises most Java developers: generics only exist at <strong>compile time</strong>. The JVM has no idea about them at runtime. This design decision is called <strong>type erasure</strong>, and it explains many of the "weird" limitations of generics.</p>
+
+  <h3>What Actually Happens</h3>
+
+  <p>When you compile your code, the Java compiler:</p>
+  <ol class="steps">
+    <li>Checks all your generic types for correctness (type safety)</li>
+    <li>Replaces every type parameter <code>T</code> with <code>Object</code> (or the bound, if there is one)</li>
+    <li>Inserts casts where needed</li>
+    <li>Produces bytecode that has NO generic information at all</li>
+  </ol>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">What You Write</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(new User("Darshan"));
+User u = users.get(0);</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">What JVM Sees (After Erasure)</div>
+      <div class="comparison-body">
+        <pre><code class="language-java">ArrayList users = new ArrayList();
+users.add(new User("Darshan"));
+User u = (User) users.get(0);</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <p>At runtime, <code>ArrayList&lt;User&gt;</code> and <code>ArrayList&lt;Booking&gt;</code> are the <strong>exact same class</strong>. The JVM sees just <code>ArrayList</code>.</p>
+
+  <h3>What You CANNOT Do Because of Type Erasure</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ErasureLimitations.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Box&lt;T&gt; {
+
+    // CANNOT create an instance of T
+    T item = new T();          // ERROR: Type parameter T cannot be instantiated
+
+    // CANNOT create an array of T
+    T[] items = new T[10];     // ERROR: Cannot create a generic array
+
+    // CANNOT use instanceof with T
+    if (obj instanceof T) {}   // ERROR: Cannot perform instanceof check against T
+
+    // CANNOT use T in a static context
+    static T value;            // ERROR: Cannot make a static reference to T
+}</code></pre>
+  </div>
+
+  <p>All of these fail because <code>T</code> does not exist at runtime. The JVM cannot create an instance of something it does not know about. It cannot check <code>instanceof</code> against a type it has never heard of. These are compile-time constructs that get erased.</p>
+
+  <h3>Bounded Type Erasure</h3>
+
+  <p>If you have <code>&lt;T extends Number&gt;</code>, the compiler erases <code>T</code> to <code>Number</code> (the bound) instead of <code>Object</code>. This is why bounded types can call methods of their bound.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Gotcha</div>
+    <p>Because of type erasure, you cannot overload methods based on generic types. <code>void process(ArrayList&lt;User&gt; list)</code> and <code>void process(ArrayList&lt;Booking&gt; list)</code> have the same erasure &mdash; <code>void process(ArrayList list)</code> &mdash; so Java treats them as duplicate methods.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Generic Interfaces                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="generic-interfaces">
+  <div class="section-tag">Section 07</div>
+  <h2>Generic Interfaces</h2>
+  <p class="section-desc">Many of Java's most important interfaces are generic. When you implement them, you specify the type parameter, and the compiler enforces type safety on all the methods you must implement.</p>
+
+  <h3>Comparable&lt;T&gt;</h3>
+
+  <p><code>Comparable&lt;T&gt;</code> has one method: <code>compareTo(T other)</code>. It defines the <strong>natural ordering</strong> of objects.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class User implements Comparable&lt;User&gt; {
+    private String name;
+    private String email;
+
+    @Override
+    public int compareTo(User other) {
+        return this.name.compareTo(other.name);  // Sort by name
+    }
+}
+
+// Now you can sort users
+ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+Collections.sort(users);  // Uses compareTo internally</code></pre>
+  </div>
+
+  <p>Without the generic parameter, <code>compareTo</code> would take an <code>Object</code> and you would need to cast it. With <code>Comparable&lt;User&gt;</code>, the parameter is already typed as <code>User</code>.</p>
+
+  <h3>Iterable&lt;T&gt;</h3>
+
+  <p>If a class implements <code>Iterable&lt;T&gt;</code>, it can be used in a for-each loop.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingList.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class BookingList implements Iterable&lt;Booking&gt; {
+    private ArrayList&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+
+    public void add(Booking b) {
+        bookings.add(b);
+    }
+
+    @Override
+    public Iterator&lt;Booking&gt; iterator() {
+        return bookings.iterator();
+    }
+}
+
+// Now you can use for-each
+BookingList list = new BookingList();
+for (Booking b : list) {
+    System.out.println(b.getTrackingId());
+}</code></pre>
+  </div>
+
+  <h3>Comparator&lt;T&gt;</h3>
+
+  <p><code>Comparator&lt;T&gt;</code> defines an <strong>external</strong> ordering. Unlike <code>Comparable</code> (which is built into the class), a <code>Comparator</code> is a separate object that knows how to compare two T's.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingComparators.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Sort bookings by cost
+Comparator&lt;Booking&gt; byCost = new Comparator&lt;Booking&gt;() {
+    @Override
+    public int compare(Booking a, Booking b) {
+        return Double.compare(a.getCost(), b.getCost());
+    }
+};
+
+// Sort bookings by date
+Comparator&lt;Booking&gt; byDate = new Comparator&lt;Booking&gt;() {
+    @Override
+    public int compare(Booking a, Booking b) {
+        return a.getBookingDate().compareTo(b.getBookingDate());
+    }
+};
+
+ArrayList&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+Collections.sort(bookings, byCost);   // Sort by cost
+Collections.sort(bookings, byDate);   // Sort by date</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses <code>Comparator&lt;Booking&gt;</code> to sort bookings by cost, date, or status in the admin console. Without generics, the <code>compare</code> method would take <code>Object</code> parameters and you would need to cast inside every comparator &mdash; more code, more risk of <code>ClassCastException</code>.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Nimbus Examples                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-examples">
+  <div class="section-tag">Section 08</div>
+  <h2>Generics in Nimbus</h2>
+  <p class="section-desc">Every layer of Nimbus uses generics. Here is exactly where and why.</p>
+
+  <h3>UserDAO &mdash; <code>ArrayList&lt;User&gt;</code></h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserDAO.java (simplified)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class UserDAO {
+
+    public ArrayList&lt;User&gt; getAllUsers() throws SQLException {
+        ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+        // ... JDBC query ...
+        while (rs.next()) {
+            User u = new User();
+            u.setName(rs.getString("name"));
+            u.setEmail(rs.getString("email"));
+            users.add(u);  // Only User objects allowed
+        }
+        return users;
+    }
+}</code></pre>
+  </div>
+
+  <p>The return type <code>ArrayList&lt;User&gt;</code> guarantees that callers get a list of <code>User</code> objects. No casting needed on the receiving end.</p>
+
+  <h3>BookingService &mdash; <code>HashMap&lt;String, Booking&gt;</code></h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingService.java (simplified)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class BookingService {
+
+    // Key = tracking ID (String), Value = Booking object
+    private HashMap&lt;String, Booking&gt; activeBookings = new HashMap&lt;&gt;();
+
+    public void trackBooking(Booking booking) {
+        activeBookings.put(booking.getTrackingId(), booking);
+    }
+
+    public Booking findByTrackingId(String trackingId) {
+        return activeBookings.get(trackingId);  // Returns Booking, not Object
+    }
+}</code></pre>
+  </div>
+
+  <h3>Sorting Bookings &mdash; <code>Comparator&lt;Booking&gt;</code></h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingReports.java (simplified)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class BookingReports {
+
+    public ArrayList&lt;Booking&gt; sortByCost(ArrayList&lt;Booking&gt; bookings) {
+        Comparator&lt;Booking&gt; byCost = new Comparator&lt;Booking&gt;() {
+            @Override
+            public int compare(Booking a, Booking b) {
+                return Double.compare(a.getCost(), b.getCost());
+            }
+        };
+        Collections.sort(bookings, byCost);
+        return bookings;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Generics are not something you "add" to Nimbus &mdash; they are already woven into every data structure. <code>ArrayList&lt;User&gt;</code> in the DAO layer, <code>HashMap&lt;String, Booking&gt;</code> in the service layer, <code>Comparator&lt;Booking&gt;</code> in the reports layer. Removing generics would mean adding casts everywhere and losing all compile-time safety.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Why No Primitives                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="no-primitives">
+  <div class="section-tag">Section 09</div>
+  <h2>Why You Cannot Use Primitives</h2>
+  <p class="section-desc">Generics only work with <strong>reference types</strong> (objects). Primitive types like <code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code> are not objects, so they cannot be used as type parameters.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PrimitivesFail.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// These will NOT compile
+ArrayList&lt;int&gt; numbers = new ArrayList&lt;&gt;();       // ERROR
+HashMap&lt;int, double&gt; map = new HashMap&lt;&gt;();       // ERROR
+Box&lt;boolean&gt; flag = new Box&lt;&gt;();                  // ERROR
+
+// Use wrapper classes instead
+ArrayList&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();   // OK
+HashMap&lt;Integer, Double&gt; map = new HashMap&lt;&gt;();   // OK
+Box&lt;Boolean&gt; flag = new Box&lt;&gt;();                  // OK</code></pre>
+  </div>
+
+  <h3>Wrapper Classes</h3>
+
+  <p>Each primitive has a corresponding wrapper class that is a real object:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Primitive</th>
+        <th>Wrapper Class</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>int</code></td>
+        <td><code>Integer</code></td>
+        <td><code>ArrayList&lt;Integer&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>double</code></td>
+        <td><code>Double</code></td>
+        <td><code>ArrayList&lt;Double&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>boolean</code></td>
+        <td><code>Boolean</code></td>
+        <td><code>ArrayList&lt;Boolean&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>char</code></td>
+        <td><code>Character</code></td>
+        <td><code>ArrayList&lt;Character&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>long</code></td>
+        <td><code>Long</code></td>
+        <td><code>ArrayList&lt;Long&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>float</code></td>
+        <td><code>Float</code></td>
+        <td><code>ArrayList&lt;Float&gt;</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Autoboxing and Unboxing</h3>
+
+  <p>Java automatically converts between primitives and wrappers. This is called <strong>autoboxing</strong> (primitive &rarr; wrapper) and <strong>unboxing</strong> (wrapper &rarr; primitive).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Autoboxing.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">ArrayList&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+
+// Autoboxing: int 42 → Integer.valueOf(42)
+numbers.add(42);
+
+// Unboxing: Integer → int
+int first = numbers.get(0);
+
+// Behind the scenes, Java did:
+// numbers.add(Integer.valueOf(42));
+// int first = numbers.get(0).intValue();</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Performance Warning</div>
+    <p>Autoboxing creates objects. If you are doing millions of operations, <code>ArrayList&lt;Integer&gt;</code> is significantly slower than a primitive <code>int[]</code> array. For Nimbus-scale data (hundreds of bookings), this does not matter. For high-performance computing, it does.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Common Mistakes                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-mistakes">
+  <div class="section-tag">Section 10</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">These are the errors every Java developer hits when learning generics. Know them so you do not repeat them.</p>
+
+  <h3>Mistake 1: Using Raw Types</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// Raw type — no type parameter
+ArrayList users = new ArrayList();
+users.add(new User("Darshan"));
+users.add("Not a user");  // No error!
+
+User u = (User) users.get(1);
+// ClassCastException at runtime!</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// Parameterized type
+ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(new User("Darshan"));
+users.add("Not a user");
+// COMPILE ERROR — caught immediately
+
+User u = users.get(0);  // No cast</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 2: Using <code>ArrayList&lt;int&gt;</code></h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">ArrayList&lt;int&gt; ids = new ArrayList&lt;&gt;();
+// COMPILE ERROR: type argument
+// cannot be a primitive type</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">ArrayList&lt;Integer&gt; ids = new ArrayList&lt;&gt;();
+ids.add(101);  // Autoboxing handles it</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 3: Creating Instances of Type Parameters</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">public &lt;T&gt; T create() {
+    return new T();  // ERROR!
+    // T is erased at runtime
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// Pass the class object
+public &lt;T&gt; T create(Class&lt;T&gt; type)
+    throws Exception {
+    return type.getDeclaredConstructor()
+               .newInstance();
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 4: Assuming Generic Subtyping</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong Assumption</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// String extends Object, so...
+ArrayList&lt;Object&gt; list
+    = new ArrayList&lt;String&gt;();
+// COMPILE ERROR!
+// Generic types are invariant</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right Approach</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// Use wildcards instead
+ArrayList&lt;? extends Object&gt; list
+    = new ArrayList&lt;String&gt;();
+// OK — wildcard allows it</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 5: Overloading with Different Generic Types</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// These two methods have the SAME
+// erasure (both become ArrayList)
+void process(ArrayList&lt;User&gt; u) {}
+void process(ArrayList&lt;Booking&gt; b) {}
+// COMPILE ERROR: duplicate method</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre><code class="language-java">// Give them different names
+void processUsers(ArrayList&lt;User&gt; u) {}
+void processBookings(
+    ArrayList&lt;Booking&gt; b) {}
+// No ambiguity</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 11</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Write these yourself. Do not copy-paste. The goal is muscle memory.</p>
+
+  <h3>Exercise 1: Generic Stack</h3>
+
+  <p>Create a generic class <code>Stack&lt;T&gt;</code> that uses an <code>ArrayList&lt;T&gt;</code> internally. Implement <code>push(T item)</code>, <code>pop()</code> (returns and removes top), <code>peek()</code> (returns top without removing), and <code>isEmpty()</code>. Test it with both <code>Stack&lt;String&gt;</code> and <code>Stack&lt;Integer&gt;</code>.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public class Stack&lt;T&gt; {
+    private ArrayList&lt;T&gt; items = new ArrayList&lt;&gt;();
+
+    public void push(T item) {
+        items.add(item);
+    }
+
+    public T pop() {
+        if (isEmpty()) throw new RuntimeException("Stack is empty");
+        return items.remove(items.size() - 1);
+    }
+
+    public T peek() {
+        if (isEmpty()) throw new RuntimeException("Stack is empty");
+        return items.get(items.size() - 1);
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+}
+
+// Test
+Stack&lt;String&gt; names = new Stack&lt;&gt;();
+names.push("Darshan");
+names.push("Nimbus");
+System.out.println(names.pop());   // Nimbus
+System.out.println(names.peek());  // Darshan</code></pre></div>
+        <div class="breakdown-explain">The class uses <code>T</code> everywhere &mdash; the internal list, the push parameter, and the pop/peek return types. One class works for any type.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 2: Generic findAll Method</h3>
+
+  <p>Write a generic method <code>&lt;T&gt; ArrayList&lt;T&gt; findAll(ArrayList&lt;T&gt; list, T target)</code> that returns a new list containing all elements that are <code>.equals()</code> to the target. Test with <code>ArrayList&lt;String&gt;</code> and <code>ArrayList&lt;Integer&gt;</code>.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public static &lt;T&gt; ArrayList&lt;T&gt; findAll(ArrayList&lt;T&gt; list, T target) {
+    ArrayList&lt;T&gt; result = new ArrayList&lt;&gt;();
+    for (T item : list) {
+        if (item.equals(target)) {
+            result.add(item);
+        }
+    }
+    return result;
+}
+
+// Test
+ArrayList&lt;String&gt; words = new ArrayList&lt;&gt;(List.of("hi", "hello", "hi", "hey", "hi"));
+ArrayList&lt;String&gt; matches = findAll(words, "hi");
+System.out.println(matches.size());  // 3</code></pre></div>
+        <div class="breakdown-explain">Java infers <code>T</code> = <code>String</code> from the arguments. The method is type-safe: you cannot pass a list of Strings and search for an Integer.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 3: Bounded Type &mdash; findMin</h3>
+
+  <p>Write a method <code>&lt;T extends Comparable&lt;T&gt;&gt; T findMin(ArrayList&lt;T&gt; list)</code> that returns the smallest element. Test with a list of <code>Integer</code> and a list of <code>String</code>.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public static &lt;T extends Comparable&lt;T&gt;&gt; T findMin(ArrayList&lt;T&gt; list) {
+    if (list.isEmpty()) throw new RuntimeException("List is empty");
+    T min = list.get(0);
+    for (T item : list) {
+        if (item.compareTo(min) &lt; 0) {
+            min = item;
+        }
+    }
+    return min;
+}
+
+ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;(List.of(8, 3, 12, 1, 5));
+System.out.println(findMin(nums));  // 1
+
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;(List.of("Nimbus", "Alpha", "Zeta"));
+System.out.println(findMin(names));  // Alpha</code></pre></div>
+        <div class="breakdown-explain">The bound <code>extends Comparable&lt;T&gt;</code> is required so we can call <code>compareTo</code>. Without it, Java does not know T has that method.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 4: Generic Pair with Swap</h3>
+
+  <p>Create a <code>Pair&lt;A, B&gt;</code> class with <code>getFirst()</code>, <code>getSecond()</code>, and a method <code>swap()</code> that returns a new <code>Pair&lt;B, A&gt;</code> with the values reversed. Note the return type carefully.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public class Pair&lt;A, B&gt; {
+    private A first;
+    private B second;
+
+    public Pair(A first, B second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public A getFirst()  { return first; }
+    public B getSecond() { return second; }
+
+    public Pair&lt;B, A&gt; swap() {
+        return new Pair&lt;&gt;(second, first);
+    }
+}
+
+Pair&lt;String, Integer&gt; p1 = new Pair&lt;&gt;("Darshan", 24);
+Pair&lt;Integer, String&gt; p2 = p1.swap();
+System.out.println(p2.getFirst());   // 24
+System.out.println(p2.getSecond());  // Darshan</code></pre></div>
+        <div class="breakdown-explain">The <code>swap()</code> method returns <code>Pair&lt;B, A&gt;</code> &mdash; the type parameters are reversed. The compiler tracks this, so <code>p2.getFirst()</code> returns <code>Integer</code> and <code>p2.getSecond()</code> returns <code>String</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 5: Wildcard Method &mdash; Count Elements</h3>
+
+  <p>Write a method <code>int countElements(ArrayList&lt;?&gt; list)</code> that returns the number of non-null elements. It should accept <code>ArrayList</code> of ANY type. Think about which wildcard to use and why.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public static int countElements(ArrayList&lt;?&gt; list) {
+    int count = 0;
+    for (Object item : list) {
+        if (item != null) {
+            count++;
+        }
+    }
+    return count;
+}
+
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;(List.of("A", "B"));
+ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+System.out.println(countElements(names));  // 2
+System.out.println(countElements(users));  // 0</code></pre></div>
+        <div class="breakdown-explain">Unbounded wildcard <code>&lt;?&gt;</code> is correct here because we do not need to know the type &mdash; we only need to check for null. We read items as <code>Object</code> since that is all we need.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Exercise 6: Nimbus &mdash; Generic DAO Interface</h3>
+
+  <p>Design a generic interface <code>DAO&lt;T&gt;</code> with methods: <code>void save(T entity)</code>, <code>T findById(int id)</code>, <code>ArrayList&lt;T&gt; findAll()</code>, <code>void delete(int id)</code>. Then write class headers (no implementation) for <code>UserDAO implements DAO&lt;User&gt;</code> and <code>BookingDAO implements DAO&lt;Booking&gt;</code>.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down</button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+<div class="breakdown-code"><pre><code class="language-java">public interface DAO&lt;T&gt; {
+    void save(T entity) throws SQLException;
+    T findById(int id) throws SQLException;
+    ArrayList&lt;T&gt; findAll() throws SQLException;
+    void delete(int id) throws SQLException;
+}
+
+public class UserDAO implements DAO&lt;User&gt; {
+    @Override
+    public void save(User entity) throws SQLException { /* ... */ }
+    @Override
+    public User findById(int id) throws SQLException { /* ... */ }
+    @Override
+    public ArrayList&lt;User&gt; findAll() throws SQLException { /* ... */ }
+    @Override
+    public void delete(int id) throws SQLException { /* ... */ }
+}
+
+public class BookingDAO implements DAO&lt;Booking&gt; {
+    @Override
+    public void save(Booking entity) throws SQLException { /* ... */ }
+    @Override
+    public Booking findById(int id) throws SQLException { /* ... */ }
+    @Override
+    public ArrayList&lt;Booking&gt; findAll() throws SQLException { /* ... */ }
+    @Override
+    public void delete(int id) throws SQLException { /* ... */ }
+}</code></pre></div>
+        <div class="breakdown-explain">One interface, two implementations. When <code>UserDAO</code> says <code>implements DAO&lt;User&gt;</code>, every <code>T</code> in the interface becomes <code>User</code>. The compiler enforces that <code>findById</code> returns a <code>User</code>, not an <code>Object</code>. This is the real power of generic interfaces.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="exceptions.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Exception Handling</span>
+  </a>
+  <a href="collections.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Collections</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrays &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link active"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is an Array?                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-array">
+  <div class="section-tag">Section 01</div>
+  <h2>What is an Array?</h2>
+  <p class="section-desc">An array is a <strong>fixed-size container</strong> that holds multiple values of the <strong>same type</strong>. Once you create an array with 5 slots, it will always have 5 slots &mdash; you cannot add a 6th or remove one. Every slot holds the same kind of data: all ints, all Strings, all booleans.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: A Row of Mailboxes</div>
+    <p>Imagine a row of 5 mailboxes mounted on a wall in an apartment lobby. Each mailbox is <strong>numbered</strong> (0, 1, 2, 3, 4), and each holds <strong>one item</strong> (a letter). You cannot add a 6th mailbox without tearing down the wall and installing a new row. You cannot put a couch in a mailbox &mdash; it only accepts letters. That is exactly what an array is in Java.</p>
+    <ul>
+      <li><strong>Fixed size</strong> &mdash; 5 mailboxes means 5 mailboxes, forever</li>
+      <li><strong>Numbered starting from 0</strong> &mdash; the first mailbox is #0, not #1</li>
+      <li><strong>Same type only</strong> &mdash; all letters, no couches</li>
+      <li><strong>Direct access</strong> &mdash; you go straight to mailbox #3 without checking #0, #1, #2</li>
+    </ul>
+  </div>
+
+  <div class="diagram">
+    <pre>
+  AN ARRAY OF 5 INTEGERS
+  =======================
+
+  Index:     [0]    [1]    [2]    [3]    [4]
+           +------+------+------+------+------+
+  Values:  |  10  |  20  |  30  |  40  |  50  |
+           +------+------+------+------+------+
+
+  - Length = 5 (slots 0 through 4)
+  - Every slot holds an int
+  - Access any slot directly: nums[2] gives you 30
+  - First element: nums[0] = 10
+  - Last element:  nums[4] = 50  (or nums[nums.length - 1])
+    </pre>
+    <div class="diagram-label">Arrays are contiguous blocks of memory with numbered slots</div>
+  </div>
+
+  <p>Before Java introduced <code>ArrayList</code> (in Java 1.2), arrays were the ONLY way to store a collection of values. Even today, arrays are used everywhere &mdash; the <code>String[] args</code> parameter in your <code>main</code> method is an array. Understanding arrays is non-negotiable.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus has exactly 5 parcel statuses: <code>"Booked"</code>, <code>"Picked Up"</code>, <code>"In Transit"</code>, <code>"Delivered"</code>, <code>"Returned"</code>. This is a perfect use case for an array &mdash; a fixed set of values that never changes. You would declare it as <code>String[] statuses = {"Booked", "Picked Up", "In Transit", "Delivered", "Returned"}</code> and use it throughout the application whenever you need to display or validate a status.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Declaration and Initialization                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="declaration">
+  <div class="section-tag">Section 02</div>
+  <h2>Declaration and Initialization</h2>
+  <p class="section-desc">There are multiple ways to create an array in Java. Each approach has its use case &mdash; sometimes you know the values upfront, sometimes you only know the size and will fill it later.</p>
+
+  <h3>Declare Then Initialize</h3>
+
+  <p>You declare the array variable first, then create the array with <code>new</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Declare then initialize</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Step 1: Declare the variable (no array exists yet)
+int[] nums;
+
+// Step 2: Create the array with a specific size
+nums = new int[5];
+
+// Now nums has 5 slots, all filled with default value 0:
+// nums = [0, 0, 0, 0, 0]
+
+// Step 3: Fill in values manually
+nums[0] = 10;
+nums[1] = 20;
+nums[2] = 30;
+nums[3] = 40;
+nums[4] = 50;
+// nums = [10, 20, 30, 40, 50]</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int[] nums;</div>
+        <div class="breakdown-explain">Declares a variable called <code>nums</code> that CAN hold an int array. No array exists yet &mdash; <code>nums</code> is <code>null</code> at this point.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">nums = new int[5];</div>
+        <div class="breakdown-explain"><code>new int[5]</code> creates an array of 5 integers in memory. Each slot starts at the default value <code>0</code>. The variable <code>nums</code> now points to this array.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">nums[0] = 10;</div>
+        <div class="breakdown-explain">Sets the first slot (index 0) to the value 10. Array indexing always starts at 0 in Java.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Declare and Initialize in One Line</h3>
+
+  <p>When you already know the values, use the shorthand syntax:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Shorthand initialization</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// All in one line — size is inferred from the values
+int[] nums = {1, 2, 3, 4, 5};          // 5 elements
+String[] names = {"Alice", "Bob", "Charlie"};  // 3 elements
+double[] prices = {99.99, 149.50, 29.00};      // 3 elements
+boolean[] flags = {true, false, true};          // 3 elements
+
+// For Nimbus:
+String[] statuses = {"Booked", "Picked Up", "In Transit", "Delivered", "Returned"};
+
+// You can also use new with values (less common but valid):
+int[] nums2 = new int[]{10, 20, 30};</code></pre>
+  </div>
+
+  <h3>String Array with new</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Creating a String array</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Create a String array of size 3 — filled with null by default
+String[] names = new String[3];
+// names = [null, null, null]
+
+names[0] = "Darshan";
+names[1] = "Priya";
+names[2] = "Amit";
+// names = ["Darshan", "Priya", "Amit"]
+
+System.out.println(names[0]);  // Darshan
+System.out.println(names.length);  // 3</code></pre>
+  </div>
+
+  <h3>Default Values</h3>
+
+  <p>When you create an array with <code>new</code>, Java fills every slot with a <strong>default value</strong> based on the type. This is important &mdash; you are never dealing with garbage data.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Array Type</th>
+        <th>Default Value</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>int[]</code></td>
+        <td><code>0</code></td>
+        <td><code>new int[3]</code> &rarr; <code>[0, 0, 0]</code></td>
+      </tr>
+      <tr>
+        <td><code>double[]</code></td>
+        <td><code>0.0</code></td>
+        <td><code>new double[3]</code> &rarr; <code>[0.0, 0.0, 0.0]</code></td>
+      </tr>
+      <tr>
+        <td><code>boolean[]</code></td>
+        <td><code>false</code></td>
+        <td><code>new boolean[3]</code> &rarr; <code>[false, false, false]</code></td>
+      </tr>
+      <tr>
+        <td><code>char[]</code></td>
+        <td><code>'\u0000'</code> (null character)</td>
+        <td><code>new char[3]</code> &rarr; <code>['\0', '\0', '\0']</code></td>
+      </tr>
+      <tr>
+        <td><code>String[]</code></td>
+        <td><code>null</code></td>
+        <td><code>new String[3]</code> &rarr; <code>[null, null, null]</code></td>
+      </tr>
+      <tr>
+        <td>Any object array</td>
+        <td><code>null</code></td>
+        <td><code>new Booking[5]</code> &rarr; <code>[null, null, null, null, null]</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Watch Out</div>
+    <p>For <code>String[]</code> and object arrays, the default is <code>null</code>, not an empty string. If you try to call a method on a <code>null</code> element like <code>names[2].length()</code> before assigning a value, you will get a <code>NullPointerException</code>. Always assign values before using them.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Accessing Elements                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="accessing">
+  <div class="section-tag">Section 03</div>
+  <h2>Accessing Elements</h2>
+  <p class="section-desc">Arrays are <strong>zero-indexed</strong> in Java. The first element is at index <code>0</code>, the second at index <code>1</code>, and the last at index <code>length - 1</code>. This is one of the most common sources of confusion and bugs for beginners.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Accessing array elements</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] statuses = {"Booked", "Picked Up", "In Transit", "Delivered", "Returned"};
+
+// Access by index
+System.out.println(statuses[0]);  // Booked       (first)
+System.out.println(statuses[2]);  // In Transit   (third)
+System.out.println(statuses[4]);  // Returned     (last)
+
+// Get the length (number of elements)
+System.out.println(statuses.length);  // 5
+
+// Access the last element dynamically
+System.out.println(statuses[statuses.length - 1]);  // Returned
+
+// Modify an element
+statuses[3] = "Successfully Delivered";
+System.out.println(statuses[3]);  // Successfully Delivered</code></pre>
+  </div>
+
+  <h3>ArrayIndexOutOfBoundsException</h3>
+
+  <p>If you try to access an index that does not exist, Java throws an <code>ArrayIndexOutOfBoundsException</code>. This is a <strong>runtime error</strong> &mdash; your code compiles fine but crashes when it runs.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Out of bounds error</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] nums = {10, 20, 30};  // Indices 0, 1, 2
+
+System.out.println(nums[3]);  // CRASH! ArrayIndexOutOfBoundsException
+// Index 3 does not exist. Max valid index is 2 (length - 1).
+
+System.out.println(nums[-1]); // CRASH! Negative indices do not exist in Java.
+
+// Safe way to access:
+int index = 3;
+if (index &gt;= 0 &amp;&amp; index &lt; nums.length) {
+    System.out.println(nums[index]);
+} else {
+    System.out.println("Invalid index: " + index);
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why Zero-Indexed?</div>
+    <p>The index represents an <strong>offset</strong> from the start of the array in memory. The first element is at offset 0 (zero distance from the start). The second element is at offset 1 (one position away). This convention comes from C and is used by almost every programming language: Java, JavaScript, Python, C++, Go, Rust &mdash; all zero-indexed. Remembering this will save you from hundreds of off-by-one bugs in your career.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Iterating Over Arrays                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="iterating">
+  <div class="section-tag">Section 04</div>
+  <h2>Iterating Over Arrays</h2>
+  <p class="section-desc">There are two main ways to loop through an array: the traditional <code>for</code> loop (when you need the index) and the enhanced <code>for-each</code> loop (when you just need the values).</p>
+
+  <h3>Traditional for Loop</h3>
+
+  <p>Use this when you need to know the <strong>position</strong> of each element, or when you need to modify elements.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Traditional for loop</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] statuses = {"Booked", "Picked Up", "In Transit", "Delivered", "Returned"};
+
+// Print each status with its index
+for (int i = 0; i &lt; statuses.length; i++) {
+    System.out.println("Index " + i + ": " + statuses[i]);
+}
+// Output:
+// Index 0: Booked
+// Index 1: Picked Up
+// Index 2: In Transit
+// Index 3: Delivered
+// Index 4: Returned
+
+// Use case: Display a numbered menu
+System.out.println("=== Parcel Status Options ===");
+for (int i = 0; i &lt; statuses.length; i++) {
+    System.out.println((i + 1) + ". " + statuses[i]);
+}
+// Output:
+// 1. Booked
+// 2. Picked Up
+// 3. In Transit
+// 4. Delivered
+// 5. Returned</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">for (int i = 0; i &lt; statuses.length; i++)</div>
+        <div class="breakdown-explain"><code>i = 0</code> starts at the first index. <code>i &lt; statuses.length</code> stops BEFORE going past the last index (5 elements = indices 0-4, so we stop when i reaches 5). <code>i++</code> moves to the next index each iteration.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">statuses[i]</div>
+        <div class="breakdown-explain">Accesses the element at position <code>i</code>. When <code>i = 0</code>, this is <code>"Booked"</code>. When <code>i = 4</code>, this is <code>"Returned"</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">(i + 1) + ". " + statuses[i]</div>
+        <div class="breakdown-explain">Adds 1 to the index for human-friendly numbering. Users expect menus starting at 1, not 0.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Enhanced for-each Loop</h3>
+
+  <p>Use this when you just need each value and do not care about its position. It is cleaner and less error-prone &mdash; no chance of off-by-one errors because there is no index variable.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Enhanced for-each loop</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] statuses = {"Booked", "Picked Up", "In Transit", "Delivered", "Returned"};
+
+// Print every status — no index needed
+for (String status : statuses) {
+    System.out.println(status);
+}
+// Output:
+// Booked
+// Picked Up
+// In Transit
+// Delivered
+// Returned
+
+// Use case: Search for a specific status
+String target = "In Transit";
+boolean found = false;
+for (String status : statuses) {
+    if (status.equals(target)) {
+        found = true;
+        break;
+    }
+}
+System.out.println(target + " found? " + found);  // true</code></pre>
+  </div>
+
+  <h3>When to Use Which?</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Use</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Need the index (position)</td>
+        <td>Traditional <code>for</code></td>
+        <td>for-each does not give you the index</td>
+      </tr>
+      <tr>
+        <td>Need to modify elements</td>
+        <td>Traditional <code>for</code></td>
+        <td>for-each variable is a copy &mdash; changing it does not affect the array</td>
+      </tr>
+      <tr>
+        <td>Just reading values</td>
+        <td><code>for-each</code></td>
+        <td>Cleaner, no index variable, no off-by-one risk</td>
+      </tr>
+      <tr>
+        <td>Iterate backwards</td>
+        <td>Traditional <code>for</code></td>
+        <td>for-each only goes forward</td>
+      </tr>
+      <tr>
+        <td>Iterate over part of an array</td>
+        <td>Traditional <code>for</code></td>
+        <td>for-each always goes through ALL elements</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When displaying the status menu for an officer to update a parcel, you need the index (the user picks a number). Use the traditional <code>for</code> loop with <code>(i + 1)</code> for human-friendly numbering. When printing a tracking history where you just need each status entry, use the <code>for-each</code> loop &mdash; simpler and more readable.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Array Utility Methods                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="array-methods">
+  <div class="section-tag">Section 05</div>
+  <h2>Array Utility Methods</h2>
+  <p class="section-desc">Java provides the <code>java.util.Arrays</code> class with useful static methods for common array operations. These save you from writing your own sorting, searching, and comparison code.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Import required</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.Arrays;  // Required for all methods below</code></pre>
+  </div>
+
+  <h3>Arrays.toString() &mdash; Print an Array</h3>
+
+  <p>If you try to print an array directly with <code>System.out.println(nums)</code>, you get something like <code>[I@15db9742</code> &mdash; a memory address, not the values. Use <code>Arrays.toString()</code> to get a readable output.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays.toString()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] nums = {50, 10, 40, 20, 30};
+
+System.out.println(nums);                 // [I@15db9742  (useless!)
+System.out.println(Arrays.toString(nums)); // [50, 10, 40, 20, 30]  (readable!)</code></pre>
+  </div>
+
+  <h3>Arrays.sort() &mdash; Sort an Array</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays.sort()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] nums = {50, 10, 40, 20, 30};
+
+Arrays.sort(nums);  // Sorts IN PLACE (modifies the original array)
+
+System.out.println(Arrays.toString(nums));  // [10, 20, 30, 40, 50]
+
+// Works with Strings too (alphabetical order)
+String[] names = {"Charlie", "Alice", "Bob"};
+Arrays.sort(names);
+System.out.println(Arrays.toString(names));  // [Alice, Bob, Charlie]
+
+// Sort a portion of the array (from index 1 to 3, exclusive)
+int[] partial = {50, 30, 10, 40, 20};
+Arrays.sort(partial, 1, 4);  // Sorts indices 1, 2, 3 only
+System.out.println(Arrays.toString(partial));  // [50, 10, 30, 40, 20]</code></pre>
+  </div>
+
+  <h3>Arrays.binarySearch() &mdash; Find an Element</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays.binarySearch()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] nums = {10, 20, 30, 40, 50};  // MUST be sorted first!
+
+int index = Arrays.binarySearch(nums, 30);
+System.out.println("30 is at index: " + index);  // 2
+
+int notFound = Arrays.binarySearch(nums, 35);
+System.out.println("35 result: " + notFound);  // Negative value (not found)</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Important</div>
+    <p><code>Arrays.binarySearch()</code> only works correctly on a <strong>sorted</strong> array. If the array is not sorted, the result is unpredictable. Always call <code>Arrays.sort()</code> first if the array is not already sorted.</p>
+  </div>
+
+  <h3>Arrays.fill() &mdash; Fill All Slots</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays.fill()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] scores = new int[5];
+Arrays.fill(scores, -1);  // Set ALL elements to -1
+System.out.println(Arrays.toString(scores));  // [-1, -1, -1, -1, -1]
+
+String[] slots = new String[3];
+Arrays.fill(slots, "Empty");
+System.out.println(Arrays.toString(slots));  // [Empty, Empty, Empty]</code></pre>
+  </div>
+
+  <h3>Arrays.copyOf() &mdash; Copy an Array</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays.copyOf()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] original = {10, 20, 30};
+
+// Copy all elements
+int[] copy = Arrays.copyOf(original, original.length);
+System.out.println(Arrays.toString(copy));  // [10, 20, 30]
+
+// Copy with a LARGER size (pads with default values)
+int[] expanded = Arrays.copyOf(original, 5);
+System.out.println(Arrays.toString(expanded));  // [10, 20, 30, 0, 0]
+
+// Copy with a SMALLER size (truncates)
+int[] shorter = Arrays.copyOf(original, 2);
+System.out.println(Arrays.toString(shorter));  // [10, 20]
+
+// Modifying the copy does NOT affect the original
+copy[0] = 999;
+System.out.println(Arrays.toString(original));  // [10, 20, 30]  (unchanged)
+System.out.println(Arrays.toString(copy));      // [999, 20, 30] (changed)</code></pre>
+  </div>
+
+  <h3>Arrays.equals() &mdash; Compare Two Arrays</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays.equals()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] a = {1, 2, 3};
+int[] b = {1, 2, 3};
+int[] c = {1, 2, 4};
+
+// DO NOT use == to compare arrays!
+System.out.println(a == b);              // false (compares memory addresses)
+
+// USE Arrays.equals() to compare contents
+System.out.println(Arrays.equals(a, b)); // true  (same values)
+System.out.println(Arrays.equals(a, c)); // false (different values)</code></pre>
+  </div>
+
+  <h3>Quick Reference Table</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>What It Does</th>
+        <th>Returns</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Arrays.toString(arr)</code></td>
+        <td>Readable string representation</td>
+        <td><code>String</code></td>
+      </tr>
+      <tr>
+        <td><code>Arrays.sort(arr)</code></td>
+        <td>Sorts in ascending order (in place)</td>
+        <td><code>void</code></td>
+      </tr>
+      <tr>
+        <td><code>Arrays.binarySearch(arr, key)</code></td>
+        <td>Finds index of key (array must be sorted)</td>
+        <td><code>int</code> (index or negative)</td>
+      </tr>
+      <tr>
+        <td><code>Arrays.fill(arr, val)</code></td>
+        <td>Sets all elements to val</td>
+        <td><code>void</code></td>
+      </tr>
+      <tr>
+        <td><code>Arrays.copyOf(arr, len)</code></td>
+        <td>Creates a new array with copied elements</td>
+        <td>New array</td>
+      </tr>
+      <tr>
+        <td><code>Arrays.equals(a, b)</code></td>
+        <td>Compares contents of two arrays</td>
+        <td><code>boolean</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: 2D Arrays                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="2d-arrays">
+  <div class="section-tag">Section 06</div>
+  <h2>2D Arrays</h2>
+  <p class="section-desc">A 2D array is an <strong>array of arrays</strong> &mdash; think of it as a table with rows and columns. Each row is itself an array, and the 2D array holds all the rows together.</p>
+
+  <div class="diagram">
+    <pre>
+  A 2D ARRAY (3 rows x 4 columns)
+  =================================
+
+              Col 0    Col 1    Col 2    Col 3
+            +--------+--------+--------+--------+
+  Row 0     |   1    |   2    |   3    |   4    |
+            +--------+--------+--------+--------+
+  Row 1     |   5    |   6    |   7    |   8    |
+            +--------+--------+--------+--------+
+  Row 2     |   9    |   10   |   11   |   12   |
+            +--------+--------+--------+--------+
+
+  grid[0][0] = 1      grid[1][2] = 7      grid[2][3] = 12
+  ^row  ^col           ^row  ^col           ^row  ^col
+    </pre>
+    <div class="diagram-label">2D arrays use two indices: [row][column]</div>
+  </div>
+
+  <h3>Declaration and Initialization</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">2D array creation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Method 1: Declare with size, fill later
+int[][] grid = new int[3][4];  // 3 rows, 4 columns (all zeros)
+
+grid[0][0] = 1;
+grid[0][1] = 2;
+// ... fill each cell
+
+// Method 2: Initialize with values
+int[][] grid2 = {
+    {1,  2,  3,  4},    // Row 0
+    {5,  6,  7,  8},    // Row 1
+    {9, 10, 11, 12}     // Row 2
+};
+
+// Access: grid2[row][col]
+System.out.println(grid2[1][2]);  // 7  (row 1, col 2)
+
+// Number of rows
+System.out.println(grid2.length);     // 3
+
+// Number of columns in row 0
+System.out.println(grid2[0].length);  // 4</code></pre>
+  </div>
+
+  <h3>Iterating Over a 2D Array</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nested loops for 2D arrays</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[][] grid = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+// Traditional for loop — gives you full control over row and column indices
+for (int row = 0; row &lt; grid.length; row++) {
+    for (int col = 0; col &lt; grid[row].length; col++) {
+        System.out.print(grid[row][col] + "\t");
+    }
+    System.out.println();  // New line after each row
+}
+// Output:
+// 1    2    3
+// 4    5    6
+// 7    8    9
+
+// Enhanced for-each — cleaner when you just need values
+for (int[] row : grid) {
+    for (int value : row) {
+        System.out.print(value + "\t");
+    }
+    System.out.println();
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>You could represent booking history as a 2D array where each row is a booking and each column is a field (booking ID, sender, receiver, status, cost):</p>
+    <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); margin-top: 8px;">
+String[][] bookings = {
+    {"NB001", "Darshan", "Priya",  "Delivered", "150.00"},
+    {"NB002", "Amit",    "Sneha",  "In Transit", "200.00"},
+    {"NB003", "Priya",   "Darshan","Booked",     "120.00"}
+};</pre>
+    <p style="margin-top: 8px;">However, this approach has limitations: all values are Strings (costs should be doubles), and adding a new field means restructuring the whole array. This is exactly why Java has classes and objects &mdash; a <code>Booking</code> class with typed fields is far better than a 2D String array. But understanding 2D arrays is important because they appear in algorithms, matrix operations, and interview questions.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Array Limitations                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="limitations">
+  <div class="section-tag">Section 07</div>
+  <h2>Array Limitations</h2>
+  <p class="section-desc">Arrays are fast and simple, but they have hard limitations that become painful in real-world applications. Understanding these limitations explains <strong>why ArrayList was created</strong>.</p>
+
+  <h3>The Problems</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Limitation</th>
+        <th>What It Means</th>
+        <th>Real Problem</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fixed size</strong></td>
+        <td>Once created, the size cannot change</td>
+        <td>You create <code>new Booking[10]</code>. The 11th customer books a parcel. Now what?</td>
+      </tr>
+      <tr>
+        <td><strong>No add/remove</strong></td>
+        <td>No built-in method to insert or delete elements</td>
+        <td>Removing a cancelled booking means manually shifting all elements left and tracking the "real" size</td>
+      </tr>
+      <tr>
+        <td><strong>Same type only</strong></td>
+        <td>Every element must be the same type</td>
+        <td>Cannot store a booking's ID (String), weight (double), and cost (double) in one array</td>
+      </tr>
+      <tr>
+        <td><strong>No contains()</strong></td>
+        <td>No built-in way to check if a value exists</td>
+        <td>You must write your own loop to search for a value</td>
+      </tr>
+      <tr>
+        <td><strong>Manual size tracking</strong></td>
+        <td><code>.length</code> is the capacity, not the number of actual values</td>
+        <td>If you have a 10-slot array with 3 bookings, <code>.length</code> still says 10</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The fixed-size problem</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Problem: You don't know how many bookings you'll have
+String[] bookings = new String[5];  // Guess 5?
+
+bookings[0] = "NB001";
+bookings[1] = "NB002";
+bookings[2] = "NB003";
+bookings[3] = "NB004";
+bookings[4] = "NB005";
+
+// 6th booking comes in...
+bookings[5] = "NB006";  // CRASH! ArrayIndexOutOfBoundsException
+
+// The only workaround: create a bigger array and copy everything
+String[] bigger = Arrays.copyOf(bookings, 10);  // Double the size
+bigger[5] = "NB006";  // Works now, but ugly and inefficient
+
+// This is EXACTLY what ArrayList does internally —
+// it manages a growing array for you automatically.</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why Arrays Still Exist</div>
+    <p>If ArrayList solves all these problems, why do arrays still exist? Two reasons: <strong>performance</strong> and <strong>simplicity</strong>. Arrays are faster because they have zero overhead &mdash; no wrapper objects, no dynamic resizing. For fixed-size data (days of the week, months, parcel statuses), arrays are the perfect choice. For data that grows and shrinks (bookings, users, search results), use ArrayList.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Array vs ArrayList                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="array-vs-arraylist">
+  <div class="section-tag">Section 08</div>
+  <h2>Array vs ArrayList</h2>
+  <p class="section-desc">This is one of the most important comparisons in Java. Knowing when to use each is a fundamental skill.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Array</th>
+        <th>ArrayList</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Size</strong></td>
+        <td>Fixed at creation</td>
+        <td>Grows and shrinks dynamically</td>
+      </tr>
+      <tr>
+        <td><strong>Syntax</strong></td>
+        <td><code>int[] nums = new int[5];</code></td>
+        <td><code>ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;();</code></td>
+      </tr>
+      <tr>
+        <td><strong>Add element</strong></td>
+        <td>Not possible (fixed size)</td>
+        <td><code>nums.add(10);</code></td>
+      </tr>
+      <tr>
+        <td><strong>Remove element</strong></td>
+        <td>Not built-in</td>
+        <td><code>nums.remove(index);</code></td>
+      </tr>
+      <tr>
+        <td><strong>Get element</strong></td>
+        <td><code>nums[i]</code></td>
+        <td><code>nums.get(i)</code></td>
+      </tr>
+      <tr>
+        <td><strong>Set element</strong></td>
+        <td><code>nums[i] = 10;</code></td>
+        <td><code>nums.set(i, 10);</code></td>
+      </tr>
+      <tr>
+        <td><strong>Size</strong></td>
+        <td><code>nums.length</code></td>
+        <td><code>nums.size()</code></td>
+      </tr>
+      <tr>
+        <td><strong>Primitives</strong></td>
+        <td>Yes (<code>int</code>, <code>double</code>, etc.)</td>
+        <td>No &mdash; must use wrapper classes (<code>Integer</code>, <code>Double</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>Contains check</strong></td>
+        <td>Manual loop</td>
+        <td><code>nums.contains(10)</code></td>
+      </tr>
+      <tr>
+        <td><strong>Performance</strong></td>
+        <td>Faster (no overhead)</td>
+        <td>Slightly slower (object overhead)</td>
+      </tr>
+      <tr>
+        <td><strong>Best for</strong></td>
+        <td>Fixed data, performance-critical code</td>
+        <td>Dynamic data that grows/shrinks</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Converting Between Array and ArrayList</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Array to ArrayList and back</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+// Array to ArrayList
+String[] statusArray = {"Booked", "Picked Up", "In Transit", "Delivered", "Returned"};
+List&lt;String&gt; statusList = new ArrayList&lt;&gt;(Arrays.asList(statusArray));
+
+// Now you can use ArrayList methods
+statusList.add("Cancelled");                    // Add a new status
+statusList.remove("Returned");                  // Remove a status
+System.out.println(statusList.contains("Booked")); // true
+System.out.println(statusList.size());              // 5
+
+// ArrayList back to Array
+String[] backToArray = statusList.toArray(new String[0]);
+System.out.println(Arrays.toString(backToArray));
+// [Booked, Picked Up, In Transit, Delivered, Cancelled]</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Watch Out</div>
+    <p><code>Arrays.asList()</code> returns a <strong>fixed-size</strong> list backed by the original array. You cannot add or remove elements from it. To get a fully mutable ArrayList, wrap it: <code>new ArrayList&lt;&gt;(Arrays.asList(arr))</code>.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Nimbus Phase 2 Sprint 1, bookings are stored in an <code>ArrayList&lt;Booking&gt;</code> inside <code>ArrayListBookingDAO</code>. Customers can create new bookings (add), and the list grows dynamically. But the parcel statuses themselves are a fixed set &mdash; perfect for a <code>String[]</code> array. <strong>Rule of thumb:</strong> if the data is fixed and known at compile time, use an array. If it can grow or shrink at runtime, use ArrayList.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Passing Arrays to Methods                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="passing-arrays">
+  <div class="section-tag">Section 09</div>
+  <h2>Passing Arrays to Methods</h2>
+  <p class="section-desc">Arrays in Java are <strong>reference types</strong>. When you pass an array to a method, you are passing a reference (pointer) to the same array in memory &mdash; NOT a copy. This means changes inside the method <strong>affect the original array</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays are passed by reference</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class ArrayReferenceDemo {
+
+    // This method modifies the original array
+    public static void doubleAll(int[] nums) {
+        for (int i = 0; i &lt; nums.length; i++) {
+            nums[i] = nums[i] * 2;
+        }
+    }
+
+    // This method also modifies the original
+    public static void setFirstToZero(int[] nums) {
+        nums[0] = 0;
+    }
+
+    public static void main(String[] args) {
+        int[] values = {10, 20, 30};
+
+        System.out.println("Before: " + Arrays.toString(values));
+        // Before: [10, 20, 30]
+
+        doubleAll(values);
+
+        System.out.println("After doubleAll: " + Arrays.toString(values));
+        // After doubleAll: [20, 40, 60]  — ORIGINAL was modified!
+
+        setFirstToZero(values);
+
+        System.out.println("After setFirstToZero: " + Arrays.toString(values));
+        // After setFirstToZero: [0, 40, 60]  — ORIGINAL was modified again!
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of an array like a house. When you pass an array to a method, you are giving that method the <strong>address</strong> of the house, not building a duplicate house. The method goes to the same house and rearranges the furniture. When it returns, the furniture in the original house has changed. If you want to prevent this, make a copy first with <code>Arrays.copyOf()</code> and pass the copy.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Returning arrays from methods</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Methods can also CREATE and RETURN arrays
+public static int[] getFirstN(int[] source, int n) {
+    return Arrays.copyOf(source, n);
+}
+
+public static String[] getStatuses() {
+    return new String[]{"Booked", "Picked Up", "In Transit", "Delivered", "Returned"};
+}
+
+// Usage
+String[] statuses = getStatuses();
+System.out.println(Arrays.toString(statuses));
+
+int[] all = {10, 20, 30, 40, 50};
+int[] firstThree = getFirstN(all, 3);
+System.out.println(Arrays.toString(firstThree));  // [10, 20, 30]</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Common Array Algorithms                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="algorithms">
+  <div class="section-tag">Section 10</div>
+  <h2>Common Array Algorithms</h2>
+  <p class="section-desc">These algorithms appear in interviews, university exams, and real code. Every Java developer should be able to write them from scratch.</p>
+
+  <h3>Linear Search</h3>
+
+  <p>Check every element one by one from start to end. Works on <strong>any</strong> array (sorted or not). Time complexity: O(n).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Linear search</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static int linearSearch(int[] arr, int target) {
+    for (int i = 0; i &lt; arr.length; i++) {
+        if (arr[i] == target) {
+            return i;  // Found! Return the index
+        }
+    }
+    return -1;  // Not found
+}
+
+// Usage
+int[] nums = {30, 10, 50, 20, 40};
+int index = linearSearch(nums, 50);
+System.out.println("50 found at index: " + index);  // 2
+System.out.println("99 found at index: " + linearSearch(nums, 99));  // -1</code></pre>
+  </div>
+
+  <h3>Binary Search (Manual Implementation)</h3>
+
+  <p>Much faster than linear search but requires a <strong>sorted</strong> array. It repeatedly divides the search space in half. Time complexity: O(log n).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Binary search</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static int binarySearch(int[] arr, int target) {
+    int low = 0;
+    int high = arr.length - 1;
+
+    while (low &lt;= high) {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] == target) {
+            return mid;          // Found!
+        } else if (arr[mid] &lt; target) {
+            low = mid + 1;       // Target is in the right half
+        } else {
+            high = mid - 1;      // Target is in the left half
+        }
+    }
+    return -1;  // Not found
+}
+
+// Usage (array MUST be sorted)
+int[] sorted = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+System.out.println(binarySearch(sorted, 70));   // 6
+System.out.println(binarySearch(sorted, 35));   // -1</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">How binary search works step by step</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int low = 0; int high = arr.length - 1;</div>
+        <div class="breakdown-explain">Start with the entire array. <code>low</code> points to the first element, <code>high</code> points to the last.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int mid = (low + high) / 2;</div>
+        <div class="breakdown-explain">Find the middle element. Compare it to the target.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (arr[mid] == target) return mid;</div>
+        <div class="breakdown-explain">If the middle element IS the target, we found it. Return its index.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">else if (arr[mid] &lt; target) low = mid + 1;</div>
+        <div class="breakdown-explain">If the middle is too small, the target must be in the RIGHT half. Move <code>low</code> to <code>mid + 1</code>, eliminating the entire left half.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">else high = mid - 1;</div>
+        <div class="breakdown-explain">If the middle is too large, the target must be in the LEFT half. Move <code>high</code> to <code>mid - 1</code>, eliminating the entire right half.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Finding Min and Max</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Find minimum and maximum</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static int findMin(int[] arr) {
+    int min = arr[0];  // Assume the first element is the smallest
+    for (int i = 1; i &lt; arr.length; i++) {
+        if (arr[i] &lt; min) {
+            min = arr[i];
+        }
+    }
+    return min;
+}
+
+public static int findMax(int[] arr) {
+    int max = arr[0];
+    for (int i = 1; i &lt; arr.length; i++) {
+        if (arr[i] &gt; max) {
+            max = arr[i];
+        }
+    }
+    return max;
+}
+
+// Usage
+int[] costs = {150, 200, 80, 320, 175};
+System.out.println("Cheapest booking: " + findMin(costs));   // 80
+System.out.println("Most expensive: " + findMax(costs));     // 320</code></pre>
+  </div>
+
+  <h3>Reversing an Array</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Reverse an array in place</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public static void reverse(int[] arr) {
+    int left = 0;
+    int right = arr.length - 1;
+
+    while (left &lt; right) {
+        // Swap elements at left and right
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+
+        left++;
+        right--;
+    }
+}
+
+// Usage
+int[] nums = {1, 2, 3, 4, 5};
+reverse(nums);
+System.out.println(Arrays.toString(nums));  // [5, 4, 3, 2, 1]</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Nimbus Use Cases                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-use-cases">
+  <div class="section-tag">Section 11</div>
+  <h2>Arrays in Nimbus</h2>
+  <p class="section-desc">Here are the concrete places where arrays appear in the Nimbus Parcel Management System.</p>
+
+  <h3>Status Array for Switch Menu</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusApp.java &mdash; Status update menu</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class NimbusApp {
+
+    // Fixed set of statuses — perfect for an array
+    private static final String[] STATUSES = {
+        "Booked", "Picked Up", "In Transit", "Delivered", "Returned"
+    };
+
+    public void showStatusUpdateMenu(String bookingId) {
+        System.out.println("=== Update Parcel Status ===");
+        System.out.println("Booking: " + bookingId);
+        System.out.println();
+
+        // Display numbered menu from the array
+        for (int i = 0; i &lt; STATUSES.length; i++) {
+            System.out.println((i + 1) + ". " + STATUSES[i]);
+        }
+
+        System.out.print("Select new status (1-" + STATUSES.length + "): ");
+        int choice = scanner.nextInt();
+
+        // Validate input against array bounds
+        if (choice &gt;= 1 &amp;&amp; choice &lt;= STATUSES.length) {
+            String newStatus = STATUSES[choice - 1];  // Convert 1-based to 0-based
+            bookingService.updateStatus(bookingId, newStatus);
+            System.out.println("Status updated to: " + newStatus);
+        } else {
+            System.out.println("Invalid choice.");
+        }
+    }
+}</code></pre>
+  </div>
+
+  <h3>String[] args in main</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Command-line arguments</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Every Java program starts with this:
+public static void main(String[] args) {
+    // args is an array of Strings passed from the command line
+    // Example: java NimbusApp --mode admin --port 8080
+    // args = ["--mode", "admin", "--port", "8080"]
+
+    // Check if any arguments were passed
+    if (args.length == 0) {
+        System.out.println("No arguments provided. Running in default mode.");
+    }
+
+    // Parse arguments
+    for (int i = 0; i &lt; args.length; i++) {
+        if (args[i].equals("--mode") &amp;&amp; i + 1 &lt; args.length) {
+            String mode = args[i + 1];
+            System.out.println("Running in " + mode + " mode");
+        }
+    }
+}
+
+// When you run: java NimbusApp admin
+// args[0] = "admin"
+// args.length = 1
+
+// When you run: java NimbusApp
+// args.length = 0 (empty array, not null)</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>String[] args</code> parameter in <code>main</code> is the first array you encounter in any Java program. In Nimbus, you could use it to start the application in different modes: <code>java NimbusApp customer</code> could skip the login screen for testing, or <code>java NimbusApp --seed</code> could pre-populate the database with sample data. Even if you do not use <code>args</code> right now, understanding what it is and how to read it is essential.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Common Mistakes                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-mistakes">
+  <div class="section-tag">Section 12</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">These are the bugs that every beginner hits. Knowing them ahead of time saves hours of debugging.</p>
+
+  <h3>Mistake 1: Off-by-One Error</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Off-by-one error</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] nums = {10, 20, 30, 40, 50};
+
+// WRONG: Using &lt;= instead of &lt;
+for (int i = 0; i &lt;= nums.length; i++) {  // CRASH on last iteration!
+    System.out.println(nums[i]);
+}
+// When i = 5, nums[5] does not exist. ArrayIndexOutOfBoundsException!
+
+// CORRECT: Use &lt; (strictly less than)
+for (int i = 0; i &lt; nums.length; i++) {
+    System.out.println(nums[i]);
+}</code></pre>
+  </div>
+
+  <h3>Mistake 2: Forgetting Arrays are Zero-Indexed</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Zero-index confusion</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] statuses = {"Booked", "Picked Up", "In Transit", "Delivered", "Returned"};
+
+// WRONG: Trying to access the "5th" element using index 5
+System.out.println(statuses[5]);  // CRASH! Valid indices are 0-4
+
+// CORRECT: Last element is at length - 1
+System.out.println(statuses[statuses.length - 1]);  // Returned
+
+// WRONG: User picks option 3 from a 1-based menu
+int userChoice = 3;
+String status = statuses[userChoice];  // Gets "Delivered" (index 3), not "In Transit"!
+
+// CORRECT: Convert 1-based input to 0-based index
+String status2 = statuses[userChoice - 1];  // Gets "In Transit" (index 2)</code></pre>
+  </div>
+
+  <h3>Mistake 3: Using null Elements</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NullPointerException from array elements</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String[] names = new String[5];
+// names = [null, null, null, null, null]
+
+names[0] = "Darshan";
+names[1] = "Priya";
+// names = ["Darshan", "Priya", null, null, null]
+
+// WRONG: Calling a method on a null element
+System.out.println(names[2].toUpperCase());  // CRASH! NullPointerException
+
+// CORRECT: Check for null first
+if (names[2] != null) {
+    System.out.println(names[2].toUpperCase());
+} else {
+    System.out.println("(empty)");
+}
+
+// ALSO CORRECT: Use a for loop that only goes up to the filled count
+int count = 2;  // Track how many elements you've actually added
+for (int i = 0; i &lt; count; i++) {
+    System.out.println(names[i]);
+}</code></pre>
+  </div>
+
+  <h3>Mistake 4: Comparing Arrays with ==</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Array comparison trap</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] a = {1, 2, 3};
+int[] b = {1, 2, 3};
+
+// WRONG: == compares memory addresses, not contents
+if (a == b) {
+    System.out.println("Equal");  // NEVER prints — they are different objects
+}
+
+// CORRECT: Use Arrays.equals() to compare contents
+if (Arrays.equals(a, b)) {
+    System.out.println("Equal");  // Prints "Equal"
+}</code></pre>
+  </div>
+
+  <h3>Mistake 5: Printing an Array Directly</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Printing trap</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int[] nums = {10, 20, 30};
+
+// WRONG: Prints memory address
+System.out.println(nums);          // [I@15db9742
+
+// CORRECT: Use Arrays.toString()
+System.out.println(Arrays.toString(nums));  // [10, 20, 30]
+
+// For 2D arrays, use Arrays.deepToString()
+int[][] grid = {{1, 2}, {3, 4}};
+System.out.println(Arrays.toString(grid));      // [[I@..., [I@...]  (useless)
+System.out.println(Arrays.deepToString(grid));  // [[1, 2], [3, 4]]  (correct)</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 13</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Complete these exercises to solidify your understanding. Start from the top and work your way down &mdash; they get progressively harder.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Status Lookup</div>
+    <p>Create a <code>String[] statuses</code> array with the 5 Nimbus parcel statuses. Write a method <code>getStatus(int code)</code> that takes a status code (1-5) and returns the matching status string. If the code is invalid, return <code>"Unknown"</code>.</p>
+    <p><strong>Test with:</strong> <code>getStatus(3)</code> should return <code>"In Transit"</code>. <code>getStatus(7)</code> should return <code>"Unknown"</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: Sum and Average</div>
+    <p>Write two methods: <code>sum(int[] arr)</code> that returns the total of all elements, and <code>average(int[] arr)</code> that returns the average as a <code>double</code>. Test with <code>{150, 200, 80, 320, 175}</code> (booking costs in rupees).</p>
+    <p><strong>Expected:</strong> Sum = 925, Average = 185.0</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Count Occurrences</div>
+    <p>Write a method <code>countStatus(String[] bookingStatuses, String target)</code> that counts how many bookings have a given status. Test with <code>{"Booked", "Delivered", "In Transit", "Delivered", "Booked", "Delivered"}</code> and target <code>"Delivered"</code>.</p>
+    <p><strong>Expected:</strong> 3</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Reverse a String Array</div>
+    <p>Write a method <code>reverseArray(String[] arr)</code> that reverses the array in place (without creating a new array). Test with <code>{"Booked", "Picked Up", "In Transit", "Delivered", "Returned"}</code>.</p>
+    <p><strong>Expected after reversal:</strong> <code>{"Returned", "Delivered", "In Transit", "Picked Up", "Booked"}</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: Find Second Largest</div>
+    <p>Write a method <code>secondLargest(int[] arr)</code> that finds the second largest value in an array. Do NOT sort the array. Test with <code>{150, 200, 80, 320, 175}</code>.</p>
+    <p><strong>Expected:</strong> 200. <strong>Hint:</strong> Track both the largest and second largest as you loop.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6: Remove Duplicates</div>
+    <p>Given <code>String[] statuses = {"Booked", "Delivered", "Booked", "In Transit", "Delivered", "Booked"}</code>, write a method that returns a new array containing only unique values. Order does not matter.</p>
+    <p><strong>Expected:</strong> <code>{"Booked", "Delivered", "In Transit"}</code> (or any order)</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7: 2D Booking Table</div>
+    <p>Create a 2D String array representing 3 bookings with 4 fields each: Booking ID, Sender, Receiver, Status. Write a method that prints it as a formatted table with headers. Then write a method that finds all bookings with status <code>"Delivered"</code> and prints their booking IDs.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8: Merge Two Sorted Arrays</div>
+    <p>Write a method <code>mergeSorted(int[] a, int[] b)</code> that takes two sorted arrays and returns a single sorted array containing all elements from both. Do NOT use <code>Arrays.sort()</code> on the result &mdash; merge them in order using two pointers.</p>
+    <p><strong>Test:</strong> <code>a = {10, 30, 50}</code>, <code>b = {20, 40, 60}</code>. <strong>Expected:</strong> <code>{10, 20, 30, 40, 50, 60}</code></p>
+    <p><strong>Hint:</strong> Use two index variables, one for each array. Compare elements at both positions, take the smaller one, advance that index.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="java-strings.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Strings</span>
+  </a>
+  <a href="java-control-flow.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Control Flow</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

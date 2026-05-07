@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Strings Deep Dive &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link active"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: STRING CREATION                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="string-creation">
+  <div class="section-tag">Section 01</div>
+  <h2>String Creation &mdash; Literal vs new</h2>
+  <p class="section-desc">Strings are the most used data type in any Java application. Every user ID, booking ID, email address, and status message in Nimbus is a String. Understanding how Java creates and stores them is the foundation for everything else on this page.</p>
+
+  <h3>Two Ways to Create a String</h3>
+
+  <p>Java gives you two ways to create a String, and they behave <strong>very differently</strong> in memory:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StringCreation.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Way 1: String literal (uses the String Pool)
+String status1 = "BOOKED";
+String status2 = "BOOKED";
+
+// Way 2: new keyword (creates a NEW object on the heap)
+String status3 = new String("BOOKED");
+String status4 = new String("BOOKED");</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String status1 = "BOOKED";</div>
+        <div class="breakdown-explain">Java checks the String Pool. "BOOKED" doesn't exist yet, so it creates it there. status1 points to that pool entry.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String status2 = "BOOKED";</div>
+        <div class="breakdown-explain">Java checks the pool again. "BOOKED" already exists! So status2 points to the SAME object. No new object created.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String status3 = new String("BOOKED");</div>
+        <div class="breakdown-explain">The new keyword FORCES Java to create a brand new object on the heap, even though "BOOKED" already exists in the pool. status3 points to this new copy.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String status4 = new String("BOOKED");</div>
+        <div class="breakdown-explain">Another new = another separate object on the heap. status4 points to yet another copy. Three objects with the same content now exist.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The String Pool (String Intern Pool)</h3>
+
+  <p>Java keeps a special area inside the Heap memory called the <strong>String Pool</strong> (also called the String Intern Pool). When you create a String using a literal (double quotes), Java first checks this pool. If the same text already exists, it reuses it. If not, it creates a new entry.</p>
+
+  <p>This is a performance optimization. Think about how many times your code uses strings like <code>"BOOKED"</code>, <code>"DELIVERED"</code>, <code>"CANCELLED"</code>. Without the pool, every usage would create a new object. With the pool, all of them share one object.</p>
+
+  <div class="diagram">
+    <pre>
+                         HEAP MEMORY
+    +---------------------------------------------------------+
+    |                                                         |
+    |    STRING POOL                                          |
+    |    +-------------------------------------------+        |
+    |    |                                           |        |
+    |    |   [ "BOOKED" ]  &lt;--- status1              |        |
+    |    |        ^                                  |        |
+    |    |        +-------- status2                  |        |
+    |    |                                           |        |
+    |    +-------------------------------------------+        |
+    |                                                         |
+    |    REGULAR HEAP                                         |
+    |    +-------------------------------------------+        |
+    |    |                                           |        |
+    |    |   [ "BOOKED" ]  &lt;--- status3              |        |
+    |    |                                           |        |
+    |    |   [ "BOOKED" ]  &lt;--- status4              |        |
+    |    |                                           |        |
+    |    +-------------------------------------------+        |
+    |                                                         |
+    +---------------------------------------------------------+
+
+    STACK
+    +-------------------+
+    | status1 ---> pool |      status1 and status2 point to
+    | status2 ---> pool |      the SAME object in the pool.
+    | status3 ---> heap |
+    | status4 ---> heap |      status3 and status4 each point
+    +-------------------+      to their OWN separate objects.
+    </pre>
+    <div class="diagram-label">String Pool vs Heap &mdash; literal strings share pool entries, new String() always creates a separate heap object</div>
+  </div>
+
+  <p>This is why:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PoolDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String a = "hello";
+String b = "hello";
+String c = new String("hello");
+String d = new String("hello");
+
+System.out.println(a == b);   // true  &mdash; same pool object
+System.out.println(a == c);   // false &mdash; pool vs heap = different objects
+System.out.println(c == d);   // false &mdash; two different heap objects
+System.out.println(a.equals(c)); // true &mdash; same CONTENT</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Takeaway</div>
+    <p><strong>Always use string literals</strong> (double quotes) unless you have a specific reason to use <code>new String()</code>. Literals are faster (pool reuse) and use less memory. You will almost never need <code>new String()</code> in real code.</p>
+  </div>
+
+  <h3>The intern() Method</h3>
+
+  <p>If you have a String created with <code>new</code>, you can manually put it into the pool using <code>.intern()</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">InternDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String a = "BOOKED";
+String b = new String("BOOKED");
+String c = b.intern(); // puts "BOOKED" into pool, returns pool reference
+
+System.out.println(a == b); // false
+System.out.println(a == c); // true &mdash; c now points to the pool entry</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: IMMUTABILITY                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="immutability">
+  <div class="section-tag">Section 02</div>
+  <h2>Immutability &mdash; Strings Cannot Be Changed</h2>
+  <p class="section-desc">Once a String object is created, its content can never be modified. Every operation that appears to "change" a String actually creates a brand new String object. This is one of Java's most important design decisions.</p>
+
+  <h3>What Immutability Means</h3>
+
+  <p>When you do this:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ImmutabilityDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String name = "Darshan";
+name = name.toUpperCase(); // "DARSHAN"</code></pre>
+  </div>
+
+  <p>You are <strong>not</strong> modifying the original <code>"Darshan"</code> object. You are creating a <strong>new</strong> String <code>"DARSHAN"</code> and making the <code>name</code> variable point to it. The original <code>"Darshan"</code> still exists in memory (until garbage collected).</p>
+
+  <div class="diagram">
+    <pre>
+    BEFORE:  name ---&gt; [ "Darshan" ]
+
+    AFTER:   name ---&gt; [ "DARSHAN" ]   (NEW object)
+                       [ "Darshan" ]   (still exists, no variable points to it)
+    </pre>
+    <div class="diagram-label">The variable changed which object it points to. The object itself was never modified.</div>
+  </div>
+
+  <p>Every method that seems to modify a String &mdash; <code>toUpperCase()</code>, <code>trim()</code>, <code>replace()</code>, <code>substring()</code>, <code>concat()</code> &mdash; returns a <strong>new</strong> String. The original is untouched.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ImmutabilityProof.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String original = "  Nimbus Parcel  ";
+
+// None of these change 'original'
+original.trim();          // returns "Nimbus Parcel" but original is unchanged
+original.toUpperCase();   // returns "  NIMBUS PARCEL  " but original is unchanged
+original.replace("Nimbus", "Thunder"); // returns "  Thunder Parcel  "
+
+System.out.println(original); // "  Nimbus Parcel  " &mdash; UNCHANGED!
+
+// You have to ASSIGN the result to use it
+String trimmed = original.trim();
+System.out.println(trimmed); // "Nimbus Parcel"</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistake</div>
+    <p>Beginners write <code>str.trim();</code> or <code>str.toUpperCase();</code> and expect the variable to change. It does not. You <strong>must</strong> assign the result: <code>str = str.trim();</code></p>
+  </div>
+
+  <h3>Why Did Java Make Strings Immutable?</h3>
+
+  <p>Three critical reasons:</p>
+
+  <ol>
+    <li><strong>Security</strong> &mdash; Strings are used for passwords, file paths, database connection URLs, class names. If someone could change a String after it was validated, they could bypass security checks. Imagine validating a file path as <code>"/safe/folder/file.txt"</code> then someone changes it to <code>"/etc/passwd"</code> before the file is actually opened.</li>
+    <li><strong>Thread Safety</strong> &mdash; Immutable objects are inherently thread-safe. Multiple threads can read the same String without locks or synchronization. No thread can change it, so no thread can corrupt it for another.</li>
+    <li><strong>Caching / String Pool</strong> &mdash; The String Pool only works because strings are immutable. If you could change <code>"BOOKED"</code> to <code>"CANCELLED"</code>, every variable pointing to that pool entry would suddenly see <code>"CANCELLED"</code>. Immutability makes pool sharing safe.</li>
+  </ol>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When Nimbus stores a booking status like <code>"BOOKED"</code>, it relies on immutability to guarantee that status value cannot be tampered with by another part of the code. The <code>Booking</code> class stores a <code>String status</code> field, and no external code can reach in and mutate that String object. They can only assign a new one through the setter, which triggers validation.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: == VS .equals()                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="equals-vs-double-equals">
+  <div class="section-tag">Section 03</div>
+  <h2>== vs .equals() &mdash; The #1 Java Trap</h2>
+  <p class="section-desc">This is the single most common mistake in Java. Every beginner makes it. Many experienced developers still slip up. Understand this section deeply and you will avoid a category of bugs that wastes hours of debugging time.</p>
+
+  <h3>The Rule</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Operator</th>
+        <th>What It Checks</th>
+        <th>Use For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>==</code></td>
+        <td><strong>Reference equality</strong> &mdash; are these two variables pointing to the <strong>same object</strong> in memory?</td>
+        <td>Primitives (<code>int</code>, <code>char</code>, <code>boolean</code>)</td>
+      </tr>
+      <tr>
+        <td><code>.equals()</code></td>
+        <td><strong>Content equality</strong> &mdash; do these two objects contain the <strong>same text</strong>?</td>
+        <td>Strings and all objects</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">EqualsDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String a = "BOOKED";
+String b = "BOOKED";
+String c = new String("BOOKED");
+
+// == checks: are they the SAME OBJECT?
+System.out.println(a == b);       // true  (same pool object)
+System.out.println(a == c);       // false (different objects!)
+
+// .equals() checks: do they have the SAME TEXT?
+System.out.println(a.equals(b));  // true
+System.out.println(a.equals(c)); // true  (same content, different objects)</code></pre>
+  </div>
+
+  <h3>Memory Diagram &mdash; Why == Fails</h3>
+
+  <div class="diagram">
+    <pre>
+    STACK                          HEAP
+    +-----------+
+    |  a -------+---&gt; [ "BOOKED" ]  (String Pool, address 0x100)
+    |  b -------+---/
+    |  c -------+---&gt; [ "BOOKED" ]  (Regular Heap, address 0x200)
+    +-----------+
+
+    a == b   &rarr;  0x100 == 0x100  &rarr;  true   (same address)
+    a == c   &rarr;  0x100 == 0x200  &rarr;  false  (different address!)
+
+    a.equals(b) &rarr; compare characters: B-O-O-K-E-D == B-O-O-K-E-D &rarr; true
+    a.equals(c) &rarr; compare characters: B-O-O-K-E-D == B-O-O-K-E-D &rarr; true
+    </pre>
+    <div class="diagram-label">== compares arrows (references). .equals() compares the boxes (content).</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When checking if a booking status is <code>"DELIVERED"</code>, you must use <code>.equals()</code>. The status might come from user input, a database query, or string concatenation &mdash; all of which can create new String objects. Using <code>==</code> would randomly fail.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusStatusCheck.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// WRONG &mdash; will randomly fail depending on how status was created
+if (booking.getStatus() == "DELIVERED") {
+    System.out.println("Package delivered!");
+}
+
+// CORRECT &mdash; always works
+if (booking.getStatus().equals("DELIVERED")) {
+    System.out.println("Package delivered!");
+}
+
+// SAFEST &mdash; avoids NullPointerException if status is null
+if ("DELIVERED".equals(booking.getStatus())) {
+    System.out.println("Package delivered!");
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">booking.getStatus() == "DELIVERED"</div>
+        <div class="breakdown-explain">Compares memory addresses. If getStatus() returns a String built at runtime (e.g., from DB), it will be a different object than the literal "DELIVERED", so this returns false even when the status IS "DELIVERED".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">booking.getStatus().equals("DELIVERED")</div>
+        <div class="breakdown-explain">Compares the actual characters. Works correctly. But if getStatus() returns null, calling .equals() on null throws NullPointerException.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">"DELIVERED".equals(booking.getStatus())</div>
+        <div class="breakdown-explain">The literal "DELIVERED" is never null, so .equals() is called on a non-null object. If getStatus() returns null, .equals() simply returns false instead of crashing. This is the defensive pattern.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>equalsIgnoreCase()</h3>
+
+  <p>When comparing strings where capitalization might vary (user input, for example):</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">IgnoreCaseDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String userInput = "booked";
+String expected = "BOOKED";
+
+userInput.equals(expected);            // false
+userInput.equalsIgnoreCase(expected);  // true</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: STRING METHODS                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="string-methods">
+  <div class="section-tag">Section 04</div>
+  <h2>String Methods &mdash; The Complete Toolkit</h2>
+  <p class="section-desc">Java's String class has dozens of methods. These are the ones you will actually use. Every example uses Nimbus data so you can see exactly when each method matters.</p>
+
+  <h3>length()</h3>
+  <p>Returns the number of characters in the string.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LengthDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String bookingId = "NMB-260401-0001";
+System.out.println(bookingId.length()); // 15
+
+String empty = "";
+System.out.println(empty.length()); // 0</code></pre>
+  </div>
+
+  <h3>charAt(int index)</h3>
+  <p>Returns the character at the given index (0-based).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CharAtDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String userId = "260401-DM01";
+//  Index:       0123456789...
+
+System.out.println(userId.charAt(0));  // '2'
+System.out.println(userId.charAt(6));  // '-'
+System.out.println(userId.charAt(7));  // 'D'
+
+// DANGER: index out of range throws StringIndexOutOfBoundsException
+// userId.charAt(20); // CRASH!</code></pre>
+  </div>
+
+  <h3>substring(int begin) and substring(int begin, int end)</h3>
+  <p>Extracts a portion of the string. <code>begin</code> is inclusive, <code>end</code> is exclusive.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SubstringDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String bookingId = "NMB-260401-0001";
+
+// Extract the prefix
+String prefix = bookingId.substring(0, 3);  // "NMB"
+
+// Extract the date part
+String datePart = bookingId.substring(4, 10); // "260401"
+
+// Extract the sequence number
+String seqNum = bookingId.substring(11);      // "0001"
+
+// Extract initials from user ID
+String userId = "260401-DM01";
+String initials = userId.substring(7, 9);     // "DM"</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The booking ID <code>"NMB-260401-0001"</code> is structured: prefix (NMB) + date (260401) + sequence (0001). Parsing these parts with <code>substring()</code> is how Nimbus extracts the booking date or sequence number from an ID without querying the database.</p>
+  </div>
+
+  <h3>indexOf() and lastIndexOf()</h3>
+  <p>Finds the position of a character or substring. Returns <code>-1</code> if not found.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">IndexOfDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String email = "darshan@nimbus.com";
+
+System.out.println(email.indexOf('@'));         // 7
+System.out.println(email.indexOf("nimbus"));    // 8
+System.out.println(email.indexOf("xyz"));       // -1 (not found)
+System.out.println(email.lastIndexOf('.'));      // 14
+
+// Extract domain from email
+int atIndex = email.indexOf('@');
+String domain = email.substring(atIndex + 1);   // "nimbus.com"</code></pre>
+  </div>
+
+  <h3>contains(), startsWith(), endsWith()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ContainsDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String bookingId = "NMB-260401-0001";
+
+bookingId.contains("NMB");         // true
+bookingId.contains("nmb");         // false (case-sensitive!)
+bookingId.startsWith("NMB");       // true
+bookingId.endsWith("0001");        // true
+
+// Check if email is from a specific domain
+String email = "admin@nimbus.com";
+email.endsWith("@nimbus.com");     // true</code></pre>
+  </div>
+
+  <h3>toLowerCase() and toUpperCase()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CaseDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String name = "Darshan Mohan";
+System.out.println(name.toLowerCase()); // "darshan mohan"
+System.out.println(name.toUpperCase()); // "DARSHAN MOHAN"
+
+// Normalize user input before comparison
+String userInput = "boOkEd";
+if (userInput.toUpperCase().equals("BOOKED")) {
+    System.out.println("Status is booked"); // This works
+}</code></pre>
+  </div>
+
+  <h3>trim(), strip() (Java 11)</h3>
+  <p>Removes leading and trailing whitespace. <code>strip()</code> (Java 11+) handles Unicode whitespace too.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrimDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String messy = "  Darshan Mohan  ";
+System.out.println(messy.trim());  // "Darshan Mohan"
+
+// Always trim user input
+String rawAddress = "  12 MG Road, Mumbai  \n";
+String cleanAddress = rawAddress.trim(); // "12 MG Road, Mumbai"</code></pre>
+  </div>
+
+  <h3>replace() and replaceAll()</h3>
+  <p><code>replace()</code> takes literal strings. <code>replaceAll()</code> takes a regex pattern.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ReplaceDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String address = "12 MG Road, Mumbai, Maharashtra";
+
+// Replace literal text
+String updated = address.replace("Mumbai", "Pune");
+// "12 MG Road, Pune, Maharashtra"
+
+// Replace all digits with #
+String masked = address.replaceAll("[0-9]", "#");
+// "## MG Road, Mumbai, Maharashtra"
+
+// Remove all non-alphanumeric characters
+String phone = "+91-98765-43210";
+String digits = phone.replaceAll("[^0-9]", "");
+// "919876543210"</code></pre>
+  </div>
+
+  <h3>split()</h3>
+  <p>Splits a string into an array based on a delimiter (regex).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SplitDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String bookingId = "NMB-260401-0001";
+String[] parts = bookingId.split("-");
+
+System.out.println(parts[0]); // "NMB"
+System.out.println(parts[1]); // "260401"
+System.out.println(parts[2]); // "0001"
+System.out.println(parts.length); // 3
+
+// Split full name into first and last
+String fullName = "Darshan Mohan";
+String[] nameParts = fullName.split(" ");
+String firstName = nameParts[0]; // "Darshan"
+String lastName = nameParts[1];  // "Mohan"
+
+// Split CSV data
+String csv = "NMB-260401-0001,BOOKED,darshan@nimbus.com,2026-04-01";
+String[] fields = csv.split(",");
+// fields = ["NMB-260401-0001", "BOOKED", "darshan@nimbus.com", "2026-04-01"]</code></pre>
+  </div>
+
+  <h3>toCharArray()</h3>
+  <p>Converts the string to a character array. Useful for processing individual characters.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ToCharArrayDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String password = "Nimbus@123";
+char[] chars = password.toCharArray();
+
+// Count digits in password
+int digitCount = 0;
+for (char c : chars) {
+    if (Character.isDigit(c)) {
+        digitCount++;
+    }
+}
+System.out.println("Digits: " + digitCount); // 3</code></pre>
+  </div>
+
+  <h3>isEmpty() and isBlank() (Java 11)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">EmptyBlankDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String empty = "";
+String blank = "   ";
+String name = "Darshan";
+
+empty.isEmpty();  // true  (length == 0)
+blank.isEmpty();  // false (length == 3, it has spaces)
+name.isEmpty();   // false
+
+empty.isBlank();  // true  (no visible characters)
+blank.isBlank();  // true  (only whitespace = blank)
+name.isBlank();   // false
+
+// Validate required fields
+if (userName == null || userName.isBlank()) {
+    throw new IllegalArgumentException("Name cannot be empty");
+}</code></pre>
+  </div>
+
+  <h3>compareTo()</h3>
+  <p>Compares two strings lexicographically (dictionary order). Returns 0 if equal, negative if first is "less," positive if first is "greater."</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CompareToDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">"apple".compareTo("banana");   // negative (a comes before b)
+"banana".compareTo("apple");   // positive (b comes after a)
+"apple".compareTo("apple");    // 0 (equal)
+
+// Useful for sorting
+"BOOKED".compareTo("DELIVERED");  // negative (B before D)
+
+// Case-insensitive comparison
+"booked".compareToIgnoreCase("BOOKED"); // 0</code></pre>
+  </div>
+
+  <h3>Complete Method Reference</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Returns</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>length()</code></td><td>int</td><td>Number of characters</td></tr>
+      <tr><td><code>charAt(i)</code></td><td>char</td><td>Character at index i</td></tr>
+      <tr><td><code>substring(begin)</code></td><td>String</td><td>From begin to end</td></tr>
+      <tr><td><code>substring(begin, end)</code></td><td>String</td><td>From begin to end (exclusive)</td></tr>
+      <tr><td><code>indexOf(str)</code></td><td>int</td><td>First occurrence, -1 if missing</td></tr>
+      <tr><td><code>lastIndexOf(str)</code></td><td>int</td><td>Last occurrence, -1 if missing</td></tr>
+      <tr><td><code>contains(str)</code></td><td>boolean</td><td>Does it contain this substring?</td></tr>
+      <tr><td><code>startsWith(str)</code></td><td>boolean</td><td>Does it start with this?</td></tr>
+      <tr><td><code>endsWith(str)</code></td><td>boolean</td><td>Does it end with this?</td></tr>
+      <tr><td><code>toLowerCase()</code></td><td>String</td><td>All lowercase copy</td></tr>
+      <tr><td><code>toUpperCase()</code></td><td>String</td><td>All uppercase copy</td></tr>
+      <tr><td><code>trim()</code></td><td>String</td><td>Remove leading/trailing whitespace</td></tr>
+      <tr><td><code>replace(old, new)</code></td><td>String</td><td>Replace all literal matches</td></tr>
+      <tr><td><code>replaceAll(regex, new)</code></td><td>String</td><td>Replace all regex matches</td></tr>
+      <tr><td><code>split(regex)</code></td><td>String[]</td><td>Split into array</td></tr>
+      <tr><td><code>toCharArray()</code></td><td>char[]</td><td>Convert to char array</td></tr>
+      <tr><td><code>isEmpty()</code></td><td>boolean</td><td>True if length is 0</td></tr>
+      <tr><td><code>isBlank()</code></td><td>boolean</td><td>True if empty or only whitespace (Java 11)</td></tr>
+      <tr><td><code>compareTo(str)</code></td><td>int</td><td>Lexicographic comparison</td></tr>
+      <tr><td><code>equals(obj)</code></td><td>boolean</td><td>Content equality</td></tr>
+      <tr><td><code>equalsIgnoreCase(str)</code></td><td>boolean</td><td>Content equality, ignoring case</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: STRING CONCATENATION                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="concatenation">
+  <div class="section-tag">Section 05</div>
+  <h2>String Concatenation</h2>
+  <p class="section-desc">Joining strings together is something you do constantly. But how you do it matters for performance, especially in loops.</p>
+
+  <h3>The + Operator</h3>
+  <p>The simplest way. Works great for one-off concatenations.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ConcatPlus.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String firstName = "Darshan";
+String lastName = "Mohan";
+
+// Simple concatenation
+String fullName = firstName + " " + lastName; // "Darshan Mohan"
+
+// Concatenation with non-strings (auto-converted)
+int age = 25;
+String message = "Age: " + age; // "Age: 25" &mdash; int auto-converted to String</code></pre>
+  </div>
+
+  <h3>The concat() Method</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ConcatMethod.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String greeting = "Hello, ".concat("Darshan"); // "Hello, Darshan"
+
+// Less common than + operator. No advantage. Doesn't auto-convert types.
+// "Age: ".concat(25); // COMPILE ERROR &mdash; concat only takes String</code></pre>
+  </div>
+
+  <h3>Why + in Loops is Bad</h3>
+
+  <p>Because strings are immutable, every <code>+</code> creates a <strong>new String object</strong>. In a loop, this means creating and throwing away hundreds or thousands of objects:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BadLoop.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD &mdash; creates 1000 intermediate String objects
+String result = "";
+for (int i = 0; i &lt; 1000; i++) {
+    result = result + i + ", ";  // Each + creates a NEW string
+}
+// Iteration 0: "" + "0" + ", " = "0, " (new object #1)
+// Iteration 1: "0, " + "1" + ", " = "0, 1, " (new object #2)
+// Iteration 2: "0, 1, " + "2" + ", " = "0, 1, 2, " (new object #3)
+// ... 1000 objects created and thrown away!</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+    Loop iteration 0:  result = "" + "0" + ", "
+                       Creates: ["0"], ["0, "]          2 objects
+
+    Loop iteration 1:  result = "0, " + "1" + ", "
+                       Creates: ["0, 1"], ["0, 1, "]    2 objects
+
+    Loop iteration 2:  result = "0, 1, " + "2" + ", "
+                       Creates: ["0, 1, 2"], ["0, 1, 2, "]  2 objects
+
+    ...after 1000 iterations: ~2000 temporary String objects in memory!
+    All discarded except the final one. Massive waste.
+    </pre>
+    <div class="diagram-label">Each + operation creates a new String. Old ones become garbage. Use StringBuilder instead.</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Name concatenation: <code>firstName + " " + lastName</code> is fine &mdash; it is a one-time operation. But if you are building a report string for all 500 bookings in a loop, <strong>use StringBuilder</strong> (next section).</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: STRINGBUILDER                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="string-builder">
+  <div class="section-tag">Section 06</div>
+  <h2>StringBuilder &mdash; The Mutable String</h2>
+  <p class="section-desc">StringBuilder is a mutable (changeable) sequence of characters. Unlike String, modifications happen in-place without creating new objects. Use it whenever you are building strings in loops or assembling strings from many parts.</p>
+
+  <h3>Basic Usage</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StringBuilderDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">StringBuilder sb = new StringBuilder();
+
+sb.append("Booking: ");
+sb.append("NMB-260401-0001");
+sb.append(" | Status: ");
+sb.append("BOOKED");
+
+String result = sb.toString();
+// "Booking: NMB-260401-0001 | Status: BOOKED"</code></pre>
+  </div>
+
+  <h3>Key Methods</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">StringBuilderMethods.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">StringBuilder sb = new StringBuilder("Nimbus");
+
+// append() &mdash; adds to the end
+sb.append(" Parcel");            // "Nimbus Parcel"
+
+// insert() &mdash; adds at a specific position
+sb.insert(6, " Express");       // "Nimbus Express Parcel"
+
+// delete() &mdash; removes a range (begin inclusive, end exclusive)
+sb.delete(6, 14);               // "Nimbus Parcel"
+
+// replace() &mdash; replaces a range with new text
+sb.replace(7, 13, "Courier");   // "Nimbus Courier"
+
+// reverse() &mdash; reverses the entire sequence
+sb.reverse();                    // "reiruoC submiN"
+
+// toString() &mdash; converts back to an immutable String
+String final = sb.toString();</code></pre>
+  </div>
+
+  <h3>StringBuilder in Loops &mdash; The Right Way</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GoodLoop.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GOOD &mdash; ONE object, modified in-place
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i &lt; 1000; i++) {
+    sb.append(i).append(", ");
+}
+String result = sb.toString();
+// Only 1 StringBuilder object used, no waste</code></pre>
+  </div>
+
+  <h3>Performance Comparison</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">String + in Loop</div>
+      <div class="comparison-body">
+        <p>1000 iterations with <code>+</code>:</p>
+        <ul>
+          <li>~2000 temporary objects</li>
+          <li>Each iteration copies all previous characters</li>
+          <li>Time complexity: <strong>O(n&sup2;)</strong></li>
+          <li>Benchmark: ~50ms for 10,000 iterations</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">StringBuilder</div>
+      <div class="comparison-body">
+        <p>1000 iterations with <code>append()</code>:</p>
+        <ul>
+          <li>1 object, resized as needed</li>
+          <li>Each append only copies the new characters</li>
+          <li>Time complexity: <strong>O(n)</strong></li>
+          <li>Benchmark: ~1ms for 10,000 iterations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Building an invoice output for a booking with multiple items? StringBuilder. Assembling a formatted address from street, city, state, pin code? StringBuilder. Any time you are joining more than 3-4 parts or doing it in a loop, reach for StringBuilder.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: STRINGBUFFER                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="string-buffer">
+  <div class="section-tag">Section 07</div>
+  <h2>StringBuffer &mdash; Thread-Safe StringBuilder</h2>
+  <p class="section-desc">StringBuffer has the exact same API as StringBuilder (append, insert, delete, reverse, toString) but every method is <strong>synchronized</strong>, meaning only one thread can use it at a time.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>StringBuilder</th>
+        <th>StringBuffer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Mutable?</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>Thread-safe?</td><td>No</td><td>Yes (synchronized)</td></tr>
+      <tr><td>Performance</td><td><strong>Faster</strong></td><td>Slower (lock overhead)</td></tr>
+      <tr><td>When to use</td><td><strong>99% of the time</strong></td><td>Only when multiple threads share the same builder</td></tr>
+      <tr><td>Introduced</td><td>Java 5</td><td>Java 1.0</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Key Takeaway</div>
+    <p>Use <strong>StringBuilder</strong> by default. Use StringBuffer <strong>only</strong> if multiple threads will modify the same buffer simultaneously, which is rare. In Nimbus and most applications, StringBuilder is what you want.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: STRING.FORMAT()                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="string-format">
+  <div class="section-tag">Section 08</div>
+  <h2>String.format() &mdash; Template Strings</h2>
+  <p class="section-desc">Instead of messy concatenation with <code>+</code>, use <code>String.format()</code> to create formatted strings using placeholders. Cleaner, more readable, and supports number/date formatting.</p>
+
+  <h3>Format Specifiers</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Specifier</th>
+        <th>Type</th>
+        <th>Example</th>
+        <th>Output</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>%s</code></td><td>String</td><td><code>String.format("Hi %s", "Darshan")</code></td><td>Hi Darshan</td></tr>
+      <tr><td><code>%d</code></td><td>Integer</td><td><code>String.format("Count: %d", 42)</code></td><td>Count: 42</td></tr>
+      <tr><td><code>%f</code></td><td>Float/Double</td><td><code>String.format("Price: %.2f", 99.5)</code></td><td>Price: 99.50</td></tr>
+      <tr><td><code>%04d</code></td><td>Zero-padded int</td><td><code>String.format("%04d", 1)</code></td><td>0001</td></tr>
+      <tr><td><code>%n</code></td><td>Newline</td><td>(platform-specific line break)</td><td></td></tr>
+      <tr><td><code>%%</code></td><td>Literal %</td><td><code>String.format("100%%")</code></td><td>100%</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Nimbus Examples</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">FormatNimbus.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Generate user ID: YYMMDD-XX## format
+String userId = String.format("%s-%s%02d", "260401", "DM", 1);
+// "260401-DM01"
+
+// Generate booking ID: NMB-YYMMDD-#### format
+int sequenceNumber = 1;
+String bookingId = String.format("NMB-%s-%04d", "260401", sequenceNumber);
+// "NMB-260401-0001"
+
+// Format invoice line
+String invoiceLine = String.format(
+    "%-30s %5d x Rs. %8.2f = Rs. %10.2f",
+    "Express Delivery", 2, 150.00, 300.00
+);
+// "Express Delivery                  2 x Rs.   150.00 = Rs.     300.00"
+
+// Format booking summary
+String summary = String.format(
+    "Booking %s | From: %s | To: %s | Status: %s",
+    "NMB-260401-0001", "Mumbai", "Delhi", "BOOKED"
+);
+// "Booking NMB-260401-0001 | From: Mumbai | To: Delhi | Status: BOOKED"</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Format specifier breakdown</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">%02d</div>
+        <div class="breakdown-explain">%d = integer, 02 = pad with zeros to at least 2 digits. So 1 becomes "01", 9 becomes "09", 12 stays "12".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">%04d</div>
+        <div class="breakdown-explain">Pad with zeros to at least 4 digits. 1 becomes "0001", 42 becomes "0042", 1234 stays "1234".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">%-30s</div>
+        <div class="breakdown-explain">%s = string, 30 = minimum width, - = left-align. If the string is shorter than 30 chars, it pads with spaces on the right. Good for table formatting.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">%8.2f</div>
+        <div class="breakdown-explain">%f = float/double, 8 = minimum total width (including decimal point), .2 = exactly 2 decimal places. 150.0 becomes "  150.00".</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses <code>String.format()</code> heavily for ID generation. The booking ID format <code>NMB-YYMMDD-####</code> needs zero-padded sequence numbers (<code>%04d</code>), and the user ID format <code>YYMMDD-XX##</code> needs zero-padded user numbers (<code>%02d</code>). Without format(), you would have to manually check digit count and prepend zeros.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: STRING CONVERSION                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="string-conversion">
+  <div class="section-tag">Section 09</div>
+  <h2>String Conversion &mdash; Parsing and Converting</h2>
+  <p class="section-desc">Converting between Strings and other types (int, double, boolean) is something you do constantly when reading user input, parsing IDs, or formatting output.</p>
+
+  <h3>String to Number</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ParseDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// String to int
+String seqStr = "0001";
+int seqNum = Integer.parseInt(seqStr);   // 1
+
+// String to double
+String priceStr = "149.99";
+double price = Double.parseDouble(priceStr); // 149.99
+
+// String to long
+String trackingNum = "9876543210";
+long tracking = Long.parseLong(trackingNum);
+
+// String to boolean
+String flag = "true";
+boolean isActive = Boolean.parseBoolean(flag); // true</code></pre>
+  </div>
+
+  <h3>Number to String</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ToStringDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">int count = 42;
+double price = 149.99;
+
+// Way 1: String.valueOf() (preferred)
+String s1 = String.valueOf(count);     // "42"
+String s2 = String.valueOf(price);     // "149.99"
+
+// Way 2: .toString() on wrapper class
+String s3 = Integer.toString(count);   // "42"
+String s4 = Double.toString(price);    // "149.99"
+
+// Way 3: Concatenation trick (works but less clear)
+String s5 = "" + count;               // "42"</code></pre>
+  </div>
+
+  <h3>NumberFormatException &mdash; When Parsing Fails</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ParseError.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// These all throw NumberFormatException:
+Integer.parseInt("abc");     // not a number
+Integer.parseInt("12.5");    // parseInt expects integer, not decimal
+Integer.parseInt("");        // empty string
+Integer.parseInt(null);      // null
+
+// Always handle it:
+String input = "abc";
+try {
+    int value = Integer.parseInt(input);
+} catch (NumberFormatException e) {
+    System.out.println("Invalid number: " + input);
+}
+
+// Nimbus example: parsing sequence number from booking ID
+String bookingId = "NMB-260401-0001";
+String seqPart = bookingId.substring(11); // "0001"
+try {
+    int seqNum = Integer.parseInt(seqPart);
+    System.out.println("Sequence: " + seqNum); // 1
+} catch (NumberFormatException e) {
+    System.out.println("Invalid booking ID format");
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: REGULAR EXPRESSIONS                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="regex">
+  <div class="section-tag">Section 10</div>
+  <h2>Regular Expressions &mdash; Pattern Matching</h2>
+  <p class="section-desc">Regular expressions (regex) let you define patterns to match, validate, search, and replace text. Java provides the <code>Pattern</code> and <code>Matcher</code> classes, plus built-in regex support in String methods like <code>matches()</code>, <code>replaceAll()</code>, and <code>split()</code>.</p>
+
+  <h3>Common Regex Syntax</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Pattern</th>
+        <th>Matches</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>.</code></td><td>Any single character</td><td><code>"c.t"</code> matches "cat", "cut"</td></tr>
+      <tr><td><code>\d</code></td><td>Any digit (0-9)</td><td><code>"\d{4}"</code> matches "0001"</td></tr>
+      <tr><td><code>\w</code></td><td>Word character (letter, digit, _)</td><td><code>"\w+"</code> matches "hello_123"</td></tr>
+      <tr><td><code>\s</code></td><td>Whitespace (space, tab, newline)</td><td><code>"\s+"</code> matches "  "</td></tr>
+      <tr><td><code>[abc]</code></td><td>Any character in the set</td><td><code>"[aeiou]"</code> matches any vowel</td></tr>
+      <tr><td><code>[^abc]</code></td><td>Any character NOT in the set</td><td><code>"[^0-9]"</code> matches non-digits</td></tr>
+      <tr><td><code>*</code></td><td>0 or more</td><td><code>"ab*"</code> matches "a", "ab", "abb"</td></tr>
+      <tr><td><code>+</code></td><td>1 or more</td><td><code>"ab+"</code> matches "ab", "abb" (not "a")</td></tr>
+      <tr><td><code>?</code></td><td>0 or 1</td><td><code>"colou?r"</code> matches "color", "colour"</td></tr>
+      <tr><td><code>{n}</code></td><td>Exactly n times</td><td><code>"\d{6}"</code> matches "260401"</td></tr>
+      <tr><td><code>{n,m}</code></td><td>Between n and m times</td><td><code>"\d{8,10}"</code> matches 8-10 digit numbers</td></tr>
+      <tr><td><code>^</code></td><td>Start of string</td><td><code>"^NMB"</code> matches if starts with NMB</td></tr>
+      <tr><td><code>$</code></td><td>End of string</td><td><code>"com$"</code> matches if ends with com</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Email Validation</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">EmailValidation.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidation {
+
+    // Regex: one or more word chars/dots/hyphens, then @,
+    // then one or more word chars/dots, then . and 2-6 letters
+    private static final String EMAIL_REGEX =
+        "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
+
+    private static final Pattern EMAIL_PATTERN =
+        Pattern.compile(EMAIL_REGEX);
+
+    public static boolean isValidEmail(String email) {
+        if (email == null) return false;
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isValidEmail("darshan@nimbus.com"));  // true
+        System.out.println(isValidEmail("user.name@mail.co.in")); // true
+        System.out.println(isValidEmail("invalid@"));             // false
+        System.out.println(isValidEmail("no-at-sign.com"));       // false
+        System.out.println(isValidEmail(null));                    // false
+    }
+}</code></pre>
+  </div>
+
+  <h3>Password Validation</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PasswordValidation.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class PasswordValidation {
+
+    public static boolean isStrongPassword(String password) {
+        if (password == null || password.length() &lt; 8) return false;
+
+        // Check each requirement with regex
+        boolean hasUpper = password.matches(".*[A-Z].*");
+        boolean hasLower = password.matches(".*[a-z].*");
+        boolean hasDigit = password.matches(".*\\d.*");
+        boolean hasSpecial = password.matches(".*[!@#$%^&amp;*()_+\\-=].*");
+
+        return hasUpper &amp;&amp; hasLower &amp;&amp; hasDigit &amp;&amp; hasSpecial;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isStrongPassword("Nimbus@123"));  // true
+        System.out.println(isStrongPassword("weakpass"));    // false
+        System.out.println(isStrongPassword("NoDigit!"));    // false
+    }
+}</code></pre>
+  </div>
+
+  <h3>Pattern and Matcher (Full API)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PatternMatcherDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.regex.*;
+
+// Compile pattern once, reuse many times (better performance)
+Pattern bookingPattern = Pattern.compile("NMB-(\\d{6})-(\\d{4})");
+//                                       ^     ^group1    ^group2
+
+String id = "NMB-260401-0001";
+Matcher m = bookingPattern.matcher(id);
+
+if (m.matches()) {
+    System.out.println("Full match: " + m.group(0));  // "NMB-260401-0001"
+    System.out.println("Date: " + m.group(1));         // "260401"
+    System.out.println("Sequence: " + m.group(2));     // "0001"
+}
+
+// find() &mdash; searches anywhere in the string (not just full match)
+String log = "Bookings: NMB-260401-0001, NMB-260401-0002, NMB-260402-0001";
+Matcher finder = bookingPattern.matcher(log);
+while (finder.find()) {
+    System.out.println("Found: " + finder.group(0));
+}
+// Found: NMB-260401-0001
+// Found: NMB-260401-0002
+// Found: NMB-260402-0001</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus validates user email on registration using the email regex pattern above. Password validation checks strength requirements. Booking IDs are validated against the <code>NMB-\d{6}-\d{4}</code> pattern to ensure they follow the expected format before processing.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: NIMBUS EXAMPLES                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-examples">
+  <div class="section-tag">Section 11</div>
+  <h2>Full Nimbus Examples</h2>
+  <p class="section-desc">Everything you learned on this page, applied to real Nimbus code. These are actual patterns from the project &mdash; user ID generation, booking ID parsing, status checks, password validation, and address formatting.</p>
+
+  <h3>User ID Generation</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusUserIdGenerator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">/**
+ * Generates a user ID in format: YYMMDD-XX##
+ * Example: 260401-DM01
+ *
+ * YY     = last 2 digits of year (26 for 2026)
+ * MM     = month (04 for April)
+ * DD     = day (01)
+ * XX     = first letters of first and last name
+ * ##     = zero-padded sequence number
+ */
+public static String generateUserId(String firstName, String lastName,
+                                     String joinDate, int sequenceNum) {
+    // Extract date part: "2026-04-01" &rarr; "260401"
+    String datePart = joinDate.substring(2, 4)   // "26" (year)
+                    + joinDate.substring(5, 7)   // "04" (month)
+                    + joinDate.substring(8, 10); // "01" (day)
+
+    // Extract initials: "Darshan" &rarr; "D", "Mohan" &rarr; "M"
+    String initials = firstName.substring(0, 1).toUpperCase()
+                    + lastName.substring(0, 1).toUpperCase();
+
+    // Format: YYMMDD-XX## with zero-padded sequence
+    return String.format("%s-%s%02d", datePart, initials, sequenceNum);
+    // "260401-DM01"
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">joinDate.substring(2, 4)</div>
+        <div class="breakdown-explain">joinDate is "2026-04-01". Index 2 to 4 extracts "26" (the last two digits of the year).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">joinDate.substring(5, 7)</div>
+        <div class="breakdown-explain">Index 5 to 7 extracts "04" (the month). The dash at index 4 is skipped.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">firstName.substring(0, 1).toUpperCase()</div>
+        <div class="breakdown-explain">Takes the first character of the first name and uppercases it. "darshan" &rarr; "d" &rarr; "D".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String.format("%s-%s%02d", datePart, initials, sequenceNum)</div>
+        <div class="breakdown-explain">%s inserts datePart ("260401"), %s inserts initials ("DM"), %02d formats sequenceNum (1 &rarr; "01"). Result: "260401-DM01".</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Booking ID Parsing</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusBookingParser.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">/**
+ * Parses a Nimbus booking ID: "NMB-260401-0001"
+ * Returns: prefix, date, and sequence number
+ */
+public static void parseBookingId(String bookingId) {
+    // Validate format first
+    if (bookingId == null || !bookingId.matches("NMB-\\d{6}-\\d{4}")) {
+        throw new IllegalArgumentException("Invalid booking ID: " + bookingId);
+    }
+
+    // Split by dash
+    String[] parts = bookingId.split("-");
+    String prefix = parts[0];          // "NMB"
+    String datePart = parts[1];        // "260401"
+    int seqNum = Integer.parseInt(parts[2]); // 1
+
+    // Parse date components
+    String year = "20" + datePart.substring(0, 2);  // "2026"
+    String month = datePart.substring(2, 4);         // "04"
+    String day = datePart.substring(4, 6);           // "01"
+
+    System.out.println("Prefix: " + prefix);
+    System.out.println("Booked on: " + year + "-" + month + "-" + day);
+    System.out.println("Sequence: " + seqNum);
+}</code></pre>
+  </div>
+
+  <h3>Status Comparison (The Right Way)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusStatusHandler.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class NimbusStatusHandler {
+
+    // Define status constants to avoid typos
+    public static final String STATUS_BOOKED = "BOOKED";
+    public static final String STATUS_IN_TRANSIT = "IN_TRANSIT";
+    public static final String STATUS_DELIVERED = "DELIVERED";
+    public static final String STATUS_CANCELLED = "CANCELLED";
+
+    public static String getStatusMessage(String status) {
+        // ALWAYS use .equals(), NEVER ==
+        // Put the constant FIRST to avoid NullPointerException
+        if (STATUS_BOOKED.equals(status)) {
+            return "Your parcel has been booked and is awaiting pickup.";
+        } else if (STATUS_IN_TRANSIT.equals(status)) {
+            return "Your parcel is on its way!";
+        } else if (STATUS_DELIVERED.equals(status)) {
+            return "Your parcel has been delivered.";
+        } else if (STATUS_CANCELLED.equals(status)) {
+            return "This booking has been cancelled.";
+        } else {
+            return "Unknown status: " + status;
+        }
+    }
+}</code></pre>
+  </div>
+
+  <h3>Password Sequential Character Check</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusPasswordValidator.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">/**
+ * Checks if password contains 3+ sequential characters.
+ * "abc", "123", "xyz" are sequential &mdash; weak passwords.
+ * Uses charAt() to compare consecutive character codes.
+ */
+public static boolean hasSequentialChars(String password) {
+    if (password == null || password.length() &lt; 3) return false;
+
+    String lower = password.toLowerCase();
+    for (int i = 0; i &lt; lower.length() - 2; i++) {
+        char c1 = lower.charAt(i);
+        char c2 = lower.charAt(i + 1);
+        char c3 = lower.charAt(i + 2);
+
+        // Check ascending: a,b,c or 1,2,3
+        if (c2 == c1 + 1 &amp;&amp; c3 == c2 + 1) return true;
+
+        // Check descending: c,b,a or 3,2,1
+        if (c2 == c1 - 1 &amp;&amp; c3 == c2 - 1) return true;
+    }
+    return false;
+}
+
+public static void main(String[] args) {
+    System.out.println(hasSequentialChars("Nabc@99"));   // true  (a,b,c)
+    System.out.println(hasSequentialChars("N123@bc"));    // true  (1,2,3)
+    System.out.println(hasSequentialChars("Nxyz!01"));    // true  (x,y,z)
+    System.out.println(hasSequentialChars("Nimbus@99"));  // false (no sequence)
+    System.out.println(hasSequentialChars("Ncba!01"));    // true  (c,b,a descending)
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">How sequential detection works</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">char c1 = lower.charAt(i);</div>
+        <div class="breakdown-explain">Characters have numeric values (ASCII). 'a'=97, 'b'=98, 'c'=99. So 'b' == 'a'+1 is true.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">c2 == c1 + 1 &amp;&amp; c3 == c2 + 1</div>
+        <div class="breakdown-explain">If three consecutive chars are each +1 of the previous (a,b,c or 1,2,3), that is an ascending sequence. The password is weak.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">c2 == c1 - 1 &amp;&amp; c3 == c2 - 1</div>
+        <div class="breakdown-explain">Also checks descending sequences like c,b,a or 9,8,7. Same logic, just subtract instead of add.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Address Formatting</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusAddressFormatter.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">/**
+ * Formats a full delivery address from individual components.
+ * Handles null/blank fields gracefully.
+ */
+public static String formatAddress(String street, String city,
+                                    String state, String pinCode) {
+    StringBuilder sb = new StringBuilder();
+
+    if (street != null &amp;&amp; !street.isBlank()) {
+        sb.append(street.trim());
+    }
+    if (city != null &amp;&amp; !city.isBlank()) {
+        if (sb.length() &gt; 0) sb.append(", ");
+        sb.append(city.trim());
+    }
+    if (state != null &amp;&amp; !state.isBlank()) {
+        if (sb.length() &gt; 0) sb.append(", ");
+        sb.append(state.trim());
+    }
+    if (pinCode != null &amp;&amp; !pinCode.isBlank()) {
+        if (sb.length() &gt; 0) sb.append(" - ");
+        sb.append(pinCode.trim());
+    }
+
+    return sb.toString();
+}
+
+// Usage:
+String addr = formatAddress("12 MG Road", "Mumbai", "Maharashtra", "400001");
+// "12 MG Road, Mumbai, Maharashtra - 400001"
+
+String partial = formatAddress("  Sector 5  ", "Noida", null, "201301");
+// "Sector 5, Noida - 201301"</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: COMMON MISTAKES                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-mistakes">
+  <div class="section-tag">Section 12</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">These are the bugs that will eat your time if you do not know about them. Every single one of these has bitten real developers on real projects.</p>
+
+  <h3>Mistake 1: Using == Instead of .equals()</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre><code class="language-java">if (status == "BOOKED") {
+    // May work with literals
+    // FAILS with runtime strings
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Correct</div>
+      <div class="comparison-body">
+<pre><code class="language-java">if ("BOOKED".equals(status)) {
+    // Always works
+    // Null-safe
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 2: NullPointerException on null String</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Crashes</div>
+      <div class="comparison-body">
+<pre><code class="language-java">String name = null;
+name.equals("Darshan");
+// NullPointerException!</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Safe</div>
+      <div class="comparison-body">
+<pre><code class="language-java">String name = null;
+"Darshan".equals(name);
+// false (no crash)</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 3: StringIndexOutOfBoundsException</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">IndexOutOfBounds.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String id = "NMB";
+
+// CRASH: index 5 does not exist (max index = 2)
+char c = id.charAt(5); // StringIndexOutOfBoundsException
+
+// CRASH: substring end beyond length
+String sub = id.substring(0, 10); // StringIndexOutOfBoundsException
+
+// FIX: always check length first
+if (id.length() &gt; 5) {
+    char c = id.charAt(5);
+}</code></pre>
+  </div>
+
+  <h3>Mistake 4: Forgetting Strings Are Immutable</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Does Nothing</div>
+      <div class="comparison-body">
+<pre><code class="language-java">String name = "  darshan  ";
+name.trim();       // result discarded
+name.toUpperCase(); // result discarded
+// name is STILL "  darshan  "</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Assign the Result</div>
+      <div class="comparison-body">
+<pre><code class="language-java">String name = "  darshan  ";
+name = name.trim();
+name = name.toUpperCase();
+// name is now "DARSHAN"</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 5: Concatenation in Loops</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">O(n&sup2;) Performance</div>
+      <div class="comparison-body">
+<pre><code class="language-java">String csv = "";
+for (String s : list) {
+    csv += s + ",";
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">O(n) Performance</div>
+      <div class="comparison-body">
+<pre><code class="language-java">StringBuilder sb = new StringBuilder();
+for (String s : list) {
+    sb.append(s).append(",");
+}
+String csv = sb.toString();</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 13</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Ten exercises, all Nimbus-themed. Try each one before looking at hints. Write the code, compile it, run it. Reading is not learning &mdash; doing is learning.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1: Generate a Booking ID</div>
+    <p>Write a method <code>generateBookingId(String dateStr, int seqNum)</code> that takes a date like <code>"2026-04-01"</code> and a sequence number like <code>1</code> and returns <code>"NMB-260401-0001"</code>.</p>
+    <p><strong>Methods needed:</strong> <code>substring()</code>, <code>String.format()</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2: Extract Domain from Email</div>
+    <p>Write a method <code>getDomain(String email)</code> that extracts the domain. <code>"darshan@nimbus.com"</code> should return <code>"nimbus.com"</code>. Return <code>"invalid"</code> if there is no <code>@</code>.</p>
+    <p><strong>Methods needed:</strong> <code>indexOf()</code>, <code>substring()</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3: Count Vowels in a Name</div>
+    <p>Write a method <code>countVowels(String name)</code> that counts vowels (a, e, i, o, u) in a name. <code>"Darshan Mohan"</code> should return <code>4</code>. Handle uppercase and lowercase.</p>
+    <p><strong>Methods needed:</strong> <code>toLowerCase()</code>, <code>charAt()</code> or <code>toCharArray()</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4: Reverse a String</div>
+    <p>Write a method <code>reverse(String str)</code> that reverses a string <strong>without using StringBuilder.reverse()</strong>. <code>"Nimbus"</code> should return <code>"submiN"</code>.</p>
+    <p><strong>Methods needed:</strong> <code>charAt()</code>, <code>length()</code>, loop</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5: Validate Booking ID Format</div>
+    <p>Write a method <code>isValidBookingId(String id)</code> that returns <code>true</code> if the ID matches the format <code>NMB-NNNNNN-NNNN</code> where N is a digit. <code>"NMB-260401-0001"</code> is valid. <code>"NMB-26a401-0001"</code> is not.</p>
+    <p><strong>Methods needed:</strong> <code>matches()</code> with regex</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6: Mask Email Address</div>
+    <p>Write a method <code>maskEmail(String email)</code> that masks an email: <code>"darshan@nimbus.com"</code> becomes <code>"da*****@nimbus.com"</code>. Show the first 2 characters, replace the rest before @ with asterisks.</p>
+    <p><strong>Methods needed:</strong> <code>indexOf()</code>, <code>substring()</code>, loop or <code>repeat()</code> (Java 11)</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7: Title Case a Name</div>
+    <p>Write a method <code>toTitleCase(String name)</code> that converts <code>"darshan mohan"</code> to <code>"Darshan Mohan"</code>. Each word's first letter should be uppercase, rest lowercase.</p>
+    <p><strong>Methods needed:</strong> <code>split()</code>, <code>substring()</code>, <code>toUpperCase()</code>, <code>toLowerCase()</code>, <code>StringBuilder</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8: Check if Palindrome</div>
+    <p>Write a method <code>isPalindrome(String str)</code> that checks if a string reads the same forwards and backwards, ignoring case and spaces. <code>"race car"</code> should return <code>true</code>.</p>
+    <p><strong>Methods needed:</strong> <code>replaceAll()</code>, <code>toLowerCase()</code>, <code>StringBuilder.reverse()</code> or loop</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 9: Build a Booking Summary</div>
+    <p>Write a method <code>buildSummary(String id, String sender, String receiver, String status, double weight)</code> that returns a formatted summary using <code>String.format()</code>:</p>
+    <p><code>Booking NMB-260401-0001 | From: Darshan | To: Mohan | Status: BOOKED | Weight: 2.50 kg</code></p>
+    <p><strong>Methods needed:</strong> <code>String.format()</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 10: Password Strength Checker</div>
+    <p>Write a full <code>checkPassword(String password)</code> method that returns a strength rating:</p>
+    <ul>
+      <li><strong>WEAK</strong> &mdash; less than 8 chars, or only letters, or only numbers</li>
+      <li><strong>MEDIUM</strong> &mdash; 8+ chars, has letters and numbers, but no special characters</li>
+      <li><strong>STRONG</strong> &mdash; 8+ chars, has uppercase, lowercase, digit, and special character</li>
+    </ul>
+    <p>Also check for sequential characters using the <code>hasSequentialChars()</code> method from Section 11. If found, downgrade STRONG to MEDIUM.</p>
+    <p><strong>Methods needed:</strong> <code>length()</code>, <code>matches()</code>, <code>charAt()</code></p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="java-basics.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Variables &amp; Types</span>
+  </a>
+  <a href="java-arrays.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Arrays</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus Full Stack &mdash; Complete Code | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> API Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Architecture</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus as Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular &mdash; Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Angular Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Angular Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link active"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: PROJECT STRUCTURE                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="project-structure">
+  <div class="section-tag">Section 01</div>
+  <h2>Project Structure</h2>
+  <p class="section-desc">The complete file layout for the Nimbus full stack application &mdash; Spring Boot backend and Angular frontend.</p>
+
+  <div class="diagram">
+    <pre>
+nimbus/
+├── nimbus-backend/                    &lt;-- Spring Boot (port 8080)
+│   ├── pom.xml
+│   ├── src/main/java/com/nimbus/
+│   │   ├── NimbusApplication.java
+│   │   ├── config/
+│   │   │   └── WebConfig.java            (CORS config)
+│   │   ├── controller/
+│   │   │   ├── UserController.java
+│   │   │   └── BookingController.java
+│   │   ├── service/
+│   │   │   ├── UserService.java
+│   │   │   └── BookingService.java
+│   │   ├── dao/
+│   │   │   ├── UserDAO.java
+│   │   │   └── BookingDAO.java
+│   │   ├── model/
+│   │   │   ├── User.java
+│   │   │   └── Booking.java
+│   │   ├── dto/
+│   │   │   ├── RegistrationRequest.java
+│   │   │   ├── LoginRequest.java
+│   │   │   ├── LoginResponse.java
+│   │   │   ├── BookingRequest.java
+│   │   │   ├── BookingResponse.java
+│   │   │   ├── StatusUpdateRequest.java
+│   │   │   └── PickupUpdateRequest.java
+│   │   └── exception/
+│   │       ├── ErrorResponse.java
+│   │       ├── GlobalExceptionHandler.java
+│   │       ├── DuplicateEmailException.java
+│   │       ├── BookingNotFoundException.java
+│   │       └── InvalidBookingException.java
+│   └── src/main/resources/
+│       └── application.properties
+│
+└── nimbus-frontend/                   &lt;-- Angular (port 4200)
+    ├── angular.json
+    ├── package.json
+    ├── proxy.conf.json
+    ├── src/
+    │   ├── app/
+    │   │   ├── app.module.ts
+    │   │   ├── app.component.ts / .html
+    │   │   ├── app-routing.module.ts
+    │   │   ├── components/
+    │   │   │   ├── login/
+    │   │   │   ├── register/
+    │   │   │   ├── dashboard/
+    │   │   │   ├── booking-form/
+    │   │   │   ├── booking-detail/
+    │   │   │   ├── booking-history/
+    │   │   │   ├── navbar/
+    │   │   │   └── status-update/
+    │   │   ├── services/
+    │   │   │   ├── auth.service.ts
+    │   │   │   └── booking.service.ts
+    │   │   ├── guards/
+    │   │   │   ├── auth.guard.ts
+    │   │   │   └── role.guard.ts
+    │   │   └── models/
+    │   │       ├── user.model.ts
+    │   │       └── booking.model.ts
+    │   └── environments/
+    │       ├── environment.ts
+    │       └── environment.prod.ts
+    </pre>
+    <div class="diagram-label">Complete Nimbus project structure &mdash; backend and frontend as sibling directories</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SPRING BOOT BACKEND                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="backend">
+  <div class="section-tag">Section 02</div>
+  <h2>Spring Boot Backend</h2>
+  <p class="section-desc">Every backend file, from pom.xml to the exception handler. Copy these to build the complete Nimbus API.</p>
+
+  <h3>pom.xml</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus-backend/pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.0&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-backend&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;name&gt;Nimbus Backend&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;8.0.33&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+  </div>
+
+  <h3>application.properties</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">server.port=8080
+spring.datasource.url=jdbc:mysql://localhost:3306/nimbus
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver</code></pre>
+  </div>
+
+  <h3>NimbusApplication.java</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/NimbusApplication.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NimbusApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApplication.class, args);
+    }
+}</code></pre>
+  </div>
+
+  <h3>Models</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+public class User {
+    private int userId;
+    private String name;
+    private String email;
+    private String password;
+    private String role;  // CUSTOMER, OFFICER, ADMIN
+
+    // Constructors
+    public User() {}
+    public User(int userId, String name, String email, String password, String role) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    // Getters and Setters
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class Booking {
+    private int bookingId;
+    private int userId;
+    private String senderName;
+    private String senderAddress;
+    private String receiverName;
+    private String receiverAddress;
+    private double weight;
+    private String status;       // BOOKED, PICKED_UP, IN_TRANSIT, DELIVERED, CANCELLED
+    private LocalDate pickupDate;
+    private LocalDate estimatedDelivery;
+    private LocalDateTime createdAt;
+
+    // Default constructor
+    public Booking() {}
+
+    // Getters and Setters
+    public int getBookingId() { return bookingId; }
+    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+    public String getSenderName() { return senderName; }
+    public void setSenderName(String senderName) { this.senderName = senderName; }
+    public String getSenderAddress() { return senderAddress; }
+    public void setSenderAddress(String senderAddress) { this.senderAddress = senderAddress; }
+    public String getReceiverName() { return receiverName; }
+    public void setReceiverName(String receiverName) { this.receiverName = receiverName; }
+    public String getReceiverAddress() { return receiverAddress; }
+    public void setReceiverAddress(String receiverAddress) { this.receiverAddress = receiverAddress; }
+    public double getWeight() { return weight; }
+    public void setWeight(double weight) { this.weight = weight; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public LocalDate getPickupDate() { return pickupDate; }
+    public void setPickupDate(LocalDate pickupDate) { this.pickupDate = pickupDate; }
+    public LocalDate getEstimatedDelivery() { return estimatedDelivery; }
+    public void setEstimatedDelivery(LocalDate estimatedDelivery) { this.estimatedDelivery = estimatedDelivery; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+}</code></pre>
+  </div>
+
+  <h3>DAOs</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dao/UserDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class UserDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    private final RowMapper&lt;User&gt; userMapper = (rs, rowNum) -&gt; {
+        User user = new User();
+        user.setUserId(rs.getInt("user_id"));
+        user.setName(rs.getString("name"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setRole(rs.getString("role"));
+        return user;
+    };
+
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        var results = jdbcTemplate.query(sql, userMapper, email);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public User findById(int id) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        var results = jdbcTemplate.query(sql, userMapper, id);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public int save(User user) {
+        String sql = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, user.getName(), user.getEmail(),
+                           user.getPassword(), user.getRole());
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dao/BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Booking;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public class BookingDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    private final RowMapper&lt;Booking&gt; bookingMapper = (rs, rowNum) -&gt; {
+        Booking b = new Booking();
+        b.setBookingId(rs.getInt("booking_id"));
+        b.setUserId(rs.getInt("user_id"));
+        b.setSenderName(rs.getString("sender_name"));
+        b.setSenderAddress(rs.getString("sender_address"));
+        b.setReceiverName(rs.getString("receiver_name"));
+        b.setReceiverAddress(rs.getString("receiver_address"));
+        b.setWeight(rs.getDouble("weight"));
+        b.setStatus(rs.getString("status"));
+        b.setPickupDate(rs.getDate("pickup_date").toLocalDate());
+        b.setEstimatedDelivery(rs.getDate("estimated_delivery") != null
+            ? rs.getDate("estimated_delivery").toLocalDate() : null);
+        b.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        return b;
+    };
+
+    public int save(Booking b) {
+        String sql = "INSERT INTO bookings (user_id, sender_name, sender_address, "
+            + "receiver_name, receiver_address, weight, status, pickup_date, "
+            + "estimated_delivery) VALUES (?,?,?,?,?,?,?,?,?)";
+        jdbcTemplate.update(sql, b.getUserId(), b.getSenderName(),
+            b.getSenderAddress(), b.getReceiverName(), b.getReceiverAddress(),
+            b.getWeight(), b.getStatus(), b.getPickupDate(), b.getEstimatedDelivery());
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+    }
+
+    public Booking findById(int id) {
+        String sql = "SELECT * FROM bookings WHERE booking_id = ?";
+        var results = jdbcTemplate.query(sql, bookingMapper, id);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public List&lt;Booking&gt; findByUserId(int userId) {
+        return jdbcTemplate.query(
+            "SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC",
+            bookingMapper, userId);
+    }
+
+    public List&lt;Booking&gt; findDeliveredByUserId(int userId) {
+        return jdbcTemplate.query(
+            "SELECT * FROM bookings WHERE user_id = ? AND status = 'DELIVERED' ORDER BY created_at DESC",
+            bookingMapper, userId);
+    }
+
+    public void updateStatus(int id, String status) {
+        jdbcTemplate.update("UPDATE bookings SET status = ? WHERE booking_id = ?", status, id);
+    }
+
+    public void updatePickupDate(int id, String pickupDate) {
+        jdbcTemplate.update("UPDATE bookings SET pickup_date = ? WHERE booking_id = ?", pickupDate, id);
+    }
+}</code></pre>
+  </div>
+
+  <h3>Services</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">service/UserService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.UserDAO;
+import com.nimbus.dto.*;
+import com.nimbus.exception.DuplicateEmailException;
+import com.nimbus.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserDAO userDAO;
+
+    public UserResponse register(RegistrationRequest request) {
+        if (userDAO.findByEmail(request.getEmail()) != null) {
+            throw new DuplicateEmailException(request.getEmail());
+        }
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());  // Hash in production!
+        user.setRole(request.getRole());
+        int id = userDAO.save(user);
+        user.setUserId(id);
+        return new UserResponse(user.getUserId(), user.getName(),
+                               user.getEmail(), user.getRole());
+    }
+
+    public LoginResponse authenticate(LoginRequest request) {
+        User user = userDAO.findByEmail(request.getEmail());
+        if (user == null || !user.getPassword().equals(request.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+        return new LoginResponse(user.getUserId(), user.getName(),
+                                user.getRole(), "Login successful");
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">service/BookingService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.dao.BookingDAO;
+import com.nimbus.dto.*;
+import com.nimbus.exception.BookingNotFoundException;
+import com.nimbus.model.Booking;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class BookingService {
+
+    @Autowired
+    private BookingDAO bookingDAO;
+
+    public BookingResponse createBooking(BookingRequest request) {
+        Booking booking = new Booking();
+        booking.setUserId(request.getUserId());
+        booking.setSenderName(request.getSenderName());
+        booking.setSenderAddress(request.getSenderAddress());
+        booking.setReceiverName(request.getReceiverName());
+        booking.setReceiverAddress(request.getReceiverAddress());
+        booking.setWeight(request.getWeight());
+        booking.setStatus("BOOKED");
+        booking.setPickupDate(LocalDate.parse(request.getPickupDate()));
+        booking.setEstimatedDelivery(LocalDate.parse(request.getPickupDate()).plusDays(3));
+        booking.setCreatedAt(LocalDateTime.now());
+
+        int id = bookingDAO.save(booking);
+        booking.setBookingId(id);
+        return toResponse(booking);
+    }
+
+    public BookingResponse findById(int id) {
+        Booking booking = bookingDAO.findById(id);
+        if (booking == null) throw new BookingNotFoundException(id);
+        return toResponse(booking);
+    }
+
+    public List&lt;BookingResponse&gt; findByUserId(int userId) {
+        return bookingDAO.findByUserId(userId).stream()
+            .map(this::toResponse).collect(Collectors.toList());
+    }
+
+    public BookingResponse updateStatus(int id, StatusUpdateRequest request) {
+        Booking booking = bookingDAO.findById(id);
+        if (booking == null) throw new BookingNotFoundException(id);
+        bookingDAO.updateStatus(id, request.getStatus());
+        booking.setStatus(request.getStatus());
+        return toResponse(booking);
+    }
+
+    public BookingResponse updatePickup(int id, PickupUpdateRequest request) {
+        Booking booking = bookingDAO.findById(id);
+        if (booking == null) throw new BookingNotFoundException(id);
+        bookingDAO.updatePickupDate(id, request.getPickupDate());
+        booking.setPickupDate(LocalDate.parse(request.getPickupDate()));
+        return toResponse(booking);
+    }
+
+    public List&lt;BookingResponse&gt; getHistory(int userId) {
+        return bookingDAO.findDeliveredByUserId(userId).stream()
+            .map(this::toResponse).collect(Collectors.toList());
+    }
+
+    private BookingResponse toResponse(Booking b) {
+        BookingResponse r = new BookingResponse();
+        r.setBookingId(b.getBookingId());
+        r.setSenderName(b.getSenderName());
+        r.setReceiverName(b.getReceiverName());
+        r.setWeight(b.getWeight());
+        r.setStatus(b.getStatus());
+        r.setPickupDate(b.getPickupDate() != null ? b.getPickupDate().toString() : null);
+        r.setEstimatedDelivery(b.getEstimatedDelivery() != null ? b.getEstimatedDelivery().toString() : null);
+        r.setCreatedAt(b.getCreatedAt());
+        return r;
+    }
+}</code></pre>
+  </div>
+
+  <h3>Controllers</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">controller/UserController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.*;
+import com.nimbus.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.net.URI;
+
+@RestController
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/api/register")
+    public ResponseEntity&lt;UserResponse&gt; register(
+            @Valid @RequestBody RegistrationRequest request) {
+        UserResponse created = userService.register(request);
+        return ResponseEntity.created(
+            URI.create("/api/users/" + created.getUserId())
+        ).body(created);
+    }
+
+    @PostMapping("/api/login")
+    public ResponseEntity&lt;LoginResponse&gt; login(
+            @Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(userService.authenticate(request));
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">controller/BookingController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.*;
+import com.nimbus.service.BookingService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/bookings")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    @PostMapping
+    public ResponseEntity&lt;BookingResponse&gt; create(
+            @Valid @RequestBody BookingRequest request) {
+        BookingResponse created = bookingService.createBooking(request);
+        return ResponseEntity.created(
+            URI.create("/api/bookings/" + created.getBookingId())
+        ).body(created);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;BookingResponse&gt; getById(@PathVariable int id) {
+        return ResponseEntity.ok(bookingService.findById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;BookingResponse&gt;&gt; getByUser(@RequestParam int userId) {
+        return ResponseEntity.ok(bookingService.findByUserId(userId));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity&lt;BookingResponse&gt; updateStatus(
+            @PathVariable int id, @Valid @RequestBody StatusUpdateRequest request) {
+        return ResponseEntity.ok(bookingService.updateStatus(id, request));
+    }
+
+    @PutMapping("/{id}/pickup")
+    public ResponseEntity&lt;BookingResponse&gt; updatePickup(
+            @PathVariable int id, @Valid @RequestBody PickupUpdateRequest request) {
+        return ResponseEntity.ok(bookingService.updatePickup(id, request));
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity&lt;List&lt;BookingResponse&gt;&gt; getHistory(@RequestParam int userId) {
+        return ResponseEntity.ok(bookingService.getHistory(userId));
+    }
+}</code></pre>
+  </div>
+
+  <h3>CORS Configuration</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">config/WebConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: ANGULAR FRONTEND                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="frontend">
+  <div class="section-tag">Section 03</div>
+  <h2>Angular Frontend</h2>
+  <p class="section-desc">Key Angular files: modules, services, routing, and the auth guard.</p>
+
+  <h3>app.module.ts</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/app.module.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { BookingFormComponent } from './components/booking-form/booking-form.component';
+import { BookingDetailComponent } from './components/booking-detail/booking-detail.component';
+import { BookingHistoryComponent } from './components/booking-history/booking-history.component';
+import { StatusUpdateComponent } from './components/status-update/status-update.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    DashboardComponent,
+    NavbarComponent,
+    BookingFormComponent,
+    BookingDetailComponent,
+    BookingHistoryComponent,
+    StatusUpdateComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }</code></pre>
+  </div>
+
+  <h3>Services</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">services/auth.service.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
+
+  register(data: any): Observable&lt;any&gt; {
+    return this.http.post(`${this.apiUrl}/register`, data);
+  }
+
+  login(email: string, password: string): Observable&lt;any&gt; {
+    return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap((response: any) =&gt; {
+        localStorage.setItem('user', JSON.stringify(response));
+      })
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem('user');
+  }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem('user') !== null;
+  }
+
+  getUser(): any {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  getUserRole(): string {
+    const user = this.getUser();
+    return user ? user.role : '';
+  }
+
+  getUserId(): number {
+    const user = this.getUser();
+    return user ? user.userId : 0;
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">services/booking.service.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+@Injectable({ providedIn: 'root' })
+export class BookingService {
+  private apiUrl = `${environment.apiUrl}/bookings`;
+
+  constructor(private http: HttpClient) {}
+
+  create(booking: any): Observable&lt;any&gt; {
+    return this.http.post(this.apiUrl, booking);
+  }
+
+  getById(id: number): Observable&lt;any&gt; {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  getByUser(userId: number): Observable&lt;any&gt; {
+    return this.http.get(`${this.apiUrl}?userId=${userId}`);
+  }
+
+  updateStatus(id: number, status: string): Observable&lt;any&gt; {
+    return this.http.put(`${this.apiUrl}/${id}/status`, { status });
+  }
+
+  updatePickup(id: number, pickupDate: string): Observable&lt;any&gt; {
+    return this.http.put(`${this.apiUrl}/${id}/pickup`, { pickupDate });
+  }
+
+  getHistory(userId: number): Observable&lt;any&gt; {
+    return this.http.get(`${this.apiUrl}/history?userId=${userId}`);
+  }
+}</code></pre>
+  </div>
+
+  <h3>Environment Config</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">environments/environment.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api'
+};</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">environments/environment.prod.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">export const environment = {
+  production: true,
+  apiUrl: 'https://api.nimbus.com/api'  // Replace with real domain
+};</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: HOW TO RUN                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="how-to-run">
+  <div class="section-tag">Section 04</div>
+  <h2>How to Run Both</h2>
+  <p class="section-desc">Start the backend on port 8080 and the frontend on port 4200. They talk to each other over HTTP.</p>
+
+  <h3>Step 1: Start the Backend</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal 1 &mdash; Spring Boot backend</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">cd nimbus-backend
+mvn spring-boot:run
+# Server starts on http://localhost:8080
+# Test: curl http://localhost:8080/api/bookings/1001</code></pre>
+  </div>
+
+  <h3>Step 2: Start the Frontend</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal 2 &mdash; Angular frontend</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">cd nimbus-frontend
+npm install
+ng serve
+# App opens on http://localhost:4200</code></pre>
+  </div>
+
+  <h3>Proxy Configuration (Alternative to CORS)</h3>
+
+  <p>Instead of configuring CORS on the backend, you can proxy Angular's dev server to forward API calls to Spring Boot:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">proxy.conf.json &mdash; Angular dev proxy</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+  "/api": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Start with proxy</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">ng serve --proxy-config proxy.conf.json</code></pre>
+  </div>
+
+  <p>With the proxy, Angular sends requests to <code>http://localhost:4200/api/...</code> and the dev server forwards them to <code>http://localhost:8080/api/...</code>. No CORS issues because both appear to be on the same origin from the browser's perspective.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Use <strong>both</strong> approaches. The proxy for development (no CORS config needed). The WebConfig CORS setup for when Angular is built and deployed separately from the backend (production). In development, update <code>environment.ts</code> to use <code>apiUrl: '/api'</code> (relative, goes through proxy) instead of <code>'http://localhost:8080/api'</code>.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="angular-routing.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Angular Routing &amp; Guards</span>
+  </a>
+  <a href="cheat-sheets.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Cheat Sheets</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeScript Basics | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Arch</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link active"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS TYPESCRIPT?                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-typescript">
+  <div class="section-tag">Section 01</div>
+  <h2>What is TypeScript?</h2>
+  <p class="section-desc">TypeScript is JavaScript with types. It was created by Microsoft and is the language Angular is built with. You write TypeScript, and it compiles (transpiles) down to plain JavaScript that browsers can run.</p>
+
+  <h3>The Core Idea</h3>
+
+  <p>JavaScript is <strong>dynamically typed</strong> &mdash; you can put any value into any variable and JavaScript will not complain until your code actually runs and breaks. TypeScript adds a <strong>type system</strong> on top of JavaScript so errors are caught at compile time, before your code ever runs.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">JavaScript (Runtime Error)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-typescript">let price = 100;
+price = "free";   // No error
+// ... 500 lines later ...
+let total = price * 2;  // NaN! Bug found
+// at RUNTIME by a user</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">TypeScript (Compile Error)</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-typescript">let price: number = 100;
+price = "free";
+// ERROR: Type 'string' is not
+// assignable to type 'number'
+// Caught BEFORE code runs</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>How TypeScript Works</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">You Write<span class="flow-sub">.ts files (TypeScript)</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">TSC Compiler<span class="flow-sub">Checks types, reports errors</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Output<span class="flow-sub">.js files (JavaScript)</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Browser / Node<span class="flow-sub">Runs the JS</span></div>
+    </div>
+    <div class="flow-label">TypeScript is a development tool. Browsers never see TypeScript &mdash; they only run the compiled JavaScript.</div>
+  </div>
+
+  <p>Every valid JavaScript file is also valid TypeScript. TypeScript is a <strong>superset</strong> of JavaScript &mdash; it adds features on top, but everything from JavaScript still works.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our Angular frontend is written entirely in TypeScript. Every component, service, and model uses TypeScript types to catch bugs before the code ever reaches the browser. When you see a <code>.ts</code> file in Angular, that is TypeScript.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHY TYPESCRIPT?                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-typescript">
+  <div class="section-tag">Section 02</div>
+  <h2>Why TypeScript?</h2>
+  <p class="section-desc">JavaScript works fine for small scripts. But when your project has 50+ files, dozens of functions, and multiple developers &mdash; types become essential.</p>
+
+  <h3>The 4 Big Wins</h3>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Catch Bugs Early</div>
+      <div class="layer-detail">Errors appear as red squiggles in your editor <strong>while you type</strong>, not after deployment when a user hits the bug.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Better IDE Support</div>
+      <div class="layer-detail">VS Code gives you autocompletion, parameter hints, and inline docs because it knows every variable's type. No more guessing what a function returns.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Self-Documenting</div>
+      <div class="layer-detail">When you see <code>function getUser(id: number): User</code>, you instantly know it takes a number and returns a User object. No need to read the function body.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Safer Refactoring</div>
+      <div class="layer-detail">Rename a property and TypeScript shows you <strong>every</strong> place that breaks. In JavaScript, you find out at runtime &mdash; if you are lucky.</div>
+    </div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Building a House</div>
+    <p>JavaScript is like building a house without blueprints. You can do it &mdash; but you might discover the bathroom is too small after the walls are up. TypeScript is the blueprint. It catches design flaws <em>before</em> you pour the concrete.</p>
+  </div>
+
+  <h3>Who Uses TypeScript?</h3>
+
+  <p>TypeScript is not a niche tool. It is used by:</p>
+  <ul>
+    <li><strong>Angular</strong> &mdash; built entirely in TypeScript (the framework itself)</li>
+    <li><strong>VS Code</strong> &mdash; written in TypeScript by Microsoft</li>
+    <li><strong>Slack, Airbnb, Google, Stripe</strong> &mdash; all use TypeScript in production</li>
+    <li><strong>React projects</strong> &mdash; increasingly migrating to TypeScript</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Angular <strong>requires</strong> TypeScript. Unlike React (where TypeScript is optional), you cannot build an Angular app without TypeScript. Learning TypeScript is not optional for Nimbus &mdash; it is a prerequisite.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: BASIC TYPES                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="basic-types">
+  <div class="section-tag">Section 03</div>
+  <h2>Basic Types</h2>
+  <p class="section-desc">TypeScript has the same types as JavaScript, but you explicitly declare them. This is the foundation of everything else.</p>
+
+  <h3>The Core Types</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Type</th><th>What It Holds</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>string</code></td><td>Text</td><td><code>let name: string = "Darshan";</code></td></tr>
+      <tr><td><code>number</code></td><td>All numbers (int + float)</td><td><code>let age: number = 22;</code></td></tr>
+      <tr><td><code>boolean</code></td><td>true or false</td><td><code>let isActive: boolean = true;</code></td></tr>
+      <tr><td><code>any</code></td><td>Anything (disables type checking)</td><td><code>let data: any = "hello";</code></td></tr>
+      <tr><td><code>void</code></td><td>No return value (for functions)</td><td><code>function log(): void { }</code></td></tr>
+      <tr><td><code>null</code></td><td>Intentionally empty</td><td><code>let x: null = null;</code></td></tr>
+      <tr><td><code>undefined</code></td><td>Not yet assigned</td><td><code>let y: undefined = undefined;</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Avoid <code>any</code></div>
+    <p>Using <code>any</code> defeats the entire purpose of TypeScript. It tells the compiler "do not check this variable." Use it only as a last resort when you genuinely do not know the type (e.g., data from an unknown third-party API). In our Nimbus code, we avoid <code>any</code> completely.</p>
+  </div>
+
+  <h3>Java vs TypeScript Types</h3>
+
+  <p>Coming from Java, here is what maps to what:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Java</th><th>TypeScript</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>String</code></td><td><code>string</code></td><td>Lowercase in TypeScript</td></tr>
+      <tr><td><code>int</code> / <code>double</code> / <code>float</code></td><td><code>number</code></td><td>TypeScript has ONE number type for all</td></tr>
+      <tr><td><code>boolean</code></td><td><code>boolean</code></td><td>Same</td></tr>
+      <tr><td><code>void</code></td><td><code>void</code></td><td>Same</td></tr>
+      <tr><td><code>Object</code></td><td><code>any</code> or interface</td><td>Prefer interfaces over <code>any</code></td></tr>
+      <tr><td><code>int[]</code></td><td><code>number[]</code></td><td>Bracket syntax is the same</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: TYPE ANNOTATIONS                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="type-annotations">
+  <div class="section-tag">Section 04</div>
+  <h2>Type Annotations</h2>
+  <p class="section-desc">Type annotations are how you tell TypeScript what type a variable, parameter, or return value should be. The syntax is <code>: type</code> after the name.</p>
+
+  <h3>Variables</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Variable Annotations</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Explicit type annotation
+let name: string = "Darshan";
+let age: number = 22;
+let isAdmin: boolean = false;
+
+// Type inference — TypeScript figures it out automatically
+let city = "Mumbai";       // TypeScript infers: string
+let weight = 2.5;          // TypeScript infers: number
+let active = true;         // TypeScript infers: boolean
+
+// const is always inferred to the literal type
+const role = "CUSTOMER";   // Type is literally "CUSTOMER", not string</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">let name: string = "Darshan";</div>
+        <div class="breakdown-explain"><code>: string</code> is the type annotation. It tells TypeScript this variable can ONLY hold strings. Assigning a number later would cause a compile error.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">let city = "Mumbai";</div>
+        <div class="breakdown-explain">No annotation needed here. TypeScript sees the value <code>"Mumbai"</code> and infers the type as <code>string</code> automatically. This is called <strong>type inference</strong>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">const role = "CUSTOMER";</div>
+        <div class="breakdown-explain"><code>const</code> cannot be reassigned, so TypeScript narrows the type to the exact string literal <code>"CUSTOMER"</code> instead of generic <code>string</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Functions</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Function Annotations</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Parameter types + return type
+function calculateCost(weight: number, type: string): number {
+  let base = weight * 50;
+  if (type === "FRAGILE") base += 30;
+  return base;
+}
+
+// Arrow function with types
+const greet = (name: string): string =&gt; {
+  return `Hello, ${name}!`;
+};
+
+// void return — function does not return anything
+function logBooking(id: number): void {
+  console.log(`Booking ${id} logged`);
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>In Java, the type comes <em>before</em> the name: <code>String name</code>. In TypeScript, the type comes <em>after</em> the name: <code>name: string</code>. Different order, same idea.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: INTERFACES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="interfaces">
+  <div class="section-tag">Section 05</div>
+  <h2>Interfaces</h2>
+  <p class="section-desc">An interface defines the shape of an object &mdash; what properties it must have and what types those properties are. It is TypeScript's most powerful feature for keeping code organized.</p>
+
+  <h3>Defining an Interface</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User Interface</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">interface User {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+  isActive: boolean;
+}
+
+// Now TypeScript enforces the shape
+let user: User = {
+  id: 1,
+  username: "darshan",
+  email: "darshan@example.com",
+  role: "CUSTOMER",
+  isActive: true
+};
+
+// ERROR: Property 'email' is missing
+let badUser: User = {
+  id: 2,
+  username: "rahul",
+  role: "ADMIN",
+  isActive: true
+  // Missing email — TypeScript catches this!
+};</code></pre>
+  </div>
+
+  <h3>Optional Properties</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Optional Properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">interface Booking {
+  id: number;
+  trackingNumber: string;
+  senderName: string;
+  receiverName: string;
+  weight: number;
+  status: string;
+  description?: string;    // Optional — the ? means it can be missing
+  remarks?: string;        // Optional
+}
+
+// Valid — description and remarks are optional
+let booking: Booking = {
+  id: 42,
+  trackingNumber: "NIM-2026-0042",
+  senderName: "Darshan",
+  receiverName: "Rahul",
+  weight: 2.5,
+  status: "BOOKED"
+};</code></pre>
+  </div>
+
+  <h3>Interfaces for Function Parameters</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Using Interfaces in Functions</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+interface LoginResponse {
+  token: string;
+  userId: number;
+  role: string;
+}
+
+function login(request: LoginRequest): LoginResponse {
+  // The function signature tells you everything:
+  // - Takes a LoginRequest (username + password)
+  // - Returns a LoginResponse (token + userId + role)
+  return {
+    token: "eyJhbGci...",
+    userId: 1,
+    role: "CUSTOMER"
+  };
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In our Angular app, we define interfaces for every API model:</p>
+    <ul>
+      <li><code>User</code> interface &mdash; matches the JSON from <code>/api/register</code> and <code>/api/login</code></li>
+      <li><code>Booking</code> interface &mdash; matches the JSON from <code>/api/bookings</code></li>
+      <li><code>LoginRequest</code> / <code>LoginResponse</code> interfaces &mdash; define exact shapes for API calls</li>
+    </ul>
+    <p>This way, if the backend changes a field name, TypeScript immediately shows every place in the frontend that breaks.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: CLASSES                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="classes">
+  <div class="section-tag">Section 06</div>
+  <h2>Classes</h2>
+  <p class="section-desc">TypeScript classes are very similar to Java classes. If you know Java classes, you already know 80% of TypeScript classes.</p>
+
+  <h3>Java vs TypeScript &mdash; Side by Side</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Java</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-java">public class User {
+  private int id;
+  private String name;
+  private String role;
+
+  public User(int id, String name,
+              String role) {
+    this.id = id;
+    this.name = name;
+    this.role = role;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">TypeScript</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-typescript">class User {
+  private id: number;
+  private name: string;
+  private role: string;
+
+  constructor(id: number,
+    name: string, role: string) {
+    this.id = id;
+    this.name = name;
+    this.role = role;
+  }
+
+  getName(): string {
+    return this.name;
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>TypeScript Shorthand (Constructor Parameters)</h3>
+
+  <p>TypeScript has a shorthand that Java does not &mdash; you can declare and assign properties directly in the constructor parameters:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Shorthand Constructor</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// The long way
+class Booking {
+  private id: number;
+  private sender: string;
+  private receiver: string;
+
+  constructor(id: number, sender: string, receiver: string) {
+    this.id = id;
+    this.sender = sender;
+    this.receiver = receiver;
+  }
+}
+
+// The shorthand — does exactly the same thing
+class Booking {
+  constructor(
+    private id: number,
+    private sender: string,
+    private receiver: string
+  ) { }
+  // TypeScript auto-creates the properties AND assigns them
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Shorthand explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">constructor(private id: number, ...)</div>
+        <div class="breakdown-explain">Adding <code>private</code> (or <code>public</code>) before a constructor parameter automatically creates a class property with that name and assigns the value. No need for <code>this.id = id;</code> lines.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">{ }</div>
+        <div class="breakdown-explain">The constructor body is empty because all assignment is handled by the shorthand. This is extremely common in Angular services and components.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Access Modifiers</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Modifier</th><th>Access</th><th>Java Equivalent</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>public</code></td><td>Accessible from anywhere (default in TypeScript)</td><td><code>public</code></td></tr>
+      <tr><td><code>private</code></td><td>Only inside the class</td><td><code>private</code></td></tr>
+      <tr><td><code>protected</code></td><td>Inside the class and subclasses</td><td><code>protected</code></td></tr>
+      <tr><td><code>readonly</code></td><td>Can only be set once (in constructor)</td><td><code>final</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Key Difference from Java</div>
+    <p>In Java, the default access is package-private. In TypeScript, the default is <code>public</code>. If you write <code>name: string</code> in a class without a modifier, it is public.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: ENUMS                                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="enums">
+  <div class="section-tag">Section 07</div>
+  <h2>Enums</h2>
+  <p class="section-desc">Enums let you define a set of named constants. They work almost identically to Java enums.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus Enums</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Numeric enum (default — values are 0, 1, 2, ...)
+enum BookingStatus {
+  BOOKED,         // 0
+  PICKED_UP,      // 1
+  IN_TRANSIT,     // 2
+  OUT_FOR_DELIVERY, // 3
+  DELIVERED,      // 4
+  CANCELLED       // 5
+}
+
+// String enum (explicit values — preferred for APIs)
+enum ParcelType {
+  STANDARD = "STANDARD",
+  FRAGILE = "FRAGILE",
+  HEAVY = "HEAVY",
+  DOCUMENT = "DOCUMENT"
+}
+
+enum UserRole {
+  CUSTOMER = "CUSTOMER",
+  OFFICER = "OFFICER",
+  ADMIN = "ADMIN"
+}
+
+// Using enums
+let status: BookingStatus = BookingStatus.IN_TRANSIT;
+let type: ParcelType = ParcelType.FRAGILE;
+
+if (status === BookingStatus.DELIVERED) {
+  console.log("Parcel delivered!");
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">String Enums vs Numeric Enums</div>
+    <p>Always use <strong>string enums</strong> when the values are sent to/from an API. If you use numeric enums, the API sends <code>0</code> instead of <code>"BOOKED"</code>, which is unreadable and breaks if you reorder the enum.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: ARRAYS AND TUPLES                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="arrays-tuples">
+  <div class="section-tag">Section 08</div>
+  <h2>Arrays and Tuples</h2>
+  <p class="section-desc">TypeScript arrays are typed &mdash; you declare what type of elements they can hold. Tuples are fixed-length arrays where each position has a specific type.</p>
+
+  <h3>Typed Arrays</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Arrays</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Array of numbers
+let weights: number[] = [1.5, 2.0, 3.5, 0.8];
+
+// Array of strings
+let cities: string[] = ["Mumbai", "Delhi", "Bangalore"];
+
+// Array of objects using an interface
+interface Booking {
+  id: number;
+  status: string;
+}
+
+let bookings: Booking[] = [
+  { id: 42, status: "DELIVERED" },
+  { id: 43, status: "IN_TRANSIT" }
+];
+
+// Alternative syntax (same thing)
+let names: Array&lt;string&gt; = ["Darshan", "Rahul"];</code></pre>
+  </div>
+
+  <h3>Tuples</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Tuples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Tuple — fixed positions with specific types
+let userInfo: [number, string, boolean] = [1, "darshan", true];
+//             id       name     isActive
+
+// Accessing tuple values
+let userId = userInfo[0];    // number
+let userName = userInfo[1];  // string
+
+// Java does not have tuples — this is unique to TypeScript
+// Tuples are rarely used in Angular; interfaces are preferred</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When our Angular frontend calls <code>GET /api/bookings?userId=1</code>, the response is an array of booking objects. We type it as <code>Booking[]</code> so TypeScript knows every element in the array has <code>id</code>, <code>trackingNumber</code>, <code>status</code>, etc.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: FUNCTIONS WITH TYPES                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="functions">
+  <div class="section-tag">Section 09</div>
+  <h2>Functions with Types</h2>
+  <p class="section-desc">TypeScript functions can have typed parameters, return types, optional parameters, and default values.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Function Patterns</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// 1. Basic function with types
+function getBooking(id: number): Booking {
+  // returns a Booking object
+  return { id: id, trackingNumber: "NIM-001", status: "BOOKED" };
+}
+
+// 2. Arrow function (common in Angular)
+const calculateCost = (weight: number, type: string): number =&gt; {
+  return weight * 50 + (type === "FRAGILE" ? 30 : 0);
+};
+
+// 3. Optional parameter (add ? after name)
+function createBooking(sender: string, receiver: string, description?: string): void {
+  // description may or may not be provided
+  console.log(`From ${sender} to ${receiver}`);
+  if (description) {
+    console.log(`Description: ${description}`);
+  }
+}
+
+createBooking("Darshan", "Rahul");                    // OK
+createBooking("Darshan", "Rahul", "Glass frames");    // Also OK
+
+// 4. Default parameter
+function getBookings(userId: number, limit: number = 10): Booking[] {
+  // If limit is not provided, it defaults to 10
+  return [];
+}
+
+getBookings(1);      // limit = 10 (default)
+getBookings(1, 50);  // limit = 50</code></pre>
+  </div>
+
+  <h3>Java vs TypeScript Functions</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Java</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-java">// Must use method overloading
+public Booking getBooking(int id) {
+  return bookingDao.findById(id);
+}
+
+// No default params in Java
+// Need overloaded method
+public List&lt;Booking&gt; getBookings(
+    int userId) {
+  return getBookings(userId, 10);
+}
+public List&lt;Booking&gt; getBookings(
+    int userId, int limit) {
+  // actual logic
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">TypeScript</div>
+      <div class="comparison-body">
+<pre style="background:none;margin:0;padding:0;"><code class="language-typescript">// Clean and simple
+function getBooking(id: number):
+    Booking {
+  return this.http.get(`/api/${id}`);
+}
+
+// Default params — no overloading
+function getBookings(
+    userId: number,
+    limit: number = 10
+): Booking[] {
+  // one function handles both cases
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: MODULES                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="modules">
+  <div class="section-tag">Section 10</div>
+  <h2>Modules &mdash; Import / Export</h2>
+  <p class="section-desc">TypeScript uses the same module system as modern JavaScript. You export things from one file and import them in another. This is how Angular organizes code across hundreds of files.</p>
+
+  <h3>Export and Import</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">models/booking.model.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Export — makes it available to other files
+export interface Booking {
+  id: number;
+  trackingNumber: string;
+  senderName: string;
+  receiverName: string;
+  status: string;
+}
+
+export enum BookingStatus {
+  BOOKED = "BOOKED",
+  IN_TRANSIT = "IN_TRANSIT",
+  DELIVERED = "DELIVERED"
+}
+
+export function calculateCost(weight: number): number {
+  return weight * 50;
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">services/booking.service.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// Import — bring in what you need
+import { Booking, BookingStatus, calculateCost } from '../models/booking.model';
+
+class BookingService {
+  getBookingLabel(booking: Booking): string {
+    if (booking.status === BookingStatus.DELIVERED) {
+      return "Delivered";
+    }
+    let cost = calculateCost(2.5);
+    return `Cost: ${cost}`;
+  }
+}</code></pre>
+  </div>
+
+  <h3>Java vs TypeScript Modules</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Concept</th><th>Java</th><th>TypeScript</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Making code available</td><td><code>public class User { }</code></td><td><code>export class User { }</code></td></tr>
+      <tr><td>Using code from another file</td><td><code>import com.nimbus.model.User;</code></td><td><code>import { User } from './models/user';</code></td></tr>
+      <tr><td>File = module?</td><td>No (packages contain multiple classes)</td><td>Yes (each <code>.ts</code> file is a module)</td></tr>
+      <tr><td>Path style</td><td>Package names: <code>com.nimbus.model</code></td><td>File paths: <code>./models/user</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In our Angular project, every component, service, and model is in its own <code>.ts</code> file. The module system connects them:</p>
+    <ul>
+      <li><code>booking.model.ts</code> exports the <code>Booking</code> interface</li>
+      <li><code>booking.service.ts</code> imports <code>Booking</code> and uses it in API calls</li>
+      <li><code>booking-list.component.ts</code> imports <code>BookingService</code> and displays bookings</li>
+    </ul>
+    <p>Each file has a single responsibility, just like Java classes.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: JAVA VS TYPESCRIPT COMPARISON                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="java-vs-typescript">
+  <div class="section-tag">Section 11</div>
+  <h2>Java vs TypeScript &mdash; Full Comparison</h2>
+  <p class="section-desc">You already know Java from Phase 2 and 3. Here is a complete side-by-side comparison to make the transition smooth.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Feature</th><th>Java</th><th>TypeScript</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Type system</td><td>Static, compiled</td><td>Static, compiled to JS</td></tr>
+      <tr><td>Variable declaration</td><td><code>String name = "D";</code></td><td><code>let name: string = "D";</code></td></tr>
+      <tr><td>Constants</td><td><code>final String X = "Y";</code></td><td><code>const x: string = "Y";</code></td></tr>
+      <tr><td>Type position</td><td>Before name: <code>int age</code></td><td>After name: <code>age: number</code></td></tr>
+      <tr><td>No value type</td><td><code>void</code></td><td><code>void</code></td></tr>
+      <tr><td>Null safety</td><td>NullPointerException at runtime</td><td><code>strictNullChecks</code> at compile time</td></tr>
+      <tr><td>Interfaces</td><td><code>interface + implements</code></td><td><code>interface</code> (no implements needed for objects)</td></tr>
+      <tr><td>Constructor</td><td>Same name as class</td><td><code>constructor()</code></td></tr>
+      <tr><td>Semicolons</td><td>Required</td><td>Optional (but recommended)</td></tr>
+      <tr><td>String interpolation</td><td><code>"Hello " + name</code></td><td><code>`Hello ${name}`</code> (backticks)</td></tr>
+      <tr><td>Output</td><td><code>.class</code> (bytecode)</td><td><code>.js</code> (JavaScript)</td></tr>
+      <tr><td>Runs on</td><td>JVM</td><td>Browser / Node.js</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Same Concept, Different Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Java Booking Model</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Booking {
+    private int id;
+    private String trackingNumber;
+    private String senderName;
+    private String receiverName;
+    private double weight;
+    private String status;
+
+    public Booking(int id, String trackingNumber, String senderName,
+                   String receiverName, double weight, String status) {
+        this.id = id;
+        this.trackingNumber = trackingNumber;
+        this.senderName = senderName;
+        this.receiverName = receiverName;
+        this.weight = weight;
+        this.status = status;
+    }
+
+    public int getId() { return id; }
+    public String getTrackingNumber() { return trackingNumber; }
+    public String getStatus() { return status; }
+    // ... more getters and setters
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TypeScript Booking Model</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-typescript">// TypeScript — interface is enough (no getters/setters needed)
+export interface Booking {
+  id: number;
+  trackingNumber: string;
+  senderName: string;
+  receiverName: string;
+  weight: number;
+  status: string;
+}
+
+// That's it. 8 lines vs 20+ lines in Java.
+// Interfaces define shape. No boilerplate.</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Java uses classes with getters/setters for data objects. TypeScript uses <strong>interfaces</strong> &mdash; just the shape, no implementation. This is because JavaScript objects are plain key-value pairs. You do not need a class just to hold data.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 12</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Apply what you learned. Try each exercise before looking at any solutions.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Type the Variables</div>
+    <p>Add type annotations to these variables:</p>
+<pre style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;font-size:0.85rem;"><code>let trackingNumber = "NIM-2026-0042";
+let weight = 2.5;
+let isDelivered = false;
+let parcelTypes = ["STANDARD", "FRAGILE", "HEAVY"];
+let booking = { id: 1, sender: "Darshan", status: "BOOKED" };</code></pre>
+    <p>For the last one, define a proper interface first, then use it as the type.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Build the Nimbus Interfaces</div>
+    <p>Create TypeScript interfaces for:</p>
+    <ol>
+      <li><code>User</code> &mdash; id (number), username (string), email (string), fullName (string), role (string), phone (string)</li>
+      <li><code>BookingRequest</code> &mdash; senderName, senderAddress, senderPhone, receiverName, receiverAddress, receiverPhone, weight, parcelType, description (optional)</li>
+      <li><code>BookingResponse</code> &mdash; id, trackingNumber, status, estimatedDelivery, cost, createdAt</li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Write a TypeScript Function</div>
+    <p>Write a function <code>getStatusLabel</code> that:</p>
+    <ul>
+      <li>Takes a <code>status: string</code> parameter</li>
+      <li>Returns a human-readable label (string)</li>
+      <li>"BOOKED" &rarr; "Booking Confirmed", "IN_TRANSIT" &rarr; "On The Way", "DELIVERED" &rarr; "Delivered", default &rarr; "Unknown"</li>
+    </ul>
+    <p>Use a string enum for the status values instead of raw strings.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Convert Java to TypeScript</div>
+    <p>Convert this Java class to TypeScript (use interface for the model, keep the service as a class):</p>
+<pre style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;font-size:0.85rem;"><code>public class UserService {
+    private List&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+    public User findById(int id) {
+        for (User u : users) {
+            if (u.getId() == id) return u;
+        }
+        return null;
+    }
+
+    public List&lt;User&gt; findAll() {
+        return users;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Module Exercise</div>
+    <p>Create two files in your head:</p>
+    <ol>
+      <li><code>models/user.model.ts</code> &mdash; Export a <code>User</code> interface and a <code>UserRole</code> enum (CUSTOMER, OFFICER, ADMIN)</li>
+      <li><code>services/user.service.ts</code> &mdash; Import both. Write a class <code>UserService</code> with a method <code>isAdmin(user: User): boolean</code> that checks if the user's role is <code>UserRole.ADMIN</code></li>
+    </ol>
+    <p>Write out the complete code for both files with all imports and exports.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="nimbus-microservices.html" class="prev">
+    <span class="nav-label">&larr; Previous Topic</span>
+    <span class="nav-title">Nimbus Microservices</span>
+  </a>
+  <a href="angular-intro.html" class="next">
+    <span class="nav-label">Next Topic &rarr;</span>
+    <span class="nav-title">Angular Big Picture</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

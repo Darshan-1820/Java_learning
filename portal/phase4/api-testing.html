@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Testing &mdash; Postman &amp; curl | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> API Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link active"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link"><span class="num">07</span> Microservices Architecture</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus as Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular &mdash; Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Angular Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Angular Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: WHAT IS API TESTING                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-api-testing">
+  <div class="section-tag">Section 01</div>
+  <h2>What Is API Testing?</h2>
+  <p class="section-desc">You built REST endpoints. Now you need to test them. The browser can't do it all.</p>
+
+  <h3>Why the Browser Isn't Enough</h3>
+
+  <p>You can type <code>http://localhost:8080/api/bookings/1001</code> in a browser and see the JSON response. That works for <strong>GET requests</strong>. But browsers can only make GET requests from the address bar. You can't:</p>
+
+  <ul>
+    <li>Send a <strong>POST request</strong> with a JSON body to create a booking</li>
+    <li>Send a <strong>PUT request</strong> to update a status</li>
+    <li>Set custom headers like <code>Content-Type: application/json</code></li>
+    <li>Test error responses (400, 404, 500) systematically</li>
+  </ul>
+
+  <p>You need a tool that lets you craft any HTTP request with any method, headers, and body. That's what Postman and curl do.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Browser</div>
+      <div class="comparison-body">
+        <ul style="margin: 0; padding-left: 16px;">
+          <li>Only GET requests</li>
+          <li>Can't set custom headers</li>
+          <li>Can't send request body</li>
+          <li>Good for quick checks</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Postman / curl</div>
+      <div class="comparison-body">
+        <ul style="margin: 0; padding-left: 16px;">
+          <li>Any HTTP method (GET, POST, PUT, DELETE)</li>
+          <li>Custom headers, auth tokens</li>
+          <li>JSON request body</li>
+          <li>Save requests, organize in collections</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: POSTMAN SETUP                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="postman-setup">
+  <div class="section-tag">Section 02</div>
+  <h2>Postman &mdash; Setup &amp; Basics</h2>
+  <p class="section-desc">Install Postman, create your first request, and learn the interface.</p>
+
+  <h3>Installation</h3>
+
+  <ol class="steps">
+    <li>Go to <strong>postman.com/downloads</strong> and download the desktop app (free)</li>
+    <li>Install and open it. You can use it without an account (skip sign-in)</li>
+    <li>Click the <strong>+</strong> tab to create a new request</li>
+  </ol>
+
+  <h3>The Postman Interface</h3>
+
+  <div class="diagram">
+    <pre>
++------------------------------------------------------------------+
+|  [GET  v]  http://localhost:8080/api/bookings/1001     [  Send  ] |
++------------------------------------------------------------------+
+|  Params | Authorization | Headers | Body | Pre-request | Tests   |
++------------------------------------------------------------------+
+|                                                                  |
+|  Body tab:  ( none )  ( raw )  ( JSON v )                        |
+|  +-------------------------------------------------------------+ |
+|  | {                                                            | |
+|  |   "senderName": "Darshan",                                   | |
+|  |   "receiverName": "Amit",                                    | |
+|  |   "weight": 2.5                                              | |
+|  | }                                                            | |
+|  +-------------------------------------------------------------+ |
++------------------------------------------------------------------+
+|  Response:   Status: 200 OK    Time: 45ms    Size: 234 B        |
+|  +-------------------------------------------------------------+ |
+|  | {                                                            | |
+|  |   "bookingId": 1001,                                         | |
+|  |   "status": "BOOKED",                                        | |
+|  |   ...                                                        | |
+|  | }                                                            | |
+|  +-------------------------------------------------------------+ |
++------------------------------------------------------------------+
+    </pre>
+    <div class="diagram-label">Postman request builder &mdash; method dropdown, URL, tabs for headers/body, response panel below</div>
+  </div>
+
+  <h3>Key Concepts</h3>
+
+  <ul>
+    <li><strong>Method dropdown:</strong> Switch between GET, POST, PUT, DELETE</li>
+    <li><strong>URL bar:</strong> Enter the full endpoint URL</li>
+    <li><strong>Headers tab:</strong> Set <code>Content-Type: application/json</code> (Postman often auto-sets this)</li>
+    <li><strong>Body tab:</strong> For POST/PUT, select "raw" and "JSON", then write your JSON</li>
+    <li><strong>Response panel:</strong> Shows status code, response time, and the response body</li>
+    <li><strong>Collections:</strong> Save requests into folders. Create a "Nimbus API" collection with all 8 endpoints</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: TESTING ALL NIMBUS ENDPOINTS                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-endpoints">
+  <div class="section-tag">Section 03</div>
+  <h2>Testing All 8 Nimbus Endpoints</h2>
+  <p class="section-desc">Full request and response examples for every Nimbus API endpoint. Follow along in Postman.</p>
+
+  <h3>1. POST /api/register &mdash; Register a User</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: POST http://localhost:8080/api/register</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// REQUEST BODY (raw JSON)
+{
+  "name": "Darshan Mohan",
+  "email": "darshan@nimbus.com",
+  "password": "secret123",
+  "role": "CUSTOMER"
+}
+
+// RESPONSE (201 Created)
+{
+  "userId": 1,
+  "name": "Darshan Mohan",
+  "email": "darshan@nimbus.com",
+  "role": "CUSTOMER"
+}</code></pre>
+  </div>
+
+  <h3>2. POST /api/login &mdash; Login</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: POST http://localhost:8080/api/login</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// REQUEST BODY
+{
+  "email": "darshan@nimbus.com",
+  "password": "secret123"
+}
+
+// RESPONSE (200 OK)
+{
+  "userId": 1,
+  "name": "Darshan Mohan",
+  "role": "CUSTOMER",
+  "message": "Login successful"
+}</code></pre>
+  </div>
+
+  <h3>3. POST /api/bookings &mdash; Create a Booking</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: POST http://localhost:8080/api/bookings</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// REQUEST BODY
+{
+  "userId": 1,
+  "senderName": "Darshan Mohan",
+  "senderAddress": "123 MG Road, Mumbai",
+  "receiverName": "Amit Kumar",
+  "receiverAddress": "456 Park Street, Delhi",
+  "weight": 2.5,
+  "pickupDate": "2026-04-25"
+}
+
+// RESPONSE (201 Created)
+{
+  "bookingId": 1001,
+  "senderName": "Darshan Mohan",
+  "receiverName": "Amit Kumar",
+  "weight": 2.5,
+  "status": "BOOKED",
+  "pickupDate": "2026-04-25",
+  "estimatedDelivery": "2026-04-28",
+  "createdAt": "2026-04-23 10:30:00"
+}</code></pre>
+  </div>
+
+  <h3>4. GET /api/bookings/{id} &mdash; Get Booking by ID</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: GET http://localhost:8080/api/bookings/1001</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// NO REQUEST BODY (GET requests don't have a body)
+
+// RESPONSE (200 OK)
+{
+  "bookingId": 1001,
+  "senderName": "Darshan Mohan",
+  "receiverName": "Amit Kumar",
+  "weight": 2.5,
+  "status": "BOOKED",
+  "pickupDate": "2026-04-25",
+  "estimatedDelivery": "2026-04-28",
+  "createdAt": "2026-04-23 10:30:00"
+}
+
+// ERROR CASE: GET /api/bookings/9999 (RESPONSE: 404 Not Found)
+{
+  "timestamp": "2026-04-23 10:35:00",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Booking not found with ID: 9999",
+  "path": "/api/bookings/9999"
+}</code></pre>
+  </div>
+
+  <h3>5. GET /api/bookings?userId=X &mdash; Get User's Bookings</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: GET http://localhost:8080/api/bookings?userId=1</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// RESPONSE (200 OK)
+[
+  {
+    "bookingId": 1001,
+    "senderName": "Darshan Mohan",
+    "receiverName": "Amit Kumar",
+    "status": "BOOKED",
+    "pickupDate": "2026-04-25"
+  },
+  {
+    "bookingId": 1002,
+    "senderName": "Darshan Mohan",
+    "receiverName": "Priya Singh",
+    "status": "IN_TRANSIT",
+    "pickupDate": "2026-04-20"
+  }
+]</code></pre>
+  </div>
+
+  <h3>6. PUT /api/bookings/{id}/status &mdash; Update Status</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: PUT http://localhost:8080/api/bookings/1001/status</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// REQUEST BODY
+{
+  "status": "IN_TRANSIT"
+}
+
+// RESPONSE (200 OK)
+{
+  "bookingId": 1001,
+  "senderName": "Darshan Mohan",
+  "receiverName": "Amit Kumar",
+  "status": "IN_TRANSIT",
+  "pickupDate": "2026-04-25"
+}</code></pre>
+  </div>
+
+  <h3>7. PUT /api/bookings/{id}/pickup &mdash; Update Pickup Date</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: PUT http://localhost:8080/api/bookings/1001/pickup</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// REQUEST BODY
+{
+  "pickupDate": "2026-04-26"
+}
+
+// RESPONSE (200 OK)
+{
+  "bookingId": 1001,
+  "senderName": "Darshan Mohan",
+  "receiverName": "Amit Kumar",
+  "status": "IN_TRANSIT",
+  "pickupDate": "2026-04-26"
+}</code></pre>
+  </div>
+
+  <h3>8. GET /api/bookings/history &mdash; Booking History</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Postman: GET http://localhost:8080/api/bookings/history?userId=1</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">// RESPONSE (200 OK)
+[
+  {
+    "bookingId": 1001,
+    "senderName": "Darshan Mohan",
+    "receiverName": "Amit Kumar",
+    "status": "DELIVERED",
+    "pickupDate": "2026-04-20",
+    "deliveredDate": "2026-04-22"
+  },
+  {
+    "bookingId": 1000,
+    "senderName": "Darshan Mohan",
+    "receiverName": "Raj Patel",
+    "status": "DELIVERED",
+    "pickupDate": "2026-04-15",
+    "deliveredDate": "2026-04-18"
+  }
+]</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: CURL COMMANDS                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="curl-commands">
+  <div class="section-tag">Section 04</div>
+  <h2>curl Commands</h2>
+  <p class="section-desc">Test APIs from the terminal. No GUI needed. Every developer should know curl.</p>
+
+  <h3>What is curl?</h3>
+
+  <p><code>curl</code> is a command-line tool for making HTTP requests. It comes pre-installed on macOS, Linux, and Windows 10+. It's the fastest way to test an API without opening any application.</p>
+
+  <h3>All 8 Nimbus Endpoints via curl</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">1. Register</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl -X POST http://localhost:8080/api/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Darshan Mohan","email":"darshan@nimbus.com","password":"secret123","role":"CUSTOMER"}'</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">2. Login</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl -X POST http://localhost:8080/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"darshan@nimbus.com","password":"secret123"}'</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">3. Create Booking</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl -X POST http://localhost:8080/api/bookings \
+  -H "Content-Type: application/json" \
+  -d '{"userId":1,"senderName":"Darshan","senderAddress":"Mumbai","receiverName":"Amit","receiverAddress":"Delhi","weight":2.5,"pickupDate":"2026-04-25"}'</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">4. Get Booking by ID</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl http://localhost:8080/api/bookings/1001</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">5. Get User's Bookings</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl "http://localhost:8080/api/bookings?userId=1"</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">6. Update Status</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl -X PUT http://localhost:8080/api/bookings/1001/status \
+  -H "Content-Type: application/json" \
+  -d '{"status":"IN_TRANSIT"}'</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">7. Update Pickup Date</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl -X PUT http://localhost:8080/api/bookings/1001/pickup \
+  -H "Content-Type: application/json" \
+  -d '{"pickupDate":"2026-04-26"}'</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">8. Booking History</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">curl "http://localhost:8080/api/bookings/history?userId=1"</code></pre>
+  </div>
+
+  <h3>curl Flags Reference</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Flag</th>
+        <th>Purpose</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>-X</code></td>
+        <td>Set HTTP method</td>
+        <td><code>-X POST</code>, <code>-X PUT</code></td>
+      </tr>
+      <tr>
+        <td><code>-H</code></td>
+        <td>Add a header</td>
+        <td><code>-H "Content-Type: application/json"</code></td>
+      </tr>
+      <tr>
+        <td><code>-d</code></td>
+        <td>Request body data</td>
+        <td><code>-d '{"name":"Darshan"}'</code></td>
+      </tr>
+      <tr>
+        <td><code>-v</code></td>
+        <td>Verbose (shows headers)</td>
+        <td><code>curl -v http://...</code></td>
+      </tr>
+      <tr>
+        <td><code>-i</code></td>
+        <td>Include response headers</td>
+        <td><code>curl -i http://...</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Windows Note</div>
+    <p>On Windows CMD/PowerShell, use double quotes for JSON and escape inner quotes: <code>-d "{\"name\":\"Darshan\"}"</code>. Or use Git Bash, which supports single quotes like Linux/macOS.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: AUTOMATED TESTING                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="automated-testing">
+  <div class="section-tag">Section 05</div>
+  <h2>Automated Testing Concept</h2>
+  <p class="section-desc">Manual testing with Postman works, but real projects need automated tests that run every time you build.</p>
+
+  <h3>Why Automate?</h3>
+
+  <p>Imagine you have 8 endpoints and each needs 3-5 test cases (success, validation error, not found, etc.). That's 30+ tests. Running them manually in Postman after every code change is tedious and error-prone.</p>
+
+  <p>Spring Boot provides <code>MockMvc</code> for writing automated API tests in Java:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingControllerTest.java &mdash; Automated API test</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">@SpringBootTest
+@AutoConfigureMockMvc
+public class BookingControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    void getBookingById_Returns200() throws Exception {
+        mockMvc.perform(get("/api/bookings/1001"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.bookingId").value(1001))
+            .andExpect(jsonPath("$.status").value("BOOKED"));
+    }
+
+    @Test
+    void getBookingById_Returns404_WhenNotFound() throws Exception {
+        mockMvc.perform(get("/api/bookings/9999"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.error").value("Not Found"));
+    }
+
+    @Test
+    void createBooking_Returns201() throws Exception {
+        String json = "{\"userId\":1,\"senderName\":\"Darshan\",\"receiverName\":\"Amit\",\"weight\":2.5}";
+
+        mockMvc.perform(post("/api/bookings")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.bookingId").exists());
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">MockMvc</div>
+    <p><code>MockMvc</code> simulates HTTP requests without starting a real server. It calls your controller methods directly, applies all filters and exception handlers, and returns the response. Tests run in milliseconds instead of seconds. You run them with <code>mvn test</code> and they execute automatically in CI/CD pipelines.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: SWAGGER / OPENAPI                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="swagger">
+  <div class="section-tag">Section 06</div>
+  <h2>Swagger / OpenAPI Preview</h2>
+  <p class="section-desc">Auto-generate interactive API documentation from your code. The industry standard.</p>
+
+  <h3>What is Swagger?</h3>
+
+  <p>Swagger (now called <strong>OpenAPI</strong>) auto-generates a web page that lists all your API endpoints, their parameters, request bodies, and response formats. You can even test endpoints directly from the page.</p>
+
+  <h3>Add to Spring Boot</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml &mdash; Add springdoc-openapi</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-starter-webmvc-ui&lt;/artifactId&gt;
+    &lt;version&gt;2.3.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <p>That's it. No configuration needed. Start your app and visit:</p>
+
+  <ul>
+    <li><code>http://localhost:8080/swagger-ui.html</code> &mdash; Interactive UI</li>
+    <li><code>http://localhost:8080/v3/api-docs</code> &mdash; Raw OpenAPI JSON spec</li>
+  </ul>
+
+  <p>Swagger scans your <code>@RestController</code> classes and generates documentation for every endpoint, including parameter types, request body schemas, and response codes.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Add the springdoc dependency to your pom.xml and you instantly get a professional API documentation page. When you hand off the API to the Angular team (or any frontend developer), you share the Swagger URL instead of writing documentation manually. It's always up-to-date because it reads directly from your code.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: EXERCISES                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="exercises">
+  <div class="section-tag">Section 07</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Hands-on API testing practice.</p>
+
+  <h3>Exercise 1: Postman Collection (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1</div>
+    <p>Create a Postman collection called "Nimbus API". Add all 8 endpoints. For each, set the correct method, URL, headers, and body. Run them in sequence: register &rarr; login &rarr; create booking &rarr; get booking &rarr; update status &rarr; get history. Save the collection.</p>
+  </div>
+
+  <h3>Exercise 2: Error Testing (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2</div>
+    <p>Test every error path in Postman:</p>
+    <ul>
+      <li>Register with a duplicate email &rarr; expect 400</li>
+      <li>Login with wrong password &rarr; expect 401</li>
+      <li>Get booking with non-existent ID &rarr; expect 404</li>
+      <li>Create booking with empty sender name &rarr; expect 400 (validation)</li>
+      <li>Create booking with missing fields &rarr; expect 400</li>
+    </ul>
+    <p>For each, verify the response uses the <code>ErrorResponse</code> JSON structure.</p>
+  </div>
+
+  <h3>Exercise 3: curl Mastery (Medium)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3</div>
+    <p>Run all 8 Nimbus curl commands from your terminal. Use the <code>-i</code> flag to see response headers. Verify the <code>Content-Type</code> header is <code>application/json</code> and the status codes are correct (201 for POST, 200 for GET/PUT).</p>
+  </div>
+
+  <h3>Exercise 4: Swagger Setup (Easy)</h3>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4</div>
+    <p>Add the <code>springdoc-openapi-starter-webmvc-ui</code> dependency to your Nimbus pom.xml. Start the app and open <code>http://localhost:8080/swagger-ui.html</code>. Explore the auto-generated docs. Try testing an endpoint directly from the Swagger UI page.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Self-Check Questions</div>
+    <ol>
+      <li>Why can't you test POST/PUT endpoints in a browser? (Browser address bar only sends GET requests)</li>
+      <li>What does the <code>-H "Content-Type: application/json"</code> header tell the server? (The request body is JSON format, so use Jackson to parse it)</li>
+      <li>What's the difference between Postman and curl? (Postman is a GUI tool; curl is command-line. Both send HTTP requests)</li>
+      <li>What does Swagger auto-generate? (Interactive API documentation from your @RestController annotations)</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="api-error-handling.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">API Error Handling &amp; Validation</span>
+  </a>
+  <a href="microservices-intro.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Microservices Architecture</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

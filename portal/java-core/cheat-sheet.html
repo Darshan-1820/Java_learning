@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheat Sheet | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .layout { display: block; }
+    .main { max-width: 800px; margin: 0 auto; padding: 40px 30px 80px; }
+
+    @media print {
+      .header { display: none; }
+      .main { padding: 0; max-width: 100%; }
+      body { background: white; color: black; }
+      .cheat-section { break-inside: avoid; }
+      .cheat-section pre { background: #f0f0f0 !important; color: #333 !important; }
+      .cheat-section code { background: #e8e8e8 !important; color: #1a1a1a !important; }
+      .cheat-section h3 { color: #1a56db !important; }
+      .cheat-section { background: white !important; border-color: #ccc !important; }
+      .cheat-section td, .cheat-section th { color: #333 !important; border-color: #ccc !important; }
+      .cheat-section li { color: #333 !important; }
+      .print-btn { display: none; }
+      .cheat-grid { gap: 8px; }
+      .cheat-section { padding: 10px; }
+    }
+
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 700px) { .cheat-grid { grid-template-columns: 1fr; } }
+
+    .cheat-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 0.78rem;
+    }
+    .cheat-section h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+      color: var(--accent);
+    }
+    .cheat-section pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      background: rgba(0,0,0,0.2);
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin: 6px 0;
+      overflow-x: auto;
+      color: var(--text-secondary);
+    }
+    .cheat-section code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      background: rgba(0,0,0,0.2);
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: var(--accent);
+    }
+    .cheat-section ul { padding-left: 16px; margin: 4px 0; }
+    .cheat-section li { margin-bottom: 3px; color: var(--text-secondary); }
+    .cheat-section table { width: 100%; font-size: 0.72rem; border-collapse: collapse; margin: 6px 0; }
+    .cheat-section th { text-align: left; padding: 4px 6px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border); }
+    .cheat-section td { padding: 4px 6px; color: var(--text-secondary); border-bottom: 1px solid rgba(148,163,184,0.05); }
+    .cheat-section p { color: var(--text-secondary); font-size: 0.78rem; margin-bottom: 6px; }
+    .cheat-section strong { color: var(--text-primary); }
+
+    .print-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: white; font-weight: 600;
+      padding: 10px 24px; border-radius: 8px; border: none;
+      cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+    .print-btn:hover { background: var(--accent-hover); }
+
+    .cheat-warn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--red);
+      font-weight: 600;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+<div class="layout">
+<main class="main">
+
+  <div class="section-tag">REFERENCE</div>
+  <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px;">PRA Cheat Sheet</h2>
+  <p class="section-desc">Everything you need on one page. Print it, keep it next to you.</p>
+
+  <button class="print-btn" onclick="window.print()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Print Cheat Sheet
+  </button>
+
+  <div class="cheat-grid">
+
+    <!-- SECTION 1: POJO Template -->
+    <div class="cheat-section">
+      <h3>1. POJO Template</h3>
+<pre>class X {
+  private Type f1;
+  private Type f2;
+
+  // Parameterized constructor
+  public X(Type f1, Type f2) {
+    this.f1 = f1;
+    this.f2 = f2;
+  }
+
+  // Getters
+  public Type getF1() { return f1; }
+  public Type getF2() { return f2; }
+
+  // Setters
+  public void setF1(Type f1) { this.f1 = f1; }
+  public void setF2(Type f2) { this.f2 = f2; }
+}</pre>
+      <p>For <code>List&lt;X&gt;</code> field: getter returns <code>List&lt;X&gt;</code>, setter takes <code>List&lt;X&gt;</code>.</p>
+    </div>
+
+    <!-- SECTION 2: Input Reading -->
+    <div class="cheat-section">
+      <h3>2. Input Reading</h3>
+<pre>Scanner sc = new Scanner(System.in);
+
+int n = Integer.parseInt(sc.nextLine().trim());
+String s = sc.nextLine().trim();
+double d = Double.parseDouble(sc.nextLine().trim());
+boolean b = Boolean.parseBoolean(sc.nextLine().trim());</pre>
+      <div class="cheat-warn">NEVER use sc.nextInt() or sc.nextDouble() in PRA!</div>
+      <p>Always use <code>nextLine().trim()</code> then parse. Avoids the newline bug that fails test cases.</p>
+    </div>
+
+    <!-- SECTION 3: Filter Template -->
+    <div class="cheat-section">
+      <h3>3. Filter Template</h3>
+<pre>public List&lt;X&gt; filterMethod(List&lt;X&gt; list, Type param) {
+  List&lt;X&gt; result = new ArrayList&lt;&gt;();
+  for (X item : list) {
+    if (item.getField().equals(param)) {
+      result.add(item);
+    }
+  }
+  return result;
+}</pre>
+      <p>Use <code>.equals()</code> for String/Object. Use <code>==</code> or <code>.equals()</code> for Integer. Use <code>&gt;</code> <code>&lt;</code> for numeric comparisons.</p>
+    </div>
+
+    <!-- SECTION 4: Aggregate Template -->
+    <div class="cheat-section">
+      <h3>4. Aggregate Template (Avg/Sum)</h3>
+<pre>public double getAverage(List&lt;X&gt; list) {
+  double sum = 0;
+  int count = 0;
+  for (X item : list) {
+    if (condition) {
+      sum += item.getVal();
+      count++;
+    }
+  }
+  return count > 0 ? sum / count : 0;
+}</pre>
+      <p>If question says "returns null if not found" use <code>Double</code> return type and <code>return null;</code>.</p>
+    </div>
+
+    <!-- SECTION 5: Try-Catch -->
+    <div class="cheat-section">
+      <h3>5. Try-Catch (SEPARATE for each method)</h3>
+<pre>// Method 1 - its own try-catch
+try {
+  List&lt;X&gt; r = obj.method1(list, param);
+  for (X x : r) {
+    System.out.println(x.toString());
+  }
+} catch (Exception1 e) {
+  System.out.println(e.getMessage());
+}
+
+// Method 2 - its own try-catch
+try {
+  double r = obj.method2(list, param);
+  System.out.println(r);
+} catch (Exception2 e) {
+  System.out.println(e.getMessage());
+}</pre>
+      <div class="cheat-warn">NEVER put two methods in the same try block!</div>
+    </div>
+
+    <!-- SECTION 6: Return vs Print -->
+    <div class="cheat-section">
+      <h3>6. Return vs Print Decision</h3>
+      <table>
+        <thead><tr><th>Question Says</th><th>You Do</th></tr></thead>
+        <tbody>
+          <tr><td>"<strong>returns</strong> a list"</td><td><code>return result;</code> &mdash; main prints</td></tr>
+          <tr><td>"<strong>returns</strong> the average"</td><td><code>return value;</code> &mdash; main prints</td></tr>
+          <tr><td>"<strong>returns</strong> null if not found"</td><td>Use <code>Double</code> (wrapper) return type</td></tr>
+          <tr><td>"<strong>print</strong> / <strong>display</strong>"</td><td><code>void</code> method, println inside</td></tr>
+          <tr><td>"<strong>throw</strong> exception"</td><td><code>throws</code> on method, <code>throw new</code> inside</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 7: Collections -->
+    <div class="cheat-section">
+      <h3>7. Collections Quick Ref</h3>
+      <table>
+        <thead><tr><th>Type</th><th>Ordered?</th><th>Duplicates?</th><th>Key Methods</th></tr></thead>
+        <tbody>
+          <tr><td><code>ArrayList</code></td><td>Yes</td><td>Yes</td><td>.add() .get(i) .size()</td></tr>
+          <tr><td><code>LinkedHashMap</code></td><td>Yes</td><td>Keys: No</td><td>.put(k,v) .get(k) .entrySet()</td></tr>
+          <tr><td><code>HashMap</code></td><td>No</td><td>Keys: No</td><td>.put(k,v) .get(k) .containsKey()</td></tr>
+          <tr><td><code>HashSet</code></td><td>No</td><td>No</td><td>.add() .contains() .size()</td></tr>
+          <tr><td><code>LinkedHashSet</code></td><td>Yes</td><td>No</td><td>.add() .contains()</td></tr>
+          <tr><td><code>TreeMap</code></td><td>Sorted</td><td>Keys: No</td><td>.put(k,v) .firstKey()</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 8: String Methods -->
+    <div class="cheat-section">
+      <h3>8. String Methods</h3>
+      <table>
+        <thead><tr><th>Method</th><th>What It Does</th></tr></thead>
+        <tbody>
+          <tr><td><code>.equals(s)</code></td><td>Compare content (case-sensitive)</td></tr>
+          <tr><td><code>.equalsIgnoreCase(s)</code></td><td>Compare ignoring case</td></tr>
+          <tr><td><code>.charAt(i)</code></td><td>Character at index i</td></tr>
+          <tr><td><code>.length()</code></td><td>String length (with parens!)</td></tr>
+          <tr><td><code>.indexOf(ch)</code></td><td>First index of char (-1 if not found)</td></tr>
+          <tr><td><code>.substring(start, end)</code></td><td>Sub-string [start, end)</td></tr>
+          <tr><td><code>.trim()</code></td><td>Remove leading/trailing spaces</td></tr>
+          <tr><td><code>.toLowerCase()</code></td><td>All lowercase</td></tr>
+          <tr><td><code>.contains(s)</code></td><td>True if contains substring</td></tr>
+          <tr><td><code>.startsWith(s)</code></td><td>True if starts with prefix</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 9: Common Traps -->
+    <div class="cheat-section">
+      <h3>9. Common Traps</h3>
+      <table>
+        <thead><tr><th>Trap</th><th>Explanation</th></tr></thead>
+        <tbody>
+          <tr><td><code>list.remove(1)</code></td><td>Removes INDEX 1, not value 1</td></tr>
+          <tr><td><code>"a" + 5 + 3</code></td><td>= "a53" (string concat)</td></tr>
+          <tr><td><code>5 + 3 + "a"</code></td><td>= "8a" (math then concat)</td></tr>
+          <tr><td><code>10 / 3</code></td><td>= 3 (integer division)</td></tr>
+          <tr><td><code>10.0 / 3</code></td><td>= 3.333 (double division)</td></tr>
+          <tr><td><code>a++</code></td><td>Returns THEN increments</td></tr>
+          <tr><td><code>++a</code></td><td>Increments THEN returns</td></tr>
+          <tr><td><code>switch</code> no break</td><td>Falls through to next case!</td></tr>
+          <tr><td><code>== on Strings</code></td><td>Compares reference, not content</td></tr>
+          <tr><td><code>arr.length</code></td><td>No parens! (list.size() has parens)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 10: Custom Exception -->
+    <div class="cheat-section">
+      <h3>10. Custom Exception</h3>
+<pre>class MyException extends Exception {
+  MyException(String msg) {
+    super(msg);
+  }
+}</pre>
+      <p>In the method:</p>
+<pre>public X method(...) throws MyException {
+  if (condition) {
+    throw new MyException("Exact message");
+  }
+  // normal logic
+}</pre>
+      <p>In main:</p>
+<pre>try {
+  result = obj.method(params);
+} catch (MyException e) {
+  System.out.println(e.getMessage());
+}</pre>
+    </div>
+
+    <!-- SECTION 11: Integer vs int -->
+    <div class="cheat-section">
+      <h3>11. Integer vs int</h3>
+      <table>
+        <thead><tr><th>Use</th><th>When</th></tr></thead>
+        <tbody>
+          <tr><td><code>Integer</code></td><td>When question says Integer, in Collections, nullable values</td></tr>
+          <tr><td><code>int</code></td><td>Loops, math, local variables</td></tr>
+          <tr><td><code>Double</code></td><td>When method must return null</td></tr>
+          <tr><td><code>double</code></td><td>Math, averages, prices</td></tr>
+        </tbody>
+      </table>
+      <p>They auto-convert (autoboxing). <code>Integer x = 5;</code> works. <code>int y = Integer.valueOf(5);</code> works.</p>
+      <p><strong>Key:</strong> Collections (<code>List&lt;&gt;</code>, <code>Map&lt;&gt;</code>) MUST use wrappers. Cannot use <code>int</code>, <code>double</code> in generics.</p>
+    </div>
+
+    <!-- SECTION 12: Nested Loop Pattern -->
+    <div class="cheat-section">
+      <h3>12. Nested Loop (Composition)</h3>
+<pre>// Reading input:
+for (int i = 0; i &lt; n; i++) {
+  // read parent fields
+  int mCount = Integer.parseInt(
+    sc.nextLine().trim());
+  List&lt;Mobile&gt; mobiles = new ArrayList&lt;&gt;();
+  for (int j = 0; j &lt; mCount; j++) {
+    // read child fields
+    mobiles.add(new Mobile(...));
+  }
+  brands.add(new Brand(..., mobiles));
+}
+
+// Accessing nested data:
+for (Brand b : brands) {
+  for (Mobile m : b.getMobileList()) {
+    // m.getPrice(), b.getBrandName()
+  }
+}</pre>
+    </div>
+
+  </div><!-- end cheat-grid -->
+
+</main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

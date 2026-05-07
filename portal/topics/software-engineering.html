@@ -1,0 +1,2534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Engineering — Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link active"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is Software Engineering?                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-se">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Software Engineering?</h2>
+  <p class="section-desc">Before writing a single line of Java, you need to understand <strong>how professional software is built</strong>. Software engineering is not just coding &mdash; it is the discipline of building software that works, scales, and can be maintained by a team over months or years.</p>
+
+  <h3>Building Software vs Writing Code</h3>
+
+  <p>Many people think software engineering is just "writing code." That is like saying building a house is just "stacking bricks." Sure, bricks are involved. But if you just start stacking bricks without a plan, without a foundation, without plumbing and electrical design &mdash; your "house" will collapse the first time it rains.</p>
+
+  <p><strong>Writing code</strong> means you open an editor, type some logic, run it, and it works. Great. That is programming. You solved a problem.</p>
+
+  <p><strong>Software engineering</strong> means you figure out what problem to solve (requirements), plan how to solve it (design), build it in an organized way (implementation), make sure it actually works (testing), put it somewhere people can use it (deployment), and keep fixing things as the world changes (maintenance).</p>
+
+  <p>Here is the core difference:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Just Coding</th>
+        <th>Software Engineering</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>One person writes code</td>
+        <td>A team collaborates on code</td>
+      </tr>
+      <tr>
+        <td>Works on your machine</td>
+        <td>Works everywhere, for everyone</td>
+      </tr>
+      <tr>
+        <td>You remember how it works</td>
+        <td>Anyone can read and understand it</td>
+      </tr>
+      <tr>
+        <td>Fix bugs when you notice them</td>
+        <td>Automated tests catch bugs before users do</td>
+      </tr>
+      <tr>
+        <td>One file with everything</td>
+        <td>Organized packages, classes, layers</td>
+      </tr>
+      <tr>
+        <td>"It works, ship it"</td>
+        <td>"It works, it's tested, it's documented, ship it"</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus started as "just code" in Phase 1 &mdash; HTML files with inline JavaScript, LocalStorage as the database. That was fine for a prototype. But now, in Phase 2+, you are doing <strong>real software engineering</strong>: separating into packages (<code>com.nimbus.model</code>, <code>com.nimbus.dao</code>, <code>com.nimbus.service</code>), designing database schemas, writing reusable classes, and building in layers. That transition &mdash; from "it works" to "it's engineered" &mdash; is exactly what this section is about.</p>
+  </div>
+
+  <h3>Why Processes Matter</h3>
+
+  <p>Imagine 8 people trying to cook dinner together in a kitchen. No recipe. No one knows who is making what. Two people are both boiling rice. No one is making the curry. Someone accidentally uses sugar instead of salt because nothing is labeled.</p>
+
+  <p>That is what happens when a software team writes code without a process. You get:</p>
+  <ul>
+    <li><strong>Duplicate work</strong> &mdash; two people build the same feature</li>
+    <li><strong>Conflicting code</strong> &mdash; person A assumes the user ID is an integer, person B assumes it is a string</li>
+    <li><strong>Missing features</strong> &mdash; everyone assumed someone else was building it</li>
+    <li><strong>Bugs that take hours to find</strong> &mdash; because code is tangled together</li>
+    <li><strong>Impossible to change</strong> &mdash; touching one thing breaks five other things</li>
+  </ul>
+
+  <p>Processes are the recipe. They tell each team member what to build, when to build it, how to build it, and how to check if it is correct. Processes are not bureaucracy &mdash; they are survival.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your team of 8 freshers is building Nimbus together. Without a process, person A might create a <code>User</code> class with <code>username</code> while person B creates one with <code>userId</code>. Your team avoids this by following the <strong>Programming File Structure document</strong> &mdash; it defines exactly what each class looks like, what fields it has, and who builds what. That document IS your process.</p>
+  </div>
+
+  <h3>Real-World Analogy: Building a House vs Building Software</h3>
+
+  <p>This analogy is so powerful that software engineers use it all the time. Let us walk through it carefully:</p>
+
+  <div class="diagram">
+    <pre>
+  BUILDING A HOUSE                          BUILDING SOFTWARE
+  ==================                        ====================
+
+  1. Talk to the family                     1. Talk to the client/users
+     "How many rooms?"                         "What features do you need?"
+     "Budget?"                                 "How many users?"
+     "Any special needs?"                      "Any special requirements?"
+           |                                          |
+           v                                          v
+  2. Architect draws blueprints             2. Architect designs the system
+     Floor plan, elevation,                    Database schema, API design,
+     plumbing layout, wiring                   class diagrams, flow diagrams
+           |                                          |
+           v                                          v
+  3. Foundation first, then walls,          3. Database first, then models,
+     then roof, then interiors                 then services, then UI
+           |                                          |
+           v                                          v
+  4. Inspector checks everything            4. Tester tests everything
+     "Is the wiring safe?"                     "Does login work?"
+     "Are walls straight?"                     "Does booking calculate correctly?"
+           |                                          |
+           v                                          v
+  5. Family moves in                        5. Users start using the app
+           |                                          |
+           v                                          v
+  6. Plumber comes when tap leaks           6. Developer fixes bugs,
+     Painter comes every few years              adds new features over time
+    </pre>
+    <div class="diagram-label">The house-building analogy maps perfectly to software development phases</div>
+  </div>
+
+  <p>The key insight: <strong>you do not start painting walls before laying the foundation.</strong> In software, you do not start building the UI before understanding what data you need. Nimbus Phase 1 (UI) came first because it was a prototype. But in real-world software engineering, the database and backend logic often come first, and the UI is built on top.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Think About It</div>
+    <p>What happens if you build a house without blueprints? You might discover the bathroom is too far from the water main. You would have to tear down walls and redo plumbing. In software, this is called <strong>refactoring</strong> &mdash; rewriting code because the original design was wrong. Good engineering minimizes how much refactoring you need.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SDLC                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="sdlc">
+  <div class="section-tag">Section 02</div>
+  <h2>SDLC &mdash; Software Development Life Cycle</h2>
+  <p class="section-desc">The SDLC is the <strong>step-by-step journey</strong> every piece of software goes through from idea to retirement. Think of it as the complete lifecycle of a building, from the first conversation with the architect to eventually demolishing it decades later.</p>
+
+  <p>Every software product &mdash; Instagram, Google Maps, Nimbus &mdash; goes through these six phases. The only difference is how fast they move through them and whether they do them in order (Waterfall) or in loops (Agile).</p>
+
+  <div class="diagram">
+    <pre>
+   Requirements ──&gt; Design ──&gt; Implementation ──&gt; Testing ──&gt; Deployment ──&gt; Maintenance
+       |                                                                        |
+       |                                                                        |
+       +────────────────────── feedback loop ──────────────────────────────────+
+    </pre>
+    <div class="diagram-label">The six phases of the Software Development Life Cycle</div>
+  </div>
+
+  <h3>Phase 1: Requirements Gathering</h3>
+
+  <p><strong>Analogy:</strong> You are planning a wedding. Before booking a venue, a caterer, or a DJ, you ask: "How many guests? Vegetarian or non-veg? Indoor or outdoor? What is the budget?" If you skip this step, you might book a venue for 50 people when 300 are coming.</p>
+
+  <p>In software, requirements gathering means sitting down with the people who will USE the software and asking: "What do you need this to do? Who will use it? How many users? What are the most important features?"</p>
+
+  <p>There are two types of requirements:</p>
+  <ul>
+    <li><strong>Functional Requirements</strong> &mdash; What the system DOES. "Users can create bookings." "Officers can update delivery status." "System calculates shipping cost based on weight."</li>
+    <li><strong>Non-Functional Requirements</strong> &mdash; How well the system does it. "The system should handle 1000 simultaneous users." "Pages should load in under 2 seconds." "Data must be encrypted."</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your requirements came from the TCS PBL sprint documents (<code>.xlsx</code> files). Each sprint defines <strong>User Stories</strong> like US1 (Main Menu), US2 (Registration), US3 (Login), and so on. These user stories ARE your requirements. When the document says "Customer can track parcels by booking ID," that is a functional requirement. When it says "The application should work in Eclipse," that is a non-functional requirement.</p>
+  </div>
+
+  <h3>Phase 2: Design</h3>
+
+  <p><strong>Analogy:</strong> The architect draws blueprints. Not one blueprint &mdash; multiple. A floor plan (top-down view), an elevation (front view), plumbing diagrams, wiring diagrams, structural diagrams. Each shows the same house from a different angle. Together, they give the builder complete information about what to construct.</p>
+
+  <p>In software design, you create similar documents:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Design Artifact</th>
+        <th>What It Shows</th>
+        <th>House Equivalent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>High-Level Architecture (HLA)</strong></td>
+        <td>Major components and how they connect</td>
+        <td>Floor plan &mdash; shows rooms and hallways</td>
+      </tr>
+      <tr>
+        <td><strong>Low-Level Architecture (LLA)</strong></td>
+        <td>Detailed class design, methods, data flow</td>
+        <td>Plumbing/wiring diagrams &mdash; internal details</td>
+      </tr>
+      <tr>
+        <td><strong>Database Design</strong></td>
+        <td>Tables, columns, relationships</td>
+        <td>Storage plan &mdash; where things go</td>
+      </tr>
+      <tr>
+        <td><strong>Flow Diagrams</strong></td>
+        <td>Step-by-step logic for key operations</td>
+        <td>Fire escape route &mdash; what happens in each situation</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>You already have these design documents in the <code>docs/</code> folder: <code>High_Level_Architecture.md</code>, <code>Low_Level_Architecture.md</code>, <code>DB_Design_Document.md</code>, <code>Flow_Diagrams.md</code>, <code>Logical_Connection_Map.md</code>. These were created BEFORE writing Java code. That is professional software engineering &mdash; design first, code second.</p>
+  </div>
+
+  <h3>Phase 3: Implementation (Coding)</h3>
+
+  <p><strong>Analogy:</strong> The construction workers arrive. They follow the blueprints. The plumber does plumbing, the electrician does wiring, the mason does walls. Each specialist works on their part, following the architectural plan.</p>
+
+  <p>This is the phase most people think IS software engineering. But as you can see, it is just one of six phases. Implementation means writing the actual code &mdash; creating classes, methods, database queries, and connecting everything together.</p>
+
+  <p>Key principles during implementation:</p>
+  <ul>
+    <li><strong>Follow the design</strong> &mdash; do not invent new classes that are not in the design document</li>
+    <li><strong>Write clean code</strong> &mdash; meaningful variable names, comments where needed, consistent formatting</li>
+    <li><strong>Build in layers</strong> &mdash; database layer first, then service layer, then UI layer</li>
+    <li><strong>Test as you go</strong> &mdash; do not write 500 lines and then try to run it</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Implementation is split across phases. Phase 1 = HTML/CSS/JS frontend. Phase 2 = Java backend with JDBC. Phase 3 = Servlets/JSP. Phase 4 = REST APIs. Each phase implements more of the design. Your team of 8 splits work using the <code>Team_Task_Breakdown.md</code> document &mdash; each person implements specific classes and features.</p>
+  </div>
+
+  <h3>Phase 4: Testing</h3>
+
+  <p><strong>Analogy:</strong> Before the family moves into their new house, an inspector checks everything. Turn on every faucet &mdash; does water flow? Flip every switch &mdash; do lights turn on? Open every door &mdash; does it lock? Check the foundation &mdash; any cracks? You do NOT move in and THEN discover the bathroom floods.</p>
+
+  <p>In software, testing means systematically checking that every feature works correctly. This includes:</p>
+  <ul>
+    <li><strong>Does the login work with correct credentials?</strong></li>
+    <li><strong>Does the login FAIL with wrong credentials?</strong> (This is equally important!)</li>
+    <li><strong>What happens if someone enters a negative weight for a parcel?</strong></li>
+    <li><strong>What happens if the database is down?</strong></li>
+    <li><strong>Can a customer see another customer's bookings?</strong> (Security testing)</li>
+  </ul>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Phase 1, testing was manual &mdash; you opened the browser, clicked buttons, and checked if things worked. In Phase 2+, you will write <strong>JUnit test cases</strong> &mdash; code that automatically tests your code. For example, a test that creates a booking with weight 2.5 kg and checks if the price is calculated correctly. We will cover JUnit in detail in Section 8.</p>
+  </div>
+
+  <h3>Phase 5: Deployment</h3>
+
+  <p><strong>Analogy:</strong> The house is built. Inspected. Approved. The family gets the keys and moves in. But the builder does not just dump them at the door. They do a walkthrough &mdash; "Here is how the heating works. Here is where the breaker panel is. Call us if anything breaks."</p>
+
+  <p>Deployment means putting your software where users can actually use it. For a web app, that means uploading it to a server. For a mobile app, that means publishing it to the App Store or Play Store. For a console application like Nimbus Phase 2, it means packaging the <code>.jar</code> file so it can run on any machine with Java installed.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Phase 1 (frontend) was "deployed" by simply opening <code>login.html</code> in a browser &mdash; static files need no server. Phase 2 (Java console app) runs inside Eclipse. In Phase 3, you will deploy to a Tomcat server. In Phase 4, your REST API will be a deployable <code>.war</code> or <code>.jar</code> file. Each phase teaches a different deployment model.</p>
+  </div>
+
+  <h3>Phase 6: Maintenance</h3>
+
+  <p><strong>Analogy:</strong> Three months after moving in, a tap starts leaking. A year later, the family wants to add a balcony. Two years later, the paint is peeling and needs redoing. The house is NEVER "done" &mdash; it needs ongoing care.</p>
+
+  <p>Software maintenance is the longest phase. It includes:</p>
+  <ul>
+    <li><strong>Bug fixes</strong> &mdash; users find problems you missed during testing</li>
+    <li><strong>Feature additions</strong> &mdash; users want new capabilities</li>
+    <li><strong>Security patches</strong> &mdash; new vulnerabilities are discovered</li>
+    <li><strong>Performance improvements</strong> &mdash; system slows down as more users join</li>
+    <li><strong>Technology updates</strong> &mdash; libraries get updated, old ones get deprecated</li>
+  </ul>
+
+  <p>Here is a shocking statistic: <strong>60-80% of a software project's total cost is maintenance.</strong> That means if building the software costs 20 lakh, maintaining it over its lifetime costs 60-80 lakh. This is why writing clean, well-structured code matters &mdash; because someone (maybe you) will be reading and changing it for years.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Even within the project timeline, you are already doing maintenance. When the pricing formula in Phase 1 (JavaScript) needs to match the formula in Phase 2 (Java), that is maintenance. When you discover that the user ID generation has a bug with same-day registrations, fixing it across all files is maintenance. Good engineering makes maintenance easier.</p>
+  </div>
+
+  <h3>Waterfall vs Agile</h3>
+
+  <p>Now that you know the 6 phases, the big question is: <strong>in what order do you do them?</strong></p>
+
+  <h4>Waterfall Model</h4>
+
+  <p><strong>Analogy:</strong> A waterfall flows in one direction &mdash; down. Water does not flow back up. Similarly, in Waterfall, you complete each phase 100% before moving to the next. No going back.</p>
+
+  <div class="diagram">
+    <pre>
+  WATERFALL MODEL
+  ===============
+
+  Requirements  ====&gt;  DONE (sign off, move on)
+                           |
+                           v
+                       Design  ====&gt;  DONE (sign off, move on)
+                                          |
+                                          v
+                                      Implementation  ====&gt;  DONE
+                                                                |
+                                                                v
+                                                            Testing  ====&gt;  DONE
+                                                                               |
+                                                                               v
+                                                                           Deployment
+                                                                               |
+                                                                               v
+                                                                           Maintenance
+
+  Problem: What if you discover during Testing that
+  the Requirements were wrong? You have to go ALL
+  the way back. Expensive. Time-consuming. Painful.
+    </pre>
+    <div class="diagram-label">Waterfall: each phase completes fully before the next begins</div>
+  </div>
+
+  <p><strong>When Waterfall works:</strong> Building a bridge. Launching a satellite. You CANNOT go back and change the foundation of a bridge after it is built. Requirements must be 100% correct upfront.</p>
+
+  <p><strong>When Waterfall fails:</strong> Most software projects. Because users change their minds. Markets shift. You discover problems late. By the time you finish, the requirements are outdated.</p>
+
+  <h4>Agile Model</h4>
+
+  <p><strong>Analogy:</strong> Instead of building the entire house at once, you build one room at a time. Build the kitchen. Let the family use it. Get feedback. "Oh, we need more counter space." Adjust. Now build the bedroom. Use feedback. Adjust. Each room is a small, complete, usable unit.</p>
+
+  <div class="diagram">
+    <pre>
+  AGILE MODEL
+  ===========
+
+  Sprint 1 (2 weeks):   Requirements &gt; Design &gt; Code &gt; Test &gt; Deploy  =&gt;  Working Login
+                                                                             |
+                                                                             v  (feedback)
+  Sprint 2 (2 weeks):   Requirements &gt; Design &gt; Code &gt; Test &gt; Deploy  =&gt;  Working Booking
+                                                                             |
+                                                                             v  (feedback)
+  Sprint 3 (2 weeks):   Requirements &gt; Design &gt; Code &gt; Test &gt; Deploy  =&gt;  Working Tracking
+                                                                             |
+                                                                             v  (feedback)
+  Sprint 4 (2 weeks):   Requirements &gt; Design &gt; Code &gt; Test &gt; Deploy  =&gt;  Full System
+
+  Each sprint delivers something USABLE.
+  Feedback from each sprint improves the next.
+    </pre>
+    <div class="diagram-label">Agile: small cycles, each delivering working software</div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Aspect</th>
+        <th>Waterfall</th>
+        <th>Agile</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Planning</td>
+        <td>Everything planned upfront</td>
+        <td>Plan one sprint at a time</td>
+      </tr>
+      <tr>
+        <td>Feedback</td>
+        <td>Only at the end</td>
+        <td>After every 2-week sprint</td>
+      </tr>
+      <tr>
+        <td>Changes</td>
+        <td>Expensive and difficult</td>
+        <td>Welcome and expected</td>
+      </tr>
+      <tr>
+        <td>Working software</td>
+        <td>Only at the very end</td>
+        <td>After every sprint</td>
+      </tr>
+      <tr>
+        <td>Risk</td>
+        <td>High &mdash; problems found late</td>
+        <td>Low &mdash; problems found early</td>
+      </tr>
+      <tr>
+        <td>Documentation</td>
+        <td>Heavy (every detail documented first)</td>
+        <td>Light (just enough to build)</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>Fixed requirements (military, medical devices)</td>
+        <td>Evolving requirements (apps, websites, SaaS)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses a <strong>hybrid approach</strong>. Your TCS PBL structure is like Waterfall &mdash; Sprint 1 (UI), Sprint 2 (JDBC), Sprint 3 (Servlets), Sprint 4 (APIs) must be completed in order. But within each sprint, you work in an Agile way &mdash; build one feature, test it, move to the next. The sprint documents define WHAT to build, but your team decides HOW to break it into smaller pieces and what order to tackle them.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Agile & Scrum                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="agile-scrum">
+  <div class="section-tag">Section 03</div>
+  <h2>Agile &amp; Scrum</h2>
+  <p class="section-desc">Agile is the philosophy. Scrum is the framework that implements it. Think of Agile as "I believe in eating healthy" and Scrum as "Here is my exact meal plan for the week."</p>
+
+  <h3>Scrum Framework Overview</h3>
+
+  <p>Scrum breaks work into <strong>sprints</strong> &mdash; fixed time periods (usually 2 weeks) where the team builds a specific set of features. At the end of each sprint, you have working software that you can show to someone.</p>
+
+  <div class="diagram">
+    <pre>
+  SCRUM FRAMEWORK
+  ===============
+
+  Product Backlog          Sprint Backlog           Sprint (2 weeks)         Review
+  (ALL features)           (THIS sprint)            (daily work)             (demo)
+  +----------------+       +---------------+        +------------------+     +---------+
+  | - Login        |  Pick | - Login       |  Work  |  Day 1: DB setup |     | Show    |
+  | - Register     | ====&gt; | - Register    | ====&gt;  |  Day 2: User.java| ==&gt; | working |
+  | - Booking      |       | - Login tests |        |  Day 3: Login    |     | login + |
+  | - Tracking     |       +---------------+        |  ...             |     | register|
+  | - Payment      |                                 |  Day 10: Testing |     +---------+
+  | - History      |                                 +------------------+         |
+  | - Support      |                                                             v
+  | - Reports      |       &lt;========= feedback from review goes back ============+
+  +----------------+
+    </pre>
+    <div class="diagram-label">How Scrum flows: Backlog to Sprint to Working Software to Feedback</div>
+  </div>
+
+  <h3>Key Scrum Concepts</h3>
+
+  <h4>1. Sprint</h4>
+  <p>A <strong>sprint</strong> is a fixed time period (1-4 weeks, usually 2 weeks) where the team picks a set of features from the backlog and builds them. The sprint has a clear goal ("By end of this sprint, users can log in and register") and a fixed deadline. You do NOT add more work mid-sprint. If something new comes up, it goes into the backlog for the NEXT sprint.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Each TCS PBL phase maps to a sprint. Phase 1 sprint goal: "Working frontend with all pages and LocalStorage." Phase 2 sprint goal: "Java console app with JDBC database connection." Each phase has a clear deliverable and deadline.</p>
+  </div>
+
+  <h4>2. Product Backlog</h4>
+  <p>The <strong>product backlog</strong> is the master list of EVERYTHING the software needs to do. It is ordered by priority. The most important features are at the top. It is a living document &mdash; new items get added, old ones get removed or reprioritized.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your product backlog is all the User Stories across all sprints: US1 (Main Menu), US2 (Registration), US3 (Login), US4 (Customer Menu), US5 (Officer Menu), US6 (Booking), US7 (Payment), US8 (Invoice), US9-US10 (Tracking), US11-US12 (History), US13-US14 (Support). All of these, across all 4 phases, form the complete product backlog.</p>
+  </div>
+
+  <h4>3. Sprint Backlog</h4>
+  <p>The <strong>sprint backlog</strong> is the subset of the product backlog that the team commits to completing in THIS sprint. Once the sprint starts, this list is locked. No adding, no removing. Focus on what you committed to.</p>
+
+  <h4>4. User Stories</h4>
+  <p>A <strong>user story</strong> is a feature described from the user's perspective. It follows a specific format:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User Story Format</span>
+    </div>
+    <pre><code class="language-java">// Format:
+// "As a [ROLE], I want [FEATURE], so that [BENEFIT]."
+
+// This format forces you to think about:
+// 1. WHO needs this feature (role)
+// 2. WHAT they need (feature)
+// 3. WHY they need it (benefit/value)</code></pre>
+  </div>
+
+  <p>Here are 5 actual Nimbus user stories:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus User Stories</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// USER STORY 1: Registration
+// "As a new user, I want to register with my details,
+//  so that I can access the parcel management system."
+// Acceptance criteria:
+//   - Collects: first name, last name, email, phone, password, role
+//   - Generates unique User ID (YYMMDD-XX##)
+//   - Validates all inputs (email format, phone 10 digits, password rules)
+//   - Stores user in database
+
+// USER STORY 2: Login
+// "As a registered user, I want to log in with my User ID and password,
+//  so that I can access my role-specific dashboard."
+// Acceptance criteria:
+//   - Accepts User ID + password
+//   - Validates credentials against database
+//   - Redirects to correct dashboard based on role (Customer/Officer/Support)
+//   - Shows error for wrong credentials
+
+// USER STORY 3: Booking
+// "As a customer, I want to create a parcel booking with sender/receiver details,
+//  so that my parcel can be picked up and delivered."
+// Acceptance criteria:
+//   - Collects: sender &amp; receiver address, weight, parcel type, packaging
+//   - Calculates cost using pricing formula
+//   - Generates unique Booking ID
+//   - Shows booking confirmation with all details
+
+// USER STORY 4: Tracking
+// "As a customer, I want to track my parcel using the booking ID,
+//  so that I know where my parcel is and when it will arrive."
+// Acceptance criteria:
+//   - Search by Booking ID
+//   - Shows current status (Booked/Picked Up/In Transit/Delivered)
+//   - Shows timeline of status updates with dates
+//   - Only shows bookings belonging to the logged-in customer
+
+// USER STORY 5: Status Update
+// "As an officer, I want to update the delivery status of parcels,
+//  so that customers can track their shipments in real time."
+// Acceptance criteria:
+//   - Officer sees list of assigned parcels
+//   - Can change status: Booked &gt; Picked Up &gt; In Transit &gt; Delivered
+//   - Status change records timestamp
+//   - Customer sees updated status immediately</code></pre>
+  </div>
+
+  <h4>5. Daily Standup</h4>
+  <p>A <strong>daily standup</strong> (also called "daily scrum") is a 15-minute meeting every morning where each team member answers three questions:</p>
+  <ol>
+    <li><strong>What did I do yesterday?</strong></li>
+    <li><strong>What will I do today?</strong></li>
+    <li><strong>Are there any blockers?</strong> (things stopping me from working)</li>
+  </ol>
+
+  <p>The standup is NOT a status report to the boss. It is a coordination meeting among the team. If person A says "I'm blocked because the database is not set up yet," person B might say "I can help with that today."</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Even if your team does not have formal daily standups, the concept applies. When you share updates in your WhatsApp group &mdash; "I finished the User model, starting on BookingService today, but I'm stuck on the pricing formula" &mdash; that IS a standup. Three questions: done, doing, blocked.</p>
+  </div>
+
+  <h4>6. Sprint Review / Demo</h4>
+  <p>At the end of each sprint, the team <strong>demos</strong> what they built. They show working software to the stakeholders (in your case, the TCS mentors). The stakeholders give feedback, which goes into the backlog for the next sprint.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Each TCS PBL phase ends with a review. Phase 1 review: demo the working HTML/CSS/JS frontend with all pages. Phase 2 review: demo the Java console app with database operations. The mentors' feedback becomes your improvement backlog for the next phase.</p>
+  </div>
+
+  <h3>How Nimbus Phases Map to Sprints</h3>
+
+  <div class="diagram">
+    <pre>
+  NIMBUS PROJECT AS AGILE SPRINTS
+  ================================
+
+  Sprint 1 (Phase 1): UI Sprint
+  Goal: "Users can interact with all screens"
+  Backlog: Login page, Register page, Customer dashboard, Officer dashboard,
+           Support dashboard, Booking flow, Tracking page, Payment page
+  Deliverable: Working static frontend
+
+  Sprint 2 (Phase 2): Backend Sprint
+  Goal: "Business logic works with real database"
+  Backlog: Java models, JDBC connection, UserDAO, BookingDAO,
+           Console menus, Input validation, Pricing engine
+  Deliverable: Working Java console app connected to MySQL
+
+  Sprint 3 (Phase 3): Web Integration Sprint
+  Goal: "Backend serves web pages dynamically"
+  Backlog: Servlets, JSP pages, Session management,
+           Form handling, Spring framework basics
+  Deliverable: Dynamic web application
+
+  Sprint 4 (Phase 4): API Sprint
+  Goal: "System exposes APIs for any frontend"
+  Backlog: REST controllers, JSON responses, Angular frontend,
+           API authentication, Microservice separation
+  Deliverable: Full-stack application with REST APIs
+    </pre>
+    <div class="diagram-label">Each Nimbus phase is a sprint with a clear goal and deliverable</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: SOLID Principles                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="solid">
+  <div class="section-tag">Section 04</div>
+  <h2>Design Principles &mdash; SOLID</h2>
+  <p class="section-desc">SOLID is an acronym for five design principles that make software <strong>easier to understand, maintain, and extend</strong>. These principles were identified by Robert C. Martin ("Uncle Bob") and are considered fundamental to good object-oriented design. If you follow them, your code will not turn into a tangled mess as it grows.</p>
+
+  <p><strong>Analogy:</strong> Think of SOLID principles like the rules of good cooking. You CAN throw all ingredients into one pot and heat it. The food might be edible. But if you follow rules &mdash; prep vegetables separately, season at the right time, use the right heat &mdash; you get a dish that tastes great, looks great, and can be reproduced consistently. SOLID principles are the "rules of good cooking" for code.</p>
+
+  <!-- S: Single Responsibility -->
+  <h3>S &mdash; Single Responsibility Principle (SRP)</h3>
+
+  <h4>Definition</h4>
+  <p><strong>A class should have one, and only one, reason to change.</strong></p>
+
+  <p>In simpler terms: each class should do ONE thing. If a class handles user login AND sends emails AND calculates pricing AND writes to the database, it is doing four things. When you need to change the pricing formula, you are editing the same class that handles login. You might accidentally break login while fixing pricing. That is a nightmare.</p>
+
+  <p><strong>Analogy:</strong> In a restaurant, the chef cooks. The waiter serves. The cashier handles payment. The dishwasher cleans. If one person does all four jobs, the restaurant is chaos. If the cashier is also cooking, they cannot give change to a customer while a dish is burning. Each person has a SINGLE responsibility.</p>
+
+  <h4>The Wrong Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserManager.java (BAD - does too many things)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD: This class has FOUR responsibilities
+public class UserManager {
+
+    // Responsibility 1: Database operations
+    public void saveUserToDatabase(User user) {
+        Connection conn = DriverManager.getConnection(DB_URL);
+        PreparedStatement ps = conn.prepareStatement(
+            "INSERT INTO users VALUES (?, ?, ?, ?)"
+        );
+        ps.setString(1, user.getUserId());
+        ps.setString(2, user.getName());
+        // ... execute
+    }
+
+    // Responsibility 2: Validation
+    public boolean validateEmail(String email) {
+        return email.matches("^[\\w.-]+@[\\w.-]+\\.\\w{2,}$");
+    }
+
+    // Responsibility 3: Password hashing
+    public String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    // Responsibility 4: Sending welcome emails
+    public void sendWelcomeEmail(String email) {
+        // SMTP setup, compose email, send...
+    }
+}
+// If the email provider changes, you edit UserManager.
+// If the DB schema changes, you edit UserManager.
+// If validation rules change, you edit UserManager.
+// ONE class changing for FOUR different reasons = violation of SRP.</code></pre>
+  </div>
+
+  <h4>The Right Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Separated classes (GOOD - each does ONE thing)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GOOD: Each class has ONE responsibility
+
+// Class 1: Only handles database operations for users
+public class UserDAO {
+    public void save(User user) { /* DB insert */ }
+    public User findById(String userId) { /* DB query */ }
+    public void update(User user) { /* DB update */ }
+    public void delete(String userId) { /* DB delete */ }
+}
+
+// Class 2: Only handles input validation
+public class InputValidator {
+    public boolean isValidEmail(String email) { /* regex check */ }
+    public boolean isValidPhone(String phone) { /* format check */ }
+    public boolean isValidPassword(String pwd) { /* strength check */ }
+}
+
+// Class 3: Only handles password security
+public class PasswordService {
+    public String hash(String password) { /* hashing logic */ }
+    public boolean verify(String plain, String hashed) { /* comparison */ }
+}
+
+// Class 4: Only handles email sending
+public class EmailService {
+    public void sendWelcomeEmail(String email) { /* email logic */ }
+    public void sendPasswordReset(String email) { /* email logic */ }
+}
+
+// Now if the email provider changes, ONLY EmailService changes.
+// Database schema changes? ONLY UserDAO changes.
+// Validation rules change? ONLY InputValidator changes.
+// Each class has ONE reason to change.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus follows SRP with its package structure. <code>UserDAO</code> in <code>com.nimbus.dao</code> ONLY handles user database operations &mdash; <code>save()</code>, <code>findById()</code>, <code>findByEmail()</code>, <code>update()</code>. It does not validate input (that is <code>InputValidator</code>'s job). It does not calculate pricing (that is <code>PricingService</code>'s job). It does not display menus (that is <code>NimbusApp</code>'s job). Each class has exactly one reason to exist.</p>
+  </div>
+
+  <!-- O: Open/Closed -->
+  <h3>O &mdash; Open/Closed Principle (OCP)</h3>
+
+  <h4>Definition</h4>
+  <p><strong>Software entities should be open for extension, but closed for modification.</strong></p>
+
+  <p>This means: you should be able to ADD new behavior without CHANGING existing code. Why? Because every time you modify existing code, you risk breaking things that already work. If you can add new features by writing NEW code instead of changing old code, existing features stay safe.</p>
+
+  <p><strong>Analogy:</strong> Think of a power strip. When you need to plug in a new device, you do not rewire the power strip. You just plug into an available socket. The power strip is CLOSED for modification (you do not change its internals) but OPEN for extension (you can plug in new devices).</p>
+
+  <h4>The Wrong Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java (BAD - must modify for each new role)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD: Every time a new role is added, you MODIFY this class
+public class TrackingService {
+
+    public void showTracking(String role, String bookingId) {
+        if (role.equals("customer")) {
+            // Show limited info: status + estimated delivery
+            System.out.println("Status: " + getStatus(bookingId));
+            System.out.println("ETA: " + getETA(bookingId));
+        }
+        else if (role.equals("officer")) {
+            // Show detailed info: status + location + route + driver
+            System.out.println("Status: " + getStatus(bookingId));
+            System.out.println("Location: " + getLocation(bookingId));
+            System.out.println("Route: " + getRoute(bookingId));
+            System.out.println("Driver: " + getDriver(bookingId));
+        }
+        // What if we add "admin" role? Or "warehouse" role?
+        // We have to come back here and ADD more if-else blocks.
+        // This class is MODIFIED every time we extend the system.
+    }
+}</code></pre>
+  </div>
+
+  <h4>The Right Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingService.java (GOOD - extend without modifying)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GOOD: Define a base class/interface, extend with new classes
+
+// Base class - CLOSED for modification
+public abstract class TrackingService {
+    public abstract void showTracking(String bookingId);
+}
+
+// Extension for Customer - no modification to TrackingService
+public class CustomerTrackingService extends TrackingService {
+    @Override
+    public void showTracking(String bookingId) {
+        System.out.println("Status: " + getStatus(bookingId));
+        System.out.println("ETA: " + getETA(bookingId));
+    }
+}
+
+// Extension for Officer - no modification to TrackingService
+public class OfficerTrackingService extends TrackingService {
+    @Override
+    public void showTracking(String bookingId) {
+        System.out.println("Status: " + getStatus(bookingId));
+        System.out.println("Location: " + getLocation(bookingId));
+        System.out.println("Route: " + getRoute(bookingId));
+        System.out.println("Driver: " + getDriver(bookingId));
+    }
+}
+
+// NEW: Add Admin role WITHOUT touching ANY existing code
+public class AdminTrackingService extends TrackingService {
+    @Override
+    public void showTracking(String bookingId) {
+        System.out.println("=== ADMIN VIEW ===");
+        System.out.println("Status: " + getStatus(bookingId));
+        System.out.println("Full Audit Log: " + getAuditLog(bookingId));
+        System.out.println("Cost Breakdown: " + getCostBreakdown(bookingId));
+    }
+}
+
+// Usage: the caller does not need to know which implementation
+TrackingService tracker = getTrackerForRole(currentUser.getRole());
+tracker.showTracking(bookingId);</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus has three roles: Customer, Officer, and Support. Each role sees different information when tracking a parcel. Instead of one giant <code>if-else</code> block, you create <code>CustomerTrackingService</code>, <code>OfficerTrackingService</code>, and <code>SupportTrackingService</code>. If TCS later says "add a Warehouse Manager role," you just create a new <code>WarehouseTrackingService</code> class. Zero changes to existing code. Zero risk of breaking what already works.</p>
+  </div>
+
+  <!-- L: Liskov Substitution -->
+  <h3>L &mdash; Liskov Substitution Principle (LSP)</h3>
+
+  <h4>Definition</h4>
+  <p><strong>Objects of a superclass should be replaceable with objects of a subclass without breaking the program.</strong></p>
+
+  <p>In simpler terms: if your code works with a <code>TrackingService</code>, it should work equally well with <code>CustomerTrackingService</code> or <code>OfficerTrackingService</code> &mdash; without the code even knowing which one it is using.</p>
+
+  <p><strong>Analogy:</strong> A TV remote control works with any TV &mdash; Samsung, LG, Sony. If you replace your Samsung TV with an LG TV, the remote still works the same way. The "interface" (power button, volume button, channel button) is the same. The internal implementation is different, but the user does not care. If a new TV required you to press power twice because it works differently, that VIOLATES the Liskov principle &mdash; the replacement is not seamless.</p>
+
+  <h4>The Wrong Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Violation of LSP</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD: Subclass changes the behavior in an unexpected way
+public class TrackingService {
+    public String getStatus(String bookingId) {
+        // Returns status like "In Transit", "Delivered", etc.
+        return bookingDAO.getStatus(bookingId);
+    }
+}
+
+public class GuestTrackingService extends TrackingService {
+    @Override
+    public String getStatus(String bookingId) {
+        // VIOLATION: Instead of returning status, throws an exception
+        // if user is not logged in. The caller did not expect this!
+        throw new UnauthenticatedException("Guests cannot track");
+    }
+}
+
+// Code that uses TrackingService:
+public void displayTracking(TrackingService service, String id) {
+    String status = service.getStatus(id);  // CRASHES with GuestTrackingService!
+    System.out.println("Your parcel is: " + status);
+}</code></pre>
+  </div>
+
+  <h4>The Right Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Correct LSP implementation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GOOD: All subclasses honor the contract of the parent
+
+public class TrackingService {
+    public String getStatus(String bookingId) {
+        return bookingDAO.getStatus(bookingId);
+    }
+}
+
+public class CustomerTrackingService extends TrackingService {
+    @Override
+    public String getStatus(String bookingId) {
+        // Returns status just like parent, but filters for this customer only
+        String status = super.getStatus(bookingId);
+        return status;  // Same return type, same behavior, no surprises
+    }
+}
+
+public class OfficerTrackingService extends TrackingService {
+    @Override
+    public String getStatus(String bookingId) {
+        // Returns status just like parent, but includes more detail
+        String status = super.getStatus(bookingId);
+        return status + " | Location: " + getLocation(bookingId);
+    }
+}
+
+// This code works with ANY TrackingService subclass - no surprises
+public void displayTracking(TrackingService service, String id) {
+    String status = service.getStatus(id);  // Always works!
+    System.out.println("Your parcel is: " + status);
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Nimbus, <code>CustomerTrackingService</code> can seamlessly replace <code>TrackingService</code> anywhere in the code. If a method accepts <code>TrackingService</code> as a parameter, you can pass <code>CustomerTrackingService</code> or <code>OfficerTrackingService</code> and it will work correctly. The calling code does not need to know which specific implementation it is talking to &mdash; it just calls <code>getStatus()</code> and gets a valid status string back.</p>
+  </div>
+
+  <!-- I: Interface Segregation -->
+  <h3>I &mdash; Interface Segregation Principle (ISP)</h3>
+
+  <h4>Definition</h4>
+  <p><strong>No client should be forced to depend on methods it does not use.</strong></p>
+
+  <p>In simpler terms: do not create one giant interface with 20 methods and force every class to implement all 20. Instead, create small, focused interfaces. A class can implement multiple small interfaces if it needs to.</p>
+
+  <p><strong>Analogy:</strong> Imagine a Swiss Army Knife vs separate tools. A Swiss Army Knife has a blade, scissors, screwdriver, can opener, corkscrew, and magnifying glass. But if you just need to open a can, you are carrying 5 unnecessary tools. The Interface Segregation Principle says: give the can-opener user just a can opener, not the whole Swiss Army Knife.</p>
+
+  <h4>The Wrong Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Fat Interface (BAD)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD: One fat interface forces all implementations to have everything
+public interface UserOperations {
+    void register(User user);
+    User login(String id, String password);
+    void createBooking(Booking booking);
+    void updateDeliveryStatus(String bookingId, String status);
+    void assignIssue(String issueId, String officerId);
+    void resolveIssue(String issueId);
+    void generateReport();
+}
+
+// Customer only needs register, login, createBooking
+// But is FORCED to implement updateDeliveryStatus, assignIssue, etc.
+public class CustomerService implements UserOperations {
+    public void register(User user) { /* works */ }
+    public User login(String id, String pwd) { /* works */ }
+    public void createBooking(Booking b) { /* works */ }
+
+    // These make NO SENSE for a customer:
+    public void updateDeliveryStatus(String id, String s) {
+        throw new UnsupportedOperationException(); // Ugly!
+    }
+    public void assignIssue(String iid, String oid) {
+        throw new UnsupportedOperationException(); // Ugly!
+    }
+    public void resolveIssue(String iid) {
+        throw new UnsupportedOperationException(); // Ugly!
+    }
+    public void generateReport() {
+        throw new UnsupportedOperationException(); // Ugly!
+    }
+}</code></pre>
+  </div>
+
+  <h4>The Right Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Segregated Interfaces (GOOD)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GOOD: Small, focused interfaces
+
+public interface Authenticatable {
+    void register(User user);
+    User login(String id, String password);
+}
+
+public interface Bookable {
+    void createBooking(Booking booking);
+    List&lt;Booking&gt; getBookings(String userId);
+}
+
+public interface Deliverable {
+    void updateDeliveryStatus(String bookingId, String status);
+    void assignDriver(String bookingId, String driverId);
+}
+
+public interface Supportable {
+    void assignIssue(String issueId, String officerId);
+    void resolveIssue(String issueId);
+}
+
+// Customer implements ONLY what it needs
+public class CustomerService implements Authenticatable, Bookable {
+    public void register(User user) { /* works */ }
+    public User login(String id, String pwd) { /* works */ }
+    public void createBooking(Booking b) { /* works */ }
+    public List&lt;Booking&gt; getBookings(String uid) { /* works */ }
+    // No unnecessary methods!
+}
+
+// Officer implements what IT needs
+public class OfficerService implements Authenticatable, Deliverable {
+    public void register(User user) { /* works */ }
+    public User login(String id, String pwd) { /* works */ }
+    public void updateDeliveryStatus(String id, String s) { /* works */ }
+    public void assignDriver(String bid, String did) { /* works */ }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Nimbus, Customer, Officer, and Support have different capabilities. A Customer can book parcels but cannot update delivery status. An Officer can update delivery status but cannot raise support issues. Instead of one giant <code>NimbusOperations</code> interface, you create focused interfaces: <code>Bookable</code> (for customers), <code>Deliverable</code> (for officers), <code>Supportable</code> (for support). Each role implements only the interfaces relevant to its job.</p>
+  </div>
+
+  <!-- D: Dependency Inversion -->
+  <h3>D &mdash; Dependency Inversion Principle (DIP)</h3>
+
+  <h4>Definition</h4>
+  <p><strong>High-level modules should not depend on low-level modules. Both should depend on abstractions.</strong></p>
+
+  <p>In simpler terms: your business logic should not directly depend on a specific database, a specific email provider, or a specific file format. Instead, it should depend on an INTERFACE (abstraction), and the specific implementation can be swapped.</p>
+
+  <p><strong>Analogy:</strong> When you plug your phone charger into a wall socket, your phone does not care whether the electricity comes from a coal plant, a nuclear plant, or a solar panel. Your phone depends on the SOCKET INTERFACE (220V, Type C plug). The power source can be changed without affecting your phone. If your phone was hardwired directly to a coal plant, you could never switch to solar.</p>
+
+  <h4>The Wrong Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Direct dependency (BAD)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD: BookingService directly depends on MySQLBookingDAO
+public class BookingService {
+    // Hardcoded dependency on MySQL implementation
+    private MySQLBookingDAO bookingDAO = new MySQLBookingDAO();
+
+    public void createBooking(Booking booking) {
+        bookingDAO.save(booking);
+    }
+}
+
+// Problem: What if you want to switch from MySQL to PostgreSQL?
+// You have to CHANGE BookingService code.
+// What if you want to use an in-memory store for testing?
+// You have to CHANGE BookingService code.
+// BookingService is TIGHTLY COUPLED to MySQLBookingDAO.</code></pre>
+  </div>
+
+  <h4>The Right Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Depend on abstraction (GOOD)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GOOD: Define an interface (abstraction)
+public interface BookingDAO {
+    void save(Booking booking);
+    Booking findById(String bookingId);
+    List&lt;Booking&gt; findByUserId(String userId);
+}
+
+// Implementation 1: MySQL
+public class MySQLBookingDAO implements BookingDAO {
+    public void save(Booking b) { /* MySQL INSERT */ }
+    public Booking findById(String id) { /* MySQL SELECT */ }
+    public List&lt;Booking&gt; findByUserId(String uid) { /* MySQL SELECT */ }
+}
+
+// Implementation 2: In-memory (for testing)
+public class InMemoryBookingDAO implements BookingDAO {
+    private List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+    public void save(Booking b) { bookings.add(b); }
+    public Booking findById(String id) { /* search list */ }
+    public List&lt;Booking&gt; findByUserId(String uid) { /* filter list */ }
+}
+
+// BookingService depends on the INTERFACE, not the implementation
+public class BookingService {
+    private BookingDAO bookingDAO;  // Interface type!
+
+    // Implementation is INJECTED from outside
+    public BookingService(BookingDAO bookingDAO) {
+        this.bookingDAO = bookingDAO;
+    }
+
+    public void createBooking(Booking booking) {
+        bookingDAO.save(booking);  // Works with ANY implementation
+    }
+}
+
+// Usage:
+// In production:
+BookingService service = new BookingService(new MySQLBookingDAO());
+// In tests:
+BookingService service = new BookingService(new InMemoryBookingDAO());</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This is exactly why Nimbus has a <code>dao</code> package with interfaces. <code>BookingService</code> depends on <code>BookingDAO</code> (the interface), not on <code>MySQLBookingDAO</code> (the implementation). In Phase 2 (Sprint 1), you use <code>ArrayListBookingDAO</code> (in-memory storage). In Phase 2 (Sprint 2), you swap to <code>JDBCBookingDAO</code> (MySQL). <strong>BookingService code does not change at all.</strong> That is the power of Dependency Inversion.</p>
+  </div>
+
+  <h3>SOLID Summary</h3>
+
+  <div class="diagram">
+    <pre>
+  S.O.L.I.D QUICK REFERENCE
+  ==========================
+
+  S - Single Responsibility    Each class does ONE thing
+                               UserDAO = only DB ops for users
+
+  O - Open/Closed              Add new behavior by EXTENDING, not modifying
+                               New role? New TrackingService subclass
+
+  L - Liskov Substitution      Subclass can replace parent seamlessly
+                               CustomerTrackingService works wherever TrackingService works
+
+  I - Interface Segregation    Small focused interfaces, not one giant one
+                               Bookable, Deliverable, Supportable (not UserOperations)
+
+  D - Dependency Inversion     Depend on interfaces, not concrete classes
+                               BookingService depends on BookingDAO interface
+    </pre>
+    <div class="diagram-label">The five SOLID principles in one glance</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Other Important Principles                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="other-principles">
+  <div class="section-tag">Section 05</div>
+  <h2>Other Important Principles</h2>
+  <p class="section-desc">Beyond SOLID, there are several widely-used principles that every developer should know. These are simpler than SOLID but equally important in day-to-day coding.</p>
+
+  <h3>DRY &mdash; Don't Repeat Yourself</h3>
+
+  <p><strong>Definition:</strong> Every piece of knowledge should have a single, unambiguous, authoritative representation in the system.</p>
+
+  <p>In simpler terms: if you find yourself copy-pasting the same code in three places, STOP. Extract it into a method or class and call it from those three places. When you need to change that logic, you change it in ONE place instead of hunting for all the copies.</p>
+
+  <p><strong>Analogy:</strong> Imagine you write your phone number on 10 different forms. If you change your phone number, you have to update all 10 forms. But if all 10 forms say "phone number: see your profile card," you only update the profile card once. DRY = write it once, reference it everywhere.</p>
+
+  <h4>The Wrong Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Repeated code (BAD - WET: Write Everything Twice)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// BAD: Same booking extraction logic copied in 3 methods
+
+public Booking getBookingForCustomer(String bookingId) {
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = conn.prepareStatement(
+        "SELECT * FROM bookings WHERE booking_id = ?"
+    );
+    ps.setString(1, bookingId);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+        Booking b = new Booking();
+        b.setBookingId(rs.getString("booking_id"));
+        b.setSenderName(rs.getString("sender_name"));
+        b.setReceiverName(rs.getString("receiver_name"));
+        b.setWeight(rs.getDouble("weight"));
+        b.setStatus(rs.getString("status"));
+        b.setCost(rs.getDouble("cost"));
+        return b;
+    }
+    return null;
+}
+
+public Booking getBookingForOfficer(String bookingId) {
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = conn.prepareStatement(
+        "SELECT * FROM bookings WHERE booking_id = ?"
+    );
+    ps.setString(1, bookingId);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+        // SAME 7 lines of extraction code AGAIN
+        Booking b = new Booking();
+        b.setBookingId(rs.getString("booking_id"));
+        b.setSenderName(rs.getString("sender_name"));
+        b.setReceiverName(rs.getString("receiver_name"));
+        b.setWeight(rs.getDouble("weight"));
+        b.setStatus(rs.getString("status"));
+        b.setCost(rs.getDouble("cost"));
+        return b;
+    }
+    return null;
+}
+// If you add a new column "priority", you must update BOTH methods.
+// Miss one? Bug.</code></pre>
+  </div>
+
+  <h4>The Right Way</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Extracted helper method (GOOD - DRY)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// GOOD: Extract the repeated logic into a helper method
+
+// This method exists ONCE, converts a ResultSet row into a Booking object
+private Booking extractBooking(ResultSet rs) throws SQLException {
+    Booking b = new Booking();
+    b.setBookingId(rs.getString("booking_id"));
+    b.setSenderName(rs.getString("sender_name"));
+    b.setReceiverName(rs.getString("receiver_name"));
+    b.setWeight(rs.getDouble("weight"));
+    b.setStatus(rs.getString("status"));
+    b.setCost(rs.getDouble("cost"));
+    return b;
+}
+
+// Now both methods use the helper
+public Booking getBookingForCustomer(String bookingId) {
+    // ... setup connection, PreparedStatement, execute ...
+    if (rs.next()) {
+        return extractBooking(rs);  // ONE call
+    }
+    return null;
+}
+
+public Booking getBookingForOfficer(String bookingId) {
+    // ... setup connection, PreparedStatement, execute ...
+    if (rs.next()) {
+        return extractBooking(rs);  // SAME one call
+    }
+    return null;
+}
+
+// Add a new column "priority"? Update extractBooking() ONCE. Done.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In <code>BookingDAO</code>, the <code>extractBooking(ResultSet rs)</code> helper method is used by every method that reads from the bookings table &mdash; <code>findById()</code>, <code>findByUserId()</code>, <code>findAll()</code>. The extraction logic exists in ONE place. When you add a new column to the bookings table, you update <code>extractBooking()</code> once and all methods get the new data automatically.</p>
+  </div>
+
+  <h3>KISS &mdash; Keep It Simple, Stupid</h3>
+
+  <p><strong>Definition:</strong> The simplest solution that works is usually the best one.</p>
+
+  <p><strong>Analogy:</strong> You need to hang a picture on the wall. You COULD use a laser level, stud finder, industrial-grade anchors, and a power drill. OR you could use a nail and a hammer. The picture hangs either way. Do not over-engineer.</p>
+
+  <p>In code, KISS means: do not write a 50-line algorithm when a 5-line one does the same thing. Do not use design patterns where simple code works. Do not create 10 classes when 3 would suffice.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">KISS example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Over-engineered (violates KISS):
+public class StatusMapper {
+    private static final Map&lt;Integer, String&gt; STATUS_MAP = new HashMap&lt;&gt;();
+    static {
+        STATUS_MAP.put(1, "Booked");
+        STATUS_MAP.put(2, "Picked Up");
+        STATUS_MAP.put(3, "In Transit");
+        STATUS_MAP.put(4, "Delivered");
+    }
+    public static String getStatusName(int code) {
+        return STATUS_MAP.getOrDefault(code, "Unknown");
+    }
+}
+
+// Simple and clear (follows KISS):
+public static String getStatusName(int code) {
+    switch (code) {
+        case 1: return "Booked";
+        case 2: return "Picked Up";
+        case 3: return "In Transit";
+        case 4: return "Delivered";
+        default: return "Unknown";
+    }
+}
+// Same result. Half the code. Instantly readable.
+// Use the HashMap approach when you have 50+ statuses or load them from DB.
+// For 4 statuses, a switch is perfectly fine.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus has exactly 4 delivery statuses: Booked, Picked Up, In Transit, Delivered. A simple <code>switch</code> statement is KISS-compliant. You do not need an Enum, a StatusFactory, a StatusStrategy, and a StatusRegistry for 4 values. Use the simplest solution that works. When the system grows to 20 statuses pulled from a config file, THEN add complexity.</p>
+  </div>
+
+  <h3>YAGNI &mdash; You Ain't Gonna Need It</h3>
+
+  <p><strong>Definition:</strong> Do not build features or abstractions until you actually need them.</p>
+
+  <p><strong>Analogy:</strong> You are packing for a 2-day trip. Do you pack for a 2-day trip, or do you pack a suitcase with clothes for 14 days "just in case" you decide to stay longer? YAGNI says: pack for 2 days. If you decide to stay longer, you can buy clothes or do laundry. Do not carry the weight of imaginary future needs.</p>
+
+  <p>In code, YAGNI means: do not build a notification system before anyone has asked for notifications. Do not add multi-language support before anyone has asked for it. Do not build a plugin architecture when you have zero plugins. Each of these adds complexity NOW for a benefit that might NEVER come.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">YAGNI example</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// YAGNI violation: Building for imaginary future needs
+public class PricingService {
+    private CurrencyConverter converter;        // "We might go international"
+    private DiscountEngine discountEngine;      // "We might have coupons"
+    private TaxCalculator taxCalculator;        // "We might add tax"
+    private InsuranceCalculator insurance;      // "We might insure parcels"
+    private LoyaltyPointsService loyalty;       // "We might have rewards"
+
+    public double calculate(double weight, String type) {
+        // 5 extra dependencies for features nobody asked for
+        // Each one needs maintenance, testing, and documentation
+        // None of them are in the requirements
+    }
+}
+
+// YAGNI-compliant: Build what is needed NOW
+public class PricingService {
+    // Requirements say: base rate + weight charge + type multiplier
+    public double calculate(double weight, String type, String packaging) {
+        double baseCost = 50.0;
+        double weightCharge = weight * 15.0;
+        double typeMultiplier = getTypeMultiplier(type);
+        double packagingCharge = getPackagingCharge(packaging);
+        return (baseCost + weightCharge) * typeMultiplier + packagingCharge;
+    }
+    // Clean. Simple. Does exactly what the requirements ask for.
+    // Add insurance WHEN (and IF) the client asks for it.
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The Nimbus pricing formula is: base rate + weight charge + type multiplier + packaging charge. That is what the TCS PBL requirements specify. You do NOT add currency conversion, discount codes, tax calculation, or insurance &mdash; because none of those are in the requirements. If Phase 4 adds a "discount code" feature, you add it THEN. Not now.</p>
+  </div>
+
+  <h3>Separation of Concerns (SoC)</h3>
+
+  <p><strong>Definition:</strong> Different concerns (responsibilities) should be handled by different parts of the system.</p>
+
+  <p><strong>Analogy:</strong> In a hospital, the reception handles patient registration. The lab handles blood tests. The pharmacy handles medicines. The surgeon handles operations. They are all part of the same hospital, but each department handles its own concern. The surgeon does not dispense medicines. The pharmacist does not do surgeries.</p>
+
+  <p>In software, separation of concerns means organizing code into layers where each layer handles one concern:</p>
+
+  <div class="diagram">
+    <pre>
+  NIMBUS PACKAGE STRUCTURE = SEPARATION OF CONCERNS
+  ==================================================
+
+  com.nimbus.model/          &lt;-- CONCERN: Data shapes (what does a User look like?)
+    User.java                    Just fields, constructors, getters, setters
+    Booking.java                 No business logic. No DB code. No display code.
+
+  com.nimbus.dao/            &lt;-- CONCERN: Database operations (how to read/write data)
+    UserDAO.java                 Only SQL queries. No business logic. No display code.
+    BookingDAO.java              Does not know what a "menu" is. Does not validate input.
+
+  com.nimbus.service/        &lt;-- CONCERN: Business logic (rules and calculations)
+    UserService.java             Login rules, registration rules
+    BookingService.java          Pricing formula, status transitions
+    PricingService.java          Cost calculation logic
+
+  com.nimbus.util/           &lt;-- CONCERN: Reusable utilities
+    InputValidator.java          Email regex, phone format, password strength
+    IdGenerator.java             User ID and Booking ID generation
+    MenuDisplay.java             Formatted console output
+
+  com.nimbus.app/            &lt;-- CONCERN: User interaction (menus, input/output)
+    NimbusApp.java               Scanner input, System.out.println output
+                                 Does not know SQL. Does not know pricing formula.
+    </pre>
+    <div class="diagram-label">Each package handles exactly one concern in Nimbus</div>
+  </div>
+
+  <p>Why does this matter? Because when the pricing formula changes, you ONLY look at <code>PricingService.java</code>. You do not search through 20 files. When the database switches from MySQL to PostgreSQL, you ONLY change files in the <code>dao</code> package. The service layer and the app layer do not even know the database changed.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>This is perhaps the most important principle for your team. In Phase 1 (JavaScript), everything was in one <code>storage.js</code> file &mdash; database operations, business logic, and utilities all mixed together. In Phase 2 (Java), the code is properly separated: <code>model</code>, <code>dao</code>, <code>service</code>, <code>util</code>, <code>app</code>. Each person on the team can work on their package without stepping on anyone else's toes. Person A works on <code>UserDAO</code>, person B works on <code>BookingService</code>, and they do not conflict because the concerns are separated.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Design Patterns                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="design-patterns">
+  <div class="section-tag">Section 06</div>
+  <h2>Design Patterns</h2>
+  <p class="section-desc">Design patterns are <strong>proven solutions to common problems</strong>. They are not code you copy-paste &mdash; they are strategies and structures that experienced developers have found work well, documented, and shared with the community. Think of them as recipes in a cookbook. You do not invent how to make butter chicken every time &mdash; you follow a known recipe and adapt it.</p>
+
+  <h3>MVC Pattern &mdash; Model-View-Controller</h3>
+
+  <p><strong>Analogy:</strong> Think of a restaurant again. The <strong>Model</strong> is the kitchen (data and recipes). The <strong>View</strong> is the dining table presentation (what the customer sees). The <strong>Controller</strong> is the waiter (takes the order from the customer, gives it to the kitchen, and brings the food back). The customer never goes into the kitchen. The chef never comes to the dining table. The waiter coordinates between them.</p>
+
+  <div class="diagram">
+    <pre>
+  MVC PATTERN
+  ===========
+
+  +-------------+          +----------------+          +-------------+
+  |    VIEW     |  input   |   CONTROLLER   |  calls   |    MODEL    |
+  | (What user  | ------&gt;  | (Handles input | ------&gt;  | (Data +     |
+  |  sees)      |          |  and flow)     |          |  Logic)     |
+  |             |  &lt;------ |                |  &lt;------ |             |
+  | Console     |  output  | NimbusApp.java |  data    | User.java   |
+  | output /    |          | (menus, input  |          | Booking.java|
+  | JSP pages   |          |  routing)      |          | *Service    |
+  +-------------+          +----------------+          +-------------+
+    </pre>
+    <div class="diagram-label">MVC separates data, presentation, and control logic</div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Responsibility</th>
+        <th>Nimbus Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Model</strong></td>
+        <td>Data and business logic &mdash; knows nothing about display</td>
+        <td><code>User.java</code>, <code>Booking.java</code>, <code>PricingService.java</code></td>
+      </tr>
+      <tr>
+        <td><strong>View</strong></td>
+        <td>What the user sees &mdash; knows nothing about data storage</td>
+        <td>Console output (<code>System.out.println</code>), later JSP pages and Angular components</td>
+      </tr>
+      <tr>
+        <td><strong>Controller</strong></td>
+        <td>Takes user input, calls the right model, sends result to view</td>
+        <td><code>NimbusApp.java</code> &mdash; reads Scanner input, calls services, prints results</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MVC in Nimbus (Phase 2 Console App)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// MODEL: User.java - just data, no UI, no DB
+public class User {
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String role;  // "customer", "officer", "support"
+
+    // constructor, getters, setters, toString
+}
+
+// CONTROLLER: NimbusApp.java - coordinates everything
+public class NimbusApp {
+    private UserService userService;
+    private BookingService bookingService;
+    private Scanner scanner;
+
+    public void showMainMenu() {
+        // VIEW: Display the menu
+        System.out.println("=== NIMBUS PARCEL MANAGEMENT ===");
+        System.out.println("1. Register");
+        System.out.println("2. Login");
+        System.out.println("3. Exit");
+
+        // CONTROLLER: Take input
+        int choice = scanner.nextInt();
+
+        // CONTROLLER: Route to the right action
+        switch (choice) {
+            case 1: handleRegistration(); break;
+            case 2: handleLogin(); break;
+            case 3: System.exit(0);
+        }
+    }
+
+    private void handleLogin() {
+        System.out.print("User ID: ");
+        String userId = scanner.nextLine();
+        System.out.print("Password: ");
+        String password = scanner.nextLine();
+
+        // CONTROLLER calls MODEL
+        User user = userService.login(userId, password);
+
+        // CONTROLLER sends result to VIEW
+        if (user != null) {
+            System.out.println("Welcome, " + user.getFirstName() + "!");
+            showRoleMenu(user.getRole());
+        } else {
+            System.out.println("Invalid credentials.");
+        }
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Phase 2, the "View" is <code>System.out.println()</code> statements in <code>NimbusApp.java</code>. In Phase 3, the View becomes JSP pages (HTML templates). In Phase 4, the View becomes Angular components. The Model (<code>User.java</code>, <code>Booking.java</code>) stays THE SAME across all phases. That is the power of MVC &mdash; swap the view technology without touching the business logic.</p>
+  </div>
+
+  <h3>DAO Pattern &mdash; Data Access Object</h3>
+
+  <p><strong>Analogy:</strong> Think of a librarian. When you want a book, you tell the librarian the title. You do not go into the restricted archive, search the shelves, handle the delicate manuscripts, and update the catalog yourself. The librarian is the DAO &mdash; they abstract away ALL the complexity of finding, storing, and organizing the data.</p>
+
+  <p>The DAO pattern separates <strong>database access code</strong> from <strong>business logic</strong>. Your service layer says "save this booking." The DAO handles the HOW &mdash; writing SQL, managing connections, handling errors.</p>
+
+  <div class="diagram">
+    <pre>
+  DAO PATTERN IN NIMBUS
+  =====================
+
+  NimbusApp                BookingService              BookingDAO               MySQL
+  (Controller)             (Business Logic)            (Data Access)            (Database)
+      |                        |                           |                       |
+      |  "Create booking"      |                           |                       |
+      | ---------------------&gt; |                           |                       |
+      |                        |  validate input           |                       |
+      |                        |  calculate price          |                       |
+      |                        |  generate booking ID      |                       |
+      |                        |                           |                       |
+      |                        |  bookingDAO.save(booking) |                       |
+      |                        | -------------------------&gt;|                       |
+      |                        |                           | INSERT INTO bookings  |
+      |                        |                           | ---------------------&gt;|
+      |                        |                           |        OK             |
+      |                        |                           | &lt;---------------------|
+      |                        |       saved               |                       |
+      |                        | &lt;-------------------------|                       |
+      |  "Booking created!"    |                           |                       |
+      | &lt;--------------------- |                           |                       |
+    </pre>
+    <div class="diagram-label">The DAO isolates ALL database logic from business logic</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserDAO.java and BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// UserDAO: ALL database operations for the users table
+public class UserDAO {
+
+    public void save(User user) {
+        String sql = "INSERT INTO users (user_id, first_name, last_name, " +
+                     "email, phone, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPhone());
+            ps.setString(6, user.getPassword());
+            ps.setString(7, user.getRole());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public User findById(String userId) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return extractUser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // DRY: Extract user from ResultSet in ONE place
+    private User extractUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getString("user_id"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setEmail(rs.getString("email"));
+        user.setPhone(rs.getString("phone"));
+        user.setPassword(rs.getString("password"));
+        user.setRole(rs.getString("role"));
+        return user;
+    }
+}
+
+// BookingDAO: ALL database operations for the bookings table
+public class BookingDAO {
+
+    public void save(Booking booking) { /* INSERT SQL */ }
+    public Booking findById(String bookingId) { /* SELECT SQL */ }
+    public List&lt;Booking&gt; findByUserId(String userId) { /* SELECT SQL */ }
+    public void updateStatus(String bookingId, String status) { /* UPDATE SQL */ }
+
+    private Booking extractBooking(ResultSet rs) throws SQLException {
+        // DRY: Used by findById and findByUserId
+        Booking b = new Booking();
+        b.setBookingId(rs.getString("booking_id"));
+        // ... set all fields from ResultSet
+        return b;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus has two DAOs: <code>UserDAO</code> and <code>BookingDAO</code>. Each handles ONLY the database operations for its table. <code>UserDAO</code> knows about the <code>users</code> table. <code>BookingDAO</code> knows about the <code>bookings</code> table. Neither knows about the other. Neither knows about business rules. Neither displays anything to the user. They are pure data access &mdash; SQL in, Java objects out.</p>
+  </div>
+
+  <h3>Singleton Pattern</h3>
+
+  <p><strong>Analogy:</strong> India has ONE Prime Minister at a time. You cannot create a second Prime Minister. No matter how many people ask "who is the PM?", they all get the same person. That is the Singleton pattern &mdash; a class that guarantees only ONE instance exists.</p>
+
+  <p><strong>When to use it:</strong> When you need exactly ONE of something in your entire application. Database connections are the classic example &mdash; you want ONE connection pool, not a new pool every time someone needs to run a query.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DBConnection.java (Singleton Pattern)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class DBConnection {
+    // Step 1: Private static instance (the ONE object)
+    private static DBConnection instance;
+    private Connection connection;
+
+    // Step 2: Private constructor (nobody can call "new DBConnection()")
+    private DBConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            this.connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/nimbus_db",
+                "root",
+                "password"
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Step 3: Public static method to get the ONE instance
+    public static DBConnection getInstance() {
+        if (instance == null) {
+            instance = new DBConnection();  // Created ONLY once
+        }
+        return instance;
+    }
+
+    public Connection getConnection() {
+        return this.connection;
+    }
+}
+
+// Usage everywhere in the app:
+Connection conn = DBConnection.getInstance().getConnection();
+// No matter how many times you call getInstance(),
+// you get the SAME DBConnection object.
+// ONE connection. Shared across the entire application.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>DBConnection</code> is the perfect Singleton candidate in Nimbus. You do not want <code>UserDAO</code> creating its own connection, <code>BookingDAO</code> creating another connection, and <code>NimbusApp</code> creating yet another. That wastes memory and can exceed MySQL's connection limit. One connection, shared by all DAOs. That is Singleton.</p>
+  </div>
+
+  <h3>Factory Pattern</h3>
+
+  <p><strong>Analogy:</strong> A car factory takes an order ("I want a sedan") and produces the right car. The customer does not need to know how to assemble an engine, paint the body, or install the seats. They just say what they want and the factory handles creation.</p>
+
+  <p>In code, a Factory creates objects for you based on some input. Instead of scattering <code>new CustomerTrackingService()</code> or <code>new OfficerTrackingService()</code> throughout your code, you call <code>TrackingFactory.create("customer")</code> and it gives you the right object.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">TrackingServiceFactory.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Factory: Creates the right TrackingService based on role
+public class TrackingServiceFactory {
+
+    public static TrackingService create(String role) {
+        switch (role.toLowerCase()) {
+            case "customer":
+                return new CustomerTrackingService();
+            case "officer":
+                return new OfficerTrackingService();
+            case "support":
+                return new SupportTrackingService();
+            default:
+                throw new IllegalArgumentException("Unknown role: " + role);
+        }
+    }
+}
+
+// Usage in NimbusApp.java:
+public void handleTracking(User currentUser) {
+    // Factory creates the right service based on user's role
+    TrackingService tracker = TrackingServiceFactory.create(
+        currentUser.getRole()
+    );
+
+    System.out.print("Enter Booking ID: ");
+    String bookingId = scanner.nextLine();
+
+    // Polymorphism: calls the right showTracking() automatically
+    tracker.showTracking(bookingId);
+}
+
+// The controller (NimbusApp) does not need to know the details
+// of how each role tracks parcels. The factory handles creation,
+// and polymorphism handles behavior. Clean separation.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a user logs into Nimbus, they have a role (customer, officer, or support). The Factory pattern is used to create the appropriate tracking service for their role. The controller (<code>NimbusApp</code>) says "give me a tracker for this role" and uses it without caring about the details. If a new role is added, you create a new <code>TrackingService</code> subclass and add one line to the factory switch. No other code changes.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Version Control Concepts                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="version-control">
+  <div class="section-tag">Section 07</div>
+  <h2>Version Control Concepts</h2>
+  <p class="section-desc">Version control is the system that tracks every change made to your code, who made it, when, and why. Even if you cannot use Git at the TCS office, understanding version control is a <strong>must-know</strong> for any software engineer.</p>
+
+  <h3>What is Git and Why It Matters</h3>
+
+  <p><strong>Analogy:</strong> Imagine writing an essay in a notebook. You write 3 pages. Then you realize page 2 is wrong and rewrite it. But now you cannot see what page 2 originally said. What if the original version was actually better?</p>
+
+  <p>Now imagine Google Docs. It saves every version automatically. You can go back to "April 15, 3:47 PM" and see exactly what the document looked like at that moment. You can compare any two versions. You can undo any change. <strong>Git does this for code.</strong></p>
+
+  <p>Git is the world's most popular version control system. Here are the core concepts:</p>
+
+  <h4>Repository (Repo)</h4>
+  <p>A <strong>repository</strong> is a folder that Git tracks. Every file, every change, every version is stored in the repository's history. Nimbus is a repository.</p>
+
+  <h4>Commit</h4>
+  <p>A <strong>commit</strong> is a snapshot of your code at a specific point in time. It has a message describing what changed, a timestamp, and the author's name. Think of it as a save point in a video game &mdash; you can always go back to it.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Git commit examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Each commit is a labeled save point:
+//
+// Commit 1: "Add User.java model with fields and getters"
+//   - Created User.java with userId, firstName, lastName, etc.
+//
+// Commit 2: "Add UserDAO with save() and findById()"
+//   - Created UserDAO.java
+//   - Added JDBC code for INSERT and SELECT
+//
+// Commit 3: "Fix login bug: password comparison was case-sensitive"
+//   - Changed line 47 in UserService.java
+//   - equals() replaced with equalsIgnoreCase() -- wait, no,
+//     passwords SHOULD be case-sensitive! Revert this commit.
+//
+// Commit 4: "Revert commit 3: passwords must be case-sensitive"
+//   - Undone the change from commit 3
+//
+// Without Git, commit 3's mistake would be permanent.
+// With Git, you go back to any previous state instantly.</code></pre>
+  </div>
+
+  <h4>Branch</h4>
+  <p>A <strong>branch</strong> is a parallel version of your code. Think of it like a fork in the road. The main road (main branch) continues, and a side road (feature branch) goes off to build a specific feature. Once the feature is done, the side road merges back into the main road.</p>
+
+  <div class="diagram">
+    <pre>
+  BRANCHING IN GIT
+  =================
+
+  main:        o---o---o-----------o---o---o  (stable, always works)
+                        \         /
+  feature/login:         o---o---o            (experimental, for login feature)
+                              \
+  bugfix/pricing:              o---o          (quick fix for pricing bug)
+
+  o = a commit (snapshot)
+
+  Why branches matter:
+  - Developer A works on login feature WITHOUT affecting main
+  - Developer B fixes a pricing bug WITHOUT affecting Developer A
+  - When each is done and tested, they merge back to main
+  - If Developer A's login feature breaks, main is still safe
+    </pre>
+    <div class="diagram-label">Branches let multiple developers work independently</div>
+  </div>
+
+  <h4>Merge</h4>
+  <p>A <strong>merge</strong> combines two branches together. When your feature is done and tested, you merge it into the main branch. If two developers changed the SAME line in the SAME file, Git raises a <strong>merge conflict</strong> &mdash; a human must decide which version to keep.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your team of 8 is not using Git at TCS (office restrictions). But imagine if you were: person A works on <code>feature/user-model</code> branch, person B works on <code>feature/booking-dao</code> branch. They both push their work, and the team lead merges both into <code>main</code>. No more emailing files back and forth. No more "which version is the latest?" No more accidentally overwriting someone's work.</p>
+  </div>
+
+  <h3>How Nimbus Handles File Sharing Without Git</h3>
+
+  <p>Since your team cannot use Git at the TCS office, here is a practical strategy for manual version control:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Manual Integration Strategy for Nimbus</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// STRATEGY: One person is the "integrator" (like Git's main branch)
+//
+// Step 1: Team lead (Darshan) has the MASTER copy of the project
+//
+// Step 2: Each person works on their assigned file(s) ONLY
+//   - Person A: User.java, UserDAO.java
+//   - Person B: Booking.java, BookingDAO.java
+//   - Person C: PricingService.java, InputValidator.java
+//   - etc.
+//
+// Step 3: At the end of each day, each person sends
+//         ONLY their files (not the whole project) to the integrator
+//
+// Step 4: Integrator copies each file into the master project
+//         and tests that everything compiles and works together
+//
+// Step 5: If something breaks, integrator talks to the person
+//         whose file caused the issue
+//
+// Step 6: Next day, everyone gets the latest master copy
+//         and continues working on their files
+//
+// KEY RULE: NEVER edit a file that is assigned to someone else.
+// That is the manual equivalent of a merge conflict.</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Important</div>
+    <p>Even though you use manual file sharing for Nimbus at TCS, learning Git is essential for your career. Every company uses Git. Every open-source project uses Git. GitHub (where Git projects are stored online) is your portfolio as a developer. After TCS ILP, learn Git &mdash; it is not hard, and it will save you from file-sharing nightmares forever.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Testing Concepts                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="testing">
+  <div class="section-tag">Section 08</div>
+  <h2>Testing Concepts</h2>
+  <p class="section-desc">Testing is how you prove your code works. Not by staring at it and thinking "this looks right" &mdash; but by running it with specific inputs and checking if the outputs match expectations. Professional software has automated tests that run in seconds and catch bugs before they reach users.</p>
+
+  <h3>Why Testing Matters</h3>
+
+  <p><strong>Analogy:</strong> A car manufacturer does not ship a car after building it and saying "it looks fine." They crash-test it. They test the brakes at 200 km/h. They test the wipers in a rainstorm simulation. They test the airbags with dummies. They test the engine at extreme temperatures. They test everything that COULD go wrong BEFORE the customer drives off the lot.</p>
+
+  <p>Software testing is the same. You test every feature, every edge case, every error condition. The goal: <strong>catch bugs before users catch them.</strong></p>
+
+  <h3>Unit Testing</h3>
+
+  <p>A <strong>unit test</strong> tests a single method in isolation. "Does <code>PricingService.calculate(2.5, "standard", "basic")</code> return 102.5?" That is a unit test. You are testing one UNIT (method) with specific inputs and checking the output.</p>
+
+  <p><strong>Analogy:</strong> Testing one bulb in a string of lights. You take one bulb out, put it in a tester, and check if it lights up. You do not test the entire string &mdash; just one bulb. If it works, put it back. Move to the next bulb.</p>
+
+  <h3>Integration Testing</h3>
+
+  <p>An <strong>integration test</strong> tests multiple components working together. "When I call <code>UserService.login()</code>, does it correctly call <code>UserDAO.findById()</code>, get the user from the database, compare the password, and return the right result?" That is an integration test &mdash; multiple layers working together.</p>
+
+  <p><strong>Analogy:</strong> Testing the entire string of lights. Plug it in and see if the whole string lights up. Individual bulbs might work, but the wiring between them might be bad. Integration testing checks the wiring.</p>
+
+  <div class="diagram">
+    <pre>
+  UNIT vs INTEGRATION TESTING
+  ============================
+
+  UNIT TEST (isolated):
+  +--------------------+
+  | PricingService     |
+  |   calculate()      |   Input: weight=2.5, type="standard"
+  |                    |   Expected output: 102.5
+  +--------------------+   Does not touch DB. Does not touch UI.
+
+
+  INTEGRATION TEST (connected):
+  +------------+     +-----------+     +--------+
+  | UserService| --&gt; | UserDAO   | --&gt; | MySQL  |
+  | login()    |     | findById()|     | SELECT |
+  +------------+     +-----------+     +--------+
+                                           |
+  Input: userId="260401-DM01", pwd="Test@123"
+  Expected: User object with role="customer"
+  Tests the ENTIRE chain from service to DB and back.
+    </pre>
+    <div class="diagram-label">Unit tests check one piece. Integration tests check the whole flow.</div>
+  </div>
+
+  <h3>What to Test in Nimbus</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>What to Test</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Login validation</td>
+        <td>Correct credentials succeed, wrong password fails, non-existent user fails</td>
+        <td>Unit</td>
+      </tr>
+      <tr>
+        <td>Cost calculation</td>
+        <td>Various weights, types, and packaging combinations produce correct costs</td>
+        <td>Unit</td>
+      </tr>
+      <tr>
+        <td>Input validation</td>
+        <td>Valid email passes, invalid email fails, phone with/without country code</td>
+        <td>Unit</td>
+      </tr>
+      <tr>
+        <td>User ID generation</td>
+        <td>Format matches YYMMDD-XX## pattern, no duplicates</td>
+        <td>Unit</td>
+      </tr>
+      <tr>
+        <td>Booking creation</td>
+        <td>Complete booking flow with DB insert and retrieval</td>
+        <td>Integration</td>
+      </tr>
+      <tr>
+        <td>Status update</td>
+        <td>Officer updates status, customer sees new status</td>
+        <td>Integration</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>JUnit Basics</h3>
+
+  <p>JUnit is Java's standard testing framework. It lets you write test methods that automatically check if your code produces the right output. Here are the key annotations and assertions:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>JUnit Feature</th>
+        <th>What It Does</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>@Test</code></td>
+        <td>Marks a method as a test case. JUnit will run it automatically.</td>
+      </tr>
+      <tr>
+        <td><code>assertEquals(expected, actual)</code></td>
+        <td>Checks if two values are equal. Test fails if they are not.</td>
+      </tr>
+      <tr>
+        <td><code>assertTrue(condition)</code></td>
+        <td>Checks if a condition is true. Test fails if it is false.</td>
+      </tr>
+      <tr>
+        <td><code>assertFalse(condition)</code></td>
+        <td>Checks if a condition is false. Test fails if it is true.</td>
+      </tr>
+      <tr>
+        <td><code>assertNotNull(object)</code></td>
+        <td>Checks that an object is not null. Test fails if it is null.</td>
+      </tr>
+      <tr>
+        <td><code>assertNull(object)</code></td>
+        <td>Checks that an object IS null. Test fails if it is not null.</td>
+      </tr>
+      <tr>
+        <td><code>@BeforeEach</code></td>
+        <td>Runs before EACH test method. Used for setup (creating test data).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Example Test Cases for Nimbus</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">PricingServiceTest.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class PricingServiceTest {
+
+    private PricingService pricingService;
+
+    @BeforeEach
+    void setUp() {
+        // Runs before each test - fresh PricingService every time
+        pricingService = new PricingService();
+    }
+
+    @Test
+    void testStandardParcelCost() {
+        // Arrange: set up the test inputs
+        double weight = 2.5;
+        String type = "standard";
+        String packaging = "basic";
+
+        // Act: call the method being tested
+        double cost = pricingService.calculate(weight, type, packaging);
+
+        // Assert: check the result matches expected value
+        // Formula: (baseCost + weight*15) * typeMultiplier + packagingCharge
+        // (50 + 2.5*15) * 1.0 + 0 = 87.5
+        assertEquals(87.5, cost, 0.01);
+        // 0.01 is the delta (tolerance for floating-point comparison)
+    }
+
+    @Test
+    void testExpressParcelCostIsHigher() {
+        double standardCost = pricingService.calculate(2.0, "standard", "basic");
+        double expressCost = pricingService.calculate(2.0, "express", "basic");
+
+        // Express should cost MORE than standard for same weight
+        assertTrue(expressCost &gt; standardCost,
+            "Express cost should be higher than standard");
+    }
+
+    @Test
+    void testZeroWeightUsesBaseOnly() {
+        double cost = pricingService.calculate(0, "standard", "basic");
+
+        // Weight is 0, so cost = baseCost only
+        assertEquals(50.0, cost, 0.01);
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">InputValidatorTest.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class InputValidatorTest {
+
+    private InputValidator validator = new InputValidator();
+
+    @Test
+    void testValidEmailAccepted() {
+        assertTrue(validator.isValidEmail("darshan@gmail.com"));
+        assertTrue(validator.isValidEmail("user.name@company.co.in"));
+    }
+
+    @Test
+    void testInvalidEmailRejected() {
+        assertFalse(validator.isValidEmail("darshan"));
+        assertFalse(validator.isValidEmail("darshan@"));
+        assertFalse(validator.isValidEmail("@gmail.com"));
+        assertFalse(validator.isValidEmail("darshan@gmail"));
+        assertFalse(validator.isValidEmail(""));
+    }
+
+    @Test
+    void testPhoneValidation() {
+        assertTrue(validator.isValidPhone("+919876543210"));
+        assertFalse(validator.isValidPhone("12345"));       // Too short
+        assertFalse(validator.isValidPhone("abcdefghij"));  // Not digits
+    }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UserServiceTest.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class UserServiceTest {
+
+    private UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        // Use in-memory DAO for testing (Dependency Inversion!)
+        UserDAO testDAO = new InMemoryUserDAO();
+        userService = new UserService(testDAO);
+
+        // Seed a test user
+        User testUser = new User();
+        testUser.setUserId("260401-DM01");
+        testUser.setFirstName("Darshan");
+        testUser.setPassword("Test@123");
+        testUser.setRole("customer");
+        testDAO.save(testUser);
+    }
+
+    @Test
+    void testLoginWithCorrectCredentials() {
+        User result = userService.login("260401-DM01", "Test@123");
+
+        assertNotNull(result, "Login should return a User object");
+        assertEquals("Darshan", result.getFirstName());
+        assertEquals("customer", result.getRole());
+    }
+
+    @Test
+    void testLoginWithWrongPasswordReturnsNull() {
+        User result = userService.login("260401-DM01", "WrongPass");
+
+        assertNull(result, "Wrong password should return null");
+    }
+
+    @Test
+    void testLoginWithNonExistentUserReturnsNull() {
+        User result = userService.login("999999-XX99", "Test@123");
+
+        assertNull(result, "Non-existent user should return null");
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Notice how <code>UserServiceTest</code> uses <code>InMemoryUserDAO</code> instead of the real MySQL DAO. This is the <strong>Dependency Inversion Principle</strong> making testing possible. You do not need a running database to test your business logic. The <code>InMemoryUserDAO</code> stores data in an ArrayList, which is fast and requires zero setup. That is why SOLID principles matter in practice &mdash; they make your code testable.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Security Basics                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="security">
+  <div class="section-tag">Section 09</div>
+  <h2>Security Basics</h2>
+  <p class="section-desc">Security is not a feature you add later &mdash; it is a way of thinking from day one. Every input is a potential attack. Every database query is a potential vulnerability. Understanding the basics protects your users and your reputation.</p>
+
+  <h3>SQL Injection</h3>
+
+  <p><strong>What it is:</strong> SQL Injection is the #1 web vulnerability in the world. It happens when user input is directly inserted into a SQL query without protection. An attacker types SQL code into a login form, and your application executes it as if it were a legitimate query.</p>
+
+  <p><strong>Analogy:</strong> Imagine a bank teller who follows instructions literally. You walk up and say "My name is Robert; DROP ALL ACCOUNTS." The teller writes your name on the form, but the system interprets "DROP ALL ACCOUNTS" as a command and deletes everything. That is SQL injection &mdash; the system cannot tell the difference between data and commands.</p>
+
+  <h4>The Attack</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SQL Injection Attack (VULNERABLE CODE)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// VULNERABLE: User input directly concatenated into SQL
+public User login(String userId, String password) {
+    String sql = "SELECT * FROM users WHERE user_id = '" + userId +
+                 "' AND password = '" + password + "'";
+    Statement stmt = conn.createStatement();
+    ResultSet rs = stmt.executeQuery(sql);
+    // ...
+}
+
+// Normal usage - works fine:
+// userId = "260401-DM01"
+// password = "Test@123"
+// SQL becomes: SELECT * FROM users WHERE user_id = '260401-DM01'
+//              AND password = 'Test@123'
+// This is correct.
+
+// ATTACK: Attacker types this as the password:
+// password = "anything' OR '1'='1"
+// SQL becomes: SELECT * FROM users WHERE user_id = '260401-DM01'
+//              AND password = 'anything' OR '1'='1'
+//
+// Since '1'='1' is ALWAYS true, this returns ALL users!
+// The attacker just logged in without knowing any password.
+
+// WORSE ATTACK: Attacker types this as userId:
+// userId = "'; DROP TABLE users; --"
+// SQL becomes: SELECT * FROM users WHERE user_id = '';
+//              DROP TABLE users; --' AND password = 'x'
+//
+// This DELETES the entire users table!
+// The -- makes everything after it a comment (ignored).</code></pre>
+  </div>
+
+  <h4>The Defense: PreparedStatement</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Safe code with PreparedStatement</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// SAFE: PreparedStatement separates SQL structure from data
+public User login(String userId, String password) {
+    String sql = "SELECT * FROM users WHERE user_id = ? AND password = ?";
+    //                                               ^                ^
+    //                                     placeholders (not user input)
+
+    PreparedStatement ps = conn.prepareStatement(sql);
+    ps.setString(1, userId);    // Safely inserts userId as DATA
+    ps.setString(2, password);  // Safely inserts password as DATA
+    ResultSet rs = ps.executeQuery();
+    // ...
+}
+
+// Now if attacker types: password = "anything' OR '1'='1"
+// PreparedStatement treats it as a LITERAL STRING, not SQL code.
+// It searches for a password that literally equals: anything' OR '1'='1
+// No results found. Attack fails.
+
+// If attacker types: userId = "'; DROP TABLE users; --"
+// PreparedStatement treats it as a literal user ID string.
+// It searches for a user_id that literally equals: '; DROP TABLE users; --
+// No results found. Table is safe. Attack fails.
+
+// WHY IT WORKS:
+// PreparedStatement sends the SQL structure and data SEPARATELY to the DB.
+// The DB knows: "This is the query template. These are the data values."
+// Data can NEVER be interpreted as SQL commands. Ever.</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every SQL query in Nimbus uses <code>PreparedStatement</code> with <code>?</code> placeholders. In <code>UserDAO.findById()</code>, <code>BookingDAO.save()</code>, <code>BookingDAO.updateStatus()</code> &mdash; every single query uses parameterized queries. This is a hard rule: <strong>NEVER concatenate user input into SQL strings.</strong> Always use <code>?</code> placeholders and <code>setString()</code>/<code>setInt()</code>/<code>setDouble()</code>.</p>
+  </div>
+
+  <h3>Password Hashing</h3>
+
+  <p><strong>What it is:</strong> When a user registers with password "Test@123", you do NOT store "Test@123" in the database. If a hacker breaks into your database, they now have everyone's passwords. Instead, you store a <strong>hash</strong> &mdash; a one-way scrambled version of the password that cannot be reversed.</p>
+
+  <p><strong>Analogy:</strong> A meat grinder. You put in a steak (password), and out comes ground meat (hash). You can easily go from steak to ground meat, but you CANNOT go from ground meat back to a steak. Even if someone steals the ground meat, they cannot reconstruct the original steak.</p>
+
+  <div class="diagram">
+    <pre>
+  PASSWORD HASHING
+  =================
+
+  Registration:
+    User types:     "Test@123"
+    Hash function:  bcrypt("Test@123")
+    Stored in DB:   "$2a$10$N9qo8uLOickgx2ZMRZoMy.MQDq3lRzqM3Cs6vHh8pY3.T7YL7VqOi"
+
+  Login:
+    User types:     "Test@123"
+    Hash function:  bcrypt("Test@123")
+    Result:         "$2a$10$N9qo8uLOickgx2ZMRZoMy.MQDq3lRzqM3Cs6vHh8pY3.T7YL7VqOi"
+    Compare:        stored hash == new hash?  YES --&gt; login success!
+
+  If hacker steals database:
+    They see:       "$2a$10$N9qo8uLOickgx2ZMRZoMy.MQDq3lRzqM3Cs6vHh8pY3.T7YL7VqOi"
+    They CANNOT reverse this to get "Test@123"
+    The password is safe even though the database was compromised.
+    </pre>
+    <div class="diagram-label">Hashing is a one-way function: easy to hash, impossible to reverse</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Password hashing with bcrypt</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Using jBCrypt library (add to Maven: org.mindrot:jbcrypt:0.4)
+
+import org.mindrot.jbcrypt.BCrypt;
+
+public class PasswordService {
+
+    // During registration: hash the password before storing
+    public String hashPassword(String plainPassword) {
+        // BCrypt.gensalt() generates a random salt
+        // Salt ensures same password produces different hashes each time
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+    }
+
+    // During login: compare plain password with stored hash
+    public boolean verifyPassword(String plainPassword, String storedHash) {
+        return BCrypt.checkpw(plainPassword, storedHash);
+    }
+}
+
+// Usage:
+PasswordService pwdService = new PasswordService();
+
+// Registration:
+String hash = pwdService.hashPassword("Test@123");
+// hash = "$2a$10$N9qo8uLO..."  (60 characters, different each time!)
+user.setPassword(hash);
+userDAO.save(user);  // Store the HASH, not the plain password
+
+// Login:
+User user = userDAO.findById(userId);
+boolean valid = pwdService.verifyPassword("Test@123", user.getPassword());
+// valid = true if password matches, false if not</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><strong>Current state:</strong> Phase 2 (Sprint 1) stores passwords in plain text &mdash; <code>password VARCHAR(50)</code> stores "Test@123" directly. This is acceptable for a learning project but NEVER for production. <strong>What should improve:</strong> In Phase 3 or 4, add bcrypt hashing. Change the <code>password</code> column to <code>VARCHAR(60)</code> (bcrypt hashes are 60 characters). Add <code>PasswordService</code> class. Modify <code>UserService.register()</code> to hash before saving and <code>UserService.login()</code> to use <code>BCrypt.checkpw()</code> for comparison.</p>
+  </div>
+
+  <h3>Authentication vs Authorization</h3>
+
+  <p>These two words sound similar but mean very different things:</p>
+
+  <p><strong>Authentication = WHO are you?</strong> Proving your identity. Login with user ID and password. If credentials match, you are authenticated &mdash; the system knows who you are.</p>
+
+  <p><strong>Authorization = WHAT can you do?</strong> After knowing who you are, the system checks your permissions. A customer can create bookings but cannot update delivery status. An officer can update delivery status but cannot raise support issues.</p>
+
+  <p><strong>Analogy:</strong> At an office building, the security guard checks your ID card (authentication &mdash; proving who you are). Then your ID card has a color code that determines which floors you can access (authorization &mdash; what you are allowed to do). The CEO's card opens all floors. The intern's card opens only floor 1.</p>
+
+  <div class="diagram">
+    <pre>
+  AUTHENTICATION vs AUTHORIZATION IN NIMBUS
+  ==========================================
+
+  Step 1: AUTHENTICATION (Login)
+  +----------------------------------+
+  | User enters: ID + Password       |
+  | System checks: credentials match?|
+  | Result: YES = authenticated      |
+  |         NO  = "Invalid login"    |
+  +----------------------------------+
+              |
+              v (authenticated)
+  Step 2: AUTHORIZATION (Role check)
+  +----------------------------------+
+  | User role = "customer"           |
+  |                                  |
+  | Can create booking?    YES       |
+  | Can track parcel?      YES       |
+  | Can update status?     NO !!!    |
+  | Can resolve issues?    NO !!!    |
+  | Can view all bookings? NO !!!    |
+  +----------------------------------+
+
+  Different roles, different permissions:
+
+  Customer:  book, track, pay, history, support
+  Officer:   pickup, deliver, track(all), status update
+  Support:   view issues, assign, resolve
+    </pre>
+    <div class="diagram-label">Authentication proves identity. Authorization enforces permissions.</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><strong>Authentication:</strong> <code>UserService.login(userId, password)</code> checks credentials against the database. If they match, the user is authenticated and a session is created. <strong>Authorization:</strong> After login, the system checks <code>user.getRole()</code> and shows the corresponding menu &mdash; Customer Menu (US4), Officer Menu (US5), or Support Menu. A customer cannot access officer functions because the menu does not show those options, AND the backend services check the role before executing operations. Both layers of protection matter.</p>
+  </div>
+
+  <h3>Input Validation</h3>
+
+  <p><strong>What it is:</strong> Checking that user input is safe and valid BEFORE processing it. Never trust user input. Ever. Users make typos. Users enter garbage. And attackers deliberately send malicious data.</p>
+
+  <p><strong>Analogy:</strong> Airport security. Every bag is scanned. Every person walks through a metal detector. You do not let people through and THEN check if they have something dangerous. You check BEFORE they enter.</p>
+
+  <p>There are two types of validation:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Where</th>
+        <th>Why Both Matter</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Client-side</strong></td>
+        <td>In the browser (JavaScript), before the form is submitted</td>
+        <td>Good user experience &mdash; instant feedback ("Email format is wrong"). But can be bypassed by attackers (they can disable JavaScript or send requests directly).</td>
+      </tr>
+      <tr>
+        <td><strong>Server-side</strong></td>
+        <td>In the Java backend, after the form is submitted</td>
+        <td>Security &mdash; CANNOT be bypassed by the user. Even if client-side is disabled, server catches bad input. This is the REAL validation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Rule:</strong> Client-side validation is for user convenience. Server-side validation is for security. You need BOTH. Never rely on only one.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">InputValidator.java (Server-side validation)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class InputValidator {
+
+    // Email: must match pattern user@domain.tld
+    public boolean isValidEmail(String email) {
+        if (email == null || email.isEmpty()) return false;
+        String regex = "^[\\w.-]+@[\\w.-]+\\.\\w{2,}$";
+        return email.matches(regex);
+    }
+
+    // Phone: country code + 10 digits (e.g., +919876543210)
+    public boolean isValidPhone(String phone) {
+        if (phone == null) return false;
+        return phone.matches("^\\+\\d{1,3}\\d{10}$");
+    }
+
+    // Password: min 8 chars, at least 1 uppercase, 1 lowercase,
+    //           1 digit, 1 special character
+    public boolean isValidPassword(String password) {
+        if (password == null || password.length() &lt; 8) return false;
+        boolean hasUpper = password.matches(".*[A-Z].*");
+        boolean hasLower = password.matches(".*[a-z].*");
+        boolean hasDigit = password.matches(".*\\d.*");
+        boolean hasSpecial = password.matches(".*[!@#$%^&amp;*()].*");
+        return hasUpper &amp;&amp; hasLower &amp;&amp; hasDigit &amp;&amp; hasSpecial;
+    }
+
+    // Name: 1-50 characters, letters and spaces only
+    public boolean isValidName(String name) {
+        if (name == null || name.isEmpty()) return false;
+        return name.length() &lt;= 50 &amp;&amp; name.matches("^[a-zA-Z ]+$");
+    }
+
+    // Weight: must be positive number
+    public boolean isValidWeight(double weight) {
+        return weight &gt; 0 &amp;&amp; weight &lt;= 100; // max 100 kg
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><strong>Current state:</strong> Phase 1 has client-side validation in JavaScript (email regex, phone format, password strength checks in the HTML forms). Phase 2 must duplicate ALL of these checks in the Java <code>InputValidator</code> class. <strong>Why duplicate?</strong> Because in Phase 1 (browser-only), JavaScript is the only option. In Phase 2+ (with a backend), an attacker could bypass the browser entirely and send a malicious request directly to the server. The server-side <code>InputValidator</code> is the last line of defense. <strong>What should improve:</strong> Add length limits on ALL text inputs to prevent buffer overflow attacks. Add sanitization to strip HTML/script tags from names and addresses.</p>
+  </div>
+
+  <h3>Security Summary for Nimbus</h3>
+
+  <div class="diagram">
+    <pre>
+  NIMBUS SECURITY CHECKLIST
+  ==========================
+
+  [DONE] SQL Injection Protection
+         Every query uses PreparedStatement with ? placeholders
+
+  [TODO] Password Hashing
+         Currently storing plain text
+         Need: bcrypt hashing before save, checkpw on login
+
+  [DONE] Authentication
+         Login validates userId + password against DB
+
+  [DONE] Authorization
+         Role-based menus: Customer/Officer/Support see different options
+
+  [PARTIAL] Input Validation
+         Client-side: done (JavaScript in Phase 1)
+         Server-side: need InputValidator class in Phase 2
+
+  [TODO] Session Security
+         Add session timeout (auto-logout after 30 min inactive)
+         Regenerate session ID after login
+
+  [TODO] Error Handling
+         Don't expose stack traces to users
+         Log errors server-side, show generic message to users
+    </pre>
+    <div class="diagram-label">Security features: what Nimbus has and what it needs</div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Remember</div>
+    <p>Security is not about making things unhackable &mdash; nothing is. It is about making attacks so difficult and time-consuming that attackers give up and move to easier targets. PreparedStatement, bcrypt, input validation, and role-based access &mdash; these four alone eliminate 90% of common web application vulnerabilities. Learn them. Use them. Every time. No exceptions.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="hld-lld.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">HLD &amp; LLD</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

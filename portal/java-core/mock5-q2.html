@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Management System | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+    <a href="mock5-q1.html" class="sidebar-link"><span class="num">M9</span> Subscription Mgmt</a>
+    <a href="mock5-q2.html" class="sidebar-link active"><span class="num">M10</span> Car Management</a>
+    <a href="mock6-q1.html" class="sidebar-link"><span class="num">M11</span> Music-Fest</a>
+    <a href="mock6-q2.html" class="sidebar-link"><span class="num">M12</span> TrainTicket</a>
+    <a href="mock7-q1.html" class="sidebar-link"><span class="num">M13</span> Division Exception</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: QUESTION STATEMENT ===== -->
+  <div class="content-section" id="question">
+    <div class="section-tag">Mock 5 &mdash; Question 2</div>
+    <h2>Car Management System</h2>
+    <p style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+      <span class="difficulty-badge major">Major</span>
+      <span class="time-estimate">60&ndash;75 min</span>
+    </p>
+
+    <div class="question-box">
+      <h4>Question Statement</h4>
+      <p>Design and implement a <strong>Car Management System</strong> using inheritance and polymorphism.</p>
+      <p><strong>Base Class &mdash; Car:</strong> brand, model, price, type (Petrol, Diesel, or Hybrid)</p>
+      <p><strong>Subclass &mdash; PetrolOrDieselCar</strong> extends Car: tankCapacity, mileage</p>
+      <p><strong>Subclass &mdash; SmartHybridCar</strong> extends Car: batteryCapacity, tankCapacity, mileage</p>
+
+      <p><strong>Methods in CarService:</strong></p>
+      <ol>
+        <li><code>getAveragesByType(List&lt;Car&gt;, String type)</code> &mdash; Filter cars by type, then print averages:
+          <ul>
+            <li>Hybrid: avgTankCapacity + avgBatteryCapacity</li>
+            <li>Petrol/Diesel: avgTankCapacity only</li>
+            <li>Not found: <code>"No cars available for the given type or the required criteria."</code></li>
+          </ul>
+        </li>
+        <li><code>getMinMileageByBrand(List&lt;Car&gt;)</code> &mdash; Find the car with minimum mileage per brand (across all types), print results.</li>
+      </ol>
+
+      <p><strong>Input:</strong> Read numCars, then for each car: brand, model, price, type. If Petrol/Diesel: tankCapacity, mileage. If Hybrid: batteryCapacity, tankCapacity, mileage. Then read the search type.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ANALYSIS ===== -->
+  <div class="content-section" id="analysis">
+    <div class="section-tag">Analysis</div>
+    <h2>What This Question Tests</h2>
+    <p class="section-desc">This is a full inheritance + polymorphism problem. It combines class hierarchies, type-checking at runtime, downcasting, and aggregation logic &mdash; all the heavy OOP concepts in one question.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Core Concepts Being Tested</div>
+      <ul>
+        <li><strong>Inheritance:</strong> Base class <code>Car</code> with two subclasses that add their own fields</li>
+        <li><strong>instanceof:</strong> Runtime type checking to determine if a <code>Car</code> is actually a <code>SmartHybridCar</code> or <code>PetrolOrDieselCar</code></li>
+        <li><strong>Downcasting:</strong> Casting a <code>Car</code> reference to its subclass to access subclass-specific methods like <code>getMileage()</code></li>
+        <li><strong>LinkedHashMap:</strong> Maintaining insertion order while grouping cars by brand</li>
+        <li><strong>Conditional input parsing:</strong> Reading different fields depending on the car type</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: WALKTHROUGH ===== -->
+  <div class="content-section" id="walkthrough">
+    <div class="section-tag">Walkthrough</div>
+    <h2>Tracing Through Sample Data</h2>
+    <p class="section-desc">Let's trace through Test Case 1: 3 cars, search type = "Hybrid"</p>
+
+    <div class="diagram">
+      <pre>
+<strong>Input cars:</strong>
+1. Toyota | HyRyder | 1990000 | Hybrid  | battery=4.3 | tank=40 | mileage=28.0
+2. Toyota | Glanza  | 650000  | Petrol  | tank=44     | mileage=20.0
+3. Honda  | Amaze   | 800000  | Hybrid  | battery=6.8 | tank=47 | mileage=23.0
+
+<strong>Step 1: getAveragesByType(cars, "Hybrid")</strong>
+  Filter by type "Hybrid" &rarr; [HyRyder, Amaze]
+  avgTankCapacity  = (40 + 47) / 2 = <strong>43.5</strong>
+  avgBatteryCapacity = (4.3 + 6.8) / 2 = <strong>5.55</strong>
+
+<strong>Step 2: getMinMileageByBrand(cars)</strong>
+  Brand "Toyota": HyRyder=28.0, Glanza=20.0 &rarr; min = <strong>20.0</strong>
+  Brand "Honda":  Amaze=23.0 &rarr; min = <strong>23.0</strong>
+      </pre>
+      <div class="diagram-label">Both methods work across the entire list, but getAveragesByType only looks at the filtered subset</div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Key Insight: getMinMileageByBrand uses ALL cars</div>
+      <p>The min mileage method does NOT filter by type. It looks at every car regardless of whether it's Petrol, Diesel, or Hybrid. You need <code>instanceof</code> checks to extract mileage from the correct subclass type.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: ALGORITHM ===== -->
+  <div class="content-section" id="algorithm">
+    <div class="section-tag">Algorithm</div>
+    <h2>The Algorithm Step by Step</h2>
+
+    <ul class="steps">
+      <li><strong>Step 1:</strong> Read n cars. For each, read brand, model, price, type. Based on type, read extra fields and create the correct subclass object.</li>
+      <li><strong>Step 2:</strong> Read the search type string.</li>
+      <li><strong>Step 3 (getAveragesByType):</strong> Filter the list by matching type (case-insensitive). If empty, print error message. If Hybrid, compute avgTankCapacity and avgBatteryCapacity. Otherwise, compute avgTankCapacity only.</li>
+      <li><strong>Step 4 (getMinMileageByBrand):</strong> Iterate all cars. Use <code>instanceof</code> to get mileage from each car. Use a <code>LinkedHashMap&lt;String, Double&gt;</code> to track minimum mileage per brand.</li>
+      <li><strong>Step 5:</strong> Print the map entries &mdash; LinkedHashMap preserves insertion order.</li>
+    </ul>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Why LinkedHashMap, not HashMap?</div>
+      <p>HashMap does not guarantee order. The output needs brands in the order they first appeared in input. <code>LinkedHashMap</code> preserves insertion order, so the first brand added stays first in the output. This is a common PRA requirement &mdash; if output order matters, always use LinkedHashMap.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: COMPLETE SOLUTION ===== -->
+  <div class="content-section" id="complete-solution">
+    <div class="section-tag">Full Code</div>
+    <h2>Complete Solution</h2>
+    <p class="section-desc">Three classes + one main class. The key is the inheritance hierarchy and knowing when to cast.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Car.java &mdash; Base Class</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class Car {
+    private String brand, model, type;
+    private double price;
+
+    public Car(String brand, String model, double price, String type) {
+        this.brand = brand;
+        this.model = model;
+        this.price = price;
+        this.type = type;
+    }
+
+    public String getBrand() { return brand; }
+    public String getModel() { return model; }
+    public double getPrice() { return price; }
+    public String getType() { return type; }
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">PetrolOrDieselCar.java &mdash; Subclass</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class PetrolOrDieselCar extends Car {
+    private double tankCapacity, mileage;
+
+    public PetrolOrDieselCar(String brand, String model, double price, String type,
+                             double tankCapacity, double mileage) {
+        super(brand, model, price, type);
+        this.tankCapacity = tankCapacity;
+        this.mileage = mileage;
+    }
+
+    public double getTankCapacity() { return tankCapacity; }
+    public double getMileage() { return mileage; }
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">SmartHybridCar.java &mdash; Subclass</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">class SmartHybridCar extends Car {
+    private double batteryCapacity, tankCapacity, mileage;
+
+    public SmartHybridCar(String brand, String model, double price, String type,
+                          double batteryCapacity, double tankCapacity, double mileage) {
+        super(brand, model, price, type);
+        this.batteryCapacity = batteryCapacity;
+        this.tankCapacity = tankCapacity;
+        this.mileage = mileage;
+    }
+
+    public double getBatteryCapacity() { return batteryCapacity; }
+    public double getTankCapacity() { return tankCapacity; }
+    public double getMileage() { return mileage; }
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Solution.java &mdash; Main + Service Methods</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.*;
+
+public class Solution {
+
+    public static void getAveragesByType(List&lt;Car&gt; cars, String type) {
+        List&lt;Car&gt; filtered = new ArrayList&lt;&gt;();
+        for (Car c : cars) {
+            if (c.getType().equalsIgnoreCase(type)) filtered.add(c);
+        }
+        if (filtered.isEmpty()) {
+            System.out.println("No cars available for the given type or the required criteria.");
+            return;
+        }
+        if (type.equalsIgnoreCase("Hybrid")) {
+            double avgTank = 0, avgBattery = 0;
+            for (Car c : filtered) {
+                SmartHybridCar h = (SmartHybridCar) c;
+                avgTank += h.getTankCapacity();
+                avgBattery += h.getBatteryCapacity();
+            }
+            avgTank /= filtered.size();
+            avgBattery /= filtered.size();
+            System.out.println("Averages for type: Hybrid");
+            System.out.println("avgTankCapacity: " + avgTank);
+            System.out.println("avgBatteryCapacity: " + avgBattery);
+        } else {
+            double avgTank = 0;
+            for (Car c : filtered) {
+                PetrolOrDieselCar p = (PetrolOrDieselCar) c;
+                avgTank += p.getTankCapacity();
+            }
+            avgTank /= filtered.size();
+            System.out.println("Averages for type: " + type);
+            System.out.println("avgTankCapacity: " + avgTank);
+        }
+    }
+
+    public static void getMinMileageByBrand(List&lt;Car&gt; cars) {
+        Map&lt;String, Double&gt; minMap = new LinkedHashMap&lt;&gt;();
+        for (Car c : cars) {
+            double mileage = 0;
+            if (c instanceof SmartHybridCar)
+                mileage = ((SmartHybridCar) c).getMileage();
+            else if (c instanceof PetrolOrDieselCar)
+                mileage = ((PetrolOrDieselCar) c).getMileage();
+
+            if (!minMap.containsKey(c.getBrand()) || mileage &lt; minMap.get(c.getBrand())) {
+                minMap.put(c.getBrand(), mileage);
+            }
+        }
+        System.out.println("Minimum Mileage by Brand");
+        for (Map.Entry&lt;String, Double&gt; entry : minMap.entrySet()) {
+            System.out.println("Brand: " + entry.getKey() + ", Min Mileage: " + entry.getValue());
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine().trim());
+        List&lt;Car&gt; cars = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            String brand = sc.nextLine().trim();
+            String model = sc.nextLine().trim();
+            double price = Double.parseDouble(sc.nextLine().trim());
+            String type = sc.nextLine().trim();
+
+            if (type.equalsIgnoreCase("Hybrid")) {
+                double battery = Double.parseDouble(sc.nextLine().trim());
+                double tank = Double.parseDouble(sc.nextLine().trim());
+                double mileage = Double.parseDouble(sc.nextLine().trim());
+                cars.add(new SmartHybridCar(brand, model, price, type, battery, tank, mileage));
+            } else {
+                double tank = Double.parseDouble(sc.nextLine().trim());
+                double mileage = Double.parseDouble(sc.nextLine().trim());
+                cars.add(new PetrolOrDieselCar(brand, model, price, type, tank, mileage));
+            }
+        }
+
+        String searchType = sc.nextLine().trim();
+        getAveragesByType(cars, searchType);
+        getMinMileageByBrand(cars);
+    }
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Key sections explained</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">class Car { private String brand, model, type; private double price; }</div>
+          <div class="breakdown-explain">Base class with 4 fields. All fields are <code>private</code> with getters &mdash; standard encapsulation. The <code>type</code> field determines which subclass to create.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">super(brand, model, price, type);</div>
+          <div class="breakdown-explain">Both subclasses call <code>super()</code> to pass common fields to the parent constructor. This is mandatory &mdash; Java won't compile without it if the parent has no default constructor.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">SmartHybridCar h = (SmartHybridCar) c;</div>
+          <div class="breakdown-explain">Downcasting. The variable <code>c</code> is declared as <code>Car</code>, but we know it's actually a <code>SmartHybridCar</code> (we filtered by type). We cast it to access <code>getBatteryCapacity()</code> and <code>getTankCapacity()</code>.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (c instanceof SmartHybridCar) mileage = ((SmartHybridCar) c).getMileage();</div>
+          <div class="breakdown-explain"><code>instanceof</code> checks the actual runtime type. Since both subclasses have <code>getMileage()</code> but the base class does not, we must check type and cast before calling it. Always check <code>instanceof</code> before casting.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Map&lt;String, Double&gt; minMap = new LinkedHashMap&lt;&gt;();</div>
+          <div class="breakdown-explain"><code>LinkedHashMap</code> preserves insertion order. As we iterate cars, the first brand seen stays first in output. If we used <code>HashMap</code>, brand order would be random.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">if (!minMap.containsKey(c.getBrand()) || mileage &lt; minMap.get(c.getBrand()))</div>
+          <div class="breakdown-explain">Two conditions: (1) brand not seen yet &mdash; add it, or (2) this car's mileage is lower than the current minimum for that brand &mdash; update it. This is the standard "find minimum per group" pattern.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: TEST CASES ===== -->
+  <div class="content-section" id="test-cases">
+    <div class="section-tag">Testing</div>
+    <h2>Test Cases</h2>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 1 &mdash; Hybrid Search (Visible)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">3<br>Toyota<br>HyRyder<br>1990000<br>Hybrid<br>4.3<br>40<br>28.0<br>Toyota<br>Glanza<br>650000<br>Petrol<br>44<br>20.0<br>Honda<br>Amaze<br>800000<br>Hybrid<br>6.8<br>47<br>23.0<br>Hybrid</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Averages for type: Hybrid<br>avgTankCapacity: 43.5<br>avgBatteryCapacity: 5.55<br>Minimum Mileage by Brand<br>Brand: Toyota, Min Mileage: 20.0<br>Brand: Honda, Min Mileage: 23.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 2 &mdash; Invalid Type Search (Visible)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">3<br>Toyota<br>HyRyder<br>1990000<br>Hybrid<br>4.3<br>40<br>28.0<br>Toyota<br>Glanza<br>650000<br>Petrol<br>44<br>29.0<br>Honda<br>Amaze<br>800000<br>Hybrid<br>6.8<br>47<br>23.0<br>any</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">No cars available for the given type or the required criteria.<br>Minimum Mileage by Brand<br>Brand: Toyota, Min Mileage: 28.0<br>Brand: Honda, Min Mileage: 23.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 3 &mdash; Petrol Search (Hidden)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">2<br>Maruti<br>Swift<br>750000<br>Petrol<br>37<br>22.0<br>Maruti<br>Baleno<br>850000<br>Petrol<br>40<br>25.0<br>Petrol</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Averages for type: Petrol<br>avgTankCapacity: 38.5<br>Minimum Mileage by Brand<br>Brand: Maruti, Min Mileage: 22.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 4 &mdash; Diesel Search, Multiple Brands (Hidden)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">4<br>Tata<br>Nexon<br>1200000<br>Diesel<br>44<br>24.0<br>Hyundai<br>Creta<br>1500000<br>Diesel<br>50<br>21.0<br>Tata<br>Harrier<br>2000000<br>Diesel<br>50<br>16.0<br>Hyundai<br>Venue<br>900000<br>Petrol<br>37<br>18.0<br>Diesel</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Averages for type: Diesel<br>avgTankCapacity: 48.0<br>Minimum Mileage by Brand<br>Brand: Tata, Min Mileage: 16.0<br>Brand: Hyundai, Min Mileage: 18.0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-case">
+      <div class="test-case-header">Test Case 5 &mdash; Single Car (Hidden Edge Case)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Input</div>
+          <div class="test-case-data">1<br>BMW<br>X1<br>4500000<br>Hybrid<br>9.7<br>36<br>15.0<br>Hybrid</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">Output</div>
+          <div class="test-case-data">Averages for type: Hybrid<br>avgTankCapacity: 36.0<br>avgBatteryCapacity: 9.7<br>Minimum Mileage by Brand<br>Brand: BMW, Min Mileage: 15.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: COMMON MISTAKES ===== -->
+  <div class="content-section" id="common-mistakes">
+    <div class="section-tag">Watch Out</div>
+    <h2>Common Mistakes</h2>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">Wrong: Forgetting instanceof before cast</div>
+        <div class="comparison-body">
+          <p>Directly casting <code>(SmartHybridCar) c</code> without checking type first will throw <code>ClassCastException</code> at runtime if the car is actually a <code>PetrolOrDieselCar</code>.</p>
+          <p>In <code>getAveragesByType</code>, you're safe because you filtered by type first. But in <code>getMinMileageByBrand</code>, you're iterating ALL cars &mdash; you MUST check <code>instanceof</code>.</p>
+          <p style="color: var(--red);">ClassCastException = instant 0 marks on that test case.</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">Correct: Always check before casting</div>
+        <div class="comparison-body">
+          <p>Use the <code>instanceof</code> &rarr; cast pattern:</p>
+          <p><code>if (c instanceof SmartHybridCar)</code><br>&nbsp;&nbsp;<code>mileage = ((SmartHybridCar) c).getMileage();</code></p>
+          <p><code>else if (c instanceof PetrolOrDieselCar)</code><br>&nbsp;&nbsp;<code>mileage = ((PetrolOrDieselCar) c).getMileage();</code></p>
+          <p style="color: var(--green);">Safe. No runtime exceptions. Works for any combination of car types.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <th>Mistake</th>
+        <th>What Goes Wrong</th>
+        <th>Fix</th>
+      </tr>
+      <tr>
+        <td>Using HashMap instead of LinkedHashMap</td>
+        <td>Brand output order is random &mdash; fails test cases that check order</td>
+        <td>Use <code>LinkedHashMap</code> to preserve insertion order</td>
+      </tr>
+      <tr>
+        <td>Not reading input conditionally</td>
+        <td>Hybrid has 3 extra fields, Petrol/Diesel has 2. Reading wrong number corrupts all subsequent input</td>
+        <td>Check type before deciding how many lines to read</td>
+      </tr>
+      <tr>
+        <td>Using <code>==</code> for String comparison</td>
+        <td><code>type == "Hybrid"</code> compares references, not values. Always false for Scanner input.</td>
+        <td>Use <code>type.equalsIgnoreCase("Hybrid")</code></td>
+      </tr>
+      <tr>
+        <td>Forgetting <code>return</code> after error message</td>
+        <td>If filtered list is empty and you don't return, the code continues to divide by zero</td>
+        <td>Print error message AND <code>return;</code> immediately</td>
+      </tr>
+      <tr>
+        <td>Putting mileage in the base Car class</td>
+        <td>Seems cleaner but violates the question's class design. PRA expects exact class structure.</td>
+        <td>Keep mileage in subclasses only. Use <code>instanceof</code> + cast to access it.</td>
+      </tr>
+      <tr>
+        <td>Integer division for averages</td>
+        <td><code>sum / count</code> where both are int gives truncated result (43 instead of 43.5)</td>
+        <td>Use <code>double</code> for sum and count, or cast: <code>(double) sum / count</code></td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">Exam Strategy: Build the Classes First</div>
+      <p>Start by writing all 3 classes (Car, PetrolOrDieselCar, SmartHybridCar) with constructors and getters. Then write main() to read input and create objects. Test that the objects are created correctly. Only then write the service methods. This way, even if you run out of time on the methods, you get marks for correct class structure and input parsing.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="mock5-q1.html"><span class="nav-label">Previous</span><span class="nav-title">Subscription Management</span></a>
+    <a href="mock6-q1.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Music-Fest</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

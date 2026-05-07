@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Code — Copy-Paste Ready | Nimbus Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+  <style>
+    .file-browser { display: flex; flex-direction: column; gap: 16px; }
+    .file-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .file-card:hover { border-color: rgba(59, 130, 246, 0.3); }
+    .file-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .file-card-header:hover { background: var(--bg-card-hover); }
+    .file-card-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .file-card-path {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-left: 12px;
+    }
+    .file-card-actions { display: flex; align-items: center; gap: 8px; }
+    .file-badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .badge-html { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+    .badge-css { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+    .badge-js { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+    .copy-file-btn {
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-file-btn:hover { background: rgba(59, 130, 246, 0.2); }
+    .copy-file-btn.copied { background: rgba(34, 197, 94, 0.15); color: #22C55E; border-color: rgba(34, 197, 94, 0.3); }
+    .file-card-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .file-card-body.open { display: block; }
+    .file-card-body pre {
+      margin: 0;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .file-card-body .loading {
+      padding: 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .folder-header {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 32px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .folder-header:first-of-type { margin-top: 0; }
+    .folder-header .folder-icon { color: var(--accent); }
+    .note-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .note-box strong { color: var(--text-primary); }
+    .expand-all-btn {
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .expand-all-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <a href="eclipse-master-setup.html" class="sidebar-link" style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;">&larr; Back to Setup Guide</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Root Files</div>
+    <a href="#login" class="sidebar-link">login.html</a>
+    <a href="#register" class="sidebar-link">register.html</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">CSS</div>
+    <a href="#style-css" class="sidebar-link">style.css</a>
+    <a href="#dashboard-css" class="sidebar-link">dashboard.css</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">JavaScript</div>
+    <a href="#storage-js" class="sidebar-link">storage.js</a>
+    <a href="#storage-api-js" class="sidebar-link">storage-api.js</a>
+    <a href="#auth-js" class="sidebar-link">auth.js</a>
+    <a href="#pricing-js" class="sidebar-link">pricing.js</a>
+    <a href="#navbar-js" class="sidebar-link">navbar.js</a>
+    <a href="#utils-js" class="sidebar-link">utils.js</a>
+    <a href="#bin-data-js" class="sidebar-link">bin-data.js</a>
+    <a href="#pincode-js" class="sidebar-link">pincode-data.js</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Customer Pages</div>
+    <a href="#cust-dashboard" class="sidebar-link">dashboard.html</a>
+    <a href="#cust-booking" class="sidebar-link">booking.html</a>
+    <a href="#cust-tracking" class="sidebar-link">tracking.html</a>
+    <a href="#cust-history" class="sidebar-link">history.html</a>
+    <a href="#cust-invoice" class="sidebar-link">invoice.html</a>
+    <a href="#cust-payment" class="sidebar-link">payment.html</a>
+    <a href="#cust-profile" class="sidebar-link">profile.html</a>
+    <a href="#cust-support" class="sidebar-link">support.html</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Officer Pages</div>
+    <a href="#off-dashboard" class="sidebar-link">dashboard.html</a>
+    <a href="#off-booking" class="sidebar-link">booking.html</a>
+    <a href="#off-delivery" class="sidebar-link">delivery.html</a>
+    <a href="#off-history" class="sidebar-link">history.html</a>
+    <a href="#off-invoice" class="sidebar-link">invoice.html</a>
+    <a href="#off-issues" class="sidebar-link">issues.html</a>
+    <a href="#off-payment" class="sidebar-link">payment.html</a>
+    <a href="#off-pickup" class="sidebar-link">pickup.html</a>
+    <a href="#off-profile" class="sidebar-link">profile.html</a>
+    <a href="#off-tracking" class="sidebar-link">tracking.html</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Support Pages</div>
+    <a href="#sup-dashboard" class="sidebar-link">dashboard.html</a>
+    <a href="#sup-issues" class="sidebar-link">issues.html</a>
+    <a href="#sup-profile" class="sidebar-link">profile.html</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<h1 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.75rem; margin-bottom: 8px;">Frontend Code <span style="color: var(--accent);">— Copy-Paste Ready</span></h1>
+<p style="color: var(--text-secondary); margin-bottom: 24px;">All 33 files from the <code>nimbus/</code> folder. Click any file to expand, then Copy.</p>
+
+<div class="note-box">
+  <strong>Where these go in Eclipse:</strong> Copy the entire folder structure into <code>src/main/resources/static/</code>. Spring Boot serves them automatically at <code>http://localhost:8080/</code>.<br><br>
+  <strong>For Sprint 3:</strong> Use <code>storage.js</code> (LocalStorage).<br>
+  <strong>For Sprint 4:</strong> Swap to <code>storage-api.js</code> (REST API calls) in all HTML script tags.
+</div>
+
+<div style="margin-bottom: 16px;">
+  <button class="expand-all-btn" onclick="expandAll()">Expand All Files</button>
+  <button class="expand-all-btn" onclick="collapseAll()" style="margin-left: 8px;">Collapse All</button>
+</div>
+
+<div class="file-browser" id="fileBrowser"></div>
+
+</main>
+</div>
+
+<script>
+// File registry — all 33 frontend files
+const FILES = [
+  // Root
+  { id: 'login', name: 'login.html', path: '../../nimbus/login.html', folder: 'Root (nimbus/)', type: 'html' },
+  { id: 'register', name: 'register.html', path: '../../nimbus/register.html', folder: 'Root (nimbus/)', type: 'html' },
+  // CSS
+  { id: 'style-css', name: 'style.css', path: '../../nimbus/css/style.css', folder: 'css/', type: 'css' },
+  { id: 'dashboard-css', name: 'dashboard.css', path: '../../nimbus/css/dashboard.css', folder: 'css/', type: 'css' },
+  // JS
+  { id: 'storage-js', name: 'storage.js', path: '../../nimbus/js/storage.js', folder: 'js/', type: 'js' },
+  { id: 'storage-api-js', name: 'storage-api.js', path: '../../nimbus/js/storage-api.js', folder: 'js/', type: 'js' },
+  { id: 'auth-js', name: 'auth.js', path: '../../nimbus/js/auth.js', folder: 'js/', type: 'js' },
+  { id: 'pricing-js', name: 'pricing.js', path: '../../nimbus/js/pricing.js', folder: 'js/', type: 'js' },
+  { id: 'navbar-js', name: 'navbar.js', path: '../../nimbus/js/navbar.js', folder: 'js/', type: 'js' },
+  { id: 'utils-js', name: 'utils.js', path: '../../nimbus/js/utils.js', folder: 'js/', type: 'js' },
+  { id: 'bin-data-js', name: 'bin-data.js', path: '../../nimbus/js/bin-data.js', folder: 'js/', type: 'js' },
+  { id: 'pincode-js', name: 'pincode-data.js', path: '../../nimbus/js/pincode-data.js', folder: 'js/', type: 'js' },
+  // Customer
+  { id: 'cust-dashboard', name: 'dashboard.html', path: '../../nimbus/customer/dashboard.html', folder: 'customer/', type: 'html' },
+  { id: 'cust-booking', name: 'booking.html', path: '../../nimbus/customer/booking.html', folder: 'customer/', type: 'html' },
+  { id: 'cust-tracking', name: 'tracking.html', path: '../../nimbus/customer/tracking.html', folder: 'customer/', type: 'html' },
+  { id: 'cust-history', name: 'history.html', path: '../../nimbus/customer/history.html', folder: 'customer/', type: 'html' },
+  { id: 'cust-invoice', name: 'invoice.html', path: '../../nimbus/customer/invoice.html', folder: 'customer/', type: 'html' },
+  { id: 'cust-payment', name: 'payment.html', path: '../../nimbus/customer/payment.html', folder: 'customer/', type: 'html' },
+  { id: 'cust-profile', name: 'profile.html', path: '../../nimbus/customer/profile.html', folder: 'customer/', type: 'html' },
+  { id: 'cust-support', name: 'support.html', path: '../../nimbus/customer/support.html', folder: 'customer/', type: 'html' },
+  // Officer
+  { id: 'off-dashboard', name: 'dashboard.html', path: '../../nimbus/officer/dashboard.html', folder: 'officer/', type: 'html' },
+  { id: 'off-booking', name: 'booking.html', path: '../../nimbus/officer/booking.html', folder: 'officer/', type: 'html' },
+  { id: 'off-delivery', name: 'delivery.html', path: '../../nimbus/officer/delivery.html', folder: 'officer/', type: 'html' },
+  { id: 'off-history', name: 'history.html', path: '../../nimbus/officer/history.html', folder: 'officer/', type: 'html' },
+  { id: 'off-invoice', name: 'invoice.html', path: '../../nimbus/officer/invoice.html', folder: 'officer/', type: 'html' },
+  { id: 'off-issues', name: 'issues.html', path: '../../nimbus/officer/issues.html', folder: 'officer/', type: 'html' },
+  { id: 'off-payment', name: 'payment.html', path: '../../nimbus/officer/payment.html', folder: 'officer/', type: 'html' },
+  { id: 'off-pickup', name: 'pickup.html', path: '../../nimbus/officer/pickup.html', folder: 'officer/', type: 'html' },
+  { id: 'off-profile', name: 'profile.html', path: '../../nimbus/officer/profile.html', folder: 'officer/', type: 'html' },
+  { id: 'off-tracking', name: 'tracking.html', path: '../../nimbus/officer/tracking.html', folder: 'officer/', type: 'html' },
+  // Support
+  { id: 'sup-dashboard', name: 'dashboard.html', path: '../../nimbus/support/dashboard.html', folder: 'support/', type: 'html' },
+  { id: 'sup-issues', name: 'issues.html', path: '../../nimbus/support/issues.html', folder: 'support/', type: 'html' },
+  { id: 'sup-profile', name: 'profile.html', path: '../../nimbus/support/profile.html', folder: 'support/', type: 'html' },
+];
+
+// Build the file browser UI
+function buildFileBrowser() {
+  const container = document.getElementById('fileBrowser');
+  let currentFolder = '';
+
+  FILES.forEach(file => {
+    // Add folder header if new folder
+    if (file.folder !== currentFolder) {
+      currentFolder = file.folder;
+      const header = document.createElement('div');
+      header.className = 'folder-header';
+      header.id = file.id;
+      header.innerHTML = `<span class="folder-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span> ${currentFolder}`;
+      container.appendChild(header);
+    }
+
+    // File card
+    const card = document.createElement('div');
+    card.className = 'file-card';
+    card.dataset.fileId = file.id;
+    card.innerHTML = `
+      <div class="file-card-header" onclick="toggleFile('${file.id}')">
+        <div>
+          <span class="file-card-name">${file.name}</span>
+          <span class="file-card-path">${file.path.replace('../../nimbus/', 'static/')}</span>
+        </div>
+        <div class="file-card-actions">
+          <span class="file-badge badge-${file.type}">${file.type}</span>
+          <button class="copy-file-btn" onclick="event.stopPropagation(); copyFile('${file.id}')">Copy</button>
+        </div>
+      </div>
+      <div class="file-card-body" id="body-${file.id}">
+        <div class="loading">Click to load file content...</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Toggle file expand/collapse
+async function toggleFile(fileId) {
+  const body = document.getElementById('body-' + fileId);
+  const isOpen = body.classList.contains('open');
+
+  if (isOpen) {
+    body.classList.remove('open');
+    return;
+  }
+
+  body.classList.add('open');
+
+  // Load content if not already loaded
+  if (body.querySelector('.loading')) {
+    const file = FILES.find(f => f.id === fileId);
+    try {
+      const response = await fetch(file.path);
+      if (!response.ok) throw new Error('File not found');
+      const text = await response.text();
+      body.innerHTML = `<pre>${escapeHtml(text)}</pre>`;
+    } catch (e) {
+      body.innerHTML = `<div class="loading" style="color: var(--red);">Could not load file. If viewing locally, use Live Server (VS Code extension) instead of opening the file directly.</div>`;
+    }
+  }
+}
+
+// Copy file content
+async function copyFile(fileId) {
+  const file = FILES.find(f => f.id === fileId);
+  const btn = document.querySelector(`[data-file-id="${fileId}"] .copy-file-btn`);
+
+  try {
+    const response = await fetch(file.path);
+    const text = await response.text();
+    await navigator.clipboard.writeText(text);
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  } catch (e) {
+    // Fallback: open the file body first
+    await toggleFile(fileId);
+    const body = document.getElementById('body-' + fileId);
+    const pre = body.querySelector('pre');
+    if (pre) {
+      await navigator.clipboard.writeText(pre.textContent);
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    }
+  }
+}
+
+// Expand/collapse all
+function expandAll() {
+  FILES.forEach(f => toggleFile(f.id));
+}
+function collapseAll() {
+  FILES.forEach(f => {
+    const body = document.getElementById('body-' + f.id);
+    body.classList.remove('open');
+  });
+}
+
+// HTML escape
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Init
+buildFileBrowser();
+</script>
+
+</body>
+</html>

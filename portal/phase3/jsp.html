@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSP (JavaServer Pages) — Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link active">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Web Fundamentals</div>
+    <a href="http-basics.html" class="sidebar-link"><span class="num">01</span> How the Web Works</a>
+    <a href="tomcat.html" class="sidebar-link"><span class="num">02</span> Web Servers &amp; Tomcat</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Servlets &amp; JSP</div>
+    <a href="servlets.html" class="sidebar-link"><span class="num">03</span> Servlets</a>
+    <a href="jsp.html" class="sidebar-link active"><span class="num">04</span> JSP (JavaServer Pages)</a>
+    <a href="mvc-pattern.html" class="sidebar-link"><span class="num">05</span> MVC Pattern</a>
+    <a href="sessions.html" class="sidebar-link"><span class="num">06</span> Session Management</a>
+    <a href="filters.html" class="sidebar-link"><span class="num">07</span> Filters &amp; Listeners</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Spring Framework</div>
+    <a href="spring-intro.html" class="sidebar-link"><span class="num">08</span> Spring &mdash; Big Picture</a>
+    <a href="spring-ioc-di.html" class="sidebar-link"><span class="num">09</span> IoC &amp; DI Deep Dive</a>
+    <a href="spring-annotations.html" class="sidebar-link"><span class="num">10</span> Spring Annotations</a>
+    <a href="spring-mvc.html" class="sidebar-link"><span class="num">11</span> Spring MVC</a>
+    <a href="spring-jdbc.html" class="sidebar-link"><span class="num">12</span> Spring JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Build It</div>
+    <a href="nimbus-web-app.html" class="sidebar-link"><span class="num">13</span> Nimbus Web App</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">14</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">15</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is JSP?                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-jsp">
+  <div class="section-tag">Section 01</div>
+  <h2>What is JSP?</h2>
+  <p class="section-desc">JSP (JavaServer Pages) is an HTML page that can contain Java code. Tomcat takes this page and converts it into a Servlet behind the scenes. The result: you write HTML like normal, but you can insert dynamic data wherever you need it.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>HTML is a <strong>letter template</strong> &mdash; it looks the same every time. JSP lets you <strong>fill in the blanks</strong> dynamically. The template says "Dear ____," and JSP fills in the customer's name from the database. Same template, different result for every person.</p>
+  </div>
+
+  <h3>Why JSP Exists</h3>
+  <p>In the Servlets topic, you saw how painful it is to generate HTML from Java code. Every line of HTML needs <code>out.println()</code>. Imagine writing an entire booking page that way &mdash; hundreds of <code>out.println("&lt;tr&gt;&lt;td&gt;" + booking.getId() + "&lt;/td&gt;&lt;/tr&gt;")</code> lines. Unreadable. Unmaintainable.</p>
+
+  <p>JSP flips the approach. Instead of writing Java that outputs HTML, you write HTML that contains bits of Java. The result looks like a normal web page with a few special tags mixed in.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Servlet approach (painful)</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-java">out.println("&lt;h1&gt;Welcome&lt;/h1&gt;");
+out.println("&lt;p&gt;Hello, " + name + "&lt;/p&gt;");
+out.println("&lt;table&gt;");
+for (Booking b : list) {
+  out.println("&lt;tr&gt;&lt;td&gt;" + b.getId() + "&lt;/td&gt;&lt;/tr&gt;");
+}</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">JSP approach (natural)</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;h1&gt;Welcome&lt;/h1&gt;
+&lt;p&gt;Hello, ${user.fullName}&lt;/p&gt;
+&lt;table&gt;
+  &lt;c:forEach items="${bookings}" var="b"&gt;
+    &lt;tr&gt;&lt;td&gt;${b.bookingId}&lt;/td&gt;&lt;/tr&gt;
+  &lt;/c:forEach&gt;
+&lt;/table&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>JSP = Servlet (Under the Hood)</h3>
+  <p>This is the key fact: <strong>every JSP file gets compiled into a Servlet by Tomcat</strong>. When you create <code>login.jsp</code>, Tomcat converts it into <code>login_jsp.java</code>, compiles it into <code>login_jsp.class</code>, and runs it as a regular Servlet. JSP is not a different technology &mdash; it is a convenient way to write Servlets.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>We are converting our console application into a web application. Every <code>System.out.println()</code> that showed information to the user becomes a JSP page. The login menu becomes <code>login.jsp</code>, the booking flow becomes <code>booking.jsp</code>, the tracking display becomes <code>tracking.jsp</code>. The Servlet handles the logic (validate user, query database), and the JSP handles the display (show the form, show the results).</p>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Nimbus Console Output</th><th>Becomes JSP Page</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Login menu (enter userId + password)</td><td><code>login.jsp</code></td></tr>
+      <tr><td>Registration form (all user fields)</td><td><code>register.jsp</code></td></tr>
+      <tr><td>Customer dashboard (stats + navigation)</td><td><code>customer-dashboard.jsp</code></td></tr>
+      <tr><td>Booking flow (sender, receiver, parcel)</td><td><code>booking.jsp</code></td></tr>
+      <tr><td>Tracking search + results</td><td><code>tracking.jsp</code></td></tr>
+      <tr><td>Booking history list</td><td><code>history.jsp</code></td></tr>
+      <tr><td>Invoice (read-only for printing)</td><td><code>invoice.jsp</code></td></tr>
+      <tr><td>Officer dashboard (all bookings)</td><td><code>officer-dashboard.jsp</code></td></tr>
+      <tr><td>Delivery status update</td><td><code>delivery-status.jsp</code></td></tr>
+      <tr><td>Pickup scheduling</td><td><code>pickup.jsp</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: JSP Lifecycle                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="lifecycle">
+  <div class="section-tag">Section 02</div>
+  <h2>JSP Lifecycle</h2>
+  <p class="section-desc">When a browser requests a JSP page for the first time, Tomcat goes through a multi-step process to turn that <code>.jsp</code> file into executable code. After the first request, the compiled version is reused until you modify the file.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        login.jsp
+        <span class="flow-sub">.jsp file</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">
+        Translation
+        <span class="flow-sub">JSP &rarr; .java</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">
+        Compilation
+        <span class="flow-sub">.java &rarr; .class</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">
+        Loading
+        <span class="flow-sub">Class loaded into memory</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box cyan">
+        jspInit()
+        <span class="flow-sub">One-time setup</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">
+        _jspService()
+        <span class="flow-sub">Handles every request</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">
+        jspDestroy()
+        <span class="flow-sub">Cleanup on shutdown</span>
+      </div>
+    </div>
+    <div class="flow-label">JSP Lifecycle: Translation &rarr; Compilation &rarr; Loading &rarr; Init &rarr; Service &rarr; Destroy</div>
+  </div>
+
+  <h3>Each Phase Explained</h3>
+  <ol class="steps">
+    <li><strong>Translation</strong> &mdash; Tomcat reads <code>login.jsp</code> and generates a Java file called <code>login_jsp.java</code>. All your HTML becomes <code>out.write()</code> statements. All your Java snippets stay as Java code. This happens only once (or when the JSP file changes).</li>
+    <li><strong>Compilation</strong> &mdash; The generated <code>.java</code> file is compiled into a <code>.class</code> file, just like any Java program. This is why the first request to a JSP page is slightly slower &mdash; Tomcat is compiling it on the fly.</li>
+    <li><strong>Loading</strong> &mdash; The compiled class is loaded into memory by Tomcat's class loader. The class extends <code>HttpJspBase</code> (which itself extends <code>HttpServlet</code>). This proves JSP IS a servlet.</li>
+    <li><strong>jspInit()</strong> &mdash; Called once when the servlet is first created. You can override this to set up resources. Rarely used in practice.</li>
+    <li><strong>_jspService(request, response)</strong> &mdash; Called for every request. This is where all your HTML and Java code ends up. You do NOT override this &mdash; Tomcat generates it from your JSP file.</li>
+    <li><strong>jspDestroy()</strong> &mdash; Called when Tomcat shuts down or the JSP is removed. Used for cleanup. Also rarely used.</li>
+  </ol>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>The first request to a JSP is slower because Tomcat has to translate and compile it. Every subsequent request reuses the compiled class and is fast. If you edit the <code>.jsp</code> file, Tomcat detects the change and retranslates it on the next request.</p>
+  </div>
+
+  <h3>Where Does Tomcat Put the Generated Files?</h3>
+  <p>Tomcat stores the generated Java and class files in its <code>work</code> directory. For a project called <code>nimbus</code>, you would find them at:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Tomcat work directory</span>
+    </div>
+    <pre><code class="language-markup">TOMCAT_HOME/work/Catalina/localhost/nimbus/org/apache/jsp/
+  login_jsp.java      &lt;-- Generated servlet source
+  login_jsp.class     &lt;-- Compiled servlet</code></pre>
+  </div>
+  <p>You never need to touch these files. But if you are curious what your JSP looks like as a Servlet, open the <code>.java</code> file &mdash; you will see every line of your HTML wrapped in <code>out.write()</code> calls.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: JSP Directives                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="directives">
+  <div class="section-tag">Section 03</div>
+  <h2>JSP Directives</h2>
+  <p class="section-desc">Directives are instructions to Tomcat about how to process the JSP page. They go at the top of the file and do not produce any output. Think of them as configuration settings for the page.</p>
+
+  <p>All directives use the syntax: <code>&lt;%@ directive attribute="value" %&gt;</code></p>
+
+  <h3>1. Page Directive &mdash; <code>&lt;%@ page %&gt;</code></h3>
+  <p>Controls page-level settings. This is the most common directive and almost every JSP file starts with one.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">login.jsp &mdash; page directive</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ page import="java.util.List, com.nimbus.model.Booking" %&gt;
+&lt;%@ page errorPage="error.jsp" %&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Page Directive Attributes</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">contentType="text/html;charset=UTF-8"</div>
+        <div class="breakdown-explain">Tells the browser this page is HTML with UTF-8 encoding. Same as calling response.setContentType() in a Servlet.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">language="java"</div>
+        <div class="breakdown-explain">Specifies that Java is the scripting language. This is the default, so you can omit it. No other language is supported in practice.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">import="java.util.List, com.nimbus.model.Booking"</div>
+        <div class="breakdown-explain">Imports Java classes so you can use them in the page. Same as import statements in a Java file. Comma-separated for multiple imports.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">errorPage="error.jsp"</div>
+        <div class="breakdown-explain">If an exception occurs on this page, Tomcat automatically forwards to error.jsp instead of showing a stack trace to the user.</div>
+      </div>
+    </div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Attribute</th><th>Purpose</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>contentType</code></td><td>MIME type of the response</td><td><code>"text/html;charset=UTF-8"</code></td></tr>
+      <tr><td><code>import</code></td><td>Import Java classes</td><td><code>"java.util.List"</code></td></tr>
+      <tr><td><code>errorPage</code></td><td>Page to redirect to on error</td><td><code>"error.jsp"</code></td></tr>
+      <tr><td><code>isErrorPage</code></td><td>Marks this page as an error handler</td><td><code>"true"</code></td></tr>
+      <tr><td><code>session</code></td><td>Whether page participates in session</td><td><code>"true"</code> (default)</td></tr>
+      <tr><td><code>isELIgnored</code></td><td>Disable Expression Language</td><td><code>"false"</code> (default)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2. Include Directive &mdash; <code>&lt;%@ include %&gt;</code></h3>
+  <p>Inserts the contents of another file into this JSP at compile time. The included file becomes part of this page &mdash; as if you copy-pasted it in.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">customer-dashboard.jsp &mdash; include directive</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ include file="header.jsp" %&gt;
+
+&lt;h1&gt;Customer Dashboard&lt;/h1&gt;
+&lt;p&gt;Welcome, ${sessionScope.user.fullName}&lt;/p&gt;
+
+&lt;%@ include file="footer.jsp" %&gt;</code></pre>
+  </div>
+  <p><strong>Static include</strong> means the content is merged at translation time (when JSP becomes Java). If you change <code>header.jsp</code>, you need to retranslate all pages that include it.</p>
+
+  <h3>3. Taglib Directive &mdash; <code>&lt;%@ taglib %&gt;</code></h3>
+  <p>Declares a tag library so you can use custom tags in your JSP. The most important one is JSTL (covered in detail in Section 6).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">history.jsp &mdash; taglib directive</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Taglib Directive</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">prefix="c"</div>
+        <div class="breakdown-explain">The shorthand name you use in your JSP. With prefix "c", you write &lt;c:forEach&gt;, &lt;c:if&gt;, etc. You could use any prefix, but "c" is the convention for JSTL core.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">uri="http://java.sun.com/jsp/jstl/core"</div>
+        <div class="breakdown-explain">A unique identifier for the tag library. This is NOT a URL the browser visits &mdash; it is just an ID that Tomcat uses to find the right JAR file. The JSTL core library provides &lt;c:if&gt;, &lt;c:forEach&gt;, &lt;c:choose&gt;, etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">prefix="fmt"</div>
+        <div class="breakdown-explain">The JSTL formatting library. Provides &lt;fmt:formatDate&gt; and &lt;fmt:formatNumber&gt; for displaying dates and currencies properly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Scripting Elements                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="scripting">
+  <div class="section-tag">Section 04</div>
+  <h2>Scripting Elements</h2>
+  <p class="section-desc">Scripting elements let you embed raw Java code inside a JSP page. There are three types. You need to know them, but you should NOT use them in real projects (we will explain why).</p>
+
+  <h3>1. Scriptlet &mdash; <code>&lt;% %&gt;</code></h3>
+  <p>A block of Java code that runs when the page is requested. The code goes directly into the <code>_jspService()</code> method of the generated servlet.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Scriptlet example &mdash; tracking.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%
+  String bookingId = request.getParameter("bookingId");
+  List&lt;Booking&gt; results = (List&lt;Booking&gt;) request.getAttribute("results");
+  if (results != null &amp;&amp; !results.isEmpty()) {
+%&gt;
+    &lt;table&gt;
+      &lt;tr&gt;&lt;th&gt;Booking ID&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;
+      &lt;% for (Booking b : results) { %&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;%= b.getBookingId() %&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;%= b.getParStatus() %&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;% } %&gt;
+    &lt;/table&gt;
+&lt;% } else { %&gt;
+    &lt;p&gt;No results found.&lt;/p&gt;
+&lt;% } %&gt;</code></pre>
+  </div>
+
+  <h3>2. Expression &mdash; <code>&lt;%= %&gt;</code></h3>
+  <p>Outputs the value of a Java expression directly into the HTML. Whatever the expression evaluates to gets converted to a String and written to the page.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Expression examples</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Output a variable value --&gt;
+&lt;p&gt;Welcome, &lt;%= user.getFullName() %&gt;&lt;/p&gt;
+
+&lt;!-- Output a calculation --&gt;
+&lt;p&gt;Total: Rs. &lt;%= booking.getParWeight() * ratePerKg %&gt;&lt;/p&gt;
+
+&lt;!-- Output current date --&gt;
+&lt;p&gt;Date: &lt;%= new java.util.Date() %&gt;&lt;/p&gt;</code></pre>
+  </div>
+  <p>Notice there is no semicolon inside <code>&lt;%= %&gt;</code>. It is an expression, not a statement. The value is what gets printed.</p>
+
+  <h3>3. Declaration &mdash; <code>&lt;%! %&gt;</code></h3>
+  <p>Declares methods or instance variables that become part of the servlet class (not the <code>_jspService</code> method). These exist for the entire life of the servlet.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Declaration example</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%!
+  private int visitCount = 0;
+
+  private String formatStatus(String status) {
+    switch(status) {
+      case "BOOKED": return "Booked";
+      case "IN_TRANSIT": return "In Transit";
+      case "DELIVERED": return "Delivered";
+      default: return status;
+    }
+  }
+%&gt;
+
+&lt;p&gt;Page visited: &lt;%= ++visitCount %&gt; times&lt;/p&gt;
+&lt;p&gt;Status: &lt;%= formatStatus(booking.getParStatus()) %&gt;&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Declarations Are Dangerous</div>
+    <p>Variables declared with <code>&lt;%! %&gt;</code> are shared across all users because they are instance variables of the servlet. That <code>visitCount</code> above counts visits from ALL users combined, not per user. This creates thread-safety issues. Avoid declarations in real code.</p>
+  </div>
+
+  <h3>Quick Reference: Scripting Elements</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Syntax</th><th>Where It Goes in Servlet</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Scriptlet</td><td><code>&lt;% %&gt;</code></td><td>Inside <code>_jspService()</code></td><td>Execute Java code</td></tr>
+      <tr><td>Expression</td><td><code>&lt;%= %&gt;</code></td><td>Inside <code>out.print()</code></td><td>Output a value</td></tr>
+      <tr><td>Declaration</td><td><code>&lt;%! %&gt;</code></td><td>Class level (outside any method)</td><td>Define methods/variables</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why Scriptlets Are Bad Practice</h3>
+  <p>You just learned scriptlets. Now here is why you should <strong>never use them</strong> in real projects:</p>
+
+  <ul>
+    <li><strong>Mixing logic with view.</strong> A JSP file is supposed to display data. The moment you put <code>if</code> statements, loops, and database queries inside a JSP, the file becomes impossible to maintain. Is it HTML? Is it Java? Nobody knows.</li>
+    <li><strong>Not testable.</strong> You cannot unit test Java code that is embedded in an HTML file. Servlets and service classes can be tested. Scriptlets cannot.</li>
+    <li><strong>Designers cannot work with it.</strong> If a designer needs to change the HTML layout, they have to navigate around Java code blocks. One wrong keystroke breaks the Java, and now a designer is debugging a NullPointerException.</li>
+    <li><strong>Duplication.</strong> If three JSP pages need the same logic, you copy-paste the scriptlet into all three. Change the logic? Update all three. Miss one? Bug.</li>
+  </ul>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Old way (scriptlets)</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;% if (user != null) { %&gt;
+  &lt;p&gt;Hello, &lt;%= user.getFullName() %&gt;&lt;/p&gt;
+&lt;% } else { %&gt;
+  &lt;p&gt;Please log in&lt;/p&gt;
+&lt;% } %&gt;</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Modern way (EL + JSTL)</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;c:choose&gt;
+  &lt;c:when test="${not empty user}"&gt;
+    &lt;p&gt;Hello, ${user.fullName}&lt;/p&gt;
+  &lt;/c:when&gt;
+  &lt;c:otherwise&gt;
+    &lt;p&gt;Please log in&lt;/p&gt;
+  &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Rule</div>
+    <p>In Nimbus and in professional Java web development: <strong>zero scriptlets in JSP files</strong>. Use Expression Language (EL) and JSTL instead. The only reason we teach scriptlets is so you understand them when reading old code or when exam questions ask about them.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Expression Language (EL)                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="expression-language">
+  <div class="section-tag">Section 05</div>
+  <h2>Expression Language (EL)</h2>
+  <p class="section-desc">Expression Language is the modern, clean way to access data in JSP pages. Instead of writing <code>&lt;%= user.getFullName() %&gt;</code>, you write <code>${user.fullName}</code>. Shorter, cleaner, and no Java syntax needed.</p>
+
+  <h3>Basic Syntax: <code>${}</code></h3>
+  <p>Everything inside <code>${ }</code> is an EL expression. Tomcat evaluates it and outputs the result. The EL engine automatically calls getter methods &mdash; <code>${user.fullName}</code> calls <code>user.getFullName()</code> behind the scenes.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">EL basics in Nimbus JSP pages</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Access request attributes (set by servlet) --&gt;
+&lt;p&gt;Welcome, ${user.fullName}&lt;/p&gt;
+&lt;p&gt;Booking ID: ${booking.bookingId}&lt;/p&gt;
+&lt;p&gt;Status: ${booking.parStatus}&lt;/p&gt;
+&lt;p&gt;Weight: ${booking.parWeight} kg&lt;/p&gt;
+
+&lt;!-- Access session attributes --&gt;
+&lt;p&gt;Logged in as: ${sessionScope.user.userId}&lt;/p&gt;
+
+&lt;!-- Access request parameters (from URL or form) --&gt;
+&lt;p&gt;Search for: ${param.bookingId}&lt;/p&gt;
+
+&lt;!-- Access list size --&gt;
+&lt;p&gt;Total bookings: ${bookings.size()}&lt;/p&gt;</code></pre>
+  </div>
+
+  <h3>How EL Finds Data</h3>
+  <p>When you write <code>${user}</code>, EL searches for an attribute named "user" in this order:</p>
+  <ol class="steps">
+    <li><strong>Page scope</strong> &mdash; attributes set with <code>pageContext.setAttribute("user", ...)</code>. Only visible within this JSP page.</li>
+    <li><strong>Request scope</strong> &mdash; attributes set with <code>request.setAttribute("user", ...)</code>. This is the most common one. Servlets set request attributes before forwarding to JSP.</li>
+    <li><strong>Session scope</strong> &mdash; attributes set with <code>session.setAttribute("user", ...)</code>. Survives across multiple requests for the same user.</li>
+    <li><strong>Application scope</strong> &mdash; attributes set with <code>application.setAttribute("user", ...)</code>. Shared across all users. Rarely used.</li>
+  </ol>
+
+  <p>If you want to be explicit about which scope, use the scope prefix:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">EL scope prefixes</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Explicitly specify the scope --&gt;
+${requestScope.user.fullName}     &lt;!-- from request.setAttribute() --&gt;
+${sessionScope.user.userId}       &lt;!-- from session.setAttribute() --&gt;
+${applicationScope.appName}       &lt;!-- from application.setAttribute() --&gt;
+${pageScope.tempVar}              &lt;!-- from pageContext.setAttribute() --&gt;
+
+&lt;!-- Access request parameters --&gt;
+${param.bookingId}                &lt;!-- from URL: ?bookingId=NB001 --&gt;
+${param.userId}                   &lt;!-- from form: &lt;input name="userId"&gt; --&gt;
+
+&lt;!-- Access HTTP headers --&gt;
+${header["User-Agent"]}           &lt;!-- browser info --&gt;
+
+&lt;!-- Access cookies --&gt;
+${cookie.JSESSIONID.value}        &lt;!-- session cookie value --&gt;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The Servlet handles the logic and sets data as request attributes. The JSP reads them with EL. For example, <code>CustomerDashboardServlet</code> does <code>request.setAttribute("bookedCount", 5)</code> and then <code>customer-dashboard.jsp</code> displays <code>${bookedCount}</code>. The JSP never touches the database or runs any business logic.</p>
+  </div>
+
+  <h3>EL with Java Bean Properties</h3>
+  <p>EL uses the JavaBean convention: <code>${booking.parStatus}</code> calls <code>booking.getParStatus()</code>. The property name matches the getter name minus "get" with the first letter lowercased.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>EL Expression</th><th>Java Method Called</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>${user.fullName}</code></td><td><code>user.getFullName()</code></td></tr>
+      <tr><td><code>${booking.bookingId}</code></td><td><code>booking.getBookingId()</code></td></tr>
+      <tr><td><code>${booking.parWeight}</code></td><td><code>booking.getParWeight()</code></td></tr>
+      <tr><td><code>${user.admin}</code></td><td><code>user.isAdmin()</code> (boolean getter)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>EL Operators</h3>
+  <p>You can do comparisons and arithmetic directly in EL:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Operation</th><th>Symbol</th><th>Word Form</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Equal</td><td><code>==</code></td><td><code>eq</code></td><td><code>${booking.parStatus == 'DELIVERED'}</code></td></tr>
+      <tr><td>Not equal</td><td><code>!=</code></td><td><code>ne</code></td><td><code>${booking.parStatus != 'CANCELLED'}</code></td></tr>
+      <tr><td>Less than</td><td><code>&lt;</code></td><td><code>lt</code></td><td><code>${booking.parWeight lt 5}</code></td></tr>
+      <tr><td>Greater than</td><td><code>&gt;</code></td><td><code>gt</code></td><td><code>${booking.parWeight gt 10}</code></td></tr>
+      <tr><td>Less or equal</td><td><code>&lt;=</code></td><td><code>le</code></td><td><code>${pageNum le totalPages}</code></td></tr>
+      <tr><td>Greater or equal</td><td><code>&gt;=</code></td><td><code>ge</code></td><td><code>${pageNum ge 1}</code></td></tr>
+      <tr><td>And</td><td><code>&amp;&amp;</code></td><td><code>and</code></td><td><code>${not empty user and user.admin}</code></td></tr>
+      <tr><td>Or</td><td><code>||</code></td><td><code>or</code></td><td><code>${empty user or not user.active}</code></td></tr>
+      <tr><td>Not</td><td><code>!</code></td><td><code>not</code></td><td><code>${not empty bookings}</code></td></tr>
+      <tr><td>Empty check</td><td colspan="2"><code>empty</code></td><td><code>${empty bookings}</code></td></tr>
+      <tr><td>Arithmetic</td><td colspan="2"><code>+ - * / %</code></td><td><code>${booking.parWeight * 50}</code></td></tr>
+      <tr><td>Ternary</td><td colspan="2"><code>? :</code></td><td><code>${user.admin ? 'Admin' : 'Customer'}</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Word Operators</div>
+    <p>In JSP/HTML, using <code>&lt;</code> and <code>&gt;</code> can cause parsing problems because they look like HTML tags. That is why EL provides word-based alternatives: <code>lt</code>, <code>gt</code>, <code>le</code>, <code>ge</code>, <code>eq</code>, <code>ne</code>. Use the word forms inside JSP attributes to avoid issues.</p>
+  </div>
+
+  <h3>The <code>empty</code> Operator</h3>
+  <p>One of the most useful EL operators. It returns <code>true</code> if a value is:</p>
+  <ul>
+    <li><code>null</code></li>
+    <li>An empty String <code>""</code></li>
+    <li>An empty Collection (List with 0 elements)</li>
+    <li>An empty Map</li>
+    <li>An empty array</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Using empty in Nimbus JSPs</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Show results only if the list is not empty --&gt;
+&lt;c:if test="${not empty bookings}"&gt;
+  &lt;table&gt;...&lt;/table&gt;
+&lt;/c:if&gt;
+
+&lt;!-- Show error message only if it exists --&gt;
+&lt;c:if test="${not empty errorMessage}"&gt;
+  &lt;div class="error"&gt;${errorMessage}&lt;/div&gt;
+&lt;/c:if&gt;
+
+&lt;!-- Show "no results" message --&gt;
+&lt;c:if test="${empty results}"&gt;
+  &lt;p&gt;No tracking results found for this booking ID.&lt;/p&gt;
+&lt;/c:if&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: JSTL                                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="jstl">
+  <div class="section-tag">Section 06</div>
+  <h2>JSTL (JSP Standard Tag Library)</h2>
+  <p class="section-desc">JSTL provides ready-made tags for common tasks: loops, conditionals, formatting. Combined with EL, JSTL eliminates the need for any Java scriptlets in your JSP pages.</p>
+
+  <h3>Adding JSTL to Your Project</h3>
+  <p>JSTL is not built into Tomcat. You need to add it as a dependency.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml &mdash; Maven dependency</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- JSTL for Tomcat 9 (Jakarta EE 8 / javax) --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+    &lt;version&gt;1.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+  <p>If not using Maven, download the <code>jstl-1.2.jar</code> and place it in <code>WEB-INF/lib/</code>.</p>
+
+  <p>At the top of every JSP that uses JSTL tags, add the taglib directive:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Required taglib declarations</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;</code></pre>
+  </div>
+
+  <h3><code>&lt;c:out&gt;</code> &mdash; Safe Output</h3>
+  <p>Outputs a value with automatic HTML escaping, preventing XSS attacks.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">c:out example</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- UNSAFE: If user.fullName contains &lt;script&gt;alert('hack')&lt;/script&gt;, it RUNS --&gt;
+&lt;p&gt;${user.fullName}&lt;/p&gt;
+
+&lt;!-- SAFE: c:out escapes HTML characters --&gt;
+&lt;p&gt;&lt;c:out value="${user.fullName}"/&gt;&lt;/p&gt;
+
+&lt;!-- With default value if null --&gt;
+&lt;p&gt;&lt;c:out value="${user.phone}" default="Not provided"/&gt;&lt;/p&gt;</code></pre>
+  </div>
+
+  <h3><code>&lt;c:set&gt;</code> &mdash; Set Variables</h3>
+  <p>Creates or sets a variable within the page.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">c:set example</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Set a simple variable --&gt;
+&lt;c:set var="pageTitle" value="Booking History"/&gt;
+&lt;title&gt;${pageTitle} - Nimbus&lt;/title&gt;
+
+&lt;!-- Calculate a value --&gt;
+&lt;c:set var="totalCost" value="${booking.parWeight * 50}"/&gt;
+&lt;p&gt;Shipping cost: Rs. ${totalCost}&lt;/p&gt;
+
+&lt;!-- Set in a specific scope --&gt;
+&lt;c:set var="currentPage" value="3" scope="request"/&gt;</code></pre>
+  </div>
+
+  <h3><code>&lt;c:if&gt;</code> &mdash; Simple Conditional</h3>
+  <p>Renders its body only if the test condition is true. There is no else &mdash; use <code>&lt;c:choose&gt;</code> for if/else.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">tracking.jsp &mdash; conditional display</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Show error message if login failed --&gt;
+&lt;c:if test="${not empty errorMessage}"&gt;
+  &lt;div class="alert alert-danger"&gt;${errorMessage}&lt;/div&gt;
+&lt;/c:if&gt;
+
+&lt;!-- Show results table only if there are results --&gt;
+&lt;c:if test="${not empty trackingResults}"&gt;
+  &lt;h3&gt;Tracking Results&lt;/h3&gt;
+  &lt;table&gt;...&lt;/table&gt;
+&lt;/c:if&gt;
+
+&lt;!-- Show admin link only for officers --&gt;
+&lt;c:if test="${sessionScope.user.role == 'OFFICER'}"&gt;
+  &lt;a href="/officer-dashboard"&gt;Admin Panel&lt;/a&gt;
+&lt;/c:if&gt;</code></pre>
+  </div>
+
+  <h3><code>&lt;c:choose&gt;</code> / <code>&lt;c:when&gt;</code> / <code>&lt;c:otherwise&gt;</code> &mdash; If/Else If/Else</h3>
+  <p>Works like a Java switch or if/else-if/else chain.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">delivery-status.jsp &mdash; status badge colors</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;c:choose&gt;
+  &lt;c:when test="${booking.parStatus == 'BOOKED'}"&gt;
+    &lt;span class="badge badge-info"&gt;Booked&lt;/span&gt;
+  &lt;/c:when&gt;
+  &lt;c:when test="${booking.parStatus == 'IN_TRANSIT'}"&gt;
+    &lt;span class="badge badge-warning"&gt;In Transit&lt;/span&gt;
+  &lt;/c:when&gt;
+  &lt;c:when test="${booking.parStatus == 'DELIVERED'}"&gt;
+    &lt;span class="badge badge-success"&gt;Delivered&lt;/span&gt;
+  &lt;/c:when&gt;
+  &lt;c:when test="${booking.parStatus == 'CANCELLED'}"&gt;
+    &lt;span class="badge badge-danger"&gt;Cancelled&lt;/span&gt;
+  &lt;/c:when&gt;
+  &lt;c:otherwise&gt;
+    &lt;span class="badge"&gt;${booking.parStatus}&lt;/span&gt;
+  &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">c:choose structure</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;c:choose&gt;</div>
+        <div class="breakdown-explain">Container tag. Like the opening of a switch block. Only ONE of the inner &lt;c:when&gt; blocks will execute.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;c:when test="${booking.parStatus == 'BOOKED'}"&gt;</div>
+        <div class="breakdown-explain">Like "if" or "case". The test attribute takes an EL expression that evaluates to true/false. If true, this block's content is rendered. Tomcat stops checking remaining &lt;c:when&gt; tags.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;c:otherwise&gt;</div>
+        <div class="breakdown-explain">Like "else" or "default". Runs only if none of the &lt;c:when&gt; conditions matched. Optional but recommended.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3><code>&lt;c:forEach&gt;</code> &mdash; Loop</h3>
+  <p>Iterates over a collection. This is the JSTL tag you will use the most &mdash; every table of bookings, every list of users, every history page uses this.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">history.jsp &mdash; booking list table</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;table class="table"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;#&lt;/th&gt;
+      &lt;th&gt;Booking ID&lt;/th&gt;
+      &lt;th&gt;Sender&lt;/th&gt;
+      &lt;th&gt;Receiver&lt;/th&gt;
+      &lt;th&gt;Status&lt;/th&gt;
+      &lt;th&gt;Date&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;c:forEach items="${bookings}" var="b" varStatus="loop"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;${loop.count}&lt;/td&gt;
+        &lt;td&gt;${b.bookingId}&lt;/td&gt;
+        &lt;td&gt;${b.senderName}&lt;/td&gt;
+        &lt;td&gt;${b.receiverName}&lt;/td&gt;
+        &lt;td&gt;${b.parStatus}&lt;/td&gt;
+        &lt;td&gt;&lt;fmt:formatDate value="${b.bookingDate}" pattern="dd-MMM-yyyy"/&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">c:forEach attributes</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">items="${bookings}"</div>
+        <div class="breakdown-explain">The collection to loop over. This reads the "bookings" attribute from the request (set by the Servlet with request.setAttribute("bookings", bookingList)).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">var="b"</div>
+        <div class="breakdown-explain">The loop variable name. Each iteration, "b" holds the current Booking object. You access its properties with ${b.bookingId}, ${b.senderName}, etc.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">varStatus="loop"</div>
+        <div class="breakdown-explain">Gives you loop metadata. loop.count = 1-based index. loop.index = 0-based index. loop.first = is this the first item? loop.last = is this the last item?</div>
+      </div>
+    </div>
+  </div>
+
+  <h4><code>&lt;c:forEach&gt;</code> with Numbers (Counter Loop)</h4>
+  <p>You can also use <code>&lt;c:forEach&gt;</code> as a counter loop, like a Java <code>for (int i = 1; i &lt;= 10; i++)</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">history.jsp &mdash; pagination links</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Generate page links: 1 2 3 4 5 --&gt;
+&lt;nav class="pagination"&gt;
+  &lt;c:forEach begin="1" end="${totalPages}" var="pageNum"&gt;
+    &lt;c:choose&gt;
+      &lt;c:when test="${pageNum == currentPage}"&gt;
+        &lt;span class="page-link active"&gt;${pageNum}&lt;/span&gt;
+      &lt;/c:when&gt;
+      &lt;c:otherwise&gt;
+        &lt;a href="/history?page=${pageNum}" class="page-link"&gt;${pageNum}&lt;/a&gt;
+      &lt;/c:otherwise&gt;
+    &lt;/c:choose&gt;
+  &lt;/c:forEach&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <h3><code>&lt;fmt:formatDate&gt;</code> &mdash; Format Dates</h3>
+  <p>Formats a <code>java.util.Date</code> object for display.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">invoice.jsp &mdash; date formatting</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Simple date --&gt;
+&lt;fmt:formatDate value="${booking.bookingDate}" pattern="dd-MMM-yyyy"/&gt;
+&lt;!-- Output: 23-Apr-2026 --&gt;
+
+&lt;!-- Date with time --&gt;
+&lt;fmt:formatDate value="${booking.bookingDate}" pattern="dd/MM/yyyy hh:mm a"/&gt;
+&lt;!-- Output: 23/04/2026 02:30 PM --&gt;
+
+&lt;!-- Full date --&gt;
+&lt;fmt:formatDate value="${booking.bookingDate}" type="both" dateStyle="long"/&gt;
+&lt;!-- Output: April 23, 2026 2:30:00 PM --&gt;</code></pre>
+  </div>
+
+  <h3><code>&lt;fmt:formatNumber&gt;</code> &mdash; Format Numbers and Currency</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">invoice.jsp &mdash; currency formatting</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Format as currency --&gt;
+&lt;fmt:formatNumber value="${totalCost}" type="currency" currencySymbol="Rs. "/&gt;
+&lt;!-- Output: Rs. 1,250.00 --&gt;
+
+&lt;!-- Format with decimal places --&gt;
+&lt;fmt:formatNumber value="${booking.parWeight}" maxFractionDigits="2"/&gt;
+&lt;!-- Output: 3.50 --&gt;
+
+&lt;!-- Format as percentage --&gt;
+&lt;fmt:formatNumber value="${discount}" type="percent"/&gt;
+&lt;!-- Output: 15% --&gt;</code></pre>
+  </div>
+
+  <h3>JSTL Quick Reference</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Tag</th><th>Purpose</th><th>Key Attributes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>&lt;c:out&gt;</code></td><td>Output with HTML escaping</td><td><code>value</code>, <code>default</code></td></tr>
+      <tr><td><code>&lt;c:set&gt;</code></td><td>Set a variable</td><td><code>var</code>, <code>value</code>, <code>scope</code></td></tr>
+      <tr><td><code>&lt;c:if&gt;</code></td><td>Conditional (no else)</td><td><code>test</code></td></tr>
+      <tr><td><code>&lt;c:choose&gt;</code></td><td>If/else-if/else container</td><td>None (wraps when/otherwise)</td></tr>
+      <tr><td><code>&lt;c:when&gt;</code></td><td>A condition branch</td><td><code>test</code></td></tr>
+      <tr><td><code>&lt;c:otherwise&gt;</code></td><td>Default/else branch</td><td>None</td></tr>
+      <tr><td><code>&lt;c:forEach&gt;</code></td><td>Loop over collection or range</td><td><code>items</code>, <code>var</code>, <code>varStatus</code>, <code>begin</code>, <code>end</code></td></tr>
+      <tr><td><code>&lt;fmt:formatDate&gt;</code></td><td>Format dates</td><td><code>value</code>, <code>pattern</code>, <code>type</code></td></tr>
+      <tr><td><code>&lt;fmt:formatNumber&gt;</code></td><td>Format numbers/currency</td><td><code>value</code>, <code>type</code>, <code>currencySymbol</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Implicit Objects                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="implicit-objects">
+  <div class="section-tag">Section 07</div>
+  <h2>Implicit Objects</h2>
+  <p class="section-desc">JSP gives you 9 objects automatically &mdash; you do not create them. They are available in every JSP page, ready to use in scriptlets. In modern JSP, you access most of these through EL instead.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Object</th><th>Type</th><th>What It Gives You</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>request</code></td>
+        <td><code>HttpServletRequest</code></td>
+        <td>The incoming HTTP request. Access parameters (<code>request.getParameter()</code>), attributes (<code>request.getAttribute()</code>), headers, URL info.</td>
+      </tr>
+      <tr>
+        <td><code>response</code></td>
+        <td><code>HttpServletResponse</code></td>
+        <td>The HTTP response being sent back. Set headers, cookies, status codes, redirects. Rarely used directly in JSP.</td>
+      </tr>
+      <tr>
+        <td><code>session</code></td>
+        <td><code>HttpSession</code></td>
+        <td>The user's session. Store and retrieve data that persists across requests: <code>session.getAttribute("user")</code>.</td>
+      </tr>
+      <tr>
+        <td><code>application</code></td>
+        <td><code>ServletContext</code></td>
+        <td>The web application context. Shared across all users and all pages. Used for app-wide settings.</td>
+      </tr>
+      <tr>
+        <td><code>out</code></td>
+        <td><code>JspWriter</code></td>
+        <td>The output stream. What <code>&lt;%= %&gt;</code> writes to. You can call <code>out.println()</code> in scriptlets, but you should not need to.</td>
+      </tr>
+      <tr>
+        <td><code>pageContext</code></td>
+        <td><code>PageContext</code></td>
+        <td>Access to all other implicit objects and page-scoped attributes. Acts as a gateway to everything.</td>
+      </tr>
+      <tr>
+        <td><code>config</code></td>
+        <td><code>ServletConfig</code></td>
+        <td>Configuration for this servlet (JSP). Access init parameters from web.xml. Rarely used.</td>
+      </tr>
+      <tr>
+        <td><code>page</code></td>
+        <td><code>Object</code></td>
+        <td>Reference to the current JSP page instance itself. Equivalent to <code>this</code>. Almost never used.</td>
+      </tr>
+      <tr>
+        <td><code>exception</code></td>
+        <td><code>Throwable</code></td>
+        <td>The exception that occurred. Only available in error pages (where <code>isErrorPage="true"</code>).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The ones you use daily: <code>request</code> (to get data from servlets), <code>session</code> (to check logged-in user), and <code>out</code> (to write output, though EL/JSTL is preferred). The others are there for special cases.</p>
+  </div>
+
+  <h3>EL Implicit Objects (Different from JSP Implicit Objects)</h3>
+  <p>When you use <code>${}</code> syntax, EL has its own set of implicit objects. These are not the same as the JSP ones above, but they provide access to similar data:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>EL Object</th><th>Maps To</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>requestScope</code></td><td>Request attributes</td><td><code>${requestScope.bookings}</code></td></tr>
+      <tr><td><code>sessionScope</code></td><td>Session attributes</td><td><code>${sessionScope.user}</code></td></tr>
+      <tr><td><code>applicationScope</code></td><td>Application attributes</td><td><code>${applicationScope.appName}</code></td></tr>
+      <tr><td><code>pageScope</code></td><td>Page attributes</td><td><code>${pageScope.tempVar}</code></td></tr>
+      <tr><td><code>param</code></td><td>Request parameters (single value)</td><td><code>${param.bookingId}</code></td></tr>
+      <tr><td><code>paramValues</code></td><td>Request parameters (multiple)</td><td><code>${paramValues.status[0]}</code></td></tr>
+      <tr><td><code>header</code></td><td>HTTP headers</td><td><code>${header["User-Agent"]}</code></td></tr>
+      <tr><td><code>cookie</code></td><td>Cookies</td><td><code>${cookie.JSESSIONID.value}</code></td></tr>
+      <tr><td><code>pageContext</code></td><td>PageContext object</td><td><code>${pageContext.request.contextPath}</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Context Path</div>
+    <p><code>${pageContext.request.contextPath}</code> is extremely useful. It gives you the base URL of your application (e.g., <code>/nimbus</code>). Use it in links and form actions so your URLs work regardless of deployment path: <code>&lt;a href="${pageContext.request.contextPath}/booking"&gt;</code></p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Servlet + JSP Together (MVC)                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="servlet-jsp-mvc">
+  <div class="section-tag">Section 08</div>
+  <h2>How Servlet + JSP Work Together</h2>
+  <p class="section-desc">This is the most important concept. The Servlet handles the logic (Controller). The JSP displays the data (View). The model classes carry the data between them. This is the MVC (Model-View-Controller) pattern.</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box dark">
+        Browser
+        <span class="flow-sub">User clicks "View History"</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">
+        HistoryServlet
+        <span class="flow-sub">Controller (doGet)</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">
+        BookingDAO
+        <span class="flow-sub">Database query</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box dark">
+        Browser
+        <span class="flow-sub">Sees the HTML table</span>
+      </div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box green">
+        history.jsp
+        <span class="flow-sub">View (renders HTML)</span>
+      </div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box purple">
+        List&lt;Booking&gt;
+        <span class="flow-sub">Model (data objects)</span>
+      </div>
+    </div>
+    <div class="flow-label">MVC Flow: Browser &rarr; Servlet (logic) &rarr; DAO (data) &rarr; Model (objects) &rarr; JSP (display) &rarr; Browser</div>
+  </div>
+
+  <h3>The Complete Flow, Step by Step</h3>
+  <ol class="steps">
+    <li><strong>Browser sends request.</strong> User clicks "View History" which sends a GET request to <code>/history</code>.</li>
+    <li><strong>Servlet receives request.</strong> <code>HistoryServlet.doGet()</code> runs. It gets the logged-in user from the session.</li>
+    <li><strong>Servlet calls the DAO.</strong> <code>BookingDAO.getBookingsByUser(userId)</code> queries the database and returns a <code>List&lt;Booking&gt;</code>.</li>
+    <li><strong>Servlet sets request attributes.</strong> <code>request.setAttribute("bookings", bookingList)</code> attaches the data to the request.</li>
+    <li><strong>Servlet forwards to JSP.</strong> <code>request.getRequestDispatcher("/WEB-INF/views/history.jsp").forward(request, response)</code> passes control to the JSP.</li>
+    <li><strong>JSP renders HTML.</strong> The JSP reads <code>${bookings}</code> using EL, loops through them with <code>&lt;c:forEach&gt;</code>, and generates an HTML table.</li>
+    <li><strong>Browser receives HTML.</strong> The user sees a table of their bookings. They have no idea a Servlet or JSP was involved &mdash; they just see a web page.</li>
+  </ol>
+
+  <h3>Servlet Code (Controller)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HistoryServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-java">@WebServlet("/history")
+public class HistoryServlet extends HttpServlet {
+
+    private BookingDAO bookingDAO = new BookingDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // 1. Get logged-in user from session
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
+        // 2. Get pagination parameters
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        int pageSize = 10;
+
+        // 3. Query database through DAO
+        List&lt;Booking&gt; bookings = bookingDAO
+            .getBookingsByUser(user.getUserId(), page, pageSize);
+        int totalBookings = bookingDAO
+            .countBookingsByUser(user.getUserId());
+        int totalPages = (int) Math.ceil((double) totalBookings / pageSize);
+
+        // 4. Set data as request attributes
+        request.setAttribute("bookings", bookings);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        // 5. Forward to JSP (view)
+        request.getRequestDispatcher("/WEB-INF/views/history.jsp")
+               .forward(request, response);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Servlet &rarr; JSP flow</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.getSession().getAttribute("user")</div>
+        <div class="breakdown-explain">Gets the User object stored in the session during login. If null, the user is not logged in &mdash; redirect to login page.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.getParameter("page")</div>
+        <div class="breakdown-explain">Reads the "page" parameter from the URL (e.g., /history?page=2). If not present, defaults to page 1.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.setAttribute("bookings", bookings)</div>
+        <div class="breakdown-explain">THIS is the bridge between Servlet and JSP. The Servlet attaches data to the request object. The JSP reads it using ${bookings} in EL.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">request.getRequestDispatcher("/WEB-INF/views/history.jsp").forward(request, response)</div>
+        <div class="breakdown-explain">Forwards the request to history.jsp. The JSP receives the same request object with all the attributes set. The URL in the browser stays as /history (not /WEB-INF/views/history.jsp). Placing JSP in WEB-INF prevents direct browser access.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Golden Rule</div>
+    <p><strong>JSP files go in <code>/WEB-INF/views/</code></strong>. Files inside <code>WEB-INF</code> cannot be accessed directly by the browser (typing the URL gives 404). The only way to reach them is through a Servlet forward. This enforces MVC &mdash; all requests go through the Servlet first.</p>
+  </div>
+
+  <h3>JSP Rules (What JSP Should Never Do)</h3>
+  <ul>
+    <li>Never create database connections</li>
+    <li>Never call DAO methods</li>
+    <li>Never run SQL queries</li>
+    <li>Never contain business logic (validation, calculations)</li>
+    <li>Never import service classes</li>
+    <li>Never use scriptlets</li>
+  </ul>
+  <p>JSP does one thing: <strong>take data from request attributes and render HTML</strong>. Everything else belongs in the Servlet or service layer.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Full Nimbus JSP Pages                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-jsps">
+  <div class="section-tag">Section 09</div>
+  <h2>Full Nimbus JSP Pages</h2>
+  <p class="section-desc">Complete, working JSP pages for Nimbus. Each one receives data from a Servlet via <code>request.setAttribute()</code> and displays it using EL and JSTL. No scriptlets.</p>
+
+  <h3>login.jsp</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">/WEB-INF/views/login.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Login - Nimbus Parcel Management&lt;/title&gt;
+    &lt;link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="login-container"&gt;
+        &lt;h1&gt;Nimbus Login&lt;/h1&gt;
+
+        &lt;!-- Show error message if login failed --&gt;
+        &lt;c:if test="${not empty errorMessage}"&gt;
+            &lt;div class="alert alert-danger"&gt;
+                &lt;c:out value="${errorMessage}"/&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;!-- Show success message (e.g., after registration) --&gt;
+        &lt;c:if test="${not empty successMessage}"&gt;
+            &lt;div class="alert alert-success"&gt;
+                &lt;c:out value="${successMessage}"/&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;form action="${pageContext.request.contextPath}/login" method="POST"&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label for="userId"&gt;User ID&lt;/label&gt;
+                &lt;input type="text" id="userId" name="userId"
+                       value="${param.userId}" required/&gt;
+            &lt;/div&gt;
+
+            &lt;div class="form-group"&gt;
+                &lt;label for="password"&gt;Password&lt;/label&gt;
+                &lt;input type="password" id="password" name="password" required/&gt;
+            &lt;/div&gt;
+
+            &lt;button type="submit" class="btn btn-primary"&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;p&gt;Don't have an account?
+            &lt;a href="${pageContext.request.contextPath}/register"&gt;Register here&lt;/a&gt;
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">login.jsp line-by-line</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;c:if test="${not empty errorMessage}"&gt;</div>
+        <div class="breakdown-explain">Only shows the error div if the Servlet set an "errorMessage" attribute. On first visit (GET), this is empty so nothing shows. On failed login (POST), the Servlet sets it to "Invalid credentials".</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;c:out value="${errorMessage}"/&gt;</div>
+        <div class="breakdown-explain">Outputs the error message with HTML escaping. Prevents XSS attacks even if someone manages to inject script into the message.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">action="${pageContext.request.contextPath}/login"</div>
+        <div class="breakdown-explain">The form submits to /nimbus/login (if the app is deployed as "nimbus"). contextPath ensures the URL works regardless of deployment name.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">value="${param.userId}"</div>
+        <div class="breakdown-explain">Pre-fills the userId field with the previously entered value. If the user typed "john123" and login failed, they see "john123" still in the field instead of an empty box. Saves the user from retyping.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>customer-dashboard.jsp</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">/WEB-INF/views/customer-dashboard.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Dashboard - Nimbus&lt;/title&gt;
+    &lt;link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="header.jsp" %&gt;
+
+    &lt;div class="container"&gt;
+        &lt;h1&gt;Welcome, ${sessionScope.user.fullName}&lt;/h1&gt;
+
+        &lt;!-- Stats cards from servlet attributes --&gt;
+        &lt;div class="stats-row"&gt;
+            &lt;div class="stat-card"&gt;
+                &lt;h3&gt;${bookedCount}&lt;/h3&gt;
+                &lt;p&gt;Booked&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="stat-card"&gt;
+                &lt;h3&gt;${inTransitCount}&lt;/h3&gt;
+                &lt;p&gt;In Transit&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="stat-card"&gt;
+                &lt;h3&gt;${deliveredCount}&lt;/h3&gt;
+                &lt;p&gt;Delivered&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="stat-card"&gt;
+                &lt;h3&gt;${cancelledCount}&lt;/h3&gt;
+                &lt;p&gt;Cancelled&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Navigation links --&gt;
+        &lt;div class="nav-grid"&gt;
+            &lt;a href="${pageContext.request.contextPath}/booking"
+               class="nav-card"&gt;New Booking&lt;/a&gt;
+            &lt;a href="${pageContext.request.contextPath}/tracking"
+               class="nav-card"&gt;Track Parcel&lt;/a&gt;
+            &lt;a href="${pageContext.request.contextPath}/history"
+               class="nav-card"&gt;Booking History&lt;/a&gt;
+            &lt;a href="${pageContext.request.contextPath}/profile"
+               class="nav-card"&gt;My Profile&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;%@ include file="footer.jsp" %&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The <code>CustomerDashboardServlet</code> queries the database for booking counts grouped by status: <code>request.setAttribute("bookedCount", 12)</code>, <code>request.setAttribute("inTransitCount", 5)</code>, etc. The JSP simply displays <code>${bookedCount}</code>. If the count query changes or the database changes, only the Servlet needs updating &mdash; the JSP stays the same.</p>
+  </div>
+
+  <h3>history.jsp (with pagination)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">/WEB-INF/views/history.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Booking History - Nimbus&lt;/title&gt;
+    &lt;link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="header.jsp" %&gt;
+
+    &lt;div class="container"&gt;
+        &lt;h1&gt;Booking History&lt;/h1&gt;
+
+        &lt;c:choose&gt;
+            &lt;c:when test="${empty bookings}"&gt;
+                &lt;div class="empty-state"&gt;
+                    &lt;p&gt;You have no bookings yet.&lt;/p&gt;
+                    &lt;a href="${pageContext.request.contextPath}/booking"
+                       class="btn btn-primary"&gt;Create Your First Booking&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/c:when&gt;
+            &lt;c:otherwise&gt;
+                &lt;table class="table"&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;#&lt;/th&gt;
+                            &lt;th&gt;Booking ID&lt;/th&gt;
+                            &lt;th&gt;Sender&lt;/th&gt;
+                            &lt;th&gt;Receiver&lt;/th&gt;
+                            &lt;th&gt;Weight&lt;/th&gt;
+                            &lt;th&gt;Status&lt;/th&gt;
+                            &lt;th&gt;Date&lt;/th&gt;
+                            &lt;th&gt;Actions&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;c:forEach items="${bookings}" var="b" varStatus="loop"&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;${loop.count + (currentPage - 1) * 10}&lt;/td&gt;
+                                &lt;td&gt;${b.bookingId}&lt;/td&gt;
+                                &lt;td&gt;&lt;c:out value="${b.senderName}"/&gt;&lt;/td&gt;
+                                &lt;td&gt;&lt;c:out value="${b.receiverName}"/&gt;&lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;fmt:formatNumber value="${b.parWeight}"
+                                        maxFractionDigits="2"/&gt; kg
+                                &lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;c:choose&gt;
+                                        &lt;c:when test="${b.parStatus == 'BOOKED'}"&gt;
+                                            &lt;span class="badge info"&gt;Booked&lt;/span&gt;
+                                        &lt;/c:when&gt;
+                                        &lt;c:when test="${b.parStatus == 'IN_TRANSIT'}"&gt;
+                                            &lt;span class="badge warning"&gt;In Transit&lt;/span&gt;
+                                        &lt;/c:when&gt;
+                                        &lt;c:when test="${b.parStatus == 'DELIVERED'}"&gt;
+                                            &lt;span class="badge success"&gt;Delivered&lt;/span&gt;
+                                        &lt;/c:when&gt;
+                                        &lt;c:otherwise&gt;
+                                            &lt;span class="badge"&gt;${b.parStatus}&lt;/span&gt;
+                                        &lt;/c:otherwise&gt;
+                                    &lt;/c:choose&gt;
+                                &lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;fmt:formatDate value="${b.bookingDate}"
+                                        pattern="dd-MMM-yyyy"/&gt;
+                                &lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;a href="${pageContext.request.contextPath}/invoice?id=${b.bookingId}"
+                                       class="btn btn-sm"&gt;Invoice&lt;/a&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/c:forEach&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+
+                &lt;!-- Pagination --&gt;
+                &lt;c:if test="${totalPages gt 1}"&gt;
+                    &lt;nav class="pagination"&gt;
+                        &lt;c:if test="${currentPage gt 1}"&gt;
+                            &lt;a href="?page=${currentPage - 1}"
+                               class="page-link"&gt;&amp;laquo; Previous&lt;/a&gt;
+                        &lt;/c:if&gt;
+
+                        &lt;c:forEach begin="1" end="${totalPages}" var="p"&gt;
+                            &lt;c:choose&gt;
+                                &lt;c:when test="${p == currentPage}"&gt;
+                                    &lt;span class="page-link active"&gt;${p}&lt;/span&gt;
+                                &lt;/c:when&gt;
+                                &lt;c:otherwise&gt;
+                                    &lt;a href="?page=${p}" class="page-link"&gt;${p}&lt;/a&gt;
+                                &lt;/c:otherwise&gt;
+                            &lt;/c:choose&gt;
+                        &lt;/c:forEach&gt;
+
+                        &lt;c:if test="${currentPage lt totalPages}"&gt;
+                            &lt;a href="?page=${currentPage + 1}"
+                               class="page-link"&gt;Next &amp;raquo;&lt;/a&gt;
+                        &lt;/c:if&gt;
+                    &lt;/nav&gt;
+                &lt;/c:if&gt;
+            &lt;/c:otherwise&gt;
+        &lt;/c:choose&gt;
+    &lt;/div&gt;
+
+    &lt;%@ include file="footer.jsp" %&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <h3>tracking.jsp</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">/WEB-INF/views/tracking.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Track Parcel - Nimbus&lt;/title&gt;
+    &lt;link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="header.jsp" %&gt;
+
+    &lt;div class="container"&gt;
+        &lt;h1&gt;Track Your Parcel&lt;/h1&gt;
+
+        &lt;!-- Search form --&gt;
+        &lt;form action="${pageContext.request.contextPath}/tracking" method="GET"
+              class="search-form"&gt;
+            &lt;input type="text" name="bookingId"
+                   placeholder="Enter Booking ID (e.g., NB001)"
+                   value="${param.bookingId}" required/&gt;
+            &lt;button type="submit" class="btn btn-primary"&gt;Track&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;!-- Error message --&gt;
+        &lt;c:if test="${not empty errorMessage}"&gt;
+            &lt;div class="alert alert-danger"&gt;${errorMessage}&lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;!-- Tracking results (only shown when booking is found) --&gt;
+        &lt;c:if test="${not empty booking}"&gt;
+            &lt;div class="tracking-card"&gt;
+                &lt;h2&gt;Booking #${booking.bookingId}&lt;/h2&gt;
+
+                &lt;div class="tracking-details"&gt;
+                    &lt;div class="detail-row"&gt;
+                        &lt;span class="label"&gt;Status:&lt;/span&gt;
+                        &lt;span class="value"&gt;
+                            &lt;c:choose&gt;
+                                &lt;c:when test="${booking.parStatus == 'DELIVERED'}"&gt;
+                                    &lt;span class="badge success"&gt;Delivered&lt;/span&gt;
+                                &lt;/c:when&gt;
+                                &lt;c:when test="${booking.parStatus == 'IN_TRANSIT'}"&gt;
+                                    &lt;span class="badge warning"&gt;In Transit&lt;/span&gt;
+                                &lt;/c:when&gt;
+                                &lt;c:otherwise&gt;
+                                    &lt;span class="badge info"&gt;${booking.parStatus}&lt;/span&gt;
+                                &lt;/c:otherwise&gt;
+                            &lt;/c:choose&gt;
+                        &lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="detail-row"&gt;
+                        &lt;span class="label"&gt;Sender:&lt;/span&gt;
+                        &lt;span class="value"&gt;&lt;c:out value="${booking.senderName}"/&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="detail-row"&gt;
+                        &lt;span class="label"&gt;Receiver:&lt;/span&gt;
+                        &lt;span class="value"&gt;&lt;c:out value="${booking.receiverName}"/&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="detail-row"&gt;
+                        &lt;span class="label"&gt;Weight:&lt;/span&gt;
+                        &lt;span class="value"&gt;
+                            &lt;fmt:formatNumber value="${booking.parWeight}"
+                                maxFractionDigits="2"/&gt; kg
+                        &lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="detail-row"&gt;
+                        &lt;span class="label"&gt;Booked On:&lt;/span&gt;
+                        &lt;span class="value"&gt;
+                            &lt;fmt:formatDate value="${booking.bookingDate}"
+                                pattern="dd-MMM-yyyy hh:mm a"/&gt;
+                        &lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;!-- No results message --&gt;
+        &lt;c:if test="${not empty param.bookingId and empty booking and empty errorMessage}"&gt;
+            &lt;div class="empty-state"&gt;
+                &lt;p&gt;No booking found with ID: &lt;c:out value="${param.bookingId}"/&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/c:if&gt;
+    &lt;/div&gt;
+
+    &lt;%@ include file="footer.jsp" %&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <h3>invoice.jsp</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">/WEB-INF/views/invoice.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Invoice #${booking.bookingId} - Nimbus&lt;/title&gt;
+    &lt;link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/&gt;
+    &lt;style&gt;
+        @media print {
+            .no-print { display: none; }
+            body { background: white; color: black; }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="invoice-container"&gt;
+        &lt;div class="invoice-header"&gt;
+            &lt;h1&gt;NIMBUS PARCEL SERVICES&lt;/h1&gt;
+            &lt;h2&gt;Invoice&lt;/h2&gt;
+        &lt;/div&gt;
+
+        &lt;div class="invoice-meta"&gt;
+            &lt;div&gt;
+                &lt;strong&gt;Invoice #:&lt;/strong&gt; ${booking.bookingId}
+            &lt;/div&gt;
+            &lt;div&gt;
+                &lt;strong&gt;Date:&lt;/strong&gt;
+                &lt;fmt:formatDate value="${booking.bookingDate}"
+                    pattern="dd MMMM yyyy"/&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="invoice-parties"&gt;
+            &lt;div class="sender"&gt;
+                &lt;h3&gt;Sender&lt;/h3&gt;
+                &lt;p&gt;&lt;c:out value="${booking.senderName}"/&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;c:out value="${booking.senderAddress}"/&gt;&lt;/p&gt;
+                &lt;p&gt;Phone: &lt;c:out value="${booking.senderPhone}"/&gt;&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="receiver"&gt;
+                &lt;h3&gt;Receiver&lt;/h3&gt;
+                &lt;p&gt;&lt;c:out value="${booking.receiverName}"/&gt;&lt;/p&gt;
+                &lt;p&gt;&lt;c:out value="${booking.receiverAddress}"/&gt;&lt;/p&gt;
+                &lt;p&gt;Phone: &lt;c:out value="${booking.receiverPhone}"/&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;table class="invoice-table"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Description&lt;/th&gt;
+                    &lt;th&gt;Weight&lt;/th&gt;
+                    &lt;th&gt;Rate&lt;/th&gt;
+                    &lt;th&gt;Amount&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;${booking.parType} - ${booking.shippingMode}&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;fmt:formatNumber value="${booking.parWeight}"
+                            maxFractionDigits="2"/&gt; kg
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;fmt:formatNumber value="${ratePerKg}" type="currency"
+                            currencySymbol="Rs. "/&gt;/kg
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;fmt:formatNumber value="${totalCost}" type="currency"
+                            currencySymbol="Rs. "/&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+            &lt;tfoot&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="3" style="text-align:right;"&gt;
+                        &lt;strong&gt;Total:&lt;/strong&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;strong&gt;
+                            &lt;fmt:formatNumber value="${totalCost}" type="currency"
+                                currencySymbol="Rs. "/&gt;
+                        &lt;/strong&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tfoot&gt;
+        &lt;/table&gt;
+
+        &lt;div class="invoice-footer"&gt;
+            &lt;p&gt;Status: ${booking.parStatus}&lt;/p&gt;
+            &lt;button onclick="window.print()" class="btn btn-primary no-print"&gt;
+                Print Invoice
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Forms in JSP                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="forms">
+  <div class="section-tag">Section 10</div>
+  <h2>Forms in JSP</h2>
+  <p class="section-desc">Forms are how users send data to the server. Every booking, every login, every search goes through an HTML form. JSP can pre-fill forms with previous values and show validation errors next to each field.</p>
+
+  <h3>Basic Form Structure</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking.jsp &mdash; multi-step booking form</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;form action="${pageContext.request.contextPath}/booking" method="POST"&gt;
+
+    &lt;!-- Hidden field to track which step we are on --&gt;
+    &lt;input type="hidden" name="step" value="1"/&gt;
+
+    &lt;!-- SENDER DETAILS --&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Sender Details&lt;/legend&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="senderName"&gt;Full Name&lt;/label&gt;
+            &lt;input type="text" id="senderName" name="senderName"
+                   value="&lt;c:out value='${param.senderName}'/&gt;" required/&gt;
+            &lt;c:if test="${not empty errors.senderName}"&gt;
+                &lt;span class="error"&gt;${errors.senderName}&lt;/span&gt;
+            &lt;/c:if&gt;
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="senderPhone"&gt;Phone&lt;/label&gt;
+            &lt;input type="tel" id="senderPhone" name="senderPhone"
+                   value="&lt;c:out value='${param.senderPhone}'/&gt;"
+                   pattern="[0-9]{10}" required/&gt;
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="senderAddress"&gt;Address&lt;/label&gt;
+            &lt;textarea id="senderAddress" name="senderAddress"
+                      rows="3" required&gt;&lt;c:out value="${param.senderAddress}"/&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+    &lt;/fieldset&gt;
+
+    &lt;!-- PARCEL DETAILS --&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Parcel Details&lt;/legend&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="parType"&gt;Parcel Type&lt;/label&gt;
+            &lt;select id="parType" name="parType" required&gt;
+                &lt;option value=""&gt;-- Select --&lt;/option&gt;
+                &lt;option value="DOCUMENT"
+                    ${param.parType == 'DOCUMENT' ? 'selected' : ''}&gt;
+                    Document
+                &lt;/option&gt;
+                &lt;option value="PACKAGE"
+                    ${param.parType == 'PACKAGE' ? 'selected' : ''}&gt;
+                    Package
+                &lt;/option&gt;
+                &lt;option value="FRAGILE"
+                    ${param.parType == 'FRAGILE' ? 'selected' : ''}&gt;
+                    Fragile
+                &lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="parWeight"&gt;Weight (kg)&lt;/label&gt;
+            &lt;input type="number" id="parWeight" name="parWeight"
+                   value="${param.parWeight}" step="0.1" min="0.1" required/&gt;
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="shippingMode"&gt;Shipping Mode&lt;/label&gt;
+            &lt;select id="shippingMode" name="shippingMode" required&gt;
+                &lt;option value="STANDARD"
+                    ${param.shippingMode == 'STANDARD' ? 'selected' : ''}&gt;
+                    Standard (5-7 days)
+                &lt;/option&gt;
+                &lt;option value="EXPRESS"
+                    ${param.shippingMode == 'EXPRESS' ? 'selected' : ''}&gt;
+                    Express (2-3 days)
+                &lt;/option&gt;
+                &lt;option value="OVERNIGHT"
+                    ${param.shippingMode == 'OVERNIGHT' ? 'selected' : ''}&gt;
+                    Overnight (next day)
+                &lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/div&gt;
+    &lt;/fieldset&gt;
+
+    &lt;button type="submit" class="btn btn-primary"&gt;Submit Booking&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Form techniques</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">method="POST"</div>
+        <div class="breakdown-explain">Forms that create or modify data use POST. Search forms use GET (so the search term appears in the URL and can be bookmarked).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;input type="hidden" name="step" value="1"/&gt;</div>
+        <div class="breakdown-explain">Hidden fields send data to the servlet without showing it to the user. Used to track multi-step form progress, pass IDs, or include CSRF tokens.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">value="&lt;c:out value='${param.senderName}'/&gt;"</div>
+        <div class="breakdown-explain">Pre-fills the input with the previously submitted value. If validation fails and the servlet forwards back to this form, the user does not have to retype everything. c:out escapes HTML to prevent XSS.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">${param.parType == 'DOCUMENT' ? 'selected' : ''}</div>
+        <div class="breakdown-explain">For dropdown selects, this EL expression adds the "selected" attribute to the option that was previously chosen. This is how you preserve dropdown selections after form resubmission.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;c:if test="${not empty errors.senderName}"&gt;</div>
+        <div class="breakdown-explain">The servlet can set an "errors" Map attribute with field-specific messages. The JSP displays each error next to its field. errors.senderName accesses errors.get("senderName").</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Pickup Form (Date/Time Inputs)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pickup.jsp &mdash; date and time inputs</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;form action="${pageContext.request.contextPath}/pickup" method="POST"&gt;
+    &lt;!-- Search for booking first --&gt;
+    &lt;div class="form-group"&gt;
+        &lt;label for="bookingId"&gt;Booking ID&lt;/label&gt;
+        &lt;input type="text" id="bookingId" name="bookingId"
+               value="${param.bookingId}" required/&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Date and time inputs --&gt;
+    &lt;div class="form-group"&gt;
+        &lt;label for="pickupDate"&gt;Pickup Date&lt;/label&gt;
+        &lt;input type="date" id="pickupDate" name="pickupDate"
+               value="${param.pickupDate}" required/&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        &lt;label for="pickupTime"&gt;Pickup Time&lt;/label&gt;
+        &lt;input type="time" id="pickupTime" name="pickupTime"
+               value="${param.pickupTime}" required/&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        &lt;label for="dropoffDate"&gt;Expected Dropoff Date&lt;/label&gt;
+        &lt;input type="datetime-local" id="dropoffDate" name="dropoffDate"
+               value="${param.dropoffDate}"/&gt;
+    &lt;/div&gt;
+
+    &lt;button type="submit" class="btn btn-primary"&gt;Schedule Pickup&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+
+  <h3>Delivery Status Update (Officer)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">delivery-status.jsp &mdash; status update dropdown</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;c:if test="${not empty booking}"&gt;
+    &lt;form action="${pageContext.request.contextPath}/delivery-status"
+          method="POST"&gt;
+        &lt;input type="hidden" name="bookingId" value="${booking.bookingId}"/&gt;
+
+        &lt;p&gt;Current Status: &lt;strong&gt;${booking.parStatus}&lt;/strong&gt;&lt;/p&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="newStatus"&gt;Update Status To&lt;/label&gt;
+            &lt;select id="newStatus" name="newStatus" required&gt;
+                &lt;option value=""&gt;-- Select New Status --&lt;/option&gt;
+                &lt;option value="PICKED_UP"&gt;Picked Up&lt;/option&gt;
+                &lt;option value="IN_TRANSIT"&gt;In Transit&lt;/option&gt;
+                &lt;option value="OUT_FOR_DELIVERY"&gt;Out for Delivery&lt;/option&gt;
+                &lt;option value="DELIVERED"&gt;Delivered&lt;/option&gt;
+                &lt;option value="CANCELLED"&gt;Cancelled&lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;button type="submit" class="btn btn-primary"&gt;Update Status&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/c:if&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Error Handling                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="error-handling">
+  <div class="section-tag">Section 11</div>
+  <h2>Error Handling in JSP</h2>
+  <p class="section-desc">When something goes wrong in a JSP page, you do not want users to see a stack trace. JSP provides mechanisms to display custom error pages instead.</p>
+
+  <h3>Step 1: Tell Your Page Where to Go on Error</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">booking.jsp &mdash; errorPage directive</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8"
+         errorPage="error.jsp" %&gt;</code></pre>
+  </div>
+
+  <h3>Step 2: Create the Error Page</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">/WEB-INF/views/error.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8"
+         isErrorPage="true" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Error - Nimbus&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="error-container"&gt;
+        &lt;h1&gt;Something Went Wrong&lt;/h1&gt;
+        &lt;p&gt;We encountered an error processing your request.&lt;/p&gt;
+        &lt;p&gt;Error: &lt;c:out value="${pageContext.exception.message}"/&gt;&lt;/p&gt;
+        &lt;a href="${pageContext.request.contextPath}/dashboard"&gt;
+            Return to Dashboard
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Error page explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">isErrorPage="true"</div>
+        <div class="breakdown-explain">Marks this JSP as an error handler. This makes the "exception" implicit object available, so you can access the error that occurred.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">${pageContext.exception.message}</div>
+        <div class="breakdown-explain">In EL, the exception object is accessed through pageContext.exception (not directly as "exception"). This gives you the error message without exposing the full stack trace to the user.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Global Error Pages in web.xml</h3>
+  <p>Instead of setting <code>errorPage</code> on every single JSP, configure error pages globally in <code>web.xml</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">web.xml &mdash; global error pages</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Handle 404 Not Found --&gt;
+&lt;error-page&gt;
+    &lt;error-code&gt;404&lt;/error-code&gt;
+    &lt;location&gt;/WEB-INF/views/404.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+
+&lt;!-- Handle 500 Internal Server Error --&gt;
+&lt;error-page&gt;
+    &lt;error-code&gt;500&lt;/error-code&gt;
+    &lt;location&gt;/WEB-INF/views/500.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+
+&lt;!-- Handle all Java exceptions --&gt;
+&lt;error-page&gt;
+    &lt;exception-type&gt;java.lang.Exception&lt;/exception-type&gt;
+    &lt;location&gt;/WEB-INF/views/error.jsp&lt;/location&gt;
+&lt;/error-page&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Including Other JSPs                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="includes">
+  <div class="section-tag">Section 12</div>
+  <h2>Including Other JSPs</h2>
+  <p class="section-desc">Real web applications do not copy the same header and footer HTML into every page. Instead, you create reusable fragments and include them. There are two ways to include, and they work differently.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Static Include (Directive)</div>
+      <div class="comparison-body">
+        <p><code>&lt;%@ include file="header.jsp" %&gt;</code></p>
+        <ul>
+          <li>Content inserted at <strong>compile time</strong></li>
+          <li>Becomes part of the same servlet</li>
+          <li>Faster (no overhead at runtime)</li>
+          <li>Changes to included file require recompilation of the parent</li>
+          <li>Best for: header, footer, navigation that rarely changes</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Dynamic Include (Action)</div>
+      <div class="comparison-body">
+        <p><code>&lt;jsp:include page="header.jsp"/&gt;</code></p>
+        <ul>
+          <li>Content included at <strong>runtime</strong></li>
+          <li>Each file is a separate servlet</li>
+          <li>Slightly slower (separate request processing)</li>
+          <li>Changes to included file are picked up automatically</li>
+          <li>Best for: content that changes often, or includes with parameters</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Common Layout Pattern</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">header.jsp &mdash; reusable header fragment</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;nav class="navbar"&gt;
+    &lt;a href="${pageContext.request.contextPath}/" class="brand"&gt;Nimbus&lt;/a&gt;
+    &lt;div class="nav-links"&gt;
+        &lt;c:choose&gt;
+            &lt;c:when test="${not empty sessionScope.user}"&gt;
+                &lt;a href="${pageContext.request.contextPath}/dashboard"&gt;Dashboard&lt;/a&gt;
+                &lt;a href="${pageContext.request.contextPath}/booking"&gt;New Booking&lt;/a&gt;
+                &lt;a href="${pageContext.request.contextPath}/tracking"&gt;Track&lt;/a&gt;
+                &lt;span&gt;Hello, ${sessionScope.user.fullName}&lt;/span&gt;
+                &lt;a href="${pageContext.request.contextPath}/logout"&gt;Logout&lt;/a&gt;
+            &lt;/c:when&gt;
+            &lt;c:otherwise&gt;
+                &lt;a href="${pageContext.request.contextPath}/login"&gt;Login&lt;/a&gt;
+                &lt;a href="${pageContext.request.contextPath}/register"&gt;Register&lt;/a&gt;
+            &lt;/c:otherwise&gt;
+        &lt;/c:choose&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">footer.jsp &mdash; reusable footer fragment</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;footer class="footer"&gt;
+    &lt;p&gt;&amp;copy; 2026 Nimbus Parcel Management. All rights reserved.&lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Any page using the layout</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Page - Nimbus&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="header.jsp" %&gt;
+
+    &lt;div class="container"&gt;
+        &lt;!-- Page-specific content here --&gt;
+    &lt;/div&gt;
+
+    &lt;%@ include file="footer.jsp" %&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <h3>Dynamic Include with Parameters</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Passing parameters to included page</span>
+      <button class="copy-btn" onclick="copyCode(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+      </button>
+    </div>
+    <pre><code class="language-markup">&lt;!-- Include with parameters --&gt;
+&lt;jsp:include page="sidebar.jsp"&gt;
+    &lt;jsp:param name="activePage" value="history"/&gt;
+&lt;/jsp:include&gt;
+
+&lt;!-- In sidebar.jsp, access the parameter: --&gt;
+&lt;c:if test="${param.activePage == 'history'}"&gt;
+    &lt;a href="/history" class="active"&gt;History&lt;/a&gt;
+&lt;/c:if&gt;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Common Mistakes                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="mistakes">
+  <div class="section-tag">Section 13</div>
+  <h2>Common Mistakes</h2>
+  <p class="section-desc">Mistakes every beginner makes with JSP &mdash; and how to avoid them.</p>
+
+  <h3>Mistake 1: Using Scriptlets Instead of EL/JSTL</h3>
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;% String name = (String)
+   request.getAttribute("name"); %&gt;
+&lt;p&gt;Hello, &lt;%= name %&gt;&lt;/p&gt;</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;p&gt;Hello, ${name}&lt;/p&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 2: Not Escaping Output (XSS Vulnerability)</h3>
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Unsafe</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;!-- If name = "&lt;script&gt;alert('hacked')&lt;/script&gt;"
+     the script RUNS in the browser --&gt;
+&lt;p&gt;${user.fullName}&lt;/p&gt;</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Safe</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;!-- c:out escapes HTML characters.
+     &lt;script&gt; becomes &amp;lt;script&amp;gt;
+     and does NOT execute --&gt;
+&lt;p&gt;&lt;c:out value="${user.fullName}"/&gt;&lt;/p&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 3: Putting Business Logic in JSP</h3>
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;!-- NEVER do this in JSP --&gt;
+&lt;%
+  Connection conn = DriverManager
+    .getConnection("jdbc:mysql://...");
+  PreparedStatement ps = conn
+    .prepareStatement("SELECT * FROM bookings");
+  ResultSet rs = ps.executeQuery();
+  while (rs.next()) {
+%&gt;
+  &lt;tr&gt;&lt;td&gt;&lt;%= rs.getString("id") %&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;% } %&gt;</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Right</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;!-- Servlet does the DB query,
+     JSP only displays results --&gt;
+&lt;c:forEach items="${bookings}" var="b"&gt;
+  &lt;tr&gt;&lt;td&gt;${b.bookingId}&lt;/td&gt;&lt;/tr&gt;
+&lt;/c:forEach&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>Mistake 4: Forgetting the Taglib Directive</h3>
+  <p>If you use <code>&lt;c:forEach&gt;</code> or <code>&lt;c:if&gt;</code> but forget to add the taglib directive at the top of the page, the tags are treated as plain text and rendered as-is in the HTML output. Nothing breaks, but nothing works either &mdash; you just see the raw tag text on the page.</p>
+
+  <h3>Mistake 5: Using <code>==</code> for String Comparison in Scriptlets</h3>
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong (scriptlet)</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;!-- == compares references, not values --&gt;
+&lt;% if (status == "DELIVERED") { %&gt;</code></pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Correct (EL handles it right)</div>
+      <div class="comparison-body">
+<pre style="margin:0;background:none;"><code class="language-markup">&lt;!-- EL == correctly compares String values --&gt;
+&lt;c:if test="${status == 'DELIVERED'}"&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+  <p>In Java scriptlets, <code>==</code> on Strings compares memory references (wrong). You need <code>.equals()</code>. But in EL, <code>==</code> correctly compares String values. One more reason to use EL instead of scriptlets.</p>
+
+  <h3>Mistake 6: JSP Accessible Directly by Browser</h3>
+  <p>If JSP files are placed in the root of the web application (e.g., <code>/history.jsp</code>), users can access them directly by typing the URL. This bypasses the Servlet, which means no data is loaded and the page shows empty or throws errors. Always place JSPs inside <code>/WEB-INF/</code>.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 14</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build these to solidify your understanding. Each exercise focuses on a different JSP concept.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Registration Form</div>
+    <p>Create <code>register.jsp</code> with fields for: userId, fullName, email, phone, password, confirmPassword. Use <code>${param.fieldName}</code> to pre-fill fields on validation failure. Show field-specific errors using a <code>${errors}</code> map. The form should POST to <code>/register</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Officer Dashboard</div>
+    <p>Create <code>officer-dashboard.jsp</code> that displays ALL bookings (not just the logged-in user's). Use <code>&lt;c:forEach&gt;</code> to build a table showing bookingId, senderName, receiverName, status, and date. Add a <code>&lt;c:choose&gt;</code> block to color-code the status column. Include a "View" link in each row that goes to <code>/booking?id=${b.bookingId}</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Conditional Navigation</div>
+    <p>Create <code>header.jsp</code> that shows different navigation links based on the user's role. If <code>${sessionScope.user.role == 'CUSTOMER'}</code>, show: Dashboard, New Booking, Track, History. If <code>${sessionScope.user.role == 'OFFICER'}</code>, show: All Bookings, Update Status, Pickup Management. If no user is logged in, show: Login, Register.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Invoice with Formatting</div>
+    <p>Create <code>invoice.jsp</code> that displays a booking's full details. Use <code>&lt;fmt:formatDate&gt;</code> to show the booking date in "dd MMMM yyyy" format. Use <code>&lt;fmt:formatNumber&gt;</code> to show the total cost as currency with Rs. symbol and two decimal places. Add a print button that calls <code>window.print()</code>. Add a <code>@media print</code> CSS rule to hide the button when printing.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Error Page</div>
+    <p>Create <code>error.jsp</code> with <code>isErrorPage="true"</code>. Display a user-friendly message and the exception message (but not the stack trace). Add a "Back to Home" link. Then create a <code>404.jsp</code> that says "Page not found" and configure both in <code>web.xml</code> using <code>&lt;error-page&gt;</code> elements.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; Full Servlet + JSP Pair</div>
+    <p>Write <code>TrackingServlet.java</code> that reads a <code>bookingId</code> parameter, calls <code>BookingDAO.findByBookingId()</code>, and either sets a <code>booking</code> attribute (if found) or an <code>errorMessage</code> attribute (if not found). Then forward to <code>tracking.jsp</code>. In the JSP, show the search form, the error message (if any), and the booking details (if found) using <code>&lt;c:if&gt;</code> to conditionally display each section.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="servlets.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Servlets</span>
+  </a>
+  <a href="mvc-pattern.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">MVC with Servlets + JSP</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

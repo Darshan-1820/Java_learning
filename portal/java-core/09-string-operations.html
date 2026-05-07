@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String Operations | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link active"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: equalsIgnoreCase ===== -->
+  <div class="content-section" id="equals-ignore-case">
+    <div class="section-tag">Essential</div>
+    <h2>equalsIgnoreCase &mdash; The PRA Essential</h2>
+    <p class="section-desc">If there's one string method you MUST know for PRA, it's this one. Almost every PRA question involves comparing strings, and almost every one says "case-insensitive." Using <code>equals()</code> instead of <code>equalsIgnoreCase()</code> will fail test cases silently &mdash; your logic is right but the answer is wrong.</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">WRONG &mdash; Case Sensitive</div>
+        <div class="comparison-body">
+          <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.8;"><code>if (genre.equals("Crime"))
+// Only matches "Crime"
+// Fails on "crime", "CRIME", "CrImE"</code></pre>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">CORRECT &mdash; Case Insensitive</div>
+        <div class="comparison-body">
+          <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.8;"><code>if (genre.equalsIgnoreCase("Crime"))
+// Matches "Crime", "crime", "CRIME"
+// Matches "CrImE", "cRiMe" - any case</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <h3>How It Works</h3>
+    <p><code>equalsIgnoreCase()</code> converts both strings to the same case internally before comparing. It doesn't modify your original string &mdash; it just ignores case during the comparison.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">equalsIgnoreCase Examples</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">"Crime".equalsIgnoreCase("crime")   // true
+"Crime".equalsIgnoreCase("CRIME")   // true
+"Crime".equalsIgnoreCase("CrImE")   // true
+"Crime".equalsIgnoreCase("Drama")   // false
+"Crime".equals("crime")             // FALSE! Case sensitive!</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; PRA Rule</div>
+      <p><strong>Always use <code>equalsIgnoreCase()</code> for every string comparison in PRA.</strong> There is zero downside. You'll never lose marks for being case-insensitive, but you WILL lose marks if a test case uses "crime" and your code only matches "Crime".</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Never Use == for Strings</div>
+      <p><code>==</code> compares memory addresses, not string content. Two strings with the same text can be at different memory addresses. Always use <code>.equals()</code> or <code>.equalsIgnoreCase()</code> for string comparison in Java.</p>
+      <ul>
+        <li><code>"abc" == "abc"</code> &mdash; might work (string pool), <strong>but unreliable</strong></li>
+        <li><code>new String("abc") == "abc"</code> &mdash; <strong>false!</strong> Different objects</li>
+        <li><code>"abc".equals("abc")</code> &mdash; <strong>always true</strong>. Use this.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: STRING CONCATENATION ===== -->
+  <div class="content-section" id="string-concat">
+    <div class="section-tag">Output</div>
+    <h2>String Concatenation for Output</h2>
+    <p class="section-desc">PRA expects exact output format. You need to build output strings that match the expected output character-by-character. The <code>+</code> operator joins strings together.</p>
+
+    <h3>Concatenation with +</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">String Concatenation Examples</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Simple concatenation
+System.out.println("Name: " + investor.getName());
+// Output: Name: John Smith
+
+// Multiple fields
+System.out.println("AuthorName: " + book.getAuthor().getAuthorName()
+    + ", Title: " + book.getTitle());
+// Output: AuthorName: J.K. Rowling, Title: Harry Potter
+
+// Number with unit
+System.out.println(area + " sq.m");
+// Output: 50 sq.m
+
+System.out.println(perimeter + " m");
+// Output: 30 m</code></pre>
+    </div>
+
+    <h4>How + Works with Different Types</h4>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Expression</th>
+          <th>Result</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>"Hello" + " World"</code></td>
+          <td><code>"Hello World"</code></td>
+          <td>String + String = concatenation</td>
+        </tr>
+        <tr>
+          <td><code>"Price: " + 500</code></td>
+          <td><code>"Price: 500"</code></td>
+          <td>String + int = int becomes string</td>
+        </tr>
+        <tr>
+          <td><code>"Value: " + 3.14</code></td>
+          <td><code>"Value: 3.14"</code></td>
+          <td>String + double = double becomes string</td>
+        </tr>
+        <tr>
+          <td><code>50 + " sq.m"</code></td>
+          <td><code>"50 sq.m"</code></td>
+          <td>int + String = int becomes string</td>
+        </tr>
+        <tr>
+          <td><code>5 + 3 + " items"</code></td>
+          <td><code>"8 items"</code></td>
+          <td>5+3 = 8 first (both ints), then 8 + " items"</td>
+        </tr>
+        <tr>
+          <td><code>"items: " + 5 + 3</code></td>
+          <td><code>"items: 53"</code></td>
+          <td>"items: " + 5 = "items: 5", then + 3 = "items: 53"</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout think">
+      <div class="callout-title">&#x1F4A1; Order Matters</div>
+      <p>Java evaluates <code>+</code> from left to right. If it starts with a String, everything after becomes concatenation. If it starts with numbers, those numbers add normally until a String appears. The last two rows in the table above show this difference. If you need math inside a print, use parentheses: <code>"Sum: " + (5 + 3)</code> gives <code>"Sum: 8"</code>.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: PARSING ===== -->
+  <div class="content-section" id="parsing">
+    <div class="section-tag">Conversion</div>
+    <h2>Parsing Strings to Numbers</h2>
+    <p class="section-desc">Sometimes you receive a value as a String but need to use it as a number for calculations. Java provides parsing methods to convert between types.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Parsing Methods</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// String to int
+int num = Integer.parseInt("42");          // num = 42
+
+// String to double
+double val = Double.parseDouble("3.14");   // val = 3.14
+
+// Number to String
+String s1 = String.valueOf(42);            // s1 = "42"
+String s2 = Integer.toString(42);          // s2 = "42"
+String s3 = "" + 42;                       // s3 = "42" (quick trick)</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; NumberFormatException</div>
+      <p>If you try to parse a non-numeric string, Java crashes with <code>NumberFormatException</code>:</p>
+      <ul>
+        <li><code>Integer.parseInt("hello")</code> &mdash; crashes</li>
+        <li><code>Integer.parseInt("3.14")</code> &mdash; crashes (3.14 is not an integer)</li>
+        <li><code>Double.parseDouble("3.14")</code> &mdash; works fine</li>
+      </ul>
+      <p>In PRA, you rarely need to parse manually since Scanner handles type conversion. But it's good to know.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: COMPARISON PATTERNS ===== -->
+  <div class="content-section" id="comparison-patterns">
+    <div class="section-tag">Patterns</div>
+    <h2>String Comparison Patterns in PRA</h2>
+    <p class="section-desc">Here are all the string comparison patterns from real PRA mock questions. Every single one uses <code>equalsIgnoreCase</code>. Notice the consistent structure: <code>object.getField().equalsIgnoreCase(parameter)</code>.</p>
+
+    <h3>Pattern 1: Filter by Genre</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">From Mock 3 Q1 &mdash; Author-Book</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Find books by genre
+if (book.getGenre().equalsIgnoreCase(searchGenre)) {
+    result.add(book);
+}</code></pre>
+    </div>
+
+    <h3>Pattern 2: Search by League</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">From Mock 2 Q1 &mdash; CountryLeague</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Search through nested statistics
+if (stat.getLeagueName().equalsIgnoreCase(leagueName)) {
+    System.out.println(c.getCricketerName());
+    found = true;
+    break;
+}</code></pre>
+    </div>
+
+    <h3>Pattern 3: Match by Country</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">From Mock 2 Q1 &mdash; CountryLeague</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Sum values for matching country
+if (stat.getCountryName().equalsIgnoreCase(countryName)) {
+    total += stat.getPerformanceAverage();
+    found = true;
+}</code></pre>
+    </div>
+
+    <h4>The Universal Pattern</h4>
+    <div class="diagram">
+      <pre>
+  object.getStringField().equalsIgnoreCase(parameterFromInput)
+
+  Examples:
+  book.getGenre().equalsIgnoreCase(searchGenre)
+  stat.getLeagueName().equalsIgnoreCase(leagueName)
+  stat.getCountryName().equalsIgnoreCase(countryName)
+  investor.getCategory().equalsIgnoreCase(category)
+
+  Structure is ALWAYS the same:
+  [object].[getter]().equalsIgnoreCase([variable])
+      </pre>
+      <div class="diagram-label">Every PRA string comparison follows this exact pattern</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: OUTPUT FORMAT ===== -->
+  <div class="content-section" id="output-format">
+    <div class="section-tag">Critical</div>
+    <h2>Output Format Matching</h2>
+    <p class="section-desc">PRA is STRICT about output format. HackerRank compares your output character-by-character against the expected output. One extra space, one missing comma, one wrong word &mdash; and your test case fails. Even if your logic is 100% correct.</p>
+
+    <h3>Real Output Formats from Mock Questions</h3>
+
+    <h4>Mock 3 Q2: Area-Perimeter</h4>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Exact Output Format</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">System.out.println(area + " sq.m");       // "50 sq.m" -- space before unit
+System.out.println(perimeter + " m");     // "30 m"</code></pre>
+    </div>
+
+    <h4>Mock 1 Q1: Investor Details</h4>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Exact Output Format</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Each field on its own line
+System.out.println(inv.getId());
+System.out.println(inv.getName());
+System.out.println(inv.getGains());</code></pre>
+    </div>
+
+    <h4>Mock 3 Q1: Book with Discount</h4>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Exact Output Format</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">System.out.println("AuthorName: " + name + ", Title: " + title + ", Updated Price: " + price);
+// Output: AuthorName: J.K. Rowling, Title: Harry Potter, Updated Price: 479.99</code></pre>
+    </div>
+
+    <h4>Error Messages &mdash; Must Be Exact</h4>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Error Messages (copy exactly from question)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// Different questions use different error messages
+System.out.println("No such Investors found");    // one wording
+System.out.println("No Investors found");          // different wording!
+System.out.println("No Cricketer Found");          // yet another
+System.out.println("No Statistics are available With the Country : " + countryName);
+// Note: "With the Country : " has specific capitalization and spacing!</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; The #1 Reason for Wrong Answers</div>
+      <p><strong>Output format mismatch is the number one reason people get wrong answers on HackerRank despite having correct logic.</strong> When you read the question:</p>
+      <ol>
+        <li>Find the "Output Format" or "Expected Output" section</li>
+        <li>Copy the exact format &mdash; every comma, space, colon, and word</li>
+        <li>Check capitalization: "No Cricketer Found" is not the same as "No cricketer found"</li>
+        <li>Check spacing: "Country : " (with spaces around colon) is not "Country:"</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: INT VS DOUBLE ===== -->
+  <div class="content-section" id="int-vs-double">
+    <div class="section-tag">Gotcha</div>
+    <h2>int vs double in Output</h2>
+    <p class="section-desc">This subtle difference has caught many people. When you print a number, Java formats it differently depending on whether it's an <code>int</code> or a <code>double</code>. The expected output tells you which type to use.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">int vs double Output</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// int output
+int area = 50;
+System.out.println(area + " sq.m");       // prints: 50 sq.m
+
+// double output
+double area2 = 50.0;
+System.out.println(area2 + " sq.m");      // prints: 50.0 sq.m
+                                           //         ^^^^
+                                           //         Note the .0!</code></pre>
+    </div>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">int</div>
+        <div class="comparison-body">
+          <p><code>int x = 50;</code></p>
+          <p>Prints as: <code>50</code></p>
+          <p>No decimal point</p>
+          <p><strong>Use when expected output shows:</strong> <code>50 sq.m</code></p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">double</div>
+        <div class="comparison-body">
+          <p><code>double x = 50.0;</code></p>
+          <p>Prints as: <code>50.0</code></p>
+          <p>Always has decimal point</p>
+          <p><strong>Use when expected output shows:</strong> <code>50.0 sq.m</code></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; PRA Tip</div>
+      <p><strong>Check whether the expected output shows <code>50</code> or <code>50.0</code>.</strong> This tells you whether the field should be <code>int</code> or <code>double</code>. If the expected output shows <code>50.0</code> and you use <code>int</code>, your output will be <code>50</code> (no .0) and HackerRank will mark it wrong.</p>
+    </div>
+
+    <h3>Common Number Output Scenarios</h3>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Expected Output</th>
+          <th>Use Type</th>
+          <th>Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>50 sq.m</code></td>
+          <td><code>int</code></td>
+          <td><code>int area = length * breadth;</code></td>
+        </tr>
+        <tr>
+          <td><code>50.0 sq.m</code></td>
+          <td><code>double</code></td>
+          <td><code>double area = length * breadth;</code></td>
+        </tr>
+        <tr>
+          <td><code>3500.5</code></td>
+          <td><code>double</code></td>
+          <td><code>System.out.println(gains);</code></td>
+        </tr>
+        <tr>
+          <td><code>1001</code></td>
+          <td><code>int</code></td>
+          <td><code>System.out.println(id);</code></td>
+        </tr>
+        <tr>
+          <td><code>479.992</code></td>
+          <td><code>double</code></td>
+          <td><code>System.out.println(discountedPrice);</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout practice">
+      <div class="callout-title">&#x1F3C3; Quick Check</div>
+      <p>If the question says "Calculate the area of a rectangle" and the expected output shows <code>50 sq.m</code>, use <code>int</code> for both length, breadth, and area. If it shows <code>50.0 sq.m</code>, use <code>double</code>. This one decision affects whether your entire solution passes or fails.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="08-scanner-input.html"><span class="nav-label">Previous</span><span class="nav-title">Scanner Input</span></a>
+    <a href="10-putting-it-together.html" class="next"><span class="nav-label">Next</span><span class="nav-title">Putting It Together</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

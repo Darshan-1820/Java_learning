@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5 Code Templates | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* Override layout to be full-width, no sidebar */
+    .layout { display: block; }
+    .main { max-width: 800px; margin: 0 auto; padding: 40px 30px 80px; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* How to use */
+    .how-to-use {
+      background: var(--accent-glow);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 40px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .how-to-use strong { color: var(--accent); }
+
+    /* Template section */
+    .template-section {
+      margin-bottom: 48px;
+    }
+    .template-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+    .template-num {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: white;
+      flex-shrink: 0;
+    }
+    .template-section[data-color="blue"] .template-num { background: var(--accent); }
+    .template-section[data-color="green"] .template-num { background: var(--green); }
+    .template-section[data-color="orange"] .template-num { background: var(--orange); }
+    .template-section[data-color="purple"] .template-num { background: var(--purple); }
+    .template-section[data-color="red"] .template-num { background: var(--red); }
+
+    .template-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+    .template-section[data-color="blue"] .template-title { color: var(--accent); }
+    .template-section[data-color="green"] .template-title { color: var(--green); }
+    .template-section[data-color="orange"] .template-title { color: var(--orange); }
+    .template-section[data-color="purple"] .template-title { color: var(--purple); }
+    .template-section[data-color="red"] .template-title { color: var(--red); }
+
+    .template-trigger {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    /* Code blocks */
+    .code-block {
+      position: relative;
+      margin: 16px 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .code-block pre {
+      margin: 0;
+      padding: 20px;
+      background: var(--bg-secondary) !important;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      overflow-x: auto;
+    }
+    .code-block code {
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.82rem;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(148,163,184,0.1);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { color: var(--text-primary); background: rgba(148,163,184,0.2); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    /* Notes */
+    .template-note {
+      background: var(--bg-card);
+      border-left: 3px solid var(--text-muted);
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      border-radius: 0 8px 8px 0;
+    }
+    .template-note strong { color: var(--text-primary); }
+    .template-note.warning {
+      border-left-color: var(--orange);
+      background: rgba(245,158,11,0.06);
+    }
+    .template-note.danger {
+      border-left-color: var(--red);
+      background: rgba(239,68,68,0.06);
+    }
+
+    /* Variation label */
+    .variation-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 20px;
+      margin-bottom: 4px;
+    }
+
+    /* Variations grid */
+    .variations-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .variation-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .variation-card h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+    .variation-card code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Bottom CTA */
+    .bottom-cta {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+    }
+    .bottom-cta h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .bottom-cta p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+    }
+    .cta-link {
+      display: inline-block;
+      padding: 10px 24px;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .cta-link:hover { background: var(--accent-hover); }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .main { padding: 24px 16px 60px; }
+      .hero h1 { font-size: 1.5rem; }
+      .variations-grid { grid-template-columns: 1fr; }
+      .template-title { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+<div class="layout">
+<main class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>The 5 Templates That Solve Every PRA</h1>
+    <p>Memorize these. Type them without thinking. They cover 95% of what PRA asks.</p>
+  </div>
+
+  <!-- How to use -->
+  <div class="how-to-use">
+    <strong>How to use this page:</strong> Don't just read &mdash; <strong>TYPE</strong> each template into the IDE from memory. Do this 3 times. By the third time, your fingers should type them automatically.
+  </div>
+
+  <!-- ============ TEMPLATE 1 ============ -->
+  <div class="template-section" data-color="blue">
+    <div class="template-header">
+      <div class="template-num">1</div>
+      <div class="template-title">The POJO Class</div>
+    </div>
+    <div class="template-trigger">When you see: "Create a class X with the following attributes..."</div>
+
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">class ClassName {
+    private Type field1;
+    private Type field2;
+    private Type field3;
+
+    public ClassName(Type field1, Type field2, Type field3) {
+        this.field1 = field1;
+        this.field2 = field2;
+        this.field3 = field3;
+    }
+
+    public Type getField1() { return field1; }
+    public void setField1(Type field1) { this.field1 = field1; }
+    // ... repeat for each field
+}</code></pre>
+    </div>
+
+    <div class="template-note">
+      <strong>What changes:</strong> class name, field names, field types. Structure is ALWAYS the same.
+    </div>
+
+    <div class="variation-label">3 Variations</div>
+    <div class="variations-grid">
+      <div class="variation-card">
+        <h4>Simple: Investor</h4>
+        <code>int investorId<br>String investorName<br>double gains</code>
+      </div>
+      <div class="variation-card">
+        <h4>With List: Brand</h4>
+        <code>Integer brandId<br>String brandName<br>List&lt;Mobile&gt; mobileList</code>
+      </div>
+      <div class="variation-card">
+        <h4>Composed: Book</h4>
+        <code>int bookId<br>String title<br>String genre<br>double price<br>Author author</code>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ============ TEMPLATE 2 ============ -->
+  <div class="template-section" data-color="green">
+    <div class="template-header">
+      <div class="template-num">2</div>
+      <div class="template-title">Read Input</div>
+    </div>
+    <div class="template-trigger">When you see: "Read N objects from input..."</div>
+
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+int n = Integer.parseInt(sc.nextLine().trim());
+List&lt;ClassName&gt; list = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; n; i++) {
+    int id = Integer.parseInt(sc.nextLine().trim());
+    String name = sc.nextLine().trim();
+    double value = Double.parseDouble(sc.nextLine().trim());
+    list.add(new ClassName(id, name, value));
+}
+// Read method parameters AFTER the loop
+String param1 = sc.nextLine().trim();
+int param2 = Integer.parseInt(sc.nextLine().trim());</code></pre>
+    </div>
+
+    <div class="template-note danger">
+      <strong>Golden rule:</strong> ALWAYS use <code>Integer.parseInt(sc.nextLine().trim())</code>. NEVER use <code>sc.nextInt()</code>. The nextInt() leaves a newline in the buffer and your next read will break.
+    </div>
+
+    <div class="variation-label">Nested Reading (Brand with Mobiles)</div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">for (int i = 0; i &lt; n; i++) {
+    int brandId = Integer.parseInt(sc.nextLine().trim());
+    String brandName = sc.nextLine().trim();
+    int mobileCount = Integer.parseInt(sc.nextLine().trim());
+
+    List&lt;Mobile&gt; mList = new ArrayList&lt;&gt;();
+    for (int j = 0; j &lt; mobileCount; j++) {
+        // read mobile fields
+        mList.add(new Mobile(...));
+    }
+    list.add(new Brand(brandId, brandName, mList));
+}</code></pre>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ============ TEMPLATE 3 ============ -->
+  <div class="template-section" data-color="orange">
+    <div class="template-header">
+      <div class="template-num">3</div>
+      <div class="template-title">Filter Method</div>
+    </div>
+    <div class="template-trigger">When you see: "return all items that match..." or "find items where..."</div>
+
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">public static List&lt;ClassName&gt; filterBy(List&lt;ClassName&gt; list, String value) {
+    List&lt;ClassName&gt; result = new ArrayList&lt;&gt;();
+    for (ClassName item : list) {
+        if (item.getField().equalsIgnoreCase(value)) {
+            result.add(item);
+        }
+    }
+    return result;
+}</code></pre>
+    </div>
+
+    <div class="template-note">
+      <strong>What changes:</strong> the condition inside the if(). Structure is ALWAYS the same.
+    </div>
+
+    <div class="variation-label">Filter by number</div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">if (item.getGains() &lt; 0)         // negative values
+if (item.getStorage() &gt;= min &amp;&amp; item.getStorage() &lt;= max)  // range</code></pre>
+    </div>
+
+    <div class="variation-label">Filter through nested list</div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">for (Brand b : brands) {
+    for (Mobile m : b.getMobileList()) {
+        if (m.getStorage() &gt;= min) {
+            result.add(m);
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ============ TEMPLATE 4 ============ -->
+  <div class="template-section" data-color="purple">
+    <div class="template-header">
+      <div class="template-num">4</div>
+      <div class="template-title">Aggregate Method</div>
+    </div>
+    <div class="template-trigger">When you see: "calculate average/sum/count of..."</div>
+
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">public static double calculateX(List&lt;ClassName&gt; list) {
+    double sum = 0;
+    int count = 0;
+    for (ClassName item : list) {
+        if (/* condition */) {
+            sum += item.getValue();
+            count++;
+        }
+    }
+    return count &gt; 0 ? sum / count : 0;
+}</code></pre>
+    </div>
+
+    <div class="variation-label">Return Map (average per group)</div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">public static Map&lt;String, Double&gt; avgByGroup(List&lt;Brand&gt; brands) {
+    Map&lt;String, Double&gt; result = new LinkedHashMap&lt;&gt;();
+    for (Brand b : brands) {
+        double sum = 0;
+        for (Mobile m : b.getMobileList()) {
+            sum += m.getPrice();
+        }
+        result.put(b.getBrandName(), sum / b.getMobileList().size());
+    }
+    return result;
+}</code></pre>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ============ TEMPLATE 5 ============ -->
+  <div class="template-section" data-color="red">
+    <div class="template-header">
+      <div class="template-num">5</div>
+      <div class="template-title">Main with Try-Catch</div>
+    </div>
+    <div class="template-trigger">When you see: "throw exception if..."</div>
+
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <pre><code class="language-java">public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    // Template 2: Read input
+    // Read method params
+
+    // Method 1 — OWN try-catch
+    try {
+        ResultType r1 = method1(list, param);
+        // print r1
+    } catch (CustomException1 e) {
+        System.out.println("CustomException1: " + e.getMessage());
+    }
+
+    // Method 2 — SEPARATE try-catch
+    try {
+        ResultType r2 = method2(list, param);
+        // print r2
+    } catch (CustomException2 e) {
+        System.out.println("CustomException2: " + e.getMessage());
+    }
+}</code></pre>
+    </div>
+
+    <div class="template-note danger">
+      <strong>THE RULE:</strong> Each method gets its OWN try-catch. Never put both in one try block. If method1 throws, method2 must still run.
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Bottom CTA -->
+  <div class="bottom-cta">
+    <h3>Test Yourself</h3>
+    <p>If you can type all 5 templates without looking at this page, you're ready for SBQ.</p>
+    <a href="practice-ide.html" class="cta-link">Go type these templates from memory in the IDE</a>
+  </div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

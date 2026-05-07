@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 2 — Java + JDBC + Database | Nimbus Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0B1120;
+      --bg-secondary: #131B2E;
+      --bg-card: #1A2340;
+      --bg-card-hover: #1F2B4D;
+      --bg-surface: #0F172A;
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --accent: #3B82F6;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --green: #22C55E;
+      --orange: #F59E0B;
+      --purple: #A855F7;
+      --red: #EF4444;
+      --cyan: #06B6D4;
+      --border: rgba(148, 163, 184, 0.1);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo svg { width: 32px; height: 32px; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--text-primary); }
+    .logo-badge { background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .header-right { display: flex; gap: 12px; }
+    .header-link { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+    .header-link:hover { color: var(--text-primary); background: var(--bg-card); }
+    .header-link.active { color: var(--accent); background: var(--accent-glow); }
+
+    /* Hero */
+    .hero { padding: 60px 40px 40px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; }
+    .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; line-height: 1.2; margin-bottom: 12px; position: relative; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--text-secondary); font-size: 1rem; max-width: 600px; margin: 0 auto 12px; position: relative; }
+    .hero-stat { display: inline-flex; gap: 32px; margin-top: 20px; position: relative; }
+    .hero-stat-item { text-align: center; }
+    .hero-stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--accent); }
+    .hero-stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Content */
+    .content { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px; }
+
+    /* Section headers */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 48px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Topic cards */
+    .topic-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+
+    .topic-card {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+    .topic-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(148, 163, 184, 0.2);
+      transform: translateX(4px);
+    }
+
+    .topic-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .topic-num.blue { background: rgba(59, 130, 246, 0.15); color: var(--accent); }
+    .topic-num.green { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+    .topic-num.orange { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+    .topic-num.purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+    .topic-num.cyan { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
+    .topic-num.red { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+
+    .topic-info h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
+    .topic-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+    .topic-arrow {
+      color: var(--text-muted);
+      transition: all 0.2s;
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+    .topic-card:hover .topic-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .topic-card.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .topic-card.disabled::after {
+      content: 'Coming soon';
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Start button */
+    .start-section { text-align: center; margin: 48px 0; }
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+    .start-btn:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3); }
+
+    /* Footer */
+    .footer { padding: 24px 40px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+
+    @media (max-width: 768px) {
+      .header { padding: 0 20px; }
+      .hero { padding: 40px 20px 30px; }
+      .content { padding: 0 20px 60px; }
+      .topic-card { grid-template-columns: 40px 1fr; }
+      .topic-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="logo-text">nimbus</span>
+        <span class="logo-badge">Portal</span>
+      </a>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="sprint-2.html" class="header-link active">Phase 2</a>
+      <a href="sprint-3.html" class="header-link">Phase 3</a>
+      <a href="sprint-4.html" class="header-link">Phase 4</a>
+      <a href="java-core.html" class="header-link">Java Core</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Phase 2 — <span>Java + JDBC</span></h1>
+    <p>From zero Java knowledge to a complete database-backed Nimbus console application. Every concept explained in depth, every line of code connected to your project.</p>
+    <div class="hero-stat">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">25</div>
+        <div class="hero-stat-label">Topics</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">14</div>
+        <div class="hero-stat-label">Java Files</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">14</div>
+        <div class="hero-stat-label">SQL Queries</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">50+</div>
+        <div class="hero-stat-label">Exercises</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <div class="start-section">
+      <a href="topics/software-engineering.html" class="start-btn">
+        Start Learning
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- FOUNDATIONS -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--accent);"></span>
+      Foundations
+    </div>
+    <div class="topic-grid">
+      <a href="topics/software-engineering.html" class="topic-card">
+        <div class="topic-num blue">01</div>
+        <div class="topic-info">
+          <h3>Software Engineering</h3>
+          <p>SDLC, Agile, SOLID principles, design patterns, testing, security</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/hld-lld.html" class="topic-card">
+        <div class="topic-num blue">02</div>
+        <div class="topic-info">
+          <h3>HLD & LLD</h3>
+          <p>Architecture, class diagrams, data flow, how everything connects end-to-end</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/project-structure.html" class="topic-card">
+        <div class="topic-num blue">03</div>
+        <div class="topic-info">
+          <h3>Project Structure</h3>
+          <p>Eclipse setup, Maven, packages, layered architecture, build path</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- JAVA CORE -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--green);"></span>
+      Java Core
+    </div>
+    <div class="topic-grid">
+      <a href="topics/java-how-it-works.html" class="topic-card">
+        <div class="topic-num green">04</div>
+        <div class="topic-info">
+          <h3>How Java Works</h3>
+          <p>JDK vs JRE vs JVM, compilation, bytecode, Stack vs Heap memory</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/java-basics.html" class="topic-card">
+        <div class="topic-num green">05</div>
+        <div class="topic-info">
+          <h3>Variables, Types & Operators</h3>
+          <p>Primitives, reference types, casting, wrapper classes, autoboxing, operators</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/java-strings.html" class="topic-card">
+        <div class="topic-num green">06</div>
+        <div class="topic-info">
+          <h3>Strings Deep Dive</h3>
+          <p>equals vs ==, immutability, String methods, StringBuilder, formatting</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/java-arrays.html" class="topic-card">
+        <div class="topic-num green">07</div>
+        <div class="topic-info">
+          <h3>Arrays</h3>
+          <p>1D and 2D arrays, traversal, sorting, searching, limitations</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/java-control-flow.html" class="topic-card">
+        <div class="topic-num green">08</div>
+        <div class="topic-info">
+          <h3>Control Flow</h3>
+          <p>if/else, switch, for, while, do-while, break, continue, nested loops</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/java-methods.html" class="topic-card">
+        <div class="topic-num green">09</div>
+        <div class="topic-info">
+          <h3>Methods & Scope</h3>
+          <p>Parameters, return types, overloading, static vs instance, final, scope rules</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- OOP -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--orange);"></span>
+      Object-Oriented Programming
+    </div>
+    <div class="topic-grid">
+      <a href="topics/oop-classes.html" class="topic-card">
+        <div class="topic-num orange">10</div>
+        <div class="topic-info">
+          <h3>Classes & Encapsulation</h3>
+          <p>Class anatomy, constructors, this keyword, access modifiers, getters/setters</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/oop-inheritance.html" class="topic-card">
+        <div class="topic-num orange">11</div>
+        <div class="topic-info">
+          <h3>Inheritance</h3>
+          <p>extends, super, constructor chaining, method overriding, types of inheritance</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/oop-polymorphism.html" class="topic-card">
+        <div class="topic-num orange">12</div>
+        <div class="topic-info">
+          <h3>Polymorphism</h3>
+          <p>Compile-time vs runtime, overloading vs overriding, upcasting, downcasting, instanceof</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/oop-abstraction.html" class="topic-card">
+        <div class="topic-num orange">13</div>
+        <div class="topic-info">
+          <h3>Abstraction</h3>
+          <p>Abstract classes, interfaces, implements, abstract vs interface, default methods</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- ADVANCED JAVA -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--purple);"></span>
+      Advanced Java
+    </div>
+    <div class="topic-grid">
+      <a href="topics/exceptions.html" class="topic-card">
+        <div class="topic-num purple">14</div>
+        <div class="topic-info">
+          <h3>Exception Handling</h3>
+          <p>Hierarchy, try-catch-finally, checked vs unchecked, throw vs throws, custom exceptions</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/generics.html" class="topic-card">
+        <div class="topic-num purple">15</div>
+        <div class="topic-info">
+          <h3>Generics</h3>
+          <p>Type parameters, why ArrayList&lt;User&gt; works, bounded types, type safety</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/collections.html" class="topic-card">
+        <div class="topic-num purple">16</div>
+        <div class="topic-info">
+          <h3>Collections</h3>
+          <p>ArrayList, LinkedList, HashMap, HashSet, TreeMap, Iterator, Comparable, Comparator</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/datetime.html" class="topic-card">
+        <div class="topic-num purple">17</div>
+        <div class="topic-info">
+          <h3>Date & Time API</h3>
+          <p>LocalDate, LocalDateTime, DateTimeFormatter, parsing, formatting</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/threads.html" class="topic-card">
+        <div class="topic-num purple">18</div>
+        <div class="topic-info">
+          <h3>Threads</h3>
+          <p>Thread lifecycle, Thread vs Runnable, start vs run, join, synchronized</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- DATABASE -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--cyan);"></span>
+      Database
+    </div>
+    <div class="topic-grid">
+      <a href="topics/sql.html" class="topic-card">
+        <div class="topic-num cyan">19</div>
+        <div class="topic-info">
+          <h3>SQL & Database Design</h3>
+          <p>RDBMS, data types, CREATE, INSERT, SELECT, JOINs, GROUP BY, normalization, ER diagrams</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/jdbc.html" class="topic-card">
+        <div class="topic-num cyan">20</div>
+        <div class="topic-info">
+          <h3>JDBC Deep Dive</h3>
+          <p>Architecture, Connection, Statement types, ResultSet, CRUD, transactions, DAO pattern</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- TOOLS & MORE -->
+    <div class="section-label">
+      <span class="dot" style="background: var(--red);"></span>
+      Tools & Build
+    </div>
+    <div class="topic-grid">
+      <a href="topics/maven.html" class="topic-card">
+        <div class="topic-num red">21</div>
+        <div class="topic-info">
+          <h3>Maven</h3>
+          <p>pom.xml, dependencies, build lifecycle, project structure, plugins</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/unix.html" class="topic-card">
+        <div class="topic-num red">22</div>
+        <div class="topic-info">
+          <h3>Unix / Shell Commands</h3>
+          <p>grep, sed, awk, sort, pipes — all with Nimbus data files</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/nimbus-backend.html" class="topic-card">
+        <div class="topic-num red">23</div>
+        <div class="topic-info">
+          <h3>Nimbus Backend Code</h3>
+          <p>Complete console application — all 14 Java files, copy-paste ready for Eclipse</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/practice-lab.html" class="topic-card">
+        <div class="topic-num red">24</div>
+        <div class="topic-info">
+          <h3>Practice Lab</h3>
+          <p>50+ exercises — output prediction, bug hunting, mini-projects, Nimbus challenges</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="topics/cheat-sheets.html" class="topic-card">
+        <div class="topic-num red">25</div>
+        <div class="topic-info">
+          <h3>Cheat Sheets</h3>
+          <p>Java syntax, SQL queries, JDBC patterns, Eclipse shortcuts, common errors</p>
+        </div>
+        <svg class="topic-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    Nimbus Learning Portal &mdash; Team Nimbus, 2026
+  </footer>
+
+</body>
+</html>

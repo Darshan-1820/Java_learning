@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collections Framework — Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link active"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: Collections Hierarchy                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="hierarchy">
+  <div class="section-tag">Section 01</div>
+  <h2>The Collections Hierarchy</h2>
+  <p class="section-desc">Java arrays have a fatal flaw: <strong>fixed size</strong>. You declare <code>User[] users = new User[10]</code> and you are stuck with 10 slots forever. What if 15 users register? What if only 2 do? The Java Collections Framework solves this &mdash; it gives you resizable, flexible, powerful data structures out of the box.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of an array as a row of fixed chairs in a classroom &mdash; you set up exactly 30 chairs before anyone arrives. If 35 students show up, some stand. If only 10 show up, 20 chairs sit empty. A <strong>Collection</strong> is like a conference hall with stackable chairs &mdash; you add chairs as people arrive, remove them as people leave. The room adapts to the crowd.</p>
+  </div>
+
+  <h3>The Full Family Tree</h3>
+
+  <p>Every collection class in Java descends from one of two root interfaces: <code>Collection</code> (for groups of elements) and <code>Map</code> (for key-value pairs). Here is the complete hierarchy you need to know:</p>
+
+  <div class="diagram">
+    <pre>
+                            Iterable&lt;E&gt;
+                                |
+                          Collection&lt;E&gt;
+                         /      |       \
+                        /       |        \
+                   List&lt;E&gt;   Set&lt;E&gt;    Queue&lt;E&gt;
+                  /  |  \     /  |  \
+                 /   |   \   /   |   \
+          ArrayList  |  Vector  |  TreeSet
+                     |       HashSet  |
+                 LinkedList      LinkedHashSet
+
+
+                           Map&lt;K,V&gt;
+                          /    |    \
+                         /     |     \
+                   HashMap  TreeMap  LinkedHashMap
+    </pre>
+    <div class="diagram-label">Java Collections Framework hierarchy &mdash; the two family trees</div>
+  </div>
+
+  <p>Let us break this down:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Interface</th>
+        <th>What It Stores</th>
+        <th>Key Property</th>
+        <th>Common Implementations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>List</strong></td>
+        <td>Ordered elements</td>
+        <td>Duplicates allowed, index-based access</td>
+        <td><code>ArrayList</code>, <code>LinkedList</code>, <code>Vector</code></td>
+      </tr>
+      <tr>
+        <td><strong>Set</strong></td>
+        <td>Unique elements</td>
+        <td>No duplicates, no index</td>
+        <td><code>HashSet</code>, <code>TreeSet</code>, <code>LinkedHashSet</code></td>
+      </tr>
+      <tr>
+        <td><strong>Queue</strong></td>
+        <td>Elements in FIFO order</td>
+        <td>First-in, first-out processing</td>
+        <td><code>LinkedList</code>, <code>PriorityQueue</code></td>
+      </tr>
+      <tr>
+        <td><strong>Map</strong></td>
+        <td>Key-value pairs</td>
+        <td>Unique keys, each maps to one value</td>
+        <td><code>HashMap</code>, <code>TreeMap</code>, <code>LinkedHashMap</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Right now, when you query all users from the database, you get them one at a time from <code>ResultSet</code>. You need somewhere to put them. An array? You do not know how many users exist. That is why you use <code>ArrayList&lt;User&gt;</code> &mdash; it grows as you add each user from the ResultSet. When you search bookings, the result goes into <code>ArrayList&lt;Booking&gt;</code>. When you want to look up a booking instantly by ID, you use <code>HashMap&lt;String, Booking&gt;</code>.</p>
+  </div>
+
+  <h3>Why Not Just Use Arrays?</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Arrays</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Fixed size &mdash; cannot grow or shrink</li>
+          <li>No built-in search, sort, or remove</li>
+          <li>Manual index management</li>
+          <li>No type safety without generics</li>
+          <li>Inserting in the middle requires shifting everything</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Collections</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Dynamic size &mdash; grows and shrinks automatically</li>
+          <li>Built-in search, sort, remove, contains</li>
+          <li>Iterator for safe traversal</li>
+          <li>Full generics support: <code>ArrayList&lt;User&gt;</code></li>
+          <li>Specialized structures for every use case</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: ArrayList                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="arraylist">
+  <div class="section-tag">Section 02</div>
+  <h2>ArrayList &mdash; The Workhorse</h2>
+  <p class="section-desc"><code>ArrayList</code> is the collection you will use 80% of the time. It is a <strong>resizable array</strong> &mdash; it acts like an array but grows automatically when you add elements.</p>
+
+  <h3>How ArrayList Works Internally</h3>
+
+  <p>Under the hood, ArrayList is just a regular array. When you create <code>new ArrayList&lt;&gt;()</code>, Java creates an internal array of size <strong>10</strong> (the default capacity). As you add elements:</p>
+
+  <div class="diagram">
+    <pre>
+  Step 1: new ArrayList&lt;String&gt;()
+  Internal array: [null, null, null, null, null, null, null, null, null, null]
+  Capacity: 10    Size: 0
+
+  Step 2: add("Alice"), add("Bob"), add("Charlie") ... add 10 elements
+  Internal array: [Alice, Bob, Charlie, Dave, Eve, Frank, Grace, Hank, Ivy, Jack]
+  Capacity: 10    Size: 10    &lt;-- FULL!
+
+  Step 3: add("Kate") &mdash; no room!
+  Java creates a NEW array with capacity = old * 1.5 = 15
+  Copies all 10 elements to the new array, then adds "Kate"
+  Internal array: [Alice, Bob, Charlie, Dave, Eve, Frank, Grace, Hank, Ivy, Jack, Kate, null, null, null, null]
+  Capacity: 15    Size: 11
+
+  This "grow and copy" is called RESIZING.
+  It is O(n) when it happens, but it happens rarely, so
+  on average (amortized), add() is still O(1).
+    </pre>
+    <div class="diagram-label">ArrayList internal resizing: capacity grows by 50% each time it fills up</div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Imagine a notebook with 10 pages. You fill all 10. To add more notes, you buy a bigger notebook (15 pages), copy everything from the old one, throw the old one away, and continue writing. That "copy to a bigger notebook" is expensive &mdash; but you do not do it every single time you write a note. You only do it when the notebook is full.</p>
+  </div>
+
+  <h3>Every ArrayList Method You Need</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">NimbusUserList.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.ArrayList;
+
+public class NimbusUserList {
+    public static void main(String[] args) {
+        // CREATE &mdash; type-safe list of Users
+        ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+        // ADD &mdash; append to end (O(1) amortized)
+        users.add(new User("U001", "Darshan", "darshan@nimbus.com"));
+        users.add(new User("U002", "Priya", "priya@nimbus.com"));
+        users.add(new User("U003", "Rahul", "rahul@nimbus.com"));
+
+        // ADD at index &mdash; insert at position (O(n), shifts elements right)
+        users.add(1, new User("U004", "Meera", "meera@nimbus.com"));
+        // List is now: [Darshan, Meera, Priya, Rahul]
+
+        // GET &mdash; access by index (O(1), instant)
+        User firstUser = users.get(0);  // Darshan
+        System.out.println("First user: " + firstUser.getName());
+
+        // SET &mdash; replace element at index (O(1))
+        users.set(2, new User("U005", "Anita", "anita@nimbus.com"));
+        // Priya replaced with Anita at index 2
+
+        // SIZE &mdash; how many elements
+        System.out.println("Total users: " + users.size());  // 4
+
+        // CONTAINS &mdash; check if element exists (O(n), uses equals())
+        boolean hasDarshan = users.contains(new User("U001", "Darshan", "darshan@nimbus.com"));
+
+        // INDEXOF &mdash; find position of element (O(n))
+        int pos = users.indexOf(new User("U001", "Darshan", "darshan@nimbus.com"));
+        // Returns -1 if not found
+
+        // REMOVE by index (O(n), shifts elements left)
+        users.remove(3);  // Removes Rahul at index 3
+
+        // REMOVE by object (O(n), finds and removes first match)
+        users.remove(new User("U004", "Meera", "meera@nimbus.com"));
+
+        // ISEMPTY &mdash; check if list has zero elements
+        if (!users.isEmpty()) {
+            System.out.println("We have " + users.size() + " users");
+        }
+
+        // CLEAR &mdash; remove ALL elements
+        // users.clear();  // List is now empty, size = 0
+
+        // LOOP through all users
+        for (User u : users) {
+            System.out.println(u.getUserId() + ": " + u.getName());
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();</div>
+        <div class="breakdown-explain">Creates an empty ArrayList that can ONLY hold User objects. The &lt;&gt; on the right is the diamond operator &mdash; Java infers the type from the left side.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">users.add(new User("U001", "Darshan", "darshan@nimbus.com"));</div>
+        <div class="breakdown-explain">Creates a new User and appends it to the end of the list. ArrayList grows automatically if needed. This is O(1) amortized.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">users.add(1, new User("U004", "Meera", ...));</div>
+        <div class="breakdown-explain">Inserts Meera at index 1. Everything from index 1 onward shifts right by one position. This is O(n) because of the shifting.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User firstUser = users.get(0);</div>
+        <div class="breakdown-explain">Direct index access, just like an array. O(1) &mdash; instant, no matter how big the list is. This is ArrayList's biggest advantage.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">users.set(2, new User("U005", "Anita", ...));</div>
+        <div class="breakdown-explain">Replaces the element at index 2 (Priya) with Anita. Does NOT shift anything &mdash; just overwrites that slot. O(1).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">users.contains(new User("U001", ...));</div>
+        <div class="breakdown-explain">Walks through the entire list calling equals() on each element. Returns true if any match. O(n). Requires User to override equals().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">users.remove(3);</div>
+        <div class="breakdown-explain">Removes the element at index 3. Everything after index 3 shifts left. O(n) in the worst case.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>ArrayList Performance Summary</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>Method</th>
+        <th>Time Complexity</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Access by index</td>
+        <td><code>get(i)</code></td>
+        <td><strong>O(1)</strong></td>
+        <td>Direct array index lookup</td>
+      </tr>
+      <tr>
+        <td>Add to end</td>
+        <td><code>add(e)</code></td>
+        <td><strong>O(1)*</strong></td>
+        <td>Append to end (amortized, occasional resize)</td>
+      </tr>
+      <tr>
+        <td>Add at beginning</td>
+        <td><code>add(0, e)</code></td>
+        <td><strong>O(n)</strong></td>
+        <td>Must shift every element right by one</td>
+      </tr>
+      <tr>
+        <td>Remove from end</td>
+        <td><code>remove(size-1)</code></td>
+        <td><strong>O(1)</strong></td>
+        <td>No shifting needed</td>
+      </tr>
+      <tr>
+        <td>Remove from beginning</td>
+        <td><code>remove(0)</code></td>
+        <td><strong>O(n)</strong></td>
+        <td>Must shift every element left by one</td>
+      </tr>
+      <tr>
+        <td>Search</td>
+        <td><code>contains(e)</code></td>
+        <td><strong>O(n)</strong></td>
+        <td>Must check each element sequentially</td>
+      </tr>
+      <tr>
+        <td>Set/replace</td>
+        <td><code>set(i, e)</code></td>
+        <td><strong>O(1)</strong></td>
+        <td>Direct overwrite at index</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your <code>UserDAO.getAllUsers()</code> method returns an <code>ArrayList&lt;User&gt;</code>. Inside the method, you loop through the <code>ResultSet</code> and call <code>users.add(user)</code> for each row. Since you are always adding to the end, this is O(1) per add. Later, when you display the user list, you use <code>users.get(i)</code> which is also O(1). ArrayList is perfect for this &mdash; build a list by appending, then access by index.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: LinkedList                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="linkedlist">
+  <div class="section-tag">Section 03</div>
+  <h2>LinkedList &mdash; The Chain</h2>
+  <p class="section-desc">A <code>LinkedList</code> stores elements as <strong>nodes</strong>. Each node holds the data plus pointers to the previous and next node. No internal array, no resizing, no shifting.</p>
+
+  <h3>How LinkedList Works Internally</h3>
+
+  <div class="diagram">
+    <pre>
+  ArrayList (under the hood):
+  [Darshan | Priya | Rahul | Meera | null | null | null]
+   index 0   index 1  index 2  index 3
+   Continuous block of memory. Access any index instantly.
+
+  LinkedList (under the hood):
+  HEAD
+   |
+   v
+  [prev:null | "Darshan" | next] --&gt; [prev | "Priya" | next] --&gt; [prev | "Rahul" | next] --&gt; [prev | "Meera" | next:null]
+                                                                                                         ^
+                                                                                                        TAIL
+
+  Each box is a NODE. Each node knows its neighbors but NOT its position.
+  To reach index 2, you must walk: HEAD &rarr; node 0 &rarr; node 1 &rarr; node 2.
+    </pre>
+    <div class="diagram-label">ArrayList = contiguous array vs LinkedList = chain of nodes</div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Imagine a <strong>paper chain</strong> decoration. Each link is connected to the next by hooking through it. To add a new link at the start, you just hook it in &mdash; instant, nothing else moves. But to find the 50th link, you have to count from the beginning: 1, 2, 3, ... 50. Compare that to a <strong>bookshelf</strong> (ArrayList) where you can grab book #50 directly because they are numbered and in order.</p>
+  </div>
+
+  <h3>ArrayList vs LinkedList &mdash; When to Use Which</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">ArrayList</div>
+      <div class="comparison-body">
+        <ul>
+          <li><strong>Fast random access</strong> &mdash; get(50) is O(1)</li>
+          <li><strong>Slow insert/remove at beginning</strong> &mdash; O(n) shifting</li>
+          <li><strong>Memory efficient</strong> &mdash; just stores data, no pointers</li>
+          <li><strong>Use when:</strong> you read more than you insert/delete</li>
+          <li>Great for: displaying user lists, search results</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">LinkedList</div>
+      <div class="comparison-body">
+        <ul>
+          <li><strong>Slow random access</strong> &mdash; get(50) is O(n)</li>
+          <li><strong>Fast insert/remove at ends</strong> &mdash; O(1)</li>
+          <li><strong>More memory</strong> &mdash; each node stores 2 extra pointers</li>
+          <li><strong>Use when:</strong> you insert/delete at ends frequently</li>
+          <li>Great for: queues, deques, undo histories</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>ArrayList</th>
+        <th>LinkedList</th>
+        <th>Winner</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>get(index)</td>
+        <td><strong>O(1)</strong></td>
+        <td>O(n)</td>
+        <td>ArrayList</td>
+      </tr>
+      <tr>
+        <td>add(element) &mdash; to end</td>
+        <td><strong>O(1)*</strong></td>
+        <td><strong>O(1)</strong></td>
+        <td>Tie</td>
+      </tr>
+      <tr>
+        <td>add(0, element) &mdash; to beginning</td>
+        <td>O(n)</td>
+        <td><strong>O(1)</strong></td>
+        <td>LinkedList</td>
+      </tr>
+      <tr>
+        <td>remove(0) &mdash; from beginning</td>
+        <td>O(n)</td>
+        <td><strong>O(1)</strong></td>
+        <td>LinkedList</td>
+      </tr>
+      <tr>
+        <td>remove(size-1) &mdash; from end</td>
+        <td><strong>O(1)</strong></td>
+        <td><strong>O(1)</strong></td>
+        <td>Tie</td>
+      </tr>
+      <tr>
+        <td>contains(element)</td>
+        <td>O(n)</td>
+        <td>O(n)</td>
+        <td>Tie</td>
+      </tr>
+      <tr>
+        <td>Memory overhead</td>
+        <td>Low</td>
+        <td>High (2 pointers per node)</td>
+        <td>ArrayList</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>For Nimbus, you almost always want <strong>ArrayList</strong>. Why? Because you mostly read data from the database and display it. You call <code>get(i)</code> far more than you insert at the beginning. LinkedList would be useful if Nimbus had an undo feature (last-in, first-out) or a parcel processing queue (first-in, first-out). For user lists and booking results &mdash; ArrayList wins.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LinkedListAsQueue.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.LinkedList;
+
+// LinkedList as a parcel processing queue
+LinkedList&lt;String&gt; processingQueue = new LinkedList&lt;&gt;();
+
+// Parcels arrive (add to end)
+processingQueue.addLast("PKG-001");  // O(1)
+processingQueue.addLast("PKG-002");  // O(1)
+processingQueue.addLast("PKG-003");  // O(1)
+
+// Process parcels in order (remove from front)
+String next = processingQueue.removeFirst();  // "PKG-001" &mdash; O(1)
+// No shifting! Just update the HEAD pointer.
+
+// Peek at next without removing
+String upcoming = processingQueue.peekFirst();  // "PKG-002"</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: HashSet                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="hashset">
+  <div class="section-tag">Section 04</div>
+  <h2>HashSet &mdash; Uniqueness Enforced</h2>
+  <p class="section-desc">A <code>HashSet</code> stores elements with <strong>no duplicates</strong> and <strong>no ordering</strong>. It uses <strong>hashing</strong> internally to give you O(1) add, remove, and contains operations.</p>
+
+  <h3>How Hashing Works (Simplified)</h3>
+
+  <div class="diagram">
+    <pre>
+  When you add "darshan@nimbus.com" to a HashSet:
+
+  Step 1: Java calls "darshan@nimbus.com".hashCode()
+          Returns a number like 184927633
+
+  Step 2: Java computes: 184927633 % 16 = 1
+          (16 is the default number of internal "buckets")
+
+  Step 3: Java puts the element in bucket #1
+
+  BUCKET ARRAY:
+  [0] --&gt; empty
+  [1] --&gt; "darshan@nimbus.com"
+  [2] --&gt; empty
+  [3] --&gt; "priya@nimbus.com"
+  [4] --&gt; empty
+  ...
+  [15] --&gt; "rahul@nimbus.com"
+
+  When you call contains("darshan@nimbus.com"):
+  Step 1: hashCode() &rarr; 184927633
+  Step 2: 184927633 % 16 = 1
+  Step 3: Look in bucket #1. Found it! O(1).
+
+  No need to search through the entire collection.
+    </pre>
+    <div class="diagram-label">Hashing: convert the element to a number, use it as an index into buckets</div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Imagine a library with 26 shelves labeled A through Z. When a book arrives, you look at the author's last name and put it on the corresponding shelf &mdash; "Sharma" goes on shelf S. To find a book by Sharma, you go straight to shelf S. You do not search all 26 shelves. That is hashing &mdash; a formula that tells you <strong>exactly where to look</strong>.</p>
+  </div>
+
+  <h3>HashSet in Action &mdash; Tracking Unique Emails</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UniqueEmailCheck.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.HashSet;
+
+public class RegistrationValidator {
+    // Track all registered emails to prevent duplicates
+    private HashSet&lt;String&gt; registeredEmails = new HashSet&lt;&gt;();
+
+    public boolean registerUser(String email) {
+        // add() returns false if element already exists
+        if (!registeredEmails.add(email.toLowerCase())) {
+            System.out.println("Email already registered: " + email);
+            return false;
+        }
+        System.out.println("Registration successful: " + email);
+        return true;
+    }
+
+    public boolean isEmailTaken(String email) {
+        // contains() is O(1) with hashing!
+        return registeredEmails.contains(email.toLowerCase());
+    }
+
+    public int totalRegistered() {
+        return registeredEmails.size();
+    }
+
+    public static void main(String[] args) {
+        RegistrationValidator validator = new RegistrationValidator();
+
+        validator.registerUser("darshan@nimbus.com");   // Success
+        validator.registerUser("priya@nimbus.com");     // Success
+        validator.registerUser("darshan@nimbus.com");   // FAILS &mdash; duplicate!
+
+        System.out.println("Total: " + validator.totalRegistered());  // 2, not 3
+
+        // Iterating &mdash; order is NOT guaranteed
+        for (String email : validator.registeredEmails) {
+            System.out.println(email);
+        }
+        // Could print in ANY order &mdash; that is HashSet.
+    }
+}</code></pre>
+  </div>
+
+  <h3>HashSet vs TreeSet vs LinkedHashSet</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Set Type</th>
+        <th>Ordering</th>
+        <th>Performance</th>
+        <th>When to Use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>HashSet</code></td>
+        <td>No order guaranteed</td>
+        <td>O(1) add/remove/contains</td>
+        <td>Default choice for uniqueness checks</td>
+      </tr>
+      <tr>
+        <td><code>TreeSet</code></td>
+        <td>Sorted (natural or custom)</td>
+        <td>O(log n) add/remove/contains</td>
+        <td>When you need elements sorted (e.g., sorted city names)</td>
+      </tr>
+      <tr>
+        <td><code>LinkedHashSet</code></td>
+        <td>Insertion order preserved</td>
+        <td>O(1) add/remove/contains</td>
+        <td>When you need uniqueness AND insertion order</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>During user registration, you need to check if an email is already taken. With an <code>ArrayList</code>, you would call <code>contains(email)</code> which loops through every element &mdash; O(n). With 10,000 users, that means checking up to 10,000 entries. With a <code>HashSet</code>, the same <code>contains(email)</code> call is <strong>O(1)</strong> &mdash; it hashes the email, goes straight to the right bucket, done. For duplicate-checking, HashSet is orders of magnitude faster.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: HashMap                                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="hashmap">
+  <div class="section-tag">Section 05</div>
+  <h2>HashMap &mdash; Instant Lookup by Key</h2>
+  <p class="section-desc">A <code>HashMap</code> stores <strong>key-value pairs</strong>. You give it a key, it gives you back the value &mdash; in O(1) time. Think of it as a dictionary: you look up a word (key) and instantly find its definition (value).</p>
+
+  <h3>How HashMap Works</h3>
+
+  <div class="diagram">
+    <pre>
+  HashMap&lt;String, Booking&gt; bookingMap
+
+  PUT: bookingMap.put("BK-1001", booking1)
+  Step 1: "BK-1001".hashCode() &rarr; 7482910
+  Step 2: 7482910 % 16 = 14
+  Step 3: Store {key:"BK-1001", value:booking1} in bucket #14
+
+  BUCKET ARRAY:
+  [0]  --&gt; empty
+  [1]  --&gt; empty
+  [2]  --&gt; {key:"BK-1003", value:booking3}
+  ...
+  [7]  --&gt; {key:"BK-1002", value:booking2}
+  ...
+  [14] --&gt; {key:"BK-1001", value:booking1}
+  [15] --&gt; empty
+
+  GET: bookingMap.get("BK-1001")
+  Step 1: Hash "BK-1001" &rarr; bucket #14
+  Step 2: Found! Return booking1.     O(1)
+
+  COLLISION: Two keys hash to same bucket? Java chains them in a list:
+  [14] --&gt; {BK-1001, booking1} --&gt; {BK-2045, booking45}
+  Then it uses equals() to find the right one.
+    </pre>
+    <div class="diagram-label">HashMap: hash the key to find which bucket, then store key-value pair there</div>
+  </div>
+
+  <h3>Complete HashMap Example &mdash; Booking Lookup</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingLookupService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+
+public class BookingLookupService {
+    // Key = booking ID, Value = Booking object
+    private HashMap&lt;String, Booking&gt; bookingCache = new HashMap&lt;&gt;();
+
+    // Load bookings into the map for instant lookup
+    public void loadBookings(ArrayList&lt;Booking&gt; bookingsFromDB) {
+        for (Booking b : bookingsFromDB) {
+            bookingCache.put(b.getBookingId(), b);
+        }
+    }
+
+    // O(1) lookup by booking ID &mdash; instant!
+    public Booking findBooking(String bookingId) {
+        return bookingCache.get(bookingId);  // null if not found
+    }
+
+    // Check if a booking exists
+    public boolean bookingExists(String bookingId) {
+        return bookingCache.containsKey(bookingId);
+    }
+
+    // ALL keys
+    public void printAllBookingIds() {
+        for (String id : bookingCache.keySet()) {
+            System.out.println("Booking ID: " + id);
+        }
+    }
+
+    // ALL values
+    public void printAllBookings() {
+        for (Booking b : bookingCache.values()) {
+            System.out.println(b.getBookingId() + " | " + b.getSenderName());
+        }
+    }
+
+    // ALL key-value pairs (entrySet is the most efficient way to iterate)
+    public void printFullDetails() {
+        for (Map.Entry&lt;String, Booking&gt; entry : bookingCache.entrySet()) {
+            String id = entry.getKey();
+            Booking b = entry.getValue();
+            System.out.println(id + " &rarr; " + b.getSenderName()
+                + " | Rs. " + b.getCost() + " | " + b.getStatus());
+        }
+    }
+
+    // Remove a cancelled booking
+    public void cancelBooking(String bookingId) {
+        Booking removed = bookingCache.remove(bookingId);
+        if (removed != null) {
+            System.out.println("Cancelled: " + bookingId);
+        }
+    }
+
+    // Total bookings
+    public int totalBookings() {
+        return bookingCache.size();
+    }
+
+    // Check if cache is empty
+    public boolean isEmpty() {
+        return bookingCache.isEmpty();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Key methods explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">put(key, value)</div>
+        <div class="breakdown-explain">Stores a key-value pair. If the key already exists, the old value is REPLACED and returned. O(1).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">get(key)</div>
+        <div class="breakdown-explain">Returns the value associated with the key. Returns null if the key does not exist. O(1).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">containsKey(key)</div>
+        <div class="breakdown-explain">Returns true if this map has an entry for the given key. Faster than checking get() != null because some values CAN be null. O(1).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">keySet()</div>
+        <div class="breakdown-explain">Returns a Set of all keys. Useful when you only need the keys (like all booking IDs).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">values()</div>
+        <div class="breakdown-explain">Returns a Collection of all values. Useful when you only need the values (like all Booking objects).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">entrySet()</div>
+        <div class="breakdown-explain">Returns a Set of Map.Entry&lt;K,V&gt; pairs. MOST EFFICIENT way to iterate when you need both key and value &mdash; only one lookup per entry.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a customer enters booking ID "BK-1001" to track their parcel, you need to find that specific booking. With an <code>ArrayList&lt;Booking&gt;</code>, you would loop through ALL bookings comparing IDs &mdash; O(n). With 50,000 bookings, that is 50,000 comparisons. With a <code>HashMap&lt;String, Booking&gt;</code>, you hash "BK-1001" and jump straight to the answer &mdash; <strong>O(1)</strong>. One lookup. Done. This is why real systems use HashMaps for lookups.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: TreeMap                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="treemap">
+  <div class="section-tag">Section 06</div>
+  <h2>TreeMap &mdash; Sorted Keys</h2>
+  <p class="section-desc">A <code>TreeMap</code> keeps its keys in <strong>sorted order</strong> automatically. Every time you put a new entry, it slots it into the right position. It uses a Red-Black Tree internally (a self-balancing binary search tree).</p>
+
+  <h3>HashMap vs TreeMap</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">HashMap</div>
+      <div class="comparison-body">
+        <ul>
+          <li>O(1) put/get/remove</li>
+          <li>No ordering of keys</li>
+          <li>Allows one null key</li>
+          <li>Use for: fast lookup by key</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">TreeMap</div>
+      <div class="comparison-body">
+        <ul>
+          <li>O(log n) put/get/remove</li>
+          <li>Keys always sorted</li>
+          <li>No null keys allowed</li>
+          <li>Use for: sorted display, range queries</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SortedBookingDisplay.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.TreeMap;
+import java.time.LocalDate;
+
+// TreeMap sorts by key automatically
+// Key = booking date, Value = list of bookings on that date
+TreeMap&lt;LocalDate, ArrayList&lt;Booking&gt;&gt; bookingsByDate = new TreeMap&lt;&gt;();
+
+// Add bookings (inserted in sorted order automatically)
+bookingsByDate.put(LocalDate.of(2026, 4, 23), aprilBookings);
+bookingsByDate.put(LocalDate.of(2026, 3, 15), marchBookings);
+bookingsByDate.put(LocalDate.of(2026, 5, 1), mayBookings);
+
+// Iterating &mdash; always in date order (earliest first)
+for (Map.Entry&lt;LocalDate, ArrayList&lt;Booking&gt;&gt; entry : bookingsByDate.entrySet()) {
+    System.out.println("Date: " + entry.getKey());
+    for (Booking b : entry.getValue()) {
+        System.out.println("  " + b.getBookingId());
+    }
+}
+// Output: March 15, then April 23, then May 1
+
+// NavigableMap methods:
+LocalDate firstDate = bookingsByDate.firstKey();     // 2026-03-15
+LocalDate lastDate  = bookingsByDate.lastKey();      // 2026-05-01
+
+// Get all bookings between two dates (inclusive)
+Map&lt;LocalDate, ArrayList&lt;Booking&gt;&gt; aprilBookingsRange =
+    bookingsByDate.subMap(
+        LocalDate.of(2026, 4, 1), true,   // from (inclusive)
+        LocalDate.of(2026, 4, 30), true    // to (inclusive)
+    );
+
+// Get all bookings before a date
+Map&lt;LocalDate, ArrayList&lt;Booking&gt;&gt; beforeApril =
+    bookingsByDate.headMap(LocalDate.of(2026, 4, 1), false);
+
+// Get the booking date just before a given date
+LocalDate previousDate = bookingsByDate.lowerKey(LocalDate.of(2026, 4, 23));
+// Returns 2026-03-15</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When displaying booking history for a customer, you want bookings sorted by date &mdash; most recent first. A <code>TreeMap&lt;LocalDate, List&lt;Booking&gt;&gt;</code> gives you this automatically. You can also answer questions like "show me all bookings in April" using <code>subMap()</code>, or "what was the last booking before today" using <code>lowerKey()</code>. HashMap cannot do any of this &mdash; it has no concept of order.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Iterator                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="iterator">
+  <div class="section-tag">Section 07</div>
+  <h2>Iterator &mdash; Safe Traversal</h2>
+  <p class="section-desc">An <code>Iterator</code> is a cursor that walks through a collection one element at a time. Its superpower: it lets you <strong>remove elements safely while iterating</strong> &mdash; something a regular for-each loop cannot do.</p>
+
+  <h3>The ConcurrentModificationException Problem</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DangerousRemoval.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">ArrayList&lt;Booking&gt; bookings = getBookings();
+
+// THIS CRASHES with ConcurrentModificationException!
+for (Booking b : bookings) {
+    if (b.getStatus().equals("CANCELLED")) {
+        bookings.remove(b);  // Modifying the list WHILE iterating
+    }
+}
+// Java detects that the list changed during iteration and throws an exception.
+// The for-each loop uses an iterator internally, and the iterator's
+// expected modification count no longer matches the list's actual count.</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Why This Crashes</div>
+    <p>A for-each loop secretly creates an <code>Iterator</code> behind the scenes. That iterator keeps a count of how many times the list has been modified. When you call <code>bookings.remove(b)</code> directly, the list's modification count increases but the iterator does not know. On the next <code>hasNext()</code> call, the iterator sees the mismatch and throws <code>ConcurrentModificationException</code>. It is a safety mechanism to prevent corrupted iteration.</p>
+  </div>
+
+  <h3>The Solution: Use Iterator.remove()</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SafeRemoval.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.Iterator;
+import java.util.ArrayList;
+
+ArrayList&lt;Booking&gt; bookings = getBookings();
+
+// SAFE removal using Iterator
+Iterator&lt;Booking&gt; iterator = bookings.iterator();
+
+while (iterator.hasNext()) {
+    Booking b = iterator.next();       // Move to next element
+
+    if (b.getStatus().equals("CANCELLED")) {
+        iterator.remove();             // Remove via iterator &mdash; SAFE!
+        System.out.println("Removed cancelled booking: " + b.getBookingId());
+    }
+}
+
+// The iterator updates its internal state when YOU remove through it,
+// so there is no mismatch. No exception. Clean removal.</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Iterator methods</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookings.iterator()</div>
+        <div class="breakdown-explain">Creates an Iterator positioned BEFORE the first element. Think of it as a cursor sitting at position -1.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">iterator.hasNext()</div>
+        <div class="breakdown-explain">Returns true if there are more elements after the cursor's current position. Used as the loop condition.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">iterator.next()</div>
+        <div class="breakdown-explain">Advances the cursor by one position and returns the element it just passed. You MUST call next() before remove().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">iterator.remove()</div>
+        <div class="breakdown-explain">Removes the element that was last returned by next(). This is the ONLY safe way to remove during iteration. You can only call it once per next() call.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>For-Each vs Iterator &mdash; When to Use Which</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Use</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Just reading all elements</td>
+        <td>For-each loop</td>
+        <td>Cleaner syntax, fewer lines of code</td>
+      </tr>
+      <tr>
+        <td>Need to remove during iteration</td>
+        <td>Iterator</td>
+        <td>Only Iterator.remove() is safe</td>
+      </tr>
+      <tr>
+        <td>Need the index while iterating</td>
+        <td>Regular for loop</td>
+        <td><code>for (int i = 0; i &lt; list.size(); i++)</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When cleaning up expired bookings from a list, you need to iterate through all bookings and remove the expired ones. Use an <code>Iterator</code> for this. When simply displaying booking history to the user, a plain for-each loop is cleaner. Know both, use the right one.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Comparable                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="comparable">
+  <div class="section-tag">Section 08</div>
+  <h2>Comparable &mdash; Natural Ordering</h2>
+  <p class="section-desc">When you call <code>Collections.sort(bookings)</code>, Java needs to know: <strong>how do you compare two Bookings?</strong> By date? By cost? By ID? The <code>Comparable</code> interface lets YOUR class define its own natural ordering.</p>
+
+  <h3>Implementing Comparable&lt;Booking&gt;</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.time.LocalDate;
+
+public class Booking implements Comparable&lt;Booking&gt; {
+    private String bookingId;
+    private String senderName;
+    private LocalDate bookingDate;
+    private double cost;
+    private String status;
+
+    // Constructor, getters, setters...
+
+    @Override
+    public int compareTo(Booking other) {
+        // Natural ordering: by booking date (earliest first)
+        return this.bookingDate.compareTo(other.bookingDate);
+    }
+
+    // compareTo() contract:
+    // Returns NEGATIVE if this &lt; other  (this comes first)
+    // Returns ZERO     if this == other (same position)
+    // Returns POSITIVE if this &gt; other  (other comes first)
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">SortBookings.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.ArrayList;
+import java.util.Collections;
+
+ArrayList&lt;Booking&gt; bookings = bookingDAO.getAllBookings();
+
+// This works because Booking implements Comparable&lt;Booking&gt;
+Collections.sort(bookings);
+// Bookings are now sorted by date (earliest first)
+
+// Without Comparable, this line would cause a compile error:
+// "Booking cannot be cast to java.lang.Comparable"</code></pre>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of <code>Comparable</code> as giving your class a <strong>built-in ruler</strong>. When someone asks "which Booking comes first?" the Booking itself knows how to answer that question because <code>compareTo()</code> is baked into the class. It is like alphabetical order for Strings &mdash; Strings already implement <code>Comparable</code>, so <code>"Apple".compareTo("Banana")</code> returns a negative number (Apple comes before Banana).</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Comparator                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="comparator">
+  <div class="section-tag">Section 09</div>
+  <h2>Comparator &mdash; Custom Sorting</h2>
+  <p class="section-desc"><code>Comparable</code> defines ONE natural ordering. But what if you want to sort bookings by cost sometimes and by date other times? <code>Comparator</code> lets you define <strong>external, interchangeable sorting strategies</strong>.</p>
+
+  <h3>Comparable vs Comparator</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Comparable</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Defined INSIDE the class</li>
+          <li>Only ONE natural ordering</li>
+          <li>Implements <code>compareTo()</code></li>
+          <li><code>Collections.sort(list)</code></li>
+          <li>"I know how I should be sorted"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Comparator</div>
+      <div class="comparison-body">
+        <ul>
+          <li>Defined OUTSIDE the class</li>
+          <li>Unlimited sort strategies</li>
+          <li>Implements <code>compare(a, b)</code></li>
+          <li><code>Collections.sort(list, comparator)</code></li>
+          <li>"Someone else decides how to sort me"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Multiple Sort Strategies for Bookings</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingSortStrategies.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
+
+ArrayList&lt;Booking&gt; bookings = bookingDAO.getAllBookings();
+
+// --- Sort by COST (cheapest first) ---
+Comparator&lt;Booking&gt; byCost = Comparator.comparing(Booking::getCost);
+Collections.sort(bookings, byCost);
+
+// --- Sort by COST (most expensive first) ---
+Comparator&lt;Booking&gt; byCostDesc = Comparator.comparing(Booking::getCost).reversed();
+Collections.sort(bookings, byCostDesc);
+
+// --- Sort by DATE (most recent first) ---
+Comparator&lt;Booking&gt; byDateDesc = Comparator.comparing(Booking::getBookingDate).reversed();
+Collections.sort(bookings, byDateDesc);
+
+// --- Sort by STATUS alphabetically ---
+Comparator&lt;Booking&gt; byStatus = Comparator.comparing(Booking::getStatus);
+Collections.sort(bookings, byStatus);
+
+// --- Sort by STATUS first, then by DATE within each status ---
+Comparator&lt;Booking&gt; byStatusThenDate = Comparator
+    .comparing(Booking::getStatus)
+    .thenComparing(Booking::getBookingDate);
+Collections.sort(bookings, byStatusThenDate);
+// Result: All "BOOKED" sorted by date, then all "DELIVERED" sorted by date, etc.
+
+// --- Sort by COST, but put nulls last ---
+Comparator&lt;Booking&gt; byCostNullSafe = Comparator.comparing(
+    Booking::getCost, Comparator.nullsLast(Comparator.naturalOrder())
+);
+
+// --- Inline with lambda (same as byCost above) ---
+bookings.sort((b1, b2) -&gt; Double.compare(b1.getCost(), b2.getCost()));</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Comparator method chain explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Comparator.comparing(Booking::getCost)</div>
+        <div class="breakdown-explain">Creates a Comparator that extracts the cost from each Booking and compares those values. Booking::getCost is a method reference &mdash; shorthand for (b) -&gt; b.getCost().</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.reversed()</div>
+        <div class="breakdown-explain">Flips the sort order. If the original was ascending (cheapest first), reversed() makes it descending (most expensive first).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">.thenComparing(Booking::getBookingDate)</div>
+        <div class="breakdown-explain">When two bookings have the same status, this secondary comparator breaks the tie using booking date. You can chain as many thenComparing() calls as you need.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookings.sort((b1, b2) -&gt; Double.compare(b1.getCost(), b2.getCost()))</div>
+        <div class="breakdown-explain">Lambda version. b1 and b2 are two Bookings being compared. Double.compare returns negative, zero, or positive. The list sorts itself in-place.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In the booking history display, a customer might want to see bookings sorted differently: "Show me most recent first" (sort by date descending), "Show me cheapest first" (sort by cost ascending), "Group by status" (sort by status then date). With <code>Comparator</code>, you create one list and sort it multiple ways without changing the <code>Booking</code> class. The admin dashboard could sort by status + date, while the customer view sorts by date only.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Collections Utility Class                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="collections-util">
+  <div class="section-tag">Section 10</div>
+  <h2>Collections Utility Class</h2>
+  <p class="section-desc">The <code>java.util.Collections</code> class (note the 's' &mdash; plural) is a utility class full of <strong>static helper methods</strong> for working with collections. Think of it as a toolbox that operates ON collections.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Do Not Confuse</div>
+    <p><code>Collection</code> (singular, no 's') = the <strong>interface</strong> that List, Set, Queue extend.<br>
+    <code>Collections</code> (plural, with 's') = the <strong>utility class</strong> with static helper methods like sort(), reverse(), min().</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CollectionsUtilDemo.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.ArrayList;
+import java.util.Collections;
+
+ArrayList&lt;Booking&gt; bookings = bookingDAO.getAllBookings();
+
+// SORT &mdash; natural ordering (uses compareTo)
+Collections.sort(bookings);
+
+// SORT with Comparator
+Collections.sort(bookings, Comparator.comparing(Booking::getCost));
+
+// REVERSE &mdash; flip the current order
+Collections.reverse(bookings);
+
+// MIN &mdash; smallest element (by natural ordering)
+Booking cheapest = Collections.min(bookings, Comparator.comparing(Booking::getCost));
+System.out.println("Cheapest booking: Rs. " + cheapest.getCost());
+
+// MAX &mdash; largest element
+Booking mostExpensive = Collections.max(bookings, Comparator.comparing(Booking::getCost));
+
+// FREQUENCY &mdash; count occurrences
+ArrayList&lt;String&gt; statuses = new ArrayList&lt;&gt;();
+for (Booking b : bookings) statuses.add(b.getStatus());
+int deliveredCount = Collections.frequency(statuses, "DELIVERED");
+System.out.println("Delivered bookings: " + deliveredCount);
+
+// UNMODIFIABLE LIST &mdash; read-only wrapper
+List&lt;String&gt; validStatuses = Collections.unmodifiableList(
+    new ArrayList&lt;&gt;(List.of("BOOKED", "IN_TRANSIT", "DELIVERED", "CANCELLED"))
+);
+// validStatuses.add("LOST");  // Throws UnsupportedOperationException!
+
+// SHUFFLE &mdash; randomize order (useful for testing)
+Collections.shuffle(bookings);
+
+// SWAP &mdash; swap two elements
+Collections.swap(bookings, 0, 3);  // Swap element at index 0 with index 3</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><code>Collections.unmodifiableList()</code> is useful for things that should never change &mdash; like the list of valid booking statuses. If someone accidentally tries to add to it, Java throws an exception immediately instead of letting corrupted data sneak through. Defensive programming.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Immutable Collections                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="immutable">
+  <div class="section-tag">Section 11</div>
+  <h2>Immutable Collections (Java 9+)</h2>
+  <p class="section-desc">Java 9 introduced factory methods to create <strong>immutable (unmodifiable) collections</strong> in a single line. These collections cannot be changed after creation &mdash; no add, no remove, no set.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ImmutableCollections.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import java.util.List;
+import java.util.Set;
+import java.util.Map;
+
+// IMMUTABLE LIST &mdash; fixed content, cannot change
+List&lt;String&gt; parcelTypes = List.of("Document", "Package", "Fragile", "Hazardous");
+// parcelTypes.add("Oversize");  // UnsupportedOperationException!
+// parcelTypes.set(0, "Letter"); // UnsupportedOperationException!
+
+// IMMUTABLE SET &mdash; unique, fixed elements
+Set&lt;String&gt; validStatuses = Set.of("BOOKED", "IN_TRANSIT", "DELIVERED", "CANCELLED");
+boolean valid = validStatuses.contains("BOOKED");  // true &mdash; reading is fine
+
+// IMMUTABLE MAP &mdash; fixed key-value pairs
+Map&lt;String, Double&gt; zoneRates = Map.of(
+    "LOCAL", 50.0,
+    "REGIONAL", 100.0,
+    "NATIONAL", 200.0,
+    "INTERNATIONAL", 500.0
+);
+double rate = zoneRates.get("NATIONAL");  // 200.0
+
+// For maps with more than 10 entries, use Map.ofEntries()
+Map&lt;String, String&gt; statusLabels = Map.ofEntries(
+    Map.entry("BOOKED", "Parcel Booked"),
+    Map.entry("PICKED_UP", "Picked Up by Courier"),
+    Map.entry("IN_TRANSIT", "In Transit"),
+    Map.entry("OUT_FOR_DELIVERY", "Out for Delivery"),
+    Map.entry("DELIVERED", "Delivered"),
+    Map.entry("CANCELLED", "Cancelled"),
+    Map.entry("RETURNED", "Returned to Sender")
+);
+
+// IMPORTANT: List.of() does NOT allow null elements
+// List.of("A", null, "B");  // NullPointerException!</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">When to Use Immutable Collections</div>
+    <p>Use immutable collections for data that is <strong>fixed at compile time</strong> and should never change: parcel types, status codes, zone mappings, pricing tiers. This prevents bugs where someone accidentally modifies a shared reference. If you need a collection you can modify later, use regular <code>new ArrayList&lt;&gt;()</code> / <code>new HashMap&lt;&gt;()</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Generics Connection                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="generics">
+  <div class="section-tag">Section 12</div>
+  <h2>Generics &mdash; Why ArrayList&lt;User&gt; Not ArrayList</h2>
+  <p class="section-desc">Before Java 5, collections had no type parameter. You used raw <code>ArrayList</code> and it stored <code>Object</code>s. You could put a User, a String, and an Integer into the same list. The compiler would not warn you, but at runtime &mdash; ClassCastException.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without Generics (pre-Java 5)</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin: 0;">
+          <pre><code class="language-java">// Raw ArrayList &mdash; accepts ANYTHING
+ArrayList users = new ArrayList();
+users.add(new User("U001", "Darshan"));
+users.add("This is a String?!");  // No error!
+users.add(42);                     // No error!
+
+// Retrieving requires dangerous casting
+User u = (User) users.get(0);  // Works
+User u2 = (User) users.get(1); // CRASH!
+// ClassCastException: String cannot
+// be cast to User</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With Generics (Java 5+)</div>
+      <div class="comparison-body">
+        <div class="code-block" style="margin: 0;">
+          <pre><code class="language-java">// Type-safe ArrayList &mdash; ONLY Users
+ArrayList&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add(new User("U001", "Darshan"));
+users.add("String?!");  // COMPILE ERROR!
+users.add(42);           // COMPILE ERROR!
+
+// No casting needed
+User u = users.get(0);  // Just works.
+// Compiler guarantees every element
+// is a User.</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>The <code>&lt;User&gt;</code> in <code>ArrayList&lt;User&gt;</code> is a <strong>type parameter</strong>. It tells the compiler: "this list will ONLY hold User objects." Any attempt to add something else is caught at <strong>compile time</strong> &mdash; before the program even runs. This is type safety, and it eliminates an entire category of bugs.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every collection in Nimbus uses generics: <code>ArrayList&lt;User&gt;</code> for user lists, <code>ArrayList&lt;Booking&gt;</code> for booking results, <code>HashMap&lt;String, Booking&gt;</code> for booking lookups. This means the compiler catches mistakes like accidentally putting a <code>User</code> into a <code>Booking</code> list. Never use raw types. Always specify the type parameter.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Choosing the Right Collection                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="choosing">
+  <div class="section-tag">Section 13</div>
+  <h2>Choosing the Right Collection</h2>
+  <p class="section-desc">The hardest part of collections is not learning the API &mdash; it is knowing <strong>which one to reach for</strong>. This decision flowchart covers every common scenario.</p>
+
+  <div class="diagram">
+    <pre>
+  START: What do you need?
+  |
+  +-- Need KEY-VALUE pairs?
+  |   |
+  |   YES --&gt; Need keys sorted?
+  |   |       |
+  |   |       YES --&gt; TreeMap
+  |   |       NO  --&gt; Need insertion order?
+  |   |               |
+  |   |               YES --&gt; LinkedHashMap
+  |   |               NO  --&gt; HashMap  (DEFAULT CHOICE)
+  |
+  +-- Need UNIQUENESS (no duplicates)?
+  |   |
+  |   YES --&gt; Need elements sorted?
+  |   |       |
+  |   |       YES --&gt; TreeSet
+  |   |       NO  --&gt; Need insertion order?
+  |   |               |
+  |   |               YES --&gt; LinkedHashSet
+  |   |               NO  --&gt; HashSet  (DEFAULT CHOICE)
+  |
+  +-- Need an ORDERED list (duplicates OK)?
+      |
+      YES --&gt; Mostly reading/accessing by index?
+              |
+              YES --&gt; ArrayList  (DEFAULT CHOICE)
+              NO  --&gt; Frequent insert/remove at ends?
+                      |
+                      YES --&gt; LinkedList
+                      NO  --&gt; ArrayList  (still usually wins)
+    </pre>
+    <div class="diagram-label">Decision flowchart: choose the right collection for the job</div>
+  </div>
+
+  <h3>Quick Reference &mdash; Nimbus Scenarios</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Nimbus Scenario</th>
+        <th>Best Collection</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Store all users from DB query</td>
+        <td><code>ArrayList&lt;User&gt;</code></td>
+        <td>Ordered, index access, build by appending</td>
+      </tr>
+      <tr>
+        <td>Store booking search results</td>
+        <td><code>ArrayList&lt;Booking&gt;</code></td>
+        <td>Ordered results, iterate and display</td>
+      </tr>
+      <tr>
+        <td>Look up booking by ID instantly</td>
+        <td><code>HashMap&lt;String, Booking&gt;</code></td>
+        <td>O(1) lookup by key</td>
+      </tr>
+      <tr>
+        <td>Check if email is already registered</td>
+        <td><code>HashSet&lt;String&gt;</code></td>
+        <td>O(1) uniqueness check</td>
+      </tr>
+      <tr>
+        <td>Display bookings sorted by date</td>
+        <td><code>TreeMap&lt;LocalDate, List&lt;Booking&gt;&gt;</code></td>
+        <td>Automatic date sorting + range queries</td>
+      </tr>
+      <tr>
+        <td>Track unique cities in the system</td>
+        <td><code>TreeSet&lt;String&gt;</code></td>
+        <td>Unique + alphabetically sorted</td>
+      </tr>
+      <tr>
+        <td>Cache status codes with display names</td>
+        <td><code>Map.of("BOOKED", "Parcel Booked", ...)</code></td>
+        <td>Fixed, never changes, immutable</td>
+      </tr>
+      <tr>
+        <td>Parcel processing queue</td>
+        <td><code>LinkedList&lt;Booking&gt;</code></td>
+        <td>FIFO: add at end, remove from front</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: Performance Comparison                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="performance">
+  <div class="section-tag">Section 14</div>
+  <h2>Performance Comparison &mdash; The Big Table</h2>
+  <p class="section-desc">This table is your reference card. When choosing a collection, check the operation you will use most &mdash; pick the one where that operation is fastest.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>ArrayList</th>
+        <th>LinkedList</th>
+        <th>HashSet</th>
+        <th>HashMap</th>
+        <th>TreeMap</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Add (end)</strong></td>
+        <td>O(1)*</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+        <td>O(log n)</td>
+      </tr>
+      <tr>
+        <td><strong>Add (beginning)</strong></td>
+        <td>O(n)</td>
+        <td>O(1)</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><strong>Get by index</strong></td>
+        <td><strong>O(1)</strong></td>
+        <td>O(n)</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><strong>Get by key</strong></td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td><strong>O(1)</strong></td>
+        <td>O(log n)</td>
+      </tr>
+      <tr>
+        <td><strong>Contains/Search</strong></td>
+        <td>O(n)</td>
+        <td>O(n)</td>
+        <td><strong>O(1)</strong></td>
+        <td><strong>O(1)</strong></td>
+        <td>O(log n)</td>
+      </tr>
+      <tr>
+        <td><strong>Remove</strong></td>
+        <td>O(n)</td>
+        <td>O(1)**</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+        <td>O(log n)</td>
+      </tr>
+      <tr>
+        <td><strong>Sorted?</strong></td>
+        <td>No</td>
+        <td>No</td>
+        <td>No</td>
+        <td>No</td>
+        <td><strong>Yes</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Duplicates?</strong></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td><strong>No</strong></td>
+        <td>Keys: No</td>
+        <td>Keys: No</td>
+      </tr>
+      <tr>
+        <td><strong>Null allowed?</strong></td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>1 null</td>
+        <td>1 null key</td>
+        <td>No null keys</td>
+      </tr>
+      <tr>
+        <td><strong>Thread-safe?</strong></td>
+        <td>No</td>
+        <td>No</td>
+        <td>No</td>
+        <td>No</td>
+        <td>No</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>*</strong> Amortized O(1) &mdash; occasionally O(n) during resize.<br>
+  <strong>**</strong> O(1) only if you already have a reference to the node. Finding the node first is O(n).</p>
+
+  <div class="callout think">
+    <div class="callout-title">Rule of Thumb</div>
+    <p><strong>When in doubt, start with ArrayList for lists and HashMap for key-value lookups.</strong> They cover 90% of use cases. Only switch to LinkedList, TreeMap, or other structures when you have a specific performance need (frequent front-insertions, sorted keys, etc.). Premature optimization is the root of all evil &mdash; pick the simple one first, optimize later if needed.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 15: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 15</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">All exercises use Nimbus data. Write complete, compilable code for each one.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; User Directory</div>
+    <p>Create an <code>ArrayList&lt;User&gt;</code>, add 5 users, then write a method <code>findUserByEmail(String email)</code> that searches the list and returns the matching User (or null). Test it with an email that exists and one that does not.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Duplicate Email Guard</div>
+    <p>Using a <code>HashSet&lt;String&gt;</code>, write a registration method that accepts a list of email strings and returns only the unique ones. If the input is ["a@b.com", "c@d.com", "a@b.com", "e@f.com", "c@d.com"], the output should have 3 unique emails. Print how many duplicates were rejected.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Booking Cache</div>
+    <p>Create a <code>HashMap&lt;String, Booking&gt;</code> with 5 bookings. Write methods: <code>getBooking(String id)</code>, <code>cancelBooking(String id)</code> (removes from map), and <code>getBookingsByStatus(String status)</code> (iterates all values and returns matching ones as a list).</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Sort by Multiple Criteria</div>
+    <p>Create an <code>ArrayList&lt;Booking&gt;</code> with bookings that have different dates, costs, and statuses. Write three Comparators: (1) sort by cost ascending, (2) sort by date descending, (3) sort by status then cost. Apply each and print the results.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Safe Cleanup</div>
+    <p>Create an <code>ArrayList&lt;Booking&gt;</code> where some bookings have status "CANCELLED". Use an <code>Iterator</code> to safely remove all cancelled bookings. Print the list before and after removal. Then try doing it with a for-each loop and observe the <code>ConcurrentModificationException</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; City Analytics</div>
+    <p>Given a list of bookings, use a <code>HashMap&lt;String, Integer&gt;</code> to count how many bookings each city has. Then find the city with the most bookings using <code>Collections.max()</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7 &mdash; Sorted Timeline</div>
+    <p>Use a <code>TreeMap&lt;LocalDate, List&lt;String&gt;&gt;</code> to store booking IDs grouped by date. Add bookings in random date order. Iterate the TreeMap and verify the output is in chronological order. Use <code>subMap()</code> to get all bookings within a date range.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8 &mdash; Implement Comparable</div>
+    <p>Make the <code>Booking</code> class implement <code>Comparable&lt;Booking&gt;</code> with natural ordering by booking date. Then create 5 bookings with different dates, put them in an ArrayList, call <code>Collections.sort()</code>, and verify they are in date order.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 9 &mdash; Immutable Config</div>
+    <p>Create immutable collections using <code>List.of()</code>, <code>Set.of()</code>, and <code>Map.of()</code> for: (1) parcel types ["Document", "Package", "Fragile"], (2) valid statuses, (3) zone-to-price mappings. Try adding to each and catch the <code>UnsupportedOperationException</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 10 &mdash; Collections Utility Drill</div>
+    <p>Create an <code>ArrayList&lt;Integer&gt;</code> of booking costs: [250, 100, 450, 300, 150, 450, 200]. Using the <code>Collections</code> class only: (1) sort it, (2) reverse it, (3) find min and max, (4) count how many times 450 appears using <code>frequency()</code>, (5) create an unmodifiable version and try to add to it.</p>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="generics.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Generics</span>
+  </a>
+  <a href="datetime.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Date &amp; Time API</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

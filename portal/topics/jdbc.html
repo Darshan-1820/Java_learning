@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JDBC &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link active"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is JDBC?                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-jdbc">
+  <div class="section-tag">Section 01</div>
+  <h2>What is JDBC?</h2>
+  <p class="section-desc">JDBC (Java Database Connectivity) is the <strong>bridge between your Java code and a database</strong>. Without it, your Java program has no way to store, retrieve, or modify data in MySQL, PostgreSQL, or any other database.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Imagine two people who speak different languages. Java speaks "Java." MySQL speaks "SQL." They cannot talk to each other directly. JDBC is the <strong>translator</strong> sitting between them &mdash; it takes Java's requests, translates them into SQL, sends them to the database, gets the response back, and translates it into Java objects.</p>
+  </div>
+
+  <h3>The Architecture</h3>
+  <p>Every JDBC interaction follows this chain:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Your Java Code<span class="flow-sub">UserDAO, BookingDAO</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">JDBC API<span class="flow-sub">java.sql package</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">JDBC Driver<span class="flow-sub">MySQL Connector/J</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">MySQL Database<span class="flow-sub">nimbus_db</span></div>
+    </div>
+    <div class="flow-label">Java Code &rarr; JDBC API &rarr; Driver (translates) &rarr; Database</div>
+  </div>
+
+  <p>Why does this matter? Because the JDBC API is the <strong>same</strong> no matter which database you use. If tomorrow Nimbus switches from MySQL to PostgreSQL, you just swap the driver JAR file and change the connection URL. Your DAO code stays the same. That is the power of having a standard API.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every time <code>UserDAO</code> saves a new user or <code>BookingDAO</code> fetches a booking, the call goes through JDBC. The connection string <code>jdbc:mysql://localhost:3306/nimbus_db</code> in your <code>DBConnection</code> class is the address that JDBC uses to find the database.</p>
+  </div>
+
+  <h3>Why Not Just Write SQL Directly?</h3>
+  <p>You cannot send a raw SQL string to MySQL from Java. MySQL runs as a separate process (a server), usually on port 3306. To communicate with it, your Java program needs to:</p>
+  <ol class="steps">
+    <li>Open a <strong>network connection</strong> to the MySQL server</li>
+    <li>Authenticate with a <strong>username and password</strong></li>
+    <li>Send a SQL query over that connection using the <strong>MySQL wire protocol</strong></li>
+    <li>Read the binary response and <strong>parse it</strong> into rows and columns</li>
+    <li><strong>Close</strong> the connection when done</li>
+  </ol>
+  <p>JDBC handles all of this. You just write <code>connection.prepareStatement("SELECT * FROM users")</code> and JDBC does the rest.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: JDBC Components                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="jdbc-components">
+  <div class="section-tag">Section 02</div>
+  <h2>JDBC Components</h2>
+  <p class="section-desc">JDBC has six core components. Each one plays a specific role in the chain from Java to the database.</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Driver</div>
+      <div class="layer-detail">The translator. Converts JDBC calls into the specific protocol the database understands. For MySQL, this is <code>com.mysql.cj.jdbc.Driver</code> (inside the MySQL Connector/J JAR).</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Connection</div>
+      <div class="layer-detail">An open session with the database. Created via <code>DriverManager.getConnection(url, user, pass)</code>. Think of it as a phone call &mdash; you dial the database, it picks up, and you have a live line.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Statement</div>
+      <div class="layer-detail">Sends a <strong>static</strong> SQL string to the database. Simple but dangerous &mdash; vulnerable to SQL injection. Used for one-off queries where no user input is involved.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name cyan">PreparedStatement</div>
+      <div class="layer-detail">Sends a <strong>parameterized</strong> SQL string with <code>?</code> placeholders. Safe from SQL injection. <strong>Used in all Nimbus DAO code.</strong> Pre-compiled for better performance.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">CallableStatement</div>
+      <div class="layer-detail">Calls stored procedures in the database. Syntax: <code>"{call procedureName(?, ?)}"</code>. Not used in Nimbus but common in enterprise apps.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">ResultSet</div>
+      <div class="layer-detail">The result of a SELECT query. A cursor that starts <strong>before the first row</strong>. You call <code>next()</code> to move to each row, then <code>getString()</code>, <code>getInt()</code>, etc. to read columns.</div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p><code>Statement</code>, <code>PreparedStatement</code>, and <code>CallableStatement</code> are all in the <code>java.sql</code> package. <code>PreparedStatement</code> extends <code>Statement</code>, and <code>CallableStatement</code> extends <code>PreparedStatement</code>. So a <code>CallableStatement</code> can do everything a <code>PreparedStatement</code> can do, plus call stored procedures.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Setting Up JDBC                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="setting-up">
+  <div class="section-tag">Section 03</div>
+  <h2>Setting Up JDBC</h2>
+  <p class="section-desc">Three things need to happen before you can talk to a database from Java: add the driver JAR, load the driver class, and open a connection.</p>
+
+  <h3>Step 1: Add MySQL Connector JAR</h3>
+  <p>The MySQL JDBC driver is not part of Java. It is a separate library (<code>mysql-connector-j-8.x.x.jar</code>). You add it to your project in one of two ways:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Manual (no build tool)</div>
+      <div class="comparison-body">
+        <p>Download the JAR file from <a href="https://dev.mysql.com/downloads/connector/j/" style="color: var(--accent);">dev.mysql.com</a> and add it to your project's <code>/lib</code> folder. Then add it to the classpath when compiling:</p>
+        <code>javac -cp lib/mysql-connector-j-8.3.0.jar src/*.java</code>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Maven (Nimbus uses this)</div>
+      <div class="comparison-body">
+        <p>Add this dependency to <code>pom.xml</code> and Maven downloads it automatically:</p>
+        <code>&lt;dependency&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;groupId&gt;com.mysql&lt;/groupId&gt;</code><br>
+        <code>&nbsp;&nbsp;&lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;</code><br>
+        <code>&lt;/dependency&gt;</code>
+      </div>
+    </div>
+  </div>
+
+  <h3>Step 2: The DBConnection Utility</h3>
+  <p>In Nimbus, all database connections go through a single utility class. This is the <strong>one place</strong> where the URL, username, and password live. Every DAO calls <code>DBConnection.getConnection()</code> instead of writing connection code themselves.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/util/DBConnection.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBConnection {
+
+    private static final String URL = "jdbc:mysql://localhost:3306/nimbus_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "password";
+
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL Driver not found!", e);
+        }
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">package com.nimbus.util;</div>
+        <div class="breakdown-explain">This class lives in the util (utility) package. Utilities are helper classes shared across the project.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">import java.sql.Connection;</div>
+        <div class="breakdown-explain">Imports the Connection interface from JDBC. This represents an open session with the database.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">import java.sql.DriverManager;</div>
+        <div class="breakdown-explain">DriverManager is the factory that creates Connection objects. You give it a URL + credentials, it gives you a connection.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private static final String URL = "jdbc:mysql://localhost:3306/nimbus_db";</div>
+        <div class="breakdown-explain"><strong>jdbc:</strong> protocol | <strong>mysql:</strong> database type | <strong>localhost:</strong> server address | <strong>3306:</strong> MySQL default port | <strong>nimbus_db:</strong> database name. This is the "address" of our database.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">private static final String USER = "root";</div>
+        <div class="breakdown-explain">MySQL username. "root" is the default admin user. In production, you would use a less privileged user.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">static { ... Class.forName("com.mysql.cj.jdbc.Driver"); }</div>
+        <div class="breakdown-explain">A static initializer block &mdash; runs ONCE when the class is first loaded. <code>Class.forName()</code> loads the MySQL driver class into memory and registers it with DriverManager. Without this, DriverManager does not know MySQL exists.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public static Connection getConnection() throws SQLException</div>
+        <div class="breakdown-explain"><strong>static</strong> so you can call <code>DBConnection.getConnection()</code> without creating an object. <strong>throws SQLException</strong> because the connection might fail (wrong password, database down, etc.).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">return DriverManager.getConnection(URL, USER, PASSWORD);</div>
+        <div class="breakdown-explain">DriverManager looks at the URL, finds the registered MySQL driver, and asks it to open a real TCP connection to MySQL on port 3306. Returns a Connection object you can use to send queries.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Connection URL Anatomy</h3>
+  <div class="diagram">
+    <pre>
+jdbc:mysql://localhost:3306/nimbus_db
+ |    |        |       |       |
+ |    |        |       |       +-- Database name
+ |    |        |       +---------- Port number (MySQL default: 3306)
+ |    |        +------------------ Host (localhost = this machine)
+ |    +--------------------------- Database type (mysql, postgresql, oracle)
+ +-------------------------------- Protocol (always "jdbc")
+    </pre>
+    <div class="diagram-label">Every part of the URL has meaning. Change "localhost" to an IP address for a remote database.</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Statement vs PreparedStatement                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="statement-vs-prepared">
+  <div class="section-tag">Section 04</div>
+  <h2>Statement vs PreparedStatement</h2>
+  <p class="section-desc">This is the most important security concept in JDBC. <strong>Statement is dangerous. PreparedStatement is safe.</strong> Here is why.</p>
+
+  <h3>Statement &mdash; The Dangerous Way</h3>
+  <p>With <code>Statement</code>, you build the SQL string by concatenating user input directly:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BAD: SQL String Concatenation</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// NEVER DO THIS in real code
+String email = request.getParameter("email");
+String password = request.getParameter("password");
+
+Statement stmt = connection.createStatement();
+String sql = "SELECT * FROM users WHERE email = '" + email
+           + "' AND password = '" + password + "'";
+ResultSet rs = stmt.executeQuery(sql);</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">SQL Injection Attack &mdash; Step by Step</div>
+    <p>If a user types this into the email field:</p>
+    <p><code>' OR '1'='1' --</code></p>
+    <p>The SQL becomes:</p>
+    <p><code>SELECT * FROM users WHERE email = '' OR '1'='1' --' AND password = ''</code></p>
+    <p>Breaking it down:</p>
+    <ul>
+      <li><code>' OR '1'='1'</code> &mdash; The <code>'1'='1'</code> is always true, so the WHERE clause matches <strong>every row</strong></li>
+      <li><code>--</code> &mdash; This is a SQL comment. Everything after it is ignored, including the password check</li>
+      <li>Result: The attacker logs in as the <strong>first user in the database</strong> (usually an admin) without knowing any password</li>
+    </ul>
+    <p>An attacker could also type: <code>'; DROP TABLE users; --</code> and your entire users table is deleted.</p>
+  </div>
+
+  <h3>PreparedStatement &mdash; The Safe Way</h3>
+  <p>With <code>PreparedStatement</code>, you use <code>?</code> placeholders. The database treats user input as <strong>data, never as SQL code</strong>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GOOD: PreparedStatement with Placeholders</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">String email = request.getParameter("email");
+String password = request.getParameter("password");
+
+String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+PreparedStatement pstmt = connection.prepareStatement(sql);
+pstmt.setString(1, email);    // First ? gets the email value
+pstmt.setString(2, password); // Second ? gets the password value
+ResultSet rs = pstmt.executeQuery();</code></pre>
+  </div>
+
+  <p>Now if the user types <code>' OR '1'='1' --</code>, the database sees it as a <strong>literal string value</strong>, not SQL code. It searches for an email that is literally <code>' OR '1'='1' --</code>. No match. No injection. Safe.</p>
+
+  <h3>How PreparedStatement Works Internally</h3>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Step 1: Compile<span class="flow-sub">SQL structure sent to DB</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Step 2: Bind<span class="flow-sub">Values fill ? slots</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Step 3: Execute<span class="flow-sub">DB runs pre-compiled plan</span></div>
+    </div>
+    <div class="flow-label">The SQL structure is locked before values are inserted. Values cannot change the structure.</div>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Statement</th>
+        <th>PreparedStatement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SQL Injection</td>
+        <td style="color: var(--red);">Vulnerable</td>
+        <td style="color: var(--green);">Protected</td>
+      </tr>
+      <tr>
+        <td>Performance (repeated queries)</td>
+        <td>Re-compiled every time</td>
+        <td>Compiled once, executed many times</td>
+      </tr>
+      <tr>
+        <td>Readability</td>
+        <td>Messy string concatenation</td>
+        <td>Clean <code>?</code> placeholders</td>
+      </tr>
+      <tr>
+        <td>Type safety</td>
+        <td>Everything is a string</td>
+        <td><code>setInt()</code>, <code>setString()</code>, <code>setTimestamp()</code></td>
+      </tr>
+      <tr>
+        <td>Used in Nimbus?</td>
+        <td style="color: var(--red);">No</td>
+        <td style="color: var(--green);">Yes &mdash; everywhere</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every single query in <code>UserDAO</code> and <code>BookingDAO</code> uses <code>PreparedStatement</code>. You will never see string concatenation in our SQL. This is a hard rule, not a suggestion.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: CRUD Operations                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="crud">
+  <div class="section-tag">Section 05</div>
+  <h2>CRUD Operations</h2>
+  <p class="section-desc">CRUD stands for <strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete. Every database operation falls into one of these four categories. Each uses a specific SQL command and a specific JDBC method.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>SQL</th>
+        <th>JDBC Method</th>
+        <th>Returns</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Create</strong></td>
+        <td><code>INSERT INTO</code></td>
+        <td><code>executeUpdate()</code></td>
+        <td><code>int</code> &mdash; number of rows inserted</td>
+      </tr>
+      <tr>
+        <td><strong>Read</strong></td>
+        <td><code>SELECT</code></td>
+        <td><code>executeQuery()</code></td>
+        <td><code>ResultSet</code> &mdash; the matching rows</td>
+      </tr>
+      <tr>
+        <td><strong>Update</strong></td>
+        <td><code>UPDATE</code></td>
+        <td><code>executeUpdate()</code></td>
+        <td><code>int</code> &mdash; number of rows changed</td>
+      </tr>
+      <tr>
+        <td><strong>Delete</strong></td>
+        <td><code>DELETE FROM</code></td>
+        <td><code>executeUpdate()</code></td>
+        <td><code>int</code> &mdash; number of rows deleted</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p>Notice that INSERT, UPDATE, and DELETE all use <code>executeUpdate()</code> &mdash; they modify data and return a row count. Only SELECT uses <code>executeQuery()</code> because it returns data (a ResultSet).</p>
+  </div>
+
+  <h3>CREATE &mdash; Inserting a User</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus: addUser()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public boolean addUser(User user) {
+    String sql = "INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, user.getName());
+        pstmt.setString(2, user.getEmail());
+        pstmt.setString(3, user.getPassword());
+        pstmt.setString(4, user.getPhone());
+        pstmt.setString(5, user.getRole());
+
+        int rowsInserted = pstmt.executeUpdate();
+        return rowsInserted &gt; 0;  // true if at least 1 row was inserted
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String sql = "INSERT INTO users (...) VALUES (?, ?, ?, ?, ?)";</div>
+        <div class="breakdown-explain">The SQL template. Five <code>?</code> placeholders for the five columns. The actual values are set below.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = ...)</div>
+        <div class="breakdown-explain">try-with-resources. Both <code>conn</code> and <code>pstmt</code> are automatically closed when the try block ends, even if an exception occurs.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">pstmt.setString(1, user.getName());</div>
+        <div class="breakdown-explain">Fills the 1st <code>?</code> with the user's name. JDBC placeholders are <strong>1-indexed</strong> (starts at 1, not 0).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int rowsInserted = pstmt.executeUpdate();</div>
+        <div class="breakdown-explain"><code>executeUpdate()</code> sends the INSERT to MySQL and returns how many rows were inserted. For a single INSERT, this is 1 on success, 0 on failure.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">return rowsInserted &gt; 0;</div>
+        <div class="breakdown-explain">Returns <code>true</code> if the insert worked, <code>false</code> if not. The caller (e.g. a servlet) uses this to show a success/error message.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>READ &mdash; Fetching a User by ID</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus: getUserById()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public User getUserById(int id) {
+    String sql = "SELECT * FROM users WHERE user_id = ?";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            User user = new User();
+            user.setUserId(rs.getInt("user_id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setPhone(rs.getString("phone"));
+            user.setRole(rs.getString("role"));
+            return user;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;  // No user found with that ID
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">pstmt.setInt(1, id);</div>
+        <div class="breakdown-explain"><code>setInt()</code> instead of <code>setString()</code> because user_id is an integer column. JDBC ensures type safety.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ResultSet rs = pstmt.executeQuery();</div>
+        <div class="breakdown-explain"><code>executeQuery()</code> for SELECT. Returns a ResultSet (cursor pointing to the results).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">if (rs.next()) { ... }</div>
+        <div class="breakdown-explain"><code>rs.next()</code> moves the cursor to the first row. If it returns <code>false</code>, there are no results. We use <code>if</code> (not <code>while</code>) because we expect at most one row for a primary key lookup.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">rs.getInt("user_id"), rs.getString("name")</div>
+        <div class="breakdown-explain">Extracts values from the current row by column name. You can also use column index: <code>rs.getInt(1)</code>, but names are more readable.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">return null;</div>
+        <div class="breakdown-explain">If no row matched the ID, or if an exception occurred, return null. The caller must check for null before using the result.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>UPDATE &mdash; Changing Booking Status</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus: updateStatus()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public boolean updateStatus(int bookingId, String newStatus) {
+    String sql = "UPDATE bookings SET status = ? WHERE booking_id = ?";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, newStatus);
+        pstmt.setInt(2, bookingId);
+
+        int rowsUpdated = pstmt.executeUpdate();
+        return rowsUpdated &gt; 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}</code></pre>
+  </div>
+
+  <h3>DELETE &mdash; Removing a Booking</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus: deleteBooking()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public boolean deleteBooking(int bookingId) {
+    String sql = "DELETE FROM bookings WHERE booking_id = ?";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setInt(1, bookingId);
+        int rowsDeleted = pstmt.executeUpdate();
+        return rowsDeleted &gt; 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Important</div>
+    <p>Notice the pattern? INSERT, UPDATE, and DELETE all follow the same structure: prepare the statement, set the parameters, call <code>executeUpdate()</code>, check the row count. The only thing that changes is the SQL string.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: ResultSet                                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="resultset">
+  <div class="section-tag">Section 06</div>
+  <h2>ResultSet Deep Dive</h2>
+  <p class="section-desc">A <code>ResultSet</code> is like a cursor pointing at the results of a SELECT query. It starts <strong>before the first row</strong> &mdash; you must call <code>next()</code> to move to each row.</p>
+
+  <div class="diagram">
+    <pre>
+ResultSet cursor positions:
+
+  [Before first]  &larr;  rs starts here
+       |
+  Row 1: { id=1, name="Darshan", email="darshan@mail.com" }
+  Row 2: { id=2, name="Ravi",    email="ravi@mail.com"    }
+  Row 3: { id=3, name="Priya",   email="priya@mail.com"   }
+       |
+  [After last]
+
+  rs.next() &rarr; moves cursor to Row 1 (returns true)
+  rs.next() &rarr; moves cursor to Row 2 (returns true)
+  rs.next() &rarr; moves cursor to Row 3 (returns true)
+  rs.next() &rarr; moves to After Last (returns false)
+    </pre>
+  </div>
+
+  <h3>Getting Values from a Row</h3>
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Java Type</th>
+        <th>SQL Type</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>getString("col")</code></td>
+        <td><code>String</code></td>
+        <td>VARCHAR, TEXT</td>
+        <td><code>rs.getString("name")</code></td>
+      </tr>
+      <tr>
+        <td><code>getInt("col")</code></td>
+        <td><code>int</code></td>
+        <td>INT, TINYINT</td>
+        <td><code>rs.getInt("user_id")</code></td>
+      </tr>
+      <tr>
+        <td><code>getDouble("col")</code></td>
+        <td><code>double</code></td>
+        <td>DOUBLE, DECIMAL</td>
+        <td><code>rs.getDouble("weight")</code></td>
+      </tr>
+      <tr>
+        <td><code>getTimestamp("col")</code></td>
+        <td><code>Timestamp</code></td>
+        <td>DATETIME, TIMESTAMP</td>
+        <td><code>rs.getTimestamp("created_at")</code></td>
+      </tr>
+      <tr>
+        <td><code>getBoolean("col")</code></td>
+        <td><code>boolean</code></td>
+        <td>BOOLEAN, TINYINT(1)</td>
+        <td><code>rs.getBoolean("is_active")</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Column Name vs Column Index</h3>
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header good">By Name (Recommended)</div>
+      <div class="comparison-body">
+        <code>rs.getString("email")</code>
+        <p style="margin-top: 8px;">Readable. Works even if you rearrange columns in the SELECT.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header bad">By Index (Fragile)</div>
+      <div class="comparison-body">
+        <code>rs.getString(3)</code>
+        <p style="margin-top: 8px;">Which column is 3? If you add a column to the SELECT, all indexes shift.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Navigating Multiple Rows</h3>
+  <p>When a SELECT returns multiple rows, use a <code>while</code> loop:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus: getBookingsByUser()</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public List&lt;Booking&gt; getBookingsByUser(int userId) {
+    List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+    String sql = "SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setInt(1, userId);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            bookings.add(extractBooking(rs));  // Helper method builds Booking object
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return bookings;
+}</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p><code>if (rs.next())</code> = expecting 0 or 1 row (e.g. findById). <code>while (rs.next())</code> = expecting 0 or many rows (e.g. findAll, search). Use the right one for the right situation.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Transaction Management                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="transactions">
+  <div class="section-tag">Section 07</div>
+  <h2>Transaction Management</h2>
+  <p class="section-desc">A transaction groups multiple SQL operations into a single <strong>all-or-nothing</strong> unit. Either everything succeeds, or everything rolls back as if nothing happened.</p>
+
+  <h3>ACID Properties</h3>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy &mdash; Bank Transfer</div>
+    <p>You transfer Rs. 500 from Account A to Account B. That requires two operations: debit A, credit B. What if the system crashes after debiting A but before crediting B? You just lost Rs. 500 into thin air. Transactions prevent this.</p>
+  </div>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">Atomicity</div>
+      <div class="layer-detail"><strong>All or nothing.</strong> If the debit succeeds but the credit fails, the debit is undone (rolled back). Both operations succeed together, or neither happens.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Consistency</div>
+      <div class="layer-detail"><strong>Valid state to valid state.</strong> Before the transfer, total money in A+B = Rs. 10,000. After the transfer, total must still be Rs. 10,000. No money created or destroyed.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Isolation</div>
+      <div class="layer-detail"><strong>Concurrent transactions do not interfere.</strong> If two people transfer money simultaneously, each transaction sees a consistent snapshot. No partial reads.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Durability</div>
+      <div class="layer-detail"><strong>Once committed, it is permanent.</strong> Even if the server crashes 1 millisecond after commit, the data is safe on disk.</div>
+    </div>
+  </div>
+
+  <h3>AutoCommit and Manual Transactions</h3>
+  <p>By default, JDBC runs in <strong>auto-commit mode</strong>: every single SQL statement is its own transaction. It is committed immediately. To group multiple statements, you turn off auto-commit:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus: Booking + Payment Transaction</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public boolean createBookingWithPayment(Booking booking, Payment payment) {
+    Connection conn = null;
+    try {
+        conn = DBConnection.getConnection();
+        conn.setAutoCommit(false);  // START TRANSACTION
+
+        // Step 1: Insert booking
+        String bookingSql = "INSERT INTO bookings (user_id, pickup, dropoff, weight, status) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement bookingStmt = conn.prepareStatement(bookingSql);
+        bookingStmt.setInt(1, booking.getUserId());
+        bookingStmt.setString(2, booking.getPickup());
+        bookingStmt.setString(3, booking.getDropoff());
+        bookingStmt.setDouble(4, booking.getWeight());
+        bookingStmt.setString(5, "PENDING");
+        bookingStmt.executeUpdate();
+
+        // Step 2: Insert payment
+        String paymentSql = "INSERT INTO payments (booking_id, amount, method, status) VALUES (LAST_INSERT_ID(), ?, ?, ?)";
+        PreparedStatement paymentStmt = conn.prepareStatement(paymentSql);
+        paymentStmt.setDouble(1, payment.getAmount());
+        paymentStmt.setString(2, payment.getMethod());
+        paymentStmt.setString(3, "COMPLETED");
+        paymentStmt.executeUpdate();
+
+        conn.commit();  // BOTH succeeded &mdash; make it permanent
+        return true;
+
+    } catch (SQLException e) {
+        if (conn != null) {
+            try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        }
+        e.printStackTrace();
+        return false;
+
+    } finally {
+        if (conn != null) {
+            try {
+                conn.setAutoCommit(true);  // Reset for next use
+                conn.close();
+            } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Transaction flow</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">conn.setAutoCommit(false);</div>
+        <div class="breakdown-explain">Turns off auto-commit. From now on, nothing is saved to the database until you explicitly call <code>commit()</code>. This starts the transaction.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">bookingStmt.executeUpdate();</div>
+        <div class="breakdown-explain">Inserts the booking. But because auto-commit is off, this change is <strong>not permanent yet</strong>. It is in a temporary state.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">paymentStmt.executeUpdate();</div>
+        <div class="breakdown-explain">Inserts the payment. Also not permanent yet. <code>LAST_INSERT_ID()</code> gets the auto-generated booking_id from Step 1.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">conn.commit();</div>
+        <div class="breakdown-explain">Both inserts succeeded. <code>commit()</code> makes them permanent. If the server crashes after this line, both rows are safe.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">conn.rollback();</div>
+        <div class="breakdown-explain">If anything fails (exception), <code>rollback()</code> undoes everything. The booking insert is erased. No orphan booking without payment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a user creates a booking and pays, both operations must succeed together. If payment insertion fails but the booking was already inserted, you would have a booking with no payment record &mdash; a data inconsistency. Transactions prevent this.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: try-with-resources                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="try-with-resources">
+  <div class="section-tag">Section 08</div>
+  <h2>try-with-resources</h2>
+  <p class="section-desc">Database connections, statements, and result sets are <strong>system resources</strong> that must be closed when you are done. Forgetting to close them causes <strong>connection leaks</strong> &mdash; eventually your application runs out of connections and crashes.</p>
+
+  <h3>Before: Manual Closing (Old Way)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The Ugly Old Way</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">Connection conn = null;
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+
+try {
+    conn = DBConnection.getConnection();
+    pstmt = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
+    pstmt.setInt(1, id);
+    rs = pstmt.executeQuery();
+    // ... process results ...
+
+} catch (SQLException e) {
+    e.printStackTrace();
+} finally {
+    // MUST close in reverse order, each with its own try-catch
+    if (rs != null) { try { rs.close(); } catch (SQLException e) { } }
+    if (pstmt != null) { try { pstmt.close(); } catch (SQLException e) { } }
+    if (conn != null) { try { conn.close(); } catch (SQLException e) { } }
+}</code></pre>
+  </div>
+
+  <p>Look at that mess. Three null checks, three try-catch blocks, just to close resources. And if you forget one, you have a leak.</p>
+
+  <h3>After: try-with-resources (Java 7+)</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">The Clean Way (Nimbus uses this)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">try (Connection conn = DBConnection.getConnection();
+     PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?")) {
+
+    pstmt.setInt(1, id);
+    ResultSet rs = pstmt.executeQuery();
+    // ... process results ...
+
+} catch (SQLException e) {
+    e.printStackTrace();
+}
+// conn, pstmt, and rs are ALL automatically closed here</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p>Any object that implements <code>AutoCloseable</code> can be used in try-with-resources. <code>Connection</code>, <code>PreparedStatement</code>, and <code>ResultSet</code> all implement it. When the try block ends (normally or by exception), Java calls <code>.close()</code> on each resource in <strong>reverse order</strong>. No leaks. No forgotten close calls.</p>
+  </div>
+
+  <h3>What Happens When You Leak Connections</h3>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Request 1<span class="flow-sub">Opens connection, forgets to close</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Request 2<span class="flow-sub">Opens another connection</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Request 100<span class="flow-sub">Opens another...</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">CRASH<span class="flow-sub">MySQL: "Too many connections"</span></div>
+    </div>
+    <div class="flow-label">MySQL has a connection limit (default: 151). Leaked connections pile up until the limit is hit.</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every DAO method in Nimbus uses try-with-resources. This is non-negotiable. You will never see a <code>finally</code> block with manual <code>.close()</code> calls in Nimbus code.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Connection Pooling                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="connection-pooling">
+  <div class="section-tag">Section 09</div>
+  <h2>Connection Pooling</h2>
+  <p class="section-desc">Opening a new database connection is <strong>expensive</strong>. It involves a TCP handshake, authentication, and memory allocation. Connection pooling solves this by reusing connections.</p>
+
+  <h3>The Problem</h3>
+  <p>Without pooling, every request follows this cycle:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box red">Request arrives</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Open new connection<span class="flow-sub">~50-100ms</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box blue">Execute query<span class="flow-sub">~5ms</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Close connection<span class="flow-sub">~10ms</span></div>
+    </div>
+    <div class="flow-label">Opening a connection takes 10-20x longer than the actual query. That is wasted time.</div>
+  </div>
+
+  <h3>The Solution: Connection Pool</h3>
+  <p>A pool maintains a set of pre-opened connections. When your code needs a connection, it borrows one from the pool. When done, it returns it. The connection stays open for the next request.</p>
+
+  <div class="diagram">
+    <pre>
+  Connection Pool (e.g. HikariCP, pool size = 5)
+  ┌────────────────────────────────────────────┐
+  │                                            │
+  │   [Conn 1] ←── borrowed by Request A       │
+  │   [Conn 2] ←── borrowed by Request B       │
+  │   [Conn 3]     idle (waiting)              │
+  │   [Conn 4]     idle (waiting)              │
+  │   [Conn 5] ←── borrowed by Request C       │
+  │                                            │
+  └────────────────────────────────────────────┘
+  Request D arrives → borrows Conn 3
+  Request A finishes → returns Conn 1 to pool
+    </pre>
+    <div class="diagram-label">Connections are reused, not created and destroyed for every request.</div>
+  </div>
+
+  <h3>HikariCP &mdash; The Industry Standard</h3>
+  <p><strong>HikariCP</strong> is the most popular connection pool in Java. It is the default in Spring Boot. Here is what it would look like in Nimbus:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DBConnection.java with HikariCP (production version)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class DBConnection {
+    private static final HikariDataSource dataSource;
+
+    static {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/nimbus_db");
+        config.setUsername("root");
+        config.setPassword("password");
+        config.setMaximumPoolSize(10);       // Max 10 connections in pool
+        config.setMinimumIdle(2);            // Keep at least 2 idle
+        config.setConnectionTimeout(30000);  // Wait 30s before giving up
+        dataSource = new HikariDataSource(config);
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return dataSource.getConnection();  // Borrows from pool, not new
+    }
+}</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The current Nimbus <code>DBConnection</code> uses <code>DriverManager.getConnection()</code> directly (creates a new connection each time). This is fine for learning. In production, you would swap it with HikariCP as shown above. The beautiful part: <strong>no DAO code changes</strong>. They all call <code>DBConnection.getConnection()</code> and do not care how the connection was obtained.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: DAO Pattern                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="dao-pattern">
+  <div class="section-tag">Section 10</div>
+  <h2>The DAO Pattern</h2>
+  <p class="section-desc">DAO stands for <strong>Data Access Object</strong>. It is a design pattern that separates database code from business logic. Each table gets its own DAO class.</p>
+
+  <h3>Why Separate Database Code?</h3>
+  <p>Without the DAO pattern, your servlet (or controller) would contain SQL queries, connection handling, result processing, AND business logic all mixed together. That is a maintenance disaster.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without DAO</div>
+      <div class="comparison-body">
+        <p>The servlet has SQL mixed with HTTP handling:</p>
+        <code style="font-size: 0.78rem; display: block; margin-top: 8px; line-height: 1.6;">
+          // In the servlet<br>
+          Connection conn = ...;<br>
+          PreparedStatement pstmt = conn.prepareStatement("SELECT...");<br>
+          ResultSet rs = ...;<br>
+          // parse results<br>
+          // also handle HTTP request/response<br>
+          // also validate input<br>
+          // 200 lines of mixed code
+        </code>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With DAO</div>
+      <div class="comparison-body">
+        <p>Servlet calls the DAO. Clean separation:</p>
+        <code style="font-size: 0.78rem; display: block; margin-top: 8px; line-height: 1.6;">
+          // In the servlet<br>
+          UserDAO userDAO = new UserDAO();<br>
+          User user = userDAO.getUserById(id);<br>
+          // handle HTTP request/response<br>
+          // ONE line for DB access
+        </code>
+      </div>
+    </div>
+  </div>
+
+  <h3>What Does a DAO Do?</h3>
+  <ul>
+    <li><strong>Encapsulates</strong> all SQL queries for one table</li>
+    <li><strong>Translates</strong> between database rows and Java objects</li>
+    <li><strong>Handles</strong> connections, exceptions, and resource cleanup</li>
+    <li><strong>Exposes</strong> clean methods like <code>addUser()</code>, <code>getUserById()</code></li>
+  </ul>
+
+  <h3>Nimbus DAO Structure</h3>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Servlet<span class="flow-sub">HTTP handling</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">DAO<span class="flow-sub">UserDAO, BookingDAO</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">DBConnection<span class="flow-sub">Connection utility</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">MySQL<span class="flow-sub">nimbus_db</span></div>
+    </div>
+    <div class="flow-label">Each layer has one job. Servlets never touch SQL. DAOs never touch HTTP.</div>
+  </div>
+
+  <h3>Why This Makes Code Better</h3>
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Benefit</th>
+        <th>How</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Testable</strong></td>
+        <td>You can test <code>UserDAO</code> independently without running a servlet. Just call its methods directly.</td>
+      </tr>
+      <tr>
+        <td><strong>Swappable</strong></td>
+        <td>If you switch from MySQL to PostgreSQL, only the DAO changes. Servlets do not care.</td>
+      </tr>
+      <tr>
+        <td><strong>Readable</strong></td>
+        <td>A servlet calling <code>userDAO.addUser(user)</code> is instantly clear. A servlet with 30 lines of SQL is not.</td>
+      </tr>
+      <tr>
+        <td><strong>Reusable</strong></td>
+        <td>Multiple servlets can call the same <code>getUserById()</code>. No duplicate SQL.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Batch Operations                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="batch-operations">
+  <div class="section-tag">Section 11</div>
+  <h2>Batch Operations</h2>
+  <p class="section-desc">When you need to execute the same query many times (e.g. inserting 100 bookings), sending them one by one is slow. Batch operations group them and send everything at once.</p>
+
+  <h3>Without Batch: 100 Round Trips</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Slow: One Insert Per Round Trip</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// 100 bookings = 100 round trips to the database
+for (Booking b : bookings) {
+    pstmt.setInt(1, b.getUserId());
+    pstmt.setString(2, b.getPickup());
+    pstmt.setString(3, b.getDropoff());
+    pstmt.executeUpdate();  // Network round trip each time!
+}</code></pre>
+  </div>
+
+  <h3>With Batch: 1 Round Trip</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Fast: Batch Insert</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public void addBookingsBatch(List&lt;Booking&gt; bookings) {
+    String sql = "INSERT INTO bookings (user_id, pickup, dropoff, weight, status) VALUES (?, ?, ?, ?, ?)";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        conn.setAutoCommit(false);  // Wrap in transaction for safety
+
+        for (Booking b : bookings) {
+            pstmt.setInt(1, b.getUserId());
+            pstmt.setString(2, b.getPickup());
+            pstmt.setString(3, b.getDropoff());
+            pstmt.setDouble(4, b.getWeight());
+            pstmt.setString(5, "PENDING");
+            pstmt.addBatch();  // Queue it, don't send yet
+        }
+
+        int[] results = pstmt.executeBatch();  // Send ALL at once
+        conn.commit();
+
+        System.out.println("Inserted " + results.length + " bookings");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">pstmt.addBatch();</div>
+        <div class="breakdown-explain">Adds the current set of parameter values to the batch queue. Does NOT send to the database yet. You can call this hundreds of times.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">int[] results = pstmt.executeBatch();</div>
+        <div class="breakdown-explain">Sends all queued statements to the database in ONE network trip. Returns an array where each element is the row count for that statement (usually 1 for each INSERT).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">conn.setAutoCommit(false) / conn.commit();</div>
+        <div class="breakdown-explain">Wrapping the batch in a transaction means if row 50 fails, all 49 previous rows are rolled back. All or nothing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Think About It</div>
+    <p>Performance difference: 100 individual inserts might take 2-3 seconds. The same 100 inserts as a batch typically take 50-100 milliseconds. That is a 20-30x improvement.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Full UserDAO                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="user-dao">
+  <div class="section-tag">Section 12</div>
+  <h2>Full Nimbus UserDAO</h2>
+  <p class="section-desc">The complete <code>UserDAO</code> class with every method Nimbus uses. This is real production code &mdash; study every method.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/UserDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.User;
+import com.nimbus.util.DBConnection;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserDAO {
+
+    // ==================== CREATE ====================
+    public boolean addUser(User user) {
+        String sql = "INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, user.getName());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getPassword());
+            pstmt.setString(4, user.getPhone());
+            pstmt.setString(5, user.getRole());
+
+            return pstmt.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ==================== READ (Login) ====================
+    public User validateLogin(String email, String password) {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return extractUser(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ==================== READ (by ID) ====================
+    public User getUserById(int id) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return extractUser(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ==================== READ (unique check) ====================
+    public boolean isEmailUnique(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) == 0;  // 0 means no user has this email
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ==================== READ (support users) ====================
+    public List&lt;User&gt; getSupportUsers() {
+        List&lt;User&gt; users = new ArrayList&lt;&gt;();
+        String sql = "SELECT * FROM users WHERE role = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "SUPPORT");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                users.add(extractUser(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    // ==================== HELPER ====================
+    private User extractUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getInt("user_id"));
+        user.setName(rs.getString("name"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setPhone(rs.getString("phone"));
+        user.setRole(rs.getString("role"));
+        return user;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Method-by-method explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">addUser(User user) &rarr; boolean</div>
+        <div class="breakdown-explain">Takes a User object, inserts it into the users table. Returns <code>true</code> if insertion succeeded (row count &gt; 0). Used during registration.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">validateLogin(String email, String password) &rarr; User or null</div>
+        <div class="breakdown-explain">Checks if email + password combination exists. Returns the User object if match found (login success), <code>null</code> if not (login failure). Uses <code>if (rs.next())</code> because there is at most one matching user.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getUserById(int id) &rarr; User or null</div>
+        <div class="breakdown-explain">Fetches a single user by primary key. Used when you need to display user details (e.g. profile page, booking owner info).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">isEmailUnique(String email) &rarr; boolean</div>
+        <div class="breakdown-explain">Counts users with this email. If count is 0, email is unique (returns <code>true</code>). Used before registration to prevent duplicate accounts. Note: uses <code>rs.getInt(1)</code> (column index) because <code>COUNT(*)</code> has no column name.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getSupportUsers() &rarr; List&lt;User&gt;</div>
+        <div class="breakdown-explain">Returns all users with role "SUPPORT." Uses <code>while (rs.next())</code> because there can be multiple support staff. Used by admin dashboards to assign agents to tickets.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extractUser(ResultSet rs) &rarr; User</div>
+        <div class="breakdown-explain">A private helper that builds a User object from a ResultSet row. Called by every READ method. This avoids repeating <code>rs.getString("name")</code>, <code>rs.getString("email")</code>, etc. in every method. <strong>DRY principle in action.</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Full BookingDAO                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="booking-dao">
+  <div class="section-tag">Section 13</div>
+  <h2>Full Nimbus BookingDAO</h2>
+  <p class="section-desc">The complete <code>BookingDAO</code> class. More complex than UserDAO because bookings have more operations &mdash; date ranges, status updates, pickup/dropoff updates, and a shared extraction helper.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/dao/BookingDAO.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dao;
+
+import com.nimbus.model.Booking;
+import com.nimbus.util.DBConnection;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookingDAO {
+
+    // ==================== CREATE ====================
+    public boolean addBooking(Booking booking) {
+        String sql = "INSERT INTO bookings (user_id, sender_name, sender_phone, sender_address, "
+                   + "receiver_name, receiver_phone, receiver_address, weight, parcel_type, "
+                   + "pickup_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, booking.getUserId());
+            pstmt.setString(2, booking.getSenderName());
+            pstmt.setString(3, booking.getSenderPhone());
+            pstmt.setString(4, booking.getSenderAddress());
+            pstmt.setString(5, booking.getReceiverName());
+            pstmt.setString(6, booking.getReceiverPhone());
+            pstmt.setString(7, booking.getReceiverAddress());
+            pstmt.setDouble(8, booking.getWeight());
+            pstmt.setString(9, booking.getParcelType());
+            pstmt.setTimestamp(10, booking.getPickupDate());
+            pstmt.setString(11, "PENDING");
+
+            return pstmt.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ==================== READ (single) ====================
+    public Booking getBookingById(int bookingId) {
+        String sql = "SELECT * FROM bookings WHERE booking_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, bookingId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return extractBooking(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ==================== READ (by user) ====================
+    public List&lt;Booking&gt; getBookingsByUser(int userId) {
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+        String sql = "SELECT * FROM bookings WHERE user_id = ? ORDER BY created_at DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                bookings.add(extractBooking(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    // ==================== READ (by date range) ====================
+    public List&lt;Booking&gt; getBookingsByDateRange(Timestamp start, Timestamp end) {
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+        String sql = "SELECT * FROM bookings WHERE created_at BETWEEN ? AND ? ORDER BY created_at DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setTimestamp(1, start);
+            pstmt.setTimestamp(2, end);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                bookings.add(extractBooking(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    // ==================== READ (all) ====================
+    public List&lt;Booking&gt; getAllBookings() {
+        List&lt;Booking&gt; bookings = new ArrayList&lt;&gt;();
+        String sql = "SELECT * FROM bookings ORDER BY created_at DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                bookings.add(extractBooking(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    // ==================== UPDATE (status) ====================
+    public boolean updateStatus(int bookingId, String newStatus) {
+        String sql = "UPDATE bookings SET status = ? WHERE booking_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newStatus);
+            pstmt.setInt(2, bookingId);
+            return pstmt.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ==================== UPDATE (pickup & drop) ====================
+    public boolean updatePickupDrop(int bookingId, String pickup, String dropoff) {
+        String sql = "UPDATE bookings SET sender_address = ?, receiver_address = ? WHERE booking_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, pickup);
+            pstmt.setString(2, dropoff);
+            pstmt.setInt(3, bookingId);
+            return pstmt.executeUpdate() &gt; 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ==================== HELPER ====================
+    private Booking extractBooking(ResultSet rs) throws SQLException {
+        Booking booking = new Booking();
+        booking.setBookingId(rs.getInt("booking_id"));
+        booking.setUserId(rs.getInt("user_id"));
+        booking.setSenderName(rs.getString("sender_name"));
+        booking.setSenderPhone(rs.getString("sender_phone"));
+        booking.setSenderAddress(rs.getString("sender_address"));
+        booking.setReceiverName(rs.getString("receiver_name"));
+        booking.setReceiverPhone(rs.getString("receiver_phone"));
+        booking.setReceiverAddress(rs.getString("receiver_address"));
+        booking.setWeight(rs.getDouble("weight"));
+        booking.setParcelType(rs.getString("parcel_type"));
+        booking.setPickupDate(rs.getTimestamp("pickup_date"));
+        booking.setStatus(rs.getString("status"));
+        booking.setCreatedAt(rs.getTimestamp("created_at"));
+        return booking;
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Method-by-method explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">addBooking(Booking booking) &rarr; boolean</div>
+        <div class="breakdown-explain">Inserts a new booking with 11 parameters. Sets status to "PENDING" by default. Returns true/false for success/failure. Used when a customer submits the booking form.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getBookingById(int bookingId) &rarr; Booking or null</div>
+        <div class="breakdown-explain">Fetches a single booking by its primary key. Used for the booking detail page, tracking page, and status updates.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getBookingsByUser(int userId) &rarr; List&lt;Booking&gt;</div>
+        <div class="breakdown-explain">Gets all bookings for a specific user, ordered by newest first. Used on the "My Bookings" dashboard. Uses <code>while</code> loop because a user can have many bookings.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getBookingsByDateRange(Timestamp start, Timestamp end) &rarr; List&lt;Booking&gt;</div>
+        <div class="breakdown-explain">Uses SQL <code>BETWEEN</code> to find bookings within a date range. Used for admin reports ("show all bookings from March 1-31"). Uses <code>setTimestamp()</code> for date parameters.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">getAllBookings() &rarr; List&lt;Booking&gt;</div>
+        <div class="breakdown-explain">Returns every booking in the system. No WHERE clause, no parameters. Used for the admin "All Bookings" view. Note: in production, you would add pagination (LIMIT/OFFSET).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">updateStatus(int bookingId, String newStatus) &rarr; boolean</div>
+        <div class="breakdown-explain">Changes a booking's status (PENDING &rarr; PICKED_UP &rarr; IN_TRANSIT &rarr; DELIVERED). Used by delivery agents and admins to track parcel progress.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">updatePickupDrop(int bookingId, String pickup, String dropoff) &rarr; boolean</div>
+        <div class="breakdown-explain">Updates the sender and receiver addresses. Used when a customer or admin corrects the address after booking.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">extractBooking(ResultSet rs) &rarr; Booking</div>
+        <div class="breakdown-explain">Private helper that reads one row from the ResultSet and builds a Booking object. Called by every READ method. Centralizes the column &rarr; field mapping. If you add a column to the table, you update it in ONE place.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Notice the pattern across both DAOs: <strong>every method</strong> follows the same structure. try-with-resources for connection management, PreparedStatement with <code>?</code> placeholders, and a private <code>extract</code> helper for building objects. Once you understand one method, you understand them all.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 14: Common JDBC Errors                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="common-errors">
+  <div class="section-tag">Section 14</div>
+  <h2>Common JDBC Errors</h2>
+  <p class="section-desc">These are the errors you <strong>will</strong> encounter when working with JDBC. Know what they mean and how to fix them.</p>
+
+  <h3>1. ClassNotFoundException: com.mysql.cj.jdbc.Driver</h3>
+  <div class="callout warning">
+    <div class="callout-title">Error</div>
+    <p><code>java.lang.ClassNotFoundException: com.mysql.cj.jdbc.Driver</code></p>
+  </div>
+  <p><strong>What it means:</strong> Java cannot find the MySQL driver class. The MySQL Connector JAR is not on the classpath.</p>
+  <p><strong>Fix:</strong></p>
+  <ul>
+    <li>If using Maven: Add the <code>mysql-connector-j</code> dependency to <code>pom.xml</code> and run <code>mvn clean install</code></li>
+    <li>If manual: Make sure the JAR file is in <code>/lib</code> and included in the classpath (<code>-cp</code> flag)</li>
+    <li>If in an IDE: Right-click the JAR &rarr; Add to Build Path</li>
+  </ul>
+
+  <h3>2. SQLException: Access denied for user 'root'@'localhost'</h3>
+  <div class="callout warning">
+    <div class="callout-title">Error</div>
+    <p><code>java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)</code></p>
+  </div>
+  <p><strong>What it means:</strong> Wrong username or password in your connection URL.</p>
+  <p><strong>Fix:</strong></p>
+  <ul>
+    <li>Double-check the password in <code>DBConnection.java</code></li>
+    <li>Test it manually: open MySQL terminal and login with the same credentials</li>
+    <li>If you reset your MySQL password, update it in <code>DBConnection.java</code></li>
+  </ul>
+
+  <h3>3. CommunicationsException: Connection Refused</h3>
+  <div class="callout warning">
+    <div class="callout-title">Error</div>
+    <p><code>com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure</code></p>
+  </div>
+  <p><strong>What it means:</strong> Java cannot reach the MySQL server. Either MySQL is not running, or the port/host is wrong.</p>
+  <p><strong>Fix:</strong></p>
+  <ul>
+    <li>Check if MySQL is running: <code>sudo systemctl status mysql</code> (Linux) or check Services on Windows</li>
+    <li>Verify the port: <code>mysql --port=3306</code> (default). If you changed it, update the URL</li>
+    <li>If using a remote server, check firewall rules</li>
+  </ul>
+
+  <h3>4. SQLSyntaxErrorException: Table doesn't exist</h3>
+  <div class="callout warning">
+    <div class="callout-title">Error</div>
+    <p><code>java.sql.SQLSyntaxErrorException: Table 'nimbus_db.bookingz' doesn't exist</code></p>
+  </div>
+  <p><strong>What it means:</strong> The table name in your SQL does not match any table in the database. Typo or the table was never created.</p>
+  <p><strong>Fix:</strong></p>
+  <ul>
+    <li>Check the exact table name: <code>SHOW TABLES;</code> in MySQL</li>
+    <li>SQL table names are case-sensitive on Linux, case-insensitive on Windows</li>
+    <li>Make sure you selected the right database: <code>USE nimbus_db;</code></li>
+  </ul>
+
+  <h3>5. SQLIntegrityConstraintViolationException</h3>
+  <div class="callout warning">
+    <div class="callout-title">Error</div>
+    <p><code>java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'user@email.com' for key 'users.email'</code></p>
+  </div>
+  <p><strong>What it means:</strong> You tried to insert a row that violates a UNIQUE constraint. The email already exists in the table.</p>
+  <p><strong>Fix:</strong></p>
+  <ul>
+    <li>Check before inserting: use <code>isEmailUnique()</code> in UserDAO</li>
+    <li>Or handle the exception gracefully and show "Email already registered" to the user</li>
+  </ul>
+
+  <h3>Quick Debugging Checklist</h3>
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th>Symptom</th>
+        <th>Check</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ClassNotFoundException</td>
+        <td>Is the MySQL JAR on the classpath?</td>
+      </tr>
+      <tr>
+        <td>Access denied</td>
+        <td>Are username/password correct?</td>
+      </tr>
+      <tr>
+        <td>Connection refused</td>
+        <td>Is MySQL running? Correct port?</td>
+      </tr>
+      <tr>
+        <td>Table doesn't exist</td>
+        <td>Typo? Did you run CREATE TABLE?</td>
+      </tr>
+      <tr>
+        <td>Duplicate entry</td>
+        <td>UNIQUE constraint violated. Check before inserting.</td>
+      </tr>
+      <tr>
+        <td>ResultSet is closed</td>
+        <td>Are you using the ResultSet outside the try block?</td>
+      </tr>
+      <tr>
+        <td>Too many connections</td>
+        <td>Are you closing connections? Use try-with-resources.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 15: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 15</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Build these yourself. Each one reinforces a core JDBC concept from this page.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Basic Connection</div>
+    <p>Write a program that connects to <code>nimbus_db</code> and prints "Connected successfully!" if the connection opens without error. Use try-with-resources.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Insert a User</div>
+    <p>Create a standalone <code>main()</code> method that inserts a new user (hardcoded name, email, password, phone, role) into the <code>users</code> table using <code>PreparedStatement</code>. Print the row count returned by <code>executeUpdate()</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Fetch and Print</div>
+    <p>Write a method <code>printAllUsers()</code> that selects all users and prints each user's name and email to the console. Use a <code>while (rs.next())</code> loop.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; SQL Injection Demo</div>
+    <p>Write TWO versions of a login check: one using <code>Statement</code> (string concatenation) and one using <code>PreparedStatement</code>. Test both with the input <code>' OR '1'='1' --</code>. See the difference.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Update and Delete</div>
+    <p>Write <code>updateUserPhone(int userId, String newPhone)</code> and <code>deleteUser(int userId)</code>. Both should return <code>boolean</code> indicating success. Use the same pattern as Nimbus DAO methods.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; Transaction</div>
+    <p>Write a <code>transferBooking(int bookingId, int fromUserId, int toUserId)</code> method that updates the booking's user_id AND inserts a log entry into a <code>transfer_log</code> table. Use a transaction (<code>setAutoCommit(false)</code>, <code>commit()</code>, <code>rollback()</code>).</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 7 &mdash; Batch Insert</div>
+    <p>Write a method that inserts 50 dummy bookings using batch operations (<code>addBatch()</code> + <code>executeBatch()</code>). Time it using <code>System.currentTimeMillis()</code> before and after. Then do the same with 50 individual <code>executeUpdate()</code> calls. Compare the times.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 8 &mdash; Build a DAO</div>
+    <p>Create a <code>PaymentDAO</code> class for a <code>payments</code> table with columns: <code>payment_id</code>, <code>booking_id</code>, <code>amount</code>, <code>method</code>, <code>status</code>, <code>paid_at</code>. Implement: <code>addPayment()</code>, <code>getPaymentByBookingId()</code>, <code>getPaymentsByDateRange()</code>, <code>updateStatus()</code>, and an <code>extractPayment()</code> helper. Follow the exact same patterns as UserDAO and BookingDAO.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="sql.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">SQL &amp; Database</span>
+  </a>
+  <a href="maven.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Maven</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

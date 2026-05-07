@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scanner Input Patterns | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link active"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ===== SECTION 1: HACKERRANK INPUT ===== -->
+  <div class="content-section" id="hackerrank-input">
+    <div class="section-tag">Basics</div>
+    <h2>HackerRank Input Pattern</h2>
+    <p class="section-desc">PRA runs on HackerRank. The input is provided via standard input (stdin) &mdash; no prompts, no GUI, no "Enter name:" messages. You just read values directly in the order the question specifies.</p>
+
+    <h3>The Setup &mdash; Always the Same</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Scanner Setup</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">import java.util.Scanner;
+
+Scanner sc = new Scanner(System.in);</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; No Prompts!</div>
+      <p>Do NOT write <code>System.out.println("Enter name:");</code> or any prompt messages. HackerRank sends input automatically. Any extra output you print will cause your answer to fail because the expected output won't match.</p>
+    </div>
+
+    <h3>Key Rules for HackerRank</h3>
+    <ul>
+      <li><strong>Always import:</strong> <code>import java.util.Scanner;</code> (or <code>import java.util.*;</code> which covers everything)</li>
+      <li><strong>One Scanner:</strong> Create it once at the start of main. Don't create multiple scanners.</li>
+      <li><strong>No prompts:</strong> Just <code>sc.nextLine()</code>, never <code>println("Enter:");</code> before it</li>
+      <li><strong>Read in order:</strong> The question tells you the exact order of inputs. Follow it precisely.</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 2: READING PRIMITIVES ===== -->
+  <div class="content-section" id="reading-primitives">
+    <div class="section-tag">Methods</div>
+    <h2>Reading Primitives</h2>
+    <p class="section-desc">Scanner has different methods for reading different data types. Using the wrong one causes runtime errors or reads incorrect values.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Scanner Read Methods</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">int n = sc.nextInt();       // reads an integer
+double d = sc.nextDouble(); // reads a double
+String s = sc.nextLine();   // reads entire line (including spaces)
+String word = sc.next();    // reads single word (stops at space)</code></pre>
+    </div>
+
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Reads</th>
+          <th>Stops At</th>
+          <th>Use For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>nextInt()</code></td>
+          <td>Integer number</td>
+          <td>Whitespace (leaves <code>\n</code> in buffer!)</td>
+          <td>IDs, counts, quantities</td>
+        </tr>
+        <tr>
+          <td><code>nextDouble()</code></td>
+          <td>Decimal number</td>
+          <td>Whitespace (leaves <code>\n</code> in buffer!)</td>
+          <td>Prices, gains, averages</td>
+        </tr>
+        <tr>
+          <td><code>nextLine()</code></td>
+          <td>Entire line</td>
+          <td>Newline (<code>\n</code>) &mdash; consumes it</td>
+          <td>Names, genres, addresses</td>
+        </tr>
+        <tr>
+          <td><code>next()</code></td>
+          <td>Single word</td>
+          <td>Any whitespace</td>
+          <td>Single-word inputs (rarely needed in PRA)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout think">
+      <div class="callout-title">&#x1F4A1; Key Difference</div>
+      <p><code>nextLine()</code> reads the ENTIRE line including spaces and consumes the newline character at the end. <code>nextInt()</code> and <code>nextDouble()</code> only read the number and leave the newline sitting in the buffer. This leftover newline is the source of the #1 bug in PRA.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: THE NEWLINE TRAP ===== -->
+  <div class="content-section" id="newline-trap">
+    <div class="section-tag">Critical Bug</div>
+    <h2>THE NEWLINE TRAP</h2>
+    <p class="section-desc">This is the #1 bug that fails PRA solutions. If you understand and fix this one thing, you'll avoid the most common cause of "wrong answer" on correct logic. Read this section carefully &mdash; it will save your marks.</p>
+
+    <h3>The Problem</h3>
+    <p>When you call <code>sc.nextInt()</code>, it reads the number but <strong>leaves the newline character (<code>\n</code>) in the input buffer</strong>. When you then call <code>sc.nextLine()</code>, it reads that leftover newline and returns an EMPTY string instead of the actual next line.</p>
+
+    <h4>Visualizing the Bug</h4>
+    <p>Let's say the input is:</p>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Input</span>
+      </div>
+      <pre><code>1001
+Savings</code></pre>
+    </div>
+
+    <div class="diagram">
+      <pre>
+  INPUT BUFFER:  [ 1  0  0  1  \n  S  a  v  i  n  g  s  \n ]
+                  ~~~~~~~~~~~~  ~~  ~~~~~~~~~~~~~~~~~~~~~~~~~
+                  nextInt reads  leftover   nextLine should read this
+                  "1001"         \n          but reads \n instead!
+
+  STEP 1: int x = sc.nextInt();
+  Buffer after:  [ \n  S  a  v  i  n  g  s  \n ]
+                   ^^
+                   This \n is still here!
+
+  STEP 2: String str = sc.nextLine();
+  Buffer after:  [ S  a  v  i  n  g  s  \n ]
+                 str = "" (EMPTY! It read the \n and stopped)
+
+  RESULT: x = 1001, str = "" (NOT "Savings"!)
+      </pre>
+      <div class="diagram-label">The leftover \n from nextInt() poisons the next nextLine() call</div>
+    </div>
+
+    <h3>The Buggy Code</h3>
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header bad">BUG &mdash; Will Fail</div>
+        <div class="comparison-body">
+          <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.8;"><code>int x = sc.nextInt();
+String str = sc.nextLine();
+// str = "" (EMPTY!)
+// Reads leftover \n, not "Savings"</code></pre>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header good">FIX &mdash; Works Correctly</div>
+        <div class="comparison-body">
+          <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.8;"><code>int x = sc.nextInt();
+sc.nextLine();  // consume leftover \n
+String str = sc.nextLine();
+// str = "Savings" (CORRECT!)</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <h3>The Fix Visualized</h3>
+    <div class="diagram">
+      <pre>
+  INPUT BUFFER:  [ 1  0  0  1  \n  S  a  v  i  n  g  s  \n ]
+
+  STEP 1: int x = sc.nextInt();        // reads 1001
+  Buffer:  [ \n  S  a  v  i  n  g  s  \n ]
+
+  STEP 2: sc.nextLine();                // GARBAGE COLLECTOR! Eats the \n
+  Buffer:  [ S  a  v  i  n  g  s  \n ]
+
+  STEP 3: String str = sc.nextLine();   // NOW reads "Savings"
+  Buffer:  [ ]  (empty)
+
+  RESULT: x = 1001, str = "Savings" (CORRECT!)
+      </pre>
+      <div class="diagram-label">The extra sc.nextLine() acts as a garbage collector for the leftover newline</div>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; THE GOLDEN RULE</div>
+      <p><strong>Every time you call <code>sc.nextInt()</code> or <code>sc.nextDouble()</code>, and the NEXT read is <code>sc.nextLine()</code>, you MUST add an extra <code>sc.nextLine()</code> in between to consume the leftover newline.</strong></p>
+      <p>This is not optional. This is not "good practice." This is the difference between your code working and failing every test case.</p>
+    </div>
+
+    <h4>When You DON'T Need the Extra nextLine()</h4>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>After</th>
+          <th>Next Read</th>
+          <th>Need Extra nextLine()?</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>nextInt()</code></td>
+          <td><code>nextLine()</code></td>
+          <td><strong>YES</strong></td>
+          <td>nextLine reads the leftover \n</td>
+        </tr>
+        <tr>
+          <td><code>nextDouble()</code></td>
+          <td><code>nextLine()</code></td>
+          <td><strong>YES</strong></td>
+          <td>Same problem as nextInt</td>
+        </tr>
+        <tr>
+          <td><code>nextInt()</code></td>
+          <td><code>nextInt()</code></td>
+          <td>No</td>
+          <td>nextInt skips whitespace automatically</td>
+        </tr>
+        <tr>
+          <td><code>nextDouble()</code></td>
+          <td><code>nextDouble()</code></td>
+          <td>No</td>
+          <td>nextDouble also skips whitespace</td>
+        </tr>
+        <tr>
+          <td><code>nextLine()</code></td>
+          <td><code>nextLine()</code></td>
+          <td>No</td>
+          <td>nextLine already consumed the \n</td>
+        </tr>
+        <tr>
+          <td><code>nextInt()</code></td>
+          <td><code>nextDouble()</code></td>
+          <td>No</td>
+          <td>nextDouble skips whitespace</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout analogy">
+      <div class="callout-title">&#x1F4DA; Simple Rule</div>
+      <p><strong>Only add the extra <code>sc.nextLine()</code> when going from a number read (<code>nextInt</code>/<code>nextDouble</code>) to a line read (<code>nextLine</code>).</strong> Number-to-number is fine. Line-to-line is fine. Only number-to-line causes the trap.</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: READING N OBJECTS ===== -->
+  <div class="content-section" id="reading-objects">
+    <div class="section-tag">Pattern</div>
+    <h2>Reading N Objects in a Loop</h2>
+    <p class="section-desc">The most common PRA input pattern: first read how many objects (n), then read each object's fields in a loop. The newline trap appears at every transition from number to string.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Reading N Investor Objects</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">int n = sc.nextInt();                    // how many investors?
+ArrayList&lt;Investor&gt; list = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; n; i++) {
+    int id = sc.nextInt();               // read ID (number)
+    sc.nextLine();                       // CONSUME leftover \n
+    String name = sc.nextLine();         // read name (string)
+    double gains = sc.nextDouble();      // read gains (number)
+    list.add(new Investor(id, name, gains));
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Reading order explained</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int n = sc.nextInt();</div>
+          <div class="breakdown-explain">First line of input is always the count. "How many objects am I about to read?"</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int id = sc.nextInt();</div>
+          <div class="breakdown-explain">First field of each object. In the loop, we read one complete object per iteration.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">sc.nextLine(); // CONSUME</div>
+          <div class="breakdown-explain">CRITICAL! We just read an int (id), and the next read is nextLine (name). We MUST consume the leftover \n here.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">String name = sc.nextLine();</div>
+          <div class="breakdown-explain">Now reads the actual name string correctly, because we already consumed the leftover \n.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double gains = sc.nextDouble();</div>
+          <div class="breakdown-explain">Reading a number after a line &mdash; no extra consume needed. nextDouble skips whitespace automatically.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Input for This Example</h3>
+    <div class="test-case">
+      <div class="test-case-header">Sample Input (n=2 Investors)</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Raw Input</div>
+          <div class="test-case-data">2
+1001
+John Smith
+5000.5
+1002
+Jane Doe
+-2000.0</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">What Each Line Reads</div>
+          <div class="test-case-data">n = 2
+id = 1001
+(consumed \n)  name = "John Smith"
+gains = 5000.5
+id = 1002
+(consumed \n)  name = "Jane Doe"
+gains = -2000.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: METHOD PARAMETERS ===== -->
+  <div class="content-section" id="method-parameters">
+    <div class="section-tag">Pattern</div>
+    <h2>Reading Method Parameters After Objects</h2>
+    <p class="section-desc">After reading all objects in the loop, PRA often asks you to read additional parameters that will be passed to your methods (like a genre to search for, or a discount percentage).</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Reading Parameters After Object Loop</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">// After the object reading loop ends...
+// The last read in the loop was probably nextDouble() or nextInt()
+// So we MUST consume the leftover \n before reading strings
+
+sc.nextLine();                           // consume leftover \n from loop's last read
+String searchGenre = sc.nextLine();      // parameter for method 1
+String discountGenre = sc.nextLine();    // parameter for method 2
+int discount = sc.nextInt();             // discount percentage</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">&#x26A0; Easy to Forget</div>
+      <p>The <code>sc.nextLine()</code> between the loop and the parameters is the one most people forget. Your loop's last read was a number (like <code>gains = sc.nextDouble()</code>). When the loop ends, that leftover <code>\n</code> is still in the buffer. If you immediately call <code>sc.nextLine()</code> for the search parameter, you'll get an empty string.</p>
+    </div>
+
+    <h3>Full Input Reading Flow</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">Read n<span class="flow-sub">sc.nextInt()</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">Loop n times<span class="flow-sub">Read each object's fields</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box purple">Consume \n<span class="flow-sub">sc.nextLine()</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box green">Read params<span class="flow-sub">Method arguments</span></div>
+      </div>
+      <div class="flow-label">The consume step between loop and parameters is the most forgotten sc.nextLine()</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 6: COMPOSED OBJECTS ===== -->
+  <div class="content-section" id="composed-objects">
+    <div class="section-tag">Advanced</div>
+    <h2>Reading Composed Objects</h2>
+    <p class="section-desc">When one class contains another (like Author inside Book), you read ALL fields for BOTH classes in a single loop iteration. The reading order follows the input specification exactly.</p>
+
+    <h3>Author-Book Pattern</h3>
+    <p>The question says: "For each entry, read Author fields first, then Book fields." Your code must follow this exact order.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Reading Composed Objects (Author + Book)</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">int n = sc.nextInt();
+ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; n; i++) {
+    // Read Author fields first (as question specifies)
+    int authorId = sc.nextInt();
+    sc.nextLine();                       // consume \n after int
+    String authorName = sc.nextLine();   // read author name
+
+    // Then read Book fields
+    int bookId = sc.nextInt();
+    sc.nextLine();                       // consume \n after int
+    String title = sc.nextLine();        // read book title
+    String genre = sc.nextLine();        // read genre (line after line = no consume needed)
+    double price = sc.nextDouble();      // read price
+
+    // Create objects
+    Author author = new Author(authorId, authorName);
+    Book book = new Book(bookId, title, genre, price, author);
+    books.add(book);
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Reading order with consume points marked</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int authorId = sc.nextInt();</div>
+          <div class="breakdown-explain">Read author ID (number). Leaves \n in buffer.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">sc.nextLine(); // consume</div>
+          <div class="breakdown-explain">Number-to-line transition: MUST consume. Without this, authorName would be empty.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">String authorName = sc.nextLine();</div>
+          <div class="breakdown-explain">Reads the author's full name correctly now.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int bookId = sc.nextInt();</div>
+          <div class="breakdown-explain">Line-to-number: no consume needed. nextInt skips whitespace automatically.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">5</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">sc.nextLine(); // consume</div>
+          <div class="breakdown-explain">Number-to-line transition again: MUST consume before reading title.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">6</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">String genre = sc.nextLine();</div>
+          <div class="breakdown-explain">Line-to-line: no consume needed. nextLine already ate the previous \n.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">7</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">double price = sc.nextDouble();</div>
+          <div class="breakdown-explain">Line-to-number: no consume needed. nextDouble skips whitespace.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Input Mapping</h3>
+    <div class="test-case">
+      <div class="test-case-header">Sample Input for 1 Composed Object</div>
+      <div class="test-case-body">
+        <div class="test-case-col">
+          <div class="test-case-label">Raw Input</div>
+          <div class="test-case-data">1
+101
+J.K. Rowling
+501
+Harry Potter
+Fantasy
+599.99</div>
+        </div>
+        <div class="test-case-col">
+          <div class="test-case-label">What Each Line Maps To</div>
+          <div class="test-case-data">n = 1
+authorId = 101
+(consume) authorName = "J.K. Rowling"
+bookId = 501
+(consume) title = "Harry Potter"
+genre = "Fantasy"
+price = 599.99</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: TEMPLATES ===== -->
+  <div class="content-section" id="scanner-templates">
+    <div class="section-tag">Templates</div>
+    <h2>Scanner Templates</h2>
+    <p class="section-desc">Three copy-paste templates for the three input patterns you'll see in PRA. Pick the one that matches your question and fill in the field names.</p>
+
+    <h3>Template 1: Simple Object Reading</h3>
+
+    <div class="callout template">
+      <div class="callout-title">&#x1F4CB; Copy-Paste Template</div>
+      <p>Use for flat objects with no composition (e.g., Investor with id, name, gains).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Template &mdash; Simple Object Input</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+int n = sc.nextInt();
+ArrayList&lt;ClassName&gt; list = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; n; i++) {
+    int id = sc.nextInt();
+    sc.nextLine();                  // consume \n after int
+    String name = sc.nextLine();
+    double value = sc.nextDouble();
+    list.add(new ClassName(id, name, value));
+}</code></pre>
+    </div>
+
+    <h3>Template 2: Composed Object Reading</h3>
+
+    <div class="callout template">
+      <div class="callout-title">&#x1F4CB; Copy-Paste Template</div>
+      <p>Use when one class contains another (e.g., Book has an Author inside it).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Template &mdash; Composed Object Input</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+int n = sc.nextInt();
+ArrayList&lt;Child&gt; list = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; n; i++) {
+    // Parent fields
+    int parentId = sc.nextInt();
+    sc.nextLine();                      // consume \n
+    String parentName = sc.nextLine();
+
+    // Child fields
+    int childId = sc.nextInt();
+    sc.nextLine();                      // consume \n
+    String childField1 = sc.nextLine();
+    String childField2 = sc.nextLine(); // line-to-line: no consume
+    double childValue = sc.nextDouble();
+
+    Parent parent = new Parent(parentId, parentName);
+    Child child = new Child(childId, childField1, childField2, childValue, parent);
+    list.add(child);
+}</code></pre>
+    </div>
+
+    <h3>Template 3: Object Reading + Method Parameters</h3>
+
+    <div class="callout template">
+      <div class="callout-title">&#x1F4CB; Copy-Paste Template</div>
+      <p>Use when the question reads objects in a loop, then additional parameters for the methods at the end.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Template &mdash; Objects + Parameters</span>
+        <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+int n = sc.nextInt();
+ArrayList&lt;ClassName&gt; list = new ArrayList&lt;&gt;();
+
+// Read objects
+for (int i = 0; i &lt; n; i++) {
+    int id = sc.nextInt();
+    sc.nextLine();
+    String name = sc.nextLine();
+    double value = sc.nextDouble();
+    list.add(new ClassName(id, name, value));
+}
+
+// Read method parameters
+sc.nextLine();                          // CRITICAL: consume \n from loop's last read
+String param1 = sc.nextLine();          // e.g., genre to search
+String param2 = sc.nextLine();          // e.g., genre for discount
+int param3 = sc.nextInt();              // e.g., discount percentage
+
+// Call methods with parameters
+method1(list, param1);
+method2(list, param2, param3);</code></pre>
+    </div>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">&#x1F3AF; Memory Aid</div>
+      <p>Count the <code>sc.nextLine()</code> consume calls in your code. Every time you see <code>nextInt()</code> or <code>nextDouble()</code> followed by <code>nextLine()</code> on the next read, there should be a consume in between. If the count doesn't match, you have a bug.</p>
+    </div>
+  </div>
+
+  <div class="topic-nav">
+    <a href="07-custom-exceptions.html"><span class="nav-label">Previous</span><span class="nav-title">Custom Exceptions</span></a>
+    <a href="09-string-operations.html" class="next"><span class="nav-label">Next</span><span class="nav-title">String Operations</span></a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

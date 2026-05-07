@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint 1 &rarr; Eclipse Setup &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Getting Started</div>
+    <a href="#what-is-eclipse" class="sidebar-link"><span class="num">01</span> What is Eclipse?</a>
+    <a href="#vscode-vs-eclipse" class="sidebar-link"><span class="num">02</span> VS Code vs Eclipse</a>
+    <a href="#installing-eclipse" class="sidebar-link"><span class="num">03</span> Installing Eclipse</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Eclipse Tour</div>
+    <a href="#package-explorer" class="sidebar-link"><span class="num">04</span> Package Explorer</a>
+    <a href="#editor-panel" class="sidebar-link"><span class="num">05</span> Editor</a>
+    <a href="#console-panel" class="sidebar-link"><span class="num">06</span> Console</a>
+    <a href="#problems-tab" class="sidebar-link"><span class="num">07</span> Problems Tab</a>
+    <a href="#keyboard-shortcuts" class="sidebar-link"><span class="num">08</span> Keyboard Shortcuts</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Your First Project</div>
+    <a href="#create-maven-project" class="sidebar-link"><span class="num">09</span> Create Maven Project</a>
+    <a href="#what-is-maven" class="sidebar-link"><span class="num">10</span> What is Maven?</a>
+    <a href="#what-is-pom" class="sidebar-link"><span class="num">11</span> What is pom.xml?</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Understanding Structure</div>
+    <a href="#what-are-packages" class="sidebar-link"><span class="num">12</span> What are Packages?</a>
+    <a href="#why-packages" class="sidebar-link"><span class="num">13</span> Why Packages?</a>
+    <a href="#folder-structure" class="sidebar-link"><span class="num">14</span> Folder Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Move Frontend</div>
+    <a href="#copy-frontend" class="sidebar-link"><span class="num">15</span> Copy nimbus/ Files</a>
+    <a href="#static-folder" class="sidebar-link"><span class="num">16</span> Static Folder</a>
+    <a href="#run-frontend" class="sidebar-link"><span class="num">17</span> Run from Eclipse</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Next Steps</div>
+    <a href="#whats-next" class="sidebar-link"><span class="num">18</span> What's Next</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<a href="../backend-overview.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px;">&larr; Back to Backend Overview</a>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is Eclipse?                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-eclipse">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Eclipse?</h2>
+  <p class="section-desc">Before you write a single line of Java, you need the right tool. Eclipse is that tool.</p>
+
+  <p>Eclipse is an <strong>IDE</strong> &mdash; an Integrated Development Environment. That is a fancy way of saying it is a code editor, compiler, runner, and debugger all packed into one window.</p>
+
+  <p>When you write JavaScript, you open a <code>.js</code> file in VS Code, save it, then open a terminal to run <code>node app.js</code>. You jump between the editor and the terminal constantly.</p>
+
+  <p>Eclipse removes that juggling. You write your Java code, hit <strong>Ctrl+F11</strong>, and Eclipse compiles it, runs it, and shows the output &mdash; all without leaving the window. If there is an error, it underlines the exact line in red before you even try to run it.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Think of it this way</div>
+    <p>VS Code is like a kitchen counter &mdash; you can cook on it, but you need to bring your own stove, pans, and utensils (extensions). Eclipse is like a fully equipped kitchen &mdash; the stove, oven, fridge, and dishwasher are already there. For Java, that means the compiler, build tools, server support, and debugger are all built in.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: VS Code vs Eclipse                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="vscode-vs-eclipse">
+  <div class="section-tag">Section 02</div>
+  <h2>VS Code vs Eclipse</h2>
+  <p class="section-desc">You already know VS Code. Here is why Eclipse is the right choice for this project.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">VS Code</div>
+      <div class="comparison-body">
+        <ul>
+          <li>A general-purpose <strong>text editor</strong></li>
+          <li>Needs extensions for every language</li>
+          <li>Great for JavaScript, Python, HTML/CSS</li>
+          <li>No built-in Java compilation</li>
+          <li>No built-in Maven support</li>
+          <li>No built-in servlet/JSP server</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Eclipse</div>
+      <div class="comparison-body">
+        <ul>
+          <li>A Java-specific <strong>IDE</strong></li>
+          <li>Understands Java natively &mdash; zero setup</li>
+          <li>Built-in Maven integration</li>
+          <li>Built-in Java compilation + debugging</li>
+          <li>Built-in servlet/JSP support</li>
+          <li>Built-in Spring Boot runner</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Why you can't use VS Code for this project</div>
+    <p>This project needs: <strong>Maven integration</strong> (dependency management), <strong>Java compilation</strong> (converting .java to .class), <strong>servlet/JSP support</strong> (web pages in Phase 3), and a <strong>Spring Boot runner</strong> (Phase 4). Eclipse has all of this built in. VS Code would need 5+ extensions, manual configuration, and would still not work as smoothly.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Installing Eclipse                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="installing-eclipse">
+  <div class="section-tag">Section 03</div>
+  <h2>Installing Eclipse</h2>
+  <p class="section-desc">Getting Eclipse on your machine takes about 5 minutes. No installer &mdash; just download and extract.</p>
+
+  <ol class="steps">
+    <li>Go to <strong><a href="https://www.eclipse.org/downloads/packages/" target="_blank" style="color: var(--accent);">eclipse.org/downloads/packages</a></strong></li>
+    <li>Find <strong>"Eclipse IDE for Enterprise Java and Web Developers"</strong> and click the download link for your OS (Windows, Mac, or Linux)</li>
+    <li>Extract the downloaded zip file to any folder you like (e.g., <code>C:\Eclipse</code> or <code>D:\Tools\Eclipse</code>)</li>
+    <li>Open the extracted folder and double-click <strong>eclipse.exe</strong> (Windows) or <strong>Eclipse.app</strong> (Mac)</li>
+    <li>Eclipse asks for a <strong>"workspace"</strong> location. Pick any folder like <code>C:\eclipse-workspace</code>. This is just the folder where your projects will live.</li>
+    <li>Check <strong>"Use this as the default and do not ask again"</strong> so it does not ask every time you open Eclipse</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-title">Download the RIGHT version</div>
+    <p>There are multiple versions on the downloads page. You <strong>must</strong> download <strong>"Eclipse IDE for Enterprise Java and Web Developers"</strong> &mdash; not "Eclipse IDE for Java Developers" (the basic one). The Enterprise version includes servlet, JSP, and Spring support that you will need in Phase 3 and 4. If you download the wrong one, you will have to reinstall later.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">What is a "workspace"?</div>
+    <p>A workspace is just a regular folder on your computer. Eclipse stores all your projects inside it. Think of it like a desk &mdash; all your project folders sit on this desk. You can have multiple workspaces, but one is enough for now.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Package Explorer                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="package-explorer">
+  <div class="section-tag">Section 04</div>
+  <h2>Package Explorer</h2>
+  <p class="section-desc">The left panel of Eclipse &mdash; your file browser for the project.</p>
+
+  <p>When Eclipse opens, you will see a panel on the <strong>left side</strong> called <strong>Package Explorer</strong>. This is like the file explorer in VS Code's sidebar, but smarter &mdash; it understands Java project structure.</p>
+
+  <h3>What you will see</h3>
+  <ul>
+    <li>Your project name at the top level</li>
+    <li>Click the <strong>arrow</strong> (&#9654;) next to any item to expand it and see what is inside</li>
+    <li><strong>src/main/java</strong> &mdash; this is where your Java code lives</li>
+    <li><strong>src/main/resources</strong> &mdash; config files and static assets</li>
+    <li><strong>Maven Dependencies</strong> &mdash; libraries Maven downloaded for you</li>
+    <li><strong>pom.xml</strong> &mdash; your project's dependency file (like package.json)</li>
+  </ul>
+
+  <h3>Key actions</h3>
+  <ul>
+    <li><strong>Right-click anything</strong> to see options: New (create files/folders), Delete, Rename, Run As, etc.</li>
+    <li><strong>Right-click &rarr; New &rarr; Class</strong> creates a new Java file</li>
+    <li><strong>Right-click &rarr; New &rarr; Package</strong> creates a new package (folder)</li>
+    <li><strong>Double-click a file</strong> to open it in the editor</li>
+  </ul>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Package Explorer is like the "Files" sidebar in VS Code, except it groups things by Java conventions instead of raw folders. It hides the messy internal folders and shows you only what matters.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Editor Panel                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="editor-panel">
+  <div class="section-tag">Section 05</div>
+  <h2>Editor</h2>
+  <p class="section-desc">The center panel &mdash; where you actually write your code.</p>
+
+  <p>Double-click any file in Package Explorer, and it opens here. If you open multiple files, they appear as <strong>tabs</strong> at the top of the editor &mdash; just like browser tabs or VS Code tabs.</p>
+
+  <h3>What to look for</h3>
+  <ul>
+    <li><strong style="color: var(--red);">Red squiggly underlines</strong> = errors. Your code will not compile until you fix these. Hover over the red line to see what is wrong.</li>
+    <li><strong style="color: var(--orange);">Yellow squiggly underlines</strong> = warnings. Usually safe to ignore, but worth understanding.</li>
+    <li><strong>Line numbers</strong> on the left side &mdash; error messages reference these</li>
+    <li><strong>The red circle with an X</strong> in the left margin = there is an error on that line</li>
+    <li><strong>The yellow triangle</strong> in the left margin = there is a warning on that line</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Eclipse catches errors BEFORE you run</div>
+    <p>This is a major difference from JavaScript. In JS, you find errors only when you run the code. Eclipse checks your Java code <strong>as you type</strong> and shows errors immediately. If you see a red underline, hover over it &mdash; Eclipse often suggests a fix. Click the suggestion and it fixes it for you.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Console Panel                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="console-panel">
+  <div class="section-tag">Section 06</div>
+  <h2>Console</h2>
+  <p class="section-desc">The bottom panel &mdash; where your program's output appears.</p>
+
+  <p>When you run your Java program (Ctrl+F11), any output goes to the <strong>Console</strong> panel at the bottom of Eclipse.</p>
+
+  <ul>
+    <li><code>System.out.println("Hello")</code> output appears here in normal text</li>
+    <li>Error messages (<strong>stack traces</strong>) appear here in <strong style="color: var(--red);">red text</strong></li>
+    <li>If your program asks for input (using <code>Scanner</code>), you type into this console</li>
+  </ul>
+
+  <div class="callout warning">
+    <div class="callout-title">Console not visible?</div>
+    <p>If you cannot see the Console panel, go to <strong>Window &rarr; Show View &rarr; Console</strong>. Eclipse lets you rearrange or close any panel, so sometimes it gets hidden.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Sprint 2, you will build a console-based menu app. All the menu options ("1. Register", "2. Book Parcel", etc.) will print to this console, and user input will be typed here.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Problems Tab                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="problems-tab">
+  <div class="section-tag">Section 07</div>
+  <h2>Problems Tab</h2>
+  <p class="section-desc">A centralized list of every error and warning in your entire project.</p>
+
+  <p>The Problems tab sits at the bottom of Eclipse (next to the Console tab). While the editor shows errors for the file you are looking at, the <strong>Problems tab shows errors across ALL files</strong> in your project.</p>
+
+  <ul>
+    <li><strong style="color: var(--red);">Red circle with X</strong> = Error. Your code will <strong>not compile</strong> until you fix this.</li>
+    <li><strong style="color: var(--orange);">Yellow triangle</strong> = Warning. Your code will compile, but something might not be ideal.</li>
+    <li><strong>Double-click any error</strong> in the Problems tab &mdash; Eclipse jumps to the exact file and line where the error is.</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Common beginner errors you will see here</div>
+    <p><code>cannot be resolved to a type</code> &mdash; you forgot to import a class. Fix: <strong>Ctrl+Shift+O</strong>.<br>
+    <code>Syntax error on token</code> &mdash; you forgot a semicolon, brace, or parenthesis.<br>
+    <code>The method X is undefined</code> &mdash; you misspelled a method name or called it on the wrong object.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Keyboard Shortcuts                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="keyboard-shortcuts">
+  <div class="section-tag">Section 08</div>
+  <h2>Keyboard Shortcuts</h2>
+  <p class="section-desc">Memorize these. They will save you hours.</p>
+
+  <div class="callout important">
+    <div class="callout-title">The shortcuts you will use every single day</div>
+    <table class="info-table">
+      <thead>
+        <tr><th>Shortcut</th><th>What it does</th><th>When to use</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Ctrl+S</code></td>
+          <td>Save the current file</td>
+          <td>After every change. Eclipse <strong>auto-compiles</strong> when you save &mdash; so saving also checks for errors.</td>
+        </tr>
+        <tr>
+          <td><code>Ctrl+Shift+O</code></td>
+          <td>Auto-import missing classes</td>
+          <td>When you use a class like <code>ArrayList</code> and Eclipse shows "cannot be resolved." Press this and Eclipse adds the import line at the top. <strong>You will use this constantly.</strong></td>
+        </tr>
+        <tr>
+          <td><code>Alt+F5</code></td>
+          <td>Maven Update Project</td>
+          <td>After adding a new dependency to <code>pom.xml</code>. Tells Maven to re-download and update everything.</td>
+        </tr>
+        <tr>
+          <td><code>Ctrl+F11</code></td>
+          <td>Run the current file</td>
+          <td>To execute your program and see output in the Console.</td>
+        </tr>
+        <tr>
+          <td><code>Ctrl+Space</code></td>
+          <td>Autocomplete</td>
+          <td>Start typing a class or method name, press this, and Eclipse shows suggestions. Like IntelliSense in VS Code.</td>
+        </tr>
+        <tr>
+          <td><code>Ctrl+Shift+F</code></td>
+          <td>Auto-format / indent code</td>
+          <td>If your code looks messy, select it all and press this. Eclipse fixes the indentation and spacing.</td>
+        </tr>
+        <tr>
+          <td><code>Ctrl+Z</code></td>
+          <td>Undo</td>
+          <td>Same as everywhere else. Undo the last change.</td>
+        </tr>
+        <tr>
+          <td><code>F5</code></td>
+          <td>Refresh Package Explorer</td>
+          <td>If you added/deleted files outside Eclipse (e.g., from File Explorer), press F5 so Eclipse sees the changes.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Create Your First Maven Project                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="create-maven-project">
+  <div class="section-tag">Section 09</div>
+  <h2>Create Your First Maven Project</h2>
+  <p class="section-desc">Time to create the Nimbus backend project inside Eclipse. Follow each step exactly.</p>
+
+  <ol class="steps">
+    <li>In Eclipse, go to <strong>File &rarr; New &rarr; Maven Project</strong></li>
+    <li>Check <strong>"Create a simple project (skip archetype selection)"</strong> and click <strong>Next</strong></li>
+    <li>Fill in the form:
+      <ul>
+        <li><strong>Group ID:</strong> <code>com.nimbus</code></li>
+        <li><strong>Artifact ID:</strong> <code>nimbus-backend</code></li>
+        <li><strong>Packaging:</strong> <code>war</code></li>
+      </ul>
+    </li>
+    <li>Click <strong>Finish</strong></li>
+  </ol>
+
+  <div class="callout think">
+    <div class="callout-title">What is an "archetype"?</div>
+    <p>An archetype is a project template. Maven has templates for different project types (web app, console app, library, etc.). We skip it because we are building our structure from scratch &mdash; it is easier to understand when you create every folder yourself.</p>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">What do Group ID and Artifact ID mean?</div>
+    <p><strong>Group ID</strong> is like your organization name, written in reverse domain format. <code>com.nimbus</code> means "Nimbus project." If you worked at Google, it would be <code>com.google</code>.<br><br>
+    <strong>Artifact ID</strong> is your project name. <code>nimbus-backend</code> tells anyone looking at the project that this is the backend part of Nimbus.<br><br>
+    <strong>Packaging: war</strong> means Web Application Archive. This tells Maven that your project is a web application (needed for servlets and JSP in Phase 3).</p>
+  </div>
+
+  <h3>What Maven just created</h3>
+  <p>After clicking Finish, look in Package Explorer. Maven created this folder structure for you:</p>
+
+  <div class="diagram">
+    <pre>
+nimbus-backend/
+  pom.xml              &larr; Project config (your dependencies go here)
+  src/
+    main/
+      java/             &larr; Your Java code goes here
+      resources/        &larr; Config files (may need to create)
+      webapp/           &larr; Web files like JSP pages
+    test/
+      java/             &larr; Tests (skip for now)
+    </pre>
+    <div class="diagram-label">The default Maven project structure</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: What is Maven?                                    -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-maven">
+  <div class="section-tag">Section 10</div>
+  <h2>What is Maven?</h2>
+  <p class="section-desc">Maven is the tool that manages your project's libraries. Think of it as "npm for Java."</p>
+
+  <p>You already know this pattern from JavaScript:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">JavaScript (npm)</div>
+      <div class="comparison-body">
+        <ol>
+          <li>Run <code>npm install express</code></li>
+          <li><code>package.json</code> lists your dependencies</li>
+          <li><code>node_modules/</code> has the actual library files</li>
+        </ol>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Java (Maven)</div>
+      <div class="comparison-body">
+        <ol>
+          <li>Add a dependency to <code>pom.xml</code></li>
+          <li><code>pom.xml</code> lists your dependencies</li>
+          <li>"Maven Dependencies" folder has the actual .jar files</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <p>That is literally it. You list what you need in <code>pom.xml</code>, Maven downloads it. When you need a new library (like a database driver, or Spring Boot), you add a few lines to <code>pom.xml</code> and press <strong>Alt+F5</strong> (Maven Update). Maven handles the rest.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Maven is like a personal shopper. You write a grocery list (<code>pom.xml</code>) with items like "MySQL driver version 8.0" and "Spring Boot version 3.2". Maven goes to the store (the internet), downloads exactly those items, and puts them in your pantry (the Maven Dependencies folder). You never manually download .jar files.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: What is pom.xml?                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-pom">
+  <div class="section-tag">Section 11</div>
+  <h2>What is pom.xml?</h2>
+  <p class="section-desc">POM stands for Project Object Model. It is your project's config file &mdash; like package.json.</p>
+
+  <p>The <code>pom.xml</code> file is the single most important file in a Maven project. It tells Maven three things:</p>
+
+  <ol>
+    <li><strong>Who is this project?</strong> (Group ID, Artifact ID, version)</li>
+    <li><strong>What libraries does it need?</strong> (dependencies)</li>
+    <li><strong>How should it be built?</strong> (plugins, packaging type)</li>
+  </ol>
+
+  <p>Here is what the pom.xml looks like right now after creating the project:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+  &lt;artifactId&gt;nimbus-backend&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+
+  &lt;dependencies&gt;
+    &lt;!-- Libraries you need go here --&gt;
+    &lt;!-- Example: In Sprint 2, you will add the MySQL driver here --&gt;
+  &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;project&gt;</div>
+        <div class="breakdown-explain">The root element. Everything about your project goes inside this tag.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</div>
+        <div class="breakdown-explain">The POM format version. Always 4.0.0. Never change this.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;groupId&gt;com.nimbus&lt;/groupId&gt;</div>
+        <div class="breakdown-explain">Your organization/project identifier. Like a domain name in reverse.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;artifactId&gt;nimbus-backend&lt;/artifactId&gt;</div>
+        <div class="breakdown-explain">Your project's name. This becomes the name of the final .war file.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;</div>
+        <div class="breakdown-explain">Project version. SNAPSHOT means "still in development." Like version 0.1.0-beta.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;packaging&gt;war&lt;/packaging&gt;</div>
+        <div class="breakdown-explain">Tells Maven to package this as a WAR (Web Application Archive) for deployment on a web server.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">&lt;dependencies&gt; ... &lt;/dependencies&gt;</div>
+        <div class="breakdown-explain">All your external libraries go between these tags. Each library is a &lt;dependency&gt; block with a groupId, artifactId, and version.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Sprint 2, you will add the MySQL JDBC driver as a dependency here. In Sprint 3, you will add servlet and JSP dependencies. In Sprint 4, Spring Boot. Each time, you add a few lines inside <code>&lt;dependencies&gt;</code> and press <strong>Alt+F5</strong>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: What are Java Packages?                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-are-packages">
+  <div class="section-tag">Section 12</div>
+  <h2>What are Java Packages?</h2>
+  <p class="section-desc">A package is literally just a folder for your Java files. That is all.</p>
+
+  <p>When you see <code>com.nimbus.model</code>, that is a package. Under the hood, it is just a folder structure:</p>
+
+  <div class="diagram">
+    <pre>
+com/
+  nimbus/
+    model/
+      User.java
+      Booking.java
+      Issue.java
+    </pre>
+    <div class="diagram-label">com.nimbus.model = a folder at com/nimbus/model/</div>
+  </div>
+
+  <p>Every Java file starts with a <code>package</code> line at the very top. This tells Java which folder the file belongs to:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;  // This file lives in com/nimbus/model/
+
+public class User {
+    // ...
+}</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">The package line MUST match the folder</div>
+    <p>If your file says <code>package com.nimbus.model;</code> but the file is sitting in <code>com/nimbus/service/</code>, Eclipse will show an error. The package declaration and the actual folder location must always match.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Why Packages?                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="why-packages">
+  <div class="section-tag">Section 13</div>
+  <h2>Why Use Packages?</h2>
+  <p class="section-desc">The same reason you organized your frontend into folders.</p>
+
+  <p>Think about your nimbus/ frontend. You did not dump every file in one folder. You organized them:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Frontend (nimbus/)</div>
+      <div class="comparison-body">
+        <pre style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.7;">
+css/style.css
+js/auth.js
+js/pricing.js
+customer/dashboard.html
+officer/dashboard.html
+support/dashboard.html</pre>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Backend (Java packages)</div>
+      <div class="comparison-body">
+        <pre style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.7;">
+com.nimbus.model/
+com.nimbus.dao/
+com.nimbus.service/
+com.nimbus.controller/
+com.nimbus.util/
+com.nimbus.console/</pre>
+      </div>
+    </div>
+  </div>
+
+  <p>Same idea. Styles in one folder, scripts in another, customer pages in their own folder. Java packages do the same thing: data classes together, database code together, business logic together.</p>
+
+  <h3>How to create a package in Eclipse</h3>
+  <ol class="steps">
+    <li>In Package Explorer, expand your project &rarr; expand <strong>src/main/java</strong></li>
+    <li>Right-click <strong>src/main/java</strong> &rarr; <strong>New</strong> &rarr; <strong>Package</strong></li>
+    <li>Type the package name (e.g., <code>com.nimbus.model</code>) &rarr; click <strong>Finish</strong></li>
+    <li>Repeat for all 11 packages listed below</li>
+  </ol>
+
+  <h3>All 11 packages for Nimbus</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Package</th><th>Purpose</th><th>When you will use it</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>com.nimbus</code></td><td>Main application class</td><td>Sprint 4 (Spring Boot entry point)</td></tr>
+      <tr><td><code>com.nimbus.model</code></td><td>Data classes (User, Booking, Issue)</td><td>Sprint 2</td></tr>
+      <tr><td><code>com.nimbus.dao</code></td><td>Raw JDBC database access</td><td>Sprint 2</td></tr>
+      <tr><td><code>com.nimbus.repository</code></td><td>Spring's smarter database access</td><td>Sprint 3+</td></tr>
+      <tr><td><code>com.nimbus.service</code></td><td>Business rules (pricing, validation)</td><td>Sprint 2</td></tr>
+      <tr><td><code>com.nimbus.servlet</code></td><td>Old-school web handlers</td><td>Sprint 3</td></tr>
+      <tr><td><code>com.nimbus.controller</code></td><td>Modern REST API handlers</td><td>Sprint 4</td></tr>
+      <tr><td><code>com.nimbus.config</code></td><td>App configuration</td><td>Sprint 3+</td></tr>
+      <tr><td><code>com.nimbus.dto</code></td><td>API request/response shapes</td><td>Sprint 4</td></tr>
+      <tr><td><code>com.nimbus.util</code></td><td>Helper utilities (ID generator, pricing calculator)</td><td>Sprint 2</td></tr>
+      <tr><td><code>com.nimbus.console</code></td><td>Console menu app</td><td>Sprint 2</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>You do not need to create all 11 packages right now. Start with the ones you will use in Sprint 2: <code>com.nimbus.model</code>, <code>com.nimbus.dao</code>, <code>com.nimbus.service</code>, <code>com.nimbus.util</code>, and <code>com.nimbus.console</code>. Create the rest when you need them in later sprints.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: Folder Structure                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="folder-structure">
+  <div class="section-tag">Section 14</div>
+  <h2>Complete Folder Structure</h2>
+  <p class="section-desc">Here is everything your project will look like after setup. Create the resource folders now.</p>
+
+  <h3>Create resource folders</h3>
+  <ol class="steps">
+    <li>If <code>src/main/resources</code> does not exist: Right-click <strong>src/main</strong> &rarr; <strong>New</strong> &rarr; <strong>Folder</strong> &rarr; type <code>resources</code></li>
+    <li>Inside <code>resources</code>: Right-click &rarr; <strong>New</strong> &rarr; <strong>Folder</strong> &rarr; type <code>static</code> (this is where your frontend files will go)</li>
+    <li>If <code>src/main/webapp</code> does not exist: Right-click <strong>src/main</strong> &rarr; <strong>New</strong> &rarr; <strong>Folder</strong> &rarr; type <code>webapp</code></li>
+    <li>Inside <code>webapp</code>: Right-click &rarr; <strong>New</strong> &rarr; <strong>Folder</strong> &rarr; type <code>WEB-INF</code></li>
+    <li>Inside <code>WEB-INF</code>: Right-click &rarr; <strong>New</strong> &rarr; <strong>Folder</strong> &rarr; type <code>jsp</code></li>
+  </ol>
+
+  <h3>The complete project structure</h3>
+
+  <div class="diagram">
+    <pre>
+nimbus-backend/
+  pom.xml
+  src/main/
+    java/com/nimbus/
+      model/              &larr; User.java, Booking.java, Issue.java
+      dao/                &larr; UserDAO.java, BookingDAO.java, IssueDAO.java
+      repository/         &larr; UserRepository.java, etc.
+      service/            &larr; UserService.java, etc.
+      servlet/            &larr; LoginServlet.java, etc.
+      controller/         &larr; AuthController.java, etc.
+      config/             &larr; CorsConfig.java, etc.
+      dto/                &larr; LoginRequest.java, etc.
+      util/               &larr; IdGenerator.java, etc.
+      console/            &larr; ConsoleApp.java, ConsoleMenu.java
+      NimbusApplication.java
+    resources/
+      application.properties
+      schema.sql
+      data.sql
+      static/             &larr; Copy nimbus/ frontend here
+    webapp/WEB-INF/jsp/
+      login.jsp
+      register.jsp
+      etc.
+    </pre>
+    <div class="diagram-label">The complete Nimbus backend structure &mdash; each folder has a clear purpose</div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why so many folders?</div>
+    <p>It looks like a lot, but each folder has <strong>one job</strong>. <code>model/</code> holds data shapes. <code>dao/</code> talks to the database. <code>service/</code> contains business rules. This separation is called <strong>layered architecture</strong> &mdash; it keeps your code organized as the project grows. You will not put files in all these folders right away. Sprint 2 only uses <code>model/</code>, <code>dao/</code>, <code>service/</code>, <code>util/</code>, and <code>console/</code>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 15: Copy Frontend Files                               -->
+<!-- ============================================================ -->
+<section class="content-section" id="copy-frontend">
+  <div class="section-tag">Section 15</div>
+  <h2>Copy nimbus/ Files</h2>
+  <p class="section-desc">Your Phase 1 frontend is ready to move into the Eclipse project.</p>
+
+  <p>Remember the <code>nimbus/</code> folder you built in Phase 1? It has all your HTML, CSS, and JS files &mdash; login.html, register.html, the customer/, officer/, and support/ dashboards. Now you will copy them into the Eclipse project so everything lives in one place.</p>
+
+  <ol class="steps">
+    <li>Open <strong>File Explorer</strong> (Windows) or <strong>Finder</strong> (Mac)</li>
+    <li>Navigate to your <code>nimbus/</code> folder &mdash; the one with <code>login.html</code>, <code>register.html</code>, <code>customer/</code>, <code>officer/</code>, <code>support/</code>, <code>css/</code>, <code>js/</code></li>
+    <li>Select <strong>ALL files and folders</strong> inside <code>nimbus/</code> (Ctrl+A)</li>
+    <li>Copy them (Ctrl+C)</li>
+    <li>Navigate to your Eclipse project folder: <code>nimbus-backend/src/main/resources/static/</code></li>
+    <li>Paste everything here (Ctrl+V)</li>
+    <li>Go back to Eclipse and press <strong>F5</strong> to refresh Package Explorer &mdash; you should see all the files appear under <code>src/main/resources/static/</code></li>
+  </ol>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 16: Static Folder                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="static-folder">
+  <div class="section-tag">Section 16</div>
+  <h2>The static/ Folder</h2>
+  <p class="section-desc">Why <code>static/</code>? Because Spring Boot serves files from this folder automatically.</p>
+
+  <p>In Phase 3 and 4, when you run your backend server (Spring Boot), it will automatically look inside <code>src/main/resources/static/</code> and serve any file there as a web page. No configuration needed.</p>
+
+  <p>So if you have:</p>
+
+  <div class="diagram">
+    <pre>
+static/
+  login.html
+  register.html
+  customer/
+    dashboard.html
+  css/
+    style.css
+  js/
+    auth.js
+    </pre>
+    <div class="diagram-label">Files inside static/ are served as web pages</div>
+  </div>
+
+  <p>Then when your server runs at <code>http://localhost:8080</code>, you can access:</p>
+
+  <ul>
+    <li><code>http://localhost:8080/login.html</code></li>
+    <li><code>http://localhost:8080/register.html</code></li>
+    <li><code>http://localhost:8080/customer/dashboard.html</code></li>
+  </ul>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of the <code>static/</code> folder as the "public" folder in a Node.js/Express project. Any file you put in there is accessible via a URL. HTML, CSS, JS, images &mdash; anything.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 17: Run Frontend from Eclipse                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="run-frontend">
+  <div class="section-tag">Section 17</div>
+  <h2>Run Frontend from Eclipse</h2>
+  <p class="section-desc">You will not run the frontend from Eclipse just yet &mdash; here is why.</p>
+
+  <p>Right now, your frontend uses <strong>LocalStorage</strong> to store data. It does not need a server &mdash; you can just open the HTML files in a browser directly (like you have been doing).</p>
+
+  <p>The frontend will start running through Eclipse <strong>in Phase 3</strong>, when you set up a Tomcat server or Spring Boot. At that point, your backend Java code will replace LocalStorage with a real database, and the frontend will talk to the backend through API calls.</p>
+
+  <p>For now, keep opening your HTML files directly in the browser. The files are in the Eclipse project for organization &mdash; they do not need to run through Eclipse yet.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p><strong>Sprint 2:</strong> You build a console-based Java app. The frontend stays unchanged.<br>
+    <strong>Sprint 3:</strong> You replace LocalStorage with servlets + database. The frontend starts running through the server.<br>
+    <strong>Sprint 4:</strong> The frontend talks to REST APIs. Full stack.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 18: What's Next                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="whats-next">
+  <div class="section-tag">Section 18</div>
+  <h2>What's Next</h2>
+  <p class="section-desc">Your Eclipse project is set up. The folder structure is ready.</p>
+
+  <p>Here is what you accomplished:</p>
+  <ul>
+    <li>Installed Eclipse (Enterprise edition)</li>
+    <li>Learned the four main panels: Package Explorer, Editor, Console, Problems</li>
+    <li>Created a Maven project with Group ID <code>com.nimbus</code> and Artifact ID <code>nimbus-backend</code></li>
+    <li>Understood what Maven and pom.xml do (dependency management)</li>
+    <li>Learned what Java packages are (organized folders for your code)</li>
+    <li>Created the complete folder structure with all resource folders</li>
+    <li>Moved your Phase 1 frontend into the project</li>
+  </ul>
+
+  <p>In <strong>Sprint 2</strong>, you will start writing actual Java code &mdash; beginning with the data models (<code>User</code>, <code>Booking</code>, <code>Issue</code>) and building a console app that connects to a database.</p>
+
+  <!-- Topic Navigation -->
+  <div class="topic-nav">
+    <a href="../backend-overview.html">
+      <span class="nav-label">&larr; Previous</span>
+      <span class="nav-title">Backend Overview</span>
+    </a>
+    <a href="sprint2-guide.html" class="next">
+      <span class="nav-label">Next &rarr;</span>
+      <span class="nav-title">Sprint 2 Guide</span>
+    </a>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="../topics/shared.js"></script>
+</body>
+</html>

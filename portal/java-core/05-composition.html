@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Composition | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Concepts</div>
+    <a href="02-class-blueprint.html" class="sidebar-link"><span class="num">02</span> Class Blueprint</a>
+    <a href="03-static-vs-nonstatic.html" class="sidebar-link"><span class="num">03</span> Static vs Non-Static</a>
+    <a href="04-collections-pra.html" class="sidebar-link"><span class="num">04</span> Collections for PRA</a>
+    <a href="05-composition.html" class="sidebar-link active"><span class="num">05</span> Composition</a>
+    <a href="06-collection-methods.html" class="sidebar-link"><span class="num">06</span> Collection Methods</a>
+    <a href="07-custom-exceptions.html" class="sidebar-link"><span class="num">07</span> Custom Exceptions</a>
+    <a href="08-scanner-input.html" class="sidebar-link"><span class="num">08</span> Scanner Input</a>
+    <a href="09-string-operations.html" class="sidebar-link"><span class="num">09</span> String Operations</a>
+    <a href="10-putting-it-together.html" class="sidebar-link"><span class="num">10</span> Putting It Together</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Mock Solutions</div>
+    <a href="mock1-q1.html" class="sidebar-link"><span class="num">M1</span> Investors</a>
+    <a href="mock1-q2.html" class="sidebar-link"><span class="num">M2</span> OddEven Exception</a>
+    <a href="mock2-q1.html" class="sidebar-link"><span class="num">M3</span> CountryLeague</a>
+    <a href="mock2-q2.html" class="sidebar-link"><span class="num">M4</span> Sum of Digits</a>
+    <a href="mock3-q1.html" class="sidebar-link"><span class="num">M5</span> Author-Book</a>
+    <a href="mock3-q2.html" class="sidebar-link"><span class="num">M6</span> Area-Perimeter</a>
+    <a href="mock4-q1.html" class="sidebar-link"><span class="num">M7</span> Mobile Brand</a>
+    <a href="mock4-q2.html" class="sidebar-link"><span class="num">M8</span> Consecutive Vowels</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Practice</div>
+    <a href="practice-ide.html" class="sidebar-link"><span class="num">&#9000;</span> Practice IDE</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ==================== SECTION 1: WHAT IS COMPOSITION ==================== -->
+  <section class="content-section" id="what-is-composition">
+    <div class="section-tag">Section 01</div>
+    <h2>What is Composition?</h2>
+    <p class="section-desc">Composition is when one class HAS another class as a field. It is one of the most important OOP concepts in PRA — about 50% of PRA Major questions use it.</p>
+
+    <h3>Two Types in PRA</h3>
+    <p>PRA uses two forms of composition. Knowing which one you are dealing with changes how you write the Scanner input and the method logic:</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Simple Composition</div>
+        <div class="comparison-body">
+          <p><strong>One object inside another.</strong></p>
+          <p>Example: A <code>Book</code> HAS one <code>Author</code></p>
+          <p>Field: <code>private Author author;</code></p>
+          <p>Access: <code>book.getAuthor().getAuthorName()</code></p>
+          <p>Mock: Mock 3 Q1 (Author-Book)</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">List Composition</div>
+        <div class="comparison-body">
+          <p><strong>A list of objects inside another.</strong></p>
+          <p>Example: A <code>Cricketer</code> HAS many <code>Statistics</code></p>
+          <p>Field: <code>private List&lt;Statistics&gt; statistics;</code></p>
+          <p>Access: Loop through <code>cricketer.getStatistics()</code></p>
+          <p>Mock: Mock 2 Q1 (Cricketer-Statistics)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy — Composition vs Inheritance</div>
+      <p>A car <strong>HAS</strong> an engine. That is composition — the engine is a PART of the car. You do not say a car IS an engine (that would be inheritance).</p>
+      <p>Similarly, a Book <strong>HAS</strong> an Author. The Author is a part of the Book's data. A Cricketer <strong>HAS</strong> Statistics (possibly many of them). The Statistics are data that belong to that Cricketer.</p>
+      <p><strong>Inheritance = IS-A relationship</strong> (a Cat IS an Animal)<br>
+      <strong>Composition = HAS-A relationship</strong> (a Car HAS an Engine)</p>
+    </div>
+
+    <h3>How to Spot Composition in a PRA Question</h3>
+    <p>Look for these signals:</p>
+    <ul>
+      <li>The question describes <strong>two separate classes</strong> with their own fields</li>
+      <li>One class has a field whose type is the <strong>other class</strong></li>
+      <li>The question says something like "Book contains Author information" or "Each Cricketer has a list of Statistics"</li>
+      <li>The input format shows <strong>nested data</strong> — some fields belong to the inner class</li>
+    </ul>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Reading Tip</div>
+      <p>When you see two classes in the question, immediately ask: "Does one class contain the other?" If yes, that is composition. Then ask: "Is it ONE object or a LIST of objects?" That tells you simple vs list composition.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: SIMPLE COMPOSITION ==================== -->
+  <section class="content-section" id="simple-composition">
+    <div class="section-tag">Section 02</div>
+    <h2>Simple Composition — Author Inside Book</h2>
+    <p class="section-desc">This is the easier form. One object contains exactly one instance of another object. From Mock 3 Q1.</p>
+
+    <h3>The Classes</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Author.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Author {
+    private int authorId;
+    private String authorName;
+
+    public Author(int authorId, String authorName) {
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
+
+    public int getAuthorId() { return authorId; }
+    public void setAuthorId(int authorId) { this.authorId = authorId; }
+
+    public String getAuthorName() { return authorName; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Book.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Book {
+    private int bookId;
+    private String title;
+    private String genre;
+    private double price;
+    private Author author;  // &lt;-- COMPOSITION: Book HAS an Author
+
+    public Book(int bookId, String title, String genre, double price, Author author) {
+        this.bookId = bookId;
+        this.title = title;
+        this.genre = genre;
+        this.price = price;
+        this.author = author;
+    }
+
+    public int getBookId() { return bookId; }
+    public void setBookId(int bookId) { this.bookId = bookId; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+
+    public Author getAuthor() { return author; }
+    public void setAuthor(Author author) { this.author = author; }
+}</code></pre>
+    </div>
+
+    <h3>Visual: How the Objects Fit Together</h3>
+
+    <div class="diagram">
+      <pre>
+┌────────────────────── Book Object ──────────────────────┐
+│  bookId: 101                                            │
+│  title: "The Great Gatsby"                              │
+│  genre: "Fiction"                                       │
+│  price: 450.0                                           │
+│  author: ┌────────── Author Object ──────────┐          │
+│          │  authorId: 1                      │          │
+│          │  authorName: "F. Scott Fitzgerald" │          │
+│          └───────────────────────────────────┘          │
+└─────────────────────────────────────────────────────────┘
+
+To get the author's name from a book object:
+book.getAuthor()                → returns the Author object
+book.getAuthor().getAuthorName() → returns "F. Scott Fitzgerald"
+      </pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: LIST COMPOSITION ==================== -->
+  <section class="content-section" id="list-composition">
+    <div class="section-tag">Section 03</div>
+    <h2>List Composition — Statistics Inside Cricketer</h2>
+    <p class="section-desc">This is the harder form. One object contains a LIST of other objects. More complex to read from Scanner and more complex to process. From Mock 2 Q1.</p>
+
+    <h3>The Classes</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Statistics.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Statistics {
+    private int Rank;
+    private String LeagueName;
+    private double PerformanceAverage;
+    private String CountryName;
+
+    public Statistics(int Rank, String LeagueName, double PerformanceAverage,
+                      String CountryName) {
+        this.Rank = Rank;
+        this.LeagueName = LeagueName;
+        this.PerformanceAverage = PerformanceAverage;
+        this.CountryName = CountryName;
+    }
+
+    public int getRank() { return Rank; }
+    public void setRank(int Rank) { this.Rank = Rank; }
+
+    public String getLeagueName() { return LeagueName; }
+    public void setLeagueName(String LeagueName) { this.LeagueName = LeagueName; }
+
+    public double getPerformanceAverage() { return PerformanceAverage; }
+    public void setPerformanceAverage(double PerformanceAverage) { this.PerformanceAverage = PerformanceAverage; }
+
+    public String getCountryName() { return CountryName; }
+    public void setCountryName(String CountryName) { this.CountryName = CountryName; }
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Cricketer.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">class Cricketer {
+    private int CricketerId;
+    private String CricketerName;
+    private int CricketerAge;
+    private String CricketerGender;
+    private List&lt;Statistics&gt; statistics;  // &lt;-- LIST COMPOSITION
+
+    public Cricketer(int CricketerId, String CricketerName, int CricketerAge,
+                     String CricketerGender, List&lt;Statistics&gt; statistics) {
+        this.CricketerId = CricketerId;
+        this.CricketerName = CricketerName;
+        this.CricketerAge = CricketerAge;
+        this.CricketerGender = CricketerGender;
+        this.statistics = statistics;
+    }
+
+    public int getCricketerId() { return CricketerId; }
+    public void setCricketerId(int CricketerId) { this.CricketerId = CricketerId; }
+
+    public String getCricketerName() { return CricketerName; }
+    public void setCricketerName(String CricketerName) { this.CricketerName = CricketerName; }
+
+    public int getCricketerAge() { return CricketerAge; }
+    public void setCricketerAge(int CricketerAge) { this.CricketerAge = CricketerAge; }
+
+    public String getCricketerGender() { return CricketerGender; }
+    public void setCricketerGender(String CricketerGender) { this.CricketerGender = CricketerGender; }
+
+    public List&lt;Statistics&gt; getStatistics() { return statistics; }
+    public void setStatistics(List&lt;Statistics&gt; statistics) { this.statistics = statistics; }
+}</code></pre>
+    </div>
+
+    <h3>Visual: How List Composition Looks</h3>
+
+    <div class="diagram">
+      <pre>
+┌────────────────────── Cricketer Object ──────────────────────┐
+│  CricketerId: 201                                            │
+│  CricketerName: "Virat"                                      │
+│  CricketerAge: 35                                            │
+│  CricketerGender: "Male"                                     │
+│  statistics: [                                               │
+│    ┌──── Statistics #1 ────┐  ┌──── Statistics #2 ────┐      │
+│    │ Rank: 1               │  │ Rank: 3               │      │
+│    │ LeagueName: "IPL"     │  │ LeagueName: "BBL"     │      │
+│    │ PerfAvg: 52.7         │  │ PerfAvg: 41.2         │      │
+│    │ Country: "India"      │  │ Country: "Australia"   │      │
+│    └───────────────────────┘  └───────────────────────┘      │
+│  ]                                                           │
+└──────────────────────────────────────────────────────────────┘
+      </pre>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: READING COMPOSED OBJECTS FROM SCANNER ==================== -->
+  <section class="content-section" id="reading-scanner">
+    <div class="section-tag">Section 04</div>
+    <h2>Reading Composed Objects from Scanner</h2>
+    <p class="section-desc">This is the tricky part of composition. The input format has nested data, and you must read it in the correct order. One wrong <code>nextLine()</code> and everything shifts.</p>
+
+    <h3>Simple Composition — Author-Book Input</h3>
+    <p>Input format: For each book, the Author fields come first, then the Book fields.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ReadAuthorBook.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+int n = sc.nextInt(); // number of books
+ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; n; i++) {
+    // ===== Read Author fields FIRST =====
+    int authorId = sc.nextInt();
+    sc.nextLine(); // consume newline after nextInt
+    String authorName = sc.nextLine();
+
+    // ===== Read Book fields =====
+    int bookId = sc.nextInt();
+    sc.nextLine(); // consume newline after nextInt
+    String title = sc.nextLine();
+    String genre = sc.nextLine();
+    double price = sc.nextDouble();
+
+    // ===== Create Author object, then Book with Author inside =====
+    Author author = new Author(authorId, authorName);
+    Book book = new Book(bookId, title, genre, price, author);
+    books.add(book);
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">Step-by-step for Author-Book input</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Read Author fields first</div>
+          <div class="breakdown-explain">The question's input format tells you which fields come first. In this case, authorId and authorName are read BEFORE bookId.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Create Author author = new Author(authorId, authorName);</div>
+          <div class="breakdown-explain">Create the INNER object first. You need this object to pass into the Book constructor.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Book book = new Book(bookId, title, genre, price, author);</div>
+          <div class="breakdown-explain">Create the OUTER object, passing the Author as the last parameter. The Book now "contains" the Author.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Warning — Read the Input Format Carefully</div>
+      <p>Different PRA questions may order the fields differently. Some put Author fields first, some put Book fields first. ALWAYS follow the input format in the question, not what "makes sense" to you.</p>
+    </div>
+
+    <h3>List Composition — Cricketer-Statistics Input (Nested Loop)</h3>
+    <p>This is more complex because each Cricketer has a VARIABLE number of Statistics. You need a <strong>nested loop</strong> — an outer loop for Cricketers and an inner loop for Statistics.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ReadCricketerStats.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">Scanner sc = new Scanner(System.in);
+int n = sc.nextInt(); // number of cricketers
+ArrayList&lt;Cricketer&gt; cricketers = new ArrayList&lt;&gt;();
+
+for (int i = 0; i &lt; n; i++) {
+    // ===== Read Cricketer's own fields =====
+    int id = sc.nextInt();
+    sc.nextLine(); // consume newline
+    String name = sc.nextLine();
+    int age = sc.nextInt();
+    sc.nextLine(); // consume newline
+    String gender = sc.nextLine();
+
+    // ===== Read how many Statistics this cricketer has =====
+    int numStats = sc.nextInt();
+
+    // ===== INNER LOOP: read each Statistics object =====
+    List&lt;Statistics&gt; statsList = new ArrayList&lt;&gt;();
+    for (int j = 0; j &lt; numStats; j++) {
+        int rank = sc.nextInt();
+        sc.nextLine(); // consume newline
+        String league = sc.nextLine();
+        double avg = sc.nextDouble();
+        sc.nextLine(); // consume newline
+        String country = sc.nextLine();
+
+        statsList.add(new Statistics(rank, league, avg, country));
+    }
+
+    // ===== Create Cricketer with the list of Statistics =====
+    Cricketer c = new Cricketer(id, name, age, gender, statsList);
+    cricketers.add(c);
+}</code></pre>
+    </div>
+
+    <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+    </button>
+    <div class="code-breakdown">
+      <div class="breakdown-header">The nested loop pattern explained</div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">1</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Outer loop: for (int i = 0; i &lt; n; i++)</div>
+          <div class="breakdown-explain">Runs once for each Cricketer. Reads the cricketer's own fields (id, name, age, gender).</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">2</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">int numStats = sc.nextInt();</div>
+          <div class="breakdown-explain">BEFORE the inner loop, read HOW MANY statistics this cricketer has. This number drives the inner loop.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">3</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">Inner loop: for (int j = 0; j &lt; numStats; j++)</div>
+          <div class="breakdown-explain">Runs once for each Statistics object. Creates Statistics and adds to a temporary list.</div>
+        </div>
+      </div>
+      <div class="breakdown-line">
+        <div class="breakdown-num">4</div>
+        <div class="breakdown-content">
+          <div class="breakdown-code">new Cricketer(id, name, age, gender, statsList)</div>
+          <div class="breakdown-explain">After the inner loop finishes, create the Cricketer with the completed statistics list. The list is now "inside" the Cricketer.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">Warning — The sc.nextLine() After sc.nextDouble()</div>
+      <p>In the inner loop, after reading <code>avg</code> with <code>sc.nextDouble()</code>, you MUST add <code>sc.nextLine()</code> before reading <code>country</code> with <code>sc.nextLine()</code>. This is the same newline trap from Page 01, but it happens more often with nested loops because there are more transitions between <code>nextInt()/nextDouble()</code> and <code>nextLine()</code>.</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: ACCESSING NESTED DATA ==================== -->
+  <section class="content-section" id="accessing-nested">
+    <div class="section-tag">Section 05</div>
+    <h2>Accessing Nested Data</h2>
+    <p class="section-desc">Once objects are composed, you need to "drill down" through getters to access the inner object's data. This is where many students get confused.</p>
+
+    <h3>Simple Composition — Chained Getters</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ChainedGetters.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// To get the author's name from a Book object:
+String authorName = book.getAuthor().getAuthorName();
+//                  │               │
+//                  │               └── Step 2: on the Author, get the name
+//                  └── Step 1: get the Author object from the Book
+
+// You can also break it into two lines (same result):
+Author author = book.getAuthor();        // Step 1: get the Author
+String name = author.getAuthorName();     // Step 2: get the name
+
+// In a loop — get author name for every book:
+for (Book book : books) {
+    System.out.println(book.getTitle() + " by " + book.getAuthor().getAuthorName());
+}</code></pre>
+    </div>
+
+    <h3>List Composition — Loop Through Inner List</h3>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">InnerListLoop.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// To find if a cricketer played in a specific league:
+// You MUST loop through their statistics list
+
+for (Cricketer cricketer : cricketers) {
+    // Get the list of statistics for THIS cricketer
+    for (Statistics stat : cricketer.getStatistics()) {
+        // Check each statistics entry
+        if (stat.getLeagueName().equalsIgnoreCase(searchLeague)) {
+            System.out.println(cricketer.getCricketerName());
+            break; // found a match, no need to check more stats
+        }
+    }
+}
+
+// To calculate total performance average for a country:
+double total = 0;
+boolean found = false;
+for (Cricketer cricketer : cricketers) {
+    for (Statistics stat : cricketer.getStatistics()) {
+        if (stat.getCountryName().equalsIgnoreCase(searchCountry)) {
+            total += stat.getPerformanceAverage();
+            found = true;
+        }
+    }
+}
+return found ? total : null;</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">The Double Loop Pattern</div>
+      <p>With list composition, you always end up with a <strong>double loop</strong>:</p>
+      <ul>
+        <li><strong>Outer loop:</strong> iterates through the main collection (cricketers)</li>
+        <li><strong>Inner loop:</strong> iterates through the nested list (statistics for each cricketer)</li>
+      </ul>
+      <p>This is the standard pattern. Every PRA method that involves list composition uses this double loop.</p>
+    </div>
+
+    <h3>Cheat Sheet — Accessing Data</h3>
+
+    <table class="info-table">
+      <tr>
+        <th>What You Want</th>
+        <th>How to Get It</th>
+        <th>Type</th>
+      </tr>
+      <tr>
+        <td>Book's own title</td>
+        <td><code>book.getTitle()</code></td>
+        <td>Simple — one getter</td>
+      </tr>
+      <tr>
+        <td>Book's author name</td>
+        <td><code>book.getAuthor().getAuthorName()</code></td>
+        <td>Chained — two getters</td>
+      </tr>
+      <tr>
+        <td>Cricketer's own name</td>
+        <td><code>cricketer.getCricketerName()</code></td>
+        <td>Simple — one getter</td>
+      </tr>
+      <tr>
+        <td>A specific stat's league</td>
+        <td><code>stat.getLeagueName()</code> (inside inner loop)</td>
+        <td>Simple — but needs inner loop first</td>
+      </tr>
+      <tr>
+        <td>All leagues a cricketer played in</td>
+        <td>Loop: <code>for (Statistics s : cricketer.getStatistics())</code></td>
+        <td>Inner loop required</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ==================== SECTION 6: COMPOSITION PATTERNS IN PRA ==================== -->
+  <section class="content-section" id="patterns-summary">
+    <div class="section-tag">Section 06</div>
+    <h2>Composition Patterns in PRA — Summary</h2>
+    <p class="section-desc">A quick reference for which mock used which composition type, so you can practice the right pattern.</p>
+
+    <table class="info-table">
+      <tr>
+        <th>Mock</th>
+        <th>Outer Class</th>
+        <th>Inner Class</th>
+        <th>Composition Type</th>
+        <th>Key Challenge</th>
+      </tr>
+      <tr>
+        <td>Mock 1 Q1</td>
+        <td>Investor</td>
+        <td>(none)</td>
+        <td>No composition</td>
+        <td>Simple filter + aggregate on flat data</td>
+      </tr>
+      <tr>
+        <td>Mock 2 Q1</td>
+        <td>Cricketer</td>
+        <td>List&lt;Statistics&gt;</td>
+        <td><strong>List Composition</strong></td>
+        <td>Nested loops, reading variable-length inner list</td>
+      </tr>
+      <tr>
+        <td>Mock 3 Q1</td>
+        <td>Book</td>
+        <td>Author</td>
+        <td><strong>Simple Composition</strong></td>
+        <td>Chained getters, reading nested object from Scanner</td>
+      </tr>
+    </table>
+
+    <div class="callout pra-tip">
+      <div class="callout-title">PRA Exam Tip</div>
+      <p>When you see two classes in the question with one being a field of the other, that is composition. Read the question carefully to determine if it is a single object (<code>Author author</code>) or a list of objects (<code>List&lt;Statistics&gt; statistics</code>). This decision affects:</p>
+      <ul>
+        <li><strong>Scanner reading:</strong> Single object = read fields sequentially. List = nested loop with count.</li>
+        <li><strong>Method logic:</strong> Single object = chained getters. List = inner loop through <code>getList()</code>.</li>
+      </ul>
+    </div>
+
+    <h3>Decision Flow</h3>
+
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">
+          Question has<br>2 classes?
+        </div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box dark">
+          No → Simple PRA<br>
+          <span class="flow-sub">(like Investor — no composition)</span>
+        </div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-box green">
+          Yes → Check field type<br>
+          <span class="flow-sub">in the outer class</span>
+        </div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box orange">
+          Field is ClassName?<br>
+          <span class="flow-sub">Simple Composition (Author-Book)</span>
+        </div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-box purple">
+          Field is List&lt;ClassName&gt;?<br>
+          <span class="flow-sub">List Composition (Cricketer-Stats)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout practice">
+      <div class="callout-title">Practice Exercise</div>
+      <p>Write the complete Scanner input code for this scenario:</p>
+      <ul>
+        <li>Class <strong>Department</strong>: <code>deptId</code> (int), <code>deptName</code> (String)</li>
+        <li>Class <strong>Employee</strong>: <code>empId</code> (int), <code>empName</code> (String), <code>salary</code> (double), <code>department</code> (Department)</li>
+      </ul>
+      <p>This is simple composition (Employee HAS a Department). Read 5 employees from Scanner input.</p>
+      <p>Then try list composition: Class <strong>Employee</strong> has <code>List&lt;Project&gt; projects</code> where <strong>Project</strong> has <code>projectName</code> (String) and <code>hoursWorked</code> (int).</p>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <div class="topic-nav">
+    <a href="04-collections-pra.html">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">Collections for PRA</span>
+    </a>
+    <a href="06-collection-methods.html" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">Collection Methods</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

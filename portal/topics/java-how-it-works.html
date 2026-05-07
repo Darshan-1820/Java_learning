@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Java Works &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link active"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is Java?                                      -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-java">
+  <div class="section-tag">Section 01</div>
+  <h2>What is Java?</h2>
+  <p class="section-desc">Java is the language you will use to build Nimbus's entire backend. Before writing a single line of it, you need to understand <strong>what it is, where it came from, and why half the world's enterprise software runs on it</strong>.</p>
+
+  <h3>A Brief History</h3>
+
+  <p>Java was created by <strong>James Gosling</strong> at Sun Microsystems in 1995. The original name was "Oak" (after a tree outside Gosling's office), but that was already trademarked, so they renamed it to Java &mdash; after the Indonesian island famous for coffee. That is why the Java logo is a coffee cup.</p>
+
+  <p>The problem Java was trying to solve: in the 1990s, if you wrote a program in C or C++, you had to compile it separately for every operating system. Write it for Windows? It will not run on Mac. Compile it for Linux? Useless on Solaris. Every time you wanted to support a new machine, you had to rewrite parts of your code.</p>
+
+  <p>Java's answer was revolutionary: <strong>"Write Once, Run Anywhere" (WORA)</strong>. Write your code once, and it runs on any machine that has a Java Virtual Machine installed &mdash; Windows, Mac, Linux, servers, ATMs, Android phones, even smart cards.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of Java like a Bollywood movie with subtitles. The movie is made once (in Hindi). But because subtitles exist for English, Tamil, Telugu, and more, people everywhere can watch it. The movie does not change &mdash; the subtitle system adapts it for each audience. Java code is the movie. The JVM is the subtitle system.</p>
+  </div>
+
+  <h3>Why Companies Use Java</h3>
+
+  <p>Java is not the "coolest" or "newest" language. So why do banks, airlines, governments, and companies like Google, Amazon, Netflix, and TCS use it everywhere?</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Reason</th><th>What It Means</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Platform Independent</strong></td><td>Same code runs on Windows servers, Linux servers, Mac dev machines &mdash; no changes needed</td></tr>
+      <tr><td><strong>Extremely Reliable</strong></td><td>Strong type system catches errors at compile time, not at 3 AM in production</td></tr>
+      <tr><td><strong>Massive Ecosystem</strong></td><td>Thousands of libraries, frameworks (Spring, Hibernate), tools (Maven, Eclipse) &mdash; you never build from scratch</td></tr>
+      <tr><td><strong>Backward Compatible</strong></td><td>Code written in Java 8 (2014) still runs on Java 21 (2023). Companies do not have to rewrite their systems every few years</td></tr>
+      <tr><td><strong>Talent Pool</strong></td><td>Millions of Java developers worldwide. Easy to hire, easy to train</td></tr>
+      <tr><td><strong>Performance</strong></td><td>JIT compilation makes Java nearly as fast as C++ for most applications</td></tr>
+      <tr><td><strong>Memory Management</strong></td><td>Garbage collector handles memory automatically &mdash; no manual <code>malloc</code>/<code>free</code> like C</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>You are building Nimbus in Java because that is what TCS projects use. The backend will use <strong>JDBC</strong> (database connections), <strong>Servlets</strong> (handling HTTP requests), and eventually <strong>Spring</strong> (enterprise framework). All of these are Java. Your team of 8 will write Java in Eclipse on Windows machines &mdash; but the same code can run on TCS's Linux servers without changing a single line. That is WORA in action.</p>
+  </div>
+
+  <h3>Java by Numbers</h3>
+
+  <ul>
+    <li><strong>3+ billion devices</strong> run Java worldwide</li>
+    <li><strong>#1 or #2</strong> on every major programming language ranking (TIOBE, Stack Overflow)</li>
+    <li><strong>35 million+</strong> Java developers globally</li>
+    <li><strong>90%</strong> of Fortune 500 companies use Java in their backend systems</li>
+    <li>Android apps (until Kotlin), banking systems, airline booking, government portals &mdash; all Java</li>
+  </ul>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: JDK vs JRE vs JVM                                  -->
+<!-- ============================================================ -->
+<section class="content-section" id="jdk-jre-jvm">
+  <div class="section-tag">Section 02</div>
+  <h2>JDK vs JRE vs JVM</h2>
+  <p class="section-desc">Three acronyms you will hear constantly. They are <strong>nested inside each other like Russian dolls</strong>. Understand this and you understand how Java is installed, compiled, and run.</p>
+
+  <h3>What Each One Does</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Component</th><th>Full Name</th><th>What It Is</th><th>Who Needs It</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>JVM</strong></td>
+        <td>Java Virtual Machine</td>
+        <td>The engine that reads bytecode and executes it on your specific OS. It is "virtual" because it pretends to be a standard machine regardless of the actual hardware.</td>
+        <td>Everyone who runs Java programs</td>
+      </tr>
+      <tr>
+        <td><strong>JRE</strong></td>
+        <td>Java Runtime Environment</td>
+        <td>JVM + core libraries (<code>java.lang</code>, <code>java.util</code>, <code>java.io</code>, etc.). Everything needed to <em>run</em> a Java program, but you cannot write or compile new programs with it.</td>
+        <td>End users running Java apps</td>
+      </tr>
+      <tr>
+        <td><strong>JDK</strong></td>
+        <td>Java Development Kit</td>
+        <td>JRE + development tools (<code>javac</code> compiler, <code>javadoc</code>, <code>jdb</code> debugger, <code>jar</code> packager). The full toolkit for <em>building</em> Java applications.</td>
+        <td>Developers (you)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>The Nesting Diagram</h3>
+
+  <p>This is the critical visual. JDK contains JRE, which contains JVM. If you install the JDK, you automatically get everything.</p>
+
+  <div class="diagram">
+    <pre>
+  +---------------------------------------------------------------+
+  |                         JDK                                    |
+  |   (Java Development Kit)                                       |
+  |                                                                |
+  |   Development Tools:                                           |
+  |   javac (compiler) | javadoc | jdb (debugger) | jar (packager) |
+  |                                                                |
+  |   +---------------------------------------------------+       |
+  |   |                     JRE                            |       |
+  |   |   (Java Runtime Environment)                       |       |
+  |   |                                                    |       |
+  |   |   Core Libraries:                                  |       |
+  |   |   java.lang | java.util | java.io | java.sql       |       |
+  |   |                                                    |       |
+  |   |   +---------------------------------------+        |       |
+  |   |   |              JVM                       |        |       |
+  |   |   |   (Java Virtual Machine)               |        |       |
+  |   |   |                                        |        |       |
+  |   |   |   Class Loader                         |        |       |
+  |   |   |   Bytecode Verifier                    |        |       |
+  |   |   |   Interpreter + JIT Compiler           |        |       |
+  |   |   |   Memory Manager + Garbage Collector   |        |       |
+  |   |   +---------------------------------------+        |       |
+  |   +---------------------------------------------------+       |
+  +---------------------------------------------------------------+
+    </pre>
+    <div class="diagram-label">JDK &supset; JRE &supset; JVM &mdash; nested like Russian dolls</div>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of it like a car factory. The <strong>JVM</strong> is the engine &mdash; it makes the car move. The <strong>JRE</strong> is the car itself &mdash; engine + wheels + seats + fuel tank. You can drive it (run programs). The <strong>JDK</strong> is the entire factory &mdash; the car plus the welding machines, paint booth, and assembly line. You need the factory to <em>build</em> new cars. If you just want to drive, the car (JRE) is enough.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Your Eclipse IDE at TCS has the <strong>JDK</strong> installed (probably JDK 8 or 11). When you click "Run" in Eclipse, it uses <code>javac</code> from the JDK to compile your <code>.java</code> files, then starts the JVM to execute them. When you type <code>javac -version</code> in the terminal, you are checking your JDK installation. When you type <code>java -version</code>, you are checking your JRE/JVM.</p>
+  </div>
+
+  <h3>Quick Check Commands</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Check if JDK is installed (compiler available)
+javac -version
+// Output: javac 17.0.2   (or whatever version you have)
+
+// Check if JRE/JVM is installed (runtime available)
+java -version
+// Output: java version "17.0.2" ...</code></pre>
+  </div>
+
+  <p>If <code>javac -version</code> works, you have the JDK. If only <code>java -version</code> works, you only have the JRE &mdash; you can run programs but not compile them.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: The Compilation Process                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="compilation">
+  <div class="section-tag">Section 03</div>
+  <h2>The Compilation Process</h2>
+  <p class="section-desc">When you click "Run" in Eclipse, a multi-step process happens. Understanding this process is the difference between <strong>blindly pressing buttons and knowing what your tools actually do</strong>.</p>
+
+  <h3>The Full Pipeline</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>Hello.java</strong>
+        <span class="flow-sub">Source Code (human-readable)</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">
+        <strong>javac</strong>
+        <span class="flow-sub">Java Compiler</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">
+        <strong>Hello.class</strong>
+        <span class="flow-sub">Bytecode (intermediate)</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">
+        <strong>JVM</strong>
+        <span class="flow-sub">Executes on your OS</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">
+        <strong>Output</strong>
+        <span class="flow-sub">Hello, World!</span>
+      </div>
+    </div>
+    <div class="flow-label">The complete journey of a Java program from source to output</div>
+  </div>
+
+  <h3>Step-by-Step</h3>
+
+  <ol class="steps">
+    <li><strong>You write source code</strong> &mdash; a <code>.java</code> file containing human-readable Java code. This is what you type in Eclipse. The file name must match the class name exactly: <code>Hello.java</code> for <code>public class Hello</code>.</li>
+    <li><strong>The compiler (<code>javac</code>) compiles it</strong> &mdash; the Java compiler reads your <code>.java</code> file, checks for syntax errors, type errors, and other problems. If everything is valid, it produces a <code>.class</code> file containing <strong>bytecode</strong>.</li>
+    <li><strong>Bytecode is generated</strong> &mdash; the <code>.class</code> file contains bytecode, which is neither human-readable source code nor machine-specific binary. It is an <em>intermediate</em> format that any JVM on any operating system can understand.</li>
+    <li><strong>The JVM executes the bytecode</strong> &mdash; when you run the program, the JVM loads the <code>.class</code> file, verifies it is safe, and executes the bytecode instructions. The JVM translates bytecode into native machine code for your specific CPU and OS.</li>
+    <li><strong>You see the output</strong> &mdash; <code>System.out.println()</code> writes text to the console. Your program has completed its journey from text file to running software.</li>
+  </ol>
+
+  <h3>What is Bytecode?</h3>
+
+  <p>Bytecode is the key to everything. It sits between two extremes:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Source Code (.java)</div>
+      <div class="comparison-body">
+        <p>Human-readable. You write it. Contains keywords like <code>public</code>, <code>class</code>, <code>if</code>, <code>for</code>.</p>
+        <p>Cannot be executed directly &mdash; the computer does not understand English-like syntax.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Machine Code (.exe)</div>
+      <div class="comparison-body">
+        <p>CPU-readable. Pure binary (0s and 1s). Different for every OS and processor.</p>
+        <p>A Windows <code>.exe</code> will not run on Mac or Linux. It is locked to one platform.</p>
+      </div>
+    </div>
+  </div>
+
+  <p><strong>Bytecode (.class)</strong> is in the middle. It is not human-readable and it is not machine-specific. It is a compact, standardized set of instructions that any JVM can interpret. Think of it as a "universal instruction set" that the JVM translates to the right machine code at runtime.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Viewing bytecode (you will never need to write this)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Your source code:
+System.out.println("Hello");
+
+// What the compiler turns it into (bytecode, shown with javap -c):
+// getstatic     #2    // Field java/lang/System.out:Ljava/io/PrintStream;
+// ldc           #3    // String Hello
+// invokevirtual #4    // Method java/io/PrintStream.println:(Ljava/lang/String;)V</code></pre>
+  </div>
+
+  <p>You will never write bytecode. But knowing it exists explains <em>why</em> Java is platform-independent and <em>why</em> you need to compile before running.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When you save a <code>.java</code> file in Eclipse, it <strong>automatically compiles</strong> it (Eclipse has "Build Automatically" on by default). The <code>.class</code> files go into a <code>bin/</code> folder inside your project. If you see a red X on a file in Eclipse, that means <code>javac</code> found errors and could not produce the <code>.class</code> file. No <code>.class</code> file = you cannot run the program.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Why Bytecode Matters — Platform Independence       -->
+<!-- ============================================================ -->
+<section class="content-section" id="platform-independence">
+  <div class="section-tag">Section 04</div>
+  <h2>Why Bytecode Matters</h2>
+  <p class="section-desc">This is where Java's superpower becomes clear. The <strong>same <code>.class</code> file</strong> runs on any operating system, because each OS has its own JVM that knows how to translate bytecode into that OS's native instructions.</p>
+
+  <h3>The Platform Independence Model</h3>
+
+  <div class="diagram">
+    <pre>
+                         You write ONCE
+                              |
+                              v
+                      +---------------+
+                      |  Hello.java   |
+                      |  (source)     |
+                      +-------+-------+
+                              |
+                         javac compiles
+                              |
+                              v
+                      +---------------+
+                      |  Hello.class  |
+                      |  (bytecode)   |
+                      +-------+-------+
+                              |
+            +-----------------+-----------------+
+            |                 |                 |
+            v                 v                 v
+    +-------+-------+ +------+-------+ +-------+-------+
+    | Windows JVM   | | macOS JVM    | | Linux JVM     |
+    | translates to | | translates to| | translates to |
+    | Windows       | | macOS        | | Linux         |
+    | machine code  | | machine code | | machine code  |
+    +---------------+ +--------------+ +---------------+
+            |                 |                 |
+            v                 v                 v
+      Same output       Same output       Same output
+      "Hello!"          "Hello!"          "Hello!"
+    </pre>
+    <div class="diagram-label">One .class file, three operating systems, identical results &mdash; Write Once, Run Anywhere</div>
+  </div>
+
+  <h3>Contrast with C/C++</h3>
+
+  <p>In C or C++, the compiler produces <strong>native machine code directly</strong>. That machine code only works on the specific OS + CPU combination it was compiled for. If you want to support 3 platforms, you compile 3 times and potentially change platform-specific code.</p>
+
+  <p>In Java, you compile once to bytecode. The JVM on each platform handles the translation. You ship one <code>.class</code> file (or a <code>.jar</code> package of many <code>.class</code> files), and it works everywhere a JVM exists.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Imagine you wrote a recipe in a universal language that no human speaks directly. In India, a Hindi translator reads it and cooks the dish. In Japan, a Japanese translator reads the same recipe and cooks the same dish. In Brazil, a Portuguese translator does the same. The recipe never changes &mdash; only the translator is different for each country. Your <code>.class</code> file is the recipe. The JVM is the translator.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Reality Check</div>
+    <p>"Write Once, Run Anywhere" is <em>mostly</em> true, but not 100%. If your code uses OS-specific features (like Windows file paths with backslashes, or Linux-only system calls), it might behave differently across platforms. But for standard Java &mdash; which is what Nimbus uses &mdash; WORA works perfectly.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: JVM Internals (Simplified)                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="jvm-internals">
+  <div class="section-tag">Section 05</div>
+  <h2>JVM Internals (Simplified)</h2>
+  <p class="section-desc">The JVM is not a simple box that "just runs code." It has several components working together. You do not need to memorize all of this &mdash; but understanding the major parts will help you debug issues and write better code.</p>
+
+  <h3>What Happens When You Run <code>java Hello</code></h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>Class Loader</strong>
+        <span class="flow-sub">Finds &amp; loads .class files</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">
+        <strong>Bytecode Verifier</strong>
+        <span class="flow-sub">Checks code is safe</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">
+        <strong>Interpreter</strong>
+        <span class="flow-sub">Executes line by line</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">
+        <strong>JIT Compiler</strong>
+        <span class="flow-sub">Optimizes hot code</span>
+      </div>
+    </div>
+    <div class="flow-label">The four major stages inside the JVM</div>
+  </div>
+
+  <h3>1. Class Loader</h3>
+
+  <p>The Class Loader is responsible for finding and loading <code>.class</code> files into memory. When your program says <code>new User()</code>, the Class Loader finds <code>User.class</code>, loads it, and makes it available for the JVM to use.</p>
+
+  <p>There are three built-in class loaders that work in a chain:</p>
+  <ul>
+    <li><strong>Bootstrap Class Loader</strong> &mdash; loads core Java classes (<code>java.lang.String</code>, <code>java.util.List</code>, etc.) from the JRE's <code>rt.jar</code></li>
+    <li><strong>Extension Class Loader</strong> &mdash; loads classes from Java's extension directories</li>
+    <li><strong>Application Class Loader</strong> &mdash; loads your classes (the ones <em>you</em> write) from the classpath</li>
+  </ul>
+
+  <h3>2. Bytecode Verifier</h3>
+
+  <p>Before executing any bytecode, the JVM checks it for safety. Is it well-formed? Does it try to access memory it should not? Does it violate access rules (like calling a <code>private</code> method from outside the class)? This is a security feature &mdash; it prevents corrupted or malicious <code>.class</code> files from crashing your system or stealing data.</p>
+
+  <h3>3. Interpreter</h3>
+
+  <p>The Interpreter reads bytecode instructions one by one and executes them. It is simple and works immediately, but it is <em>slow</em> because it translates the same instruction every time it encounters it. If a loop runs 10,000 times, the Interpreter translates the same bytecode 10,000 times.</p>
+
+  <h3>4. JIT (Just-In-Time) Compiler</h3>
+
+  <p>This is Java's performance secret. The JIT Compiler watches which code runs frequently (called "hot" code &mdash; like a loop that runs thousands of times). When it identifies hot code, it compiles that bytecode into <strong>native machine code</strong> and caches it. Next time that code runs, the JVM uses the pre-compiled native code instead of interpreting bytecode again.</p>
+
+  <p>This is why Java programs start slightly slower (the JIT has not warmed up yet) but get <em>faster</em> over time &mdash; the hot paths get compiled to native speed.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>The Interpreter is like a translator who reads a foreign recipe step by step every time you cook. The JIT Compiler is like that translator eventually memorizing the recipe. After cooking the same dish 50 times, the translator does not even look at the original &mdash; they just cook from memory. Much faster.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When you run Nimbus, the Class Loader loads your classes (<code>User.class</code>, <code>Parcel.class</code>, <code>UserDAO.class</code>, etc.) from the <code>bin/</code> folder. The Bytecode Verifier checks them. The Interpreter runs them. If you have a loop that processes 100 parcels, the JIT Compiler will optimize that loop after it runs enough times. You will not "see" any of this &mdash; it all happens invisibly inside the JVM.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Memory Model — Stack vs Heap                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="memory-model">
+  <div class="section-tag">Section 06</div>
+  <h2>Memory Model &mdash; Stack vs Heap</h2>
+  <p class="section-desc">When your Java program runs, the JVM divides memory into two main areas: the <strong>Stack</strong> and the <strong>Heap</strong>. Understanding this division is fundamental to understanding how variables, objects, and method calls actually work.</p>
+
+  <h3>Stack Memory</h3>
+
+  <p>The Stack is where <strong>method calls and local variables</strong> live. Every time you call a method, the JVM creates a "stack frame" &mdash; a block of memory that holds:</p>
+  <ul>
+    <li>The method's <strong>local variables</strong> (primitives like <code>int</code>, <code>boolean</code>, <code>double</code>)</li>
+    <li><strong>References</strong> (pointers) to objects on the Heap</li>
+    <li>The <strong>return address</strong> &mdash; where to go back to when this method finishes</li>
+  </ul>
+
+  <p>When the method finishes (returns), its stack frame is <strong>removed</strong>. All local variables in that frame are gone forever. This is why local variables do not persist between method calls &mdash; they literally do not exist after the method returns.</p>
+
+  <h3>Heap Memory</h3>
+
+  <p>The Heap is where <strong>objects and arrays</strong> live. When you write <code>new User("Darshan")</code>, the actual <code>User</code> object is created on the Heap. The variable that "holds" the object is actually just a <strong>reference</strong> (address) stored on the Stack, pointing to the real object on the Heap.</p>
+
+  <p>Objects on the Heap live until no references point to them, at which point the Garbage Collector cleans them up (more on that in the next section).</p>
+
+  <h3>Stack vs Heap &mdash; Side by Side</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Feature</th><th>Stack</th><th>Heap</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Stores</strong></td><td>Primitives, references, method info</td><td>Objects and arrays</td></tr>
+      <tr><td><strong>Lifetime</strong></td><td>Until the method returns</td><td>Until no references remain (GC cleans up)</td></tr>
+      <tr><td><strong>Speed</strong></td><td>Very fast (LIFO, simple push/pop)</td><td>Slower (complex allocation, GC overhead)</td></tr>
+      <tr><td><strong>Size</strong></td><td>Small (usually 512KB &ndash; 1MB per thread)</td><td>Large (can be gigabytes)</td></tr>
+      <tr><td><strong>Thread</strong></td><td>Each thread has its own stack</td><td>Shared across all threads</td></tr>
+      <tr><td><strong>Error</strong></td><td><code>StackOverflowError</code> (too deep recursion)</td><td><code>OutOfMemoryError</code> (too many objects)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Visual Example</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">MemoryExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class MemoryExample {
+    public static void main(String[] args) {
+        int age = 25;                        // primitive on Stack
+        String name = "Darshan";             // reference on Stack, object on Heap
+        User user = new User("Darshan", 25); // reference on Stack, object on Heap
+
+        printUser(user);                     // new stack frame created
+    }   // main() returns → its stack frame is removed
+
+    static void printUser(User u) {          // 'u' is a copy of the reference
+        System.out.println(u.getName());
+    }   // printUser() returns → its stack frame is removed
+}</code></pre>
+  </div>
+
+  <div class="diagram">
+    <pre>
+     STACK                                    HEAP
+  (per thread)                        (shared, managed by GC)
+  +------------------+
+  | printUser() frame |
+  |   u = 0xABC ------+---+
+  +------------------+    |
+  | main() frame      |    |
+  |   age = 25         |    |      +---------------------------+
+  |   name = 0x123 ----+---+--&gt;   | String "Darshan"          |
+  |   user = 0xABC ----+---+-&gt;   | address: 0x123            |
+  +------------------+    |      +---------------------------+
+                           |
+                           |      +---------------------------+
+                           +----&gt; | User object               |
+                                  | name = "Darshan"          |
+                                  | age = 25                  |
+                                  | address: 0xABC            |
+                                  +---------------------------+
+    </pre>
+    <div class="diagram-label">age (25) lives directly on the stack. The User object lives on the heap. The variable "user" holds a reference (address 0xABC) pointing to it.</div>
+  </div>
+
+  <h3>What Happens When a Method Returns</h3>
+
+  <p>When <code>printUser()</code> finishes, its stack frame is popped (removed). The local variable <code>u</code> is gone. But the <code>User</code> object on the Heap is <strong>still alive</strong> because <code>main()</code> still has a reference (<code>user</code>) pointing to it.</p>
+
+  <p>When <code>main()</code> finishes, <em>all</em> references to the User object are gone. The object is now "unreachable" and eligible for garbage collection.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Every time your Nimbus code creates an object &mdash; <code>new User()</code>, <code>new Parcel()</code>, <code>new ArrayList&lt;Parcel&gt;()</code> &mdash; those objects go on the Heap. Local variables like <code>int parcelId = 101</code> in a method stay on the Stack. When your <code>createParcel()</code> method returns, the local variables are gone, but the Parcel object remains on the Heap as long as it is stored in a list or referenced somewhere. If you had a method that creates 10,000 Parcel objects in a loop and stores them in a <code>List&lt;Parcel&gt;</code>, that list and all 10,000 objects live on the Heap.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Garbage Collection                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="garbage-collection">
+  <div class="section-tag">Section 07</div>
+  <h2>Garbage Collection</h2>
+  <p class="section-desc">In C and C++, you manually allocate and free memory. Forget to free it? Memory leak. Free it twice? Program crash. Java eliminates this entire category of bugs with <strong>automatic garbage collection</strong>.</p>
+
+  <h3>How It Works</h3>
+
+  <p>The Garbage Collector (GC) is a background process inside the JVM that periodically scans the Heap looking for objects that no longer have any references pointing to them. When it finds such objects, it reclaims their memory.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GarbageExample.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class GarbageExample {
+    public static void main(String[] args) {
+        User user1 = new User("Alice");   // User("Alice") created on Heap
+        User user2 = new User("Bob");     // User("Bob") created on Heap
+
+        user1 = user2;  // user1 now points to Bob
+                         // No one points to Alice anymore!
+                         // Alice is eligible for garbage collection
+
+        user2 = null;    // user2 no longer points to Bob
+                         // But user1 still points to Bob → Bob is safe
+
+        // At this point:
+        // Alice → no references → WILL be collected
+        // Bob   → user1 points to it → SAFE
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User user1 = new User("Alice");</div>
+        <div class="breakdown-explain">Creates a User object with name "Alice" on the Heap. The reference <code>user1</code> on the Stack points to it.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User user2 = new User("Bob");</div>
+        <div class="breakdown-explain">Creates another User object with name "Bob" on the Heap. <code>user2</code> points to it.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">user1 = user2;</div>
+        <div class="breakdown-explain">Reassigns <code>user1</code> to point to the same object as <code>user2</code> (Bob). The Alice object now has zero references &mdash; it becomes garbage.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">user2 = null;</div>
+        <div class="breakdown-explain">Sets <code>user2</code> to null (points to nothing). But Bob is still referenced by <code>user1</code>, so Bob is not garbage.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Key Rules of Garbage Collection</h3>
+
+  <ul>
+    <li><strong>You cannot force GC.</strong> <code>System.gc()</code> is a <em>hint</em> &mdash; the JVM may ignore it completely. You are asking, not commanding.</li>
+    <li><strong>GC only cleans the Heap.</strong> Stack memory is cleaned automatically when methods return (stack frames are popped).</li>
+    <li><strong>An object is eligible for GC when no live reference points to it.</strong> If even one reference exists, the object stays alive.</li>
+    <li><strong>GC runs in the background.</strong> You do not call it. You do not schedule it. The JVM decides when to run it based on memory pressure.</li>
+    <li><strong>You can still get memory leaks</strong> &mdash; if you accidentally keep references to objects you no longer need (e.g., adding to a list but never removing), the GC cannot collect them.</li>
+  </ul>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Think of the Heap as a parking lot. Every car (object) is parked by someone who has a ticket (reference). The garbage collector is a tow truck that drives around looking for cars with no tickets. No ticket? The car gets towed (memory reclaimed). But you cannot call the tow truck directly &mdash; it comes on its own schedule. And if someone keeps holding a ticket to a car they never drive, that car stays forever, wasting a parking spot. That is a memory leak.</p>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>When a customer logs in and you create <code>new User("Darshan")</code>, that object lives on the Heap for the session. When the user logs out and no code holds a reference to that User object anymore, the GC will eventually clean it up. You never write <code>free(user)</code> or <code>delete user</code> like you would in C/C++. Java handles it. In Phase 3, when you use Servlets, each HTTP request might create temporary objects (parcels, lists, DTOs) &mdash; the GC cleans them all up after the response is sent.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: Your First Java Program                            -->
+<!-- ============================================================ -->
+<section class="content-section" id="first-program">
+  <div class="section-tag">Section 08</div>
+  <h2>Your First Java Program</h2>
+  <p class="section-desc">The classic "Hello, World!" program. But instead of just copying it, we will <strong>dissect every single keyword</strong> so you understand exactly what each part does and why it is there.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Hello.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Every keyword explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public</div>
+        <div class="breakdown-explain"><strong>Access modifier.</strong> This class is visible to everyone, everywhere. Other options are <code>private</code> (visible only inside the same class) and <code>protected</code> (visible in the same package + subclasses). The main class of a file must be <code>public</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">class</div>
+        <div class="breakdown-explain"><strong>Declares a class.</strong> In Java, ALL code lives inside a class. You cannot write a standalone function like in Python or JavaScript. A class is a blueprint for creating objects (or in this case, a container for the <code>main</code> method).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Hello</div>
+        <div class="breakdown-explain"><strong>Class name.</strong> Must match the filename exactly (<code>Hello.java</code>). Convention: PascalCase (first letter of each word capitalized). <code>User</code>, <code>ParcelService</code>, <code>DatabaseConnection</code> &mdash; not <code>user</code> or <code>parcel_service</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">public static void main(String[] args)</div>
+        <div class="breakdown-explain"><strong>The entry point.</strong> When you run <code>java Hello</code>, the JVM looks for this exact method signature. It must be <code>public</code> (JVM needs access), <code>static</code> (no object needed to call it), <code>void</code> (returns nothing), named <code>main</code>, and take <code>String[] args</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">static</div>
+        <div class="breakdown-explain"><strong>Belongs to the class, not an object.</strong> The JVM needs to call <code>main()</code> without creating a <code>Hello</code> object first. <code>static</code> means "you can call this directly on the class: <code>Hello.main(args)</code>."</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">void</div>
+        <div class="breakdown-explain"><strong>Return type.</strong> This method returns nothing. Other methods might return <code>int</code>, <code>String</code>, <code>User</code>, etc. <code>main()</code> always returns <code>void</code> &mdash; there is nothing to return to (the program is ending).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">7</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">String[] args</div>
+        <div class="breakdown-explain"><strong>Command-line arguments.</strong> An array of Strings passed when you run the program. <code>java Hello John 25</code> makes <code>args[0]="John"</code> and <code>args[1]="25"</code>. Usually empty, but the parameter must be there.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">8</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">System.out.println("Hello, World!");</div>
+        <div class="breakdown-explain"><strong>Print to console.</strong> <code>System</code> is a built-in class. <code>out</code> is a static field of type <code>PrintStream</code> representing standard output. <code>println()</code> prints the text and adds a newline. <code>print()</code> does the same without a newline.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Compiling and Running from Command Line</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Terminal</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// Step 1: Compile (creates Hello.class)
+javac Hello.java
+
+// Step 2: Run (JVM executes Hello.class)
+java Hello
+
+// Output:
+// Hello, World!</code></pre>
+  </div>
+
+  <p>Notice: when compiling you use <code>javac Hello.java</code> (with the <code>.java</code> extension). When running you use <code>java Hello</code> (without any extension &mdash; you are giving the class name, not the file name).</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Common Mistakes</div>
+    <ul>
+      <li><strong>File name does not match class name</strong> &mdash; <code>hello.java</code> containing <code>public class Hello</code> will not compile. The file <em>must</em> be <code>Hello.java</code>.</li>
+      <li><strong>Running with <code>.class</code> extension</strong> &mdash; <code>java Hello.class</code> will fail. Use <code>java Hello</code>.</li>
+      <li><strong>Missing semicolon</strong> &mdash; every statement in Java ends with <code>;</code>. Forget one and the compiler will throw an error.</li>
+      <li><strong>Wrong capitalization</strong> &mdash; <code>String</code> not <code>string</code>. <code>System</code> not <code>system</code>. Java is case-sensitive.</li>
+    </ul>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>In Eclipse, you never manually type <code>javac</code> or <code>java</code>. Eclipse auto-compiles on save and has a "Run" button. But knowing the underlying commands matters because: (1) you will use them in the TCS Unix terminal, (2) you will need them for Maven builds, and (3) if something goes wrong in Eclipse, understanding what <code>javac</code> does helps you diagnose the problem. Your first Nimbus Java file will be something like <code>NimbusApp.java</code> with a <code>main()</code> method that starts the console menu system.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: Packages                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="packages">
+  <div class="section-tag">Section 09</div>
+  <h2>Packages</h2>
+  <p class="section-desc">As your project grows beyond a handful of files, you need a way to <strong>organize classes into groups</strong> and avoid name conflicts. That is what packages do.</p>
+
+  <h3>What is a Package?</h3>
+
+  <p>A package is a folder that holds related Java classes. It is also a namespace &mdash; it gives each class a unique full name so two classes called <code>User</code> in different parts of a system do not conflict.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;  // This file belongs to the "com.nimbus.model" package
+
+public class User {
+    private String name;
+    private String userId;
+
+    // The full name of this class is: com.nimbus.model.User
+}</code></pre>
+  </div>
+
+  <h3>Naming Convention</h3>
+
+  <p>Java packages follow a <strong>reverse domain name</strong> convention:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Company/Project</th><th>Package Prefix</th><th>Example Full Package</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Google</td><td><code>com.google</code></td><td><code>com.google.maps.api</code></td></tr>
+      <tr><td>Apache</td><td><code>org.apache</code></td><td><code>org.apache.commons.lang</code></td></tr>
+      <tr><td>Nimbus (our project)</td><td><code>com.nimbus</code></td><td><code>com.nimbus.model</code>, <code>com.nimbus.dao</code>, <code>com.nimbus.service</code></td></tr>
+    </tbody>
+  </table>
+
+  <p>Why reverse domain? Because domain names are globally unique. <code>com.google</code> can never conflict with <code>com.nimbus</code>. This guarantees that even if two companies both have a class called <code>User</code>, their full names (<code>com.google.auth.User</code> vs <code>com.nimbus.model.User</code>) are different.</p>
+
+  <h3>Import Statements</h3>
+
+  <p>When you want to use a class from a different package, you <strong>import</strong> it:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">com/nimbus/service/UserService.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.service;
+
+import com.nimbus.model.User;        // Import specific class
+import com.nimbus.dao.UserDAO;        // Import another class
+import java.util.List;               // Import from Java standard library
+import java.util.*;                  // Import ALL classes from java.util (wildcard)
+
+public class UserService {
+    private UserDAO userDAO = new UserDAO();
+
+    public User findUser(String userId) {
+        return userDAO.getById(userId);
+    }
+
+    public List&lt;User&gt; getAllUsers() {
+        return userDAO.getAll();
+    }
+}</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Import rules</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">import com.nimbus.model.User;</div>
+        <div class="breakdown-explain"><strong>Specific import.</strong> Imports only the <code>User</code> class. Best practice &mdash; you know exactly what you are importing.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">import java.util.*;</div>
+        <div class="breakdown-explain"><strong>Wildcard import.</strong> Imports ALL classes from <code>java.util</code> (List, Map, ArrayList, etc.). Convenient but makes it harder to see what you are actually using. Eclipse prefers specific imports.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">No import needed for java.lang</div>
+        <div class="breakdown-explain">Classes in <code>java.lang</code> (<code>String</code>, <code>System</code>, <code>Integer</code>, <code>Math</code>) are automatically imported. You never write <code>import java.lang.String;</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Package = Folder</h3>
+
+  <p>A critical rule: <strong>the package declaration must match the folder structure</strong>. If your class says <code>package com.nimbus.model;</code>, the file must be at <code>com/nimbus/model/User.java</code>. Mismatch = compilation error.</p>
+
+  <div class="diagram">
+    <pre>
+  src/
+  └── com/
+      └── nimbus/
+          ├── model/
+          │   ├── User.java          → package com.nimbus.model;
+          │   ├── Parcel.java        → package com.nimbus.model;
+          │   └── Address.java       → package com.nimbus.model;
+          ├── dao/
+          │   ├── UserDAO.java       → package com.nimbus.dao;
+          │   └── ParcelDAO.java     → package com.nimbus.dao;
+          ├── service/
+          │   ├── UserService.java   → package com.nimbus.service;
+          │   └── ParcelService.java → package com.nimbus.service;
+          └── util/
+              └── InputValidator.java → package com.nimbus.util;
+    </pre>
+    <div class="diagram-label">Nimbus project package structure &mdash; package names map directly to folder paths</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses four main packages: <code>com.nimbus.model</code> (data classes like <code>User</code>, <code>Parcel</code>), <code>com.nimbus.dao</code> (database access), <code>com.nimbus.service</code> (business logic), and <code>com.nimbus.util</code> (helpers). When <code>UserService</code> needs to use <code>User</code>, it writes <code>import com.nimbus.model.User;</code> at the top. Eclipse generates these imports automatically when you press <strong>Ctrl+Shift+O</strong> (Organize Imports). This is one of the most useful Eclipse shortcuts &mdash; memorize it.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Java Versions                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="java-versions">
+  <div class="section-tag">Section 10</div>
+  <h2>Java Versions</h2>
+  <p class="section-desc">Java releases new versions every 6 months. But not all versions are created equal. Some are <strong>Long-Term Support (LTS)</strong> versions that get years of updates. Companies stick to LTS versions for stability.</p>
+
+  <h3>Timeline of Key Versions</h3>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot blue"></div>
+      <div class="timeline-title">Java 1.0 (1996)</div>
+      <div class="timeline-desc">The beginning. Basic OOP, AWT for GUIs, applets for browsers. "Write Once, Run Anywhere" was born.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot blue"></div>
+      <div class="timeline-title">Java 5 (2004)</div>
+      <div class="timeline-desc">Massive update: <strong>Generics</strong> (<code>List&lt;String&gt;</code>), <strong>Enhanced for-loop</strong> (<code>for (String s : list)</code>), <strong>Enums</strong>, <strong>Autoboxing</strong>, <strong>Annotations</strong> (<code>@Override</code>). Modern Java starts here.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green active"></div>
+      <div class="timeline-title">Java 8 (2014) &mdash; LTS</div>
+      <div class="timeline-desc">The most important release. <strong>Lambdas</strong> (<code>x -&gt; x * 2</code>), <strong>Streams API</strong> (<code>list.stream().filter().map()</code>), <strong>Optional</strong>, new <strong>Date/Time API</strong> (<code>LocalDate</code>). Still the most widely used version in production. Many TCS projects run on Java 8.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot orange"></div>
+      <div class="timeline-title">Java 9 (2017)</div>
+      <div class="timeline-desc"><strong>Module system</strong> (Project Jigsaw) &mdash; organize code into modules with explicit dependencies. <strong>JShell</strong> (REPL for trying out Java code interactively). <code>List.of()</code>, <code>Map.of()</code> factory methods.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green active"></div>
+      <div class="timeline-title">Java 11 (2018) &mdash; LTS</div>
+      <div class="timeline-desc"><strong><code>var</code></strong> for local variable type inference (<code>var name = "Darshan"</code>), <strong>HTTP Client</strong> (built-in, replaces old <code>HttpURLConnection</code>), <code>String</code> new methods (<code>isBlank()</code>, <code>strip()</code>, <code>lines()</code>). JRE no longer distributed separately &mdash; just use the JDK.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green active"></div>
+      <div class="timeline-title">Java 17 (2021) &mdash; LTS</div>
+      <div class="timeline-desc"><strong>Sealed classes</strong> (restrict which classes can extend yours), <strong>Pattern matching for instanceof</strong> (<code>if (obj instanceof String s)</code>), <strong>Records</strong> (<code>record User(String name, int age) {}</code> &mdash; immutable data classes in one line), <strong>Text blocks</strong> (multi-line strings with <code>"""</code>).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green active"></div>
+      <div class="timeline-title">Java 21 (2023) &mdash; LTS</div>
+      <div class="timeline-desc"><strong>Virtual threads</strong> (Project Loom &mdash; lightweight threads for massive concurrency), <strong>Pattern matching for switch</strong>, <strong>Record patterns</strong>, <strong>Sequenced collections</strong>. The latest LTS and the future of Java.</div>
+    </div>
+  </div>
+
+  <h3>Which Version Should You Know?</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Version</th><th>Status</th><th>Why It Matters</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Java 8</strong></td><td>Still widely used</td><td>Most enterprise codebases, most TCS projects. Lambdas and Streams are essential.</td></tr>
+      <tr><td><strong>Java 11</strong></td><td>Active LTS</td><td>Modern alternative to 8. Has <code>var</code>, better HTTP client. Many companies migrated here.</td></tr>
+      <tr><td><strong>Java 17</strong></td><td>Current standard LTS</td><td>Records, sealed classes, pattern matching. Spring Boot 3 requires Java 17+.</td></tr>
+      <tr><td><strong>Java 21</strong></td><td>Latest LTS</td><td>Virtual threads are a game-changer for server apps. The future.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus will use <strong>Java 8 features</strong> (since that is what most TCS machines have). But we will call out when something could be done differently in Java 11+ or 17+. For example, in Java 8 you write <code>List&lt;User&gt; users = new ArrayList&lt;User&gt;();</code>. In Java 11+ you can write <code>var users = new ArrayList&lt;User&gt;();</code> &mdash; shorter, same meaning. When you see these notes, you will know the modern way even if you cannot use it today.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: In Nimbus — Full Mapping                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="in-nimbus">
+  <div class="section-tag">Section 11</div>
+  <h2>In Nimbus &mdash; Full Mapping</h2>
+  <p class="section-desc">Every concept you just learned appears in the Nimbus project. Here is where each one shows up.</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">JDK</div>
+      <div class="layer-detail">Eclipse uses the JDK to compile your <code>.java</code> files. The <code>javac</code> compiler runs every time you save a file. Check your JDK version: <strong>Window &gt; Preferences &gt; Java &gt; Installed JREs</strong> in Eclipse.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">JVM</div>
+      <div class="layer-detail">Runs your Nimbus app when you click "Run." It loads classes from <code>bin/</code>, manages Stack and Heap memory, and runs the Garbage Collector. If you see <code>StackOverflowError</code>, your recursion is too deep. If you see <code>OutOfMemoryError</code>, you are creating too many objects.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Bytecode</div>
+      <div class="layer-detail">The <code>bin/</code> folder in Eclipse contains all your <code>.class</code> files. The same <code>.class</code> files can be copied to a Linux server and run there with <code>java com.nimbus.NimbusApp</code>. That is exactly what happens when you deploy to TCS servers.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Packages</div>
+      <div class="layer-detail"><code>com.nimbus.model</code> (User, Parcel, Address), <code>com.nimbus.dao</code> (UserDAO, ParcelDAO &mdash; database CRUD), <code>com.nimbus.service</code> (UserService, ParcelService &mdash; business logic), <code>com.nimbus.util</code> (InputValidator, DateUtils &mdash; helpers). Every <code>import</code> statement connects these packages.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name cyan">Memory</div>
+      <div class="layer-detail">When you write <code>User user = new User("Darshan")</code>, the reference <code>user</code> goes on the Stack, the User object goes on the Heap. When <code>ParcelDAO.getAllParcels()</code> returns a <code>List&lt;Parcel&gt;</code>, that list and all its Parcel objects are on the Heap. When the method calling it finishes, the local reference is gone, but the list survives if something else holds it.</div>
+    </div>
+  </div>
+
+  <h3>Full Compilation Flow in Nimbus</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">
+        <strong>You save User.java</strong>
+        <span class="flow-sub">in Eclipse (Ctrl+S)</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">
+        <strong>Eclipse runs javac</strong>
+        <span class="flow-sub">auto-compile on save</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">
+        <strong>User.class appears</strong>
+        <span class="flow-sub">in bin/ folder</span>
+      </div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">
+        <strong>You click Run</strong>
+        <span class="flow-sub">or press Ctrl+F11</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">
+        <strong>JVM starts</strong>
+        <span class="flow-sub">loads NimbusApp.class</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box dark">
+        <strong>Console shows menu</strong>
+        <span class="flow-sub">Scanner reads input</span>
+      </div>
+    </div>
+    <div class="flow-label">From saving code to running the Nimbus console application</div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 12</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Do not just read &mdash; <strong>type these out</strong>. Every one of these exercises maps to something you will do in Nimbus. If you can do these, you are ready for the next topic.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Hello Nimbus</div>
+    <p>Create a file called <code>NimbusApp.java</code>. Write a <code>main()</code> method that prints:</p>
+    <pre><code>=============================
+   NIMBUS Parcel Management
+=============================
+Welcome! System initialized.</code></pre>
+    <p>Use <code>System.out.println()</code> for each line. Compile with <code>javac</code> and run with <code>java</code> from the command line. Then run it in Eclipse.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Command Line Arguments</div>
+    <p>Modify your <code>NimbusApp.java</code> to accept a user name from the command line:</p>
+    <pre><code>java NimbusApp Darshan</code></pre>
+    <p>It should print: <code>Welcome, Darshan! You are logged into Nimbus.</code></p>
+    <p>If no argument is provided (<code>args.length == 0</code>), print: <code>Welcome, Guest!</code></p>
+    <p><strong>Hint:</strong> Use <code>args[0]</code> to access the first argument. Check <code>args.length</code> first to avoid <code>ArrayIndexOutOfBoundsException</code>.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Multiple Classes</div>
+    <p>Create two files:</p>
+    <ol>
+      <li><code>Greeter.java</code> &mdash; a class with a <code>static</code> method <code>greet(String name)</code> that returns <code>"Hello, " + name + "!"</code></li>
+      <li><code>Main.java</code> &mdash; a class with <code>main()</code> that calls <code>Greeter.greet("Nimbus")</code> and prints the result</li>
+    </ol>
+    <p>Compile both: <code>javac Greeter.java Main.java</code>. Run: <code>java Main</code>. This teaches you that one class can use another &mdash; the foundation of every real project.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Package Practice</div>
+    <p>Create the following folder structure and files:</p>
+    <pre><code>src/com/nimbus/model/User.java
+src/com/nimbus/app/Main.java</code></pre>
+    <p><code>User.java</code> should have <code>package com.nimbus.model;</code> and a field <code>String name</code> with a constructor and <code>getName()</code> method.</p>
+    <p><code>Main.java</code> should have <code>package com.nimbus.app;</code>, import <code>com.nimbus.model.User</code>, create a <code>new User("Darshan")</code>, and print their name.</p>
+    <p>Compile from the <code>src/</code> directory: <code>javac com/nimbus/model/User.java com/nimbus/app/Main.java</code></p>
+    <p>Run: <code>java com.nimbus.app.Main</code></p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 5 &mdash; Memory Tracing</div>
+    <p>Read this code and answer the questions WITHOUT running it:</p>
+    <pre><code>public class MemoryQuiz {
+    public static void main(String[] args) {
+        String a = new String("Hello");
+        String b = a;
+        String c = new String("Hello");
+        a = null;
+        b = null;
+    }
+}</code></pre>
+    <ol>
+      <li>How many String objects are created on the Heap?</li>
+      <li>After <code>a = null;</code>, is the first "Hello" eligible for GC?</li>
+      <li>After <code>b = null;</code>, is the first "Hello" eligible for GC?</li>
+      <li>Is <code>c</code>'s "Hello" ever eligible for GC before <code>main()</code> ends?</li>
+    </ol>
+    <p><strong>Answers:</strong> (1) Two objects (the two <code>new String("Hello")</code> calls). (2) No &mdash; <code>b</code> still references it. (3) Yes &mdash; both <code>a</code> and <code>b</code> are null, no references remain. (4) No &mdash; <code>c</code> still holds a reference until <code>main()</code> returns.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 6 &mdash; JDK Exploration</div>
+    <p>Open your terminal and run these commands. Write down the output:</p>
+    <ol>
+      <li><code>javac -version</code> &mdash; What JDK version do you have?</li>
+      <li><code>java -version</code> &mdash; What JRE/JVM version?</li>
+      <li>Create <code>Hello.java</code>, compile it, then look for the <code>Hello.class</code> file. Open it in a text editor &mdash; what do you see? (Hint: unreadable binary, because it is bytecode, not source code)</li>
+      <li>Run <code>javap -c Hello</code> &mdash; this disassembles the bytecode into human-readable instructions. Find the <code>println</code> call in the output.</li>
+    </ol>
+    <p>This exercise proves that <code>.class</code> files are not source code &mdash; they are compiled bytecode that only the JVM can execute.</p>
+  </div>
+</section>
+
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="project-structure.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Project Structure</span>
+  </a>
+  <a href="java-basics.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Variables &amp; Types</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL &amp; Database Design &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link active">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Foundations</div>
+    <a href="software-engineering.html" class="sidebar-link"><span class="num">01</span> Software Engineering</a>
+    <a href="hld-lld.html" class="sidebar-link"><span class="num">02</span> HLD &amp; LLD</a>
+    <a href="project-structure.html" class="sidebar-link"><span class="num">03</span> Project Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Java Core</div>
+    <a href="java-how-it-works.html" class="sidebar-link"><span class="num">04</span> How Java Works</a>
+    <a href="java-basics.html" class="sidebar-link"><span class="num">05</span> Variables &amp; Types</a>
+    <a href="java-strings.html" class="sidebar-link"><span class="num">06</span> Strings</a>
+    <a href="java-arrays.html" class="sidebar-link"><span class="num">07</span> Arrays</a>
+    <a href="java-control-flow.html" class="sidebar-link"><span class="num">08</span> Control Flow</a>
+    <a href="java-methods.html" class="sidebar-link"><span class="num">09</span> Methods &amp; Scope</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">OOP</div>
+    <a href="oop-classes.html" class="sidebar-link"><span class="num">10</span> Classes &amp; Encapsulation</a>
+    <a href="oop-inheritance.html" class="sidebar-link"><span class="num">11</span> Inheritance</a>
+    <a href="oop-polymorphism.html" class="sidebar-link"><span class="num">12</span> Polymorphism</a>
+    <a href="oop-abstraction.html" class="sidebar-link"><span class="num">13</span> Abstraction</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Advanced Java</div>
+    <a href="exceptions.html" class="sidebar-link"><span class="num">14</span> Exception Handling</a>
+    <a href="generics.html" class="sidebar-link"><span class="num">15</span> Generics</a>
+    <a href="collections.html" class="sidebar-link"><span class="num">16</span> Collections</a>
+    <a href="datetime.html" class="sidebar-link"><span class="num">17</span> Date &amp; Time API</a>
+    <a href="threads.html" class="sidebar-link"><span class="num">18</span> Threads</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Database</div>
+    <a href="sql.html" class="sidebar-link active"><span class="num">19</span> SQL &amp; Database</a>
+    <a href="jdbc.html" class="sidebar-link"><span class="num">20</span> JDBC</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools &amp; More</div>
+    <a href="maven.html" class="sidebar-link"><span class="num">21</span> Maven</a>
+    <a href="unix.html" class="sidebar-link"><span class="num">22</span> Unix/Shell</a>
+    <a href="nimbus-backend.html" class="sidebar-link"><span class="num">23</span> Nimbus Backend</a>
+    <a href="practice-lab.html" class="sidebar-link"><span class="num">24</span> Practice Lab</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">25</span> Cheat Sheets</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What is a Database?                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="what-is-database">
+  <div class="section-tag">Section 01</div>
+  <h2>What is a Database?</h2>
+  <p class="section-desc">Before you write SQL, you need to understand <strong>what a database actually is</strong>, why it exists, and why you cannot just store everything in files or spreadsheets.</p>
+
+  <h3>The Spreadsheet Analogy</h3>
+
+  <p>You already know spreadsheets. Open Google Sheets, make columns for Name, Email, Phone &mdash; each row is a person. A database table works <strong>exactly the same way</strong>:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Spreadsheet Concept</th><th>Database Concept</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Entire spreadsheet file</td><td>Database</td></tr>
+      <tr><td>One sheet/tab</td><td>Table</td></tr>
+      <tr><td>Column header (Name, Email)</td><td>Column / Field</td></tr>
+      <tr><td>One row of data</td><td>Row / Record / Tuple</td></tr>
+      <tr><td>One cell value</td><td>Field value</td></tr>
+    </tbody>
+  </table>
+
+  <p>So when someone says "the <code>tbl_UserProfile</code> table," picture a sheet tab called <code>tbl_UserProfile</code> with columns like <code>User_ID</code>, <code>FullName</code>, <code>Email</code> &mdash; and each row is one registered Nimbus user.</p>
+
+  <h3>Why Not Just Use Files?</h3>
+
+  <p>You <em>could</em> store data in a text file or CSV. Nimbus Phase 1 used LocalStorage (basically a file in the browser). So why bother with a database?</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Problem</th><th>File/LocalStorage</th><th>Database (MySQL)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Multiple users accessing at same time</td><td>Corrupts data &mdash; two people writing the file simultaneously</td><td>Handles thousands of concurrent users safely</td></tr>
+      <tr><td>Find one record among 100,000</td><td>Read entire file, scan line by line. Slow.</td><td>Uses indexes. Finds it in milliseconds.</td></tr>
+      <tr><td>Ensure email is unique</td><td>You write the code yourself and hope it works</td><td>Add <code>UNIQUE</code> constraint. Database enforces it for you.</td></tr>
+      <tr><td>Two related things (user + their bookings)</td><td>Separate files, you manually match IDs</td><td>Foreign keys link tables. Database keeps them in sync.</td></tr>
+      <tr><td>Crash recovery</td><td>Data gone</td><td>Transaction log restores to last safe state</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Phase 1 stored bookings in <code>localStorage</code> &mdash; browser-only, one user at a time, no relationships, data lost if cache is cleared. Phase 2 moves to MySQL because a real parcel management system needs multiple officers tracking packages simultaneously, enforced data integrity, and persistent storage that survives browser crashes.</p>
+  </div>
+
+  <h3>What is an RDBMS?</h3>
+
+  <p><strong>RDBMS</strong> stands for Relational Database Management System. Break it down:</p>
+  <ul>
+    <li><strong>Relational</strong> &mdash; Data is stored in tables that can relate to each other (a booking relates to a user)</li>
+    <li><strong>Database</strong> &mdash; An organized collection of data</li>
+    <li><strong>Management System</strong> &mdash; The software that manages storing, retrieving, updating, and deleting that data</li>
+  </ul>
+
+  <p>Popular RDBMS options:</p>
+  <table class="info-table">
+    <thead>
+      <tr><th>RDBMS</th><th>Used By</th><th>Cost</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>MySQL</strong></td><td>Facebook, Twitter, Airbnb, Uber</td><td>Free (open-source)</td></tr>
+      <tr><td>PostgreSQL</td><td>Instagram, Spotify, Apple</td><td>Free (open-source)</td></tr>
+      <tr><td>Oracle Database</td><td>Banks, telecom, government</td><td>Very expensive</td></tr>
+      <tr><td>Microsoft SQL Server</td><td>Enterprise Windows shops</td><td>Paid (free Express edition)</td></tr>
+      <tr><td>SQLite</td><td>Android apps, small tools</td><td>Free (file-based, no server)</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Nimbus uses MySQL</strong> because it is free, widely used in the industry, and the standard for Java web applications learning.</p>
+
+  <h3>SQL &mdash; The Language of Databases</h3>
+
+  <p><strong>SQL</strong> (Structured Query Language, pronounced "sequel" or "S-Q-L") is how you talk to a database. You do not click buttons. You write commands:</p>
+
+  <ul>
+    <li><strong>DDL</strong> (Data Definition Language) &mdash; Define structure: <code>CREATE TABLE</code>, <code>ALTER TABLE</code>, <code>DROP TABLE</code></li>
+    <li><strong>DML</strong> (Data Manipulation Language) &mdash; Work with data: <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></li>
+    <li><strong>DCL</strong> (Data Control Language) &mdash; Permissions: <code>GRANT</code>, <code>REVOKE</code></li>
+  </ul>
+
+  <p>This page covers DDL and DML &mdash; the parts you will use every single day.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: MySQL Data Types                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="data-types">
+  <div class="section-tag">Section 02</div>
+  <h2>MySQL Data Types</h2>
+  <p class="section-desc">Every column in a table has a <strong>data type</strong> &mdash; it tells MySQL what kind of value it should store. Using the right type saves storage, improves performance, and prevents bad data.</p>
+
+  <h3>Types You Will Actually Use</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Type</th><th>What It Stores</th><th>Example</th><th>When to Use</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>INT</code></td><td>Whole numbers (-2.1 billion to 2.1 billion)</td><td><code>42</code>, <code>-7</code>, <code>0</code></td><td>IDs, counts, quantities, weight in grams</td></tr>
+      <tr><td><code>BIGINT</code></td><td>Very large whole numbers</td><td><code>9223372036854775807</code></td><td>Phone numbers (10+ digits), huge counters</td></tr>
+      <tr><td><code>VARCHAR(n)</code></td><td>Variable-length text, up to <em>n</em> characters</td><td><code>'Darshan'</code></td><td>Names, emails, short text. Only uses as much space as the actual value.</td></tr>
+      <tr><td><code>TEXT</code></td><td>Long text (up to 65,535 characters)</td><td>A full description or comment</td><td>Long descriptions, notes. Cannot be indexed efficiently.</td></tr>
+      <tr><td><code>DECIMAL(p,s)</code></td><td>Exact decimal numbers</td><td><code>149.50</code></td><td>Money, costs. <code>DECIMAL(10,2)</code> = up to 10 digits, 2 after the decimal.</td></tr>
+      <tr><td><code>DATETIME</code></td><td>Date and time combined</td><td><code>'2026-04-23 14:30:00'</code></td><td>Timestamps for when something happened (booking date, pickup time)</td></tr>
+      <tr><td><code>DATE</code></td><td>Date only (no time)</td><td><code>'2026-04-23'</code></td><td>Birth dates, event dates</td></tr>
+      <tr><td><code>BOOLEAN</code></td><td>True or false (stored as 0 or 1 in MySQL)</td><td><code>TRUE</code>, <code>FALSE</code></td><td>Flags: is_active, is_verified</td></tr>
+      <tr><td><code>ENUM(...)</code></td><td>One value from a fixed list</td><td><code>'Express'</code></td><td>Status values, categories with known options</td></tr>
+    </tbody>
+  </table>
+
+  <h3>VARCHAR vs TEXT &mdash; When to Use Which</h3>
+
+  <p>Both store text. The difference:</p>
+  <ul>
+    <li><code>VARCHAR(100)</code> &mdash; You know the max length (names, emails). Can be indexed. Enforces a limit.</li>
+    <li><code>TEXT</code> &mdash; You do not know how long the text will be (descriptions, comments). Cannot be used as a primary key or have a default value easily.</li>
+  </ul>
+
+  <p><strong>Rule of thumb:</strong> If you can put a reasonable max length on it, use <code>VARCHAR</code>. Otherwise, <code>TEXT</code>.</p>
+
+  <h3>INT vs BIGINT &mdash; The Phone Number Trap</h3>
+
+  <p><code>INT</code> maxes out at about 2.1 billion. An Indian phone number like <code>9876543210</code> is 9.8 billion &mdash; too big for <code>INT</code>. Use <code>BIGINT</code> for phone numbers, or better yet, store them as <code>VARCHAR(15)</code> since phone numbers can have leading zeros and country codes like <code>+91</code>.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; Column Types Explained</div>
+    <p>Here is why each Nimbus column uses the type it does:</p>
+    <ul>
+      <li><code>User_ID INT</code> &mdash; Auto-incrementing integer. Users get IDs 1, 2, 3... INT handles billions.</li>
+      <li><code>FullName VARCHAR(100)</code> &mdash; No name exceeds 100 chars. VARCHAR only uses space for the actual name length.</li>
+      <li><code>Email VARCHAR(100)</code> &mdash; RFC standard says emails max out at 254 chars, but 100 covers 99.9% of cases.</li>
+      <li><code>MobileNumber VARCHAR(15)</code> &mdash; Stored as text, not number. Preserves leading zeros, allows <code>+91</code> prefix.</li>
+      <li><code>Password VARCHAR(255)</code> &mdash; Plain text for now (Phase 2). When hashed with bcrypt later, hashes are 60 chars. 255 gives room.</li>
+      <li><code>Role VARCHAR(20)</code> &mdash; <code>'Customer'</code>, <code>'Officer'</code>, or <code>'Support'</code>. Could use ENUM, but VARCHAR is more flexible if roles change.</li>
+      <li><code>Par_Weight_Gram INT</code> &mdash; Weight in grams as a whole number. 5000 grams = 5kg. No decimals needed.</li>
+      <li><code>Par_ServiceCost DECIMAL(10,2)</code> &mdash; Money should NEVER use FLOAT (rounding errors). DECIMAL is exact.</li>
+      <li><code>Par_PickupTime DATETIME</code> &mdash; Stores both date and time of scheduled pickup.</li>
+      <li><code>Par_Status VARCHAR(20)</code> &mdash; <code>'Pending'</code>, <code>'PickedUp'</code>, <code>'InTransit'</code>, <code>'Delivered'</code>, <code>'Cancelled'</code>.</li>
+      <li><code>Booking_Date DATETIME</code> &mdash; When the booking was created. Defaults to <code>CURRENT_TIMESTAMP</code>.</li>
+    </ul>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Never Use FLOAT or DOUBLE for Money</div>
+    <p><code>FLOAT</code> and <code>DOUBLE</code> are approximate types. <code>0.1 + 0.2</code> might give you <code>0.30000000000000004</code>. When you are dealing with money (service costs, payments), always use <code>DECIMAL</code>. Nimbus uses <code>DECIMAL(10,2)</code> for <code>Par_ServiceCost</code> &mdash; exact to the paisa.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: CREATE TABLE                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="create-table">
+  <div class="section-tag">Section 03</div>
+  <h2>CREATE TABLE</h2>
+  <p class="section-desc">This is where you define the structure of your data &mdash; what columns exist, what types they use, and what rules (constraints) the database enforces automatically.</p>
+
+  <h3>Basic Syntax</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">CREATE TABLE syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">CREATE TABLE table_name (
+    column1  datatype  constraints,
+    column2  datatype  constraints,
+    ...
+);</code></pre>
+  </div>
+
+  <h3>Constraints &mdash; Rules the Database Enforces</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Constraint</th><th>What It Does</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>PRIMARY KEY</code></td><td>Uniquely identifies each row. No duplicates, no NULLs. Every table must have one.</td><td><code>User_ID</code> in tbl_UserProfile, <code>Booking_ID</code> in Booking</td></tr>
+      <tr><td><code>AUTO_INCREMENT</code></td><td>MySQL auto-generates the next number (1, 2, 3...). You do not supply the value.</td><td><code>User_ID INT AUTO_INCREMENT</code></td></tr>
+      <tr><td><code>NOT NULL</code></td><td>Column cannot be empty. Insert fails if you try.</td><td><code>FullName</code> &mdash; every user must have a name</td></tr>
+      <tr><td><code>UNIQUE</code></td><td>No two rows can have the same value in this column.</td><td><code>Email</code> &mdash; prevents duplicate registrations</td></tr>
+      <tr><td><code>DEFAULT</code></td><td>If you do not provide a value, use this fallback.</td><td><code>Booking_Date DEFAULT CURRENT_TIMESTAMP</code></td></tr>
+      <tr><td><code>CHECK</code></td><td>Value must satisfy a condition.</td><td><code>Role CHECK (Role IN ('Customer','Officer','Support'))</code></td></tr>
+      <tr><td><code>FOREIGN KEY</code></td><td>Links a column to another table's primary key. Ensures the referenced row exists.</td><td><code>User_ID</code> in Booking references <code>User_ID</code> in tbl_UserProfile</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Nimbus: tbl_UserProfile</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus_db &mdash; tbl_UserProfile</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">CREATE DATABASE IF NOT EXISTS nimbus_db;
+USE nimbus_db;
+
+CREATE TABLE tbl_UserProfile (
+    User_ID       INT           AUTO_INCREMENT PRIMARY KEY,
+    FullName      VARCHAR(100)  NOT NULL,
+    Rec_Address   VARCHAR(255)  NOT NULL,
+    Email         VARCHAR(100)  NOT NULL UNIQUE,
+    MobileNumber  VARCHAR(15)   NOT NULL,
+    Password      VARCHAR(255)  NOT NULL,
+    Role          VARCHAR(20)   NOT NULL CHECK (Role IN ('Customer', 'Officer', 'Support'))
+);</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">CREATE DATABASE IF NOT EXISTS nimbus_db;</div>
+        <div class="breakdown-explain">Creates the database only if it does not already exist. Prevents errors on re-run.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">USE nimbus_db;</div>
+        <div class="breakdown-explain">Switches to the nimbus_db database. All following commands run inside this database.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User_ID INT AUTO_INCREMENT PRIMARY KEY,</div>
+        <div class="breakdown-explain">Integer column. MySQL auto-generates 1, 2, 3... for each new user. PRIMARY KEY means this uniquely identifies each row &mdash; no two users can have the same ID.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">FullName VARCHAR(100) NOT NULL,</div>
+        <div class="breakdown-explain">Text up to 100 characters. NOT NULL means you cannot register without providing a name &mdash; the INSERT will fail.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Email VARCHAR(100) NOT NULL UNIQUE,</div>
+        <div class="breakdown-explain">NOT NULL + UNIQUE = every user must have an email AND no two users can share the same email. This prevents duplicate registrations at the database level.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">6</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Role VARCHAR(20) NOT NULL CHECK (Role IN ('Customer', 'Officer', 'Support'))</div>
+        <div class="breakdown-explain">CHECK constraint limits the allowed values. If someone tries to insert Role = 'Admin', the database rejects it. This is your safety net &mdash; even if the application code has a bug, bad data cannot get in.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Nimbus: Booking Table</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus_db &mdash; Booking</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">CREATE TABLE Booking (
+    Booking_ID                INT           AUTO_INCREMENT PRIMARY KEY,
+    User_ID                   INT           NOT NULL,
+    Rec_Name                  VARCHAR(100)  NOT NULL,
+    Rec_Address               VARCHAR(255)  NOT NULL,
+    Rec_Pin                   VARCHAR(10)   NOT NULL,
+    Rec_Mobile                VARCHAR(15)   NOT NULL,
+    Par_Weight_Gram           INT           NOT NULL,
+    Par_Contents_Description  TEXT,
+    Par_Delivery_Type         VARCHAR(20)   NOT NULL,
+    Par_Packing_Preference    VARCHAR(30),
+    Par_PickupTime            DATETIME,
+    Par_DropoffTime           DATETIME,
+    Par_ServiceCost           DECIMAL(10,2) NOT NULL,
+    Par_PaymentTime           DATETIME,
+    Par_Status                VARCHAR(20)   NOT NULL DEFAULT 'Pending',
+    Booking_Date              DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (User_ID) REFERENCES tbl_UserProfile(User_ID)
+);</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">User_ID INT NOT NULL,</div>
+        <div class="breakdown-explain">Which user created this booking. NOT NULL because every booking must belong to someone.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Rec_Pin VARCHAR(10) NOT NULL,</div>
+        <div class="breakdown-explain">PIN code as VARCHAR, not INT. PIN codes like '400001' can start with 0, and you never do math on them.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Par_Contents_Description TEXT,</div>
+        <div class="breakdown-explain">No NOT NULL &mdash; description is optional. User can leave it blank. TEXT because descriptions can be long.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">Par_Status VARCHAR(20) NOT NULL DEFAULT 'Pending',</div>
+        <div class="breakdown-explain">Every new booking starts as 'Pending'. If the INSERT does not specify a status, MySQL fills in 'Pending' automatically.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">5</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">FOREIGN KEY (User_ID) REFERENCES tbl_UserProfile(User_ID)</div>
+        <div class="breakdown-explain">This is the relationship. It says: "The User_ID in this Booking table MUST exist in tbl_UserProfile." You cannot create a booking for user 999 if user 999 does not exist. The database blocks it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Why Separate Tables?</div>
+    <p>Why not put user info and booking info in one giant table? Because a user creates many bookings. If you store the user's name, email, and phone in every booking row, you duplicate data hundreds of times. If the user changes their phone number, you have to update hundreds of rows instead of one. Separate tables with a FOREIGN KEY link solve this &mdash; store user info once, reference it by ID.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: INSERT                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="insert">
+  <div class="section-tag">Section 04</div>
+  <h2>INSERT &mdash; Adding Data</h2>
+  <p class="section-desc">Tables are empty until you put data in them. <code>INSERT INTO</code> adds new rows.</p>
+
+  <h3>Single Row Insert</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Insert one user</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">INSERT INTO tbl_UserProfile (FullName, Rec_Address, Email, MobileNumber, Password, Role)
+VALUES ('Arjun Mehta', '45 MG Road, Pune 411001', 'arjun.mehta@email.com', '9876543210', 'pass123', 'Customer');</code></pre>
+  </div>
+
+  <p>Notice we did <strong>not</strong> include <code>User_ID</code> in the column list. Because it is <code>AUTO_INCREMENT</code>, MySQL generates the next number automatically. This user gets <code>User_ID = 1</code>.</p>
+
+  <h3>Multiple Row Insert</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus seed data &mdash; All 8 users</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- 5 Customers
+INSERT INTO tbl_UserProfile (FullName, Rec_Address, Email, MobileNumber, Password, Role) VALUES
+('Arjun Mehta',    '45 MG Road, Pune 411001',        'arjun.mehta@email.com',    '9876543210', 'pass123',   'Customer'),
+('Priya Sharma',   '12 Sector 21, Noida 201301',     'priya.sharma@email.com',   '9123456789', 'priya@456', 'Customer'),
+('Rahul Desai',    '78 FC Road, Pune 411004',         'rahul.desai@email.com',    '9988776655', 'rahul789',  'Customer'),
+('Sneha Patil',    '33 Baner Road, Pune 411045',      'sneha.patil@email.com',    '9876501234', 'sneha321',  'Customer'),
+('Vikram Joshi',   '56 Koregaon Park, Pune 411001',   'vikram.joshi@email.com',   '9123409876', 'vikram22',  'Customer');
+
+-- 2 Officers
+INSERT INTO tbl_UserProfile (FullName, Rec_Address, Email, MobileNumber, Password, Role) VALUES
+('Amit Kumar',     'Nimbus Depot, Hadapsar, Pune',    'amit.kumar@nimbus.com',    '9000012345', 'officer1',  'Officer'),
+('Neha Singh',     'Nimbus Depot, Wakad, Pune',       'neha.singh@nimbus.com',    '9000054321', 'officer2',  'Officer');
+
+-- 1 Support
+INSERT INTO tbl_UserProfile (FullName, Rec_Address, Email, MobileNumber, Password, Role) VALUES
+('Ravi Support',   'Nimbus HQ, Hinjewadi, Pune',     'ravi.support@nimbus.com',  '9000099999', 'support1',  'Support');</code></pre>
+  </div>
+
+  <h3>Nimbus Seed Bookings</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus seed data &mdash; 3 bookings</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">INSERT INTO Booking (User_ID, Rec_Name, Rec_Address, Rec_Pin, Rec_Mobile,
+    Par_Weight_Gram, Par_Contents_Description, Par_Delivery_Type,
+    Par_Packing_Preference, Par_PickupTime, Par_DropoffTime,
+    Par_ServiceCost, Par_PaymentTime, Par_Status, Booking_Date) VALUES
+
+(1, 'Deepak Verma',  '99 Anna Salai, Chennai 600002',   '600002', '9111222333',
+    1500, 'Books and stationery', 'Express', 'Bubble Wrap',
+    '2026-04-20 10:00:00', '2026-04-21 14:00:00',
+    249.00, '2026-04-20 09:45:00', 'Delivered', '2026-04-19 18:30:00'),
+
+(2, 'Kiran Rao',     '22 Jubilee Hills, Hyderabad 500033', '500033', '9444555666',
+    3200, 'Electronics - laptop charger', 'Standard', 'Cardboard Box',
+    '2026-04-22 11:00:00', NULL,
+    189.00, '2026-04-22 10:50:00', 'InTransit', '2026-04-21 20:00:00'),
+
+(1, 'Meena Iyer',    '5 Marine Drive, Mumbai 400002',    '400002', '9777888999',
+    800, 'Documents', 'Express', NULL,
+    '2026-04-23 09:00:00', NULL,
+    149.50, NULL, 'Pending', '2026-04-22 22:15:00');</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>User 1 (Arjun Mehta) has two bookings &mdash; one delivered, one pending. User 2 (Priya Sharma) has one in transit. Notice how <code>User_ID</code> values 1 and 2 match users created by the earlier INSERT. If you tried <code>User_ID = 99</code>, the FOREIGN KEY constraint would reject it because no user with ID 99 exists.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">Order Matters</div>
+    <p>You must insert into <code>tbl_UserProfile</code> BEFORE <code>Booking</code>. The FOREIGN KEY in Booking says "this User_ID must exist in tbl_UserProfile." If you insert a booking first, the referenced user does not exist yet, and MySQL throws an error.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: SELECT                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="select">
+  <div class="section-tag">Section 05</div>
+  <h2>SELECT &mdash; Reading Data</h2>
+  <p class="section-desc"><code>SELECT</code> is the most-used SQL command. You will write it hundreds of times. It reads data from tables without changing anything.</p>
+
+  <h3>Basic SELECT</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Get all users</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Get everything from every user
+SELECT * FROM tbl_UserProfile;
+
+-- Get only names and emails (better practice &mdash; don't select * in production)
+SELECT FullName, Email FROM tbl_UserProfile;</code></pre>
+  </div>
+
+  <p><code>*</code> means "all columns." It works for quick checks, but in production code you should list the columns you need. Fetching columns you do not use wastes memory and bandwidth.</p>
+
+  <h3>WHERE &mdash; Filtering Rows</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">WHERE examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Find a specific user by email
+SELECT * FROM tbl_UserProfile
+WHERE Email = 'arjun.mehta@email.com';
+
+-- All customers (not officers or support)
+SELECT FullName, Email FROM tbl_UserProfile
+WHERE Role = 'Customer';
+
+-- Bookings heavier than 2 kg (2000 grams)
+SELECT Booking_ID, Rec_Name, Par_Weight_Gram FROM Booking
+WHERE Par_Weight_Gram &gt; 2000;</code></pre>
+  </div>
+
+  <h3>AND / OR &mdash; Combining Conditions</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">AND and OR</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Express deliveries that are still pending
+SELECT * FROM Booking
+WHERE Par_Delivery_Type = 'Express' AND Par_Status = 'Pending';
+
+-- Bookings that are either delivered or cancelled
+SELECT * FROM Booking
+WHERE Par_Status = 'Delivered' OR Par_Status = 'Cancelled';</code></pre>
+  </div>
+
+  <h3>LIKE &mdash; Pattern Matching</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LIKE with wildcards</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Users whose name starts with 'P'
+SELECT * FROM tbl_UserProfile
+WHERE FullName LIKE 'P%';
+
+-- Users with @nimbus.com emails
+SELECT * FROM tbl_UserProfile
+WHERE Email LIKE '%@nimbus.com';
+
+-- Names containing 'sh' anywhere
+SELECT * FROM tbl_UserProfile
+WHERE FullName LIKE '%sh%';</code></pre>
+  </div>
+
+  <p><code>%</code> = any number of characters. <code>_</code> = exactly one character. So <code>'P%'</code> matches Priya, Patil, Prakash. <code>'_riya'</code> would match Priya but not Shriya.</p>
+
+  <h3>IN &mdash; Matching Multiple Values</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">IN clause</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Bookings that are pending OR in transit (cleaner than OR OR OR)
+SELECT * FROM Booking
+WHERE Par_Status IN ('Pending', 'InTransit', 'PickedUp');
+
+-- Users with IDs 1, 3, or 5
+SELECT FullName FROM tbl_UserProfile
+WHERE User_ID IN (1, 3, 5);</code></pre>
+  </div>
+
+  <h3>BETWEEN &mdash; Range Filtering</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BETWEEN for ranges</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Bookings between April 20 and April 23
+SELECT * FROM Booking
+WHERE Booking_Date BETWEEN '2026-04-20' AND '2026-04-23';
+
+-- Parcels weighing between 1kg and 3kg
+SELECT Booking_ID, Par_Weight_Gram FROM Booking
+WHERE Par_Weight_Gram BETWEEN 1000 AND 3000;</code></pre>
+  </div>
+
+  <h3>ORDER BY &mdash; Sorting Results</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">ORDER BY</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Bookings sorted by date (newest first)
+SELECT * FROM Booking
+ORDER BY Booking_Date DESC;
+
+-- Users sorted alphabetically
+SELECT FullName, Email FROM tbl_UserProfile
+ORDER BY FullName ASC;
+
+-- Sort by status, then by date within each status
+SELECT * FROM Booking
+ORDER BY Par_Status ASC, Booking_Date DESC;</code></pre>
+  </div>
+
+  <p><code>ASC</code> = ascending (A-Z, 1-9, oldest first). <code>DESC</code> = descending (Z-A, 9-1, newest first). Default is ASC.</p>
+
+  <h3>LIMIT &mdash; Controlling Result Count</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LIMIT</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Get the 5 most recent bookings
+SELECT * FROM Booking
+ORDER BY Booking_Date DESC
+LIMIT 5;
+
+-- Pagination: skip first 10, get next 10
+SELECT * FROM Booking
+ORDER BY Booking_ID
+LIMIT 10 OFFSET 10;</code></pre>
+  </div>
+
+  <h3>DISTINCT &mdash; Removing Duplicates</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DISTINCT</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- What delivery types exist in our bookings?
+SELECT DISTINCT Par_Delivery_Type FROM Booking;
+
+-- Which cities have we delivered to?
+SELECT DISTINCT Rec_Pin FROM Booking;</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: JOINs                                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="joins">
+  <div class="section-tag">Section 06</div>
+  <h2>JOINs &mdash; Combining Tables</h2>
+  <p class="section-desc">Data lives in separate tables. JOINs connect them. This is the core power of relational databases &mdash; and the concept that trips up most beginners.</p>
+
+  <h3>Why Nimbus Needs JOINs</h3>
+
+  <p>The <code>Booking</code> table has <code>User_ID = 1</code>, but it does not have the user's name or email. That information is in <code>tbl_UserProfile</code>. To show "Arjun Mehta's bookings" in one result, you need to JOIN the two tables.</p>
+
+  <div class="diagram">
+    <pre>
+  tbl_UserProfile                        Booking
+  ┌──────────┬─────────────┐             ┌────────────┬──────────┬───────────┐
+  │ User_ID  │ FullName    │             │ Booking_ID │ User_ID  │ Par_Status│
+  ├──────────┼─────────────┤             ├────────────┼──────────┼───────────┤
+  │ 1        │ Arjun Mehta │─────┐       │ 1          │ 1        │ Delivered │
+  │ 2        │ Priya Sharma│──┐  └──────▶│ 3          │ 1        │ Pending   │
+  │ 3        │ Rahul Desai │  └────────▶ │ 2          │ 2        │ InTransit │
+  │ 4        │ Sneha Patil │             └────────────┴──────────┴───────────┘
+  │ 5        │ Vikram Joshi│
+  └──────────┴─────────────┘
+         User_ID links the two tables
+    </pre>
+    <div class="diagram-label">Foreign key relationship: Booking.User_ID references tbl_UserProfile.User_ID</div>
+  </div>
+
+  <h3>INNER JOIN &mdash; Only Matching Rows</h3>
+
+  <p>Returns rows where there is a match in <strong>both</strong> tables. If a user has no bookings, they do not appear. If a booking somehow had no matching user, it would not appear either.</p>
+
+  <div class="diagram">
+    <pre>
+      ┌───────────────────────────────────┐
+      │         INNER JOIN                │
+      │                                   │
+      │    ┌─────────┐  ┌─────────┐       │
+      │    │  User   │  │ Booking │       │
+      │    │  Table  │▓▓│  Table  │       │
+      │    │         │▓▓│         │       │
+      │    └─────────┘  └─────────┘       │
+      │                                   │
+      │    ▓▓ = Only the overlap          │
+      │    Users WITH bookings            │
+      │    Bookings WITH valid users      │
+      └───────────────────────────────────┘
+    </pre>
+    <div class="diagram-label">INNER JOIN returns only rows where both sides match</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">INNER JOIN</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Show booking details WITH the customer's name
+SELECT u.FullName, b.Booking_ID, b.Rec_Name, b.Par_Status, b.Booking_Date
+FROM Booking b
+INNER JOIN tbl_UserProfile u ON b.User_ID = u.User_ID;
+
+-- Result:
+-- Arjun Mehta  | 1 | Deepak Verma | Delivered | 2026-04-19
+-- Priya Sharma | 2 | Kiran Rao    | InTransit | 2026-04-21
+-- Arjun Mehta  | 3 | Meena Iyer   | Pending   | 2026-04-22</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Line-by-line explanation</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">FROM Booking b</div>
+        <div class="breakdown-explain"><code>b</code> is an alias &mdash; a short nickname for the Booking table. Instead of writing <code>Booking.Par_Status</code>, you write <code>b.Par_Status</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">INNER JOIN tbl_UserProfile u</div>
+        <div class="breakdown-explain">Join with the user table, aliased as <code>u</code>.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ON b.User_ID = u.User_ID</div>
+        <div class="breakdown-explain">The join condition. "Match each booking's User_ID with the user who has the same User_ID." This is how the database knows which user goes with which booking.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>LEFT JOIN &mdash; All From Left, Matches From Right</h3>
+
+  <p>Returns <strong>all</strong> rows from the left table, even if there is no match in the right table. Unmatched right-side columns show as <code>NULL</code>.</p>
+
+  <div class="diagram">
+    <pre>
+      ┌───────────────────────────────────┐
+      │         LEFT JOIN                 │
+      │                                   │
+      │    ┌─────────┐  ┌─────────┐       │
+      │    │▓▓▓▓▓▓▓▓▓│  │         │       │
+      │    │▓▓ User ▓│▓▓│ Booking │       │
+      │    │▓▓ Table ▓│▓▓│  Table  │       │
+      │    │▓▓▓▓▓▓▓▓▓│  │         │       │
+      │    └─────────┘  └─────────┘       │
+      │                                   │
+      │    ▓▓ = ALL users returned        │
+      │    Even those with zero bookings  │
+      └───────────────────────────────────┘
+    </pre>
+    <div class="diagram-label">LEFT JOIN: all rows from left table, NULLs where right has no match</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">LEFT JOIN</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Show ALL users and their booking count (even if 0)
+SELECT u.FullName, COUNT(b.Booking_ID) AS total_bookings
+FROM tbl_UserProfile u
+LEFT JOIN Booking b ON u.User_ID = b.User_ID
+GROUP BY u.FullName;
+
+-- Result:
+-- Arjun Mehta   | 2
+-- Priya Sharma  | 1
+-- Rahul Desai   | 0    &lt;-- shows up even with no bookings
+-- Sneha Patil   | 0
+-- Vikram Joshi  | 0
+-- Amit Kumar    | 0
+-- Neha Singh    | 0
+-- Ravi Support  | 0</code></pre>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus &mdash; When to Use Which JOIN</div>
+    <ul>
+      <li><strong>INNER JOIN</strong> when you only want bookings that have valid users (the normal case for displaying booking lists)</li>
+      <li><strong>LEFT JOIN</strong> when you want all users even if they have not booked yet (useful for admin dashboards showing inactive users)</li>
+    </ul>
+  </div>
+
+  <h3>RIGHT JOIN &amp; FULL JOIN</h3>
+
+  <div class="diagram">
+    <pre>
+      RIGHT JOIN                          FULL OUTER JOIN
+      ┌─────────┐  ┌─────────┐           ┌─────────┐  ┌─────────┐
+      │         │  │▓▓▓▓▓▓▓▓▓│           │▓▓▓▓▓▓▓▓▓│  │▓▓▓▓▓▓▓▓▓│
+      │  User   │▓▓│▓▓Booking│           │▓▓ User ▓│▓▓│▓▓Booking│
+      │  Table  │▓▓│▓▓ Table ▓│           │▓▓ Table ▓│▓▓│▓▓ Table ▓│
+      │         │  │▓▓▓▓▓▓▓▓▓│           │▓▓▓▓▓▓▓▓▓│  │▓▓▓▓▓▓▓▓▓│
+      └─────────┘  └─────────┘           └─────────┘  └─────────┘
+
+      All bookings, even                  Everything from both
+      orphaned ones                       sides, NULLs where
+                                          no match on either side
+    </pre>
+    <div class="diagram-label">RIGHT JOIN and FULL OUTER JOIN visual comparison</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">RIGHT JOIN</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- All bookings, even if the user was somehow deleted
+-- (Rarely used &mdash; you can always just swap the table order and use LEFT JOIN)
+SELECT u.FullName, b.Booking_ID, b.Par_Status
+FROM tbl_UserProfile u
+RIGHT JOIN Booking b ON u.User_ID = b.User_ID;</code></pre>
+  </div>
+
+  <p><strong>FULL OUTER JOIN</strong> returns everything from both tables. MySQL does not support it directly &mdash; you simulate it by combining a LEFT JOIN and a RIGHT JOIN with <code>UNION</code>. In practice, you rarely need it.</p>
+
+  <div class="callout think">
+    <div class="callout-title">Quick Rule</div>
+    <p>90% of the time, you use <code>INNER JOIN</code>. 9% of the time, <code>LEFT JOIN</code>. The remaining 1% is RIGHT/FULL. Master INNER and LEFT first.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: GROUP BY & Aggregates                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="group-by">
+  <div class="section-tag">Section 07</div>
+  <h2>GROUP BY &amp; Aggregate Functions</h2>
+  <p class="section-desc">Aggregate functions crunch multiple rows into a single summary value. GROUP BY splits data into groups first, then aggregates each group separately.</p>
+
+  <h3>The Five Aggregate Functions</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Function</th><th>What It Does</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>COUNT(*)</code></td><td>Counts rows</td><td>How many bookings total?</td></tr>
+      <tr><td><code>SUM(col)</code></td><td>Adds up values</td><td>Total revenue from all bookings?</td></tr>
+      <tr><td><code>AVG(col)</code></td><td>Average value</td><td>Average parcel weight?</td></tr>
+      <tr><td><code>MIN(col)</code></td><td>Smallest value</td><td>Cheapest booking cost?</td></tr>
+      <tr><td><code>MAX(col)</code></td><td>Largest value</td><td>Heaviest parcel?</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Aggregates without GROUP BY</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Total number of bookings
+SELECT COUNT(*) AS total_bookings FROM Booking;
+-- Result: 3
+
+-- Total revenue
+SELECT SUM(Par_ServiceCost) AS total_revenue FROM Booking;
+-- Result: 587.50
+
+-- Average parcel weight
+SELECT AVG(Par_Weight_Gram) AS avg_weight FROM Booking;
+-- Result: 1833.33
+
+-- Heaviest and lightest parcels
+SELECT MIN(Par_Weight_Gram) AS lightest, MAX(Par_Weight_Gram) AS heaviest
+FROM Booking;
+-- Result: 800 | 3200</code></pre>
+  </div>
+
+  <h3>GROUP BY &mdash; Aggregating Per Group</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">GROUP BY examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Count bookings per status
+SELECT Par_Status, COUNT(*) AS count
+FROM Booking
+GROUP BY Par_Status;
+-- Result:
+-- Delivered | 1
+-- InTransit | 1
+-- Pending   | 1
+
+-- Revenue per delivery type
+SELECT Par_Delivery_Type, SUM(Par_ServiceCost) AS revenue
+FROM Booking
+GROUP BY Par_Delivery_Type;
+-- Result:
+-- Express  | 398.50
+-- Standard | 189.00
+
+-- Bookings per user
+SELECT User_ID, COUNT(*) AS bookings
+FROM Booking
+GROUP BY User_ID;
+-- Result:
+-- 1 | 2
+-- 2 | 1</code></pre>
+  </div>
+
+  <h3>HAVING &mdash; Filtering Groups</h3>
+
+  <p><code>WHERE</code> filters individual rows BEFORE grouping. <code>HAVING</code> filters groups AFTER grouping. You cannot use aggregate functions in WHERE &mdash; that is what HAVING is for.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">HAVING</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Users who have made more than 1 booking
+SELECT User_ID, COUNT(*) AS bookings
+FROM Booking
+GROUP BY User_ID
+HAVING COUNT(*) &gt; 1;
+-- Result: User_ID 1 | 2 bookings
+
+-- Delivery types with revenue over 200
+SELECT Par_Delivery_Type, SUM(Par_ServiceCost) AS revenue
+FROM Booking
+GROUP BY Par_Delivery_Type
+HAVING SUM(Par_ServiceCost) &gt; 200;</code></pre>
+  </div>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy &mdash; WHERE vs HAVING</div>
+    <p>Think of a school exam. <strong>WHERE</strong> is like saying "only look at students who submitted the exam" (filter before counting). <strong>HAVING</strong> is like saying "after counting scores, only show classes where the average score is above 80" (filter after aggregating).</p>
+  </div>
+
+  <h3>Execution Order of a SELECT</h3>
+
+  <p>SQL does not run in the order you write it. Here is the actual execution sequence:</p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">FROM<span class="flow-sub">Pick the tables</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">WHERE<span class="flow-sub">Filter rows</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">GROUP BY<span class="flow-sub">Make groups</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">HAVING<span class="flow-sub">Filter groups</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box cyan">SELECT<span class="flow-sub">Pick columns</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box red">ORDER BY<span class="flow-sub">Sort</span></div>
+    </div>
+  </div>
+
+  <p>This is why you cannot use a column alias from SELECT inside WHERE &mdash; WHERE runs before SELECT.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: UPDATE                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="update">
+  <div class="section-tag">Section 08</div>
+  <h2>UPDATE &mdash; Modifying Data</h2>
+  <p class="section-desc">Change existing values in rows. The most dangerous command after DELETE &mdash; because forgetting the WHERE clause affects <strong>every single row</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">UPDATE syntax</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">UPDATE table_name
+SET column1 = value1, column2 = value2
+WHERE condition;</code></pre>
+  </div>
+
+  <h3>Nimbus Examples</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Nimbus UPDATE operations</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Officer picks up a parcel
+UPDATE Booking
+SET Par_Status = 'PickedUp',
+    Par_PickupTime = '2026-04-23 10:30:00'
+WHERE Booking_ID = 3;
+
+-- Officer delivers a parcel
+UPDATE Booking
+SET Par_Status = 'Delivered',
+    Par_DropoffTime = NOW()
+WHERE Booking_ID = 2;
+
+-- User updates their phone number
+UPDATE tbl_UserProfile
+SET MobileNumber = '9876500000'
+WHERE User_ID = 1;</code></pre>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">The WHERE Clause Is Not Optional</div>
+    <p>Look at this disaster:</p>
+  </div>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">WRONG &mdash; No WHERE</div>
+      <div class="comparison-body">
+        <code>UPDATE Booking SET Par_Status = 'Delivered';</code>
+        <p style="margin-top:8px;">This marks ALL bookings as delivered. Every single one. Even ones that have not been picked up yet. There is no "undo" button in SQL.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">CORRECT &mdash; With WHERE</div>
+      <div class="comparison-body">
+        <code>UPDATE Booking SET Par_Status = 'Delivered' WHERE Booking_ID = 2;</code>
+        <p style="margin-top:8px;">Only updates booking #2. Exactly what you intended.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">Safety Rule</div>
+    <p>Before running any UPDATE, first run a SELECT with the same WHERE clause. If the SELECT returns the rows you expect, then run the UPDATE. This prevents accidental mass updates.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: DELETE                                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="delete">
+  <div class="section-tag">Section 09</div>
+  <h2>DELETE &mdash; Removing Data</h2>
+  <p class="section-desc">Removes rows from a table. Same danger as UPDATE &mdash; always use a WHERE clause.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">DELETE syntax and examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Delete a specific booking
+DELETE FROM Booking WHERE Booking_ID = 3;
+
+-- Delete all cancelled bookings
+DELETE FROM Booking WHERE Par_Status = 'Cancelled';
+
+-- DANGER: This deletes ALL bookings. Every single one.
+-- DELETE FROM Booking;</code></pre>
+  </div>
+
+  <h3>CASCADE &mdash; Deleting Related Data</h3>
+
+  <p>What happens if you delete a user who has bookings? The FOREIGN KEY constraint blocks it &mdash; you would have orphaned bookings pointing to a user that no longer exists.</p>
+
+  <p>You have three options:</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Option</th><th>SQL</th><th>What Happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>RESTRICT</code> (default)</td><td><code>FOREIGN KEY (User_ID) REFERENCES tbl_UserProfile(User_ID)</code></td><td>Blocks the delete. "You cannot delete this user because they have bookings."</td></tr>
+      <tr><td><code>CASCADE</code></td><td><code>FOREIGN KEY (User_ID) REFERENCES tbl_UserProfile(User_ID) ON DELETE CASCADE</code></td><td>Deleting user 1 also deletes ALL of user 1's bookings. Powerful but dangerous.</td></tr>
+      <tr><td><code>SET NULL</code></td><td><code>FOREIGN KEY (User_ID) REFERENCES tbl_UserProfile(User_ID) ON DELETE SET NULL</code></td><td>Deleting user 1 sets <code>User_ID = NULL</code> in their bookings. Bookings survive but become "orphaned."</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus uses the default (RESTRICT). If you try to delete a user who has bookings, MySQL says no. This is intentional &mdash; we do not want to accidentally wipe out booking history. If a user needs to be "removed," we would add an <code>is_active</code> column and set it to <code>FALSE</code> instead of actually deleting the row. This is called a <strong>soft delete</strong>.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: Subqueries                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="subqueries">
+  <div class="section-tag">Section 10</div>
+  <h2>Subqueries</h2>
+  <p class="section-desc">A subquery is a query inside another query. Think of it as solving a problem in two steps, where the inner query provides data for the outer query.</p>
+
+  <h3>Subquery in WHERE</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Subquery examples</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Find users who have made at least one booking
+SELECT FullName, Email FROM tbl_UserProfile
+WHERE User_ID IN (SELECT DISTINCT User_ID FROM Booking);
+-- Arjun Mehta, Priya Sharma
+
+-- Find bookings with above-average weight
+SELECT Booking_ID, Par_Weight_Gram FROM Booking
+WHERE Par_Weight_Gram &gt; (SELECT AVG(Par_Weight_Gram) FROM Booking);
+-- Booking 2: 3200g (average is 1833g)
+
+-- Find the user who made the most expensive booking
+SELECT FullName FROM tbl_UserProfile
+WHERE User_ID = (
+    SELECT User_ID FROM Booking
+    ORDER BY Par_ServiceCost DESC
+    LIMIT 1
+);</code></pre>
+  </div>
+
+  <h3>Subquery vs JOIN &mdash; When to Use Which</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Use Subquery When</th><th>Use JOIN When</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>You need a single value (average, max, count) to compare against</td><td>You need columns from both tables in the output</td></tr>
+      <tr><td>The inner query is independent (can run on its own)</td><td>Tables are directly related by a key</td></tr>
+      <tr><td>You are checking existence (<code>IN</code>, <code>EXISTS</code>)</td><td>Performance matters (JOINs are usually faster)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Same result: subquery vs JOIN</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Using subquery
+SELECT FullName FROM tbl_UserProfile
+WHERE User_ID IN (SELECT User_ID FROM Booking WHERE Par_Status = 'Pending');
+
+-- Same result using JOIN (generally faster for large data)
+SELECT DISTINCT u.FullName
+FROM tbl_UserProfile u
+INNER JOIN Booking b ON u.User_ID = b.User_ID
+WHERE b.Par_Status = 'Pending';</code></pre>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: Normalization                                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="normalization">
+  <div class="section-tag">Section 11</div>
+  <h2>Normalization</h2>
+  <p class="section-desc">Normalization is the process of organizing tables to <strong>eliminate redundancy and prevent anomalies</strong>. It is why you split data into separate tables instead of dumping everything into one giant spreadsheet.</p>
+
+  <h3>The Problem: One Giant Table</h3>
+
+  <p>What if Nimbus stored everything in one table?</p>
+
+  <div class="comparison">
+    <div class="comparison-col" style="grid-column: span 2;">
+      <div class="comparison-header bad">BAD: Everything in one table</div>
+      <div class="comparison-body" style="overflow-x:auto;">
+        <table class="info-table" style="font-size:0.75rem;">
+          <thead><tr><th>Booking_ID</th><th>FullName</th><th>Email</th><th>Phone</th><th>Rec_Name</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Arjun Mehta</td><td>arjun@email.com</td><td>987654</td><td>Deepak</td><td>Delivered</td></tr>
+            <tr><td>2</td><td>Priya Sharma</td><td>priya@email.com</td><td>912345</td><td>Kiran</td><td>InTransit</td></tr>
+            <tr><td>3</td><td>Arjun Mehta</td><td>arjun@email.com</td><td>987654</td><td>Meena</td><td>Pending</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:8px;">Arjun's name, email, and phone are stored <strong>twice</strong>. If he changes his phone number, you must update EVERY booking row &mdash; miss one and you have inconsistent data.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>1NF &mdash; First Normal Form</h3>
+
+  <p><strong>Rule:</strong> Every column holds a single value (no lists, no repeating groups).</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Violates 1NF</div>
+      <div class="comparison-body">
+        <code>Phone: "9876543210, 9123456789"</code>
+        <p style="margin-top:8px;">Two phone numbers in one cell. How do you search for one? How do you add a third?</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Follows 1NF</div>
+      <div class="comparison-body">
+        <code>MobileNumber: "9876543210"</code>
+        <p style="margin-top:8px;">One value per column. If you need multiple phones, create a separate <code>UserPhones</code> table.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus follows 1NF. Each column stores exactly one value. <code>MobileNumber</code> holds one number. <code>Rec_Address</code> holds one address. No comma-separated lists anywhere.</p>
+  </div>
+
+  <h3>2NF &mdash; Second Normal Form</h3>
+
+  <p><strong>Rule:</strong> 1NF + every non-key column depends on the <em>entire</em> primary key (no partial dependencies).</p>
+
+  <p>This matters when you have a composite primary key (a key made of multiple columns). If a column depends on only part of the key, move it to its own table.</p>
+
+  <p>Nimbus does not use composite keys (User_ID and Booking_ID are single-column primary keys), so 2NF is automatically satisfied. But the concept matters when designing more complex systems.</p>
+
+  <h3>3NF &mdash; Third Normal Form</h3>
+
+  <p><strong>Rule:</strong> 2NF + no column depends on another non-key column (no transitive dependencies).</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Violates 3NF</div>
+      <div class="comparison-body">
+        <p>If the Booking table had columns: <code>User_ID</code>, <code>User_FullName</code>, <code>User_Email</code></p>
+        <p style="margin-top:8px;"><code>User_FullName</code> depends on <code>User_ID</code>, not on <code>Booking_ID</code>. That is a transitive dependency &mdash; it belongs in the users table.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Follows 3NF</div>
+      <div class="comparison-body">
+        <p>Booking table only has <code>User_ID</code>. When you need the user's name, you JOIN to get it.</p>
+        <p style="margin-top:8px;">User info is stored once, in <code>tbl_UserProfile</code>. Change it once, it is updated everywhere.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus is in 3NF. The Booking table does not store any user details except <code>User_ID</code>. It does store <code>Rec_Name</code>, <code>Rec_Address</code>, <code>Rec_Mobile</code> &mdash; but these belong to the <em>recipient</em>, who is a different person from the sender. That is not redundancy; that is different data.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: ER Diagrams                                       -->
+<!-- ============================================================ -->
+<section class="content-section" id="er-diagrams">
+  <div class="section-tag">Section 12</div>
+  <h2>ER Diagrams</h2>
+  <p class="section-desc">An Entity-Relationship (ER) Diagram is a visual blueprint of your database &mdash; it shows tables, their columns, and how they connect. You draw this BEFORE writing any SQL.</p>
+
+  <h3>Core Concepts</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Concept</th><th>What It Is</th><th>Nimbus Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Entity</strong></td><td>A thing you store data about (becomes a table)</td><td>User, Booking</td></tr>
+      <tr><td><strong>Attribute</strong></td><td>A property of that entity (becomes a column)</td><td>FullName, Email, Par_Status</td></tr>
+      <tr><td><strong>Primary Key (PK)</strong></td><td>The attribute that uniquely identifies each entity</td><td>User_ID, Booking_ID</td></tr>
+      <tr><td><strong>Foreign Key (FK)</strong></td><td>An attribute that references another entity's PK</td><td>Booking.User_ID &rarr; tbl_UserProfile.User_ID</td></tr>
+      <tr><td><strong>Relationship</strong></td><td>How entities connect to each other</td><td>A user "creates" bookings</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Cardinality &mdash; How Many?</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Type</th><th>Meaning</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>1:1</strong> (One-to-One)</td><td>Each A has exactly one B, and vice versa</td><td>A user has one profile settings row</td></tr>
+      <tr><td><strong>1:N</strong> (One-to-Many)</td><td>One A has many Bs, but each B belongs to one A</td><td>One user creates <strong>many</strong> bookings</td></tr>
+      <tr><td><strong>M:N</strong> (Many-to-Many)</td><td>Many As relate to many Bs (needs a junction table)</td><td>Students enrolled in courses &mdash; each student takes many courses, each course has many students</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus has a <strong>1:N relationship</strong> between tbl_UserProfile and Booking. One user can create many bookings, but each booking belongs to exactly one user. The FOREIGN KEY <code>Booking.User_ID</code> implements this relationship.</p>
+  </div>
+
+  <h3>Nimbus ER Diagram</h3>
+
+  <div class="diagram">
+    <pre>
+  ┌──────────────────────────────────┐          ┌────────────────────────────────────────┐
+  │        tbl_UserProfile           │          │              Booking                   │
+  ├──────────────────────────────────┤          ├────────────────────────────────────────┤
+  │ <strong>PK</strong>  User_ID       INT AUTO_INC  │          │ <strong>PK</strong>  Booking_ID     INT AUTO_INC       │
+  │     FullName      VARCHAR(100)   │          │ <strong>FK</strong>  User_ID        INT NOT NULL        │
+  │     Rec_Address   VARCHAR(255)   │    1:N   │     Rec_Name       VARCHAR(100)        │
+  │     Email         VARCHAR(100)   │──────────│     Rec_Address    VARCHAR(255)        │
+  │     MobileNumber  VARCHAR(15)    │          │     Rec_Pin        VARCHAR(10)         │
+  │     Password      VARCHAR(255)   │          │     Rec_Mobile     VARCHAR(15)         │
+  │     Role          VARCHAR(20)    │          │     Par_Weight_Gram INT                │
+  │                                  │          │     Par_Contents_Description TEXT      │
+  │     UNIQUE(Email)                │          │     Par_Delivery_Type VARCHAR(20)      │
+  │     CHECK(Role IN (...))         │          │     Par_Packing_Preference VARCHAR(30) │
+  └──────────────────────────────────┘          │     Par_PickupTime  DATETIME           │
+                                                │     Par_DropoffTime DATETIME           │
+                                                │     Par_ServiceCost DECIMAL(10,2)      │
+                                                │     Par_PaymentTime DATETIME           │
+                                                │     Par_Status      VARCHAR(20)        │
+                                                │     Booking_Date    DATETIME           │
+                                                └────────────────────────────────────────┘
+    </pre>
+    <div class="diagram-label">Nimbus ER Diagram &mdash; 1:N relationship between User and Booking</div>
+  </div>
+
+  <p>Reading the diagram: One User (left) can have many Bookings (right). The <code>1:N</code> label on the line shows the cardinality. The <strong>FK</strong> marker on <code>User_ID</code> in Booking shows it is the foreign key that creates this link.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: Indexes                                           -->
+<!-- ============================================================ -->
+<section class="content-section" id="indexes">
+  <div class="section-tag">Section 13</div>
+  <h2>Indexes</h2>
+  <p class="section-desc">Indexes make searches fast. Without them, MySQL reads every single row to find what you want (a "full table scan"). With an index, it jumps directly to the right row.</p>
+
+  <h3>The Phone Book Analogy</h3>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy</div>
+    <p>Imagine finding "Sharma" in a phone book. You do not start from page 1 and read every name. You jump to the "S" section, then narrow down. That is what an index does for a database &mdash; it creates a sorted lookup structure so MySQL can jump directly to matching rows instead of scanning everything.</p>
+  </div>
+
+  <h3>Automatic Indexes</h3>
+
+  <p>MySQL automatically creates indexes on:</p>
+  <ul>
+    <li><strong>PRIMARY KEY</strong> columns &mdash; <code>User_ID</code> and <code>Booking_ID</code> are automatically indexed</li>
+    <li><strong>UNIQUE</strong> columns &mdash; <code>Email</code> is automatically indexed</li>
+    <li><strong>FOREIGN KEY</strong> columns &mdash; <code>Booking.User_ID</code> is automatically indexed</li>
+  </ul>
+
+  <p>This is why <code>WHERE User_ID = 1</code> and <code>WHERE Email = 'arjun@email.com'</code> are fast even with millions of rows &mdash; MySQL uses the index to jump directly to the matching row.</p>
+
+  <h3>When to Add Your Own Index</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Creating indexes</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- If you frequently search/filter by Par_Status, add an index
+CREATE INDEX idx_booking_status ON Booking(Par_Status);
+
+-- If you frequently search by date range
+CREATE INDEX idx_booking_date ON Booking(Booking_Date);
+
+-- Composite index: if you often filter by BOTH status AND date
+CREATE INDEX idx_status_date ON Booking(Par_Status, Booking_Date);</code></pre>
+  </div>
+
+  <h3>Index Trade-offs</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Benefit</th><th>Cost</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>SELECT queries become much faster</td><td>INSERT/UPDATE/DELETE become slightly slower (must update the index)</td></tr>
+      <tr><td>Sorting is faster (ORDER BY)</td><td>Uses extra disk space to store the index</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Rule of thumb:</strong> Add indexes on columns you frequently use in WHERE, JOIN ON, and ORDER BY clauses. Do not add indexes on every column &mdash; that wastes space and slows writes.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Nimbus already has automatic indexes on <code>User_ID</code>, <code>Booking_ID</code>, <code>Email</code>, and the foreign key <code>Booking.User_ID</code>. As the app grows, we would add an index on <code>Par_Status</code> (because officers constantly filter by status) and <code>Booking_Date</code> (for date range queries in reports).</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: All 14 Nimbus Queries                             -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-queries">
+  <div class="section-tag">Section 14</div>
+  <h2>All 14 Nimbus Queries</h2>
+  <p class="section-desc">These are the actual SQL queries that power Nimbus. In Phase 2, these get called from Java via JDBC. Each query is explained with its purpose, the SQL, and what it returns.</p>
+
+  <h4>Query 1: Login Validation</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Login &mdash; Validate credentials</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Check if email + password combo exists, return user details
+SELECT User_ID, FullName, Email, Role
+FROM tbl_UserProfile
+WHERE Email = ? AND Password = ?;</code></pre>
+  </div>
+  <p>The <code>?</code> are placeholders &mdash; in JDBC, you replace them with actual values using <code>PreparedStatement</code>. This prevents SQL injection. If a match is found, the user is logged in and their Role determines which menu they see.</p>
+
+  <h4>Query 2: Get User Details</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Fetch user profile by ID</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Fetch complete profile for a logged-in user
+SELECT * FROM tbl_UserProfile
+WHERE User_ID = ?;</code></pre>
+  </div>
+  <p>Used after login to populate the user's profile page. Returns one row (since User_ID is unique).</p>
+
+  <h4>Query 3: Email Uniqueness Check</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Check if email already registered</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Before registration, check if email is taken
+SELECT COUNT(*) AS email_count FROM tbl_UserProfile
+WHERE Email = ?;</code></pre>
+  </div>
+  <p>Returns <code>0</code> if the email is available, <code>1</code> if already registered. The UNIQUE constraint would also catch this, but checking first gives a friendlier error message.</p>
+
+  <h4>Query 4: Register New User</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Insert a new user</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Register a new customer
+INSERT INTO tbl_UserProfile (FullName, Rec_Address, Email, MobileNumber, Password, Role)
+VALUES (?, ?, ?, ?, ?, 'Customer');</code></pre>
+  </div>
+  <p>Role is hardcoded to <code>'Customer'</code> &mdash; officers and support users are created by admins, not through self-registration.</p>
+
+  <h4>Query 5: Create Booking</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Insert a new booking</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Customer creates a new parcel booking
+INSERT INTO Booking (User_ID, Rec_Name, Rec_Address, Rec_Pin, Rec_Mobile,
+    Par_Weight_Gram, Par_Contents_Description, Par_Delivery_Type,
+    Par_Packing_Preference, Par_ServiceCost)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);</code></pre>
+  </div>
+  <p><code>Par_Status</code> defaults to <code>'Pending'</code> and <code>Booking_Date</code> defaults to <code>CURRENT_TIMESTAMP</code> &mdash; no need to supply them.</p>
+
+  <h4>Query 6: Invoice / Booking Detail</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Full booking details for invoice</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Generate an invoice view with sender + booking details
+SELECT u.FullName AS sender_name, u.Email AS sender_email,
+       u.MobileNumber AS sender_phone, u.Rec_Address AS sender_address,
+       b.*
+FROM Booking b
+INNER JOIN tbl_UserProfile u ON b.User_ID = u.User_ID
+WHERE b.Booking_ID = ?;</code></pre>
+  </div>
+  <p>Uses INNER JOIN to combine booking details with the sender's profile. Returns everything needed for an invoice.</p>
+
+  <h4>Query 7: Customer Booking History</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">All bookings for a specific customer</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Show a customer's past and current bookings
+SELECT Booking_ID, Rec_Name, Par_Delivery_Type, Par_Status,
+       Par_ServiceCost, Booking_Date
+FROM Booking
+WHERE User_ID = ?
+ORDER BY Booking_Date DESC;</code></pre>
+  </div>
+  <p>Sorted newest first so the customer sees their most recent bookings at the top.</p>
+
+  <h4>Query 8: Officer &mdash; View All Active Parcels</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Officer tracking dashboard</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Officer sees all parcels that are not yet delivered or cancelled
+SELECT b.Booking_ID, u.FullName AS customer_name, b.Rec_Name,
+       b.Rec_Address, b.Rec_Pin, b.Par_Status, b.Par_Delivery_Type
+FROM Booking b
+INNER JOIN tbl_UserProfile u ON b.User_ID = u.User_ID
+WHERE b.Par_Status IN ('Pending', 'PickedUp', 'InTransit')
+ORDER BY b.Booking_Date ASC;</code></pre>
+  </div>
+  <p>Oldest bookings first (ASC) &mdash; officers should handle the longest-waiting parcels first.</p>
+
+  <h4>Query 9: Update Pickup Time</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Officer picks up a parcel</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Officer marks a parcel as picked up
+UPDATE Booking
+SET Par_Status = 'PickedUp', Par_PickupTime = NOW()
+WHERE Booking_ID = ?;</code></pre>
+  </div>
+  <p><code>NOW()</code> returns the current date and time from the server clock.</p>
+
+  <h4>Query 10: Update Drop-off / Delivery</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Officer delivers a parcel</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Officer marks a parcel as delivered
+UPDATE Booking
+SET Par_Status = 'Delivered', Par_DropoffTime = NOW()
+WHERE Booking_ID = ?;</code></pre>
+  </div>
+
+  <h4>Query 11: Check Delivery Status</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Track a booking by ID</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Customer or support checks parcel tracking status
+SELECT Booking_ID, Par_Status, Par_PickupTime, Par_DropoffTime,
+       Par_Delivery_Type, Rec_Name, Rec_Address
+FROM Booking
+WHERE Booking_ID = ?;</code></pre>
+  </div>
+
+  <h4>Query 12: Date Range Filter</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Bookings within a date range</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Support/admin views bookings in a specific date range
+SELECT b.Booking_ID, u.FullName, b.Rec_Name, b.Par_Status,
+       b.Par_ServiceCost, b.Booking_Date
+FROM Booking b
+INNER JOIN tbl_UserProfile u ON b.User_ID = u.User_ID
+WHERE b.Booking_Date BETWEEN ? AND ?
+ORDER BY b.Booking_Date DESC;</code></pre>
+  </div>
+  <p>Used for generating reports: "Show me all bookings from April 1 to April 23."</p>
+
+  <h4>Query 13: Revenue Summary by Status</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Revenue grouped by delivery status</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Dashboard summary &mdash; bookings and revenue per status
+SELECT Par_Status,
+       COUNT(*) AS total_bookings,
+       SUM(Par_ServiceCost) AS total_revenue
+FROM Booking
+GROUP BY Par_Status;</code></pre>
+  </div>
+  <p>Shows at a glance: 5 delivered (Rs. 2,450), 3 pending (Rs. 580), etc.</p>
+
+  <h4>Query 14: Search Bookings by Recipient</h4>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Search by recipient name</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- Purpose: Support searches for a booking by recipient name
+SELECT b.Booking_ID, u.FullName AS sender, b.Rec_Name,
+       b.Par_Status, b.Booking_Date
+FROM Booking b
+INNER JOIN tbl_UserProfile u ON b.User_ID = u.User_ID
+WHERE b.Rec_Name LIKE CONCAT('%', ?, '%')
+ORDER BY b.Booking_Date DESC;</code></pre>
+  </div>
+  <p><code>CONCAT('%', ?, '%')</code> wraps the search term with wildcards. Searching for "Deep" finds "Deepak Verma." This is safer than building the LIKE pattern in Java code.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 15: Practice Exercises                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 15</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Set up the Nimbus database with the seed data from Sections 3-4, then solve these. Write the SQL yourself before checking the answers.</p>
+
+  <h4>Exercise 1: Find All Officers</h4>
+  <p>Write a query to get the names and emails of all users with the role <code>'Officer'</code>.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT FullName, Email FROM tbl_UserProfile WHERE Role = 'Officer';</div>
+        <div class="breakdown-explain">Filters by Role column. Returns Amit Kumar and Neha Singh.</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 2: Total Revenue</h4>
+  <p>Write a query to find the total revenue (sum of all <code>Par_ServiceCost</code>) from delivered bookings only.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT SUM(Par_ServiceCost) AS delivered_revenue FROM Booking WHERE Par_Status = 'Delivered';</div>
+        <div class="breakdown-explain">SUM with a WHERE filter. Only adds up costs for delivered bookings. Result: 249.00</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 3: Heaviest Parcel</h4>
+  <p>Find the booking ID, recipient name, and weight of the heaviest parcel.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT Booking_ID, Rec_Name, Par_Weight_Gram FROM Booking ORDER BY Par_Weight_Gram DESC LIMIT 1;</div>
+        <div class="breakdown-explain">Sort by weight descending, take the first row. Result: Booking 2, Kiran Rao, 3200g.</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 4: Users With No Bookings</h4>
+  <p>Find the names of users who have <strong>never</strong> created a booking.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT u.FullName FROM tbl_UserProfile u LEFT JOIN Booking b ON u.User_ID = b.User_ID WHERE b.Booking_ID IS NULL;</div>
+        <div class="breakdown-explain">LEFT JOIN keeps all users. WHERE b.Booking_ID IS NULL filters to only those with no matching bookings. Returns Rahul, Sneha, Vikram, Amit, Neha, Ravi.</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 5: Express Delivery Percentage</h4>
+  <p>What percentage of all bookings are Express delivery?</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT ROUND(COUNT(CASE WHEN Par_Delivery_Type = 'Express' THEN 1 END) * 100.0 / COUNT(*), 1) AS express_pct FROM Booking;</div>
+        <div class="breakdown-explain">Uses CASE inside COUNT to count only Express rows, divides by total, rounds to 1 decimal. Result: 66.7%</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 6: Bookings Per Month</h4>
+  <p>Write a query that shows the number of bookings per month (use the <code>Booking_Date</code> column).</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT DATE_FORMAT(Booking_Date, '%Y-%m') AS month, COUNT(*) AS total FROM Booking GROUP BY DATE_FORMAT(Booking_Date, '%Y-%m') ORDER BY month;</div>
+        <div class="breakdown-explain">DATE_FORMAT extracts year-month. GROUP BY groups bookings into months. Result: 2026-04 | 3</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 7: Update All Pending to InTransit</h4>
+  <p>Write an UPDATE that changes all bookings with status <code>'Pending'</code> to <code>'InTransit'</code>. (Careful with WHERE!)</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">UPDATE Booking SET Par_Status = 'InTransit' WHERE Par_Status = 'Pending';</div>
+        <div class="breakdown-explain">The WHERE clause ensures only Pending bookings are updated. Without it, ALL bookings would become InTransit.</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 8: Sender With Most Bookings</h4>
+  <p>Find the user who has created the most bookings. Show their name and booking count.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT u.FullName, COUNT(b.Booking_ID) AS total FROM tbl_UserProfile u INNER JOIN Booking b ON u.User_ID = b.User_ID GROUP BY u.FullName ORDER BY total DESC LIMIT 1;</div>
+        <div class="breakdown-explain">JOIN to get names, GROUP BY user, sort by count descending, take top 1. Result: Arjun Mehta | 2</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 9: Average Cost by Delivery Type</h4>
+  <p>Find the average service cost for each delivery type (Express vs Standard).</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT Par_Delivery_Type, ROUND(AVG(Par_ServiceCost), 2) AS avg_cost FROM Booking GROUP BY Par_Delivery_Type;</div>
+        <div class="breakdown-explain">GROUP BY delivery type, AVG calculates the average. ROUND to 2 decimals for clean money formatting. Express: 199.25 | Standard: 189.00</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Exercise 10: Full Report Query</h4>
+  <p>Write a single query that shows: booking ID, sender name, recipient name, delivery type, status, cost, and booking date &mdash; for all bookings in April 2026, sorted by date.</p>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Show answer
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Solution</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">SELECT b.Booking_ID, u.FullName AS sender, b.Rec_Name AS recipient, b.Par_Delivery_Type, b.Par_Status, b.Par_ServiceCost, b.Booking_Date FROM Booking b INNER JOIN tbl_UserProfile u ON b.User_ID = u.User_ID WHERE b.Booking_Date BETWEEN '2026-04-01' AND '2026-04-30 23:59:59' ORDER BY b.Booking_Date;</div>
+        <div class="breakdown-explain">Combines JOIN (to get sender name), WHERE with BETWEEN (date range), and ORDER BY. Note the time on the end date &mdash; without it, April 30 bookings after midnight would be excluded.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAVIGATION ========== -->
+<div class="topic-nav">
+  <a href="threads.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Threads</span>
+  </a>
+  <a href="jdbc.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">JDBC</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="shared.js"></script>
+
+</body>
+</html>

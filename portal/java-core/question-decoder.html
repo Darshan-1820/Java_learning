@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Decoder | Nimbus Java Core</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .layout { display: block; }
+    .main { max-width: 800px; margin: 0 auto; padding: 40px 30px 80px; }
+
+    .decoder-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+    .decoder-step.blue { border-left-color: var(--accent); }
+    .decoder-step.green { border-left-color: var(--green); }
+    .decoder-step.orange { border-left-color: var(--orange); }
+    .decoder-step.red { border-left-color: var(--red); }
+    .decoder-step.purple { border-left-color: var(--purple); }
+    .decoder-step h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      border: none;
+      padding: 0;
+    }
+    .decoder-step p { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 8px; }
+    .keyword { color: var(--green); font-weight: 700; }
+    .wrong-keyword { color: var(--red); font-weight: 700; text-decoration: line-through; }
+
+    .decoder-step ul { padding-left: 20px; margin: 8px 0; }
+    .decoder-step li { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 4px; }
+    .decoder-step code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      background: rgba(0,0,0,0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    .decoder-step .example-box {
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 12px 0 8px;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .decoder-step .example-box .label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .decoder-step .result {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--green);
+      margin-top: 8px;
+    }
+
+    .decoder-step table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.82rem;
+    }
+    .decoder-step th {
+      text-align: left;
+      padding: 8px 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .decoder-step td {
+      padding: 8px 12px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(148,163,184,0.05);
+    }
+    .decoder-step td code {
+      font-size: 0.78rem;
+    }
+
+    .format-trap {
+      background: rgba(239, 68, 68, 0.06);
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 8px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .format-trap .trap-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .mapping-line {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(148,163,184,0.05);
+      font-size: 0.82rem;
+    }
+    .mapping-line:last-child { border-bottom: none; }
+    .mapping-left { color: var(--text-secondary); }
+    .mapping-arrow { color: var(--text-muted); font-size: 1rem; }
+    .mapping-right {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--green);
+    }
+
+    .practice-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+    .practice-box h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-bottom: 16px;
+      border: none;
+      padding: 0;
+    }
+    .practice-question {
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .reveal-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .reveal-btn:hover { background: var(--accent-hover); }
+    .practice-answer {
+      display: none;
+      margin-top: 16px;
+      padding: 16px 20px;
+      background: rgba(34, 197, 94, 0.06);
+      border: 1px solid rgba(34, 197, 94, 0.15);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .practice-answer.visible { display: block; }
+    .practice-answer strong { color: var(--green); }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../java-core.html" class="header-link active">Java Core</a>
+  </div>
+</header>
+<div class="layout">
+<main class="main">
+
+  <div class="section-tag">STRATEGY</div>
+  <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 8px;">Question Decoder</h2>
+  <p class="section-desc">Read Any PRA Question in 3 Minutes</p>
+  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 32px;">Stop re-reading the question 5 times. Here's how to extract exactly what you need.</p>
+
+  <!-- STEP 1 -->
+  <div class="decoder-step blue">
+    <h3>Step 1: Find the Classes</h3>
+    <p>Scan for <strong style="color: var(--text-primary);">"Create a class X with the following attributes"</strong>. Write down:</p>
+    <ul>
+      <li>Class name</li>
+      <li>Each field: name + type</li>
+      <li>Is any field a <code>List&lt;OtherClass&gt;</code>? &rarr; That's <strong style="color: var(--accent);">composition</strong></li>
+    </ul>
+    <div class="example-box">
+      <div class="label">Example from question:</div>
+      "Create a class <strong style="color: var(--text-primary);">Brand</strong> with attributes: brandId (Integer), brandName (String), mobileList (List&lt;Mobile&gt;)"
+      <div class="result">&rarr; You write: Brand: Integer brandId, String brandName, List&lt;Mobile&gt; mobileList</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="decoder-step green">
+    <h3>Step 2: Find the Methods</h3>
+    <p>Scan for method names. For each method, answer <strong style="color: var(--text-primary);">3 questions</strong>:</p>
+
+    <table>
+      <thead>
+        <tr><th>Question</th><th>Where to Look</th><th>What It Tells You</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>What's the name?</td><td>Bold text or code formatting</td><td>Your method name</td></tr>
+        <tr><td>What does it take?</td><td>"takes a list/collection of X"</td><td>Parameter type</td></tr>
+        <tr><td>What does it give back?</td><td>KEY WORDS below &darr;</td><td>Return type</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 16px;"><strong style="color: var(--green);">The Return Type Decision (most important part):</strong></p>
+
+    <table>
+      <thead>
+        <tr><th>Question uses these words</th><th>Return type</th><th>Your code does</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="keyword">"returns"</span> a list/collection</td>
+          <td><code>List&lt;X&gt;</code></td>
+          <td><code>return result;</code></td>
+        </tr>
+        <tr>
+          <td><span class="keyword">"returns"</span> a map</td>
+          <td><code>Map&lt;String, Double&gt;</code></td>
+          <td><code>return map;</code></td>
+        </tr>
+        <tr>
+          <td><span class="keyword">"returns"</span> the average/total/count</td>
+          <td><code>double</code> or <code>Double</code></td>
+          <td><code>return value;</code></td>
+        </tr>
+        <tr>
+          <td><span class="keyword">"returns"</span> null if not found</td>
+          <td><code>Double</code> (wrapper, nullable)</td>
+          <td><code>return null;</code></td>
+        </tr>
+        <tr>
+          <td><span class="keyword">"print"</span> the details or <span class="keyword">"display"</span></td>
+          <td><code>void</code></td>
+          <td><code>System.out.println()</code> inside method</td>
+        </tr>
+        <tr>
+          <td><span class="keyword">"throw"</span> exception</td>
+          <td>Add <code>throws XException</code></td>
+          <td><code>throw new XException("msg")</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="decoder-step orange">
+    <h3>Step 3: Find the Output Format</h3>
+    <p>Scroll to <strong style="color: var(--text-primary);">"Sample Output"</strong>. Copy the EXACT format. Character by character.</p>
+
+    <div class="format-trap">
+      <div class="trap-label">Format Trap #1</div>
+      Samsung: 27150.0
+      <br><span style="color: var(--text-muted); font-size: 0.75rem;">colon + space + decimal (.0 at end)</span>
+    </div>
+
+    <div class="format-trap">
+      <div class="trap-label">Format Trap #2</div>
+      Brand: Samsung, Model Number: 1001, Model Name: Galaxy S21, Price: 20300.0, Storage: 128GB
+      <br><span style="color: var(--text-muted); font-size: 0.75rem;">exact commas, spaces, GB suffix &mdash; every character matters</span>
+    </div>
+
+    <div class="format-trap">
+      <div class="trap-label">Format Trap #3</div>
+      "No such Investors found" &ne; "No Investors found"
+      <br><span style="color: var(--text-muted); font-size: 0.75rem;">different messages for different conditions! Read EXACTLY.</span>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="decoder-step red">
+    <h3>Step 4: Find the Input Order</h3>
+    <p>Scroll to <strong style="color: var(--text-primary);">"Sample Input Explanation"</strong>. It tells you EXACTLY what to read and in what order.</p>
+
+    <div style="margin-top: 12px;">
+      <div class="mapping-line">
+        <div class="mapping-left">"1. First read the number of Brand objects"</div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-right">int n = Integer.parseInt(sc.nextLine().trim());</div>
+      </div>
+      <div class="mapping-line">
+        <div class="mapping-left">"2. Next read brand details"</div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-right">for loop, read brandId, brandName</div>
+      </div>
+      <div class="mapping-line">
+        <div class="mapping-left">"3. Read number of mobiles for that brand"</div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-right">int mobileCount = Integer.parseInt(...);</div>
+      </div>
+      <div class="mapping-line">
+        <div class="mapping-left">"4. Read mobile attributes"</div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-right">nested for loop inside brand loop</div>
+      </div>
+      <div class="mapping-line">
+        <div class="mapping-left">"5. Read parameters for methods"</div>
+        <div class="mapping-arrow">&rarr;</div>
+        <div class="mapping-right">after ALL objects are read</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="decoder-step purple">
+    <h3>Step 5: Find the Exception Pattern</h3>
+    <p>Scan for <strong style="color: var(--text-primary);">"throw exception"</strong> or <strong style="color: var(--text-primary);">"custom exception"</strong>. If present:</p>
+    <ol style="padding-left: 20px; margin: 12px 0;">
+      <li style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 6px;">Create the exception class (4 lines &mdash; extends Exception, constructor with super(msg))</li>
+      <li style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 6px;">Throw in the method when condition is met</li>
+      <li style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 6px;">Catch in main, print <code>"ExceptionName: " + e.getMessage()</code></li>
+      <li style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 6px;">EACH method gets its OWN try-catch in main</li>
+    </ol>
+    <div class="example-box">
+      <div class="label">Template:</div>
+      <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--purple); margin: 0; background: none;">class BrandNotFoundException extends Exception {
+    BrandNotFoundException(String msg) { super(msg); }
+}</pre>
+    </div>
+  </div>
+
+  <!-- PRACTICE SECTION -->
+  <div class="practice-box">
+    <h3>Practice: Decode This Question</h3>
+    <div class="practice-question">
+      Create a class <strong style="color: var(--text-primary);">Investor</strong> with the following attributes:<br>
+      investorId (Integer), investorName (String), stockList (List&lt;Stock&gt;)<br><br>
+
+      Create a class <strong style="color: var(--text-primary);">Stock</strong> with the following attributes:<br>
+      stockId (Integer), stockName (String), purchasePrice (Double), currentPrice (Double)<br><br>
+
+      Create a method <strong style="color: var(--text-primary);">getStocksByInvestorName</strong> that takes a list of Investor objects and a String (investorName). The method returns a list of Stock objects belonging to the investor with the given name. If no investor is found, throw <strong style="color: var(--red);">InvestorNotFoundException</strong> with the message "No such Investors found".<br><br>
+
+      Create a method <strong style="color: var(--text-primary);">getAveragePurchasePrice</strong> that takes a list of Stock objects and returns the average of purchasePrice of all stocks. If the list is empty, return 0.0.
+    </div>
+
+    <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 12px;"><strong style="color: var(--text-primary);">Identify:</strong> Classes &amp; fields, method names, return types, exception name, output format clues.</p>
+
+    <button class="reveal-btn" onclick="document.getElementById('practice-answer').classList.toggle('visible'); this.textContent = this.textContent === 'Reveal Answer' ? 'Hide Answer' : 'Reveal Answer';">Reveal Answer</button>
+
+    <div class="practice-answer" id="practice-answer">
+      <strong>Classes:</strong><br>
+      &bull; Investor: Integer investorId, String investorName, List&lt;Stock&gt; stockList (composition!)<br>
+      &bull; Stock: Integer stockId, String stockName, Double purchasePrice, Double currentPrice<br><br>
+
+      <strong>Method 1 &mdash; getStocksByInvestorName:</strong><br>
+      &bull; Takes: List&lt;Investor&gt;, String<br>
+      &bull; Returns: List&lt;Stock&gt; (keyword: "returns a list")<br>
+      &bull; Exception: InvestorNotFoundException ("No such Investors found")<br><br>
+
+      <strong>Method 2 &mdash; getAveragePurchasePrice:</strong><br>
+      &bull; Takes: List&lt;Stock&gt;<br>
+      &bull; Returns: double (keyword: "returns the average")<br>
+      &bull; No exception &mdash; returns 0.0 if empty<br><br>
+
+      <strong>Custom Exception:</strong><br>
+      &bull; InvestorNotFoundException extends Exception<br>
+      &bull; Message: "No such Investors found" (exact text!)<br><br>
+
+      <strong>In main:</strong><br>
+      &bull; SEPARATE try-catch for each method call<br>
+      &bull; Method 1 in one try-catch, method 2 in another
+    </div>
+  </div>
+
+</main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

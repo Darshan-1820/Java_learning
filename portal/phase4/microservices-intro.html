@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microservices Architecture | Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link active">Phase 4</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<!-- ========== LAYOUT ========== -->
+<div class="layout">
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">REST APIs</div>
+    <a href="rest-principles.html" class="sidebar-link"><span class="num">01</span> REST Principles</a>
+    <a href="json.html" class="sidebar-link"><span class="num">02</span> JSON</a>
+    <a href="spring-boot.html" class="sidebar-link"><span class="num">03</span> Spring Boot</a>
+    <a href="rest-controllers.html" class="sidebar-link"><span class="num">04</span> REST Controllers</a>
+    <a href="api-error-handling.html" class="sidebar-link"><span class="num">05</span> Error Handling</a>
+    <a href="api-testing.html" class="sidebar-link"><span class="num">06</span> API Testing</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Microservices</div>
+    <a href="microservices-intro.html" class="sidebar-link active"><span class="num">07</span> Microservices Arch</a>
+    <a href="nimbus-microservices.html" class="sidebar-link"><span class="num">08</span> Nimbus Microservices</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="typescript.html" class="sidebar-link"><span class="num">09</span> TypeScript Basics</a>
+    <a href="angular-intro.html" class="sidebar-link"><span class="num">10</span> Angular Big Picture</a>
+    <a href="angular-services.html" class="sidebar-link"><span class="num">11</span> Services &amp; HTTP</a>
+    <a href="angular-routing.html" class="sidebar-link"><span class="num">12</span> Routing &amp; Guards</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Full Stack Build</div>
+    <a href="nimbus-fullstack.html" class="sidebar-link"><span class="num">13</span> Nimbus Full Stack</a>
+    <a href="cheat-sheets.html" class="sidebar-link"><span class="num">14</span> Cheat Sheets</a>
+  </div>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: MONOLITH VS MICROSERVICES                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="monolith-vs-micro">
+  <div class="section-tag">Section 01</div>
+  <h2>Monolith vs Microservices</h2>
+  <p class="section-desc">The monolith is one big application that does everything. Microservices break it into small, independent services that each do one thing well.</p>
+
+  <h3>The Restaurant vs Food Court Analogy</h3>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header left">Monolith = One Restaurant</div>
+      <div class="comparison-body">
+        <p>One kitchen handles everything &mdash; starters, main course, desserts, drinks. One chef falls sick? The entire restaurant slows down. Want to change the dessert menu? You risk breaking the main course workflow.</p>
+        <p><strong>One codebase. One deployment. Everything together.</strong></p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header right">Microservices = Food Court</div>
+      <div class="comparison-body">
+        <p>Separate stalls for pizza, biryani, juice, dessert. Pizza stall breaks? Biryani stall keeps running. Want to add a new sushi stall? Just add it without touching the others.</p>
+        <p><strong>Separate codebases. Independent deployments. Each does one thing.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Architecture Comparison</h3>
+
+  <div class="diagram">
+    <pre>
+    MONOLITH                           MICROSERVICES
+  +---------------------------+      +----------+  +----------+  +----------+
+  |                           |      |  User    |  | Booking  |  | Notif.   |
+  |   User Logic              |      | Service  |  | Service  |  | Service  |
+  |   Booking Logic           |      |  :8081   |  |  :8082   |  |  :8083   |
+  |   Notification Logic      |      +----+-----+  +----+-----+  +----+-----+
+  |   Payment Logic           |           |             |             |
+  |   All in ONE application  |      +----+-------------+-------------+----+
+  |                           |      |              API Gateway             |
+  |   ONE database            |      +-------------------------------------+
+  |   ONE deployment          |
+  +---------------------------+      Each service has its OWN database
+                                     Each service is deployed INDEPENDENTLY</pre>
+    <div class="diagram-label">Monolith: one big box. Microservices: many small boxes connected via APIs.</div>
+  </div>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>Our Nimbus project started as a monolith (one Spring Boot app with all endpoints). In this section, we learn how to split it into microservices &mdash; a <strong>User Service</strong>, <strong>Booking Service</strong>, and <strong>Notification Service</strong> &mdash; each running independently.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHEN TO USE MICROSERVICES                          -->
+<!-- ============================================================ -->
+<section class="content-section" id="when-to-use">
+  <div class="section-tag">Section 02</div>
+  <h2>When to Use Microservices</h2>
+  <p class="section-desc">Microservices are not always better. They add complexity. The decision depends on your team size, project scale, and rate of change.</p>
+
+  <h3>Monolith is Better When...</h3>
+
+  <ul>
+    <li><strong>Small team</strong> (1-5 developers) &mdash; microservices overhead is not worth it</li>
+    <li><strong>Early stage</strong> &mdash; you do not know your domain boundaries yet</li>
+    <li><strong>Simple application</strong> &mdash; a blog, portfolio, or basic CRUD app</li>
+    <li><strong>Speed matters</strong> &mdash; monolith is faster to build and deploy initially</li>
+  </ul>
+
+  <h3>Microservices are Better When...</h3>
+
+  <ul>
+    <li><strong>Large team</strong> (10+ developers) &mdash; teams can work on different services independently</li>
+    <li><strong>Different scaling needs</strong> &mdash; your booking service gets 100x more traffic than your notification service</li>
+    <li><strong>Different tech stacks</strong> &mdash; one service in Java, another in Python, another in Go</li>
+    <li><strong>Independent deployments</strong> &mdash; you want to deploy a fix to bookings without touching users</li>
+    <li><strong>Fault isolation</strong> &mdash; if notifications break, bookings should still work</li>
+  </ul>
+
+  <div class="callout warning">
+    <div class="callout-title">Reality Check</div>
+    <p>Most companies start with a monolith and migrate to microservices later when they hit scaling problems. Amazon, Netflix, and Uber all started as monoliths. Do not start with microservices just because "big companies use them." Start simple, evolve when needed.</p>
+  </div>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Factor</th><th>Monolith</th><th>Microservices</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Complexity</td><td>Simple to build, simple to deploy</td><td>Complex to build, complex to manage</td></tr>
+      <tr><td>Team size</td><td>1-10 developers</td><td>10-100+ developers</td></tr>
+      <tr><td>Deployment</td><td>One deployment for everything</td><td>Each service deployed separately</td></tr>
+      <tr><td>Scaling</td><td>Scale the entire app (wasteful)</td><td>Scale only what needs it (efficient)</td></tr>
+      <tr><td>Fault isolation</td><td>One bug can crash everything</td><td>One service crash does not affect others</td></tr>
+      <tr><td>Data</td><td>One shared database</td><td>Each service owns its data</td></tr>
+      <tr><td>Communication</td><td>Direct method calls (fast)</td><td>Network calls (slower, can fail)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: SERVICE BOUNDARIES                                 -->
+<!-- ============================================================ -->
+<section class="content-section" id="service-boundaries">
+  <div class="section-tag">Section 03</div>
+  <h2>Service Boundaries &mdash; How to Split</h2>
+  <p class="section-desc">The hardest part of microservices is deciding where to draw the lines. Each service should own one business domain and its data.</p>
+
+  <h3>The Rule: One Business Capability Per Service</h3>
+
+  <p>A service should map to a <strong>business function</strong>, not a technical layer. You do NOT split by "controller service" and "database service." You split by what the business does.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Wrong: Technical Split</div>
+      <div class="comparison-body">
+        <p>Database Service</p>
+        <p>Controller Service</p>
+        <p>Validation Service</p>
+        <p>Email Service</p>
+        <p>(Every service depends on every other)</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">Correct: Business Split</div>
+      <div class="comparison-body">
+        <p>User Service (auth, profiles)</p>
+        <p>Booking Service (create, track, update)</p>
+        <p>Notification Service (email, SMS)</p>
+        <p>(Each service is self-contained)</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Nimbus Service Boundaries</h3>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name blue">User Service</div>
+      <div class="layer-detail"><strong>Owns:</strong> User registration, login, JWT token generation, user profiles. <strong>Database:</strong> users table. <strong>Port:</strong> 8081</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Booking Service</div>
+      <div class="layer-detail"><strong>Owns:</strong> Create bookings, update status, track parcels, booking history. <strong>Database:</strong> bookings table. <strong>Port:</strong> 8082</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name orange">Notification Service</div>
+      <div class="layer-detail"><strong>Owns:</strong> Send email/SMS notifications when booking status changes. <strong>Database:</strong> notifications table. <strong>Port:</strong> 8083</div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Each service has its <strong>own database</strong>. The User Service does not read from the bookings table directly. If it needs booking data, it calls the Booking Service's API. This is called <strong>database per service</strong> &mdash; a core microservices principle.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: COMMUNICATION BETWEEN SERVICES                     -->
+<!-- ============================================================ -->
+<section class="content-section" id="communication">
+  <div class="section-tag">Section 04</div>
+  <h2>Communication &mdash; REST Calls Between Services</h2>
+  <p class="section-desc">In a monolith, one class calls another class directly. In microservices, services talk to each other over the network using REST APIs.</p>
+
+  <h3>Synchronous Communication (REST)</h3>
+
+  <p>The most common approach: Service A calls Service B's API and waits for the response.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">BookingService calling UserService via REST</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">// In BookingService (port 8082)
+// Need to validate user before creating booking
+
+@Service
+public class BookingService {
+
+    private final RestTemplate restTemplate;
+
+    public BookingService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public Booking createBooking(BookingRequest request) {
+        // Call User Service to verify the user exists
+        String userServiceUrl = "http://localhost:8081/api/users/" + request.getUserId();
+        User user = restTemplate.getForObject(userServiceUrl, User.class);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        // User exists — proceed with booking creation
+        Booking booking = new Booking();
+        booking.setSenderName(user.getFullName());
+        // ... save booking
+        return booking;
+    }
+}</code></pre>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box blue">Angular Frontend<span class="flow-sub">POST /api/bookings</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box green">Booking Service<span class="flow-sub">:8082</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">User Service<span class="flow-sub">:8081 (verify user)</span></div>
+    </div>
+    <div class="flow-arrow-down">&darr;</div>
+    <div class="flow-row">
+      <div class="flow-box green">Booking Service<span class="flow-sub">Saves booking to DB</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box purple">Notification Service<span class="flow-sub">:8083 (send confirmation)</span></div>
+    </div>
+    <div class="flow-label">Service-to-service communication via REST APIs</div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">The Downside of Synchronous Calls</div>
+    <p>If the User Service is slow or down, the Booking Service is stuck waiting. This is called <strong>cascading failure</strong>. Solutions include circuit breakers (Resilience4j), timeouts, and asynchronous messaging (RabbitMQ, Kafka) &mdash; but those are advanced topics.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: NIMBUS MICROSERVICES ARCHITECTURE                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="nimbus-architecture">
+  <div class="section-tag">Section 05</div>
+  <h2>Nimbus Microservices Architecture</h2>
+  <p class="section-desc">Here is the complete architecture diagram showing how Nimbus would look as a microservices system.</p>
+
+  <div class="diagram">
+    <pre>
+                         +--------------------+
+                         |   Angular Frontend |
+                         |    (port 4200)     |
+                         +--------+-----------+
+                                  |
+                         +--------v-----------+
+                         |    API Gateway     |
+                         |    (port 8080)     |
+                         +--+------+------+---+
+                            |      |      |
+              +-------------+   +--+--+   +-------------+
+              |                 |     |                  |
+    +---------v------+  +------v-----+--+  +------------v---+
+    |  User Service  |  | Booking Svc   |  | Notification   |
+    |   (port 8081)  |  |  (port 8082)  |  |   Service      |
+    |                |  |               |  |  (port 8083)   |
+    | - Register     |  | - Create      |  |                |
+    | - Login        |  | - Track       |  | - Email        |
+    | - Profile      |  | - Update      |  | - SMS          |
+    | - JWT Token    |  | - History     |  | - Push Notif.  |
+    |                |  |               |  |                |
+    | [Users DB]     |  | [Bookings DB] |  | [Notif. DB]   |
+    +----------------+  +---------------+  +----------------+</pre>
+    <div class="diagram-label">Nimbus microservices architecture: 3 services + API Gateway + Angular frontend</div>
+  </div>
+
+  <h3>What Each Service Owns</h3>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Service</th><th>Port</th><th>Endpoints</th><th>Database Tables</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>User Service</strong></td>
+        <td><code>8081</code></td>
+        <td><code>POST /api/register</code><br><code>POST /api/login</code><br><code>GET /api/users/{id}</code></td>
+        <td>users</td>
+      </tr>
+      <tr>
+        <td><strong>Booking Service</strong></td>
+        <td><code>8082</code></td>
+        <td><code>POST /api/bookings</code><br><code>GET /api/bookings/{id}</code><br><code>GET /api/bookings?userId=X</code><br><code>PUT /api/bookings/{id}/status</code><br><code>PUT /api/bookings/{id}/pickup</code><br><code>GET /api/bookings/history</code></td>
+        <td>bookings</td>
+      </tr>
+      <tr>
+        <td><strong>Notification Service</strong></td>
+        <td><code>8083</code></td>
+        <td><code>POST /api/notifications/send</code><br><code>GET /api/notifications?userId=X</code></td>
+        <td>notifications</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">In Nimbus</div>
+    <p>The endpoints are exactly the same as our monolith. The only difference is they now live in separate Spring Boot applications running on different ports. The Angular frontend does not even know the difference &mdash; the API Gateway routes requests to the correct service.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: API GATEWAY                                        -->
+<!-- ============================================================ -->
+<section class="content-section" id="api-gateway">
+  <div class="section-tag">Section 06</div>
+  <h2>API Gateway</h2>
+  <p class="section-desc">The API Gateway is the single entry point for all client requests. It routes each request to the correct microservice so the frontend only talks to one URL.</p>
+
+  <h3>Why Do We Need It?</h3>
+
+  <p>Without a gateway, the Angular frontend would need to know the URL and port of every service. With 3 services, that is 3 different URLs. With 20 services, that is 20 URLs. The gateway solves this:</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without Gateway</div>
+      <div class="comparison-body">
+        <p><code>http://localhost:8081/api/login</code></p>
+        <p><code>http://localhost:8082/api/bookings</code></p>
+        <p><code>http://localhost:8083/api/notifications</code></p>
+        <p>Frontend knows every service URL. Tight coupling.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With Gateway</div>
+      <div class="comparison-body">
+        <p><code>http://localhost:8080/api/login</code></p>
+        <p><code>http://localhost:8080/api/bookings</code></p>
+        <p><code>http://localhost:8080/api/notifications</code></p>
+        <p>Frontend talks to ONE URL. Gateway routes.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>What Else Can a Gateway Do?</h3>
+
+  <ul>
+    <li><strong>Routing</strong> &mdash; Send <code>/api/users/*</code> to User Service, <code>/api/bookings/*</code> to Booking Service</li>
+    <li><strong>Authentication</strong> &mdash; Validate JWT tokens before forwarding requests</li>
+    <li><strong>Rate Limiting</strong> &mdash; Block clients making too many requests (prevent abuse)</li>
+    <li><strong>Load Balancing</strong> &mdash; Distribute requests across multiple instances of a service</li>
+    <li><strong>CORS Handling</strong> &mdash; Manage cross-origin requests in one place</li>
+  </ul>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>In Spring Boot, the most popular API Gateway is <strong>Spring Cloud Gateway</strong>. It is itself a Spring Boot application that routes requests based on URL patterns. Think of it as a receptionist in an office &mdash; all visitors go to the reception desk first, and the receptionist directs them to the right department.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: SERVICE DISCOVERY                                   -->
+<!-- ============================================================ -->
+<section class="content-section" id="service-discovery">
+  <div class="section-tag">Section 07</div>
+  <h2>Service Discovery</h2>
+  <p class="section-desc">In production, services do not always run on the same ports or machines. Service discovery lets services find each other dynamically without hardcoded URLs.</p>
+
+  <h3>The Problem</h3>
+
+  <p>In development, we hardcode <code>http://localhost:8081</code> for the User Service. But in production, the User Service might run on <code>10.0.1.5:8081</code> today and <code>10.0.2.3:8081</code> tomorrow (after a restart or scale-up). Hardcoded URLs break.</p>
+
+  <h3>The Solution: Registry</h3>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box green">User Service<span class="flow-sub">Registers itself: "I'm at 10.0.1.5:8081"</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-box orange">Eureka Server<span class="flow-sub">Service Registry (phone book)</span></div>
+      <div class="flow-arrow">&larr;</div>
+      <div class="flow-box blue">Booking Service<span class="flow-sub">Asks: "Where is User Service?"</span></div>
+    </div>
+    <div class="flow-label">Each service registers itself. Other services look up the registry to find it.</div>
+  </div>
+
+  <p><strong>Netflix Eureka</strong> is the most common service registry in the Spring Boot ecosystem. Each service registers itself on startup, and other services can look up the registry to find the current address.</p>
+
+  <div class="callout analogy">
+    <div class="callout-title">Analogy: Phone Book</div>
+    <p>Imagine you move to a new house. You update your address in the phone book (Eureka). Anyone who wants to visit you looks up the phone book instead of memorizing your address. If you move again, you update the phone book, and everyone automatically knows your new address.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: CHALLENGES                                         -->
+<!-- ============================================================ -->
+<section class="content-section" id="challenges">
+  <div class="section-tag">Section 08</div>
+  <h2>Challenges of Microservices</h2>
+  <p class="section-desc">Microservices solve some problems but create new ones. Understanding these challenges is as important as understanding the benefits.</p>
+
+  <h3>The Big 5 Challenges</h3>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-name orange">Network Failures</div>
+      <div class="layer-detail">In a monolith, method calls cannot fail. In microservices, every service call goes over the network, which can time out, drop packets, or fail. You must handle this with retries, circuit breakers, and fallback logic.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name purple">Data Consistency</div>
+      <div class="layer-detail">With separate databases, there is no single transaction spanning services. If the Booking Service saves a booking but the Notification Service fails to send the email, you have <strong>eventual consistency</strong> &mdash; the system is temporarily in an inconsistent state.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name blue">Debugging</div>
+      <div class="layer-detail">A single request may flow through 3 services. When something breaks, you need <strong>distributed tracing</strong> (like Zipkin or Jaeger) to follow the request across all services and find where it failed.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name green">Deployment Complexity</div>
+      <div class="layer-detail">Instead of deploying one application, you deploy 3 (or 30). You need CI/CD pipelines, container orchestration (Docker + Kubernetes), and infrastructure management for each service.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-name cyan">Testing</div>
+      <div class="layer-detail">Testing one service in isolation is easy. Testing the interaction between 5 services is hard. You need integration tests, contract tests, and end-to-end tests across services.</div>
+    </div>
+  </div>
+
+  <div class="callout important">
+    <div class="callout-title">The Golden Rule</div>
+    <p>"If your team is not big enough to have dedicated DevOps, you probably do not need microservices." Microservices trade development simplicity for operational complexity. Make sure you can handle the operational cost before adopting them.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: DOCKER AND CONTAINERS                              -->
+<!-- ============================================================ -->
+<section class="content-section" id="docker">
+  <div class="section-tag">Section 09</div>
+  <h2>Docker &amp; Containers (Brief)</h2>
+  <p class="section-desc">Docker packages your microservice into a container &mdash; a lightweight, portable box that includes everything the service needs to run: code, dependencies, runtime.</p>
+
+  <h3>Why Containers?</h3>
+
+  <p>Without Docker, deploying 3 microservices means installing Java, setting up databases, and configuring environments on every server. With Docker, each service is packaged into a container that runs the same way everywhere &mdash; on your laptop, on a test server, or in production.</p>
+
+  <div class="comparison">
+    <div class="comparison-col">
+      <div class="comparison-header bad">Without Docker</div>
+      <div class="comparison-body">
+        <p>"It works on my machine."</p>
+        <p>Java 17 on dev, Java 11 on server.</p>
+        <p>Different OS, different configs.</p>
+        <p>Hours spent on environment setup.</p>
+      </div>
+    </div>
+    <div class="comparison-col">
+      <div class="comparison-header good">With Docker</div>
+      <div class="comparison-body">
+        <p>"It runs in a container."</p>
+        <p>Same Java version everywhere.</p>
+        <p>Container is identical on all machines.</p>
+        <p><code>docker run nimbus-user-service</code> &mdash; done.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Dockerfile (Nimbus User Service)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">FROM openjdk:17-slim
+COPY target/user-service.jar app.jar
+EXPOSE 8081
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+  </div>
+
+  <button class="code-breakdown-btn" onclick="toggleBreakdown(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> Break it down
+  </button>
+  <div class="code-breakdown">
+    <div class="breakdown-header">Dockerfile explained</div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">1</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">FROM openjdk:17-slim</div>
+        <div class="breakdown-explain">Start with a base image that has Java 17 installed. <code>slim</code> means a minimal version (smaller download).</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">2</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">COPY target/user-service.jar app.jar</div>
+        <div class="breakdown-explain">Copy the compiled JAR file from your project into the container.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">3</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">EXPOSE 8081</div>
+        <div class="breakdown-explain">Tell Docker that this container listens on port 8081.</div>
+      </div>
+    </div>
+    <div class="breakdown-line">
+      <div class="breakdown-num">4</div>
+      <div class="breakdown-content">
+        <div class="breakdown-code">ENTRYPOINT ["java", "-jar", "app.jar"]</div>
+        <div class="breakdown-explain">The command to run when the container starts. Same as running <code>java -jar app.jar</code> in your terminal.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Key Insight</div>
+    <p>Docker is not microservices-specific. You can containerize a monolith too. But microservices + Docker is the standard combination because each service gets its own container, deployed and scaled independently.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: PRACTICE EXERCISES                                -->
+<!-- ============================================================ -->
+<section class="content-section" id="practice">
+  <div class="section-tag">Section 10</div>
+  <h2>Practice Exercises</h2>
+  <p class="section-desc">Test your understanding of microservices architecture.</p>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 1 &mdash; Monolith or Microservices?</div>
+    <p>For each scenario, decide whether a monolith or microservices is the better choice and explain why:</p>
+    <ol>
+      <li>A solo developer building an MVP for a food delivery app</li>
+      <li>A 50-person engineering team at a bank with 200 API endpoints</li>
+      <li>A startup with 3 developers and a tight 2-month deadline</li>
+      <li>An e-commerce platform where the payment system needs 99.99% uptime but the recommendation engine can tolerate downtime</li>
+    </ol>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 2 &mdash; Split an Application</div>
+    <p>You are building an online exam platform with these features: user registration, exam creation, question bank, exam taking, grading, certificates, and email notifications.</p>
+    <p>Split this into microservices. For each service, define: the name, what it owns, its database tables, and its main endpoints.</p>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 3 &mdash; Trace a Request</div>
+    <p>In the Nimbus microservices architecture, trace the complete flow when a customer creates a new booking. Write every step from the Angular frontend to the final response, including:</p>
+    <ul>
+      <li>Which service handles each step</li>
+      <li>What REST calls happen between services</li>
+      <li>What each service does with the data</li>
+    </ul>
+  </div>
+
+  <div class="callout practice">
+    <div class="callout-title">Exercise 4 &mdash; Failure Scenario</div>
+    <p>The Notification Service (port 8083) is down. A customer just created a booking. What happens? Walk through the request flow and explain:</p>
+    <ol>
+      <li>Does the booking still get created?</li>
+      <li>Does the customer get an error?</li>
+      <li>How should the Booking Service handle this failure?</li>
+      <li>How would you design the system so the notification is eventually sent when the service comes back up?</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="api-testing.html" class="prev">
+    <span class="nav-label">&larr; Previous Topic</span>
+    <span class="nav-title">API Testing</span>
+  </a>
+  <a href="nimbus-microservices.html" class="next">
+    <span class="nav-label">Next Topic &rarr;</span>
+    <span class="nav-title">Nimbus Microservices</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>
