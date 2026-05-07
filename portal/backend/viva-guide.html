@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viva Guide &mdash; Nimbus Backend Complete Walkthrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Overview</div>
+    <a href="#the-journey" class="sidebar-link"><span class="num">01</span> What We Built</a>
+    <a href="#architecture" class="sidebar-link"><span class="num">02</span> Architecture Overview</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Layer 1: Models</div>
+    <a href="#models-overview" class="sidebar-link"><span class="num">03</span> JPA Entities</a>
+    <a href="#user-model" class="sidebar-link"><span class="num">04</span> User.java</a>
+    <a href="#booking-model" class="sidebar-link"><span class="num">05</span> Booking.java</a>
+    <a href="#issue-model" class="sidebar-link"><span class="num">06</span> Issue.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Layer 2: DAOs</div>
+    <a href="#dao-pattern" class="sidebar-link"><span class="num">07</span> Sprint 2 Approach</a>
+    <a href="#dao-code" class="sidebar-link"><span class="num">08</span> UserDAO Example</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Layer 3: Repositories</div>
+    <a href="#jpa-repository" class="sidebar-link"><span class="num">09</span> JpaRepository</a>
+    <a href="#dao-vs-repo" class="sidebar-link"><span class="num">10</span> DAO vs Repository</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Layer 4: Services</div>
+    <a href="#services-overview" class="sidebar-link"><span class="num">11</span> Business Logic Layer</a>
+    <a href="#user-service" class="sidebar-link"><span class="num">12</span> UserService</a>
+    <a href="#booking-service" class="sidebar-link"><span class="num">13</span> BookingService</a>
+    <a href="#issue-service" class="sidebar-link"><span class="num">14</span> IssueService</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Layer 5: Servlets + JSPs</div>
+    <a href="#servlet-overview" class="sidebar-link"><span class="num">15</span> Servlets Explained</a>
+    <a href="#login-servlet" class="sidebar-link"><span class="num">16</span> LoginServlet</a>
+    <a href="#jsp-overview" class="sidebar-link"><span class="num">17</span> JSP Pages</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Layer 6: REST APIs</div>
+    <a href="#rest-overview" class="sidebar-link"><span class="num">18</span> REST Explained</a>
+    <a href="#api-endpoints" class="sidebar-link"><span class="num">19</span> All API Endpoints</a>
+    <a href="#dtos" class="sidebar-link"><span class="num">20</span> DTOs &amp; ApiResponse</a>
+    <a href="#cors" class="sidebar-link"><span class="num">21</span> CORS Config</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Errors &amp; Fixes</div>
+    <a href="#errors" class="sidebar-link"><span class="num">22</span> Real Errors We Hit</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Viva Cheat Sheet</div>
+    <a href="#viva-asked" class="sidebar-link"><span class="num">23</span> Previously Asked Q&amp;A</a>
+    <a href="#viva-java" class="sidebar-link"><span class="num">24</span> Core Java Q&amp;A</a>
+    <a href="#viva-spring" class="sidebar-link"><span class="num">25</span> Spring Q&amp;A</a>
+    <a href="#viva-servlet" class="sidebar-link"><span class="num">26</span> Servlets &amp; JSP Q&amp;A</a>
+    <a href="#viva-rest" class="sidebar-link"><span class="num">27</span> REST API Q&amp;A</a>
+    <a href="#viva-db" class="sidebar-link"><span class="num">28</span> Database Q&amp;A</a>
+    <a href="#viva-micro" class="sidebar-link"><span class="num">29</span> Microservices Q&amp;A</a>
+    <a href="#annotations-table" class="sidebar-link"><span class="num">30</span> Annotations Summary</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+  <a href="../backend-overview.html" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Backend Overview
+  </a>
+
+  <div class="callout nimbus" style="margin-bottom: 32px;">
+    <div class="callout-title">Viva Preparation Guide</div>
+    <p>This page is your <strong>complete walkthrough</strong> of everything we built in the Nimbus backend. Every layer, every file, every concept &mdash; with real code and real errors we hit. Read this once, and you're ready for any viva question.</p>
+  </div>
+
+  <!-- ==================== THE JOURNEY ==================== -->
+  <section class="content-section" id="the-journey">
+    <span class="section-tag">Overview</span>
+    <h2>What We Built</h2>
+    <p class="section-desc">We built a complete Parcel Management System backend in one session &mdash; from database models to REST APIs. The system handles parcel booking, tracking, issue management, and role-based access for 4 user types.</p>
+
+    <h3>The Four Roles</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Role</th><th>What They Can Do</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Customer</strong></td><td>Register, login, book parcels, track parcels, raise issues</td></tr>
+        <tr><td><strong>Officer</strong></td><td>Login, view all bookings, update delivery status, track parcels</td></tr>
+        <tr><td><strong>Support</strong></td><td>Login, view assigned issues, update issue status, add notes</td></tr>
+        <tr><td><strong>Admin</strong></td><td>Login, view all users, register officers/support staff, view all data</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Tech Stack</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Technology</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Spring Boot 3.2.5</strong></td><td>Framework &mdash; auto-configures everything, embedded Tomcat server</td></tr>
+        <tr><td><strong>H2 Database</strong></td><td>Embedded SQL database &mdash; zero installation, file-based persistence</td></tr>
+        <tr><td><strong>JPA (Hibernate)</strong></td><td>Maps Java objects to database tables automatically</td></tr>
+        <tr><td><strong>Servlets + JSP</strong></td><td>Server-side web pages (Sprint 3 &mdash; traditional web)</td></tr>
+        <tr><td><strong>REST APIs</strong></td><td>JSON endpoints (Sprint 4 &mdash; modern API layer)</td></tr>
+        <tr><td><strong>Maven</strong></td><td>Build tool &mdash; manages all dependencies via pom.xml</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== ARCHITECTURE ==================== -->
+  <section class="content-section" id="architecture">
+    <span class="section-tag">Overview</span>
+    <h2>Architecture Overview</h2>
+    <p class="section-desc">The application has two entry points &mdash; Servlets (for JSP web pages) and REST Controllers (for JSON APIs). Both use the same Services and Repositories underneath.</p>
+
+    <div class="diagram">
+      <pre>
+ TWO ENTRY POINTS, ONE BACKEND:
+
+ Browser &rarr; Servlets (JSP Pages) &rarr; Services &rarr; Repositories &rarr; H2 Database
+ Browser &rarr; REST Controllers (JSON) &rarr; Services &rarr; Repositories &rarr; H2 Database
+
+ Servlets return HTML (rendered by JSP).
+ REST Controllers return JSON (consumed by frontend JS or Postman).
+      </pre>
+      <div class="diagram-label">Both paths share the Service and Repository layers</div>
+    </div>
+
+    <h3>Package Structure</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">com.nimbus package organization</span>
+      </div>
+      <pre><code class="language-java">com.nimbus/
+  model/          // User, Booking, Issue (JPA @Entity classes)
+  dao/            // UserDAO, BookingDAO, IssueDAO (Sprint 2 — JdbcTemplate)
+  repository/     // UserRepository, BookingRepository, IssueRepository (Sprint 3 — JPA)
+  service/        // UserService, BookingService, IssueService
+  servlet/        // LoginServlet, RegisterServlet, BookingServlet, TrackingServlet, DashboardServlet
+  controller/     // AuthController, BookingController, TrackingController, IssueController
+  dto/            // LoginRequest, LoginResponse, RegisterRequest, BookingRequest, ApiResponse
+  config/         // ServletConfig, CorsConfig, DataSeeder</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Think About It</div>
+      <p>Each package is a <strong>layer</strong>. Data flows top to bottom: Controller/Servlet &rarr; Service &rarr; Repository &rarr; Database. A controller NEVER talks to the database directly. A repository NEVER has business logic. This is <strong>Separation of Concerns</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ==================== LAYER 1: MODELS ==================== -->
+  <section class="content-section" id="models-overview">
+    <span class="section-tag">Layer 1</span>
+    <h2>Models &mdash; JPA Entities</h2>
+    <p class="section-desc">Models are Java classes that represent database tables. Each class = one table. Each field = one column. JPA annotations tell Hibernate how to map them.</p>
+
+    <h3>Key Annotations</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Annotation</th><th>What It Does</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>@Entity</code></td><td>Marks this class as a database table</td><td>Placed on User, Booking, Issue classes</td></tr>
+        <tr><td><code>@Table(name="...")</code></td><td>Specifies the actual table name in the database</td><td><code>@Table(name = "tbl_user_profile")</code></td></tr>
+        <tr><td><code>@Id</code></td><td>Marks the primary key field</td><td>On userId, bookingId, issueId</td></tr>
+        <tr><td><code>@Column(name="...")</code></td><td>Maps a field to a specific column name</td><td><code>@Column(name = "first_name")</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="content-section" id="user-model">
+    <span class="section-tag">Layer 1</span>
+    <h2>User.java</h2>
+    <p class="section-desc">The User entity has 17 fields covering identification, contact, address, and authentication.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/model/User.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tbl_user_profile")
+public class User {
+
+    @Id
+    @Column(name = "user_id", length = 20)
+    private String userId;
+
+    @Column(name = "first_name", nullable = false, length = 50)
+    private String firstName;
+
+    @Column(name = "middle_name", length = 50)
+    private String middleName;
+
+    @Column(name = "last_name", nullable = false, length = 50)
+    private String lastName;
+
+    @Column(name = "full_name", nullable = false, length = 150)
+    private String fullName;
+
+    @Column(name = "email", nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(name = "country_code", length = 5)
+    private String countryCode;
+
+    @Column(name = "mobile", nullable = false, length = 15)
+    private String mobile;
+
+    @Column(name = "street", length = 200)
+    private String street;
+
+    @Column(name = "zip_code", length = 10)
+    private String zipCode;
+
+    @Column(name = "city", length = 50)
+    private String city;
+
+    @Column(name = "state", length = 50)
+    private String state;
+
+    @Column(name = "country", length = 50)
+    private String country;
+
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
+
+    @Column(name = "role", nullable = false, length = 20)
+    private String role;   // customer, officer, support, admin
+
+    @Column(name = "preferences", length = 500)
+    private String preferences;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // Constructor, getters, setters...
+    public User() {}
+
+    // Getters and setters for all 17 fields
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+    // ... (all 17 fields have getters and setters)
+}</code></pre>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">17 Fields in User.java</div>
+      <p><code>userId</code>, <code>firstName</code>, <code>middleName</code>, <code>lastName</code>, <code>fullName</code>, <code>email</code>, <code>countryCode</code>, <code>mobile</code>, <code>street</code>, <code>zipCode</code>, <code>city</code>, <code>state</code>, <code>country</code>, <code>password</code>, <code>role</code>, <code>preferences</code>, <code>createdAt</code></p>
+    </div>
+  </section>
+
+  <section class="content-section" id="booking-model">
+    <span class="section-tag">Layer 1</span>
+    <h2>Booking.java</h2>
+    <p class="section-desc">The Booking entity tracks every parcel from creation to delivery. 17 fields covering recipient info, parcel details, pricing, and timestamps.</p>
+
+    <div class="callout nimbus">
+      <div class="callout-title">17 Fields in Booking.java</div>
+      <p><code>bookingId</code>, <code>userId</code>, <code>recName</code>, <code>recAddress</code>, <code>recPin</code>, <code>recMobile</code>, <code>parWeightGram</code>, <code>parContentsDescription</code>, <code>parDeliveryType</code>, <code>parPackingPreference</code>, <code>parStatus</code>, <code>parServiceCost</code>, <code>paymentMethod</code>, <code>pickupTime</code>, <code>dropoffTime</code>, <code>createdAt</code>, <code>updatedAt</code></p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/model/Booking.java (key parts)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">@Entity
+@Table(name = "tbl_booking")
+public class Booking {
+
+    @Id
+    @Column(name = "booking_id", length = 30)
+    private String bookingId;
+
+    @Column(name = "user_id", nullable = false, length = 20)
+    private String userId;
+
+    @Column(name = "rec_name", nullable = false, length = 100)
+    private String recName;          // Recipient name
+
+    @Column(name = "par_weight_gram")
+    private int parWeightGram;       // Parcel weight in grams
+
+    @Column(name = "par_delivery_type", length = 20)
+    private String parDeliveryType;  // standard, express, overnight
+
+    @Column(name = "par_status", length = 30)
+    private String parStatus;        // Booked, Picked Up, In Transit, Delivered
+
+    @Column(name = "par_service_cost")
+    private double parServiceCost;   // Calculated by pricing engine
+
+    @Column(name = "payment_method", length = 30)
+    private String paymentMethod;    // card, upi, cod, wallet
+
+    // ... getters, setters for all 17 fields
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="content-section" id="issue-model">
+    <span class="section-tag">Layer 1</span>
+    <h2>Issue.java</h2>
+    <p class="section-desc">The Issue entity handles customer complaints and support tickets. 11 fields covering the issue lifecycle from creation to resolution.</p>
+
+    <div class="callout nimbus">
+      <div class="callout-title">11 Fields in Issue.java</div>
+      <p><code>issueId</code>, <code>userId</code>, <code>bookingId</code>, <code>subject</code>, <code>description</code>, <code>severity</code>, <code>status</code>, <code>assignedTo</code>, <code>notes</code>, <code>createdAt</code>, <code>updatedAt</code></p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/model/Issue.java (key parts)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">@Entity
+@Table(name = "tbl_issue")
+public class Issue {
+
+    @Id
+    @Column(name = "issue_id", length = 30)
+    private String issueId;
+
+    @Column(name = "user_id", nullable = false, length = 20)
+    private String userId;
+
+    @Column(name = "booking_id", length = 30)
+    private String bookingId;
+
+    @Column(name = "subject", nullable = false, length = 200)
+    private String subject;
+
+    @Column(name = "description", length = 1000)
+    private String description;
+
+    @Column(name = "severity", length = 10)
+    private String severity;     // low, medium, high, critical
+
+    @Column(name = "status", length = 20)
+    private String status;       // Open, Assigned, Resolved, Reopened
+
+    @Column(name = "assigned_to", length = 20)
+    private String assignedTo;   // Support staff userId
+
+    @Column(name = "notes", length = 2000)
+    private String notes;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    // ... getters, setters
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== LAYER 2: DAOs ==================== -->
+  <section class="content-section" id="dao-pattern">
+    <span class="section-tag">Layer 2</span>
+    <h2>DAOs &mdash; Sprint 2 Approach</h2>
+    <p class="section-desc">DAO = Data Access Object. This was our Sprint 2 approach &mdash; writing SQL manually using JdbcTemplate. In Sprint 3, we replaced DAOs with JPA Repositories (much less code).</p>
+
+    <div class="callout think">
+      <div class="callout-title">Why Learn DAOs?</div>
+      <p>DAOs teach you how database access <em>actually</em> works under the hood. JPA Repositories auto-generate SQL, but someone at your viva might ask: "What if you didn't have JPA?" DAOs are the answer.</p>
+    </div>
+
+    <h3>Key Concepts</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Concept</th><th>What It Does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>@Repository</code></td><td>Marks the class as a data access component. Spring manages it as a bean.</td></tr>
+        <tr><td><code>JdbcTemplate</code></td><td>Spring's JDBC helper. Simplifies database calls from 7-8 lines of raw JDBC to 1 line.</td></tr>
+        <tr><td><code>RowMapper</code></td><td>Interface that converts one SQL ResultSet row into a Java object. You define <em>how</em> each column maps to each field.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout analogy">
+      <div class="callout-title">Analogy</div>
+      <p><strong>Without JdbcTemplate:</strong> You personally go to the warehouse, find the shelf, pick up the box, carry it to the counter, open it, hand the item to the customer. <strong>With JdbcTemplate:</strong> You tell the warehouse robot "get item X" and it does everything. Same result, way less work.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="dao-code">
+    <span class="section-tag">Layer 2</span>
+    <h2>UserDAO Example</h2>
+    <p class="section-desc">This is what the DAO looks like. Note the RowMapper that manually maps each column to a Java field. DAOs are now commented out (@Repository removed) but kept as Sprint 2 reference.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/dao/UserDAO.java (Sprint 2 &mdash; now commented out)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// @Repository  &lt;-- REMOVED in Sprint 3 (replaced by JPA Repository)
+public class UserDAO {
+
+    private final JdbcTemplate jdbc;
+
+    public UserDAO(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    // RowMapper: converts SQL ResultSet row &rarr; User object
+    private final RowMapper&lt;User&gt; userMapper = (rs, rowNum) -&gt; {
+        User u = new User();
+        u.setUserId(rs.getString("user_id"));
+        u.setFirstName(rs.getString("first_name"));
+        u.setLastName(rs.getString("last_name"));
+        u.setFullName(rs.getString("full_name"));
+        u.setEmail(rs.getString("email"));
+        u.setMobile(rs.getString("mobile"));
+        u.setPassword(rs.getString("password"));
+        u.setRole(rs.getString("role"));
+        u.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        return u;
+    };
+
+    // Find user by email
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM tbl_user_profile WHERE email = ?";
+        List&lt;User&gt; users = jdbc.query(sql, userMapper, email);
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    // Save a new user
+    public void save(User user) {
+        String sql = "INSERT INTO tbl_user_profile (user_id, first_name, last_name, "
+                   + "full_name, email, mobile, password, role, created_at) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbc.update(sql, user.getUserId(), user.getFirstName(),
+                    user.getLastName(), user.getFullName(), user.getEmail(),
+                    user.getMobile(), user.getPassword(), user.getRole(),
+                    user.getCreatedAt());
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Important for Viva</div>
+      <p>DAOs were our Sprint 2 approach. In Sprint 3, we replaced them with JPA Repositories. The <code>@Repository</code> annotation is <strong>removed</strong> from all DAO classes so Spring doesn't load them. They're kept in the codebase as learning reference.</p>
+    </div>
+  </section>
+
+  <!-- ==================== LAYER 3: REPOSITORIES ==================== -->
+  <section class="content-section" id="jpa-repository">
+    <span class="section-tag">Layer 3</span>
+    <h2>JPA Repositories &mdash; Sprint 3 Approach</h2>
+    <p class="section-desc">JpaRepository is Spring Data's magic. You write an interface, Spring auto-generates the SQL. No RowMapper. No SQL strings. Just method names.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/repository/UserRepository.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.repository;
+
+import com.nimbus.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository&lt;User, String&gt; {
+
+    Optional&lt;User&gt; findByEmail(String email);
+
+    Optional&lt;User&gt; findByUserIdAndPassword(String userId, String password);
+
+    List&lt;User&gt; findByRole(String role);
+
+    boolean existsByEmail(String email);
+}
+// That's it. No SQL. No RowMapper. Spring generates everything.</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">How Does Spring Know the SQL?</div>
+      <p>Spring reads the method name and generates SQL from it. <code>findByEmail(String email)</code> becomes <code>SELECT * FROM tbl_user_profile WHERE email = ?</code>. <code>findByUserIdAndPassword()</code> becomes <code>... WHERE user_id = ? AND password = ?</code>. The method name IS the query.</p>
+    </div>
+
+    <h3>BookingRepository &amp; IssueRepository</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">BookingRepository.java &amp; IssueRepository.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">// BookingRepository
+public interface BookingRepository extends JpaRepository&lt;Booking, String&gt; {
+    List&lt;Booking&gt; findByUserId(String userId);
+    List&lt;Booking&gt; findByParStatus(String status);
+}
+
+// IssueRepository
+public interface IssueRepository extends JpaRepository&lt;Issue, String&gt; {
+    List&lt;Issue&gt; findByUserId(String userId);
+    List&lt;Issue&gt; findByAssignedTo(String assignedTo);
+    List&lt;Issue&gt; findByStatus(String status);
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="content-section" id="dao-vs-repo">
+    <span class="section-tag">Layer 3</span>
+    <h2>DAO vs Repository &mdash; The Comparison</h2>
+    <p class="section-desc">This is a very common viva question. Here's the side-by-side comparison.</p>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">DAO (Sprint 2 &mdash; Manual)</div>
+        <div class="comparison-body">
+          <p><strong>30+ lines</strong> of code per DAO</p>
+          <p>Write SQL strings manually</p>
+          <p>Write RowMapper to convert rows</p>
+          <p>Uses <code>JdbcTemplate</code></p>
+          <p>Full control over SQL</p>
+          <p>More code = more bugs</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Repository (Sprint 3 &mdash; Auto)</div>
+        <div class="comparison-body">
+          <p><strong>5 lines</strong> &mdash; just an interface</p>
+          <p>Spring generates SQL from method names</p>
+          <p>No RowMapper needed (JPA handles it)</p>
+          <p>Uses <code>JpaRepository</code></p>
+          <p>Less control, but covers 95% of cases</p>
+          <p>Less code = fewer bugs</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LAYER 4: SERVICES ==================== -->
+  <section class="content-section" id="services-overview">
+    <span class="section-tag">Layer 4</span>
+    <h2>Services &mdash; Business Logic Layer</h2>
+    <p class="section-desc">Services contain the business logic. Controllers and Servlets call Services. Services call Repositories. A Service never touches HTTP requests or database SQL directly.</p>
+
+    <h3>Key Concepts</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Concept</th><th>Explanation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>@Service</code></td><td>Marks the class as a business logic component. Spring manages it as a bean.</td></tr>
+        <tr><td><strong>Constructor Injection</strong></td><td>The preferred way to inject dependencies. The repository is passed via the constructor, not <code>@Autowired</code> on a field.</td></tr>
+        <tr><td><strong>Validation</strong></td><td>Services validate data before saving. Example: check if email already exists before registering a user.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="content-section" id="user-service">
+    <span class="section-tag">Layer 4</span>
+    <h2>UserService</h2>
+    <p class="section-desc">Handles registration, login, smart user ID generation, and user lookup.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/service/UserService.java (key methods)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    // Constructor injection (preferred over @Autowired on field)
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // Register a new customer
+    public User register(User user) {
+        // Validation: check if email already exists
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already registered");
+        }
+
+        // Generate smart user ID: YYMMDD-Initials-Sequence
+        user.setUserId(generateUserId(user));
+        user.setRole("customer");
+        user.setFullName(buildFullName(user));
+        user.setCreatedAt(LocalDateTime.now());
+
+        return userRepository.save(user);
+    }
+
+    // Smart User ID: 260401-AK01 (YYMMDD + initials + sequence)
+    private String generateUserId(User user) {
+        String date = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String initials = ("" + user.getFirstName().charAt(0)
+                             + user.getLastName().charAt(0)).toUpperCase();
+        long count = userRepository.count() + 1;
+        return date + "-" + initials + String.format("%02d", count);
+    }
+
+    // Login validation
+    public User validateLogin(String userId, String password) {
+        return userRepository.findByUserIdAndPassword(userId, password)
+                .orElse(null);  // Returns null if no match
+    }
+
+    // Register admin/officer/support (admin-only action)
+    public User registerAdmin(User user, String role) {
+        user.setUserId(generateUserId(user));
+        user.setRole(role);
+        user.setFullName(buildFullName(user));
+        user.setCreatedAt(LocalDateTime.now());
+        return userRepository.save(user);
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="content-section" id="booking-service">
+    <span class="section-tag">Layer 4</span>
+    <h2>BookingService</h2>
+    <p class="section-desc">Handles booking creation with a pricing engine, parcel tracking with access control, and delivery status updates.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/service/BookingService.java (pricing engine)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">@Service
+public class BookingService {
+
+    private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
+
+    public BookingService(BookingRepository bookingRepository,
+                          UserRepository userRepository) {
+        this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
+    }
+
+    // Create booking with pricing engine
+    public Booking createBooking(Booking booking) {
+        booking.setBookingId(generateBookingId());
+        booking.setParStatus("Booked");
+        booking.setCreatedAt(LocalDateTime.now());
+        booking.setUpdatedAt(LocalDateTime.now());
+
+        // PRICING ENGINE: weight &times; rate + packaging cost
+        double cost = calculateCost(booking);
+        booking.setParServiceCost(cost);
+
+        return bookingRepository.save(booking);
+    }
+
+    private double calculateCost(Booking booking) {
+        double weightKg = booking.getParWeightGram() / 1000.0;
+
+        // Rate per kg based on delivery type
+        double ratePerKg;
+        switch (booking.getParDeliveryType().toLowerCase()) {
+            case "express":   ratePerKg = 80.0;  break;
+            case "overnight": ratePerKg = 120.0; break;
+            default:          ratePerKg = 50.0;  break; // standard
+        }
+
+        double baseCost = weightKg * ratePerKg;
+
+        // Packaging premium
+        if ("fragile".equalsIgnoreCase(booking.getParPackingPreference())) {
+            baseCost += 50.0;
+        }
+
+        return Math.round(baseCost * 100.0) / 100.0;
+    }
+
+    // Track with access control (customer sees own, officer sees all)
+    public Booking trackBooking(String bookingId, String userId, String role) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -&gt; new RuntimeException("Booking not found"));
+
+        // Access control
+        if ("customer".equals(role) &amp;&amp; !booking.getUserId().equals(userId)) {
+            throw new RuntimeException("Access denied");
+        }
+        return booking;
+    }
+
+    // Update delivery status (officer only)
+    public Booking updateDeliveryStatus(String bookingId, String newStatus) {
+        List&lt;String&gt; validStatuses = List.of(
+            "Booked", "Picked Up", "In Transit", "Out for Delivery", "Delivered"
+        );
+        if (!validStatuses.contains(newStatus)) {
+            throw new RuntimeException("Invalid status: " + newStatus);
+        }
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -&gt; new RuntimeException("Booking not found"));
+        booking.setParStatus(newStatus);
+        booking.setUpdatedAt(LocalDateTime.now());
+        return bookingRepository.save(booking);
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="content-section" id="issue-service">
+    <span class="section-tag">Layer 4</span>
+    <h2>IssueService</h2>
+    <p class="section-desc">Handles issue creation, assignment, status updates, and resolution notes.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/service/IssueService.java (key methods)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">@Service
+public class IssueService {
+
+    private final IssueRepository issueRepository;
+
+    public IssueService(IssueRepository issueRepository) {
+        this.issueRepository = issueRepository;
+    }
+
+    // Create a new issue (customer action)
+    public Issue createIssue(Issue issue) {
+        issue.setIssueId(generateIssueId());
+        issue.setStatus("Open");
+        issue.setCreatedAt(LocalDateTime.now());
+        issue.setUpdatedAt(LocalDateTime.now());
+        return issueRepository.save(issue);
+    }
+
+    // Update issue (support staff action)
+    public Issue updateIssue(String issueId, Issue updates) {
+        Issue existing = issueRepository.findById(issueId)
+                .orElseThrow(() -&gt; new RuntimeException("Issue not found"));
+
+        if (updates.getStatus() != null) existing.setStatus(updates.getStatus());
+        if (updates.getAssignedTo() != null) existing.setAssignedTo(updates.getAssignedTo());
+        if (updates.getNotes() != null) existing.setNotes(updates.getNotes());
+        existing.setUpdatedAt(LocalDateTime.now());
+
+        return issueRepository.save(existing);
+    }
+
+    // Get issues assigned to a support staff member
+    public List&lt;Issue&gt; getAssignedIssues(String staffUserId) {
+        return issueRepository.findByAssignedTo(staffUserId);
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== LAYER 5: SERVLETS + JSPs ==================== -->
+  <section class="content-section" id="servlet-overview">
+    <span class="section-tag">Layer 5</span>
+    <h2>Servlets &mdash; Handling HTTP Requests</h2>
+    <p class="section-desc">A Servlet is a Java class that handles HTTP requests. It extends HttpServlet, overrides doGet() and doPost(), and is managed by Tomcat (not Spring).</p>
+
+    <h3>Servlet Lifecycle</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box blue">init()<span class="flow-sub">Called once at startup</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box green">service()<span class="flow-sub">Every request (routes to doGet/doPost)</span></div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box orange">destroy()<span class="flow-sub">Server shutdown</span></div>
+      </div>
+      <div class="flow-label">Servlet lifecycle: created once, serves many requests, destroyed once</div>
+    </div>
+
+    <h3>How Servlets Are Registered</h3>
+    <p>Servlets are not Spring beans &mdash; they're managed by Tomcat. We register them in <code>ServletConfig.java</code> using <code>@Bean</code> methods that return <code>ServletRegistrationBean</code> objects with URL mappings.</p>
+
+    <div class="callout think">
+      <div class="callout-title">Why Can't Servlets Use @Autowired?</div>
+      <p>Servlets are created by <strong>Tomcat</strong>, not by Spring. Spring's <code>@Autowired</code> only works on objects that Spring creates. To get Spring beans inside a Servlet, we use <code>WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext())</code> to manually look up the Spring context.</p>
+    </div>
+
+    <h3>Forward vs Redirect</h3>
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">Forward (Server-Side)</div>
+        <div class="comparison-body">
+          <p><code>request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, res)</code></p>
+          <p>Same request object</p>
+          <p>URL in browser does NOT change</p>
+          <p>Use for: showing a page with data</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">Redirect (Browser-Side)</div>
+        <div class="comparison-body">
+          <p><code>response.sendRedirect("/servlet/dashboard")</code></p>
+          <p>New request created by browser</p>
+          <p>URL in browser CHANGES</p>
+          <p>Use for: after POST (PRG pattern)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" id="login-servlet">
+    <span class="section-tag">Layer 5</span>
+    <h2>LoginServlet &mdash; Complete Code</h2>
+    <p class="section-desc">The LoginServlet handles the login flow: GET shows the form (JSP), POST validates credentials and creates a session.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/servlet/LoginServlet.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.*;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import java.io.IOException;
+
+public class LoginServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    private UserService userService;
+
+    @Override
+    public void init() throws ServletException {
+        // Get Spring context manually (Servlets aren't Spring beans)
+        WebApplicationContext ctx = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(getServletContext());
+        this.userService = ctx.getBean(UserService.class);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+        // Show the login page
+        request.getRequestDispatcher("/WEB-INF/jsp/login.jsp")
+               .forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+        String userId = request.getParameter("userId");
+        String password = request.getParameter("password");
+
+        User user = userService.validateLogin(userId, password);
+
+        if (user != null) {
+            // Login success &rarr; create session &rarr; redirect to dashboard
+            HttpSession session = request.getSession();
+            session.setAttribute("userId", user.getUserId());
+            session.setAttribute("fullName", user.getFullName());
+            session.setAttribute("role", user.getRole());
+            response.sendRedirect("/servlet/dashboard");
+        } else {
+            // Login failed &rarr; show error on login page
+            request.setAttribute("error", "Invalid User ID or Password");
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp")
+                   .forward(request, response);
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Login Flow Summary</div>
+      <p><strong>GET /servlet/login</strong> &rarr; Shows login.jsp form.<br>
+      <strong>POST /servlet/login</strong> &rarr; Validates credentials &rarr; If valid: create HttpSession + redirect to dashboard. If invalid: forward back to login.jsp with error message.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="jsp-overview">
+    <span class="section-tag">Layer 5</span>
+    <h2>JSP Pages</h2>
+    <p class="section-desc">JSP = JavaServer Pages. HTML files with embedded Java. The server compiles them into Servlets, so they can display dynamic data.</p>
+
+    <h3>Key JSP Concepts</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Syntax</th><th>What It Does</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>${variable}</code></td><td>Expression Language &mdash; prints a value</td><td><code>${sessionScope.fullName}</code> prints the user's name</td></tr>
+        <tr><td><code>&lt;c:if test="..."&gt;</code></td><td>JSTL conditional &mdash; like an if statement</td><td>Show admin panel only if role = admin</td></tr>
+        <tr><td><code>&lt;c:forEach&gt;</code></td><td>JSTL loop &mdash; like a for loop</td><td>Loop through bookings and display each row</td></tr>
+        <tr><td><code>request.setAttribute()</code></td><td>Pass data from Servlet to JSP</td><td>Servlet sets "bookings" list, JSP loops through it</td></tr>
+      </tbody>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/webapp/WEB-INF/jsp/dashboard.jsp (role-based content)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-markup">&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;h1&gt;Welcome, ${sessionScope.fullName}!&lt;/h1&gt;
+  &lt;p&gt;Role: ${sessionScope.role}&lt;/p&gt;
+
+  &lt;!-- Customer sees booking options --&gt;
+  &lt;c:if test="${sessionScope.role == 'customer'}"&gt;
+    &lt;a href="/servlet/booking"&gt;Book a Parcel&lt;/a&gt;
+    &lt;a href="/servlet/tracking"&gt;Track Parcel&lt;/a&gt;
+  &lt;/c:if&gt;
+
+  &lt;!-- Officer sees delivery management --&gt;
+  &lt;c:if test="${sessionScope.role == 'officer'}"&gt;
+    &lt;a href="/servlet/dashboard?view=all-bookings"&gt;All Bookings&lt;/a&gt;
+    &lt;a href="/servlet/tracking"&gt;Update Delivery Status&lt;/a&gt;
+  &lt;/c:if&gt;
+
+  &lt;!-- Admin sees everything --&gt;
+  &lt;c:if test="${sessionScope.role == 'admin'}"&gt;
+    &lt;a href="/servlet/dashboard?view=all-users"&gt;All Users&lt;/a&gt;
+    &lt;a href="/servlet/register?type=admin"&gt;Register Staff&lt;/a&gt;
+  &lt;/c:if&gt;
+
+  &lt;a href="/servlet/login?logout=true"&gt;Logout&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== LAYER 6: REST APIs ==================== -->
+  <section class="content-section" id="rest-overview">
+    <span class="section-tag">Layer 6</span>
+    <h2>REST APIs &mdash; JSON Endpoints</h2>
+    <p class="section-desc">REST APIs return JSON data instead of HTML pages. They're used by modern frontends (React, Angular) and can be tested with Postman.</p>
+
+    <h3>Key Annotations</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Annotation</th><th>What It Does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>@RestController</code></td><td>Marks a class as a REST API controller. Returns JSON, not HTML. = <code>@Controller</code> + <code>@ResponseBody</code></td></tr>
+        <tr><td><code>@RequestMapping("/api/auth")</code></td><td>Base URL for all methods in this controller</td></tr>
+        <tr><td><code>@PostMapping("/login")</code></td><td>Handles POST requests to /api/auth/login</td></tr>
+        <tr><td><code>@GetMapping("/users")</code></td><td>Handles GET requests to /api/auth/users</td></tr>
+        <tr><td><code>@PutMapping("/{id}/status")</code></td><td>Handles PUT requests (updates)</td></tr>
+        <tr><td><code>@RequestBody</code></td><td>Parses the JSON request body into a Java object (Spring uses Jackson)</td></tr>
+        <tr><td><code>@PathVariable</code></td><td>Extracts a value from the URL path. <code>/user/{userId}</code> &rarr; userId variable</td></tr>
+        <tr><td><code>@RequestParam</code></td><td>Extracts a query parameter. <code>?role=admin</code> &rarr; role variable</td></tr>
+        <tr><td><code>ResponseEntity</code></td><td>Wraps response with HTTP status code (200 OK, 401 Unauthorized, 404 Not Found)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="comparison">
+      <div class="comparison-col">
+        <div class="comparison-header left">@Controller (Servlets / JSP)</div>
+        <div class="comparison-body">
+          <p>Returns <strong>HTML views</strong></p>
+          <p>Uses JSP templates</p>
+          <p>Server renders the page</p>
+          <p>Traditional web apps</p>
+        </div>
+      </div>
+      <div class="comparison-col">
+        <div class="comparison-header right">@RestController (APIs)</div>
+        <div class="comparison-body">
+          <p>Returns <strong>JSON data</strong></p>
+          <p>No views / templates</p>
+          <p>Frontend renders the page</p>
+          <p>Modern SPAs + mobile apps</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/controller/AuthController.java (example)</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity&lt;ApiResponse&gt; login(@RequestBody LoginRequest req) {
+        User user = userService.validateLogin(req.getUserId(), req.getPassword());
+
+        if (user != null) {
+            LoginResponse loginResp = new LoginResponse(true, "Login successful",
+                new LoginResponse.UserDTO(user.getUserId(), user.getFullName(),
+                                          user.getEmail(), user.getRole()));
+            return ResponseEntity.ok(new ApiResponse(true, "Login successful", loginResp));
+        }
+        return ResponseEntity.status(401)
+                .body(new ApiResponse(false, "Invalid credentials", null));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity&lt;ApiResponse&gt; register(@RequestBody RegisterRequest req) {
+        User user = new User();
+        user.setFirstName(req.getFirstName());
+        user.setLastName(req.getLastName());
+        user.setEmail(req.getEmail());
+        user.setMobile(req.getMobile());
+        user.setPassword(req.getPassword());
+        // ... set other fields
+
+        User saved = userService.register(user);
+        return ResponseEntity.ok(new ApiResponse(true, "Registration successful", saved));
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity&lt;ApiResponse&gt; getAllUsers() {
+        return ResponseEntity.ok(
+            new ApiResponse(true, "Users retrieved", userService.getAllUsers()));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity&lt;ApiResponse&gt; getUser(@PathVariable String userId) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            return ResponseEntity.status(404)
+                    .body(new ApiResponse(false, "User not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse(true, "User found", user));
+    }
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="content-section" id="api-endpoints">
+    <span class="section-tag">Layer 6</span>
+    <h2>All API Endpoints</h2>
+    <p class="section-desc">Complete list of every REST API endpoint in Nimbus.</p>
+
+    <h3>Auth Endpoints</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Method</th><th>URL</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>POST</code></td><td>/api/auth/login</td><td>Login with userId + password</td></tr>
+        <tr><td><code>POST</code></td><td>/api/auth/register</td><td>Register a new customer</td></tr>
+        <tr><td><code>POST</code></td><td>/api/auth/register-admin</td><td>Register staff (officer/support/admin)</td></tr>
+        <tr><td><code>GET</code></td><td>/api/auth/users</td><td>Get all users</td></tr>
+        <tr><td><code>GET</code></td><td>/api/auth/user/{userId}</td><td>Get user by ID</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Booking Endpoints</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Method</th><th>URL</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>POST</code></td><td>/api/bookings</td><td>Create a new booking</td></tr>
+        <tr><td><code>GET</code></td><td>/api/bookings/history</td><td>Get booking history (by userId)</td></tr>
+        <tr><td><code>GET</code></td><td>/api/bookings/{id}</td><td>Get a single booking</td></tr>
+        <tr><td><code>PUT</code></td><td>/api/bookings/{id}/delivery-status</td><td>Update delivery status (officer)</td></tr>
+        <tr><td><code>GET</code></td><td>/api/bookings/{id}/track</td><td>Track a parcel</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Issue Endpoints</h3>
+    <table class="info-table">
+      <thead>
+        <tr><th>Method</th><th>URL</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>POST</code></td><td>/api/issues</td><td>Create a new issue</td></tr>
+        <tr><td><code>GET</code></td><td>/api/issues</td><td>Get all issues (filtered by role)</td></tr>
+        <tr><td><code>PUT</code></td><td>/api/issues/{id}</td><td>Update issue (status, notes, assignment)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="content-section" id="dtos">
+    <span class="section-tag">Layer 6</span>
+    <h2>DTOs &amp; ApiResponse</h2>
+    <p class="section-desc">DTOs (Data Transfer Objects) define the shape of API requests and responses. They protect internal model structure and strip sensitive data like passwords.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">ApiResponse.java &mdash; consistent wrapper for all API responses</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">public class ApiResponse {
+    private boolean success;
+    private String message;
+    private Object data;
+
+    // Every API returns: { "success": true/false, "message": "...", "data": {...} }
+    // This gives a CONSISTENT structure to all responses.
+}
+
+// LoginResponse has a nested UserDTO that strips the password:
+public class LoginResponse {
+    private boolean success;
+    private String message;
+    private UserDTO user;
+
+    public static class UserDTO {
+        private String userId;
+        private String fullName;
+        private String email;
+        private String role;
+        // NO password field &mdash; never expose passwords in API responses!
+    }
+}</code></pre>
+    </div>
+
+    <div class="callout think">
+      <div class="callout-title">Why DTOs?</div>
+      <p>Without DTOs, your API would return the full User object including the password. DTOs let you control exactly what data leaves your server. <code>LoginResponse.UserDTO</code> has userId, fullName, email, role &mdash; but NO password.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="cors">
+    <span class="section-tag">Layer 6</span>
+    <h2>CORS Configuration</h2>
+    <p class="section-desc">CORS (Cross-Origin Resource Sharing) allows the frontend running on a different port to call our API. Without it, the browser blocks the request.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">src/main/java/com/nimbus/config/CorsConfig.java</span>
+        <button class="copy-btn" onclick="copyCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+        </button>
+      </div>
+      <pre><code class="language-java">@Configuration
+public class CorsConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")        // Apply to all API endpoints
+                .allowedOrigins("*")           // Allow any frontend origin
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*");
+    }
+}
+// Without this, Chrome blocks: "Access to XMLHttpRequest has been blocked by CORS policy"</code></pre>
+    </div>
+  </section>
+
+  <!-- ==================== ERRORS & FIXES ==================== -->
+  <section class="content-section" id="errors">
+    <span class="section-tag">Real Experience</span>
+    <h2>Errors We Hit &amp; How We Fixed Them</h2>
+    <p class="section-desc">These are real errors we encountered while building Nimbus. Viva panels love asking "what problems did you face?" &mdash; these are your answers.</p>
+
+    <div class="callout" style="border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06);">
+      <div class="callout-title" style="color: #EF4444;">Error 1: "JpaRepository cannot be resolved to a type"</div>
+      <p><strong>When:</strong> Creating Repository interfaces in Sprint 3.</p>
+      <p><strong>Cause:</strong> Missing <code>spring-boot-starter-data-jpa</code> dependency in pom.xml.</p>
+      <p><strong>Fix:</strong> Added the dependency to pom.xml, then ran <strong>Maven Update</strong> (Right-click project &rarr; Maven &rarr; Update Project, or <kbd>Alt+F5</kbd> in Eclipse).</p>
+    </div>
+
+    <div class="callout" style="border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06);">
+      <div class="callout-title" style="color: #EF4444;">Error 2: "The method trackBooking() is undefined for BookingService"</div>
+      <p><strong>When:</strong> Sprint 3 Servlets tried calling methods that didn't exist yet.</p>
+      <p><strong>Cause:</strong> The Sprint 2 BookingService only had basic CRUD. Sprint 3 Servlets needed <code>trackBooking()</code>, <code>updateDeliveryStatus()</code>, <code>getHistory()</code>.</p>
+      <p><strong>Fix:</strong> Upgraded BookingService to Sprint 3 version with all the new methods using Repositories.</p>
+    </div>
+
+    <div class="callout" style="border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06);">
+      <div class="callout-title" style="color: #EF4444;">Error 3: "The method getFullName() is undefined for type User"</div>
+      <p><strong>When:</strong> JSP pages tried calling <code>user.getFullName()</code>.</p>
+      <p><strong>Cause:</strong> Sprint 2 User model had <code>getName()</code> but Sprint 3 Servlets expected <code>getFullName()</code>.</p>
+      <p><strong>Fix:</strong> Upgraded User.java to Sprint 3 version with <code>firstName</code>, <code>middleName</code>, <code>lastName</code>, <code>fullName</code> and all JPA annotations.</p>
+    </div>
+
+    <div class="callout" style="border-left-color: #F59E0B; background: rgba(245, 158, 11, 0.06);">
+      <div class="callout-title" style="color: #F59E0B;">Warning 4: "serialVersionUID" in Servlet classes</div>
+      <p><strong>When:</strong> Eclipse showed yellow warning on all Servlet classes.</p>
+      <p><strong>Cause:</strong> Servlets implement Serializable but don't declare <code>serialVersionUID</code>.</p>
+      <p><strong>Fix:</strong> This is a <strong>warning, not an error</strong>. Does not affect running. Can ignore or add <code>private static final long serialVersionUID = 1L;</code></p>
+    </div>
+
+    <div class="callout" style="border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06);">
+      <div class="callout-title" style="color: #EF4444;">Error 5: "Port 8080 was already in use"</div>
+      <p><strong>When:</strong> Trying to run the app when a previous instance was still running.</p>
+      <p><strong>Cause:</strong> Previous run didn't stop properly. Port 8080 is still occupied.</p>
+      <p><strong>Fix:</strong> Stop it from Eclipse (click the red square button in Console). Or from terminal: <code>taskkill /PID &lt;pid&gt; /F</code>. Or change port in application.properties: <code>server.port=8081</code>.</p>
+    </div>
+
+    <div class="callout" style="border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06);">
+      <div class="callout-title" style="color: #EF4444;">Error 6: "Table TBL_USER_PROFILE not found"</div>
+      <p><strong>When:</strong> App starts, Hibernate tries to query before schema.sql runs.</p>
+      <p><strong>Cause 1:</strong> schema.sql wasn't executing before JPA initialized.</p>
+      <p><strong>Fix 1:</strong> Added <code>spring.jpa.defer-datasource-initialization=true</code> to application.properties.</p>
+      <p><strong>Cause 2:</strong> Hibernate converts table names to lowercase (<code>tbl_UserProfile</code> &rarr; <code>tbl_user_profile</code>) but schema.sql used mixed case.</p>
+      <p><strong>Fix 2:</strong> Changed schema.sql to use <strong>lowercase table names</strong> matching Hibernate's naming convention.</p>
+    </div>
+
+    <div class="callout" style="border-left-color: #EF4444; background: rgba(239, 68, 68, 0.06);">
+      <div class="callout-title" style="color: #EF4444;">Error 7: DAO compile errors after model upgrade</div>
+      <p><strong>When:</strong> After upgrading User.java to Sprint 3 with new field names.</p>
+      <p><strong>Cause:</strong> DAOs referenced old model methods (<code>setName()</code>, <code>setPhone()</code>) that no longer exist in the upgraded model.</p>
+      <p><strong>Fix:</strong> Commented out <code>@Repository</code> on all DAOs so Spring doesn't load them. Services now use JPA Repositories. DAOs kept in codebase as Sprint 2 reference.</p>
+    </div>
+  </section>
+
+  <!-- ==================== PREVIOUSLY ASKED QUESTIONS ==================== -->
+  <section class="content-section" id="viva-asked">
+    <span class="section-tag">Viva Cheat Sheet</span>
+    <h2>Previously Asked Viva Questions</h2>
+    <p class="section-desc">These exact questions were asked in previous vivas. Learn these first &mdash; high chance they repeat.</p>
+
+    <div class="callout warning">
+      <div class="callout-title">Priority: Learn These First</div>
+      <p>These were shared by someone who already gave the viva. Focus on these before anything else.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is a Class Loader?</div>
+      <p>Class Loader is the part of JVM that loads <code>.class</code> files (compiled Java bytecode) into memory at runtime. There are 3 types: <strong>Bootstrap</strong> (loads core Java classes like java.lang), <strong>Extension</strong> (loads classes from ext directory), and <strong>Application</strong> (loads your project classes from classpath). When you run <code>NimbusApplication.java</code>, the Application ClassLoader loads all your com.nimbus.* classes.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What are the Four Pillars of OOP?</div>
+      <p><strong>1. Encapsulation:</strong> Private fields + public getters/setters. Our User.java &mdash; fields are private, accessed only via getUserId(), setEmail(), etc.<br>
+      <strong>2. Inheritance:</strong> A class extends another. Our repositories extend JpaRepository to inherit save(), findAll(), delete() methods.<br>
+      <strong>3. Polymorphism:</strong> Same method behaves differently. doGet() in LoginServlet shows a form, doGet() in DashboardServlet shows a dashboard. Same method name, different behavior.<br>
+      <strong>4. Abstraction:</strong> Hide complexity, show only what's needed. JpaRepository hides all SQL &mdash; you just call findByEmail() and it works.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is Servlet Lifecycle?</div>
+      <p><strong>init()</strong> &rarr; Called once when the servlet is first loaded. Tomcat creates the servlet instance.<br>
+      <strong>service()</strong> &rarr; Called on every HTTP request. Routes to doGet() for GET requests and doPost() for POST requests. You override doGet/doPost, not service().<br>
+      <strong>destroy()</strong> &rarr; Called once when the server shuts down. Cleanup resources.<br>
+      In Nimbus: When you hit <code>/servlet/login</code>, Tomcat calls LoginServlet.doGet() to show the form. When you submit, it calls doPost() to validate credentials.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What are Types of Joins? How are they different?</div>
+      <p><strong>INNER JOIN:</strong> Returns only matching rows from both tables. <code>SELECT * FROM tbl_booking b INNER JOIN tbl_user_profile u ON b.user_id = u.user_id</code> &mdash; only bookings that have a valid user.<br>
+      <strong>LEFT JOIN:</strong> All rows from left table + matching from right. Shows all users even if they have no bookings (bookings columns will be NULL).<br>
+      <strong>RIGHT JOIN:</strong> All rows from right table + matching from left. Opposite of LEFT JOIN.<br>
+      <strong>FULL OUTER JOIN:</strong> All rows from both tables. NULLs where no match.<br>
+      <strong>CROSS JOIN:</strong> Every row of table A combined with every row of table B (cartesian product). Rarely used.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What are Types of Polymorphism?</div>
+      <p><strong>1. Compile-time (Static) &mdash; Method Overloading:</strong> Same method name, different parameters. Example: <code>calculatePrice(int weight)</code> and <code>calculatePrice(int weight, String type)</code>. Compiler decides which to call based on arguments.<br>
+      <strong>2. Runtime (Dynamic) &mdash; Method Overriding:</strong> Subclass redefines a parent method. Example: LoginServlet and BookingServlet both override <code>doGet()</code> from HttpServlet. JVM decides which to call at runtime based on the actual object type.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is @Controller in Spring Boot?</div>
+      <p><code>@Controller</code> marks a class as a web controller that returns <strong>HTML views</strong> (JSP pages). It works with ViewResolver to find JSP files.<br>
+      <code>@RestController</code> = @Controller + @ResponseBody. It returns <strong>JSON data</strong> directly, not views.<br>
+      In Nimbus: Our Servlets handle the JSP views (equivalent to @Controller). Our AuthController, BookingController use @RestController to return JSON for the API.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is @ComponentScan?</div>
+      <p><code>@ComponentScan</code> tells Spring: "Search this package and all sub-packages for classes with @Component, @Service, @Repository, @Controller, @RestController annotations and register them as Spring beans."<br>
+      In Nimbus: <code>@SpringBootApplication</code> on NimbusApplication.java <strong>already includes @ComponentScan</strong>. Since NimbusApplication is in <code>com.nimbus</code>, Spring automatically scans all sub-packages: com.nimbus.service, com.nimbus.controller, com.nimbus.repository, etc. You don't need to declare it separately.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is IoC (Inversion of Control)?</div>
+      <p>IoC means <strong>you don't create objects &mdash; the framework creates them for you</strong>. Normally you write <code>UserService service = new UserService()</code>. With Spring IoC, Spring creates UserService and manages its lifecycle.<br>
+      The "inversion" is: instead of YOUR code controlling object creation, the FRAMEWORK controls it. The Spring IoC Container reads your annotations (@Service, @Repository, etc.) and creates all the beans at startup. This is the foundation of Spring.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is Dependency Injection?</div>
+      <p>DI is <strong>how IoC works in practice</strong>. Instead of a class creating its own dependencies, Spring <strong>injects</strong> them.<br>
+      In Nimbus: <code>AuthController</code> needs <code>UserService</code>. Instead of writing <code>new UserService()</code>, we declare it in the constructor: <code>public AuthController(UserService userService)</code>. Spring sees this, finds the UserService bean it already created, and passes it in. This makes code testable and loosely coupled.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: Why is Spring Boot better than Spring?</div>
+      <p><strong>Spring</strong> requires tons of XML configuration &mdash; web.xml, applicationContext.xml, dispatcher-servlet.xml. You manually configure every bean, every URL mapping, every dependency.<br>
+      <strong>Spring Boot</strong> = Spring + Auto-Configuration + Embedded Server. Zero XML. <code>@SpringBootApplication</code> does everything. Tomcat is embedded &mdash; no separate server install. <code>application.properties</code> replaces hundreds of lines of XML.<br>
+      In Nimbus: We wrote ZERO XML files. One annotation (<code>@SpringBootApplication</code>) and everything works. That's Spring Boot's value.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: Primary Key vs Foreign Key difference?</div>
+      <p><strong>Primary Key:</strong> Uniquely identifies each row in a table. Cannot be NULL. Cannot be duplicate. One per table.<br>
+      In Nimbus: <code>user_id</code> in tbl_user_profile, <code>booking_id</code> in tbl_booking, <code>issue_id</code> in tbl_issue.<br><br>
+      <strong>Foreign Key:</strong> A column that references a primary key in another table. Creates a relationship between tables. Can be NULL. Can be duplicate.<br>
+      In Nimbus: <code>user_id</code> in tbl_booking is a foreign key &rarr; references <code>user_id</code> in tbl_user_profile. This means every booking must belong to a valid user. If you try to insert a booking with a user_id that doesn't exist, the database rejects it.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is JPA and Hibernate?</div>
+      <p><strong>JPA</strong> (Java Persistence API) is a <strong>specification</strong> &mdash; it defines the rules for mapping Java objects to database tables. It defines annotations like @Entity, @Table, @Id, @Column. JPA is just the interface &mdash; it doesn't do the actual work.<br>
+      <strong>Hibernate</strong> is the <strong>implementation</strong> &mdash; it's the library that actually does the work. It generates SQL, manages connections, handles caching. Think of JPA as the blueprint and Hibernate as the builder.<br>
+      In Nimbus: We use JPA annotations (@Entity, @Table) on our models. Spring Boot auto-configures Hibernate as the JPA provider. When we call <code>userRepository.save(user)</code>, Hibernate generates the INSERT SQL and executes it.</p>
+    </div>
+  </section>
+
+  <!-- ==================== VIVA CHEAT SHEET ==================== -->
+  <section class="content-section" id="viva-java">
+    <span class="section-tag">Viva Cheat Sheet</span>
+    <h2>Core Java Q&amp;A</h2>
+    <p class="section-desc">Quick answers for core Java questions. Each answer is 2-3 sentences &mdash; enough for a viva.</p>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is a POJO?</div>
+      <p><strong>A:</strong> Plain Old Java Object. A class with private fields, public getters/setters, and no framework dependency. Our User.java, Booking.java, and Issue.java are POJOs annotated with JPA.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is Encapsulation?</div>
+      <p><strong>A:</strong> Fields are private, accessed only via getters and setters. This protects data integrity &mdash; you can add validation inside a setter. Every model class in Nimbus uses encapsulation.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What are Java Editions?</div>
+      <p><strong>A:</strong> Java SE = core language (our models, collections, streams). Java EE = enterprise features (Servlets, JSP, JPA). Spring Boot simplifies Java EE so you don't need a full application server.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: Abstract Class vs Interface?</div>
+      <p><strong>A:</strong> Abstract class can have method bodies + fields, supports single inheritance only. Interface is a pure contract (method signatures only), supports multiple inheritance. Our UserRepository extends JpaRepository (an interface).</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What are Class Relationships?</div>
+      <p><strong>A:</strong> Booking has a userId field (Association with User). Issue has userId + bookingId. This is composition/aggregation &mdash; one object references another by ID rather than containing it directly.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="viva-spring">
+    <span class="section-tag">Viva Cheat Sheet</span>
+    <h2>Spring Q&amp;A</h2>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is Spring Boot?</div>
+      <p><strong>A:</strong> A framework that simplifies Java web development. It auto-configures everything &mdash; database connections, server setup, dependency injection. Comes with an embedded Tomcat server so you don't install one separately.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is Dependency Injection?</div>
+      <p><strong>A:</strong> Instead of creating objects with <code>new</code>, Spring creates them and injects them where needed. Our UserService gets UserRepository injected via its constructor. Spring manages the lifecycle of all these objects (called "beans").</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What are Spring Stereotypes?</div>
+      <p><strong>A:</strong> Annotations that register classes as Spring beans: <code>@Component</code> (generic), <code>@Service</code> (business logic), <code>@Repository</code> (data access), <code>@Controller</code> (web endpoints). They all do the same thing internally but communicate the class's purpose.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is @Autowired?</div>
+      <p><strong>A:</strong> Tells Spring to inject a dependency. With constructor injection (our approach), it's implicit &mdash; you don't even need the <code>@Autowired</code> annotation. Spring sees the constructor parameter and injects the matching bean.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is @Configuration?</div>
+      <p><strong>A:</strong> Marks a class as a source of bean definitions. Contains <code>@Bean</code> methods that return objects Spring should manage. Our ServletConfig (registers Servlets) and CorsConfig (allows cross-origin requests) use it.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is the 3-tier architecture?</div>
+      <p><strong>A:</strong> Controller &rarr; Service &rarr; Repository &rarr; Database. Each layer talks only to the one below it. Controllers handle HTTP, Services have business logic, Repositories handle data. This is Separation of Concerns.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="viva-servlet">
+    <span class="section-tag">Viva Cheat Sheet</span>
+    <h2>Servlets &amp; JSP Q&amp;A</h2>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is a Servlet?</div>
+      <p><strong>A:</strong> A Java class that handles HTTP requests. It extends HttpServlet and overrides <code>doGet()</code> and <code>doPost()</code>. Tomcat (the web server) invokes these methods when a matching URL is requested.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is the Servlet lifecycle?</div>
+      <p><strong>A:</strong> <code>init()</code> runs once at startup. <code>service()</code> runs for every request and routes to <code>doGet()</code>/<code>doPost()</code>. <code>destroy()</code> runs once when the server shuts down. The Servlet object is created once and reused for all requests.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is JSP?</div>
+      <p><strong>A:</strong> JavaServer Pages &mdash; HTML files with embedded Java code. The server compiles JSP into a Servlet behind the scenes. Uses <code>${variable}</code> for printing values and JSTL tags like <code>&lt;c:if&gt;</code> and <code>&lt;c:forEach&gt;</code> for logic.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: Forward vs Redirect?</div>
+      <p><strong>A:</strong> Forward is server-side &mdash; same request, URL doesn't change in browser. Redirect sends a response telling the browser to make a new request &mdash; URL changes. Use redirect after POST to prevent form resubmission (PRG pattern).</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is HttpSession?</div>
+      <p><strong>A:</strong> Server-side storage per user. After login, we store userId, fullName, and role in the session. On every subsequent request, the Servlet reads session data to know who the user is. Created with <code>request.getSession()</code>.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="viva-rest">
+    <span class="section-tag">Viva Cheat Sheet</span>
+    <h2>REST API Q&amp;A</h2>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is REST?</div>
+      <p><strong>A:</strong> Representational State Transfer. An architectural style that uses HTTP methods (GET, POST, PUT, DELETE) to perform CRUD operations on resources. Returns JSON. Our <code>/api/auth</code>, <code>/api/bookings</code>, <code>/api/issues</code> are REST endpoints.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: @RestController vs @Controller?</div>
+      <p><strong>A:</strong> <code>@RestController</code> returns JSON data directly to the client. <code>@Controller</code> returns HTML views (JSP pages). <code>@RestController</code> = <code>@Controller</code> + <code>@ResponseBody</code> on every method.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is @RequestBody?</div>
+      <p><strong>A:</strong> Parses the JSON request body into a Java object automatically. Spring uses the Jackson library to map JSON keys to Java field names. Example: <code>{"userId": "260401-AK01"}</code> becomes a <code>LoginRequest</code> object.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is @PathVariable?</div>
+      <p><strong>A:</strong> Extracts a value from the URL path. In <code>/api/auth/user/{userId}</code>, the <code>{userId}</code> part is a variable. If someone calls <code>/api/auth/user/260401-AK01</code>, the method gets <code>"260401-AK01"</code> as the parameter.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is ResponseEntity?</div>
+      <p><strong>A:</strong> Wraps the response body with an HTTP status code. <code>ResponseEntity.ok()</code> = 200, <code>ResponseEntity.status(401)</code> = Unauthorized, <code>ResponseEntity.status(404)</code> = Not Found. Gives the client a proper status code, not just data.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is CORS?</div>
+      <p><strong>A:</strong> Cross-Origin Resource Sharing. Browsers block requests between different origins (e.g., frontend on port 3000 calling API on port 8080). Our CorsConfig allows all origins to call <code>/api/**</code> endpoints.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is a DTO?</div>
+      <p><strong>A:</strong> Data Transfer Object. Defines the shape of API requests and responses separately from the database model. Our <code>LoginResponse</code> has a nested <code>UserDTO</code> that includes userId, fullName, email, role &mdash; but strips the password for security.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="viva-db">
+    <span class="section-tag">Viva Cheat Sheet</span>
+    <h2>Database Q&amp;A</h2>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is H2?</div>
+      <p><strong>A:</strong> An embedded Java database. Zero installation &mdash; just add the Maven dependency and it runs. Supports the same SQL as MySQL. Data persists in a file (<code>nimbusdb.mv.db</code>). Perfect for development and learning. Has a built-in web console at <code>/h2-console</code>.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is JPA?</div>
+      <p><strong>A:</strong> Java Persistence API. A specification that maps Java objects to database tables using annotations. <code>@Entity</code> marks a class as a table, <code>@Id</code> marks the primary key, <code>@Column</code> maps fields to columns. Hibernate is the JPA implementation we use.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: DAO vs Repository?</div>
+      <p><strong>A:</strong> DAO uses JdbcTemplate with manual SQL and RowMapper (Sprint 2 approach &mdash; 30+ lines per DAO). Repository extends JpaRepository and auto-generates SQL from method names (Sprint 3 approach &mdash; 5 lines). Repository is less code for the same result.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is a RowMapper?</div>
+      <p><strong>A:</strong> An interface used with JdbcTemplate that converts one row of a SQL ResultSet into a Java object. You define how each column maps to each field. This is the DAO pattern &mdash; in JPA Repositories, this mapping is automatic via annotations.</p>
+    </div>
+  </section>
+
+  <section class="content-section" id="viva-micro">
+    <span class="section-tag">Viva Cheat Sheet</span>
+    <h2>Microservices Q&amp;A</h2>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: What is a Microservice?</div>
+      <p><strong>A:</strong> A small, independent service that does one thing well. It has its own codebase, its own database, and can be deployed independently. Our Nimbus app is monolithic (one deployable), but it's structured in layers that could be split.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: Monolith vs Microservice?</div>
+      <p><strong>A:</strong> Monolith = one codebase, one deployment, one database (our Nimbus app). Microservice = many small services, each deployed independently with its own database. Monolith is simpler for small teams. Microservices scale better for large teams and high traffic.</p>
+    </div>
+
+    <div class="callout nimbus">
+      <div class="callout-title">Q: How would you split Nimbus into microservices?</div>
+      <p><strong>A:</strong> Three services: <strong>Auth Service</strong> (<code>/api/auth/*</code>), <strong>Booking Service</strong> (<code>/api/bookings/*</code>), <strong>Issue Service</strong> (<code>/api/issues/*</code>). Each gets its own database. They communicate via REST APIs. An API Gateway routes requests to the right service.</p>
+    </div>
+  </section>
+
+  <!-- ==================== ANNOTATIONS SUMMARY ==================== -->
+  <section class="content-section" id="annotations-table">
+    <span class="section-tag">Quick Reference</span>
+    <h2>Annotations Summary Table</h2>
+    <p class="section-desc">Every annotation used in Nimbus, what it does, and where it appears.</p>
+
+    <table class="info-table">
+      <thead>
+        <tr><th>Annotation</th><th>Purpose</th><th>Where Used</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>@Entity</code></td><td>Marks class as JPA entity (maps to DB table)</td><td>User, Booking, Issue</td></tr>
+        <tr><td><code>@Table</code></td><td>Specifies the database table name</td><td><code>@Table(name="tbl_user_profile")</code></td></tr>
+        <tr><td><code>@Id</code></td><td>Marks the primary key field</td><td>userId, bookingId, issueId</td></tr>
+        <tr><td><code>@Column</code></td><td>Specifies column name and constraints</td><td><code>@Column(name="first_name")</code></td></tr>
+        <tr><td><code>@Repository</code></td><td>Marks data access layer (Spring bean)</td><td>UserRepository, BookingRepository, IssueRepository</td></tr>
+        <tr><td><code>@Service</code></td><td>Marks business logic layer (Spring bean)</td><td>UserService, BookingService, IssueService</td></tr>
+        <tr><td><code>@RestController</code></td><td>Marks REST API controller (returns JSON)</td><td>AuthController, BookingController, IssueController</td></tr>
+        <tr><td><code>@Configuration</code></td><td>Marks config class with @Bean methods</td><td>ServletConfig, CorsConfig</td></tr>
+        <tr><td><code>@Bean</code></td><td>Creates a Spring-managed object from a method</td><td>ServletRegistrationBean in ServletConfig</td></tr>
+        <tr><td><code>@RequestMapping</code></td><td>Base URL for all methods in a controller</td><td><code>/api/auth</code>, <code>/api/bookings</code></td></tr>
+        <tr><td><code>@PostMapping</code></td><td>Handles HTTP POST requests</td><td><code>/login</code>, <code>/register</code></td></tr>
+        <tr><td><code>@GetMapping</code></td><td>Handles HTTP GET requests</td><td><code>/users</code>, <code>/{id}</code></td></tr>
+        <tr><td><code>@PutMapping</code></td><td>Handles HTTP PUT requests (updates)</td><td><code>/{id}/delivery-status</code></td></tr>
+        <tr><td><code>@RequestBody</code></td><td>Parse JSON request body &rarr; Java object</td><td>LoginRequest, RegisterRequest, BookingRequest</td></tr>
+        <tr><td><code>@PathVariable</code></td><td>Extract value from URL path</td><td><code>{userId}</code>, <code>{bookingId}</code></td></tr>
+        <tr><td><code>@RequestParam</code></td><td>Extract query parameter from URL</td><td><code>?userId=X&amp;role=Y</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== NAVIGATION ==================== -->
+  <div class="page-nav">
+    <a href="sprint3-guide.html" class="prev">
+      <span class="nav-label">Previous</span>
+      <span class="nav-title">&larr; Sprint 3 Guide</span>
+    </a>
+    <a href="sprint4-guide.html" class="next">
+      <span class="nav-label">Next</span>
+      <span class="nav-title">Sprint 4 Guide &rarr;</span>
+    </a>
+  </div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="../topics/shared.js"></script>
+
+</body>
+</html>
