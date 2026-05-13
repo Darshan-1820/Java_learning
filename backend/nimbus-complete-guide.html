@@ -621,28 +621,40 @@ CREATE TABLE IF NOT EXISTS tbl_issue (
       <span class="code-filename">src/main/resources/data.sql</span>
       <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
     </div>
-    <pre><code class="language-sql">-- ========== USERS ==========
+    <pre><code class="language-sql">-- ========== CUSTOMERS (Team Members) ==========
 MERGE INTO tbl_user_profile KEY(user_id) VALUES
-('260401-AK01', 'Amit', '', 'Kumar', 'Amit Kumar', 'amit@nimbus.com', '+91', '9876543210', '12 MG Road', '560001', 'Bangalore', 'Karnataka', 'India', 'Amit@123', 'customer', 'Email notifications', CURRENT_TIMESTAMP);
+('260401-DA01', 'Darshan', '', 'A', 'Darshan A', 'darshan@nimbus.com', '+91', '9876543210', '101 MG Road', '560001', 'Bangalore', 'Karnataka', 'India', 'Darshan@123', 'customer', '', CURRENT_TIMESTAMP);
 
 MERGE INTO tbl_user_profile KEY(user_id) VALUES
-('260401-DA01', 'Darshan', '', 'Adda', 'Darshan Adda', 'darshan@nimbus.com', '+91', '9876543211', '101 MG Road', '560001', 'Bangalore', 'Karnataka', 'India', 'Darshan@123', 'customer', '', CURRENT_TIMESTAMP);
+('260401-RK01', 'Rohan', '', 'K', 'Rohan K', 'rohan@nimbus.com', '+91', '9876543211', '202 Nehru St', '400001', 'Mumbai', 'Maharashtra', 'India', 'Rohan@123', 'customer', '', CURRENT_TIMESTAMP);
 
 MERGE INTO tbl_user_profile KEY(user_id) VALUES
-('OFF-001', 'Vikram', '', 'Rao', 'Vikram Rao', 'vikram@nimbus.com', '+91', '9876543220', 'Nimbus Hub', '400001', 'Mumbai', 'Maharashtra', 'India', 'Officer@123', 'officer', '', CURRENT_TIMESTAMP);
+('260401-VR01', 'Varshini', '', 'R', 'Varshini R', 'varshini@nimbus.com', '+91', '9876543212', '303 Gandhi Nagar', '110001', 'Delhi', 'Delhi', 'India', 'Varshini@123', 'customer', '', CURRENT_TIMESTAMP);
 
 MERGE INTO tbl_user_profile KEY(user_id) VALUES
-('SUP-001', 'Suresh', '', 'Pillai', 'Suresh Pillai', 'suresh@nimbus.com', '+91', '9876543230', 'Support Center', '560001', 'Bangalore', 'Karnataka', 'India', 'Support@123', 'support', '', CURRENT_TIMESTAMP);
+('260401-KS01', 'Kusuma', '', 'S', 'Kusuma S', 'kusuma@nimbus.com', '+91', '9876543213', '404 Park Lane', '411001', 'Pune', 'Maharashtra', 'India', 'Kusuma@123', 'customer', '', CURRENT_TIMESTAMP);
 
 MERGE INTO tbl_user_profile KEY(user_id) VALUES
-('ADM-001', 'Admin', '', 'User', 'Admin User', 'admin@nimbus.com', '+91', '9876543240', 'Nimbus HQ', '560001', 'Bangalore', 'Karnataka', 'India', 'Admin@123', 'admin', '', CURRENT_TIMESTAMP);
+('260401-SH01', 'Shaheer', '', 'M', 'Shaheer M', 'shaheer@nimbus.com', '+91', '9876543214', '505 Lake View', '500001', 'Hyderabad', 'Telangana', 'India', 'Shaheer@123', 'customer', '', CURRENT_TIMESTAMP);
 
--- ========== BOOKINGS ==========
+-- ========== OFFICER (Sanika) ==========
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('OFF-001', 'Sanika', '', 'P', 'Sanika P', 'sanika@nimbus.com', '+91', '9876543220', 'Nimbus Hub', '400001', 'Mumbai', 'Maharashtra', 'India', 'Officer@123', 'officer', '', CURRENT_TIMESTAMP);
+
+-- ========== SUPPORT (Lokesh) ==========
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('SUP-001', 'Lokesh', '', 'G', 'Lokesh G', 'lokesh@nimbus.com', '+91', '9876543230', 'Support Center', '560001', 'Bangalore', 'Karnataka', 'India', 'Support@123', 'support', '', CURRENT_TIMESTAMP);
+
+-- ========== ADMIN (Jeevan) ==========
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('ADM-001', 'Jeevan', '', 'T', 'Jeevan T', 'jeevan@nimbus.com', '+91', '9876543240', 'Nimbus HQ', '560001', 'Bangalore', 'Karnataka', 'India', 'Admin@123', 'admin', '', CURRENT_TIMESTAMP);
+
+-- ========== SAMPLE BOOKINGS ==========
 MERGE INTO tbl_booking KEY(booking_id) VALUES
-('BK260101001', '260401-AK01', 'Anita Desai', '789 Koramangala, Bangalore', '560034', '9988776655', 1500, 'Books and Documents', 'Express', 'Standard Packaging', 'In Transit', 120.0, 'card', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('BK260101001', '260401-DA01', 'Anita Desai', '789 Koramangala, Bangalore', '560034', '9988776655', 1500, 'Books and Documents', 'Express', 'Standard Packaging', 'In Transit', 120.0, 'card', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 MERGE INTO tbl_booking KEY(booking_id) VALUES
-('BK260102002', '260401-DA01', 'Meera Shah', '456 Andheri West, Mumbai', '400058', '9988776656', 3000, 'Electronics', 'Standard', 'Fragile Packaging', 'Booked', 95.0, 'upi', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);</code></pre>
+('BK260102002', '260401-RK01', 'Meera Shah', '456 Andheri West, Mumbai', '400058', '9988776656', 3000, 'Electronics', 'Standard', 'Fragile Packaging', 'Booked', 95.0, 'upi', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);</code></pre>
   </div>
 </section>
 
@@ -1417,7 +1429,7 @@ public class LoginServlet extends HttpServlet {
         &lt;form method="post" action="/servlet/login"&gt;
             &lt;div class="form-group"&gt;
                 &lt;label&gt;User ID&lt;/label&gt;
-                &lt;input type="text" name="userId" placeholder="e.g. 260401-AK01" required&gt;
+                &lt;input type="text" name="userId" placeholder="e.g. 260401-DA01" required&gt;
             &lt;/div&gt;
             &lt;div class="form-group"&gt;
                 &lt;label&gt;Password&lt;/label&gt;
@@ -1744,11 +1756,14 @@ public class ApiResponse {
       <tr><th>Role</th><th>User ID</th><th>Password</th></tr>
     </thead>
     <tbody>
-      <tr><td>Customer</td><td><code>260401-AK01</code></td><td><code>Amit@123</code></td></tr>
-      <tr><td>Customer</td><td><code>260401-DA01</code></td><td><code>Darshan@123</code></td></tr>
-      <tr><td>Officer</td><td><code>OFF-001</code></td><td><code>Officer@123</code></td></tr>
-      <tr><td>Support</td><td><code>SUP-001</code></td><td><code>Support@123</code></td></tr>
-      <tr><td>Admin</td><td><code>ADM-001</code></td><td><code>Admin@123</code></td></tr>
+      <tr><td>Customer (Darshan)</td><td><code>260401-DA01</code></td><td><code>Darshan@123</code></td></tr>
+      <tr><td>Customer (Rohan)</td><td><code>260401-RK01</code></td><td><code>Rohan@123</code></td></tr>
+      <tr><td>Customer (Varshini)</td><td><code>260401-VR01</code></td><td><code>Varshini@123</code></td></tr>
+      <tr><td>Customer (Kusuma)</td><td><code>260401-KS01</code></td><td><code>Kusuma@123</code></td></tr>
+      <tr><td>Customer (Shaheer)</td><td><code>260401-SH01</code></td><td><code>Shaheer@123</code></td></tr>
+      <tr><td>Officer (Sanika)</td><td><code>OFF-001</code></td><td><code>Officer@123</code></td></tr>
+      <tr><td>Support (Lokesh)</td><td><code>SUP-001</code></td><td><code>Support@123</code></td></tr>
+      <tr><td>Admin (Jeevan)</td><td><code>ADM-001</code></td><td><code>Admin@123</code></td></tr>
     </tbody>
   </table>
 </section>
@@ -1791,8 +1806,8 @@ public class ApiResponse {
       <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
     </div>
     <pre><code class="language-json">{
-    "userId": "260401-AK01",
-    "password": "Amit@123"
+    "userId": "260401-DA01",
+    "password": "Darshan@123"
 }</code></pre>
   </div>
 
@@ -1804,7 +1819,7 @@ public class ApiResponse {
     "status": "success",
     "message": "Login successful",
     "data": {
-        "userId": "260401-AK01",
+        "userId": "260401-DA01",
         "fullName": "Amit Kumar",
         "role": "customer",
         "email": "amit@nimbus.com"
@@ -2038,7 +2053,7 @@ export class Login {
     &lt;/div&gt;
     &lt;form (ngSubmit)="onLogin()"&gt;
       &lt;label&gt;User ID&lt;/label&gt;
-      &lt;input type="text" [(ngModel)]="userId" name="userId" placeholder="e.g., 260401-AK01" required&gt;
+      &lt;input type="text" [(ngModel)]="userId" name="userId" placeholder="e.g., 260401-DA01" required&gt;
       &lt;label&gt;Password&lt;/label&gt;
       &lt;input type="password" [(ngModel)]="password" name="password" placeholder="Enter password" required&gt;
       &lt;button type="submit" class="btn" [disabled]="loading"&gt;
@@ -2048,7 +2063,7 @@ export class Login {
     &lt;div class="error-msg" *ngIf="error"&gt;{{ error }}&lt;/div&gt;
     &lt;div class="demo"&gt;
       &lt;h3&gt;Demo Credentials&lt;/h3&gt;
-      &lt;p&gt;Customer: &lt;code&gt;260401-AK01&lt;/code&gt; / &lt;code&gt;Amit@123&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;Customer: &lt;code&gt;260401-DA01&lt;/code&gt; / &lt;code&gt;Darshan@123&lt;/code&gt;&lt;/p&gt;
       &lt;p&gt;Officer: &lt;code&gt;OFF-001&lt;/code&gt; / &lt;code&gt;Officer@123&lt;/code&gt;&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -2414,7 +2429,7 @@ ng build --output-path=dist
           &lt;div class="form-group"&gt;
             &lt;label class="form-label" for="userId"&gt;User ID&lt;/label&gt;
             &lt;input type="text" id="userId" name="userId" class="form-input"
-                   placeholder="e.g. 260401-AK01" required&gt;
+                   placeholder="e.g. 260401-DA01" required&gt;
           &lt;/div&gt;
           &lt;div class="form-group"&gt;
             &lt;label class="form-label" for="password"&gt;Password&lt;/label&gt;
@@ -2431,7 +2446,7 @@ ng build --output-path=dist
 
         &lt;div style="margin-top:24px; padding:16px; background:rgba(30,58,138,0.08); border-radius:8px; font-size:13px;"&gt;
           &lt;p style="font-weight:600; margin-bottom:8px;"&gt;Demo Credentials&lt;/p&gt;
-          &lt;p&gt;Customer: 260401-AK01 / Amit@123&lt;br&gt;Officer: OFF-001 / Officer@123&lt;br&gt;Support: SUP-001 / Support@123&lt;/p&gt;
+          &lt;p&gt;Customer: 260401-DA01 / Darshan@123&lt;br&gt;Officer: OFF-001 / Officer@123&lt;br&gt;Support: SUP-001 / Support@123&lt;/p&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -2677,7 +2692,7 @@ src/main/webapp/WEB-INF/jsp/
     <tbody>
       <tr><td>Title</td><td><strong>Nimbus Parcel Management System</strong></td></tr>
       <tr><td>Subtitle</td><td>A Full-Stack Java Application</td></tr>
-      <tr><td>Team</td><td>Darshan (Lead), Akhil, Meenal, Kushal, and team</td></tr>
+      <tr><td>Team</td><td>Darshan (Lead), Rohan, Varshini, Kusuma, Shaheer, Sanika, Lokesh, Jeevan</td></tr>
       <tr><td>Tech</td><td>Spring Boot 3.2.5 | H2 Database | JPA | Servlets + JSP | REST APIs | Maven</td></tr>
     </tbody>
   </table>
