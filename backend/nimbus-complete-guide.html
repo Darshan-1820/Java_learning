@@ -1,0 +1,2777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus Complete Guide &mdash; Nimbus Learning Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../topics/shared.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#3B82F6"/><path d="M10 20h12M10 16h8M10 12h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-text">nimbus</span>
+      <span class="logo-badge">Portal</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="header-link">Home</a>
+    <a href="../sprint-2.html" class="header-link">Phase 2</a>
+    <a href="../sprint-3.html" class="header-link">Phase 3</a>
+    <a href="../sprint-4.html" class="header-link">Phase 4</a>
+    <a href="../backend-overview.html" class="header-link active">Backend</a>
+    <a href="../java-core.html" class="header-link">Java Core</a>
+  </div>
+</header>
+
+<div class="layout">
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-section">
+    <a href="../backend-overview.html" class="sidebar-link" style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;">&larr; Back to Backend Overview</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Overview</div>
+    <a href="#project-overview" class="sidebar-link"><span class="num">01</span> Project Overview</a>
+    <a href="#folder-structure" class="sidebar-link"><span class="num">02</span> Folder Structure</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Eclipse Setup</div>
+    <a href="#eclipse-setup" class="sidebar-link"><span class="num">03</span> Step-by-Step Setup</a>
+    <a href="#troubleshooting" class="sidebar-link"><span class="num">04</span> Troubleshooting</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Config Files</div>
+    <a href="#pom-xml" class="sidebar-link"><span class="num">05</span> pom.xml</a>
+    <a href="#application-properties" class="sidebar-link"><span class="num">06</span> application.properties</a>
+    <a href="#schema-sql" class="sidebar-link"><span class="num">07</span> schema.sql</a>
+    <a href="#data-sql" class="sidebar-link"><span class="num">08</span> data.sql</a>
+    <a href="#nimbus-application" class="sidebar-link"><span class="num">09</span> NimbusApplication.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Models</div>
+    <a href="#user-model" class="sidebar-link"><span class="num">10</span> User.java</a>
+    <a href="#booking-model" class="sidebar-link"><span class="num">11</span> Booking.java</a>
+    <a href="#issue-model" class="sidebar-link"><span class="num">12</span> Issue.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Repositories</div>
+    <a href="#user-repo" class="sidebar-link"><span class="num">13</span> UserRepository</a>
+    <a href="#booking-repo" class="sidebar-link"><span class="num">14</span> BookingRepository</a>
+    <a href="#issue-repo" class="sidebar-link"><span class="num">15</span> IssueRepository</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Key Files</div>
+    <a href="#data-seeder" class="sidebar-link"><span class="num">16</span> DataSeeder.java</a>
+    <a href="#cors-config" class="sidebar-link"><span class="num">17</span> CorsConfig.java</a>
+    <a href="#login-servlet" class="sidebar-link"><span class="num">18</span> LoginServlet.java</a>
+    <a href="#login-jsp" class="sidebar-link"><span class="num">19</span> login.jsp</a>
+    <a href="#auth-controller" class="sidebar-link"><span class="num">20</span> AuthController.java</a>
+    <a href="#api-response" class="sidebar-link"><span class="num">21</span> ApiResponse.java</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Remaining Files</div>
+    <a href="#services-list" class="sidebar-link"><span class="num">22</span> Services</a>
+    <a href="#servlets-list" class="sidebar-link"><span class="num">23</span> Servlets &amp; JSPs</a>
+    <a href="#controllers-list" class="sidebar-link"><span class="num">24</span> Controllers &amp; DTOs</a>
+    <a href="#utils-list" class="sidebar-link"><span class="num">25</span> Utilities &amp; Config</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Run &amp; Share</div>
+    <a href="#how-to-run" class="sidebar-link"><span class="num">26</span> How to Run</a>
+    <a href="#api-endpoints" class="sidebar-link"><span class="num">27</span> All API Endpoints</a>
+    <a href="#share-with-team" class="sidebar-link"><span class="num">28</span> Share with Team</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Angular Frontend</div>
+    <a href="#angular-overview" class="sidebar-link"><span class="num">30</span> Angular Setup</a>
+    <a href="#angular-api-service" class="sidebar-link"><span class="num">31</span> api.service.ts</a>
+    <a href="#angular-login" class="sidebar-link"><span class="num">32</span> Login Component</a>
+    <a href="#angular-dashboard" class="sidebar-link"><span class="num">33</span> Dashboard Component</a>
+    <a href="#angular-deploy" class="sidebar-link"><span class="num">34</span> Deploy to Spring Boot</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">JSP Frontend</div>
+    <a href="#jsp-overview" class="sidebar-link"><span class="num">35</span> JSP Conversion Guide</a>
+    <a href="#jsp-login" class="sidebar-link"><span class="num">36</span> login.jsp (Polished)</a>
+    <a href="#jsp-dashboard" class="sidebar-link"><span class="num">37</span> dashboard.jsp</a>
+    <a href="#jsp-css" class="sidebar-link"><span class="num">38</span> CSS Files</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Integration</div>
+    <a href="#integration-guide" class="sidebar-link"><span class="num">39</span> Backend + Frontend</a>
+    <a href="#frontend-issues" class="sidebar-link"><span class="num">40</span> Common Issues</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Presentation</div>
+    <a href="#ppt-guide" class="sidebar-link"><span class="num">41</span> PPT Guide (6 Slides)</a>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="main">
+
+<a href="../backend-overview.html" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+  Back to Backend Overview
+</a>
+
+<div class="callout nimbus" style="margin-bottom: 32px;">
+  <div class="callout-title">Nimbus Complete Guide</div>
+  <p>Everything you need in one page: project overview, Eclipse setup, all config files, key code files, how to run, how to share with your team, and PPT structure. Copy-paste ready for Eclipse.</p>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: PROJECT OVERVIEW -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="project-overview">
+  <span class="section-tag">01 &mdash; Overview</span>
+  <h2>Project Overview</h2>
+  <p class="section-desc">Nimbus is a Parcel Management System with 4 roles: Customer, Officer, Support, and Admin. Built across 4 sprints, progressing from console app to full REST APIs.</p>
+
+  <h3>Roles</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Role</th><th>What They Can Do</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Customer</strong></td><td>Register, login, book parcels, track parcels, raise issues</td></tr>
+      <tr><td><strong>Officer</strong></td><td>Login, view all bookings, update delivery status, track parcels</td></tr>
+      <tr><td><strong>Support</strong></td><td>Login, view all issues, assign/resolve/reopen issues</td></tr>
+      <tr><td><strong>Admin</strong></td><td>Login, manage all users, view all data, system oversight</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tech Stack</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Technology</th><th>Version</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Spring Boot</td><td>3.2.5</td><td>Application framework (auto-config, embedded Tomcat)</td></tr>
+      <tr><td>H2 Database</td><td>2.2.224</td><td>In-memory database (no install needed)</td></tr>
+      <tr><td>JPA / Hibernate</td><td>via Spring Data</td><td>ORM &mdash; Java objects map to database tables</td></tr>
+      <tr><td>Servlets + JSP</td><td>Jakarta EE</td><td>Traditional web pages (server-rendered HTML)</td></tr>
+      <tr><td>REST APIs</td><td>Spring MVC</td><td>JSON endpoints for modern frontends</td></tr>
+      <tr><td>Maven</td><td>3.9+</td><td>Build tool &amp; dependency management</td></tr>
+      <tr><td>Java</td><td>17</td><td>Programming language</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Architecture</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">3-Tier Architecture</span>
+    </div>
+    <pre><code class="language-markup">Browser (HTML/JSP)          Angular / Postman
+       |                            |
+       v                            v
+  Servlets (JSP)           REST Controllers (JSON)
+       |                            |
+       +----------+--------+--------+
+                  |
+            Service Layer
+          (Business Logic)
+                  |
+           Repository Layer
+          (Database Access)
+                  |
+            H2 Database
+          (In-Memory SQL)</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: FOLDER STRUCTURE -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="folder-structure">
+  <span class="section-tag">02 &mdash; Structure</span>
+  <h2>Complete Folder Structure</h2>
+  <p class="section-desc">Every file in the Nimbus backend project.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">nimbus-backend/ (Eclipse Project)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">nimbus-backend/
+├── pom.xml
+├── src/main/java/com/nimbus/
+│   ├── NimbusApplication.java
+│   │
+│   ├── model/
+│   │   ├── User.java
+│   │   ├── Booking.java
+│   │   └── Issue.java
+│   │
+│   ├── repository/
+│   │   ├── UserRepository.java
+│   │   ├── BookingRepository.java
+│   │   └── IssueRepository.java
+│   │
+│   ├── dao/
+│   │   ├── UserDAO.java
+│   │   ├── BookingDAO.java
+│   │   └── IssueDAO.java
+│   │
+│   ├── service/
+│   │   ├── UserService.java
+│   │   ├── BookingService.java
+│   │   ├── IssueService.java
+│   │   └── PricingService.java
+│   │
+│   ├── servlet/
+│   │   ├── LoginServlet.java
+│   │   ├── RegisterServlet.java
+│   │   ├── BookingServlet.java
+│   │   ├── TrackingServlet.java
+│   │   └── DashboardServlet.java
+│   │
+│   ├── controller/
+│   │   ├── AuthController.java
+│   │   ├── BookingController.java
+│   │   ├── TrackingController.java
+│   │   └── IssueController.java
+│   │
+│   ├── dto/
+│   │   ├── LoginRequest.java
+│   │   ├── LoginResponse.java
+│   │   ├── RegisterRequest.java
+│   │   ├── BookingRequest.java
+│   │   └── ApiResponse.java
+│   │
+│   ├── config/
+│   │   ├── ServletConfig.java
+│   │   ├── CorsConfig.java
+│   │   └── DataSeeder.java
+│   │
+│   ├── util/
+│   │   ├── IdGenerator.java
+│   │   ├── InputValidator.java
+│   │   └── PricingCalculator.java
+│   │
+│   └── console/
+│       ├── ConsoleMenu.java
+│       └── ConsoleApp.java
+│
+├── src/main/resources/
+│   ├── application.properties
+│   ├── schema.sql
+│   └── data.sql
+│
+└── src/main/webapp/WEB-INF/jsp/
+    ├── login.jsp
+    ├── register.jsp
+    ├── dashboard.jsp
+    ├── booking.jsp
+    └── tracking.jsp</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: ECLIPSE SETUP -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="eclipse-setup">
+  <span class="section-tag">03 &mdash; Setup</span>
+  <h2>Eclipse Setup (Step by Step)</h2>
+  <p class="section-desc">Create the project from scratch in Eclipse.</p>
+
+  <h3>Step 1: Create Maven Project</h3>
+  <p><strong>File &rarr; New &rarr; Maven Project</strong></p>
+  <ul>
+    <li>Check "Create a simple project (skip archetype selection)"</li>
+    <li>Group ID: <code>com.nimbus</code></li>
+    <li>Artifact ID: <code>nimbus-backend</code></li>
+    <li>Version: <code>1.0.0</code></li>
+    <li>Packaging: <code>jar</code></li>
+    <li>Click Finish</li>
+  </ul>
+
+  <h3>Step 2: Replace pom.xml</h3>
+  <p>Open <code>pom.xml</code> in the project root. Delete ALL content and paste the pom.xml from Section 05 below.</p>
+  <p>After pasting: Right-click project &rarr; <strong>Maven &rarr; Update Project</strong> &rarr; Check "Force Update" &rarr; OK</p>
+
+  <h3>Step 3: Create All Packages</h3>
+  <p>Right-click <code>src/main/java</code> &rarr; <strong>New &rarr; Package</strong>. Create these 11 packages one by one:</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">All 11 Packages</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">com.nimbus
+com.nimbus.model
+com.nimbus.repository
+com.nimbus.dao
+com.nimbus.service
+com.nimbus.servlet
+com.nimbus.controller
+com.nimbus.dto
+com.nimbus.config
+com.nimbus.util
+com.nimbus.console</code></pre>
+  </div>
+
+  <h3>Step 4: Create Resource Files</h3>
+  <p>Right-click <code>src/main/resources</code> &rarr; <strong>New &rarr; File</strong>:</p>
+  <ul>
+    <li><code>application.properties</code> (paste from Section 06)</li>
+    <li><code>schema.sql</code> (paste from Section 07)</li>
+    <li><code>data.sql</code> (paste from Section 08)</li>
+  </ul>
+
+  <h3>Step 5: Create JSP Folder</h3>
+  <p>Right-click <code>src/main</code> &rarr; <strong>New &rarr; Folder</strong>: <code>webapp</code></p>
+  <p>Right-click <code>webapp</code> &rarr; <strong>New &rarr; Folder</strong>: <code>WEB-INF</code></p>
+  <p>Right-click <code>WEB-INF</code> &rarr; <strong>New &rarr; Folder</strong>: <code>jsp</code></p>
+
+  <h3>Step 6: Create NimbusApplication.java</h3>
+  <p>Right-click <code>com.nimbus</code> package &rarr; <strong>New &rarr; Class</strong> &rarr; Name: <code>NimbusApplication</code></p>
+  <p>Paste the code from Section 09 below.</p>
+
+  <h3>Step 7: Run the App</h3>
+  <p>Right-click <code>NimbusApplication.java</code> &rarr; <strong>Run As &rarr; Spring Boot App</strong> (or Java Application)</p>
+  <p>Wait for the console to show: <code>NIMBUS is running!</code></p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: TROUBLESHOOTING -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="troubleshooting">
+  <span class="section-tag">04 &mdash; Troubleshooting</span>
+  <h2>Real Errors We Hit</h2>
+  <p class="section-desc">These are actual errors from our Eclipse setup. If you hit any of these, the fix is right here.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Error</th><th>Fix</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Blank line before <code>&lt;?xml</code> in pom.xml</td>
+        <td><code>&lt;?xml</code> must be on line 1, column 1. No blank lines, no spaces before it.</td>
+      </tr>
+      <tr>
+        <td><code>DB_CLOSE_ON_EXIT</code> not supported</td>
+        <td>H2 2.2.224 dropped this setting. Remove it from the datasource URL. Use: <code>jdbc:h2:mem:nimbusdb;MODE=MySQL</code></td>
+      </tr>
+      <tr>
+        <td><code>com.nimbus</code> package not visible</td>
+        <td>Eclipse hides empty packages by default. Create any class inside the package to make it appear. Or: click the triangle dropdown in Package Explorer &rarr; Filters &rarr; uncheck "Empty packages".</td>
+      </tr>
+      <tr>
+        <td>JPA entities not found</td>
+        <td>Add <code>spring.jpa.defer-datasource-initialization=true</code> to application.properties. This makes JPA create tables before SQL scripts run.</td>
+      </tr>
+      <tr>
+        <td>Table not found (H2)</td>
+        <td>Use lowercase table names in schema.sql when using JPA. H2 is case-sensitive by default.</td>
+      </tr>
+      <tr>
+        <td>Port 8080 already in use</td>
+        <td>Another app is using port 8080. Either kill it (Task Manager &rarr; find java.exe) or change <code>server.port=8081</code> in application.properties.</td>
+      </tr>
+      <tr>
+        <td>JSP not rendering (shows raw code)</td>
+        <td>The <code>tomcat-embed-jasper</code> dependency is missing from pom.xml. Add it and do Maven &rarr; Update Project.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: POM.XML -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="pom-xml">
+  <span class="section-tag">05 &mdash; Config</span>
+  <h2>pom.xml</h2>
+  <p class="section-desc">Maven build file with ALL dependencies for all 4 sprints.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">Important</div>
+    <p><code>&lt;?xml</code> MUST be on line 1, column 1. No blank lines before it. Eclipse will show errors otherwise.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">pom.xml</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.5&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;groupId&gt;com.nimbus&lt;/groupId&gt;
+    &lt;artifactId&gt;nimbus-backend&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;name&gt;nimbus-backend&lt;/name&gt;
+    &lt;description&gt;Nimbus Parcel Management System&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot Web (embedded Tomcat, MVC) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring Data JPA (Hibernate, auto SQL) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring JDBC (JdbcTemplate for DAOs) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- H2 Database (in-memory, no install) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- JSP Support (Tomcat Jasper) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- JSTL Tags (for JSP forEach, if, etc.) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: APPLICATION.PROPERTIES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="application-properties">
+  <span class="section-tag">06 &mdash; Config</span>
+  <h2>application.properties</h2>
+  <p class="section-desc">All Spring Boot configuration in one file.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/application.properties</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-properties"># Server
+server.port=8080
+
+# H2 Database (in-memory)
+spring.datasource.url=jdbc:h2:mem:nimbusdb;MODE=MySQL
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# H2 Console (browser-based DB viewer)
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# SQL Init (run schema.sql + data.sql on startup)
+spring.sql.init.mode=always
+spring.jpa.defer-datasource-initialization=true
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=false
+
+# JSP View Resolver
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: SCHEMA.SQL -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="schema-sql">
+  <span class="section-tag">07 &mdash; Config</span>
+  <h2>schema.sql</h2>
+  <p class="section-desc">Creates all 3 database tables on startup.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/schema.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">CREATE TABLE IF NOT EXISTS tbl_user_profile (
+    user_id VARCHAR(20) PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50),
+    last_name VARCHAR(50) NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    country_code VARCHAR(5),
+    mobile VARCHAR(15) NOT NULL,
+    street VARCHAR(200),
+    zip_code VARCHAR(10),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    country VARCHAR(50),
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    preferences VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tbl_booking (
+    booking_id VARCHAR(30) PRIMARY KEY,
+    user_id VARCHAR(20) NOT NULL,
+    rec_name VARCHAR(100) NOT NULL,
+    rec_address VARCHAR(300),
+    rec_pin VARCHAR(10),
+    rec_mobile VARCHAR(15),
+    par_weight_gram INT,
+    par_contents_description VARCHAR(300),
+    par_delivery_type VARCHAR(20),
+    par_packing_preference VARCHAR(30),
+    par_status VARCHAR(30) DEFAULT 'Booked',
+    par_service_cost DOUBLE,
+    payment_method VARCHAR(30),
+    par_pickup_time TIMESTAMP,
+    par_dropoff_time TIMESTAMP,
+    par_payment_time TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES tbl_user_profile(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS tbl_issue (
+    issue_id VARCHAR(30) PRIMARY KEY,
+    user_id VARCHAR(20) NOT NULL,
+    booking_id VARCHAR(30),
+    subject VARCHAR(200) NOT NULL,
+    description VARCHAR(1000),
+    severity VARCHAR(10) DEFAULT 'Low',
+    status VARCHAR(20) DEFAULT 'Open',
+    assigned_to VARCHAR(20),
+    notes VARCHAR(2000),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES tbl_user_profile(user_id)
+);</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: DATA.SQL -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="data-sql">
+  <span class="section-tag">08 &mdash; Config</span>
+  <h2>data.sql</h2>
+  <p class="section-desc">Seed data with demo users and sample bookings. Runs on every startup.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/resources/data.sql</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-sql">-- ========== USERS ==========
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('260401-AK01', 'Amit', '', 'Kumar', 'Amit Kumar', 'amit@nimbus.com', '+91', '9876543210', '12 MG Road', '560001', 'Bangalore', 'Karnataka', 'India', 'Amit@123', 'customer', 'Email notifications', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('260401-DA01', 'Darshan', '', 'Adda', 'Darshan Adda', 'darshan@nimbus.com', '+91', '9876543211', '101 MG Road', '560001', 'Bangalore', 'Karnataka', 'India', 'Darshan@123', 'customer', '', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('OFF-001', 'Vikram', '', 'Rao', 'Vikram Rao', 'vikram@nimbus.com', '+91', '9876543220', 'Nimbus Hub', '400001', 'Mumbai', 'Maharashtra', 'India', 'Officer@123', 'officer', '', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('SUP-001', 'Suresh', '', 'Pillai', 'Suresh Pillai', 'suresh@nimbus.com', '+91', '9876543230', 'Support Center', '560001', 'Bangalore', 'Karnataka', 'India', 'Support@123', 'support', '', CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_user_profile KEY(user_id) VALUES
+('ADM-001', 'Admin', '', 'User', 'Admin User', 'admin@nimbus.com', '+91', '9876543240', 'Nimbus HQ', '560001', 'Bangalore', 'Karnataka', 'India', 'Admin@123', 'admin', '', CURRENT_TIMESTAMP);
+
+-- ========== BOOKINGS ==========
+MERGE INTO tbl_booking KEY(booking_id) VALUES
+('BK260101001', '260401-AK01', 'Anita Desai', '789 Koramangala, Bangalore', '560034', '9988776655', 1500, 'Books and Documents', 'Express', 'Standard Packaging', 'In Transit', 120.0, 'card', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+MERGE INTO tbl_booking KEY(booking_id) VALUES
+('BK260102002', '260401-DA01', 'Meera Shah', '456 Andheri West, Mumbai', '400058', '9988776656', 3000, 'Electronics', 'Standard', 'Fragile Packaging', 'Booked', 95.0, 'upi', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: NIMBUS APPLICATION -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="nimbus-application">
+  <span class="section-tag">09 &mdash; Config</span>
+  <h2>NimbusApplication.java</h2>
+  <p class="section-desc">The entry point. Spring Boot starts from here.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/NimbusApplication.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NimbusApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(NimbusApplication.class, args);
+        System.out.println("==========================================");
+        System.out.println("   NIMBUS is running!");
+        System.out.println("   JSP Pages:  http://localhost:8080/servlet/login");
+        System.out.println("   REST APIs:  http://localhost:8080/api/auth/users");
+        System.out.println("   H2 Console: http://localhost:8080/h2-console");
+        System.out.println("==========================================");
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: USER MODEL -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="user-model">
+  <span class="section-tag">10 &mdash; Model</span>
+  <h2>User.java</h2>
+  <p class="section-desc">JPA entity mapped to <code>tbl_user_profile</code> table.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/User.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tbl_user_profile")
+public class User {
+
+    @Id
+    @Column(name = "user_id", length = 20)
+    private String userId;
+
+    @Column(name = "first_name", length = 50, nullable = false)
+    private String firstName;
+
+    @Column(name = "middle_name", length = 50)
+    private String middleName;
+
+    @Column(name = "last_name", length = 50, nullable = false)
+    private String lastName;
+
+    @Column(name = "full_name", length = 150, nullable = false)
+    private String fullName;
+
+    @Column(name = "email", length = 100, unique = true, nullable = false)
+    private String email;
+
+    @Column(name = "country_code", length = 5)
+    private String countryCode;
+
+    @Column(name = "mobile", length = 15, nullable = false)
+    private String mobile;
+
+    @Column(name = "street", length = 200)
+    private String street;
+
+    @Column(name = "zip_code", length = 10)
+    private String zipCode;
+
+    @Column(name = "city", length = 50)
+    private String city;
+
+    @Column(name = "state", length = 50)
+    private String state;
+
+    @Column(name = "country", length = 50)
+    private String country;
+
+    @Column(name = "password", length = 100, nullable = false)
+    private String password;
+
+    @Column(name = "role", length = 20, nullable = false)
+    private String role;
+
+    @Column(name = "preferences", length = 500)
+    private String preferences;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // ===== CONSTRUCTORS =====
+    public User() {}
+
+    public User(String userId, String firstName, String middleName, String lastName,
+                String fullName, String email, String countryCode, String mobile,
+                String street, String zipCode, String city, String state,
+                String country, String password, String role, String preferences) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.fullName = fullName;
+        this.email = email;
+        this.countryCode = countryCode;
+        this.mobile = mobile;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.password = password;
+        this.role = role;
+        this.preferences = preferences;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // ===== GETTERS AND SETTERS =====
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getMiddleName() { return middleName; }
+    public void setMiddleName(String middleName) { this.middleName = middleName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getCountryCode() { return countryCode; }
+    public void setCountryCode(String countryCode) { this.countryCode = countryCode; }
+
+    public String getMobile() { return mobile; }
+    public void setMobile(String mobile) { this.mobile = mobile; }
+
+    public String getStreet() { return street; }
+    public void setStreet(String street) { this.street = street; }
+
+    public String getZipCode() { return zipCode; }
+    public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+
+    public String getCountry() { return country; }
+    public void setCountry(String country) { this.country = country; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public String getPreferences() { return preferences; }
+    public void setPreferences(String preferences) { this.preferences = preferences; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: BOOKING MODEL -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="booking-model">
+  <span class="section-tag">11 &mdash; Model</span>
+  <h2>Booking.java</h2>
+  <p class="section-desc">JPA entity mapped to <code>tbl_booking</code> table.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/Booking.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tbl_booking")
+public class Booking {
+
+    @Id
+    @Column(name = "booking_id", length = 30)
+    private String bookingId;
+
+    @Column(name = "user_id", length = 20, nullable = false)
+    private String userId;
+
+    @Column(name = "rec_name", length = 100, nullable = false)
+    private String recName;
+
+    @Column(name = "rec_address", length = 300)
+    private String recAddress;
+
+    @Column(name = "rec_pin", length = 10)
+    private String recPin;
+
+    @Column(name = "rec_mobile", length = 15)
+    private String recMobile;
+
+    @Column(name = "par_weight_gram")
+    private Integer parWeightGram;
+
+    @Column(name = "par_contents_description", length = 300)
+    private String parContentsDescription;
+
+    @Column(name = "par_delivery_type", length = 20)
+    private String parDeliveryType;
+
+    @Column(name = "par_packing_preference", length = 30)
+    private String parPackingPreference;
+
+    @Column(name = "par_status", length = 30)
+    private String parStatus;
+
+    @Column(name = "par_service_cost")
+    private Double parServiceCost;
+
+    @Column(name = "payment_method", length = 30)
+    private String paymentMethod;
+
+    @Column(name = "par_pickup_time")
+    private LocalDateTime parPickupTime;
+
+    @Column(name = "par_dropoff_time")
+    private LocalDateTime parDropoffTime;
+
+    @Column(name = "par_payment_time")
+    private LocalDateTime parPaymentTime;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // ===== CONSTRUCTORS =====
+    public Booking() {}
+
+    public Booking(String bookingId, String userId, String recName, String recAddress,
+                   String recPin, String recMobile, Integer parWeightGram,
+                   String parContentsDescription, String parDeliveryType,
+                   String parPackingPreference, String parStatus, Double parServiceCost,
+                   String paymentMethod) {
+        this.bookingId = bookingId;
+        this.userId = userId;
+        this.recName = recName;
+        this.recAddress = recAddress;
+        this.recPin = recPin;
+        this.recMobile = recMobile;
+        this.parWeightGram = parWeightGram;
+        this.parContentsDescription = parContentsDescription;
+        this.parDeliveryType = parDeliveryType;
+        this.parPackingPreference = parPackingPreference;
+        this.parStatus = parStatus;
+        this.parServiceCost = parServiceCost;
+        this.paymentMethod = paymentMethod;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // ===== GETTERS AND SETTERS =====
+    public String getBookingId() { return bookingId; }
+    public void setBookingId(String bookingId) { this.bookingId = bookingId; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getRecName() { return recName; }
+    public void setRecName(String recName) { this.recName = recName; }
+
+    public String getRecAddress() { return recAddress; }
+    public void setRecAddress(String recAddress) { this.recAddress = recAddress; }
+
+    public String getRecPin() { return recPin; }
+    public void setRecPin(String recPin) { this.recPin = recPin; }
+
+    public String getRecMobile() { return recMobile; }
+    public void setRecMobile(String recMobile) { this.recMobile = recMobile; }
+
+    public Integer getParWeightGram() { return parWeightGram; }
+    public void setParWeightGram(Integer parWeightGram) { this.parWeightGram = parWeightGram; }
+
+    public String getParContentsDescription() { return parContentsDescription; }
+    public void setParContentsDescription(String parContentsDescription) { this.parContentsDescription = parContentsDescription; }
+
+    public String getParDeliveryType() { return parDeliveryType; }
+    public void setParDeliveryType(String parDeliveryType) { this.parDeliveryType = parDeliveryType; }
+
+    public String getParPackingPreference() { return parPackingPreference; }
+    public void setParPackingPreference(String parPackingPreference) { this.parPackingPreference = parPackingPreference; }
+
+    public String getParStatus() { return parStatus; }
+    public void setParStatus(String parStatus) { this.parStatus = parStatus; }
+
+    public Double getParServiceCost() { return parServiceCost; }
+    public void setParServiceCost(Double parServiceCost) { this.parServiceCost = parServiceCost; }
+
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+
+    public LocalDateTime getParPickupTime() { return parPickupTime; }
+    public void setParPickupTime(LocalDateTime parPickupTime) { this.parPickupTime = parPickupTime; }
+
+    public LocalDateTime getParDropoffTime() { return parDropoffTime; }
+    public void setParDropoffTime(LocalDateTime parDropoffTime) { this.parDropoffTime = parDropoffTime; }
+
+    public LocalDateTime getParPaymentTime() { return parPaymentTime; }
+    public void setParPaymentTime(LocalDateTime parPaymentTime) { this.parPaymentTime = parPaymentTime; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: ISSUE MODEL -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="issue-model">
+  <span class="section-tag">12 &mdash; Model</span>
+  <h2>Issue.java</h2>
+  <p class="section-desc">JPA entity mapped to <code>tbl_issue</code> table.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/model/Issue.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tbl_issue")
+public class Issue {
+
+    @Id
+    @Column(name = "issue_id", length = 30)
+    private String issueId;
+
+    @Column(name = "user_id", length = 20, nullable = false)
+    private String userId;
+
+    @Column(name = "booking_id", length = 30)
+    private String bookingId;
+
+    @Column(name = "subject", length = 200, nullable = false)
+    private String subject;
+
+    @Column(name = "description", length = 1000)
+    private String description;
+
+    @Column(name = "severity", length = 10)
+    private String severity;
+
+    @Column(name = "status", length = 20)
+    private String status;
+
+    @Column(name = "assigned_to", length = 20)
+    private String assignedTo;
+
+    @Column(name = "notes", length = 2000)
+    private String notes;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    // ===== CONSTRUCTORS =====
+    public Issue() {}
+
+    public Issue(String issueId, String userId, String bookingId, String subject,
+                 String description, String severity) {
+        this.issueId = issueId;
+        this.userId = userId;
+        this.bookingId = bookingId;
+        this.subject = subject;
+        this.description = description;
+        this.severity = severity;
+        this.status = "Open";
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // ===== GETTERS AND SETTERS =====
+    public String getIssueId() { return issueId; }
+    public void setIssueId(String issueId) { this.issueId = issueId; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getBookingId() { return bookingId; }
+    public void setBookingId(String bookingId) { this.bookingId = bookingId; }
+
+    public String getSubject() { return subject; }
+    public void setSubject(String subject) { this.subject = subject; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public String getAssignedTo() { return assignedTo; }
+    public void setAssignedTo(String assignedTo) { this.assignedTo = assignedTo; }
+
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 13-15: REPOSITORIES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="user-repo">
+  <span class="section-tag">13 &mdash; Repository</span>
+  <h2>UserRepository.java</h2>
+  <p class="section-desc">Spring Data JPA interface &mdash; zero SQL, automatic CRUD.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/repository/UserRepository.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.repository;
+
+import com.nimbus.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, String&gt; {
+
+    Optional&lt;User&gt; findByEmail(String email);
+
+    Optional&lt;User&gt; findByUserIdAndPassword(String userId, String password);
+
+    List&lt;User&gt; findByRole(String role);
+
+    boolean existsByEmail(String email);
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="booking-repo">
+  <span class="section-tag">14 &mdash; Repository</span>
+  <h2>BookingRepository.java</h2>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/repository/BookingRepository.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.repository;
+
+import com.nimbus.model.Booking;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public interface BookingRepository extends JpaRepository&lt;Booking, String&gt; {
+
+    List&lt;Booking&gt; findByUserId(String userId);
+
+    List&lt;Booking&gt; findByParStatus(String status);
+
+    List&lt;Booking&gt; findByUserIdAndParStatus(String userId, String status);
+}</code></pre>
+  </div>
+</section>
+
+
+<section class="content-section" id="issue-repo">
+  <span class="section-tag">15 &mdash; Repository</span>
+  <h2>IssueRepository.java</h2>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/repository/IssueRepository.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.repository;
+
+import com.nimbus.model.Issue;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public interface IssueRepository extends JpaRepository&lt;Issue, String&gt; {
+
+    List&lt;Issue&gt; findByUserId(String userId);
+
+    List&lt;Issue&gt; findByStatus(String status);
+
+    List&lt;Issue&gt; findByAssignedTo(String assignedTo);
+
+    List&lt;Issue&gt; findByBookingId(String bookingId);
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 16: DATA SEEDER -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="data-seeder">
+  <span class="section-tag">16 &mdash; Key File</span>
+  <h2>DataSeeder.java</h2>
+  <p class="section-desc">Runs on startup to verify data is loaded. Useful for debugging.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/config/DataSeeder.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import com.nimbus.repository.UserRepository;
+import com.nimbus.repository.BookingRepository;
+import com.nimbus.repository.IssueRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DataSeeder implements CommandLineRunner {
+
+    private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
+    private final IssueRepository issueRepository;
+
+    public DataSeeder(UserRepository userRepository,
+                      BookingRepository bookingRepository,
+                      IssueRepository issueRepository) {
+        this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
+        this.issueRepository = issueRepository;
+    }
+
+    @Override
+    public void run(String... args) {
+        System.out.println("------------------------------------------");
+        System.out.println("DATA SEEDER: Verifying database...");
+        System.out.println("  Users:    " + userRepository.count());
+        System.out.println("  Bookings: " + bookingRepository.count());
+        System.out.println("  Issues:   " + issueRepository.count());
+        System.out.println("------------------------------------------");
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 17: CORS CONFIG -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="cors-config">
+  <span class="section-tag">17 &mdash; Key File</span>
+  <h2>CorsConfig.java</h2>
+  <p class="section-desc">Allows Angular/frontend on a different port to call REST APIs.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/config/CorsConfig.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        .allowedOrigins("http://localhost:4200", "http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 18: LOGIN SERVLET -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="login-servlet">
+  <span class="section-tag">18 &mdash; Key File</span>
+  <h2>LoginServlet.java</h2>
+  <p class="section-desc">Handles login via traditional JSP form (Sprint 3 approach).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/servlet/LoginServlet.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.servlet;
+
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Component;
+import java.io.IOException;
+import java.util.Optional;
+
+@Component
+public class LoginServlet extends HttpServlet {
+
+    private final UserService userService;
+
+    public LoginServlet(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String userId = req.getParameter("userId");
+        String password = req.getParameter("password");
+
+        Optional&lt;User&gt; user = userService.login(userId, password);
+
+        if (user.isPresent()) {
+            HttpSession session = req.getSession();
+            session.setAttribute("user", user.get());
+            session.setAttribute("role", user.get().getRole());
+            resp.sendRedirect("/servlet/dashboard");
+        } else {
+            req.setAttribute("error", "Invalid User ID or Password");
+            req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
+        }
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 19: LOGIN JSP -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="login-jsp">
+  <span class="section-tag">19 &mdash; Key File</span>
+  <h2>login.jsp</h2>
+  <p class="section-desc">Server-rendered login page using JSP + JSTL.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/webapp/WEB-INF/jsp/login.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Nimbus - Login&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5;
+               display: flex; justify-content: center; align-items: center;
+               min-height: 100vh; }
+        .login-card { background: white; padding: 40px; border-radius: 12px;
+                      box-shadow: 0 2px 12px rgba(0,0,0,0.1); width: 400px; }
+        .login-card h1 { text-align: center; color: #1a73e8; margin-bottom: 8px; }
+        .login-card p { text-align: center; color: #666; margin-bottom: 24px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600;
+                            color: #333; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd;
+                            border-radius: 8px; font-size: 14px; }
+        .form-group input:focus { outline: none; border-color: #1a73e8; }
+        .btn { width: 100%; padding: 12px; background: #1a73e8; color: white;
+               border: none; border-radius: 8px; font-size: 16px; cursor: pointer;
+               font-weight: 600; }
+        .btn:hover { background: #1557b0; }
+        .error { background: #fde8e8; color: #c62828; padding: 10px;
+                 border-radius: 8px; margin-bottom: 16px; text-align: center; }
+        .register-link { text-align: center; margin-top: 16px; }
+        .register-link a { color: #1a73e8; text-decoration: none; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="login-card"&gt;
+        &lt;h1&gt;Nimbus&lt;/h1&gt;
+        &lt;p&gt;Parcel Management System&lt;/p&gt;
+
+        &lt;c:if test="${not empty error}"&gt;
+            &lt;div class="error"&gt;${error}&lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;form method="post" action="/servlet/login"&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;User ID&lt;/label&gt;
+                &lt;input type="text" name="userId" placeholder="e.g. 260401-AK01" required&gt;
+            &lt;/div&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;Password&lt;/label&gt;
+                &lt;input type="password" name="password" placeholder="Enter password" required&gt;
+            &lt;/div&gt;
+            &lt;button type="submit" class="btn"&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;div class="register-link"&gt;
+            &lt;a href="/servlet/register"&gt;Don't have an account? Register&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 20: AUTH CONTROLLER -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="auth-controller">
+  <span class="section-tag">20 &mdash; Key File</span>
+  <h2>AuthController.java</h2>
+  <p class="section-desc">REST API controller for login, register, and user management (Sprint 4 approach).</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/controller/AuthController.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.controller;
+
+import com.nimbus.dto.ApiResponse;
+import com.nimbus.dto.LoginRequest;
+import com.nimbus.dto.LoginResponse;
+import com.nimbus.dto.RegisterRequest;
+import com.nimbus.model.User;
+import com.nimbus.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity&lt;?&gt; login(@RequestBody LoginRequest request) {
+        Optional&lt;User&gt; user = userService.login(request.getUserId(), request.getPassword());
+        if (user.isPresent()) {
+            User u = user.get();
+            LoginResponse response = new LoginResponse(
+                u.getUserId(), u.getFullName(), u.getRole(), u.getEmail()
+            );
+            return ResponseEntity.ok(new ApiResponse("success", "Login successful", response));
+        }
+        return ResponseEntity.status(401)
+            .body(new ApiResponse("error", "Invalid User ID or Password", null));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity&lt;?&gt; register(@RequestBody RegisterRequest request) {
+        try {
+            User user = userService.register(request);
+            return ResponseEntity.ok(new ApiResponse("success", "Registration successful", user));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest()
+                .body(new ApiResponse("error", e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity&lt;?&gt; getAllUsers() {
+        List&lt;User&gt; users = userService.getAllUsers();
+        return ResponseEntity.ok(new ApiResponse("success", "Found " + users.size() + " users", users));
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity&lt;?&gt; getUser(@PathVariable String userId) {
+        Optional&lt;User&gt; user = userService.getUserById(userId);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(new ApiResponse("success", "User found", user.get()));
+        }
+        return ResponseEntity.status(404)
+            .body(new ApiResponse("error", "User not found", null));
+    }
+
+    @GetMapping("/users/role/{role}")
+    public ResponseEntity&lt;?&gt; getUsersByRole(@PathVariable String role) {
+        List&lt;User&gt; users = userService.getUsersByRole(role);
+        return ResponseEntity.ok(new ApiResponse("success", "Found " + users.size() + " users", users));
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 21: API RESPONSE -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="api-response">
+  <span class="section-tag">21 &mdash; Key File</span>
+  <h2>ApiResponse.java</h2>
+  <p class="section-desc">Wraps all API responses in a consistent JSON format.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/java/com/nimbus/dto/ApiResponse.java</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">package com.nimbus.dto;
+
+public class ApiResponse {
+
+    private String status;
+    private String message;
+    private Object data;
+
+    public ApiResponse() {}
+
+    public ApiResponse(String status, String message, Object data) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
+    }
+
+    // Getters and Setters
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
+
+    public Object getData() { return data; }
+    public void setData(Object data) { this.data = data; }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 22-25: REMAINING FILE LISTS -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="services-list">
+  <span class="section-tag">22 &mdash; File List</span>
+  <h2>Services</h2>
+  <p class="section-desc">Business logic layer. Full code available in the <a href="sprint2-code.html">Sprint 2 Code</a> and <a href="sprint3-guide.html">Sprint 3 Guide</a> pages.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Path</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>UserService.java</strong></td><td><code>com.nimbus.service</code></td><td>Login, register, get users by role, generate smart user ID</td></tr>
+      <tr><td><strong>BookingService.java</strong></td><td><code>com.nimbus.service</code></td><td>Create booking, track by ID, get user bookings, update status</td></tr>
+      <tr><td><strong>IssueService.java</strong></td><td><code>com.nimbus.service</code></td><td>Create issue, assign to support, resolve, reopen, get by user</td></tr>
+      <tr><td><strong>PricingService.java</strong></td><td><code>com.nimbus.service</code></td><td>Calculate shipping cost based on weight, delivery type, packing</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section class="content-section" id="servlets-list">
+  <span class="section-tag">23 &mdash; File List</span>
+  <h2>Servlets &amp; JSPs</h2>
+  <p class="section-desc">Traditional web layer (Sprint 3). Full code in the <a href="sprint3-guide.html">Sprint 3 Guide</a>.</p>
+
+  <h3>Servlets</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>URL Pattern</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>LoginServlet.java</strong></td><td><code>/servlet/login</code></td><td>Login form (GET) + login validation (POST)</td></tr>
+      <tr><td><strong>RegisterServlet.java</strong></td><td><code>/servlet/register</code></td><td>Registration form (GET) + create user (POST)</td></tr>
+      <tr><td><strong>DashboardServlet.java</strong></td><td><code>/servlet/dashboard</code></td><td>Role-based dashboard (different view per role)</td></tr>
+      <tr><td><strong>BookingServlet.java</strong></td><td><code>/servlet/booking</code></td><td>Booking form (GET) + create booking (POST)</td></tr>
+      <tr><td><strong>TrackingServlet.java</strong></td><td><code>/servlet/tracking</code></td><td>Track parcel by booking ID</td></tr>
+    </tbody>
+  </table>
+
+  <h3>JSP Pages</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Location</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>login.jsp</strong></td><td><code>webapp/WEB-INF/jsp/</code></td><td>Login form with error display</td></tr>
+      <tr><td><strong>register.jsp</strong></td><td><code>webapp/WEB-INF/jsp/</code></td><td>Registration form with all user fields</td></tr>
+      <tr><td><strong>dashboard.jsp</strong></td><td><code>webapp/WEB-INF/jsp/</code></td><td>Role-based dashboard with JSTL conditionals</td></tr>
+      <tr><td><strong>booking.jsp</strong></td><td><code>webapp/WEB-INF/jsp/</code></td><td>Parcel booking form with pricing display</td></tr>
+      <tr><td><strong>tracking.jsp</strong></td><td><code>webapp/WEB-INF/jsp/</code></td><td>Parcel tracking results page</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section class="content-section" id="controllers-list">
+  <span class="section-tag">24 &mdash; File List</span>
+  <h2>Controllers &amp; DTOs</h2>
+  <p class="section-desc">REST API layer (Sprint 4). Full code in the <a href="sprint4-guide.html">Sprint 4 Guide</a>.</p>
+
+  <h3>Controllers</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Base Path</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>AuthController.java</strong></td><td><code>/api/auth</code></td><td>Login, register, get users</td></tr>
+      <tr><td><strong>BookingController.java</strong></td><td><code>/api/bookings</code></td><td>Create, list, track, update bookings</td></tr>
+      <tr><td><strong>TrackingController.java</strong></td><td><code>/api/tracking</code></td><td>Track by booking ID, track by user</td></tr>
+      <tr><td><strong>IssueController.java</strong></td><td><code>/api/issues</code></td><td>Create, list, assign, resolve issues</td></tr>
+    </tbody>
+  </table>
+
+  <h3>DTOs (Data Transfer Objects)</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>LoginRequest.java</strong></td><td>JSON body for login: userId + password</td></tr>
+      <tr><td><strong>LoginResponse.java</strong></td><td>Login success response: userId, fullName, role, email</td></tr>
+      <tr><td><strong>RegisterRequest.java</strong></td><td>JSON body for registration: all user fields</td></tr>
+      <tr><td><strong>BookingRequest.java</strong></td><td>JSON body for creating a booking</td></tr>
+      <tr><td><strong>ApiResponse.java</strong></td><td>Wraps all API responses: status, message, data</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section class="content-section" id="utils-list">
+  <span class="section-tag">25 &mdash; File List</span>
+  <h2>Utilities &amp; Config</h2>
+  <p class="section-desc">Helper classes and configuration. Full code in the <a href="sprint2-code.html">Sprint 2 Code</a> page.</p>
+
+  <h3>Utilities</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>IdGenerator.java</strong></td><td>Generates smart User IDs (YYMMDD + initials + sequence) and Booking IDs</td></tr>
+      <tr><td><strong>InputValidator.java</strong></td><td>Validates email format, phone numbers, passwords, required fields</td></tr>
+      <tr><td><strong>PricingCalculator.java</strong></td><td>Calculates shipping cost: base price + weight surcharge + delivery type + packing</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Config</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>ServletConfig.java</strong></td><td>Registers all servlets with their URL patterns using <code>ServletRegistrationBean</code></td></tr>
+      <tr><td><strong>CorsConfig.java</strong></td><td>Allows Angular frontend (port 4200) to call REST APIs (port 8080)</td></tr>
+      <tr><td><strong>DataSeeder.java</strong></td><td>Prints database counts on startup for verification</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Console (Sprint 2)</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>File</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>ConsoleMenu.java</strong></td><td>Text-based menu system for the console app (Scanner input)</td></tr>
+      <tr><td><strong>ConsoleApp.java</strong></td><td>Main runner for console mode &mdash; tests DAOs without a browser</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 26: HOW TO RUN -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="how-to-run">
+  <span class="section-tag">26 &mdash; Run</span>
+  <h2>How to Run</h2>
+  <p class="section-desc">Start the app and test all entry points.</p>
+
+  <h3>Start the Application</h3>
+  <ol>
+    <li>Right-click <code>NimbusApplication.java</code> &rarr; <strong>Run As &rarr; Spring Boot App</strong> (or Java Application)</li>
+    <li>Wait for the console to show:<br>
+      <code>NIMBUS is running!</code>
+    </li>
+    <li>Open browser and test the URLs below</li>
+  </ol>
+
+  <h3>URLs to Test</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>What</th><th>URL</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>JSP Login Page</td><td><code>http://localhost:8080/servlet/login</code></td></tr>
+      <tr><td>REST API (all users)</td><td><code>http://localhost:8080/api/auth/users</code></td></tr>
+      <tr><td>REST API (all bookings)</td><td><code>http://localhost:8080/api/bookings</code></td></tr>
+      <tr><td>H2 Console</td><td><code>http://localhost:8080/h2-console</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout nimbus">
+    <div class="callout-title">H2 Console Login</div>
+    <p>JDBC URL: <code>jdbc:h2:mem:nimbusdb</code> | User: <code>sa</code> | Password: (leave empty) | Click Connect</p>
+  </div>
+
+  <h3>Demo Credentials</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Role</th><th>User ID</th><th>Password</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Customer</td><td><code>260401-AK01</code></td><td><code>Amit@123</code></td></tr>
+      <tr><td>Customer</td><td><code>260401-DA01</code></td><td><code>Darshan@123</code></td></tr>
+      <tr><td>Officer</td><td><code>OFF-001</code></td><td><code>Officer@123</code></td></tr>
+      <tr><td>Support</td><td><code>SUP-001</code></td><td><code>Support@123</code></td></tr>
+      <tr><td>Admin</td><td><code>ADM-001</code></td><td><code>Admin@123</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 27: ALL API ENDPOINTS -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="api-endpoints">
+  <span class="section-tag">27 &mdash; APIs</span>
+  <h2>All API Endpoints</h2>
+  <p class="section-desc">13 REST API endpoints across 4 controllers.</p>
+
+  <table class="info-table">
+    <thead>
+      <tr><th>Method</th><th>URL</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>POST</code></td><td><code>/api/auth/login</code></td><td>Login with userId + password</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/auth/register</code></td><td>Register a new user</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/auth/users</code></td><td>Get all users</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/auth/users/{userId}</code></td><td>Get user by ID</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/auth/users/role/{role}</code></td><td>Get users by role</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/bookings</code></td><td>Create a new booking</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/bookings</code></td><td>Get all bookings</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/bookings/user/{userId}</code></td><td>Get bookings by user</td></tr>
+      <tr><td><code>PUT</code></td><td><code>/api/bookings/{bookingId}/status</code></td><td>Update booking status</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/tracking/{bookingId}</code></td><td>Track a parcel by booking ID</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/issues</code></td><td>Create a new issue</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/issues</code></td><td>Get all issues</td></tr>
+      <tr><td><code>PUT</code></td><td><code>/api/issues/{issueId}/assign</code></td><td>Assign issue to support agent</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Example: Test Login via Postman or Browser</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">POST /api/auth/login &mdash; Request Body (JSON)</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-json">{
+    "userId": "260401-AK01",
+    "password": "Amit@123"
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">Response (JSON)</span>
+    </div>
+    <pre><code class="language-json">{
+    "status": "success",
+    "message": "Login successful",
+    "data": {
+        "userId": "260401-AK01",
+        "fullName": "Amit Kumar",
+        "role": "customer",
+        "email": "amit@nimbus.com"
+    }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 28: SHARE WITH TEAM -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="share-with-team">
+  <span class="section-tag">28 &mdash; Share</span>
+  <h2>How to Share with Team</h2>
+  <p class="section-desc">Export the project as a ZIP and share with teammates.</p>
+
+  <h3>Step 1: Export from Eclipse</h3>
+  <ol>
+    <li>Right-click the <code>nimbus-backend</code> project in Package Explorer</li>
+    <li>Select <strong>Export &rarr; General &rarr; Archive File</strong></li>
+    <li>Choose a location and save as <code>nimbus-backend.zip</code></li>
+    <li>Share the ZIP via WhatsApp, email, or Google Drive</li>
+  </ol>
+
+  <h3>Step 2: Teammate Imports</h3>
+  <ol>
+    <li>Open Eclipse</li>
+    <li><strong>File &rarr; Import &rarr; General &rarr; Existing Projects into Workspace</strong></li>
+    <li>Select <strong>"Select archive file"</strong> and browse to the ZIP</li>
+    <li>Click <strong>Finish</strong></li>
+    <li>Right-click project &rarr; <strong>Maven &rarr; Update Project</strong> &rarr; Check "Force Update" &rarr; OK</li>
+    <li>Wait for Maven to download all dependencies (first time takes 2-3 minutes)</li>
+    <li>Right-click <code>NimbusApplication.java</code> &rarr; <strong>Run As &rarr; Spring Boot App</strong></li>
+  </ol>
+
+  <div class="callout nimbus">
+    <div class="callout-title">Troubleshooting for Teammates</div>
+    <p>If they see "Build path specifies Java 17 but installed is Java 11": Right-click project &rarr; Properties &rarr; Java Build Path &rarr; Libraries &rarr; change JRE to Java 17. Or install Java 17 JDK.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 30: ANGULAR OVERVIEW -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="angular-overview">
+  <div class="section-tag">Section 30</div>
+  <h2>Angular Dashboard &mdash; Setup</h2>
+  <p class="section-desc">A standalone Angular app that serves as the dashboard. Calls the same REST APIs. Covers the TCS Angular requirement.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">How It Works</div>
+    <p>The Angular app is <strong>pre-built</strong> on your laptop. You copy the compiled files into Spring Boot's <code>src/main/resources/static/angular/</code> folder. Spring Boot serves them at <code>http://localhost:8080/angular/</code>. No Node.js needed at TCS.</p>
+  </div>
+
+  <h3>Angular Project Structure</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">nimbus-angular/src/app/</span></div>
+    <pre><code class="language-java">src/app/
+  app.ts              // Root component (just router-outlet)
+  app.config.ts       // App config (HttpClient + Router providers)
+  app.routes.ts       // Routes: /login → LoginComponent, /dashboard → DashboardComponent
+  api.ts              // ApiService — calls REST APIs using HttpClient
+  login.ts            // Login component — form + API call
+  login.html          // Login template
+  dashboard.ts        // Dashboard component — stats, bookings table, issues table
+  dashboard.html      // Dashboard template</code></pre>
+  </div>
+
+  <h3>What Angular Concepts This Covers (for Viva)</h3>
+  <table class="info-table">
+    <thead><tr><th>Concept</th><th>Where It's Used</th></tr></thead>
+    <tbody>
+      <tr><td>Components</td><td>LoginComponent, DashboardComponent, AppComponent</td></tr>
+      <tr><td>Templates + Data Binding</td><td><code>{{ user.fullName }}</code>, <code>[(ngModel)]</code>, <code>*ngIf</code>, <code>*ngFor</code></td></tr>
+      <tr><td>Services + Dependency Injection</td><td>ApiService injected into components via constructor</td></tr>
+      <tr><td>HttpClient</td><td>API calls: <code>this.http.post()</code>, <code>this.http.get()</code></td></tr>
+      <tr><td>Routing</td><td><code>app.routes.ts</code> &mdash; <code>/login</code> and <code>/dashboard</code> paths</td></tr>
+      <tr><td>Observables (RxJS)</td><td><code>.subscribe()</code> on every API call</td></tr>
+      <tr><td>Event Binding</td><td><code>(ngSubmit)="onLogin()"</code>, <code>(click)="logout()"</code></td></tr>
+      <tr><td>Conditional Rendering</td><td><code>*ngIf="error"</code>, <code>*ngIf="bookings.length > 0"</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 31: API SERVICE -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="angular-api-service">
+  <div class="section-tag">Section 31</div>
+  <h2>api.ts &mdash; API Service</h2>
+  <p class="section-desc"><code>src/app/api.ts</code> &mdash; Calls Spring Boot REST APIs using Angular's HttpClient.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/api.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+
+  private baseUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) {}
+
+  login(userId: string, password: string): Observable&lt;any&gt; {
+    return this.http.post(`${this.baseUrl}/auth/login`, { userId, password });
+  }
+
+  getAllUsers(): Observable&lt;any&gt; {
+    return this.http.get(`${this.baseUrl}/auth/users`);
+  }
+
+  getBookingHistory(userId?: string, role?: string): Observable&lt;any&gt; {
+    let params = `?role=${role || 'officer'}`;
+    if (userId) params += `&amp;userId=${userId}`;
+    return this.http.get(`${this.baseUrl}/bookings/history${params}`);
+  }
+
+  getAllIssues(): Observable&lt;any&gt; {
+    return this.http.get(`${this.baseUrl}/issues`);
+  }
+
+  getIssuesByUser(userId: string): Observable&lt;any&gt; {
+    return this.http.get(`${this.baseUrl}/issues/user/${userId}`);
+  }
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 32: LOGIN COMPONENT -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="angular-login">
+  <div class="section-tag">Section 32</div>
+  <h2>Login Component</h2>
+  <p class="section-desc">Two files: <code>login.ts</code> (logic) and <code>login.html</code> (template). Calls <code>/api/auth/login</code>, stores user in sessionStorage, navigates to dashboard.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/login.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ApiService } from './api';
+
+@Component({
+  selector: 'app-login',
+  imports: [FormsModule, CommonModule],
+  templateUrl: './login.html',
+  styles: [`
+    .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0B1120 0%, #1A2340 50%, #0F172A 100%); font-family: 'Segoe UI', sans-serif; }
+    .login-card { background: #1A2340; border: 1px solid rgba(59,130,246,0.2); border-radius: 16px;
+      padding: 48px 40px; width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .brand { text-align: center; margin-bottom: 32px; }
+    .brand h1 { color: #F1F5F9; font-size: 28px; font-weight: 700; }
+    .brand span { color: #3B82F6; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+    .brand p { color: #64748B; font-size: 14px; margin-top: 8px; }
+    label { display: block; color: #94A3B8; font-size: 13px; font-weight: 600; margin-bottom: 6px; margin-top: 20px; }
+    input { width: 100%; padding: 12px 16px; background: #0F172A; border: 1px solid rgba(148,163,184,0.2);
+      border-radius: 10px; color: #F1F5F9; font-size: 15px; outline: none; }
+    input:focus { border-color: #3B82F6; }
+    .btn { width: 100%; padding: 14px; background: #3B82F6; color: white; border: none; border-radius: 10px;
+      font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 28px; }
+    .btn:hover { background: #2563EB; }
+    .btn:disabled { opacity: 0.5; }
+    .error-msg { background: rgba(239,68,68,0.15); color: #EF4444; padding: 12px; border-radius: 8px;
+      text-align: center; font-size: 14px; margin-top: 16px; }
+    .demo { margin-top: 24px; padding: 16px; background: rgba(59,130,246,0.08); border-radius: 10px; }
+    .demo h3 { color: #94A3B8; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .demo p { color: #64748B; font-size: 13px; margin: 4px 0; }
+    .demo code { color: #3B82F6; background: rgba(59,130,246,0.1); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  `]
+})
+export class Login {
+  userId = '';
+  password = '';
+  error = '';
+  loading = false;
+
+  constructor(private api: ApiService, private router: Router) {}
+
+  onLogin() {
+    this.error = '';
+    this.loading = true;
+    this.api.login(this.userId, this.password).subscribe({
+      next: (res: any) =&gt; {
+        this.loading = false;
+        if (res.success) {
+          sessionStorage.setItem('nimbus_user', JSON.stringify(res.user));
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.error = res.message || 'Login failed.';
+        }
+      },
+      error: (err: any) =&gt; {
+        this.loading = false;
+        this.error = err.error?.message || 'Server error. Is Spring Boot running on port 8080?';
+      }
+    });
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/login.html</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;div class="login-page"&gt;
+  &lt;div class="login-card"&gt;
+    &lt;div class="brand"&gt;
+      &lt;h1&gt;Nimbus&lt;/h1&gt;
+      &lt;span&gt;Angular Dashboard&lt;/span&gt;
+      &lt;p&gt;Parcel Management System&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;form (ngSubmit)="onLogin()"&gt;
+      &lt;label&gt;User ID&lt;/label&gt;
+      &lt;input type="text" [(ngModel)]="userId" name="userId" placeholder="e.g., 260401-AK01" required&gt;
+      &lt;label&gt;Password&lt;/label&gt;
+      &lt;input type="password" [(ngModel)]="password" name="password" placeholder="Enter password" required&gt;
+      &lt;button type="submit" class="btn" [disabled]="loading"&gt;
+        {{ loading ? 'Logging in...' : 'Login' }}
+      &lt;/button&gt;
+    &lt;/form&gt;
+    &lt;div class="error-msg" *ngIf="error"&gt;{{ error }}&lt;/div&gt;
+    &lt;div class="demo"&gt;
+      &lt;h3&gt;Demo Credentials&lt;/h3&gt;
+      &lt;p&gt;Customer: &lt;code&gt;260401-AK01&lt;/code&gt; / &lt;code&gt;Amit@123&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;Officer: &lt;code&gt;OFF-001&lt;/code&gt; / &lt;code&gt;Officer@123&lt;/code&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 33: DASHBOARD COMPONENT -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="angular-dashboard">
+  <div class="section-tag">Section 33</div>
+  <h2>Dashboard Component</h2>
+  <p class="section-desc">Shows booking stats, recent bookings table, and issues table. All data from REST APIs.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/dashboard.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ApiService } from './api';
+
+@Component({
+  selector: 'app-dashboard',
+  imports: [CommonModule],
+  templateUrl: './dashboard.html',
+  styles: [`
+    .dashboard { min-height: 100vh; background: #0B1120; font-family: 'Segoe UI', sans-serif; color: #F1F5F9; }
+    .navbar { background: #131B2E; border-bottom: 1px solid rgba(148,163,184,0.1); padding: 0 32px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; }
+    .nav-brand h2 { font-size: 20px; font-weight: 700; }
+    .nav-brand span { background: #3B82F6; color: white; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-user { color: #94A3B8; font-size: 14px; }
+    .nav-role { background: rgba(59,130,246,0.15); color: #3B82F6; padding: 4px 12px; border-radius: 20px; font-size: 12px;
+      font-weight: 600; text-transform: capitalize; }
+    .logout-btn { background: none; border: 1px solid rgba(239,68,68,0.3); color: #EF4444; padding: 6px 16px;
+      border-radius: 8px; font-size: 13px; cursor: pointer; }
+    .content { max-width: 1100px; margin: 0 auto; padding: 32px; }
+    .page-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-subtitle { color: #64748B; font-size: 14px; margin-bottom: 28px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: #1A2340; border: 1px solid rgba(148,163,184,0.1); border-radius: 12px; padding: 24px; text-align: center; }
+    .stat-value { font-size: 36px; font-weight: 800; }
+    .stat-label { color: #64748B; font-size: 13px; margin-top: 4px; }
+    .stat-card.blue .stat-value { color: #3B82F6; }
+    .stat-card.orange .stat-value { color: #F59E0B; }
+    .stat-card.green .stat-value { color: #22C55E; }
+    .stat-card.red .stat-value { color: #EF4444; }
+    .section-label { font-size: 12px; font-weight: 600; color: #64748B; letter-spacing: 1.5px; text-transform: uppercase;
+      margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(148,163,184,0.1); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 12px; font-weight: 600; color: #64748B; padding: 10px 14px;
+      border-bottom: 1px solid rgba(148,163,184,0.15); }
+    td { padding: 12px 14px; font-size: 14px; color: #94A3B8; border-bottom: 1px solid rgba(148,163,184,0.06); }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-booked { background: rgba(59,130,246,0.15); color: #3B82F6; }
+    .badge-transit { background: rgba(245,158,11,0.15); color: #F59E0B; }
+    .badge-delivered { background: rgba(34,197,94,0.15); color: #22C55E; }
+    .angular-badge { color: #EF4444; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+  `]
+})
+export class Dashboard implements OnInit {
+  user: any = null;
+  bookings: any[] = [];
+  issues: any[] = [];
+  stats = { total: 0, transit: 0, delivered: 0, pending: 0 };
+
+  constructor(private api: ApiService, private router: Router) {}
+
+  ngOnInit() {
+    const stored = sessionStorage.getItem('nimbus_user');
+    if (!stored) { this.router.navigate(['/login']); return; }
+    this.user = JSON.parse(stored);
+    this.loadData();
+  }
+
+  loadData() {
+    const role = this.user.role;
+    const userId = this.user.userId;
+    this.api.getBookingHistory(role === 'customer' ? userId : undefined, role).subscribe({
+      next: (res: any) =&gt; {
+        if (res.success) {
+          this.bookings = res.data || [];
+          this.stats.total = this.bookings.length;
+          this.stats.transit = this.bookings.filter((b: any) =&gt; b.parStatus === 'In Transit').length;
+          this.stats.delivered = this.bookings.filter((b: any) =&gt; b.parStatus === 'Delivered').length;
+          this.stats.pending = this.bookings.filter((b: any) =&gt; b.parStatus === 'Booked').length;
+        }
+      }
+    });
+    if (role === 'customer') {
+      this.api.getIssuesByUser(userId).subscribe({ next: (res: any) =&gt; { if (res.success) this.issues = res.data || []; } });
+    } else {
+      this.api.getAllIssues().subscribe({ next: (res: any) =&gt; { if (res.success) this.issues = res.data || []; } });
+    }
+  }
+
+  logout() { sessionStorage.removeItem('nimbus_user'); this.router.navigate(['/login']); }
+
+  getBadgeClass(status: string): string {
+    switch (status) {
+      case 'Booked': return 'badge-booked';
+      case 'In Transit': return 'badge-transit';
+      case 'Delivered': return 'badge-delivered';
+      default: return 'badge-booked';
+    }
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/dashboard.html</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;div class="dashboard" *ngIf="user"&gt;
+  &lt;nav class="navbar"&gt;
+    &lt;div class="nav-brand"&gt;&lt;h2&gt;Nimbus&lt;/h2&gt;&lt;span&gt;ANGULAR&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="nav-right"&gt;
+      &lt;span class="nav-user"&gt;{{ user.fullName }}&lt;/span&gt;
+      &lt;span class="nav-role"&gt;{{ user.role }}&lt;/span&gt;
+      &lt;button class="logout-btn" (click)="logout()"&gt;Logout&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+  &lt;div class="content"&gt;
+    &lt;h1 class="page-title"&gt;Welcome, {{ user.firstName }}&lt;/h1&gt;
+    &lt;p class="page-subtitle"&gt;&lt;span class="angular-badge"&gt;POWERED BY ANGULAR&lt;/span&gt; &amp;mdash; Dashboard connected to Spring Boot REST APIs&lt;/p&gt;
+    &lt;div class="stats-grid"&gt;
+      &lt;div class="stat-card blue"&gt;&lt;div class="stat-value"&gt;{{ stats.total }}&lt;/div&gt;&lt;div class="stat-label"&gt;Total Bookings&lt;/div&gt;&lt;/div&gt;
+      &lt;div class="stat-card orange"&gt;&lt;div class="stat-value"&gt;{{ stats.transit }}&lt;/div&gt;&lt;div class="stat-label"&gt;In Transit&lt;/div&gt;&lt;/div&gt;
+      &lt;div class="stat-card green"&gt;&lt;div class="stat-value"&gt;{{ stats.delivered }}&lt;/div&gt;&lt;div class="stat-label"&gt;Delivered&lt;/div&gt;&lt;/div&gt;
+      &lt;div class="stat-card red"&gt;&lt;div class="stat-value"&gt;{{ stats.pending }}&lt;/div&gt;&lt;div class="stat-label"&gt;Pending&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="section-label"&gt;Recent Bookings&lt;/div&gt;
+    &lt;table *ngIf="bookings.length &gt; 0"&gt;
+      &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Booking ID&lt;/th&gt;&lt;th&gt;Receiver&lt;/th&gt;&lt;th&gt;Type&lt;/th&gt;&lt;th&gt;Cost&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr *ngFor="let b of bookings.slice(0, 5)"&gt;
+          &lt;td&gt;{{ b.bookingId }}&lt;/td&gt;&lt;td&gt;{{ b.recName }}&lt;/td&gt;&lt;td&gt;{{ b.parDeliveryType }}&lt;/td&gt;
+          &lt;td&gt;Rs {{ b.parServiceCost }}&lt;/td&gt;
+          &lt;td&gt;&lt;span class="badge" [ngClass]="getBadgeClass(b.parStatus)"&gt;{{ b.parStatus }}&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;div class="section-label"&gt;Support Issues&lt;/div&gt;
+    &lt;table *ngIf="issues.length &gt; 0"&gt;
+      &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Issue ID&lt;/th&gt;&lt;th&gt;Subject&lt;/th&gt;&lt;th&gt;Severity&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr *ngFor="let i of issues.slice(0, 5)"&gt;
+          &lt;td&gt;{{ i.issueId }}&lt;/td&gt;&lt;td&gt;{{ i.subject }}&lt;/td&gt;&lt;td&gt;{{ i.severity }}&lt;/td&gt;
+          &lt;td&gt;&lt;span class="badge" [ngClass]="getBadgeClass(i.status)"&gt;{{ i.status }}&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <h3>Supporting Files (also needed)</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/app.routes.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import { Routes } from '@angular/router';
+import { Login } from './login';
+import { Dashboard } from './dashboard';
+
+export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: Login },
+  { path: 'dashboard', component: Dashboard },
+];</code></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/app/app.config.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-java">import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter(routes),
+    provideHttpClient()
+  ]
+};</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 34: DEPLOY ANGULAR TO SPRING BOOT -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="angular-deploy">
+  <div class="section-tag">Section 34</div>
+  <h2>Deploy Angular to Spring Boot</h2>
+  <p class="section-desc">How to put the compiled Angular files into your Eclipse project so Spring Boot serves them.</p>
+
+  <div class="callout warning">
+    <div class="callout-title">You Cannot Build Angular at TCS</div>
+    <p>Angular requires Node.js + npm to build. TCS machines don't have this. Build on your laptop first, then carry the compiled files.</p>
+  </div>
+
+  <h3>Step 1: Build (on your laptop)</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Terminal commands</span></div>
+    <pre><code class="language-java">cd nimbus-angular
+ng build --output-path=dist
+
+// Output goes to: nimbus-angular/dist/browser/
+// Files: index.html, main-XXXX.js, styles-XXXX.css</code></pre>
+  </div>
+
+  <h3>Step 2: Copy to Eclipse Project</h3>
+  <p>Copy the contents of <code>dist/browser/</code> into your Eclipse project at:</p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Eclipse project path</span></div>
+    <pre><code class="language-java">nimbus-backend/
+  src/main/resources/static/angular/
+    index.html          &larr; copy here
+    main-XXXX.js        &larr; copy here
+    styles-XXXX.css     &larr; copy here
+    favicon.ico         &larr; copy here</code></pre>
+  </div>
+
+  <h3>Step 3: Access in Browser</h3>
+  <p>After running Spring Boot, open: <code>http://localhost:8080/angular/index.html</code></p>
+  <p>Login with demo credentials &rarr; Angular dashboard loads data from REST APIs.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">Important: base href</div>
+    <p>The <code>index.html</code> has <code>&lt;base href="/angular/"&gt;</code>. This tells Angular that all its files are under <code>/angular/</code>. If you change the folder name, update this too.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 35: JSP CONVERSION OVERVIEW -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jsp-overview">
+  <div class="section-tag">Section 35</div>
+  <h2>JSP Conversion &mdash; Using Your Polished Frontend</h2>
+  <p class="section-desc">Convert your Phase 1 HTML frontend into JSPs. Same beautiful design, but data comes from Java instead of LocalStorage.</p>
+
+  <h3>What Changes When Converting HTML &rarr; JSP</h3>
+  <table class="info-table">
+    <thead><tr><th>HTML (Phase 1)</th><th>JSP (Phase 3)</th></tr></thead>
+    <tbody>
+      <tr><td>File extension: <code>.html</code></td><td>File extension: <code>.jsp</code></td></tr>
+      <tr><td>No server processing</td><td>Add <code>&lt;%@ page %&gt;</code> and <code>&lt;%@ taglib %&gt;</code> at top</td></tr>
+      <tr><td>Data from: <code>NimbusDB.getBookings()</code></td><td>Data from: <code>${bookings}</code> (set by Servlet)</td></tr>
+      <tr><td>Auth: <code>NimbusAuth.requireAuth()</code></td><td>Auth: <code>${sessionScope.role}</code> (HTTP Session)</td></tr>
+      <tr><td>Links: <code>href="booking.html"</code></td><td>Links: <code>href="${pageContext.request.contextPath}/servlet/booking"</code></td></tr>
+      <tr><td>Form action: JavaScript <code>handleLogin()</code></td><td>Form action: <code>POST /servlet/login</code></td></tr>
+      <tr><td>CSS: <code>href="css/style.css"</code></td><td>CSS: <code>href="/css/style.css"</code> (from static resources)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Where JSP Files Go</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Eclipse project paths</span></div>
+    <pre><code class="language-java">nimbus-backend/
+  src/main/resources/static/css/
+    style.css           &larr; copy your Phase 1 CSS here
+    dashboard.css       &larr; copy your Phase 1 CSS here
+  src/main/webapp/WEB-INF/jsp/
+    login.jsp           &larr; converted from login.html
+    register.jsp        &larr; converted from register.html
+    dashboard.jsp       &larr; combined from customer/officer/support dashboards
+    booking.jsp         &larr; converted from booking.html
+    tracking.jsp        &larr; converted from tracking.html</code></pre>
+  </div>
+
+  <h3>How to Copy CSS Files</h3>
+  <p>Your Phase 1 CSS files are at <code>nimbus/css/style.css</code> and <code>nimbus/css/dashboard.css</code>. Copy them to <code>src/main/resources/static/css/</code> in Eclipse. Spring Boot serves anything under <code>static/</code> as-is.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 36: JSP LOGIN (POLISHED) -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jsp-login">
+  <div class="section-tag">Section 36</div>
+  <h2>login.jsp &mdash; Polished Version</h2>
+  <p class="section-desc">Your beautiful Phase 1 login page converted to JSP. Same design, but form submits to LoginServlet instead of JavaScript.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/webapp/WEB-INF/jsp/login.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Nimbus &amp;mdash; Sign In&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link rel="stylesheet" href="/css/style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="login-page"&gt;
+
+    &lt;!-- LEFT: Branding (same as Phase 1) --&gt;
+    &lt;div class="login-brand"&gt;
+      &lt;div class="brand-content"&gt;
+        &lt;div class="brand-logo"&gt;
+          &lt;svg viewBox="0 0 200 60" fill="none"&gt;
+            &lt;path d="M38 40H16a10 10 0 0 1-1.2-19.9 12 12 0 0 1 22.9-2.3A8 8 0 0 1 44 26a8 8 0 0 1-6 7.7"
+                  stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/&gt;
+            &lt;path d="M30 32l6-6m0 0l-6-6m6 6H20" stroke="white" stroke-width="2.5" stroke-linecap="round"/&gt;
+            &lt;text x="54" y="36" font-family="Plus Jakarta Sans" font-weight="800" font-size="26" fill="white"&gt;nimbus&lt;/text&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;h1 class="brand-tagline"&gt;Delivering trust,&lt;br&gt;one parcel at a time.&lt;/h1&gt;
+        &lt;p class="brand-description"&gt;Track, ship, and manage your parcels with confidence.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- RIGHT: Login Form --&gt;
+    &lt;div class="login-form-panel"&gt;
+      &lt;div class="login-form-container"&gt;
+        &lt;div class="login-form-header"&gt;
+          &lt;h2&gt;Welcome back&lt;/h2&gt;
+          &lt;p&gt;Sign in to your Nimbus account&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Error message from Servlet --&gt;
+        &lt;c:if test="${not empty error}"&gt;
+          &lt;div class="login-alert" style="display:block; background:#FEE2E2; color:#DC2626; padding:12px; border-radius:8px; margin-bottom:16px;"&gt;
+            ${error}
+          &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;!-- Success message after registration --&gt;
+        &lt;c:if test="${param.registered == 'true'}"&gt;
+          &lt;div style="background:#DCFCE7; color:#166534; padding:12px; border-radius:8px; margin-bottom:16px;"&gt;
+            Registration successful! Your User ID: &lt;strong&gt;${param.userId}&lt;/strong&gt;
+          &lt;/div&gt;
+        &lt;/c:if&gt;
+
+        &lt;!-- KEY CHANGE: form action points to Servlet, not JavaScript --&gt;
+        &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/login"&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label class="form-label" for="userId"&gt;User ID&lt;/label&gt;
+            &lt;input type="text" id="userId" name="userId" class="form-input"
+                   placeholder="e.g. 260401-AK01" required&gt;
+          &lt;/div&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label class="form-label" for="password"&gt;Password&lt;/label&gt;
+            &lt;input type="password" id="password" name="password" class="form-input"
+                   placeholder="Enter your password" required&gt;
+          &lt;/div&gt;
+          &lt;button type="submit" class="btn btn-primary btn-full btn-lg"&gt;Sign In&lt;/button&gt;
+        &lt;/form&gt;
+
+        &lt;div class="login-divider"&gt;or&lt;/div&gt;
+        &lt;div class="login-footer"&gt;
+          &lt;p&gt;New to Nimbus? &lt;a href="${pageContext.request.contextPath}/servlet/register"&gt;Create an account&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div style="margin-top:24px; padding:16px; background:rgba(30,58,138,0.08); border-radius:8px; font-size:13px;"&gt;
+          &lt;p style="font-weight:600; margin-bottom:8px;"&gt;Demo Credentials&lt;/p&gt;
+          &lt;p&gt;Customer: 260401-AK01 / Amit@123&lt;br&gt;Officer: OFF-001 / Officer@123&lt;br&gt;Support: SUP-001 / Support@123&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 37: JSP DASHBOARD -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jsp-dashboard">
+  <div class="section-tag">Section 37</div>
+  <h2>dashboard.jsp &mdash; Role-Based</h2>
+  <p class="section-desc">One JSP shows different content based on role. Uses <code>&lt;c:if&gt;</code> to check <code>${sessionScope.role}</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/webapp/WEB-INF/jsp/dashboard.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Nimbus &amp;mdash; Dashboard&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link rel="stylesheet" href="/css/style.css"&gt;
+  &lt;link rel="stylesheet" href="/css/dashboard.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="main-content"&gt;
+
+    &lt;div class="page-header"&gt;
+      &lt;h1&gt;Welcome, ${sessionScope.fullName}&lt;/h1&gt;
+      &lt;p&gt;Role: ${sessionScope.role} |
+         &lt;a href="${pageContext.request.contextPath}/servlet/login" style="color:#3B82F6;"&gt;Logout&lt;/a&gt; |
+         &lt;a href="/angular/index.html" style="color:#EF4444;"&gt;Open Angular Dashboard&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- ===== CUSTOMER MENU ===== --&gt;
+    &lt;c:if test="${sessionScope.role == 'customer'}"&gt;
+      &lt;div class="modules-grid"&gt;
+        &lt;a href="${pageContext.request.contextPath}/servlet/booking" class="module-card"&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Book Parcel&lt;/h3&gt;&lt;p&gt;Ship a new parcel with live pricing.&lt;/p&gt;&lt;/div&gt;
+        &lt;/a&gt;
+        &lt;a href="${pageContext.request.contextPath}/servlet/tracking" class="module-card"&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Track Parcel&lt;/h3&gt;&lt;p&gt;Enter booking ID for real-time status.&lt;/p&gt;&lt;/div&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/c:if&gt;
+
+    &lt;!-- ===== OFFICER MENU ===== --&gt;
+    &lt;c:if test="${sessionScope.role == 'officer'}"&gt;
+      &lt;div class="modules-grid"&gt;
+        &lt;a href="${pageContext.request.contextPath}/servlet/tracking" class="module-card"&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Track Parcel&lt;/h3&gt;&lt;p&gt;Search and update delivery status.&lt;/p&gt;&lt;/div&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/c:if&gt;
+
+    &lt;!-- ===== SUPPORT MENU ===== --&gt;
+    &lt;c:if test="${sessionScope.role == 'support'}"&gt;
+      &lt;div class="modules-grid"&gt;
+        &lt;div class="module-card"&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Assigned Issues&lt;/h3&gt;&lt;p&gt;View and resolve customer issues.&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/c:if&gt;
+
+    &lt;!-- ===== ADMIN MENU ===== --&gt;
+    &lt;c:if test="${sessionScope.role == 'admin'}"&gt;
+      &lt;div class="modules-grid"&gt;
+        &lt;div class="module-card"&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;All Users&lt;/h3&gt;&lt;p&gt;View and manage registered users.&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="module-card"&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Register Staff&lt;/h3&gt;&lt;p&gt;Onboard new officers and support agents.&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/c:if&gt;
+
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 38: CSS FILES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jsp-css">
+  <div class="section-tag">Section 38</div>
+  <h2>CSS Files</h2>
+  <p class="section-desc">Copy your Phase 1 CSS files from <code>nimbus/css/</code> into <code>src/main/resources/static/css/</code>.</p>
+
+  <div class="callout nimbus">
+    <div class="callout-title">What to Copy</div>
+    <p>Go to your <code>nimbus/css/</code> folder. Copy <strong>style.css</strong> and <strong>dashboard.css</strong> into <code>src/main/resources/static/css/</code> in Eclipse. Spring Boot serves all files under <code>static/</code> automatically. Your JSPs reference them as <code>/css/style.css</code>.</p>
+  </div>
+
+  <h3>Steps in Eclipse</h3>
+  <ol>
+    <li>Right-click <code>src/main/resources/static</code> &rarr; New &rarr; Folder &rarr; name it <code>css</code></li>
+    <li>Copy <code>nimbus/css/style.css</code> into that folder</li>
+    <li>Copy <code>nimbus/css/dashboard.css</code> into that folder</li>
+    <li>Run the app &mdash; open <code>http://localhost:8080/css/style.css</code> in browser to verify it loads</li>
+  </ol>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 39: INTEGRATION GUIDE -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="integration-guide">
+  <div class="section-tag">Section 39</div>
+  <h2>Backend + Frontend Integration</h2>
+  <p class="section-desc">How all three frontends connect to the same Spring Boot backend.</p>
+
+  <h3>Three Frontends, One Backend</h3>
+  <table class="info-table">
+    <thead><tr><th>Frontend</th><th>URL</th><th>How It Gets Data</th><th>TCS Requirement</th></tr></thead>
+    <tbody>
+      <tr><td><strong>JSP Pages</strong></td><td><code>/servlet/login</code></td><td>Servlet sets data &rarr; JSP renders it</td><td>Sprint 3: Servlets + JSP</td></tr>
+      <tr><td><strong>Angular App</strong></td><td><code>/angular/index.html</code></td><td>HttpClient calls REST APIs &rarr; JSON</td><td>Sprint 4: Angular</td></tr>
+      <tr><td><strong>Phase 1 HTML</strong></td><td><code>/login.html</code></td><td>fetch() calls REST APIs &rarr; JSON</td><td>Sprint 1: HTML/CSS/JS + Sprint 4: REST</td></tr>
+    </tbody>
+  </table>
+
+  <h3>How to Set Up All Three</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-filename">Spring Boot static resources layout</span></div>
+    <pre><code class="language-java">src/main/resources/static/
+  css/
+    style.css             &larr; Phase 1 CSS (for JSPs)
+    dashboard.css         &larr; Phase 1 CSS (for JSPs)
+  angular/
+    index.html            &larr; Compiled Angular app
+    main-XXXX.js
+    styles-XXXX.css
+  login.html              &larr; Phase 1 HTML (optional — works with storage-api.js)
+  nimbus/                 &larr; Phase 1 full frontend (optional)
+    customer/
+    officer/
+    support/
+
+src/main/webapp/WEB-INF/jsp/
+  login.jsp               &larr; JSP version (served by Servlets)
+  register.jsp
+  dashboard.jsp
+  booking.jsp
+  tracking.jsp</code></pre>
+  </div>
+
+  <div class="callout think">
+    <div class="callout-title">Which Frontend Should You Demo?</div>
+    <p>In your viva, demo <strong>all three</strong>: (1) Start with JSP login at <code>/servlet/login</code> &mdash; show traditional web. (2) Then open <code>/angular/index.html</code> &mdash; show modern SPA with the same data. (3) Mention that the Phase 1 HTML also works with REST APIs via <code>storage-api.js</code>. This shows you understand all approaches.</p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 40: COMMON FRONTEND ISSUES -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="frontend-issues">
+  <div class="section-tag">Section 40</div>
+  <h2>Common Frontend Issues &amp; Fixes</h2>
+  <p class="section-desc">Problems you'll run into when integrating frontend with backend, and exact fixes.</p>
+
+  <table class="info-table">
+    <thead><tr><th>Issue</th><th>Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>CORS error in Angular</strong><br><code>blocked by CORS policy</code></td>
+        <td>Angular runs on port 4200, Spring Boot on 8080. Different origins.</td>
+        <td>Already handled by <code>CorsConfig.java</code>. If you serve Angular from Spring Boot's <code>static/angular/</code>, no CORS issue at all (same origin).</td>
+      </tr>
+      <tr>
+        <td><strong>JSP shows raw code instead of HTML</strong></td>
+        <td>Missing <code>tomcat-embed-jasper</code> dependency in pom.xml.</td>
+        <td>Add this to pom.xml:<br><code>&lt;dependency&gt;&lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;&lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;&lt;/dependency&gt;</code></td>
+      </tr>
+      <tr>
+        <td><strong>CSS not loading in JSP</strong><br>Page looks plain white</td>
+        <td>CSS files not in <code>static/css/</code> or wrong path in JSP.</td>
+        <td>Put CSS in <code>src/main/resources/static/css/</code>. Reference as <code>/css/style.css</code> (not <code>../css/style.css</code>).</td>
+      </tr>
+      <tr>
+        <td><strong>JSTL tags not working</strong><br><code>&lt;c:if&gt;</code> shows as text</td>
+        <td>Missing JSTL dependency or wrong taglib URI.</td>
+        <td>Add both JSTL dependencies (api + impl) to pom.xml. Use <code>uri="jakarta.tags.core"</code> (not the old <code>http://</code> URI).</td>
+      </tr>
+      <tr>
+        <td><strong>Angular routes show 404 on refresh</strong></td>
+        <td>Angular uses client-side routing. Spring Boot doesn't know about <code>/angular/dashboard</code>.</td>
+        <td>Always navigate via Angular's router (from login). If you refresh, go to <code>/angular/index.html</code> first. Or add a Spring Boot controller that forwards unknown <code>/angular/**</code> routes to <code>/angular/index.html</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Angular shows "Server error"</strong></td>
+        <td>Spring Boot is not running, or running on a different port.</td>
+        <td>Start Spring Boot first. Check <code>api.ts</code> &mdash; <code>baseUrl</code> must match your server (default: <code>http://localhost:8080/api</code>).</td>
+      </tr>
+      <tr>
+        <td><strong>JSP form data not reaching Servlet</strong></td>
+        <td>Input <code>name</code> attribute missing or wrong.</td>
+        <td>Every <code>&lt;input&gt;</code> must have a <code>name="..."</code> attribute matching what the Servlet reads with <code>request.getParameter("...")</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Session lost after redirect</strong></td>
+        <td>Using <code>response.sendRedirect()</code> to an external URL loses the session.</td>
+        <td>Always redirect within the same server. Use <code>request.getContextPath()</code> prefix.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 41: PPT GUIDE -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="ppt-guide">
+  <span class="section-tag">Section 41</span>
+  <h2>PPT Guide (6 Slides)</h2>
+  <p class="section-desc">Structure for your project presentation. Take the screenshots mentioned below.</p>
+
+  <h3>Slide 1: Title + Team</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Title</td><td><strong>Nimbus Parcel Management System</strong></td></tr>
+      <tr><td>Subtitle</td><td>A Full-Stack Java Application</td></tr>
+      <tr><td>Team</td><td>Darshan (Lead), Akhil, Meenal, Kushal, and team</td></tr>
+      <tr><td>Tech</td><td>Spring Boot 3.2.5 | H2 Database | JPA | Servlets + JSP | REST APIs | Maven</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Slide 2: Architecture</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Diagram</td><td>3-tier architecture: Presentation &rarr; Business &rarr; Data</td></tr>
+      <tr><td>Entry Points</td><td>Two paths: JSP (traditional, server-rendered) and REST API (modern, JSON)</td></tr>
+      <tr><td>Flow</td><td>Browser &rarr; Controller/Servlet &rarr; Service &rarr; Repository &rarr; H2 Database</td></tr>
+      <tr><td>Key Point</td><td>Same service layer powers both JSP and REST &mdash; code reuse</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Slide 3: Database Design</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tables</td><td>3 tables: <code>tbl_user_profile</code> (17 cols), <code>tbl_booking</code> (17 cols), <code>tbl_issue</code> (11 cols)</td></tr>
+      <tr><td>Relationships</td><td>Booking &rarr; User (FK), Issue &rarr; User (FK)</td></tr>
+      <tr><td>Screenshot</td><td>H2 Console showing all 3 tables with data (<code>http://localhost:8080/h2-console</code>)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Slide 4: Features Demo</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Screenshot 1</td><td>JSP Login page (<code>/servlet/login</code>)</td></tr>
+      <tr><td>Screenshot 2</td><td>JSP Dashboard showing role-based content</td></tr>
+      <tr><td>Screenshot 3</td><td>Booking confirmation page</td></tr>
+      <tr><td>Features List</td><td>Login, Register, Book Parcel, Track Parcel, Raise Issue, Update Status, Role-Based Access</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Slide 5: REST APIs</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Screenshot</td><td>Browser showing JSON response from <code>/api/auth/users</code></td></tr>
+      <tr><td>Table</td><td>13 API endpoints (from Section 27 above)</td></tr>
+      <tr><td>Testing</td><td>Can be tested via Postman, browser, or Angular frontend</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Slide 6: What We Learned</h3>
+  <table class="info-table">
+    <thead>
+      <tr><th>Element</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sprint 1</td><td>HTML/CSS/JS + LocalStorage (Frontend UI)</td></tr>
+      <tr><td>Sprint 2</td><td>Java, Maven, H2, JDBC, DAO Pattern, Console App</td></tr>
+      <tr><td>Sprint 3</td><td>Servlets, JSP, JSTL, Sessions, Spring Annotations</td></tr>
+      <tr><td>Sprint 4</td><td>REST APIs, JSON, DTOs, @RestController, CORS</td></tr>
+      <tr><td>Challenges</td><td>H2 compatibility issues, JSP rendering, CORS configuration, Maven dependency conflicts</td></tr>
+      <tr><td>Key Takeaway</td><td>Progressive architecture: same data layer serves console, JSP, and REST API</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="topic-nav">
+  <a href="eclipse-master-setup.html">
+    <span class="nav-label">&larr; Previous</span>
+    <span class="nav-title">Eclipse Master Setup</span>
+  </a>
+  <a href="viva-guide.html" class="next">
+    <span class="nav-label">Next &rarr;</span>
+    <span class="nav-title">Viva Guide</span>
+  </a>
+</div>
+
+</main>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="../topics/shared.js"></script>
+</body>
+</html>
