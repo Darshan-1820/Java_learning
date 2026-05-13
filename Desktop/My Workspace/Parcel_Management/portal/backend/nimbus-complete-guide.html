@@ -2316,56 +2316,30 @@ ng build --output-path=dist
 
 
 <!-- ============================================================ -->
-<!-- SECTION 35: JSP CONVERSION OVERVIEW -->
+<!-- SECTION 35: JSP FILES OVERVIEW -->
 <!-- ============================================================ -->
 
 <section class="content-section" id="jsp-overview">
   <div class="section-tag">Section 35</div>
-  <h2>JSP Conversion &mdash; Using Your Polished Frontend</h2>
-  <p class="section-desc">Convert your Phase 1 HTML frontend into JSPs. Same beautiful design, but data comes from Java instead of LocalStorage.</p>
+  <h2>JSP Frontend Files</h2>
+  <p class="section-desc">5 JSP files + 2 CSS files. Copy-paste each file into Eclipse. JSPs go in <code>src/main/webapp/WEB-INF/jsp/</code>. CSS goes in <code>src/main/resources/static/css/</code>.</p>
 
-  <h3>What Changes When Converting HTML &rarr; JSP</h3>
-  <table class="info-table">
-    <thead><tr><th>HTML (Phase 1)</th><th>JSP (Phase 3)</th></tr></thead>
-    <tbody>
-      <tr><td>File extension: <code>.html</code></td><td>File extension: <code>.jsp</code></td></tr>
-      <tr><td>No server processing</td><td>Add <code>&lt;%@ page %&gt;</code> and <code>&lt;%@ taglib %&gt;</code> at top</td></tr>
-      <tr><td>Data from: <code>NimbusDB.getBookings()</code></td><td>Data from: <code>${bookings}</code> (set by Servlet)</td></tr>
-      <tr><td>Auth: <code>NimbusAuth.requireAuth()</code></td><td>Auth: <code>${sessionScope.role}</code> (HTTP Session)</td></tr>
-      <tr><td>Links: <code>href="booking.html"</code></td><td>Links: <code>href="${pageContext.request.contextPath}/servlet/booking"</code></td></tr>
-      <tr><td>Form action: JavaScript <code>handleLogin()</code></td><td>Form action: <code>POST /servlet/login</code></td></tr>
-      <tr><td>CSS: <code>href="css/style.css"</code></td><td>CSS: <code>href="/css/style.css"</code> (from static resources)</td></tr>
-    </tbody>
-  </table>
-
-  <h3>Where JSP Files Go</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-filename">Eclipse project paths</span></div>
-    <pre><code class="language-java">nimbus-backend/
-  src/main/resources/static/css/
-    style.css           &larr; copy your Phase 1 CSS here
-    dashboard.css       &larr; copy your Phase 1 CSS here
-  src/main/webapp/WEB-INF/jsp/
-    login.jsp           &larr; converted from login.html
-    register.jsp        &larr; converted from register.html
-    dashboard.jsp       &larr; combined from customer/officer/support dashboards
-    booking.jsp         &larr; converted from booking.html
-    tracking.jsp        &larr; converted from tracking.html</code></pre>
+  <div class="callout nimbus">
+    <div class="callout-title">Where Each File Goes in Eclipse</div>
+    <p><strong>JSPs:</strong> <code>src/main/webapp/WEB-INF/jsp/login.jsp</code>, <code>register.jsp</code>, <code>dashboard.jsp</code>, <code>booking.jsp</code>, <code>tracking.jsp</code><br>
+    <strong>CSS:</strong> Copy <code>nimbus/css/style.css</code> and <code>nimbus/css/dashboard.css</code> into <code>src/main/resources/static/css/</code></p>
   </div>
-
-  <h3>How to Copy CSS Files</h3>
-  <p>Your Phase 1 CSS files are at <code>nimbus/css/style.css</code> and <code>nimbus/css/dashboard.css</code>. Copy them to <code>src/main/resources/static/css/</code> in Eclipse. Spring Boot serves anything under <code>static/</code> as-is.</p>
 </section>
 
 
 <!-- ============================================================ -->
-<!-- SECTION 36: JSP LOGIN (POLISHED) -->
+<!-- SECTION 36: login.jsp -->
 <!-- ============================================================ -->
 
 <section class="content-section" id="jsp-login">
-  <div class="section-tag">Section 36</div>
-  <h2>login.jsp &mdash; Polished Version</h2>
-  <p class="section-desc">Your beautiful Phase 1 login page converted to JSP. Same design, but form submits to LoginServlet instead of JavaScript.</p>
+  <div class="section-tag">File 01</div>
+  <h2>login.jsp</h2>
+  <p class="section-desc"><code>src/main/webapp/WEB-INF/jsp/login.jsp</code> &mdash; Uses your Phase 1 design. Form submits to LoginServlet.</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -2385,14 +2359,11 @@ ng build --output-path=dist
 &lt;/head&gt;
 &lt;body&gt;
   &lt;div class="login-page"&gt;
-
-    &lt;!-- LEFT: Branding (same as Phase 1) --&gt;
     &lt;div class="login-brand"&gt;
       &lt;div class="brand-content"&gt;
         &lt;div class="brand-logo"&gt;
           &lt;svg viewBox="0 0 200 60" fill="none"&gt;
-            &lt;path d="M38 40H16a10 10 0 0 1-1.2-19.9 12 12 0 0 1 22.9-2.3A8 8 0 0 1 44 26a8 8 0 0 1-6 7.7"
-                  stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/&gt;
+            &lt;path d="M38 40H16a10 10 0 0 1-1.2-19.9 12 12 0 0 1 22.9-2.3A8 8 0 0 1 44 26a8 8 0 0 1-6 7.7" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/&gt;
             &lt;path d="M30 32l6-6m0 0l-6-6m6 6H20" stroke="white" stroke-width="2.5" stroke-linecap="round"/&gt;
             &lt;text x="54" y="36" font-family="Plus Jakarta Sans" font-weight="800" font-size="26" fill="white"&gt;nimbus&lt;/text&gt;
           &lt;/svg&gt;
@@ -2401,56 +2372,39 @@ ng build --output-path=dist
         &lt;p class="brand-description"&gt;Track, ship, and manage your parcels with confidence.&lt;/p&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-
-    &lt;!-- RIGHT: Login Form --&gt;
     &lt;div class="login-form-panel"&gt;
       &lt;div class="login-form-container"&gt;
         &lt;div class="login-form-header"&gt;
           &lt;h2&gt;Welcome back&lt;/h2&gt;
           &lt;p&gt;Sign in to your Nimbus account&lt;/p&gt;
         &lt;/div&gt;
-
-        &lt;!-- Error message from Servlet --&gt;
         &lt;c:if test="${not empty error}"&gt;
-          &lt;div class="login-alert" style="display:block; background:#FEE2E2; color:#DC2626; padding:12px; border-radius:8px; margin-bottom:16px;"&gt;
-            ${error}
-          &lt;/div&gt;
+          &lt;div style="background:#FEE2E2; color:#DC2626; padding:12px; border-radius:8px; margin-bottom:16px; font-size:14px;"&gt;${error}&lt;/div&gt;
         &lt;/c:if&gt;
-
-        &lt;!-- Success message after registration --&gt;
         &lt;c:if test="${param.registered == 'true'}"&gt;
-          &lt;div style="background:#DCFCE7; color:#166534; padding:12px; border-radius:8px; margin-bottom:16px;"&gt;
+          &lt;div style="background:#DCFCE7; color:#166534; padding:12px; border-radius:8px; margin-bottom:16px; font-size:14px;"&gt;
             Registration successful! Your User ID: &lt;strong&gt;${param.userId}&lt;/strong&gt;
           &lt;/div&gt;
         &lt;/c:if&gt;
-
-        &lt;!-- KEY CHANGE: form action points to Servlet, not JavaScript --&gt;
         &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/login"&gt;
           &lt;div class="form-group"&gt;
             &lt;label class="form-label" for="userId"&gt;User ID&lt;/label&gt;
-            &lt;input type="text" id="userId" name="userId" class="form-input"
-                   placeholder="e.g. 260401-DA01" required&gt;
+            &lt;input type="text" id="userId" name="userId" class="form-input" placeholder="e.g. 260401-DA01" required&gt;
           &lt;/div&gt;
           &lt;div class="form-group"&gt;
             &lt;label class="form-label" for="password"&gt;Password&lt;/label&gt;
-            &lt;input type="password" id="password" name="password" class="form-input"
-                   placeholder="Enter your password" required&gt;
+            &lt;input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required&gt;
           &lt;/div&gt;
           &lt;button type="submit" class="btn btn-primary btn-full btn-lg"&gt;Sign In&lt;/button&gt;
         &lt;/form&gt;
-
         &lt;div class="login-divider"&gt;or&lt;/div&gt;
-        &lt;div class="login-footer"&gt;
-          &lt;p&gt;New to Nimbus? &lt;a href="${pageContext.request.contextPath}/servlet/register"&gt;Create an account&lt;/a&gt;&lt;/p&gt;
-        &lt;/div&gt;
-
+        &lt;p style="text-align:center; font-size:14px;"&gt;New to Nimbus? &lt;a href="${pageContext.request.contextPath}/servlet/register"&gt;Create an account&lt;/a&gt;&lt;/p&gt;
         &lt;div style="margin-top:24px; padding:16px; background:rgba(30,58,138,0.08); border-radius:8px; font-size:13px;"&gt;
           &lt;p style="font-weight:600; margin-bottom:8px;"&gt;Demo Credentials&lt;/p&gt;
           &lt;p&gt;Customer: 260401-DA01 / Darshan@123&lt;br&gt;Officer: OFF-001 / Officer@123&lt;br&gt;Support: SUP-001 / Support@123&lt;/p&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -2459,13 +2413,105 @@ ng build --output-path=dist
 
 
 <!-- ============================================================ -->
-<!-- SECTION 37: JSP DASHBOARD -->
+<!-- SECTION 36B: register.jsp -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jsp-register">
+  <div class="section-tag">File 02</div>
+  <h2>register.jsp</h2>
+  <p class="section-desc"><code>src/main/webapp/WEB-INF/jsp/register.jsp</code> &mdash; Registration form. Submits to RegisterServlet.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/webapp/WEB-INF/jsp/register.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Nimbus &amp;mdash; Register&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link rel="stylesheet" href="/css/style.css"&gt;
+  &lt;style&gt;
+    body { background: #F0F4F8; }
+    .register-card { max-width: 720px; margin: 40px auto; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 48px; }
+    .register-card h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; margin-bottom: 4px; color: #1B2A4A; }
+    .register-card .subtitle { color: #64748B; font-size: 15px; margin-bottom: 32px; }
+    .section-heading { font-size: 15px; font-weight: 700; color: #1E3A8A; margin: 28px 0 16px; }
+    .form-row { display: flex; gap: 16px; }
+    .form-row .form-group { flex: 1; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 4px; }
+    label .req { color: #DC2626; }
+    input, select { width: 100%; padding: 11px 14px; border: 1.5px solid #DDE4EB; border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; }
+    input:focus, select:focus { outline: none; border-color: #3B82F6; }
+    .form-group { margin-bottom: 16px; }
+    .btn-register { width: 100%; padding: 14px; background: #1B2A4A; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 24px; }
+    .btn-register:hover { background: #2E86DE; }
+    .error-box { background: #FEE2E2; color: #DC2626; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+    .back-link { display: inline-block; margin-bottom: 24px; color: #64748B; font-size: 14px; text-decoration: none; }
+    .back-link:hover { color: #1E3A8A; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="register-card"&gt;
+    &lt;a href="${pageContext.request.contextPath}/servlet/login" class="back-link"&gt;&amp;larr; Back to Login&lt;/a&gt;
+    &lt;h1&gt;Create your account&lt;/h1&gt;
+    &lt;p class="subtitle"&gt;Join Nimbus to start shipping parcels.&lt;/p&gt;
+
+    &lt;c:if test="${not empty error}"&gt;
+      &lt;div class="error-box"&gt;${error}&lt;/div&gt;
+    &lt;/c:if&gt;
+
+    &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/register"&gt;
+      &lt;h3 class="section-heading"&gt;Personal Information&lt;/h3&gt;
+      &lt;div class="form-row"&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;First Name &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input name="firstName" required&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;Middle Name&lt;/label&gt;&lt;input name="middleName"&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;Last Name &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input name="lastName" required&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="form-group"&gt;&lt;label&gt;Email &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input type="email" name="email" required&gt;&lt;/div&gt;
+      &lt;div class="form-row"&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;Country Code&lt;/label&gt;&lt;input name="countryCode" value="+91"&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;Mobile &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input name="mobile" required maxlength="10" placeholder="10 digits"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;h3 class="section-heading"&gt;Address&lt;/h3&gt;
+      &lt;div class="form-group"&gt;&lt;label&gt;Street Address &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input name="street" required&gt;&lt;/div&gt;
+      &lt;div class="form-row"&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;ZIP Code &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input name="zipCode" required&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;City &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input name="city" required&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="form-row"&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;State &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input name="state" required&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;&lt;label&gt;Country&lt;/label&gt;&lt;input name="country" value="India"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;h3 class="section-heading"&gt;Security&lt;/h3&gt;
+      &lt;div class="form-group"&gt;&lt;label&gt;Password &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input type="password" name="password" required minlength="6"&gt;&lt;/div&gt;
+      &lt;div class="form-group"&gt;&lt;label&gt;Confirm Password &lt;span class="req"&gt;*&lt;/span&gt;&lt;/label&gt;&lt;input type="password" name="confirmPassword" required&gt;&lt;/div&gt;
+
+      &lt;input type="hidden" name="preferences" value="Email notifications"&gt;
+      &lt;button type="submit" class="btn-register"&gt;Create Account&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 37: dashboard.jsp -->
 <!-- ============================================================ -->
 
 <section class="content-section" id="jsp-dashboard">
-  <div class="section-tag">Section 37</div>
-  <h2>dashboard.jsp &mdash; Role-Based</h2>
-  <p class="section-desc">One JSP shows different content based on role. Uses <code>&lt;c:if&gt;</code> to check <code>${sessionScope.role}</code>.</p>
+  <div class="section-tag">File 03</div>
+  <h2>dashboard.jsp</h2>
+  <p class="section-desc"><code>src/main/webapp/WEB-INF/jsp/dashboard.jsp</code> &mdash; Role-based dashboard using your Phase 1 CSS. Uses <code>&lt;c:if&gt;</code> for roles.</p>
 
   <div class="code-block">
     <div class="code-header">
@@ -2485,57 +2531,220 @@ ng build --output-path=dist
 &lt;/head&gt;
 &lt;body&gt;
   &lt;div class="main-content"&gt;
-
     &lt;div class="page-header"&gt;
       &lt;h1&gt;Welcome, ${sessionScope.fullName}&lt;/h1&gt;
-      &lt;p&gt;Role: ${sessionScope.role} |
-         &lt;a href="${pageContext.request.contextPath}/servlet/login" style="color:#3B82F6;"&gt;Logout&lt;/a&gt; |
-         &lt;a href="/angular/index.html" style="color:#EF4444;"&gt;Open Angular Dashboard&lt;/a&gt;
+      &lt;p&gt;Role: &lt;strong&gt;${sessionScope.role}&lt;/strong&gt; &amp;nbsp;|&amp;nbsp;
+        &lt;a href="${pageContext.request.contextPath}/servlet/login" style="color:#3B82F6;"&gt;Logout&lt;/a&gt; &amp;nbsp;|&amp;nbsp;
+        &lt;a href="/angular/index.html" style="color:#EF4444; font-weight:600;"&gt;Open Angular Dashboard&lt;/a&gt;
       &lt;/p&gt;
     &lt;/div&gt;
 
-    &lt;!-- ===== CUSTOMER MENU ===== --&gt;
     &lt;c:if test="${sessionScope.role == 'customer'}"&gt;
       &lt;div class="modules-grid"&gt;
         &lt;a href="${pageContext.request.contextPath}/servlet/booking" class="module-card"&gt;
-          &lt;div class="module-text"&gt;&lt;h3&gt;Book Parcel&lt;/h3&gt;&lt;p&gt;Ship a new parcel with live pricing.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Book Parcel&lt;/h3&gt;&lt;p&gt;Ship a new parcel with live pricing, express or standard delivery.&lt;/p&gt;&lt;/div&gt;
         &lt;/a&gt;
         &lt;a href="${pageContext.request.contextPath}/servlet/tracking" class="module-card"&gt;
-          &lt;div class="module-text"&gt;&lt;h3&gt;Track Parcel&lt;/h3&gt;&lt;p&gt;Enter booking ID for real-time status.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Track Parcel&lt;/h3&gt;&lt;p&gt;Enter your booking ID for real-time status updates.&lt;/p&gt;&lt;/div&gt;
         &lt;/a&gt;
       &lt;/div&gt;
     &lt;/c:if&gt;
 
-    &lt;!-- ===== OFFICER MENU ===== --&gt;
     &lt;c:if test="${sessionScope.role == 'officer'}"&gt;
       &lt;div class="modules-grid"&gt;
         &lt;a href="${pageContext.request.contextPath}/servlet/tracking" class="module-card"&gt;
-          &lt;div class="module-text"&gt;&lt;h3&gt;Track Parcel&lt;/h3&gt;&lt;p&gt;Search and update delivery status.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Track &amp;amp; Update&lt;/h3&gt;&lt;p&gt;Search parcels and update delivery status.&lt;/p&gt;&lt;/div&gt;
         &lt;/a&gt;
       &lt;/div&gt;
     &lt;/c:if&gt;
 
-    &lt;!-- ===== SUPPORT MENU ===== --&gt;
     &lt;c:if test="${sessionScope.role == 'support'}"&gt;
       &lt;div class="modules-grid"&gt;
         &lt;div class="module-card"&gt;
-          &lt;div class="module-text"&gt;&lt;h3&gt;Assigned Issues&lt;/h3&gt;&lt;p&gt;View and resolve customer issues.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Assigned Issues&lt;/h3&gt;&lt;p&gt;View and resolve customer support issues.&lt;/p&gt;&lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/c:if&gt;
 
-    &lt;!-- ===== ADMIN MENU ===== --&gt;
     &lt;c:if test="${sessionScope.role == 'admin'}"&gt;
       &lt;div class="modules-grid"&gt;
         &lt;div class="module-card"&gt;
-          &lt;div class="module-text"&gt;&lt;h3&gt;All Users&lt;/h3&gt;&lt;p&gt;View and manage registered users.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;All Users&lt;/h3&gt;&lt;p&gt;View and manage all registered users.&lt;/p&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class="module-card"&gt;
-          &lt;div class="module-text"&gt;&lt;h3&gt;Register Staff&lt;/h3&gt;&lt;p&gt;Onboard new officers and support agents.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="module-text"&gt;&lt;h3&gt;Register Staff&lt;/h3&gt;&lt;p&gt;Onboard officers and support agents.&lt;/p&gt;&lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/c:if&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
 
+
+<!-- ============================================================ -->
+<!-- SECTION 37B: booking.jsp -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jsp-booking">
+  <div class="section-tag">File 04</div>
+  <h2>booking.jsp</h2>
+  <p class="section-desc"><code>src/main/webapp/WEB-INF/jsp/booking.jsp</code> &mdash; Booking form. Sender info pre-filled from session. Submits to BookingServlet.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/webapp/WEB-INF/jsp/booking.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Nimbus &amp;mdash; Book Parcel&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link rel="stylesheet" href="/css/style.css"&gt;
+  &lt;link rel="stylesheet" href="/css/dashboard.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="main-content"&gt;
+    &lt;a href="${pageContext.request.contextPath}/servlet/dashboard" style="color:#64748B; font-size:14px; text-decoration:none;"&gt;&amp;larr; Back to Dashboard&lt;/a&gt;
+    &lt;div class="content-card" style="margin-top:16px;"&gt;
+      &lt;h2&gt;Book a Parcel&lt;/h2&gt;
+
+      &lt;c:if test="${not empty success}"&gt;
+        &lt;div style="background:#DCFCE7; color:#166534; padding:16px; border-radius:8px; margin:16px 0; font-size:14px;"&gt;
+          &lt;strong&gt;${success}&lt;/strong&gt;&lt;br&gt;
+          Cost: Rs ${booking.parServiceCost}
+        &lt;/div&gt;
+      &lt;/c:if&gt;
+      &lt;c:if test="${not empty error}"&gt;
+        &lt;div style="background:#FEE2E2; color:#DC2626; padding:12px; border-radius:8px; margin:16px 0; font-size:14px;"&gt;${error}&lt;/div&gt;
+      &lt;/c:if&gt;
+
+      &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/booking"&gt;
+        &lt;h3 style="font-size:15px; color:#1E3A8A; margin:24px 0 12px;"&gt;Sender (You)&lt;/h3&gt;
+        &lt;div class="form-group"&gt;
+          &lt;label class="form-label"&gt;Name&lt;/label&gt;
+          &lt;input class="form-input" value="${sender.fullName}" readonly style="background:#F8FAFC;"&gt;
+        &lt;/div&gt;
+
+        &lt;h3 style="font-size:15px; color:#1E3A8A; margin:24px 0 12px;"&gt;Receiver Details&lt;/h3&gt;
+        &lt;div class="form-group"&gt;&lt;label class="form-label"&gt;Receiver Name *&lt;/label&gt;&lt;input class="form-input" name="recName" required&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;&lt;label class="form-label"&gt;Receiver Address *&lt;/label&gt;&lt;input class="form-input" name="recAddress" required&gt;&lt;/div&gt;
+        &lt;div style="display:flex; gap:16px;"&gt;
+          &lt;div class="form-group" style="flex:1;"&gt;&lt;label class="form-label"&gt;PIN Code&lt;/label&gt;&lt;input class="form-input" name="recPin"&gt;&lt;/div&gt;
+          &lt;div class="form-group" style="flex:1;"&gt;&lt;label class="form-label"&gt;Mobile&lt;/label&gt;&lt;input class="form-input" name="recMobile"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;h3 style="font-size:15px; color:#1E3A8A; margin:24px 0 12px;"&gt;Parcel Details&lt;/h3&gt;
+        &lt;div class="form-group"&gt;&lt;label class="form-label"&gt;Weight (grams) *&lt;/label&gt;&lt;input type="number" class="form-input" name="weight" min="1" required&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;&lt;label class="form-label"&gt;Contents Description&lt;/label&gt;&lt;input class="form-input" name="contents"&gt;&lt;/div&gt;
+        &lt;div style="display:flex; gap:16px;"&gt;
+          &lt;div class="form-group" style="flex:1;"&gt;
+            &lt;label class="form-label"&gt;Delivery Type&lt;/label&gt;
+            &lt;select class="form-input" name="deliveryType"&gt;
+              &lt;option value="Standard"&gt;Standard (5-7 days)&lt;/option&gt;
+              &lt;option value="Express"&gt;Express (2-3 days)&lt;/option&gt;
+              &lt;option value="Overnight"&gt;Overnight (1 day)&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+          &lt;div class="form-group" style="flex:1;"&gt;
+            &lt;label class="form-label"&gt;Packaging&lt;/label&gt;
+            &lt;select class="form-input" name="packagingType"&gt;
+              &lt;option value="Standard Packaging"&gt;Standard&lt;/option&gt;
+              &lt;option value="Fragile Packaging"&gt;Fragile&lt;/option&gt;
+              &lt;option value="Waterproof Packaging"&gt;Waterproof&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="form-group"&gt;
+          &lt;label class="form-label"&gt;Payment Method&lt;/label&gt;
+          &lt;select class="form-input" name="paymentMethod"&gt;
+            &lt;option value="card"&gt;Card&lt;/option&gt;
+            &lt;option value="upi"&gt;UPI&lt;/option&gt;
+            &lt;option value="cod"&gt;Cash on Delivery&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+        &lt;button type="submit" class="btn btn-primary btn-full btn-lg"&gt;Book Parcel&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 37C: tracking.jsp -->
+<!-- ============================================================ -->
+
+<section class="content-section" id="jsp-tracking">
+  <div class="section-tag">File 05</div>
+  <h2>tracking.jsp</h2>
+  <p class="section-desc"><code>src/main/webapp/WEB-INF/jsp/tracking.jsp</code> &mdash; Search by booking ID. Shows result table if found.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">src/main/webapp/WEB-INF/jsp/tracking.jsp</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-markup">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Nimbus &amp;mdash; Track Parcel&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link rel="stylesheet" href="/css/style.css"&gt;
+  &lt;link rel="stylesheet" href="/css/dashboard.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="main-content"&gt;
+    &lt;a href="${pageContext.request.contextPath}/servlet/dashboard" style="color:#64748B; font-size:14px; text-decoration:none;"&gt;&amp;larr; Back to Dashboard&lt;/a&gt;
+
+    &lt;div class="page-header" style="margin-top:16px;"&gt;
+      &lt;h1&gt;Track Parcel&lt;/h1&gt;
+      &lt;p&gt;Enter your Booking ID to check the current status.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class="content-card"&gt;
+      &lt;form method="POST" action="${pageContext.request.contextPath}/servlet/tracking" style="display:flex; gap:12px; align-items:flex-end;"&gt;
+        &lt;div class="form-group" style="flex:1; margin:0;"&gt;
+          &lt;label class="form-label"&gt;Booking ID&lt;/label&gt;
+          &lt;input type="text" name="bookingId" class="form-input" placeholder="e.g. BK260101001" required&gt;
+        &lt;/div&gt;
+        &lt;button type="submit" class="btn btn-primary" style="height:46px; padding:0 24px;"&gt;Search&lt;/button&gt;
+      &lt;/form&gt;
+
+      &lt;c:if test="${not empty error}"&gt;
+        &lt;div style="background:#FEF3C7; color:#92400E; padding:12px; border-radius:8px; margin-top:16px; font-size:14px;"&gt;${error}&lt;/div&gt;
+      &lt;/c:if&gt;
+
+      &lt;c:if test="${not empty booking}"&gt;
+        &lt;h3 style="margin-top:24px; font-size:16px;"&gt;Booking Details&lt;/h3&gt;
+        &lt;table class="data-table" style="margin-top:12px;"&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td style="font-weight:600; color:#64748B; width:200px;"&gt;Booking ID&lt;/td&gt;&lt;td style="font-family:monospace; font-weight:600;"&gt;${booking.bookingId}&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td style="font-weight:600; color:#64748B;"&gt;Receiver&lt;/td&gt;&lt;td&gt;${booking.recName}&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td style="font-weight:600; color:#64748B;"&gt;Address&lt;/td&gt;&lt;td&gt;${booking.recAddress}&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td style="font-weight:600; color:#64748B;"&gt;Weight&lt;/td&gt;&lt;td&gt;${booking.parWeightGram} grams&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td style="font-weight:600; color:#64748B;"&gt;Delivery Type&lt;/td&gt;&lt;td&gt;${booking.parDeliveryType}&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td style="font-weight:600; color:#64748B;"&gt;Cost&lt;/td&gt;&lt;td&gt;Rs ${booking.parServiceCost}&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td style="font-weight:600; color:#64748B;"&gt;Status&lt;/td&gt;
+              &lt;td&gt;&lt;span style="padding:4px 12px; border-radius:20px; font-size:13px; font-weight:600;
+                background:${booking.parStatus == 'Delivered' ? 'rgba(34,197,94,0.15)' : booking.parStatus == 'In Transit' ? 'rgba(245,158,11,0.15)' : 'rgba(59,130,246,0.15)'};
+                color:${booking.parStatus == 'Delivered' ? '#16A34A' : booking.parStatus == 'In Transit' ? '#D97706' : '#2563EB'};"&gt;
+                ${booking.parStatus}&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/c:if&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -2548,22 +2757,1359 @@ ng build --output-path=dist
 <!-- ============================================================ -->
 
 <section class="content-section" id="jsp-css">
-  <div class="section-tag">Section 38</div>
+  <div class="section-tag">CSS</div>
   <h2>CSS Files</h2>
-  <p class="section-desc">Copy your Phase 1 CSS files from <code>nimbus/css/</code> into <code>src/main/resources/static/css/</code>.</p>
+  <p class="section-desc"><code>nimbus/css/style.css</code> &amp; <code>nimbus/css/dashboard.css</code></p>
 
-  <div class="callout nimbus">
-    <div class="callout-title">What to Copy</div>
-    <p>Go to your <code>nimbus/css/</code> folder. Copy <strong>style.css</strong> and <strong>dashboard.css</strong> into <code>src/main/resources/static/css/</code> in Eclipse. Spring Boot serves all files under <code>static/</code> automatically. Your JSPs reference them as <code>/css/style.css</code>.</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">style.css</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-css">/* ========================================
+   NIMBUS — Parcel Management System
+   Global Stylesheet
+   ======================================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Brand Colors */
+  --nimbus-primary: #1B2A4A;
+  --nimbus-secondary: #2E86DE;
+  --nimbus-accent: #54A0FF;
+  --nimbus-light: #F0F4F8;
+  --nimbus-white: #FFFFFF;
+  --nimbus-dark: #0D1B2A;
+  --nimbus-text: #2C3E50;
+  --nimbus-text-light: #7F8C9B;
+  --nimbus-success: #27AE60;
+  --nimbus-warning: #F39C12;
+  --nimbus-danger: #E74C3C;
+  --nimbus-border: #DDE4EB;
+
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Plus Jakarta Sans', var(--font-primary);
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--nimbus-text);
+  background: var(--nimbus-light);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--nimbus-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--nimbus-accent);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--nimbus-dark);
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.375rem; }
+h4 { font-size: 1.125rem; }
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 12px 28px;
+  font-family: var(--font-primary);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: var(--nimbus-secondary);
+  color: var(--nimbus-white);
+}
+
+.btn-primary:hover {
+  background: #2476C9;
+  box-shadow: 0 4px 15px rgba(46, 134, 222, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--nimbus-secondary);
+  border: 2px solid var(--nimbus-secondary);
+}
+
+.btn-outline:hover {
+  background: var(--nimbus-secondary);
+  color: var(--nimbus-white);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-lg {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+/* --- Form Elements --- */
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--nimbus-text);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-primary);
+  font-size: 0.9375rem;
+  color: var(--nimbus-text);
+  background: var(--nimbus-white);
+  border: 1.5px solid var(--nimbus-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--nimbus-secondary);
+  box-shadow: 0 0 0 3px rgba(46, 134, 222, 0.15);
+}
+
+.form-input::placeholder {
+  color: var(--nimbus-text-light);
+}
+
+.form-input.error {
+  border-color: var(--nimbus-danger);
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.form-error {
+  font-size: 0.8125rem;
+  color: var(--nimbus-danger);
+  margin-top: var(--space-xs);
+  display: none;
+}
+
+.form-error.visible {
+  display: block;
+}
+
+/* --- Password Field --- */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--nimbus-text-light);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-fast);
+}
+
+.password-toggle:hover {
+  color: var(--nimbus-text);
+}
+
+/* ========================================
+   LOGIN PAGE
+   ======================================== */
+
+.login-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Left Panel — Branding */
+.login-brand {
+  flex: 1;
+  background: linear-gradient(135deg, var(--nimbus-primary) 0%, #1a3a6b 50%, var(--nimbus-secondary) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-brand::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 50%;
+}
+
+.login-brand::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -10%;
+  width: 350px;
+  height: 350px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 50%;
+}
+
+.brand-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 420px;
+}
+
+.brand-logo {
+  margin-bottom: var(--space-xl);
+}
+
+.brand-logo svg {
+  width: 180px;
+  height: auto;
+}
+
+.brand-tagline {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--nimbus-white);
+  margin-bottom: var(--space-md);
+  line-height: 1.3;
+}
+
+.brand-description {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+  margin-bottom: var(--space-2xl);
+}
+
+.brand-illustration {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.brand-features {
+  display: flex;
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
+}
+
+.brand-feature {
+  text-align: center;
+}
+
+.brand-feature-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-sm);
+}
+
+.brand-feature-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: rgba(255, 255, 255, 0.85);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand-feature-text {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+}
+
+/* Right Panel — Login Form */
+.login-form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  background: var(--nimbus-white);
+}
+
+.login-form-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form-header {
+  margin-bottom: var(--space-2xl);
+}
+
+.login-form-header h2 {
+  font-size: 1.75rem;
+  margin-bottom: var(--space-sm);
+}
+
+.login-form-header p {
+  color: var(--nimbus-text-light);
+  font-size: 0.9375rem;
+}
+
+.login-alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-lg);
+  display: none;
+}
+
+.login-alert.error {
+  background: #FDF0EF;
+  color: var(--nimbus-danger);
+  border: 1px solid #F5C6CB;
+  display: block;
+}
+
+.login-alert.success {
+  background: #E8F8EF;
+  color: var(--nimbus-success);
+  border: 1px solid #B7E4C7;
+  display: block;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+  color: var(--nimbus-text-light);
+  font-size: 0.8125rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--nimbus-border);
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: var(--space-xl);
+}
+
+.login-footer p {
+  font-size: 0.875rem;
+  color: var(--nimbus-text-light);
+}
+
+.login-footer a {
+  font-weight: 600;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .login-brand {
+    padding: var(--space-2xl) var(--space-lg);
+    min-height: 280px;
+  }
+
+  .brand-illustration {
+    display: none;
+  }
+
+  .brand-features {
+    display: none;
+  }
+
+  .login-form-panel {
+    padding: var(--space-xl) var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .login-brand {
+    padding: var(--space-xl) var(--space-md);
+    min-height: 200px;
+  }
+
+  .brand-tagline {
+    font-size: 1.25rem;
+  }
+
+  .login-form-container {
+    max-width: 100%;
+  }
+}</code></pre>
   </div>
 
-  <h3>Steps in Eclipse</h3>
-  <ol>
-    <li>Right-click <code>src/main/resources/static</code> &rarr; New &rarr; Folder &rarr; name it <code>css</code></li>
-    <li>Copy <code>nimbus/css/style.css</code> into that folder</li>
-    <li>Copy <code>nimbus/css/dashboard.css</code> into that folder</li>
-    <li>Run the app &mdash; open <code>http://localhost:8080/css/style.css</code> in browser to verify it loads</li>
-  </ol>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">dashboard.css</span>
+      <button class="copy-btn" onclick="copyCode(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>
+    <pre><code class="language-css">/* ========================================
+   NIMBUS — Dashboard Layout
+   Shared across Customer, Officer, Support
+   ======================================== */
+
+/* === Page Shell === */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* === Top Navbar === */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--nimbus-primary);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 var(--space-lg);
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.nav-logo svg {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+/* Center — Page Title */
+.nav-center {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  color: rgba(255,255,255,0.7);
+  transition: all var(--transition-fast);
+}
+.nav-back:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+/* Hamburger button */
+.hamburger-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  transition: all var(--transition-fast);
+}
+.hamburger-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+/* === Side Menu (slides from left) === */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  pointer-events: none;
+  visibility: hidden;
+}
+.side-menu.open {
+  pointer-events: all;
+  visibility: visible;
+}
+
+.side-menu-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+.side-menu.open .side-menu-overlay {
+  opacity: 1;
+}
+
+.side-menu-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  background: var(--nimbus-white);
+  box-shadow: var(--shadow-xl);
+  transform: translateX(-100%);
+  transition: transform var(--transition-base);
+  overflow-y: auto;
+  padding-bottom: var(--space-xl);
+}
+.side-menu.open .side-menu-panel {
+  transform: translateX(0);
+}
+
+.side-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--nimbus-border);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--nimbus-dark);
+}
+
+.side-menu-close {
+  background: none;
+  border: none;
+  color: var(--nimbus-text-light);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  display: flex;
+}
+.side-menu-close:hover { color: var(--nimbus-text); }
+
+.side-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px var(--space-lg);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--nimbus-text);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+.side-menu-link:hover {
+  background: var(--nimbus-light);
+  color: var(--nimbus-secondary);
+}
+.side-menu-link.active {
+  background: rgba(46,134,222,0.06);
+  color: var(--nimbus-secondary);
+  font-weight: 600;
+}
+.side-menu-link svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.side-menu-divider {
+  height: 1px;
+  background: var(--nimbus-border);
+  margin: var(--space-sm) 0;
+}
+
+.side-menu-section {
+  padding: var(--space-sm) var(--space-lg) 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--nimbus-text-light);
+}
+
+/* Info panels inside side menu */
+.info-panel {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--nimbus-light);
+  margin: 0 var(--space-sm);
+  border-radius: var(--radius-md);
+}
+.info-panel h4 {
+  font-size: 0.875rem;
+  margin-bottom: var(--space-sm);
+  color: var(--nimbus-dark);
+}
+.info-panel p {
+  font-size: 0.8125rem;
+  color: var(--nimbus-text-light);
+  line-height: 1.6;
+}
+
+.info-step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+.info-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--nimbus-secondary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.info-step strong {
+  font-size: 0.8125rem;
+  color: var(--nimbus-dark);
+}
+.info-step p {
+  font-size: 0.75rem;
+  color: var(--nimbus-text-light);
+  margin-top: 2px;
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+.pricing-table th {
+  text-align: left;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nimbus-text-light);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--nimbus-border);
+}
+.pricing-table td {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  color: var(--nimbus-text);
+}
+.pricing-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+  color: var(--nimbus-dark);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+.nav-user-info {
+  text-align: right;
+  line-height: 1.3;
+}
+
+.nav-user-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.nav-user-id {
+  font-size: 0.6875rem;
+  color: rgba(255,255,255,0.55);
+  font-family: monospace;
+}
+
+.nav-role-badge {
+  font-size: 0.625rem;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  border: 1px solid;
+  font-family: monospace;
+}
+
+.nav-role-badge.customer { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); }
+.nav-role-badge.officer { border-color: rgba(84,160,255,0.35); color: rgba(84,160,255,0.7); }
+.nav-role-badge.support { border-color: rgba(243,156,18,0.35); color: rgba(243,156,18,0.7); }
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-primary);
+}
+
+.btn-logout:hover {
+  background: rgba(231,76,60,0.2);
+  border-color: rgba(231,76,60,0.4);
+  color: #fff;
+}
+
+.btn-logout svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* === Main Content === */
+.main-content {
+  flex: 1;
+  margin-top: 60px;
+  padding: var(--space-xl);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+/* === Page Header === */
+.page-header {
+  margin-bottom: var(--space-xl);
+}
+
+.page-header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  color: var(--nimbus-text-light);
+  font-size: 0.9375rem;
+}
+
+/* === Stat Cards Row === */
+/* === Stats Row — Flat inline, no boxes === */
+.stats-row {
+  display: flex;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--nimbus-border);
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.stat-card .stat-icon { display: none; }
+
+.stat-card .stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--nimbus-dark);
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.stat-card .stat-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--nimbus-text-light);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Color the numbers */
+.stat-card.blue .stat-value { color: var(--nimbus-secondary); }
+.stat-card.green .stat-value { color: var(--nimbus-success); }
+.stat-card.orange .stat-value { color: var(--nimbus-warning); }
+.stat-card.red .stat-value { color: var(--nimbus-danger); }
+
+/* === Module Cards — Hero Elements === */
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.module-card {
+  background: var(--nimbus-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl) var(--space-xl);
+  box-shadow: var(--shadow-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+.module-card::after {
+  content: '';
+  position: absolute;
+  top: var(--space-xl);
+  right: var(--space-xl);
+  font-size: 1.25rem;
+  color: var(--nimbus-border);
+  transition: all var(--transition-base);
+}
+
+.module-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(46,134,222,0.15);
+  color: inherit;
+}
+
+.module-card:hover::after {
+  color: var(--nimbus-secondary);
+  transform: translateX(4px);
+}
+
+.module-card .module-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--nimbus-primary);
+}
+
+.module-card .module-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.module-card .module-text {
+  flex: 1;
+}
+
+.module-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 6px;
+  color: var(--nimbus-dark);
+}
+
+.module-card p {
+  font-size: 0.8125rem;
+  color: var(--nimbus-text-light);
+  line-height: 1.6;
+}
+
+/* === Content Card (white card wrapper) === */
+.content-card {
+  background: var(--nimbus-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--nimbus-border);
+  margin-bottom: var(--space-lg);
+}
+
+.content-card h2 {
+  font-size: 1.125rem;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--nimbus-border);
+}
+
+/* === Data Table === */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nimbus-text-light);
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--nimbus-border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 12px;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--nimbus-border);
+  color: var(--nimbus-text);
+}
+
+.data-table tr:hover td {
+  background: rgba(46,134,222,0.03);
+}
+
+.data-table .empty-row td {
+  text-align: center;
+  color: var(--nimbus-text-light);
+  padding: 40px 12px;
+  font-style: italic;
+}
+
+/* === Status Badge === */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.booked { background: #EBF5FB; color: #2E86DE; }
+.status-badge.in-transit { background: #FFF8E1; color: #F39C12; }
+.status-badge.delivered { background: #E8F8EF; color: #27AE60; }
+.status-badge.returned { background: #FDF0EF; color: #E74C3C; }
+.status-badge.picked-up { background: #F0E6FF; color: #8E44AD; }
+
+/* === Pagination === */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.pagination button {
+  padding: 8px 16px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  border: 1px solid var(--nimbus-border);
+  border-radius: var(--radius-sm);
+  background: var(--nimbus-white);
+  color: var(--nimbus-text);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pagination button:hover:not(:disabled) {
+  border-color: var(--nimbus-secondary);
+  color: var(--nimbus-secondary);
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pagination .page-info {
+  font-size: 0.8125rem;
+  color: var(--nimbus-text-light);
+  padding: 0 var(--space-sm);
+}
+
+/* === Search Bar === */
+.search-bar {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.search-bar .form-input {
+  flex: 1;
+}
+
+.search-bar .btn {
+  flex-shrink: 0;
+}
+
+/* === Step Progress Bar === */
+.step-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-2xl);
+  padding: 0 var(--space-lg);
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.step-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--nimbus-border);
+  background: var(--nimbus-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--nimbus-text-light);
+  transition: all var(--transition-base);
+  position: relative;
+  z-index: 1;
+}
+
+.step-item.active .step-dot {
+  border-color: var(--nimbus-secondary);
+  background: var(--nimbus-secondary);
+  color: #fff;
+}
+
+.step-item.completed .step-dot {
+  border-color: var(--nimbus-success);
+  background: var(--nimbus-success);
+  color: #fff;
+}
+
+.step-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--nimbus-text-light);
+  margin-top: 6px;
+  white-space: nowrap;
+}
+
+.step-item.active .step-label { color: var(--nimbus-secondary); font-weight: 600; }
+.step-item.completed .step-label { color: var(--nimbus-success); }
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: var(--nimbus-border);
+  min-width: 40px;
+  margin: 0 8px;
+  margin-bottom: 20px;
+  transition: background var(--transition-base);
+}
+
+.step-line.completed {
+  background: var(--nimbus-success);
+}
+
+/* === Info Sidebar (for customer dashboard) === */
+.dashboard-with-sidebar {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--space-lg);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sidebar-card {
+  background: var(--nimbus-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--nimbus-border);
+}
+
+.sidebar-card h4 {
+  font-size: 0.875rem;
+  margin-bottom: var(--space-sm);
+  color: var(--nimbus-dark);
+}
+
+.sidebar-card p {
+  font-size: 0.8125rem;
+  color: var(--nimbus-text-light);
+  line-height: 1.6;
+}
+
+/* === Alert/Toast === */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.alert.success { background: #E8F8EF; color: var(--nimbus-success); border: 1px solid #B7E4C7; }
+.alert.error { background: #FDF0EF; color: var(--nimbus-danger); border: 1px solid #F5C6CB; }
+.alert.warning { background: #FFF8E1; color: #856404; border: 1px solid #FFE082; }
+.alert.info { background: #EBF5FB; color: var(--nimbus-secondary); border: 1px solid #BEE5EB; }
+
+/* === Invoice === */
+.invoice {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.invoice-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 2px solid var(--nimbus-dark);
+}
+
+.invoice-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--nimbus-border);
+  font-size: 0.9375rem;
+}
+
+.invoice-row .label {
+  color: var(--nimbus-text-light);
+  font-weight: 500;
+}
+
+.invoice-row .value {
+  color: var(--nimbus-text);
+  font-weight: 600;
+  text-align: right;
+}
+
+.invoice-total {
+  font-size: 1.125rem;
+  font-weight: 700;
+  border-top: 2px solid var(--nimbus-dark);
+  border-bottom: none;
+  padding-top: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+@media print {
+  .top-nav, .btn-logout, .no-print { display: none !important; }
+  .main-content { margin-top: 0; padding: 0; }
+  body { background: #fff; }
+}
+
+/* === Card Payment Visual === */
+.card-visual {
+  width: 340px;
+  height: 200px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #1B2A4A 0%, #2E86DE 100%);
+  padding: var(--space-lg);
+  color: #fff;
+  position: relative;
+  margin: 0 auto var(--space-lg);
+  font-family: 'Courier New', monospace;
+  box-shadow: var(--shadow-lg);
+}
+
+.card-visual .card-network {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.card-visual .card-chip {
+  width: 40px;
+  height: 30px;
+  background: linear-gradient(135deg, #d4a843, #c9952e);
+  border-radius: 6px;
+  margin-bottom: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-visual .card-chip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.2);
+}
+
+.card-visual .card-number {
+  font-size: 1.25rem;
+  letter-spacing: 3px;
+  margin-bottom: var(--space-md);
+}
+
+.card-visual .card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.card-visual .card-holder {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+
+.card-visual .card-expiry {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .nav-center { font-size: 0.875rem; }
+  .dashboard-with-sidebar { grid-template-columns: 1fr; }
+  .main-content { padding: var(--space-md); }
+}
+
+@media (max-width: 600px) {
+  .stats-row { gap: var(--space-md); }
+  .modules-grid { grid-template-columns: 1fr; }
+  .card-visual { width: 100%; max-width: 340px; }
+}</code></pre>
+  </div>
 </section>
 
 
